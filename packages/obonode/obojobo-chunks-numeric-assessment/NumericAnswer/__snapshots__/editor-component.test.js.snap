@@ -38,6 +38,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0.5"
       />
@@ -84,6 +85,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0b1101"
       />
@@ -130,6 +132,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0o77"
       />
@@ -176,6 +179,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0xFF"
       />
@@ -222,6 +226,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1"
       />
@@ -268,6 +273,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1.23e14"
       />
@@ -314,6 +320,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1/2"
       />
@@ -360,6 +367,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0.5"
       />
@@ -391,6 +399,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -437,6 +446,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0b1101"
       />
@@ -468,6 +478,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -514,6 +525,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0o77"
       />
@@ -545,6 +557,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -591,6 +604,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0xFF"
       />
@@ -622,6 +636,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -668,6 +683,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1"
       />
@@ -699,6 +715,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -745,6 +762,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1.23e14"
       />
@@ -776,6 +794,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -822,6 +841,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1/2"
       />
@@ -853,6 +873,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -899,6 +920,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0.5"
       />
@@ -930,6 +952,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -976,6 +999,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0b1101"
       />
@@ -1007,6 +1031,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -1053,6 +1078,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0o77"
       />
@@ -1084,6 +1110,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -1130,6 +1157,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0xFF"
       />
@@ -1161,6 +1189,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -1207,6 +1236,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1"
       />
@@ -1238,6 +1268,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -1284,6 +1315,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1.23e14"
       />
@@ -1315,6 +1347,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -1361,6 +1394,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="answer"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1/2"
       />
@@ -1392,6 +1426,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="input-item"
         contentEditable={false}
         name="margin"
+        onBlur={[Function]}
         onChange={[Function]}
         value={5}
       />
@@ -1438,6 +1473,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="start"
+        onBlur={[Function]}
         onChange={[Function]}
         value="-0.5"
       />
@@ -1451,6 +1487,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="end"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0.5"
       />
@@ -1497,6 +1534,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="start"
+        onBlur={[Function]}
         onChange={[Function]}
         value="-1"
       />
@@ -1510,6 +1548,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="end"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1"
       />
@@ -1556,6 +1595,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="start"
+        onBlur={[Function]}
         onChange={[Function]}
         value="-1.23e14"
       />
@@ -1569,6 +1609,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="end"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1.23e14"
       />
@@ -1615,6 +1656,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="start"
+        onBlur={[Function]}
         onChange={[Function]}
         value="-1/2"
       />
@@ -1628,6 +1670,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="end"
+        onBlur={[Function]}
         onChange={[Function]}
         value="1/2"
       />
@@ -1674,6 +1717,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="start"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0b1"
       />
@@ -1687,6 +1731,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="end"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0b1101"
       />
@@ -1733,6 +1778,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="start"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0o1"
       />
@@ -1746,6 +1792,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="end"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0o77"
       />
@@ -1792,6 +1839,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="start"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0x1"
       />
@@ -1805,6 +1853,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="input-item"
         contentEditable={false}
         name="end"
+        onBlur={[Function]}
         onChange={[Function]}
         value="0xFF"
       />

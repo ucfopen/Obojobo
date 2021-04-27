@@ -11,7 +11,6 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
     >
       <option>
         Exact answer
@@ -33,6 +32,7 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onChange={[Function]}
       value=""
     />
@@ -51,7 +51,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
       value="Exact answer"
     >
       <option>
@@ -74,6 +73,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onChange={[Function]}
       value=""
     />
@@ -92,7 +92,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
       value="Margin of error"
     >
       <option>
@@ -115,6 +114,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onChange={[Function]}
       value=""
     />
@@ -126,7 +126,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="margin-type"
-      onChange={[Function]}
     >
       <option>
         Percent
@@ -145,6 +144,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="input-item"
       contentEditable={false}
       name="margin"
+      onBlur={[Function]}
       onChange={[Function]}
       value=""
     />
@@ -163,7 +163,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
       value="Within a range"
     >
       <option>
@@ -186,6 +185,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="input-item"
       contentEditable={false}
       name="start"
+      onBlur={[Function]}
       onChange={[Function]}
       value=""
     />
@@ -199,6 +199,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="input-item"
       contentEditable={false}
       name="end"
+      onBlur={[Function]}
       onChange={[Function]}
       value=""
     />
