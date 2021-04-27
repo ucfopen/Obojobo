@@ -57,7 +57,7 @@ describe('timeoutPromise', () => {
 				expect(true).toBe(false)
 			})
 			.catch(result => {
-				expect(result).toBe(timeoutPromise.ERROR)
+				expect(result).toEqual(Error(timeoutPromise.ERROR))
 
 				done()
 			})

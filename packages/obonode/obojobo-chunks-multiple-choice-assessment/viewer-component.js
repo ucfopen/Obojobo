@@ -26,14 +26,6 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		return true
 	}
 
-	static getDetails(questionModel, questionAssessmentModel, score) {
-		if (questionAssessmentModel.modelState.responseType === 'pick-all' && score !== 100) {
-			return PICK_ALL_INCORRECT_MESSAGE
-		}
-
-		return null
-	}
-
 	static isResponseEmpty(response) {
 		return response.ids.length === 0
 	}
@@ -45,7 +37,7 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		this.sortIds()
 	}
 
-	static getInstructions(questionModel, questionAssessmentModel) {
+	getInstructions(questionModel, questionAssessmentModel) {
 		const responseType = questionAssessmentModel.modelState.responseType
 		const questionType = questionModel.modelState.type
 
@@ -85,6 +77,14 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 				{instructions}
 			</React.Fragment>
 		)
+	}
+
+	getDetails(questionModel, questionAssessmentModel, score) {
+		if (questionAssessmentModel.modelState.responseType === 'pick-all' && score !== 100) {
+			return PICK_ALL_INCORRECT_MESSAGE
+		}
+
+		return null
 	}
 
 	getResponseData() {

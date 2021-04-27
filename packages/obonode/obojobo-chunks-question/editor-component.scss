@@ -106,6 +106,7 @@
 
 	&.is-type-survey {
 		.add-solution,
+		> .flipper > .content-back > .add-solution-container,
 		.solution-editor {
 			display: none;
 		}

@@ -14,7 +14,6 @@ import MediaUtil from './util/media-util'
 import NavStore from './stores/nav-store'
 import NavUtil from './util/nav-util'
 import OboComponent from './components/obo-component'
-import OboQuestionComponent from './components/obo-question-component'
 import OboQuestionAssessmentComponent from './components/obo-question-assessment-component'
 import Flag from './components/flag'
 import QuestionStore from './stores/question-store'
@@ -29,7 +28,6 @@ export default {
 		Logo,
 		Header,
 		OboComponent,
-		OboQuestionComponent,
 		OboQuestionAssessmentComponent,
 		Flag
 	},

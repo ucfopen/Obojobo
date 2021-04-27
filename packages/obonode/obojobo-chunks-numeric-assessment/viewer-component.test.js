@@ -590,13 +590,13 @@ describe('NumericAssessment', () => {
 		)
 	})
 
-	test('getRevealAnswerDefault returns when-incorrect', () => {
-		expect(NumericAssessment.getRevealAnswerDefault()).toBe('when-incorrect')
+	test('revealAnswerDefault returns when-incorrect', () => {
+		expect(NumericAssessment.prototype.revealAnswerDefault).toBe('when-incorrect')
 	})
 
 	test('getInstructions returns expected JSX when not survey question', () => {
 		expect(
-			NumericAssessment.getInstructions({
+			NumericAssessment.prototype.getInstructions({
 				modelState: {
 					type: 'default'
 				}
@@ -610,7 +610,7 @@ describe('NumericAssessment', () => {
 
 	test('getInstructions returns expected JSX when survey question', () => {
 		expect(
-			NumericAssessment.getInstructions({
+			NumericAssessment.prototype.getInstructions({
 				modelState: {
 					type: 'survey'
 				}

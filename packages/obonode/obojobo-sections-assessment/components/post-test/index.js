@@ -9,7 +9,7 @@ const { OboModel } = Common.models
 const { focus } = Common.page
 const { AssessmentUtil, NavUtil } = Viewer.util
 const { Dispatcher } = Common.flux
-const { Throbber } = Common.components
+const { Spinner } = Common.components
 
 class AssessmentPostTest extends React.Component {
 	constructor(props) {
@@ -148,7 +148,7 @@ class AssessmentPostTest extends React.Component {
 						</div>
 					</React.Fragment>
 				) : (
-					<Throbber />
+					<Spinner />
 				)}
 			</div>
 		)

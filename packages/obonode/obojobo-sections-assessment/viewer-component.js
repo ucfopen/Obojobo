@@ -13,7 +13,7 @@ import AssessmentMachineStates from 'obojobo-document-engine/src/scripts/viewer/
 
 const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
-const { Throbber } = Common.components
+const { Spinner } = Common.components
 const { ModalPortal } = Common.components.modal
 
 const { AssessmentUtil } = Viewer.util
@@ -140,7 +140,7 @@ class Assessment extends React.Component {
 			case 'loading':
 				return (
 					<div className="loading-assessment">
-						<Throbber />
+						<Spinner />
 					</div>
 				)
 

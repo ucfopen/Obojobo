@@ -5,7 +5,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 const { QuestionResponseSendStates } = Viewer.stores.questionStore
-const { Throbber } = Common.components
+const { Spinner } = Common.components
 
 const QuestionResponseStatus = ({ responseSendState, timeout }) => {
 	return (
@@ -24,7 +24,7 @@ const QuestionResponseStatus = ({ responseSendState, timeout }) => {
 				timeout={timeout}
 			>
 				<span className="is-response-state-sending">
-					<Throbber />
+					<Spinner />
 				</span>
 			</CSSTransition>
 

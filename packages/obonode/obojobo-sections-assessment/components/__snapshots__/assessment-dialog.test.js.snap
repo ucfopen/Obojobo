@@ -285,11 +285,11 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
       >
         <div
           aria-label="Loading content"
-          className="obojobo-draft--components--throbber"
+          className="obojobo-draft--components--spinner"
         >
           <div
             aria-hidden={true}
-            className="throbber"
+            className="spinner"
           >
             <svg
               preserveAspectRatio="xMidYMid"
@@ -1615,11 +1615,11 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
       >
         <div
           aria-label="Loading content"
-          className="obojobo-draft--components--throbber"
+          className="obojobo-draft--components--spinner"
         >
           <div
             aria-hidden={true}
-            className="throbber"
+            className="spinner"
           >
             <svg
               preserveAspectRatio="xMidYMid"
