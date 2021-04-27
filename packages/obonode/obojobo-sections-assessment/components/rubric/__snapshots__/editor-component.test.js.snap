@@ -228,6 +228,7 @@ exports[`Rubric editor Rubric renders 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Edit...
       </button>
@@ -543,6 +544,7 @@ exports[`Rubric editor Rubric renders with given values 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Edit...
       </button>

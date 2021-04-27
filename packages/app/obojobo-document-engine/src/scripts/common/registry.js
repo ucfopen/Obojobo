@@ -49,7 +49,6 @@ class _Registry {
 		// undefined values (Object.assign won't overwrite object
 		// values that are undefined, only ones that don't exist
 		// in the object)
-
 		this.registerModel(
 			EditorNode.name,
 			withoutUndefined({
@@ -91,6 +90,7 @@ class _Registry {
 				componentClass: null,
 				commandHandler: null,
 				variables: {},
+				variableHandler: noop,
 				templateObject: '',
 				init: noop,
 				name: '',

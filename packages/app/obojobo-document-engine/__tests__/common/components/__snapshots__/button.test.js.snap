@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Button 1`] = `
+exports[`Button Renders 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-center testClassName"
   contentEditable={false}
@@ -8,6 +8,7 @@ exports[`Button 1`] = `
   <button
     className="button"
     contentEditable={false}
+    type="button"
   >
     Label
   </button>
@@ -22,6 +23,7 @@ exports[`Button align 1`] = `
   <button
     className="button"
     contentEditable={false}
+    type="button"
   >
     Label
   </button>
@@ -36,6 +38,7 @@ exports[`Button altAction 1`] = `
   <button
     className="button"
     contentEditable={false}
+    type="button"
   >
     Label
   </button>
@@ -50,6 +53,7 @@ exports[`Button dangerous 1`] = `
   <button
     className="button"
     contentEditable={false}
+    type="button"
   >
     Label
   </button>
@@ -65,6 +69,37 @@ exports[`Button disabled 1`] = `
     className="button"
     contentEditable={false}
     disabled={true}
+    type="button"
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button isSubmittable 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="submit"
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button isSubmittable 2`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="submit"
   >
     Label
   </button>
@@ -81,8 +116,54 @@ exports[`Button shouldPreventTab 1`] = `
     contentEditable={false}
     disabled={true}
     tabIndex="-1"
+    type="button"
   >
     Label
+  </button>
+</div>
+`;
+
+exports[`Button with empty string value 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="button"
+  >
+    
+  </button>
+</div>
+`;
+
+exports[`Button with null value 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="button"
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button with value 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="button"
+  >
+    child value
   </button>
 </div>
 `;

@@ -11,16 +11,6 @@
 		}
 	}
 
-	@keyframes obojobo-draft--components--more-info-button--fadein {
-		0% {
-			opacity: 0;
-		}
-
-		100% {
-			opacity: 1;
-		}
-	}
-
 	position: relative;
 	display: inline-block;
 
@@ -45,7 +35,7 @@
 
 		/* prettier-ignore */
 		animation:
-			obojobo-draft--components--more-info-button--fadein $duration-animation-default,
+			obojobo-draft--animation--fadein $duration-animation-default,
 			obojobo-draft--components--more-info-button--slidein $duration-animation-default;
 
 		&::before {

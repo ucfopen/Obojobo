@@ -8,15 +8,15 @@ jest.mock(
 	{ virtual: true }
 )
 import React from 'react'
-import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import MCAssessmentAnswerChoices from './mc-assessment-answer-choices'
-import Common from 'Common'
 
-const { focus } = Common.page
 let defaultProps
 
 describe('MCAssessment Answer Choices', () => {
+	const ComponentClass = function C() {
+		return <div></div>
+	}
 	beforeEach(() => {
 		defaultProps = {
 			responseType: '',
@@ -24,21 +24,20 @@ describe('MCAssessment Answer Choices', () => {
 			correctLabel: '',
 			incorrectLabel: '',
 			pickAllIncorrectMessage: '',
-			models: [],
+			models: [
+				{
+					getComponentClass: () => ComponentClass,
+					get: () => 'mockId'
+				}
+			],
 			moduleData: '',
 			mode: ''
 		}
 	})
 
-	test('focusOnResults renders', () => {
+	test('Renders', () => {
 		const component = renderer.create(<MCAssessmentAnswerChoices {...defaultProps} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
-	})
-
-	test('focusOnResults calls focus with resultsRef', () => {
-		const component = mount(<MCAssessmentAnswerChoices {...defaultProps} />)
-		component.instance().focusOnResults()
-		expect(focus).toHaveBeenCalledWith(component.instance().resultsRef.current)
 	})
 })

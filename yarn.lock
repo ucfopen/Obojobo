@@ -5214,7 +5214,7 @@ db-migrate-base@^2.3.0:
   dependencies:
     bluebird "^3.1.1"
 
-db-migrate-pg@^1.2.2:
+db-migrate-pg@^1.0.0, db-migrate-pg@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/db-migrate-pg/-/db-migrate-pg-1.2.2.tgz#66436dbad0ba398c05851d200f768db6b2e5bc1a"
   integrity sha512-+rgrhGNWC2SzcfweopyZqOQ1Igz1RVFMUZwUs6SviHpOUzFwb0NZWkG0pw1GaO+JxTxS7VJjckUWkOwZbVYVag==
@@ -5233,6 +5233,27 @@ db-migrate@^0.11.12:
   version "0.11.12"
   resolved "https://registry.yarnpkg.com/db-migrate/-/db-migrate-0.11.12.tgz#2798fc46da51fc2589497d462f3c6116802cfb6a"
   integrity sha512-HUS8T5A3sKGCi+hz9XMKMwAKfU9sqhpDufW9nbVSRc5wxDO695uxA5lDe+If0OdvwwQOVxOnEZqkzAAxgyeFWg==
+  dependencies:
+    balanced-match "^1.0.0"
+    bluebird "^3.1.1"
+    db-migrate-shared "^1.2.0"
+    deep-extend "^0.6.0"
+    dotenv "^5.0.1"
+    final-fs "^1.6.0"
+    inflection "^1.10.0"
+    mkdirp "~0.5.0"
+    parse-database-url "~0.3.0"
+    prompt "^1.0.0"
+    rc "^1.2.8"
+    resolve "^1.1.6"
+    semver "^5.3.0"
+    tunnel-ssh "^4.0.0"
+    yargs "^15.3.1"
+
+db-migrate@^0.11.6:
+  version "0.11.11"
+  resolved "https://registry.yarnpkg.com/db-migrate/-/db-migrate-0.11.11.tgz#656764ad8c8888f6a2e9378669fa691b28958ea2"
+  integrity sha512-GHZodjB5hXRy+76ZIb9z0OrUn0qSeGfvS0cCfyzPeFCBZ1YU9o9HUBQ8pUT+v/fJ9+a29eRz2xQsLfccXZtf8g==
   dependencies:
     balanced-match "^1.0.0"
     bluebird "^3.1.1"
@@ -6644,6 +6665,15 @@ fs-constants@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs-constants/-/fs-constants-1.0.0.tgz#6be0de9be998ce16af8afc24497b9ee9b7ccd9ad"
   integrity sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==
+
+fs-extra@^8.0.1:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
+  integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
+  dependencies:
+    graceful-fs "^4.2.0"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
 
 fs-extra@^9.1.0:
   version "9.1.0"
@@ -8724,6 +8754,13 @@ json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
+jsonfile@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
+  integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
+  optionalDependencies:
+    graceful-fs "^4.1.6"
+
 jsonfile@^6.0.1:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-6.1.0.tgz#bc55b2634793c679ec6403094eb13698a6ec0aae"
@@ -8897,7 +8934,7 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@^10.5.4:
+lint-staged@^10.2.2, lint-staged@^10.5.4:
   version "10.5.4"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.5.4.tgz#cd153b5f0987d2371fc1d2847a409a2fe705b665"
   integrity sha512-EechC3DdFic/TdOPgj/RB3FicqE6932LTHCUm0Y2fsD9KGlLB+RwJl2q1IYBIvEsKzDOgn0D4gll+YxG5RsrKg==
@@ -10236,6 +10273,34 @@ object.values@^1.1.0, object.values@^1.1.1, object.values@^1.1.2, object.values@
     es-abstract "^1.18.0-next.2"
     has "^1.0.3"
 
+obojobo-chunks-question@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/obojobo-chunks-question/-/obojobo-chunks-question-8.0.2.tgz#4cf7d7f9a2d14593ccde12a243554ff60b421fc5"
+  integrity sha512-7/+VMq4kdhwCKNjFgA3MKTtuEZts7Ks0Wcdcvd/BtKliwvEUNEc42AnR7KNXemTvnA1tNPixKZZpyQ+fr65YBA==
+  dependencies:
+    obojobo-lib-utils "^8.0.2"
+
+obojobo-chunks-text@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/obojobo-chunks-text/-/obojobo-chunks-text-8.0.2.tgz#8ff750c0ce4c110363322b9303b1215a8786b9bb"
+  integrity sha512-6rAU2J/C1cT0r9WE1rpUtRv62HoG5V0/74JSEvadcneSRwzOb/DyBdbRoIos+GarZjga3J1PBueuNmYLg4ULxQ==
+  dependencies:
+    obojobo-lib-utils "^8.0.2"
+
+obojobo-lib-utils@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/obojobo-lib-utils/-/obojobo-lib-utils-8.0.2.tgz#10981ed79ef014498623865921cf75cc9461aa09"
+  integrity sha512-DyYr41gu1cu1a4cZb+V6YYXn75U+80dGvbhuxthc/eHQQju/TgVGSr3zxgBUAnZ/gyPy1h28Nu6OV627EpuCng==
+  dependencies:
+    db-migrate "^0.11.6"
+    db-migrate-pg "^1.0.0"
+    fs-extra "^8.0.1"
+    prop-types "15.7.2"
+    react "16.10.1"
+    react-dom "16.10.1"
+    react-idle-timer "^4.2.9"
+    react-transition-group "^4.3.0"
+
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
@@ -11319,6 +11384,16 @@ react-compound-slider@^3.3.1:
     d3-array "^2.8.0"
     warning "^4.0.3"
 
+react-dom@16.10.1:
+  version "16.10.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.10.1.tgz#479a6511ba34a429273c213cbc2a9ac4d296dac1"
+  integrity sha512-SmM4ZW0uug0rn95U8uqr52I7UdNf6wdGLeXDmNLfg3y5q5H9eAbdjF5ubQc3bjDyRrvdAB2IKG7X0GzSpnn5Mg==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.16.1"
+
 react-dom@^16.13.1:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
@@ -11329,7 +11404,7 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-idle-timer@4.5.6:
+react-idle-timer@4.5.6, react-idle-timer@^4.2.9:
   version "4.5.6"
   resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.5.6.tgz#b3c541ba0526220f71f5820a81c0e1b2c55b0e73"
   integrity sha512-7+sdN78SWu2vZpQsPWDbrgfZWkSqzzXeq5/bC3wvlRLj6xVTA1fA+8Qy0vJmNONz5UXu8Ymrj6rn6DFhcxgssg==
@@ -11391,7 +11466,7 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.8.6"
     scheduler "^0.19.1"
 
-react-transition-group@^4.4.1:
+react-transition-group@^4.3.0, react-transition-group@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
   integrity sha512-Djqr7OQ2aPUiYurhPalTrVy9ddmFCCzwhqQmtN+J3+3DzLO209Fdr70QrN8Z3DsglWql6iY1lDWAfpFiBtuKGw==
@@ -11399,6 +11474,15 @@ react-transition-group@^4.4.1:
     "@babel/runtime" "^7.5.5"
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
+    prop-types "^15.6.2"
+
+react@16.10.1:
+  version "16.10.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.10.1.tgz#967c1e71a2767dfa699e6ba702a00483e3b0573f"
+  integrity sha512-2bisHwMhxQ3XQz4LiJJwG3360pY965pTl/MRrZYxIBKVj4fOHoDs5aZAkYXGxDRO1Li+SyjTAilQEbOmtQJHzA==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
     prop-types "^15.6.2"
 
 react@^16.13.1:
@@ -12142,6 +12226,14 @@ saxes@^5.0.1:
   integrity sha512-5LBh1Tls8c9xgGjw3QrMwETmTMVk0oFgvrFSvWx62llR2hcEInrKNZ2GZCCuuy2lvWrdl5jhbpeqc5hRYKFOcw==
   dependencies:
     xmlchars "^2.2.0"
+
+scheduler@^0.16.1:
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.16.2.tgz#f74cd9d33eff6fc554edfb79864868e4819132c1"
+  integrity sha512-BqYVWqwz6s1wZMhjFvLfVR5WXP7ZY32M/wYPo04CcuPM7XZEbV2TBNW7Z0UkguPTl0dWMA59VbNXxK6q+pHItg==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
 
 scheduler@^0.19.1:
   version "0.19.1"
@@ -13961,7 +14053,7 @@ universal-user-agent@^6.0.0:
   resolved "https://registry.yarnpkg.com/universal-user-agent/-/universal-user-agent-6.0.0.tgz#3381f8503b251c0d9cd21bc1de939ec9df5480ee"
   integrity sha512-isyNax3wXoKaulPDZWHQqbmIx1k2tb9fb3GGDBRxCscfYV2Ch7WxPArBsFEG8s/safwXTT7H4QGhaIkTp9447w==
 
-universalify@^0.1.2:
+universalify@^0.1.0, universalify@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
   integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
@@ -14684,6 +14776,11 @@ xmlchars@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
+
+xstate@^4.13.0:
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/xstate/-/xstate-4.13.0.tgz#0be22ceb8bae2bc6a025fab330fe44204d76771c"
+  integrity sha512-UnUJJzP2KTPqnmxIoD/ymXtpy/hehZnUlO6EXqWC/72XkPb15p9Oz/X4WhS3QE+by7NP+6b5bCi/GTGFzm5D+A==
 
 xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.2"

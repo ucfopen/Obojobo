@@ -368,6 +368,7 @@ export default class ViewerApp extends React.Component {
 
 			delete this.leaveEvent
 			delete this.viewerHideDate
+
 			return
 		}
 
@@ -499,7 +500,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle(event) {
-		ViewerAPI.postEvent({
+		return ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:inactive',
 			eventVersion: '3.0.0',
@@ -508,13 +509,17 @@ export default class ViewerApp extends React.Component {
 				lastActiveTime: event.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 			}
-		}).then(res => {
-			this.inactiveEvent = res.value
+		}).then(result => {
+			this.inactiveEvent = result.response.value
 		})
 	}
 
 	onReturnFromIdle(event) {
-		ViewerAPI.postEvent({
+		const inactiveEvent = this.inactiveEvent
+
+		delete this.inactiveEvent
+
+		return ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
 			eventVersion: '2.1.0',
@@ -522,11 +527,9 @@ export default class ViewerApp extends React.Component {
 			payload: {
 				lastActiveTime: event.lastActiveEpoch,
 				inactiveDuration: event.inactiveDuration,
-				relatedEventId: this.inactiveEvent.extensions.internalEventId
+				relatedEventId: inactiveEvent.extensions.internalEventId
 			}
 		})
-
-		delete this.inactiveEvent
 	}
 
 	sendCloseEvent() {
@@ -559,7 +562,7 @@ export default class ViewerApp extends React.Component {
 			AssessmentStore.triggerChange()
 			QuestionStore.triggerChange()
 
-			return ModalUtil.show(
+			ModalUtil.show(
 				<SimpleDialog ok width="19em">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
@@ -654,6 +657,7 @@ export default class ViewerApp extends React.Component {
 	getViewerClassNames() {
 		const s = this.state
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(s.focusState)
+
 		return (
 			isOrNot(s.isPreviewing, 'previewing') +
 			isOrNot(s.navState.open, 'open-nav') +
@@ -698,10 +702,7 @@ export default class ViewerApp extends React.Component {
 				) : null}
 
 				<FocusBlocker moduleData={this.state} />
-
-				{modalItem && modalItem.component ? (
-					<ModalContainer>{modalItem.component}</ModalContainer>
-				) : null}
+				<ModalContainer modalItem={modalItem} />
 			</div>
 		)
 	}

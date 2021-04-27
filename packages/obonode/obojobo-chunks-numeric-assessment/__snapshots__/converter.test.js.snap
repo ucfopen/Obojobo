@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericAssessment Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "text": "grams",
+        },
+      ],
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.NumericAssessment.Units",
+      "type": "ObojoboDraft.Chunks.NumericAssessment",
+    },
+    undefined,
+    undefined,
+  ],
+  "content": Object {
+    "units": Array [
+      Object {
+        "data": Object {},
+        "text": Object {
+          "styleList": Array [],
+          "value": "grams",
+        },
+      },
+    ],
+  },
+  "id": "mockId",
+  "questionType": "mockQuestionType",
+  "type": "ObojoboDraft.Chunks.NumericAssessment",
+}
+`;

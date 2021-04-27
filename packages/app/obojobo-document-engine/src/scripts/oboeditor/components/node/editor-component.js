@@ -9,6 +9,7 @@ import MoreInfoBox from '../navigation/more-info-box'
 import isValidId from '../../util/is-valid-id'
 
 import './editor-component.scss'
+import isOrNot from '../../../common/util/isornot'
 
 const INSERT_BEFORE = true
 const INSERT_AFTER = false
@@ -221,7 +222,10 @@ class Node extends React.Component {
 	}
 
 	render() {
-		const className = `oboeditor-component component ${this.props.className || ''}`
+		const selected = this.props.selected
+
+		const className = `oboeditor-component component ${isOrNot(selected, 'selected')} ${this.props
+			.className || ''}`
 
 		return (
 			<div className={className} data-obo-component="true">
