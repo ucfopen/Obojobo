@@ -16,6 +16,10 @@ import {
 	INPUT_MATCHES_MULTIPLE_TYPES,
 	INPUT_NOT_MATCHED
 } from '../entry/numeric-entry-statuses'
+import NumericEntryRange from '../range/numeric-entry-range'
+
+const RANGE_ERROR_SINGULAR = 'singular'
+const RANGE_ERROR_INVERTED = 'inverted'
 
 const getValidityString = valueString => {
 	if (valueString === '') {
@@ -41,18 +45,69 @@ const getValidityString = valueString => {
 	}
 }
 
+const getRangeError = (startValueString, endValueString) => {
+	// Use NumericEntryRange to determine if this is a valid range...
+	try {
+		const range = new NumericEntryRange(`[${startValueString},${endValueString}]`)
+
+		if (range.isSingular) {
+			// The start and end values of the range are the same (such as [1,1])
+			return RANGE_ERROR_SINGULAR
+		}
+	} catch (e) {
+		if (e === 'Invalid range: min value must be larger than max value') {
+			// The range is backwards, such as [10,0]
+			return RANGE_ERROR_INVERTED
+		}
+
+		// If there is some other error it's most likely because the values passed
+		// in are malformed, in that case, we'll let the other input validation
+		// handle it instead
+	}
+
+	return ''
+}
+
+const getRangeStartValidityString = (startValueString, endValueString) => {
+	switch (getRangeError(startValueString, endValueString)) {
+		case RANGE_ERROR_SINGULAR:
+			return 'Start value should be smaller than the end value'
+
+		case RANGE_ERROR_INVERTED:
+			return "Start value can't be larger than the end value"
+
+		default:
+			return getValidityString(startValueString)
+	}
+}
+
+const getRangeEndValidityString = (startValueString, endValueString) => {
+	switch (getRangeError(startValueString, endValueString)) {
+		case RANGE_ERROR_SINGULAR:
+			return 'End value should be larger than the start value'
+
+		case RANGE_ERROR_INVERTED:
+			return "End value can't be smaller than the start value"
+
+		default:
+			return getValidityString(endValueString)
+	}
+}
+
+const onBlurAnswer = event => {
+	event.target.setCustomValidity(getValidityString(event.target.value))
+	event.target.reportValidity()
+}
+
 const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
+	const inputStartRef = React.createRef()
+	const inputEndRef = React.createRef()
 	const { requirement, answer, start, end, margin, type } = numericChoice
 
 	const onChangeNumericValue = event => {
 		// Clear out the error string and then update state
 		event.target.setCustomValidity('')
 		onHandleInputChange(event)
-	}
-
-	const onBlurAnswer = event => {
-		event.target.setCustomValidity(getValidityString(event.target.value))
-		event.target.reportValidity()
 	}
 
 	const onBlurErrorValue = event => {
@@ -67,6 +122,32 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		}
 
 		event.target.reportValidity()
+	}
+
+	const onBlurStart = event => {
+		// If the user is moving to a related input then don't show range errors.
+		// If we don't do this then the user might be in the middle of typing a range
+		// and would be forced to fix it before they're done inputting the range
+		if (event.relatedTarget !== inputEndRef.current) {
+			event.target.setCustomValidity(getRangeStartValidityString(event.target.value, end))
+			event.target.reportValidity()
+			return
+		}
+
+		onBlurAnswer(event)
+	}
+
+	const onBlurEnd = event => {
+		// If the user is moving to a related input then don't show range errors.
+		// If we don't do this then the user might be in the middle of typing a range
+		// and would be forced to fix it before they're done inputting the range
+		if (event.relatedTarget !== inputStartRef.current) {
+			event.target.setCustomValidity(getRangeEndValidityString(start, event.target.value))
+			event.target.reportValidity()
+			return
+		}
+
+		onBlurAnswer(event)
 	}
 
 	switch (simplifedToFullText[requirement]) {
@@ -89,11 +170,12 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 					<label className="input start">
 						Start
 						<input
+							ref={inputStartRef}
 							className="input-item"
 							name="start"
 							value={start || ''}
 							onChange={onChangeNumericValue}
-							onBlur={onBlurAnswer}
+							onBlur={onBlurStart}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -101,11 +183,12 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 					<label className="input end">
 						End
 						<input
+							ref={inputEndRef}
 							className="input-item"
 							name="end"
 							value={end || ''}
 							onChange={onChangeNumericValue}
-							onBlur={onBlurAnswer}
+							onBlur={onBlurEnd}
 							contentEditable={false}
 							autoComplete="off"
 						/>

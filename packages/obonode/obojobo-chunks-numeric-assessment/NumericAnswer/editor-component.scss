@@ -9,34 +9,51 @@
 	padding-left: 2.5em;
 	padding-right: 2.5em;
 
+	> div {
+		display: flex;
+	}
+
 	.requirement {
 		width: 11em;
+		flex-shrink: 0;
 	}
 
 	.is-type-exact {
-		.answer {
-			width: 27.5em;
-		}
 	}
 
 	.is-type-range {
-		.start,
+		position: relative;
+
 		.end {
-			width: 13.2em;
+			padding-right: 0;
 		}
+	}
+
+	.range-error-message {
+		position: absolute;
+		left: 12.1em;
+		line-height: 1.2em;
+		top: 5.1em;
+		width: 17em;
+		font-weight: bold;
+		font-family: $font-default;
+		font-size: 0.8em;
+		color: $color-error;
 	}
 
 	.is-type-margin {
 		.margin-type {
 			width: 8em;
+			flex-shrink: 0;
 		}
 
-		.answer {
-			width: 11em;
-		}
+		// .answer {
+		// 	width: 11em;
+		// }
 
 		.margin-value {
-			width: 6.3em;
+			width: 4.5em;
+			flex-shrink: 0;
 		}
 	}
 
@@ -86,12 +103,15 @@
 		background-repeat: no-repeat;
 	}
 
+	.input {
+		width: 100%;
+	}
+
 	.input > input {
 		display: block;
 		font-family: $font-monospace;
 		border: 1px solid $color-border;
 		border-radius: $dimension-rounded-radius;
-		font-size: 0.9rem;
 		width: 100%;
 		padding: 0.7rem 0 0.7rem 0.5rem;
 		box-sizing: border-box;
