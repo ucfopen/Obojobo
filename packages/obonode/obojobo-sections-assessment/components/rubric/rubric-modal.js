@@ -2,7 +2,7 @@ import './rubric-modal.scss'
 
 import React from 'react'
 import { ReactEditor } from 'slate-react'
-import { Transforms, Editor } from 'slate'
+import { Transforms } from 'slate'
 import ModProperties from './mod-properties'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
@@ -92,13 +92,12 @@ class RubricModal extends React.Component {
 	}
 
 	renderModProperties() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		const [parent] = Editor.parent(this.props.editor, path)
+		const numAttempts = this.props.model.attributes.content.attempts
 
 		return (
 			<ModProperties
 				mods={this.state.mods}
-				attempts={parent.content.attempts}
+				attempts={numAttempts}
 				updateModProperties={mods => this.setState({ mods })}
 			/>
 		)

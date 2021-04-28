@@ -386,4 +386,41 @@ describe('EditorUtil', () => {
 		)
 		expect(result).toMatchInlineSnapshot(`"<mockSerializedToString/>"`)
 	})
+
+	test('getCurrentAssessmentId returns the correct current assessment id', () => {
+		let id = EditorUtil.getCurrentAssessmentId({
+			'my-assessment': {
+				attributes: {
+					type: 'ObojoboDraft.Sections.Assessment'
+				}
+			},
+			'mock-id-one': {
+				attributes: {
+					type: 'mock-type-one'
+				}
+			},
+			'mock-id-two': {
+				attributes: {
+					type: 'mock-type-two'
+				}
+			},
+			'mock-id-three': {}
+		})
+		expect(id).toEqual('my-assessment')
+
+		id = EditorUtil.getCurrentAssessmentId({
+			'mock-id-one': {
+				attributes: {
+					type: 'mock-type-one'
+				}
+			},
+			'mock-id-two': {
+				attributes: {
+					type: 'mock-type-two'
+				}
+			},
+			'mock-id-three': {}
+		})
+		expect(id).toEqual(null)
+	})
 })

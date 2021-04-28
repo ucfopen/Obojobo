@@ -3,20 +3,19 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import RubricModal from './rubric-modal'
 import ModProperties from './mod-properties'
+import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
 
-import { ReactEditor } from 'slate-react'
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/editor-util')
 jest.mock('slate-react')
 jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
-const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
-const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-
 describe('Rubric editor modal', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
+		EditorUtil.getCurrentAssessmentId.mockReturnValue('my-assessment')
 	})
 
 	test('Rubric modal renders', () => {
@@ -238,25 +237,15 @@ describe('Rubric editor modal', () => {
 						type: 'pass-fail'
 					}
 				}}
-				editor={{
-					children: [
-						{
-							type: ASSESSMENT_NODE,
-							content: { attempts: 3 },
-							children: [
-								{
-									type: RUBRIC_NODE,
-									content: { unableToPassType: 'set-value', mods: [] },
-									children: []
-								}
-							]
+				model={{
+					attributes: {
+						content: {
+							attempts: 3
 						}
-					]
+					}
 				}}
 			/>
 		)
-
-		ReactEditor.findPath.mockReturnValueOnce([0, 0])
 
 		// Mod properties is open.
 		component
@@ -286,25 +275,15 @@ describe('Rubric editor modal', () => {
 						type: 'pass-fail'
 					}
 				}}
-				editor={{
-					children: [
-						{
-							type: ASSESSMENT_NODE,
-							content: { attempts: 3 },
-							children: [
-								{
-									type: RUBRIC_NODE,
-									content: { unableToPassType: 'set-value', mods: [] },
-									children: []
-								}
-							]
+				model={{
+					attributes: {
+						content: {
+							attempts: 3
 						}
-					]
+					}
 				}}
 			/>
 		)
-
-		ReactEditor.findPath.mockReturnValue([0, 0])
 
 		// To render ModProperties
 		component

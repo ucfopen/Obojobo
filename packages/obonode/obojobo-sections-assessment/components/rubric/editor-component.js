@@ -4,11 +4,13 @@ import React from 'react'
 import { ReactEditor } from 'slate-react'
 import { Transforms } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import RubricModal from './rubric-modal'
 
 const { Button } = Common.components
 const { ModalUtil } = Common.util
+const { OboModel } = Common.models
 
 class Rubric extends React.Component {
 	constructor(props) {
@@ -46,11 +48,14 @@ class Rubric extends React.Component {
 
 		this.freezeEditor()
 
+		const currentAssessmentId = EditorUtil.getCurrentAssessmentId(OboModel.models)
+
 		ModalUtil.show(
 			<RubricModal
 				{...this.props}
 				onConfirm={this.changeRubricProperties}
 				onCancel={this.onCloseRubricModal}
+				model={OboModel.models[currentAssessmentId]}
 			/>
 		)
 	}
