@@ -17,6 +17,7 @@ import {
 	INPUT_NOT_MATCHED
 } from '../entry/numeric-entry-statuses'
 import NumericEntryRange from '../range/numeric-entry-range'
+import isRefRelatedTarget from './is-ref-related-target'
 
 const RANGE_ERROR_SINGULAR = 'singular'
 const RANGE_ERROR_INVERTED = 'inverted'
@@ -128,7 +129,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		// If the user is moving to a related input then don't show range errors.
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
-		if (event.relatedTarget !== inputEndRef.current) {
+		if (!isRefRelatedTarget(event, inputEndRef)) {
 			event.target.setCustomValidity(getRangeStartValidityString(event.target.value, end))
 			event.target.reportValidity()
 			return
@@ -141,7 +142,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		// If the user is moving to a related input then don't show range errors.
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
-		if (event.relatedTarget !== inputStartRef.current) {
+		if (!isRefRelatedTarget(event, inputStartRef)) {
 			event.target.setCustomValidity(getRangeEndValidityString(start, event.target.value))
 			event.target.reportValidity()
 			return
