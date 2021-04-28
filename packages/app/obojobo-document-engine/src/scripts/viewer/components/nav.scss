@@ -375,6 +375,7 @@
 
 	&.is-not-open {
 		z-index: $z-index-above-content;
+		left: -$dimension-nav-menu;
 
 		.toggle-button {
 			transform: rotate(180deg);
@@ -398,10 +399,6 @@
 				}
 			}
 		}
-	}
-
-	&.is-not-open {
-		left: -$dimension-nav-menu;
 	}
 
 	&.is-not-enabled {

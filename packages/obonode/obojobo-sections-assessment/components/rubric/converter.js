@@ -4,6 +4,7 @@ const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 const slateToObo = node => {
 	const content = Object.assign({}, node.content)
+	delete content.showModProperties
 
 	if (content.type !== 'pass-fail') return ''
 
