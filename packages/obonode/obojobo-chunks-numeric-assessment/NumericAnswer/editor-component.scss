@@ -18,9 +18,6 @@
 		flex-shrink: 0;
 	}
 
-	.is-type-exact {
-	}
-
 	.is-type-range {
 		position: relative;
 
@@ -46,10 +43,6 @@
 			width: 8em;
 			flex-shrink: 0;
 		}
-
-		// .answer {
-		// 	width: 11em;
-		// }
 
 		.margin-value {
 			width: 4.5em;
@@ -93,14 +86,22 @@
 		background-color: $color-bg;
 		padding: 0.7rem 0 0.7rem 0.5rem;
 		width: 100%;
-
 		appearance: none;
-		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-			linear-gradient(135deg, gray 50%, transparent 50%);
-		background-position: calc(100% - 20px) calc(1rem + 2px), calc(100% - 15px) calc(1rem + 2px),
-			calc(100% - 2.5rem) 0.5rem;
+
+		// stylelint-disable unit-disallowed-list
 		background-size: 5px 5px, 5px 5px, 1px 1.5rem;
 		background-repeat: no-repeat;
+
+		/* prettier-ignore */
+		background-image:
+			linear-gradient(45deg, transparent 50%, gray 50%),
+			linear-gradient(135deg, gray 50%, transparent 50%);
+
+		/* prettier-ignore */
+		background-position:
+			calc(100% - 20px) calc(1rem + 2px),
+			calc(100% - 15px) calc(1rem + 2px),
+			calc(100% - 2.5rem) 0.5rem;
 	}
 
 	.input {
