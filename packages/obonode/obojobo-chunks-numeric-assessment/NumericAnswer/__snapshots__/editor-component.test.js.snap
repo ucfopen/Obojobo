@@ -1,0 +1,1863 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null",answer="0.5",margin="null",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-exact"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Exact answer"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0.5"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null",answer="0b1101",margin="null",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-exact"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Exact answer"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0b1101"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null",answer="0o77",margin="null",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-exact"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Exact answer"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0o77"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null",answer="0xFF",margin="null",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-exact"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Exact answer"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0xFF"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null",answer="1",margin="null",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-exact"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Exact answer"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null",answer="1.23e14",margin="null",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-exact"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Exact answer"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1.23e14"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null",answer="1/2",margin="null",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-exact"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Exact answer"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1/2"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="absolute",answer="0.5",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0.5"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Absolute"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      ± Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="absolute",answer="0b1101",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0b1101"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Absolute"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      ± Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="absolute",answer="0o77",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0o77"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Absolute"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      ± Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="absolute",answer="0xFF",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0xFF"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Absolute"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      ± Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="absolute",answer="1",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Absolute"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      ± Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="absolute",answer="1.23e14",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1.23e14"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Absolute"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      ± Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="absolute",answer="1/2",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1/2"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Absolute"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      ± Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="percent",answer="0.5",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0.5"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Percent"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      % Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="percent",answer="0b1101",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0b1101"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Percent"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      % Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="percent",answer="0o77",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0o77"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Percent"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      % Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="percent",answer="0xFF",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0xFF"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Percent"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      % Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="percent",answer="1",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Percent"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      % Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="percent",answer="1.23e14",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1.23e14"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Percent"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      % Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="percent",answer="1/2",margin="5",start="null",end="null") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-margin"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Margin of error"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input answer"
+    >
+      Answer
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="answer"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1/2"
+      />
+    </label>
+    <label
+      className="select margin-type"
+    >
+      Error Type
+      <select
+        className="select-item"
+        name="margin-type"
+        onChange={[Function]}
+        value="Percent"
+      >
+        <option>
+          Percent
+        </option>
+        <option>
+          Absolute
+        </option>
+      </select>
+    </label>
+    <label
+      className="input margin-value"
+    >
+      % Error
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="margin"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={5}
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null",answer="null",margin="null",start="-0.5",end="0.5") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-range"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Within a range"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input start"
+    >
+      Start
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="start"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="-0.5"
+      />
+    </label>
+    <label
+      className="input end"
+    >
+      End
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="end"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0.5"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null",answer="null",margin="null",start="-1",end="1") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-range"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Within a range"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input start"
+    >
+      Start
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="start"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="-1"
+      />
+    </label>
+    <label
+      className="input end"
+    >
+      End
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="end"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null",answer="null",margin="null",start="-1.23e14",end="1.23e14") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-range"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Within a range"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input start"
+    >
+      Start
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="start"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="-1.23e14"
+      />
+    </label>
+    <label
+      className="input end"
+    >
+      End
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="end"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1.23e14"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null",answer="null",margin="null",start="-1/2",end="1/2") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-range"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Within a range"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input start"
+    >
+      Start
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="start"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="-1/2"
+      />
+    </label>
+    <label
+      className="input end"
+    >
+      End
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="end"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1/2"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null",answer="null",margin="null",start="0b1",end="0b1101") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-range"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Within a range"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input start"
+    >
+      Start
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="start"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0b1"
+      />
+    </label>
+    <label
+      className="input end"
+    >
+      End
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="end"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0b1101"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null",answer="null",margin="null",start="0o1",end="0o77") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-range"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Within a range"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input start"
+    >
+      Start
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="start"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0o1"
+      />
+    </label>
+    <label
+      className="input end"
+    >
+      End
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="end"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0o77"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null",answer="null",margin="null",start="0x1",end="0xFF") matches snapshot 1`] = `
+<div
+  className="numeric-input-container"
+  contentEditable={false}
+>
+  <div
+    className="is-type-range"
+  >
+    <label
+      className="select requirement"
+    >
+      Answer Type
+      <select
+        className="select-item"
+        name="requirement"
+        onChange={[Function]}
+        value="Within a range"
+      >
+        <option>
+          Exact answer
+        </option>
+        <option>
+          Margin of error
+        </option>
+        <option>
+          Within a range
+        </option>
+      </select>
+    </label>
+    <label
+      className="input start"
+    >
+      Start
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="start"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0x1"
+      />
+    </label>
+    <label
+      className="input end"
+    >
+      End
+      <input
+        autoComplete="off"
+        className="input-item"
+        contentEditable={false}
+        name="end"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="0xFF"
+      />
+    </label>
+  </div>
+</div>
+`;

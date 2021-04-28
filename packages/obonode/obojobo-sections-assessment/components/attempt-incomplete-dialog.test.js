@@ -3,7 +3,6 @@ import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util', () => {
 	return {
@@ -26,9 +25,10 @@ describe('AttemptIncompleteDialog', () => {
 
 	test('AttemptIncompleteDialog component cancels', () => {
 		const onSubmit = jest.fn()
-		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} />)
+		const onCancel = jest.fn()
+		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} onCancel={onCancel} />)
 
-		expect(ModalUtil.hide).not.toHaveBeenCalled()
+		expect(onCancel).not.toHaveBeenCalled()
 		expect(onSubmit).not.toHaveBeenCalled()
 
 		component
@@ -36,15 +36,16 @@ describe('AttemptIncompleteDialog', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(onCancel).toHaveBeenCalled()
 		expect(onSubmit).not.toHaveBeenCalled()
 	})
 
 	test('AttemptIncompleteDialog component submits', () => {
 		const onSubmit = jest.fn()
-		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} />)
+		const onCancel = jest.fn()
+		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} onCancel={onCancel} />)
 
-		expect(ModalUtil.hide).not.toHaveBeenCalled()
+		expect(onCancel).not.toHaveBeenCalled()
 		expect(onSubmit).not.toHaveBeenCalled()
 
 		component
@@ -52,7 +53,7 @@ describe('AttemptIncompleteDialog', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(onCancel).not.toHaveBeenCalled()
 		expect(onSubmit).toHaveBeenCalled()
 	})
 })

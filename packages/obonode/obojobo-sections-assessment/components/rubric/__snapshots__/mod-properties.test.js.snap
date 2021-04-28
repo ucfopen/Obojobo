@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModProperties Modal ImageProperties changes Slider 1`] = `"<div class=\\"obojobo-draft--sections--assessment--mod-properties\\"><p class=\\"info\\" tabindex=\\"-1\\">You can add or deduct percentage points from a student's assessment score based on which attempt they achived a passing score. (The final assessment score is still limited to a maximum of 100%)</p><div class=\\"mod-box\\"><div class=\\"mod\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><label>When passing on attempt</label><div class=\\"slider-container\\"><div class=\\"obojobo-draft--components--slider--slider\\"><div class=\\"slider-root\\"><div class=\\"obojobo-draft--components--slider--slider-rail-outer\\"></div><div class=\\"obojobo-draft--components--slider--slider-rail-inner\\"></div><div class=\\"slider-handles\\"><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"1\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 0%;\\"></button><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"2\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 5.263157894736842%;\\"></button></div><div class=\\"slider-tracks\\"><div style=\\"left: 0%; width: 5.263157894736842%;\\" class=\\"obojobo-draft--components--slider--track  is-not-disabled\\"></div></div></div></div></div><div class=\\"slider-inputs\\"><input type=\\"text\\" class=\\"min-input\\" value=\\"1\\">through<input type=\\"text\\" class=\\"max-input\\" value=\\"2\\"></div><label class=\\"add\\">Add <input type=\\"number\\" min=\\"-100\\" max=\\"100\\" value=\\"3\\">%</label></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Mod</button></div></div></div>"`;
+exports[`ModProperties Modal ImageProperties changes Slider 1`] = `"<div class=\\"obojobo-draft--sections--assessment--mod-properties\\"><p class=\\"info\\" tabindex=\\"-1\\">You can add or deduct percentage points from a student's assessment score based on which attempt they achived a passing score. (The final assessment score is still limited to a maximum of 100%)</p><div class=\\"mod-box\\"><div class=\\"mod\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">×</button></div><label>When passing on attempt</label><div class=\\"slider-container\\"><div class=\\"obojobo-draft--components--slider--slider\\"><div class=\\"slider-root\\"><div class=\\"obojobo-draft--components--slider--slider-rail-outer\\"></div><div class=\\"obojobo-draft--components--slider--slider-rail-inner\\"></div><div class=\\"slider-handles\\"><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"1\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 0%;\\"></button><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"2\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 5.263157894736842%;\\"></button></div><div class=\\"slider-tracks\\"><div style=\\"left: 0%; width: 5.263157894736842%;\\" class=\\"obojobo-draft--components--slider--track  is-not-disabled\\"></div></div></div></div></div><div class=\\"slider-inputs\\"><input type=\\"text\\" class=\\"min-input\\" value=\\"1\\">through<input type=\\"text\\" class=\\"max-input\\" value=\\"2\\"></div><label class=\\"add\\">Add <input type=\\"number\\" min=\\"-100\\" max=\\"100\\" value=\\"3\\">%</label></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Add Mod</button></div></div></div>"`;
 
-exports[`ModProperties Modal ImageProperties component focuses on first element 1`] = `"<div class=\\"obojobo-draft--sections--assessment--mod-properties\\"><p class=\\"info\\" tabindex=\\"-1\\">You can add or deduct percentage points from a student's assessment score based on which attempt they achived a passing score. (The final assessment score is still limited to a maximum of 100%)</p><div class=\\"mod-box\\"><div class=\\"mod\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><label>When passing on attempt</label><div class=\\"slider-container\\"><div class=\\"obojobo-draft--components--slider--slider\\"><div class=\\"slider-root\\"><div class=\\"obojobo-draft--components--slider--slider-rail-outer\\"></div><div class=\\"obojobo-draft--components--slider--slider-rail-inner\\"></div><div class=\\"slider-handles\\"><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"20\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 100%;\\"></button><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"20\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 100%;\\"></button></div><div class=\\"slider-tracks\\"><div style=\\"left: 100%; width: 0%;\\" class=\\"obojobo-draft--components--slider--track  is-not-disabled\\"></div></div></div></div></div><div class=\\"slider-inputs\\"><input type=\\"text\\" class=\\"min-input\\" value=\\"$last_attempt\\">through<input type=\\"text\\" class=\\"max-input\\" value=\\"$last_attempt\\"></div><label class=\\"add\\">Add <input type=\\"number\\" min=\\"-100\\" max=\\"100\\" value=\\"3\\">%</label></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Mod</button></div></div></div>"`;
+exports[`ModProperties Modal ImageProperties component focuses on first element 1`] = `"<div class=\\"obojobo-draft--sections--assessment--mod-properties\\"><p class=\\"info\\" tabindex=\\"-1\\">You can add or deduct percentage points from a student's assessment score based on which attempt they achived a passing score. (The final assessment score is still limited to a maximum of 100%)</p><div class=\\"mod-box\\"><div class=\\"mod\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">×</button></div><label>When passing on attempt</label><div class=\\"slider-container\\"><div class=\\"obojobo-draft--components--slider--slider\\"><div class=\\"slider-root\\"><div class=\\"obojobo-draft--components--slider--slider-rail-outer\\"></div><div class=\\"obojobo-draft--components--slider--slider-rail-inner\\"></div><div class=\\"slider-handles\\"><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"20\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 100%;\\"></button><button role=\\"slider\\" aria-valuemin=\\"1\\" aria-valuemax=\\"20\\" aria-valuenow=\\"20\\" class=\\"obojobo-draft--components--slider--handle  is-not-disabled\\" style=\\"left: 100%;\\"></button></div><div class=\\"slider-tracks\\"><div style=\\"left: 100%; width: 0%;\\" class=\\"obojobo-draft--components--slider--track  is-not-disabled\\"></div></div></div></div></div><div class=\\"slider-inputs\\"><input type=\\"text\\" class=\\"min-input\\" value=\\"$last_attempt\\">through<input type=\\"text\\" class=\\"max-input\\" value=\\"$last_attempt\\"></div><label class=\\"add\\">Add <input type=\\"number\\" min=\\"-100\\" max=\\"100\\" value=\\"3\\">%</label></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Add Mod</button></div></div></div>"`;
 
 exports[`ModProperties Modal ModProperties renders 1`] = `
 <div
@@ -28,6 +28,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -148,6 +149,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -268,6 +270,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -388,6 +391,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -505,6 +509,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Add Mod
       </button>
@@ -537,6 +542,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -657,6 +663,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -777,6 +784,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -897,6 +905,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1017,6 +1026,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1137,6 +1147,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1257,6 +1268,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1377,6 +1389,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1497,6 +1510,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1617,6 +1631,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1737,6 +1752,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1857,6 +1873,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -1977,6 +1994,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -2097,6 +2115,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -2217,6 +2236,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -2337,6 +2357,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -2457,6 +2478,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -2577,6 +2599,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -2697,6 +2720,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>
@@ -2817,6 +2841,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           ×
         </button>

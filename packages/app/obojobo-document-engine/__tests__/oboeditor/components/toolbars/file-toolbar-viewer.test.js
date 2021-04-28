@@ -25,8 +25,8 @@ jest.mock('../../../../src/scripts/oboeditor/components/toolbars/format-menu', (
 
 // Editor.nodes returns an iterator
 // this is an iterator that always returns a single node
-// `new MockNodesIeterator()[Symbol.iterator]()` will give you an iterator to call next() on
-class MockNodesIeterator {
+// `new MockNodesIterator()[Symbol.iterator]()` will give you an iterator to call next() on
+class MockNodesIterator {
 	constructor() {
 		this._nextValue = this.defaultValue
 	}
@@ -52,14 +52,14 @@ class MockNodesIeterator {
 
 describe('FileToolbarViewer', () => {
 	let editor
-	let MockNodesIeteratorInstance
+	let MockNodesIteratorInstance
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.clearAllMocks()
 		jest.mock
-		MockNodesIeteratorInstance = new MockNodesIeterator()
+		MockNodesIteratorInstance = new MockNodesIterator()
 		Editor.path.mockReturnValue('mock-path-return')
-		Editor.nodes.mockImplementation(() => MockNodesIeteratorInstance[Symbol.iterator]())
+		Editor.nodes.mockImplementation(() => MockNodesIteratorInstance[Symbol.iterator]())
 		Transforms.insertNodes.mockReturnValue(false)
 		Range.isCollapsed.mockReturnValue(false)
 		editor = {
@@ -145,7 +145,11 @@ describe('FileToolbarViewer', () => {
 			insertableItems: [
 				{
 					name: 'mock-1',
+					type: 'some-type',
 					cloneBlankNode: jest.fn()
+				},
+				{
+					separator: true
 				}
 			]
 		}
@@ -182,6 +186,7 @@ describe('FileToolbarViewer', () => {
 			insertableItems: [
 				{
 					name: 'mock-2',
+					type: 'some-type',
 					cloneBlankNode: jest.fn()
 				}
 			]
@@ -256,6 +261,7 @@ describe('FileToolbarViewer', () => {
 			insertableItems: [
 				{
 					name: 'mock-1',
+					type: 'some-type',
 					cloneBlankNode: jest.fn().mockReturnValue('clone')
 				}
 			]
@@ -289,6 +295,7 @@ describe('FileToolbarViewer', () => {
 			insertableItems: [
 				{
 					name: 'mock-1',
+					type: 'some-type',
 					cloneBlankNode: jest.fn().mockReturnValue('clone')
 				}
 			]
@@ -327,6 +334,7 @@ describe('FileToolbarViewer', () => {
 			insertableItems: [
 				{
 					name: 'mock-1',
+					type: 'some-type',
 					cloneBlankNode: jest.fn().mockReturnValue('clone')
 				}
 			]
@@ -365,6 +373,7 @@ describe('FileToolbarViewer', () => {
 			insertableItems: [
 				{
 					name: 'mock-1',
+					type: 'some-type',
 					cloneBlankNode: jest.fn().mockReturnValue('clone')
 				}
 			]
@@ -380,7 +389,7 @@ describe('FileToolbarViewer', () => {
 		Registry.getItemForType.mockReturnValueOnce(node)
 
 		Range.isCollapsed.mockReturnValueOnce(true)
-		MockNodesIeteratorInstance.nextValue = null
+		MockNodesIteratorInstance.nextValue = null
 
 		const component = shallow(<FileToolbarViewer {...props} />)
 

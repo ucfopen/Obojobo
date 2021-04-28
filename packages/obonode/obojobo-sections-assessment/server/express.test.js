@@ -267,7 +267,7 @@ describe('server/express', () => {
 		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/end fails', async () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/end fails with default error', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 

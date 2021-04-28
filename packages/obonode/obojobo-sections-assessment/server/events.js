@@ -11,7 +11,7 @@ oboEvents.on(eventRecordResponse, async (event, req) => {
 	try {
 		if (!event.payload.attemptId) return // assume we're in practice
 		if (!event.payload.assessmentId) throw Error('Missing Assessment Id')
-		if (!event.payload.questionId) throw Error('Missing Question ID')
+		if (!event.payload.questionId) throw Error('Missing Question Id')
 		if (!event.payload.response) throw Error('Missing Response')
 
 		await db.none(

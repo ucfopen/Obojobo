@@ -12,8 +12,10 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
       aria-labelledby="obojobo-draft--components--modal--modal--content"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
+      tabIndex="-1"
     >
       <input
+        aria-label="Start of dialog"
         className="first-tab"
         onFocus={[Function]}
         type="text"
@@ -327,6 +329,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                       className="button"
                       contentEditable={false}
                       onClick={[Function]}
+                      type="button"
                     >
                       <span>
                         Edit...
@@ -425,6 +428,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              type="button"
             >
               Cancel
             </button>
@@ -437,6 +441,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              type="button"
             >
               OK
             </button>
@@ -444,6 +449,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
         </div>
       </div>
       <input
+        aria-label="End of dialog"
         className="last-tab"
         onFocus={[Function]}
         type="text"
@@ -465,8 +471,10 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
       aria-labelledby="obojobo-draft--components--modal--modal--content"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
+      tabIndex="-1"
     >
       <input
+        aria-label="Start of dialog"
         className="first-tab"
         onFocus={[Function]}
         type="text"
@@ -780,6 +788,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                       className="button"
                       contentEditable={false}
                       onClick={[Function]}
+                      type="button"
                     >
                       <span>
                         Edit...
@@ -803,6 +812,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              type="button"
             >
               Cancel
             </button>
@@ -815,6 +825,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              type="button"
             >
               OK
             </button>
@@ -822,6 +833,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
         </div>
       </div>
       <input
+        aria-label="End of dialog"
         className="last-tab"
         onFocus={[Function]}
         type="text"
@@ -843,8 +855,10 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
       aria-labelledby="obojobo-draft--components--modal--modal--content"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
+      tabIndex="-1"
     >
       <input
+        aria-label="Start of dialog"
         className="first-tab"
         onFocus={[Function]}
         type="text"
@@ -1158,6 +1172,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                       className="button"
                       contentEditable={false}
                       onClick={[Function]}
+                      type="button"
                     >
                       <span>
                         Edit...
@@ -1181,6 +1196,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              type="button"
             >
               Cancel
             </button>
@@ -1193,6 +1209,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              type="button"
             >
               OK
             </button>
@@ -1200,6 +1217,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
         </div>
       </div>
       <input
+        aria-label="End of dialog"
         className="last-tab"
         onFocus={[Function]}
         type="text"

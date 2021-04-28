@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionExplanation css transition animation lifecycle events are called with props 1`] = `
+<div
+  className="solution"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[MockFunction]}
+      type="button"
+    >
+      Read an explanation of the answer
+    </button>
+  </div>
+  <div
+    className="solution-container-animation-placeholder"
+  />
+</div>
+`;
+
+exports[`QuestionExplanation css transition animation lifecycle events are called with props 2`] = `
+<div
+  className="solution"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[MockFunction]}
+      type="button"
+    >
+      Hide Explanation
+    </button>
+  </div>
+  <div
+    aria-labelledby="obojobo-draft--chunks--mc-assessment--solution-label"
+    className="solution-container"
+    role="region"
+    tabIndex="-1"
+  >
+    <span
+      className="for-screen-reader-only"
+      id="obojobo-draft--chunks--mc-assessment--solution-label"
+    >
+      Explanation of the answer:
+    </span>
+    <div
+      className="component obojobo-draft--pages--page"
+      data-focussed={false}
+      data-id="page-id"
+      data-obo-component={true}
+      data-type="ObojoboDraft.Pages.Page"
+      id="obo-page-id"
+      tabIndex={-1}
+    >
+      <div
+        className="component"
+        data-focussed={false}
+        data-id="text-id"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.Text"
+        id="obo-text-id"
+        tabIndex={-1}
+      >
+        <div
+          className="text-chunk obojobo-draft--chunks--single-text pad"
+        >
+          <span
+            className="obo-text align-left"
+            data-group-index={0}
+            data-indent={0}
+          >
+            <span>
+              <span>
+                <span>
+                  Example text
+                </span>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

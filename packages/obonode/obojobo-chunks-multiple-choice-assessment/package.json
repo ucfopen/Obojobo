@@ -28,7 +28,6 @@
 	},
 	"peerDependencies": {
 		"obojobo-chunks-question": "^11.2.0-alpha.0",
-		"obojobo-chunks-text": "^11.2.0-alpha.0",
 		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {
