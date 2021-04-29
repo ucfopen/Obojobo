@@ -9,34 +9,32 @@
 	padding-left: 2.5em;
 	padding-right: 2.5em;
 
-	.requirement {
-		width: 11em;
+	> div {
+		display: flex;
 	}
 
-	.is-type-exact {
-		.answer {
-			width: 27.5em;
-		}
+	.requirement {
+		width: 11em;
+		flex-shrink: 0;
 	}
 
 	.is-type-range {
-		.start,
+		position: relative;
+
 		.end {
-			width: 13.2em;
+			padding-right: 0;
 		}
 	}
 
 	.is-type-margin {
 		.margin-type {
 			width: 8em;
-		}
-
-		.answer {
-			width: 11em;
+			flex-shrink: 0;
 		}
 
 		.margin-value {
-			width: 6.3em;
+			width: 4.5em;
+			flex-shrink: 0;
 		}
 	}
 
@@ -76,14 +74,26 @@
 		background-color: $color-bg;
 		padding: 0.7rem 0 0.7rem 0.5rem;
 		width: 100%;
-
 		appearance: none;
-		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-			linear-gradient(135deg, gray 50%, transparent 50%);
-		background-position: calc(100% - 20px) calc(1rem + 2px), calc(100% - 15px) calc(1rem + 2px),
-			calc(100% - 2.5rem) 0.5rem;
+
+		// stylelint-disable unit-disallowed-list
 		background-size: 5px 5px, 5px 5px, 1px 1.5rem;
 		background-repeat: no-repeat;
+
+		/* prettier-ignore */
+		background-image:
+			linear-gradient(45deg, transparent 50%, gray 50%),
+			linear-gradient(135deg, gray 50%, transparent 50%);
+
+		/* prettier-ignore */
+		background-position:
+			calc(100% - 20px) calc(1rem + 2px),
+			calc(100% - 15px) calc(1rem + 2px),
+			calc(100% - 2.5rem) 0.5rem;
+	}
+
+	.input {
+		width: 100%;
 	}
 
 	.input > input {
@@ -91,7 +101,6 @@
 		font-family: $font-monospace;
 		border: 1px solid $color-border;
 		border-radius: $dimension-rounded-radius;
-		font-size: 0.9rem;
 		width: 100%;
 		padding: 0.7rem 0 0.7rem 0.5rem;
 		box-sizing: border-box;

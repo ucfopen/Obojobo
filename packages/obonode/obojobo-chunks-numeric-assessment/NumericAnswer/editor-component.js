@@ -17,8 +17,6 @@ class NumericAnswer extends React.Component {
 
 		// After the content is changed and no typing has happened for 500 ms
 		// then we update the slate state from the internal state.
-		// This is required to maintain the users' cursor position and focus
-		// unfortunately.
 		this.updateNodeFromState = debounce(
 			UPDATE_NODE_FROM_STATE_DEBOUNCE_MS,
 			this.updateNodeFromState
@@ -34,12 +32,6 @@ class NumericAnswer extends React.Component {
 
 	updateNodeFromState() {
 		try {
-			// Capture the currently focused input and DOM selection state
-			// (We only care if the element is an input)
-			const activeElement = document.activeElement
-			const selStart = activeElement ? activeElement.selectionStart : null
-			const selEnd = activeElement ? activeElement.selectionEnd : null
-
 			const content = this.props.element.content
 			const path = ReactEditor.findPath(this.props.editor, this.props.element)
 
@@ -49,30 +41,10 @@ class NumericAnswer extends React.Component {
 				{ at: path }
 			)
 
-			this.restoreSelection(activeElement, selStart, selEnd)
-
 			return true
 		} catch (e) {
 			return false
 		}
-	}
-
-	restoreSelection(el, selStart, selEnd) {
-		// Since the Transforms.setNodes call will rerender this element
-		// the selection/focus will be wiped out. We simply restore it.
-		// It's a nasty hack but I've spent a week on this problem and can't
-		// find another solution :[
-
-		if (!el || !el.select) {
-			return false
-		}
-
-		setTimeout(() => {
-			el.focus()
-			el.setSelectionRange(selStart, selEnd)
-		})
-
-		return true
 	}
 
 	onHandleInputChange(event) {

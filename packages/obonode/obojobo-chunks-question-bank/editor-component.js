@@ -35,9 +35,6 @@ class QuestionBank extends React.Component {
 		const content = this.props.element.content
 		this.state = this.contentToStateObj(content)
 
-		this.freezeEditor = this.freezeEditor.bind(this)
-		this.unfreezeEditor = this.unfreezeEditor.bind(this)
-
 		this.remove = this.remove.bind(this)
 		this.addQuestion = this.addQuestion.bind(this)
 		this.addQuestionBank = this.addQuestionBank.bind(this)
@@ -101,18 +98,6 @@ class QuestionBank extends React.Component {
 		this.setState(newContent) // update the display now
 	}
 
-	freezeEditor() {
-		clearTimeout(window.restoreEditorFocusId)
-		this.props.editor.toggleEditable(false)
-	}
-
-	unfreezeEditor() {
-		window.restoreEditorFocusId = setTimeout(() => {
-			this.updateNodeFromState()
-			this.props.editor.toggleEditable(true)
-		})
-	}
-
 	displaySettings(editor, element) {
 		const radioGroupName = `${element.id}-choose`
 		return (
@@ -126,8 +111,6 @@ class QuestionBank extends React.Component {
 							value="all"
 							checked={this.state.chooseAll}
 							onChange={this.changeChooseType}
-							onFocus={this.freezeEditor}
-							onBlur={this.unfreezeEditor}
 						/>
 						All questions
 					</label>
@@ -139,8 +122,6 @@ class QuestionBank extends React.Component {
 							value="pick"
 							checked={!this.state.chooseAll}
 							onChange={this.changeChooseType}
-							onFocus={this.freezeEditor}
-							onBlur={this.unfreezeEditor}
 						/>
 						Pick
 					</label>
@@ -151,8 +132,6 @@ class QuestionBank extends React.Component {
 						disabled={this.state.chooseAll}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'choose')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					/>
 				</fieldset>
 				<label className="select">
@@ -161,8 +140,6 @@ class QuestionBank extends React.Component {
 						value={this.state.select}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'select')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					>
 						<option value="sequential">In order</option>
 						<option value="random">Randomly</option>
@@ -224,12 +201,7 @@ class QuestionBank extends React.Component {
 		return (
 			<Node {...this.props} contentDescription={contentDescription}>
 				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-					<Button
-						className="delete-button"
-						onClick={this.remove}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
-					>
+					<Button className="delete-button" onClick={this.remove}>
 						&times;
 					</Button>
 					{this.displaySettings(editor, element, element.content)}

@@ -11,7 +11,6 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
     >
       <option>
         Exact answer
@@ -33,8 +32,8 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onChange={[Function]}
-      onClick={[Function]}
       value=""
     />
   </label>
@@ -52,7 +51,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
       value="Exact answer"
     >
       <option>
@@ -75,8 +73,8 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onChange={[Function]}
-      onClick={[Function]}
       value=""
     />
   </label>
@@ -94,7 +92,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
       value="Margin of error"
     >
       <option>
@@ -117,8 +114,8 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onChange={[Function]}
-      onClick={[Function]}
       value=""
     />
   </label>
@@ -129,7 +126,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="margin-type"
-      onChange={[Function]}
     >
       <option>
         Percent
@@ -148,8 +144,8 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="input-item"
       contentEditable={false}
       name="margin"
+      onBlur={[Function]}
       onChange={[Function]}
-      onClick={[Function]}
       value=""
     />
   </label>
@@ -167,7 +163,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
     <select
       className="select-item"
       name="requirement"
-      onChange={[Function]}
       value="Within a range"
     >
       <option>
@@ -190,8 +185,8 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="input-item"
       contentEditable={false}
       name="start"
+      onBlur={[Function]}
       onChange={[Function]}
-      onClick={[Function]}
       value=""
     />
   </label>
@@ -204,18 +199,10 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="input-item"
       contentEditable={false}
       name="end"
+      onBlur={[Function]}
       onChange={[Function]}
-      onClick={[Function]}
       value=""
     />
   </label>
 </div>
 `;
-
-exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<div class=\\"is-type-exact\\"><label class=\\"select requirement\\">Answer Type<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input answer\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label></div>"`;
-
-exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<div class=\\"is-type-margin\\"><label class=\\"select requirement\\">Answer Type<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input answer\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label><label class=\\"select margin-type\\">Error Type<select class=\\"select-item\\" name=\\"margin-type\\"><option>Percent</option><option>Absolute</option></select></label><label class=\\"input margin-value\\">± Error<input class=\\"input-item\\" name=\\"margin\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label></div>"`;
-
-exports[`NumericOption NumericOption with requirement of \`margin\`, percent error, event.stopPropagation() is called when click 1`] = `"<div class=\\"is-type-margin\\"><label class=\\"select requirement\\">Answer Type<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input answer\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label><label class=\\"select margin-type\\">Error Type<select class=\\"select-item\\" name=\\"margin-type\\"><option>Percent</option><option>Absolute</option></select></label><label class=\\"input margin-value\\">% Error<input class=\\"input-item\\" name=\\"margin\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label></div>"`;
-
-exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<div class=\\"is-type-range\\"><label class=\\"select requirement\\">Answer Type<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input start\\">Start<input class=\\"input-item\\" name=\\"start\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label><label class=\\"input end\\">End<input class=\\"input-item\\" name=\\"end\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label></div>"`;

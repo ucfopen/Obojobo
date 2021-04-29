@@ -50,6 +50,8 @@ class Node extends React.Component {
 
 		Transforms.insertNodes(this.props.editor, newBlock, { at: targetPath })
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, targetPath))
+
+		ReactEditor.focus(this.props.editor)
 	}
 
 	saveId(prevId, newId) {
