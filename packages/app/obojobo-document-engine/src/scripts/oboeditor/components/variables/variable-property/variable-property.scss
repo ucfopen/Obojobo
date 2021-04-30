@@ -1,0 +1,116 @@
+@import '~styles/includes';
+
+.variable-property {
+	font-size: 0.9em;
+	background-color: $color-bg;
+	padding: 0 1em;
+	flex: 1;
+	overflow-y: scroll;
+	text-align: left;
+
+	.variable-property--input-item {
+		@include text-input();
+
+		font-size: 1em;
+		padding: 0.5em;
+		width: 1em;
+		border: solid 1px rgba(0, 0, 0, 0.1);
+		box-sizing: border-box;
+		flex: 1;
+	}
+
+	.variable-property--checkbox-item {
+		width: 2em;
+		height: 2em;
+		margin: 0.6em 0;
+	}
+
+	.variable-property--select-item {
+		border-radius: $dimension-rounded-radius;
+		background-color: $color-bg;
+		-moz-box-sizing: content-box;
+		-webkit-box-sizing: content-box;
+		box-sizing: border-box;
+		flex: 1;
+		font-size: 1em;
+		padding: 0.6em 0.5em;
+		appearance: none;
+		border: solid 1px rgba(0, 0, 0, 0.1);
+		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+			linear-gradient(135deg, gray 50%, transparent 50%);
+		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+		background-position: calc(100% - 1.5em) 1.1em, calc(100% - 1.1em) 1.1em,
+			calc(100% - 2.5em) 0.5em;
+		background-size: 0.4em 0.4em, 0.4em 0.4em, 0.1em 1.5em;
+		background-repeat: no-repeat;
+	}
+
+	.group-item {
+		display: flex;
+		align-items: center;
+		padding: 0;
+		margin: 0.8em 0;
+
+		label {
+			margin: 0;
+			width: 4em;
+			text-align: right;
+		}
+
+		.variable-property--input-item {
+			margin: 0 0.5em;
+		}
+
+		.variable-property--select-item {
+			margin-left: 0.5em;
+		}
+	}
+
+	.variable-property--delete-button {
+		.button {
+			color: $color-dangerous;
+			background-color: $color-bg;
+			border-color: $color-dangerous;
+			padding: 0.7em;
+
+			&:hover {
+				color: $color-bg;
+				background-color: $color-dangerous;
+			}
+		}
+	}
+
+	.variable-property--duplicate-button {
+		margin-bottom: 1em;
+
+		button {
+			color: $color-action;
+			background-color: $color-bg;
+			border-color: $color-action;
+			padding: 0.5em;
+
+			&:hover {
+				color: $color-bg;
+				background-color: $color-action;
+			}
+		}
+	}
+
+	.obojobo-draft--components--more-info-button {
+		margin-right: 1em;
+
+		> .info {
+			top: 4em;
+			right: 17em;
+			width: 18em;
+			text-align: center;
+
+			&::before {
+				left: 16.3em;
+				top: 0;
+				box-shadow: none;
+			}
+		}
+	}
+}

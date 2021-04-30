@@ -6,6 +6,7 @@ import React from 'react'
 
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
+import VariableListModal from '../variables/variable-list-modal'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
@@ -45,6 +46,7 @@ class MoreInfoBox extends React.Component {
 		this.onSave = this.onSave.bind(this)
 
 		this.showTriggersModal = this.showTriggersModal.bind(this)
+		this.showVariablesModal = this.showVariablesModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
 
 		this.domRef = React.createRef()
@@ -178,17 +180,23 @@ class MoreInfoBox extends React.Component {
 		this.setState({ modalOpen: true })
 	}
 
+	showVariablesModal() {
+		// Prevent info box from closing when modal is opened
+		document.removeEventListener('mousedown', this.handleClick, false)
+		ModalUtil.show(<VariableListModal content={this.state.content} onClose={this.closeModal} />)
+	}
+
 	// TriggerListModal.onClose is called w/ no arguments when canceled
 	// TriggerListModal.onClose is called w/ triggers when save+closed
+
 	closeModal(modalState) {
 		ModalUtil.hide()
 
 		if (!modalState) return // do not save changes
 
 		this.setState(prevState => ({
-			content: { ...prevState.content, triggers: modalState.triggers },
-			needsUpdate: true,
-			modalOpen: false
+			content: { ...prevState.content, ...modalState },
+			needsUpdate: true
 		}))
 	}
 
@@ -260,7 +268,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	renderInfoBox() {
-		const triggers = this.state.content.triggers
+		const { triggers, variables } = this.state.content
 
 		return (
 			<div className="more-info-box">
@@ -299,6 +307,17 @@ class MoreInfoBox extends React.Component {
 									) : null}
 								</span>
 								<Button altAction className="trigger-button" onClick={this.showTriggersModal}>
+									✎ Edit
+								</Button>
+							</div>
+							<div>
+								<span className="triggers">
+									Variables:
+									{Array.isArray(variables) ? (
+										<span>{variables.map(variable => '$' + variable.name).join(', ')}</span>
+									) : null}
+								</span>
+								<Button className="trigger-button" onClick={this.showVariablesModal}>
 									✎ Edit
 								</Button>
 							</div>

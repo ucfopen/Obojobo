@@ -1,0 +1,32 @@
+@import '~styles/includes';
+
+.variable-values {
+	$example-text-color: rgba(0, 0, 0, 0.6);
+
+	border-radius: $dimension-rounded-radius;
+	font-size: 1em;
+	border: solid 1px rgba(0, 0, 0, 0.1);
+	padding: 0.5em;
+
+	.variable-values--example-text {
+		margin: 0.6em;
+		color: $example-text-color;
+	}
+
+	.variable-values--group {
+		display: flex;
+		align-items: center;
+		padding: 0;
+		margin: 0.6em;
+
+		label {
+			margin: 0;
+			width: 8em;
+			text-align: left;
+		}
+
+		span {
+			margin: 0 0.3em;
+		}
+	}
+}

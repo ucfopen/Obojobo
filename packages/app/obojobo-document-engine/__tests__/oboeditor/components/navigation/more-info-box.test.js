@@ -133,6 +133,28 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
+	test('More Info Box with variables', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{
+					variables: [{ name: 'mockVar1' }, { name: 'mockVar2' }]
+				}}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
 	test('More Info Box with contentDescriptions', () => {
 		const component = mount(
 			<MoreInfoBox
@@ -506,11 +528,11 @@ describe('MoreInfoBox', () => {
 
 		component
 			.find('button')
-			.at(5)
+			.at(6)
 			.simulate('click')
 		component
 			.find('button')
-			.at(6)
+			.at(7)
 			.simulate('click')
 
 		expect(moveNode).toHaveBeenCalledTimes(2)
@@ -584,7 +606,32 @@ describe('MoreInfoBox', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('More Info Box handles escape click', () => {
+	test('More Info Box opens the showVariablesModal', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		component
+			.find('button')
+			.at(3)
+			.simulate('click')
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('More Info Box closes the TriggersModal', () => {
 		const saveId = jest.fn()
 		const saveContent = jest.fn()
 
