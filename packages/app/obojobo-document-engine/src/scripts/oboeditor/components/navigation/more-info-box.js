@@ -7,10 +7,13 @@ import React from 'react'
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 import VariableListModal from '../variables/variable-list-modal'
+import FeatureFlags from '../../../common/util/feature-flags'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
 const { ModalUtil } = Common.util
+
+const FEATURE_FLAG_EXPERIMENTAL_VARIABLES = 'experimental.variables'
 
 // convenience function to reduce function creation in render
 const stopPropagation = event => event.stopPropagation()
@@ -310,17 +313,19 @@ class MoreInfoBox extends React.Component {
 									✎ Edit
 								</Button>
 							</div>
-							<div>
-								<span className="triggers">
-									Variables:
-									{Array.isArray(variables) ? (
-										<span>{variables.map(variable => '$' + variable.name).join(', ')}</span>
-									) : null}
-								</span>
-								<Button className="trigger-button" onClick={this.showVariablesModal}>
-									✎ Edit
-								</Button>
-							</div>
+							{FeatureFlags.is(FEATURE_FLAG_EXPERIMENTAL_VARIABLES, FeatureFlags.ENABLED) ? (
+								<div>
+									<span className="triggers">
+										Variables:
+										{Array.isArray(variables) ? (
+											<span>{variables.map(variable => '$' + variable.name).join(', ')}</span>
+										) : null}
+									</span>
+									<Button className="trigger-button" onClick={this.showVariablesModal}>
+										✎ Edit
+									</Button>
+								</div>
+							) : null}
 							{this.props.hideButtonBar ? null : (
 								<div className="button-bar">
 									<Button altAction isDangerous onClick={this.props.deleteNode}>

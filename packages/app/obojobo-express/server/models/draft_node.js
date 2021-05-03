@@ -1,3 +1,5 @@
+const VariableGenerator = require('./variable-generator')
+
 // Collects all children DraftNodes into a Set() object
 // optionally recursive
 const collectChildrenNodes = (draftNode, set, recurse) => {
@@ -19,6 +21,22 @@ class DraftNode {
 		delete this.node.children
 		this.init = initFn
 		this.children = []
+		this.registerEvents({
+			'internal:generateVariables': this.generateVariable
+		})
+	}
+
+	generateVariable(req, res, variableValues) {
+		if (!this.node.content.vars) {
+			return
+		}
+
+		this.node.content.vars.forEach(v => {
+			variableValues.push({
+				id: this.node.id + ':' + v.name,
+				value: VariableGenerator.generateOne(v)
+			})
+		})
 	}
 
 	get childrenSet() {
@@ -43,6 +61,8 @@ class DraftNode {
 
 	yell(event) {
 		let promises = []
+
+		// console.log(this.node, 'yell', this._listeners)
 
 		if (this._listeners) {
 			const eventListener = this._listeners.get(event)

@@ -105,6 +105,8 @@ const VariableListModal = props => {
 		return firstRef.current.focus()
 	}
 
+	console.log('variables', variables)
+
 	return (
 		<SimpleDialog
 			ok

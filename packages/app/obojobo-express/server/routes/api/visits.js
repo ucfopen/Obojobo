@@ -23,6 +23,13 @@ const getDraftAndStartVisitProps = (req, res) => {
 		.then(() => visitStartExtensions)
 }
 
+const getVariables = (req, res) => {
+	const variableValues = []
+	return req.currentDocument
+		.yell('internal:generateVariables', req, res, variableValues)
+		.then(() => variableValues)
+}
+
 router
 	.route('/:draftId/status')
 	.get([requireCurrentUser])
@@ -47,6 +54,7 @@ router
 
 		let viewState
 		let visitStartExtensions
+		let variableValues
 		let launch
 
 		return Promise.all([
@@ -55,12 +63,13 @@ router
 				req.currentDocument.contentId,
 				req.currentVisit.resource_link_id
 			),
-			getDraftAndStartVisitProps(req, res)
+			getDraftAndStartVisitProps(req, res),
+			getVariables(req, res)
 		])
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
-				;[viewState, visitStartExtensions] = results
+				;[viewState, visitStartExtensions, variableValues] = results
 
 				if (req.currentVisit.is_preview === false) {
 					if (req.currentVisit.draft_content_id !== req.currentDocument.contentId) {
@@ -121,6 +130,7 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
+					variables: variableValues,
 					extensions: visitStartExtensions
 				})
 			})
