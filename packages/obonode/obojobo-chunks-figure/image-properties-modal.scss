@@ -5,6 +5,13 @@
 	display: flex;
 	width: 22em;
 
+	&.is-size-large,
+	&.is-size-medium {
+		.caption-width-label {
+			opacity: 0.5;
+		}
+	}
+
 	label {
 		margin-top: 0.7rem;
 		margin-bottom: 0.3em;
@@ -14,6 +21,7 @@
 		@include text-input();
 
 		width: 100%;
+		box-sizing: border-box;
 	}
 
 	input[type='number'] {
@@ -28,6 +36,16 @@
 		border: none;
 		padding: 0;
 		margin: 0;
+	}
+
+	select {
+		// vertical-align: top;
+		// font-size: 0.8em;
+		// margin-top: 0.2em;
+		// height: 1.8em;
+		width: 100%;
+
+		@include select-input();
 	}
 
 	.size-input {
@@ -76,9 +94,9 @@
 		font-size: 0.8em;
 
 		&.image-preview-placeholder {
-			height: 100px; /* stylelint-disable-line unit-blacklist */
-			width: 150px; /* stylelint-disable-line unit-blacklist */
-			line-height: 100px; /* stylelint-disable-line unit-blacklist */
+			height: 100px; /* stylelint-disable-line unit-disallowed-list */
+			width: 150px; /* stylelint-disable-line unit-disallowed-list */
+			line-height: 100px; /* stylelint-disable-line unit-disallowed-list */
 			text-align: center;
 			box-sizing: border-box;
 			background: darken($color-bg2, 10%);

@@ -3,6 +3,11 @@
 .visual-editor--editor-app {
 	margin-bottom: 10rem;
 
+	span::selection {
+		background-color: highlight; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+		color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+	}
+
 	.draft-toolbars {
 		position: fixed;
 		top: 0;

@@ -1,53 +1,66 @@
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
-
-import { Transforms } from 'slate'
-
 import Figure from './editor-registration'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+import { Transforms, Editor, Node, Element } from 'slate'
 
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+jest.mock('slate-react')
+jest.mock('slate')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
 describe('Figure editor', () => {
-	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
-		const next = jest.fn()
-		Figure.plugins.normalizeNode([{}, []], {}, next)
+	beforeEach(() => {
+		jest.resetAllMocks()
+		jest.clearAllMocks()
+	})
 
+	test('plugins.normalizeNode calls next if the node is not an Figure', () => {
+		const figure = {
+			type: 'not a figure',
+			children: [{ text: '' }]
+		}
+		const editor = { isInline: () => true }
+		const next = jest.fn()
+		Element.isElement.mockReturnValue(true)
+
+		const entry = [figure, [0]]
+		Figure.plugins.normalizeNode(entry, editor, next)
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.normalizeNode calls next if all Action Button children are text', () => {
-		const button = {
+	test('plugins.normalizeNode calls next if all Figure children are text', () => {
+		const figure = {
 			type: FIGURE_NODE,
 			children: [{ text: '' }]
 		}
+		const editor = { isInline: () => true }
 		const next = jest.fn()
+		Element.isElement.mockReturnValue(true)
+		Node.children.mockReturnValue(['mock-child', 'mock-path'])
 
-		Figure.plugins.normalizeNode([button, [0]], { children: [button] }, next)
+		const entry = [figure, [0]]
+		Figure.plugins.normalizeNode(entry, editor, next)
 		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.normalizeNode calls Transforms on an invalid child', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
-		const button = {
+		const figure = {
 			type: FIGURE_NODE,
-			children: [
-				{
-					type: 'mockElement',
-					children: [{ text: '' }]
-				}
-			]
+			children: [{ type: 'mockElement' }]
 		}
-		const editor = {
-			isInline: () => false,
-			children: [button]
-		}
+		const editor = { isInline: () => false }
 		const next = jest.fn()
 
-		Figure.plugins.normalizeNode([button, [0]], editor, next)
+		Element.isElement.mockReturnValue(true)
+		Node.children.mockReturnValue(['mock-child', 'mock-path'])
+
+		const entry = [figure, [0]]
+		Figure.plugins.normalizeNode(entry, editor, next)
 		expect(Transforms.liftNodes).toHaveBeenCalled()
+		expect(next).not.toHaveBeenCalled()
 	})
 
 	test('plugins.decorate exits when not relevent', () => {
@@ -61,7 +74,12 @@ describe('Figure editor', () => {
 			children: [{ children: [{ text: '' }] }]
 		}
 
-		expect(Figure.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
+		const node = { children: [{ text: '' }] }
+		const path = [0]
+		Element.isElement.mockReturnValueOnce(true)
+		Node.string.mockReturnValueOnce('')
+		Editor.start.mockReturnValueOnce('mock-point')
+		expect(Figure.plugins.decorate([node, path], editor)).toMatchSnapshot()
 	})
 
 	test('plugins.onKeyDown deals with no special key', () => {
@@ -97,5 +115,52 @@ describe('Figure editor', () => {
 		}
 
 		expect(Figure.plugins.renderNode(props)).toMatchSnapshot()
+	})
+
+	test('plugins.insertItemInto inserts a clone and cleans up dupilcate Figure', () => {
+		const editor = {
+			path: jest.fn(),
+			children: []
+		}
+		const item = {
+			name: 'mock',
+			cloneBlankNode: () => 'mock-clone'
+		}
+		// add an extra node when the clone is created
+		// so that insertItemInto will believe a single node was added
+		Transforms.insertNodes.mockImplementationOnce(() => {
+			editor.children.push('extra node', 'duplicate-figure')
+		})
+		const mockPath = [0, 0, 0]
+
+		Editor.path.mockReturnValue(mockPath)
+
+		Figure.plugins.insertItemInto(editor, item)
+		expect(Transforms.insertNodes).toHaveBeenCalledWith(editor, 'mock-clone')
+		expect(Transforms.setNodes).toHaveBeenCalled()
+	})
+
+	test('plugins.insertItemInto inserts a clone and skips cleanup', () => {
+		const editor = {
+			path: jest.fn(),
+			children: []
+		}
+		const item = {
+			name: 'mock',
+			cloneBlankNode: () => 'mock-clone'
+		}
+		// add an extra node when the clone is created
+		// so that insertItemInto will believe a single node was added
+		Transforms.insertNodes.mockImplementationOnce(() => {
+			editor.children.push('extra node')
+		})
+
+		const mockPath = [0, 0, 0]
+
+		Editor.path.mockReturnValue(mockPath)
+
+		Figure.plugins.insertItemInto(editor, item)
+		expect(Transforms.insertNodes).toHaveBeenCalledWith(editor, 'mock-clone')
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
 	})
 })

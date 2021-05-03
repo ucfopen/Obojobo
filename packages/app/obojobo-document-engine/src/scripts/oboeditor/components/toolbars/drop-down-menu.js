@@ -117,6 +117,7 @@ class DropDownMenu extends React.PureComponent {
 				onBlur={this.onBlurHandler}
 				onFocus={this.onFocusHandler}
 				onKeyDown={this.onKeyDown}
+				onMouseLeave={this.onBlurHandler}
 				ref={this.props.onRef}
 				tabIndex={-1}
 			>

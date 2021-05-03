@@ -27,6 +27,9 @@ export default class StyleableTextComponent extends React.Component {
 				if (el.attrs && el.attrs.role) {
 					attrs.role = el.attrs.role
 				}
+				if (el.attrs && el.attrs.style) {
+					attrs.style = el.attrs.style
+				}
 				break
 		}
 

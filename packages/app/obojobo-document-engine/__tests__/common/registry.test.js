@@ -13,6 +13,7 @@ describe('Registry', () => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
+			  "acceptsInserts": true,
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
@@ -45,6 +46,7 @@ describe('Registry', () => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
+			  "acceptsInserts": true,
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
@@ -110,6 +112,7 @@ describe('Registry', () => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
+			  "acceptsInserts": true,
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
@@ -157,6 +160,7 @@ describe('Registry', () => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
+			  "acceptsInserts": true,
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
@@ -199,6 +203,7 @@ describe('Registry', () => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
+			  "acceptsInserts": true,
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
@@ -240,6 +245,7 @@ describe('Registry', () => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
+			  "acceptsInserts": true,
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
@@ -280,6 +286,7 @@ describe('Registry', () => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
+			  "acceptsInserts": true,
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,

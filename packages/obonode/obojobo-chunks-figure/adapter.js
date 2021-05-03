@@ -1,5 +1,7 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
+import ImageCaptionWidthTypes from './image-caption-width-types'
+
 const { TextGroupAdapter } = Common.chunk.textChunk
 const { TextGroup } = Common.textGroup
 
@@ -21,6 +23,14 @@ const Adapter = {
 		model.setStateProp('width', null, p => parseInt(p, 10))
 		model.setStateProp('height', null, p => parseInt(p, 10))
 		model.setStateProp('alt', null)
+		model.setStateProp('captionWidth', ImageCaptionWidthTypes.IMAGE_WIDTH, p => p.toLowerCase(), [
+			ImageCaptionWidthTypes.IMAGE_WIDTH,
+			ImageCaptionWidthTypes.TEXT_WIDTH
+		])
+
+		if (model.modelState.size === 'large' || model.modelState.size === 'medium') {
+			model.modelState.captionWidth = ImageCaptionWidthTypes.IMAGE_WIDTH
+		}
 	},
 
 	clone(model, clone) {
@@ -30,6 +40,7 @@ const Adapter = {
 		clone.modelState.width = model.modelState.width
 		clone.modelState.height = model.modelState.height
 		clone.modelState.alt = model.modelState.alt
+		clone.modelState.captionWidth = model.modelState.captionWidth
 	},
 
 	toJSON(model, json) {
@@ -39,6 +50,7 @@ const Adapter = {
 		json.content.width = model.modelState.width
 		json.content.height = model.modelState.height
 		json.content.alt = model.modelState.alt
+		json.content.captionWidth = model.modelState.captionWidth
 	},
 
 	toText(model) {

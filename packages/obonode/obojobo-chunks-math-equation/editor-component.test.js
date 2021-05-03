@@ -189,11 +189,11 @@ describe('MathEquation Editor', () => {
 			.simulate('click')
 		jest.runOnlyPendingTimers()
 		component
-			.find('input')
+			.find('textarea')
 			.at(0)
 			.simulate('keyDown', { key: 'k' })
 		component
-			.find('input')
+			.find('textarea')
 			.at(0)
 			.simulate('keyDown', { key: 'Tab', shiftKey: true })
 		jest.runOnlyPendingTimers()
