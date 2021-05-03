@@ -14,7 +14,9 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	goto: jest.fn(),
 	toggle: jest.fn(),
 	getOrderedList: jest.fn(),
-	getNavTargetModel: jest.fn()
+	getNavTargetModel: jest.fn(),
+	isRedAlertEnabled: jest.fn(),
+	setRedAlert: jest.fn()
 }))
 
 jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
@@ -517,6 +519,25 @@ describe('NavStore', () => {
 		})
 		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
+	})
+
+	test('nav:redAlert event fires and updates state', () => {
+		const redAlert = false
+		NavStore.setState({
+			redAlert
+		})
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:redAlert']({ value: { redAlert: !redAlert } })
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+		const payloadToAPI = ViewerAPI.postEvent.mock.calls[0][0].payload
+		expect(payloadToAPI).toEqual({ from: redAlert, to: !redAlert })
+		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state with basic options', () => {

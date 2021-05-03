@@ -96,6 +96,7 @@ export default class ViewerApp extends React.Component {
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
 		let viewSessionId
+		let isRedAlertEnabled
 
 		Dispatcher.trigger('viewer:loading')
 
@@ -108,11 +109,13 @@ export default class ViewerApp extends React.Component {
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
+				isRedAlertEnabled = visit.value.isRedAlertEnabled
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
 				extensions = visit.value.extensions
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
+				isRedAlertEnabled = visit.value.isRedAlertEnabled
 
 				return ViewerAPI.getDraft(this.props.draftId)
 			})
@@ -129,7 +132,8 @@ export default class ViewerApp extends React.Component {
 					model.modelState.start,
 					window.location.pathname,
 					visitIdFromApi,
-					viewState
+					viewState,
+					isRedAlertEnabled
 				)
 
 				enableWindowCloseDispatcher()

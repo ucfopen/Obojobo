@@ -159,6 +159,20 @@ class NavStore extends Store {
 					item.showChildren = false
 					this.triggerChange()
 				},
+				'nav:redAlert': payload => {
+					ViewerAPI.postEvent({
+						draftId: this.state.draftId,
+						action: 'nav:redAlert',
+						eventVersion: '1.0.0',
+						visitId: this.state.visitId,
+						payload: {
+							from: this.state.redAlert,
+							to: payload.value.redAlert
+						}
+					})
+					this.state.redAlert = payload.value.redAlert
+					this.triggerChange()
+				},
 				'question:scoreSet': payload => {
 					const navItem = this.state.itemsById[payload.value.id]
 					if (navItem) {
@@ -170,13 +184,22 @@ class NavStore extends Store {
 		)
 	}
 
-	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
+	init(
+		draftId,
+		model,
+		startingId,
+		startingPath,
+		visitId,
+		viewState = {},
+		isRedAlertEnabled = false
+	) {
 		this.state = {
 			items: {},
 			itemsById: {},
 			itemsByPath: {},
 			itemsByFullPath: {},
 			navTargetHistory: [],
+			redAlert: isRedAlertEnabled,
 			navTargetId: null,
 			locked:
 				viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
