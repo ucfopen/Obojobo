@@ -27,8 +27,11 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-chunks-question": "^11.1.1",
-		"obojobo-lib-utils": "^11.1.1"
+		"big.js": "^6.1.1"
+	},
+	"peerDependencies": {
+		"obojobo-chunks-question": "^12.1.0-alpha.0",
+		"obojobo-lib-utils": "^12.1.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
