@@ -30,7 +30,7 @@
 		"katex": "^0.13.1"
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^11.2.0-alpha.0"
+		"obojobo-lib-utils": "^12.1.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [

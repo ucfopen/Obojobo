@@ -27,8 +27,8 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^11.2.0-alpha.0",
-		"obojobo-lib-utils": "^11.2.0-alpha.0"
+		"obojobo-document-engine": "^12.1.0-alpha.0",
+		"obojobo-lib-utils": "^12.1.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
