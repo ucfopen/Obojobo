@@ -45,13 +45,19 @@ class MateriaEditor extends React.Component {
 		event.preventDefault()
 		event.stopPropagation()
 		const { draftId, contentId } = OboModel.getRoot().attributes
+
+		let caption = ''
+		this.props.element.children.forEach(child => {
+			caption += child.text
+		})
+
 		ModalUtil.show(
 			<MateriaSettingsDialog
 				content={this.props.element.content}
 				draftId={draftId}
 				contentId={contentId}
 				nodeId={this.props.element.id}
-				caption={this.props.element.children[0].text}
+				caption={caption}
 				materiaHost={this.materiaHost}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseMateriaSettingsDialog}
@@ -68,13 +74,13 @@ class MateriaEditor extends React.Component {
 	// set text held in the slate text node
 	// used wen returning from the settings dialog to set the title/caption
 	// using slate text so you can click on the caption to edit it
-	setChildText(text) {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
-		// clear out text contents
-		Transforms.delete(this.props.editor, { at: path, unit: 'line' })
-		// set text into slate children text
-		Transforms.insertText(this.props.editor, text, { at: path })
-	}
+	// setChildText(text) {
+	// 	const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
+	// 	// clear out text contents
+	// 	Transforms.delete(this.props.editor, { at: path, unit: 'line' })
+	// 	// set text into slate children text
+	// 	Transforms.insertText(this.props.editor, text, { at: path })
+	// }
 
 	changeProperties(content) {
 		content = { ...this.props.element.content, ...content }
@@ -92,10 +98,6 @@ class MateriaEditor extends React.Component {
 			// adapter.DEFAULT_HEIGHT
 			content.height = 600
 		}
-
-		// copy title/caption to the slate text
-		// using slate text so you can click on the caption to edit it
-		this.setChildText(content.caption)
 
 		// omit title from slate content
 		delete content.caption

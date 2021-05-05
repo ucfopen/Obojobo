@@ -26,7 +26,7 @@ const Figure = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
-			// If the element is a Figure, only allow Text  and inline children
+			// If the element is a Figure, only allow Text and inline children
 			if (Element.isElement(node) && node.type === FIGURE_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					if (Element.isElement(child) && !editor.isInline(child)) {
