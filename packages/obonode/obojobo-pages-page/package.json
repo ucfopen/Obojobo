@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-pages-page",
-	"version": "12.1.0-alpha.1",
+	"version": "12.1.0-alpha.2",
 	"license": "AGPL-3.0-only",
 	"description": "Page chunk for Obojobo",
 	"scripts": {
@@ -27,8 +27,8 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^12.1.0-alpha.1",
-		"obojobo-lib-utils": "^12.1.0-alpha.1"
+		"obojobo-document-engine": "^12.1.0-alpha.2",
+		"obojobo-lib-utils": "^12.1.0-alpha.2"
 	},
 	"jest": {
 		"testMatch": [
