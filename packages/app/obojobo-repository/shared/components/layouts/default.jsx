@@ -19,9 +19,12 @@ const LayoutDefault = props => (
 			<link
 				rel="preload"
 				as="style"
-				media="screen"
 				href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
 			/>
+			<link
+				rel="stylesheet"
+				href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
+			></link>
 			{props.headerJs.map((url, index) => (
 				<script key={index} src={url}></script>
 			))}

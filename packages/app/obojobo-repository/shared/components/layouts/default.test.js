@@ -8,7 +8,7 @@ describe('LayoutDefault', () => {
 		const links = component.find('link')
 
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(1)
+		expect(links).toHaveLength(2)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
 
 		// if both 'headerJS' and 'appScriptUrl' are not in props, no script tags should render
@@ -24,7 +24,7 @@ describe('LayoutDefault', () => {
 		const links = component.find('link')
 
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(2)
+		expect(links).toHaveLength(3)
 		expect(links.at(0).prop('href')).toBe('./styles.css')
 		expect(links.at(1).prop('href')).toContain('//fonts.googleapis.com')
 
@@ -41,7 +41,7 @@ describe('LayoutDefault', () => {
 		const links = component.find('link')
 
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(1)
+		expect(links).toHaveLength(2)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
 
 		// script tags should render for each entry in 'headerJs'
@@ -59,7 +59,7 @@ describe('LayoutDefault', () => {
 		const links = component.find('link')
 
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(1)
+		expect(links).toHaveLength(2)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
 
 		// if 'appScriptUrl' is not in props, standard script tags should render
@@ -83,7 +83,7 @@ describe('LayoutDefault', () => {
 		const links = component.find('link')
 
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(1)
+		expect(links).toHaveLength(2)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
 
 		// if 'appScriptUrl' is not in props, standard script tags should render
