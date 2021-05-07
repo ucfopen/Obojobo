@@ -174,12 +174,9 @@ class QuestionBank extends React.Component {
 
 	displayImportQuestionModal() {
 		const Question = Common.Registry.getItemForType(QUESTION_NODE)
-		const questionList = this.getQuestionList(OboModel.getRoot()).map(question => {
-			// Need to deep clone the question obo node structure, otherwise calling
-			// Question.oboToSlate can modify parts of the original question
-			const clonedOboNodeAttributes = JSON.parse(JSON.stringify(question.attributes))
-			return Question.oboToSlate(clonedOboNodeAttributes)
-		})
+		const questionList = this.getQuestionList(OboModel.getRoot()).map(question =>
+			Question.oboToSlate(question.attributes)
+		)
 
 		ModalUtil.show(
 			<ImportQuestionModal
