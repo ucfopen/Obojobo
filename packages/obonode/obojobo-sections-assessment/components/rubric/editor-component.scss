@@ -12,6 +12,12 @@
 	justify-content: center;
 	gap: 0.8em;
 
+	.obojobo-draft--components--more-info-button {
+		button {
+			border: 2px solid $color-action-minor;
+		}
+	}
+
 	.container {
 		font-family: $font-default;
 		font-size: 0.9rem;

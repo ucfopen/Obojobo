@@ -80,9 +80,9 @@ class Rubric extends React.Component {
 							<li>
 								<b>Recorded scores will be determined by:</b>
 								{this.state.rubricContent.type === 'highest' && (
-									<span>always using the highest attempt score</span>
+									<span>Always using the highest attempt score</span>
 								)}
-								{this.state.rubricContent.type === 'pass-fail' && <span>a threshold</span>}
+								{this.state.rubricContent.type === 'pass-fail' && <span>A threshold</span>}
 							</li>
 							{this.state.rubricContent.type === 'pass-fail' && (
 								<div>
@@ -93,7 +93,7 @@ class Rubric extends React.Component {
 									<li>
 										<b>When passing, set the assessment score to: </b>
 										{this.state.rubricContent.passedType === '$attempt_score' ? (
-											<span>the attempt score</span>
+											<span>The attempt score</span>
 										) : (
 											<span>{this.state.rubricContent.passedResult}%</span>
 										)}
@@ -102,14 +102,14 @@ class Rubric extends React.Component {
 										{this.state.rubricContent.failedType === '$attempt_score' && (
 											<div>
 												<b>When failing, set the assessment score to: </b>
-												<span>the attempt score</span>
+												<span>The attempt score</span>
 											</div>
 										)}
 
 										{this.state.rubricContent.failedType === 'no-score' && (
 											<div>
 												<b>When failing: </b>
-												<span>no score will be saved</span>
+												<span>No score will be saved</span>
 											</div>
 										)}
 
