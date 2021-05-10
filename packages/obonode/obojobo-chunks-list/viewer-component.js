@@ -27,6 +27,26 @@ const addItemToList = (ul, li, lis) => {
 	return lis.push(li)
 }
 
+const pickColorFromText = (node, indent) => {
+	let bulletColor
+	let textStyles
+
+	try {
+		// needs try/catch because some nodes don't have a text element
+		if (indent === 1) {
+			textStyles = node.children[0].text.styleList.styles
+			bulletColor = textStyles[textStyles.length - 1].data.text
+		} else if (indent > 1) {
+			textStyles = node.children[0].children[0].text.styleList.styles
+			bulletColor = textStyles[textStyles.length - 1].data.text
+		}
+	} catch (e) {
+		// Reached by nodes that have no child text, they wont be assigned a
+	}
+
+	return bulletColor
+}
+
 const renderEl = (props, node, index, indent) => {
 	const key = `${props.model.cid}-${indent}-${index}`
 
@@ -42,8 +62,14 @@ const renderEl = (props, node, index, indent) => {
 			)
 		case 'element': {
 			const ElType = node.type
+			const bulletColor = pickColorFromText(node, indent)
+
 			return (
-				<ElType key={key} start={node.start} style={{ listStyleType: node.listStyleType }}>
+				<ElType
+					key={key}
+					start={node.start}
+					style={{ listStyleType: node.listStyleType, color: bulletColor }}
+				>
 					{renderChildren(props, node.children, indent + 1)}
 				</ElType>
 			)
