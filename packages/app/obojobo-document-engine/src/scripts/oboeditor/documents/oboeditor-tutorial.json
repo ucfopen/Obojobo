@@ -1,16 +1,15 @@
 {
 	"id": "9c7e4d32-2e5b-432e-83dc-dbbb923df3b8",
-	"rev": "42498656-c7a2-49b7-a3d9-928d5840ada0",
+	"rev": "5feef0c9-59e7-4691-9b70-c31eab37996b",
 	"type": "ObojoboDraft.Modules.Module",
 	"index": 0,
 	"content": {
 		"start": null,
 		"title": "Obojobo Visual Editor Tutorial"
 	},
-	"draftId": "1a053ec9-a3d7-4d36-8b48-8b0ca1dc74cb",
+	"draftId": "2cc50a1e-1e89-4c24-9f47-872facac9e58",
 	"metadata": {},
-	"contentId": "2416e023-a3db-4431-91e3-524178d95812",
-	"Rev": "2416e023-a3db-4431-91e3-524178d95812",
+	"contentId": "5feef0c9-59e7-4691-9b70-c31eab37996b",
 	"children": [
 		{
 			"id": "40a16682-bcd9-44f0-aeb6-23d4cb143676",
@@ -37,7 +36,7 @@
 										},
 										"text": {
 											"value": "Welcome to the Obojobo Visual Editor",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -88,7 +87,7 @@
 										"data": {},
 										"text": {
 											"value": "Saving",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -107,7 +106,7 @@
 										},
 										"text": {
 											"value": "First is the most important thing; how and when to save your changes. While editing your module, your changes are only temporarily saved in this browser tab. To be clear, if you close this tab without saving, those changes will be lost.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -125,7 +124,7 @@
 										},
 										"text": {
 											"value": "Saved changes will be shown to the next students who start your module. To avoid this, you may prefer to duplicate your module and make edits to the copy.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -147,13 +146,13 @@
 												{
 													"end": 26,
 													"data": {},
-													"type": "monospace",
+													"type": "q",
 													"start": 15
 												},
 												{
 													"end": 26,
 													"data": {},
-													"type": "q",
+													"type": "monospace",
 													"start": 15
 												},
 												{
@@ -178,7 +177,7 @@
 										"data": {},
 										"text": {
 											"value": "Navigation",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -197,7 +196,7 @@
 										},
 										"text": {
 											"value": "The navigation panel along the left side list all the pages and assessments that make up your module. Pages are identified by the larger circle ◯ symbol, and assessments are identified by the Ⓠ symbol.  You can have as many pages as you wish, but only one assessment per module.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -215,7 +214,7 @@
 										},
 										"text": {
 											"value": "Clicking an item in the navigation menu displays its contents on the right - the area this paragraph is in right now. Navigating to other pages while editing will not erase your changes.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -231,7 +230,7 @@
 										"data": {},
 										"text": {
 											"value": "Adding Pages",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -258,6 +257,18 @@
 													"start": 50
 												},
 												{
+													"end": 219,
+													"data": {},
+													"type": "b",
+													"start": 210
+												},
+												{
+													"end": 238,
+													"data": {},
+													"type": "b",
+													"start": 223
+												},
+												{
 													"end": 55,
 													"data": {},
 													"type": "monospace",
@@ -270,21 +281,9 @@
 													"start": 210
 												},
 												{
-													"end": 219,
-													"data": {},
-													"type": "b",
-													"start": 210
-												},
-												{
 													"end": 238,
 													"data": {},
 													"type": "monospace",
-													"start": 223
-												},
-												{
-													"end": 238,
-													"data": {},
-													"type": "b",
 													"start": 223
 												}
 											]
@@ -303,7 +302,7 @@
 										"data": {},
 										"text": {
 											"value": "Detail Menus",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -322,7 +321,7 @@
 										},
 										"text": {
 											"value": "The circle with three dots next to any item opens a details menu with more information and options.  Sometimes you need to select that item for the details menu icon to appear. These menus are how you access the id and triggers associated with each part of your module.  In addition, each details menu can contain specialized options pertaining to the content it's controlling.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -340,7 +339,7 @@
 										},
 										"text": {
 											"value": "For instance, the details menu at the top of the navigation title allows you to edit the module title and start page.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -358,7 +357,7 @@
 										},
 										"text": {
 											"value": "The details menus for pages and assessments allow you to edit their titles, delete, duplicate, and change their order.  Similarly, the circles next to each chunk (paragraphs, images, etc.) inside a page allow you to edit that chunk's id and triggers.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -374,7 +373,7 @@
 										"data": {},
 										"text": {
 											"value": "A Special Note About ID's",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -393,7 +392,7 @@
 										},
 										"text": {
 											"value": "When changing any item's id, make sure to use a unique value.  Duplicate ids are not allowed in a module, and the menu will not close if the id you are trying to use already exists elsewhere in the module.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -409,7 +408,7 @@
 										"data": {},
 										"text": {
 											"value": "Toolbars",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -428,7 +427,7 @@
 										},
 										"text": {
 											"value": "The toolbars at the top of the page provide additional actions. These toolbars are always visible at the top of the page, no matter how far down you scroll.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -444,7 +443,7 @@
 										"data": {},
 										"text": {
 											"value": "File Toolbar",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -463,7 +462,7 @@
 										},
 										"text": {
 											"value": "The file toolbar sits just below the module name, and contains a series of menus that provide additional functionality to the Obojobo Visual Editor. Many of these functions can also be accessed with shortcut keys.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -543,7 +542,7 @@
 										},
 										"text": {
 											"value": "The View menu can also be found in the file toolbar.  It allows you to change the way you are editing the module, swapping over to the XML editor or the JSON editor in order to manually edit the module.  It also allows you to preview the module as the students would see it.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -561,7 +560,7 @@
 										},
 										"text": {
 											"value": "The Insert menu follows the View menu and allows you to insert different kinds of content into the document.  All content types are inserted with blank text and default values, ready to be edited!",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -580,7 +579,7 @@
 										},
 										"text": {
 											"value": "Finally, the Format menu allows you to make formatting changes to the content within a page. The Text submenu allows you change the inline style of any text, including making it bold or italicized. The Paragraph Styles submenu allows you to change the type of the currently selected content, swapping between Text, Headings, and Code.  Only those three types of content can be swapped, so selecting other types of content and then changing their Paragraph Style will have no effect.  The last submenu, Align & Indent, allows you to change the indent style of a block of text, or to swap how it is aligned on the page.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -596,7 +595,7 @@
 										"data": {},
 										"text": {
 											"value": "Content Toolbar",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -639,7 +638,7 @@
 										"data": {},
 										"text": {
 											"value": "Adding Content",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -658,7 +657,7 @@
 										},
 										"text": {
 											"value": "Within the pages of an Obojobo Module, you can add any of the supported Obojobo nodes. Nodes range from simple Text and Headings to more complex items such as Questions.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -676,7 +675,7 @@
 										},
 										"text": {
 											"value": "When you click on an existing node, two + buttons will appear above and below the node. Hovering over either of these buttons will open up a menu that lists all nodes that can be inserted. Clicking on any of the buttons will insert a new node into the document, either above or below the existing node.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -703,7 +702,7 @@
 										},
 										"text": {
 											"value": "Text Editing",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -723,7 +722,7 @@
 										},
 										"text": {
 											"value": "The most basic component of the Obojobo Visual Editor is the text node. Text nodes allow you to insert the main content of your Modules in paragraph form.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -742,7 +741,7 @@
 										},
 										"text": {
 											"value": "An empty text node displays a prompt for you to enter some text so that you don't lose track of where you can type.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -761,7 +760,7 @@
 										},
 										"text": {
 											"value": "Each text node consists of a series of one or more text lines.",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -864,7 +863,7 @@
 										"data": {},
 										"text": {
 											"value": "Align",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -881,7 +880,7 @@
 										"data": {},
 										"text": {
 											"value": "Text lines can be left aligned, right aligned, or center aligned.  The alignment applies to each individual line, so a text node can have multiple alignments within it.  For example, this line is left aligned,",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -890,7 +889,7 @@
 										},
 										"text": {
 											"value": "this line is right aligned,",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -899,7 +898,7 @@
 										},
 										"text": {
 											"value": "and this line is centered.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -952,7 +951,7 @@
 										"data": {},
 										"text": {
 											"value": "Indentation",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -971,7 +970,7 @@
 										},
 										"text": {
 											"value": "Text lines can also be indented. An indention applies only to a single text line, but the line will maintain the indent even when the text wraps around, as seen here.",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -980,7 +979,7 @@
 										},
 										"text": {
 											"value": "Text Lines can also contain multiple indents, up to a maximum of 20 levels of indentation",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -1058,7 +1057,7 @@
 										},
 										"text": {
 											"value": "Text nodes can also have a hanging indent, where the first part a wrapping text line sticks out further to the left than subsequent lines.  Hanging indents can be toggled by pressing CTRL+H, or by using the hanging indent button in the toolbar.",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -1090,7 +1089,7 @@
 										"data": {},
 										"text": {
 											"value": "Whitespace",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1146,7 +1145,7 @@
 										"data": {},
 										"text": {
 											"value": "Paragraph Styles",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1166,7 +1165,7 @@
 										},
 										"text": {
 											"value": "At times, you may insert a text node and then realize you want it to be a different kind of node.  In that case, the drop-down menu in the toolbar will allow you to change the paragraph style to a heading or to a code style.  You can also use the menu to change code and headings back into text.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -1182,7 +1181,7 @@
 										"data": {},
 										"text": {
 											"value": "Text Styling",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1199,7 +1198,7 @@
 										"data": {},
 										"text": {
 											"value": "Text can also be styled. To apply styles, highlight some text and use the toolbar at the top of the page or the shortcut keys.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -1215,7 +1214,7 @@
 										"data": {},
 										"text": {
 											"value": "Style Shortcuts",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1224,265 +1223,353 @@
 							"children": []
 						},
 						{
-							"id": "7d155d9f-c6cd-4500-a199-29a1802f69fe",
-							"type": "ObojoboDraft.Chunks.Text",
+							"id": "c18e9f7d-0ef3-42f2-af65-2f31607f9bac",
+							"type": "ObojoboDraft.Chunks.Table",
 							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"indent": 0
+								"header": true,
+								"display": "fixed",
+								"textGroup": {
+									"numCols": 2,
+									"numRows": 11,
+									"textGroup": [
+										{
+											"text": {
+												"value": "Style",
+												"styleList": null
+											}
 										},
-										"text": {
-											"value": "Bold Text (CTRL+B or ⌘+B)",
-											"styleList": [
-												{
-													"end": 9,
-													"data": {},
-													"type": "b",
-													"start": 0
-												},
-												{
-													"end": 17,
-													"data": {},
-													"type": "monospace",
-													"start": 11
-												},
-												{
-													"end": 24,
-													"data": {},
-													"type": "monospace",
-													"start": 21
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
+										{
+											"text": {
+												"value": "Shortcut",
+												"styleList": null
+											}
 										},
-										"text": {
-											"value": "Italic Text (CTRL+I or ⌘+I)",
-											"styleList": [
-												{
-													"end": 11,
-													"data": {},
-													"type": "i",
-													"start": 0
-												},
-												{
-													"end": 19,
-													"data": {},
-													"type": "monospace",
-													"start": 13
-												},
-												{
-													"end": 26,
-													"data": {},
-													"type": "monospace",
-													"start": 23
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
+										{
+											"text": {
+												"value": "Bold Text",
+												"styleList": [
+													{
+														"end": 4,
+														"data": {},
+														"type": "b",
+														"start": 0
+													}
+												]
+											}
 										},
-										"text": {
-											"value": "Strikethrough (CTRL+D or ⌘+D)",
-											"styleList": [
-												{
-													"end": 13,
-													"data": {},
-													"type": "del",
-													"start": 0
-												},
-												{
-													"end": 21,
-													"data": {},
-													"type": "monospace",
-													"start": 15
-												},
-												{
-													"end": 28,
-													"data": {},
-													"type": "monospace",
-													"start": 25
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Quoted Text (CTRL+\" or ⌘+\")",
-											"styleList": [
-												{
-													"end": 11,
-													"data": {},
-													"type": "q",
-													"start": 0
-												},
-												{
-													"end": 19,
-													"data": {},
-													"type": "monospace",
-													"start": 13
-												},
-												{
-													"end": 26,
-													"data": {},
-													"type": "monospace",
-													"start": 23
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Monospaced Text (CTRL+M or ⌘+M)",
-											"styleList": [
-												{
-													"end": 15,
-													"data": {},
-													"type": "monospace",
-													"start": 0
-												},
-												{
-													"end": 23,
-													"data": {},
-													"type": "monospace",
-													"start": 17
-												},
-												{
-													"end": 30,
-													"data": {},
-													"type": "monospace",
-													"start": 27
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Inline Latex Math (CTRL+Q) - for details on inline Latex, see Math Equations",
-											"styleList": [
-												{
-													"end": 17,
-													"data": {},
-													"type": "_latex",
-													"start": 0
-												},
-												{
-													"end": 25,
-													"data": {},
-													"type": "monospace",
-													"start": 19
-												},
-												{
-													"end": 76,
-													"data": {},
-													"type": "b",
-													"start": 62
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Link (CTRL+K or ⌘+K) - Links can be edited by clicking the pencil next to the link text",
-											"styleList": [
-												{
-													"end": 4,
-													"data": {
-														"href": null
+										{
+											"text": {
+												"value": "Ctrl+B or ⌘+B",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
 													},
-													"type": "a",
-													"start": 0
-												},
-												{
-													"end": 12,
-													"data": {},
-													"type": "monospace",
-													"start": 6
-												},
-												{
-													"end": 19,
-													"data": {},
-													"type": "monospace",
-													"start": 16
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
 										},
-										"text": {
-											"value": "Superscript (CTRL+. or ⌘+.)",
-											"styleList": [
-												{
-													"end": 11,
-													"data": 1,
-													"type": "sup",
-													"start": 0
-												},
-												{
-													"end": 19,
-													"data": {},
-													"type": "monospace",
-													"start": 13
-												},
-												{
-													"end": 26,
-													"data": {},
-													"type": "monospace",
-													"start": 23
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
+										{
+											"text": {
+												"value": "Italic Text",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "i",
+														"start": 0
+													}
+												]
+											}
 										},
-										"text": {
-											"value": "Subscript (CTRL+, or ⌘+,)",
-											"styleList": [
-												{
-													"end": 9,
-													"data": -1,
-													"type": "sup",
-													"start": 0
-												},
-												{
-													"end": 17,
-													"data": {},
-													"type": "monospace",
-													"start": 11
-												},
-												{
-													"end": 24,
-													"data": {},
-													"type": "monospace",
-													"start": 21
-												}
-											]
+										{
+											"text": {
+												"value": "Ctrl+I or ⌘+I",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Strikethrough Text",
+												"styleList": [
+													{
+														"end": 13,
+														"data": {},
+														"type": "del",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+D or ⌘+D",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Quoted Text",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "q",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+\" or ⌘+\"",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Monospaced Text",
+												"styleList": [
+													{
+														"end": 10,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+M or ⌘+M",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Inline Latex Math",
+												"styleList": [
+													{
+														"end": 17,
+														"data": {},
+														"type": "_latex",
+														"start": 13
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+/ or ⌘+/",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Link",
+												"styleList": [
+													{
+														"end": 4,
+														"data": {
+															"href": "https://ucf.edu"
+														},
+														"type": "a",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+K or ⌘+K",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Colored Text",
+												"styleList": [
+													{
+														"end": 7,
+														"data": {
+															"text": "#990000"
+														},
+														"type": "color",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+Shift+P or ⌘+Shift+P",
+												"styleList": [
+													{
+														"end": 12,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 25,
+														"data": {},
+														"type": "monospace",
+														"start": 16
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Superscript",
+												"styleList": [
+													{
+														"end": 5,
+														"data": 1,
+														"type": "sup",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+. or ⌘+.",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Subscript",
+												"styleList": [
+													{
+														"end": 3,
+														"data": -1,
+														"type": "sup",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Ctrl+, or ⌘+,",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													},
+													{
+														"end": 13,
+														"data": {},
+														"type": "monospace",
+														"start": 10
+													}
+												]
+											}
 										}
-									}
-								]
+									]
+								}
 							},
 							"children": []
 						}
@@ -2524,7 +2611,8 @@
 										}
 									}
 								]
-							}
+							},
+							"children": []
 						},
 						{
 							"id": "640648f0-26d4-4f7f-a92a-e0c1f75141a7",
@@ -5119,7 +5207,7 @@
 										},
 										"text": {
 											"value": "Questions",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -5136,7 +5224,7 @@
 										"data": {},
 										"text": {
 											"value": "Questions allow you to gauge the student's comprehension of your material. Questions can be placed directly into a page as practice for the student, or they can be added to a Question Bank in the assessment.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5152,7 +5240,7 @@
 										"data": {},
 										"text": {
 											"value": "A question contains three basic parts: the content, the multiple choice, and the solution.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5168,7 +5256,7 @@
 										"data": {},
 										"text": {
 											"value": "Question Content",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -5185,7 +5273,7 @@
 										"data": {},
 										"text": {
 											"value": "The content appears at the start of the question and usually describes the question that the student is answering. It can contain any node except for other Questions and Question Banks.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5201,7 +5289,7 @@
 										"data": {},
 										"text": {
 											"value": "This Question contains both a Heading node and a Text node in its content.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5222,7 +5310,7 @@
 												"data": {},
 												"text": {
 													"value": "A Simple Question",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										],
@@ -5239,7 +5327,7 @@
 												"data": {},
 												"text": {
 													"value": "How much wood could a woodchuck chuck if a woodchuck could chuck wood?",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										]
@@ -5277,7 +5365,7 @@
 																		},
 																		"text": {
 																			"value": "An answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5301,7 +5389,14 @@
 										"data": {},
 										"text": {
 											"value": "Multiple-Choice Questions",
-											"styleList": []
+											"styleList": [
+												{
+													"end": 15,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
 										}
 									}
 								],
@@ -5318,7 +5413,7 @@
 										"data": {},
 										"text": {
 											"value": "The multiple choice section allows you to create multiple answers for a student, and select which one(s) are correct. Just like the content, a multiple choice answer can hold any node type except for Questions and Question Banks.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5396,7 +5491,7 @@
 												},
 												"text": {
 													"value": "This question has three answer choices: one correct and two incorrect",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										]
@@ -5434,7 +5529,7 @@
 																		},
 																		"text": {
 																			"value": "An incorrect answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5468,7 +5563,7 @@
 																		},
 																		"text": {
 																			"value": "A correct answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5502,7 +5597,7 @@
 																		},
 																		"text": {
 																			"value": "Another incorrect answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5576,7 +5671,7 @@
 												},
 												"text": {
 													"value": "This question has three correct answers, and no incorrect answers.",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										]
@@ -5614,7 +5709,7 @@
 																		},
 																		"text": {
 																			"value": "A correct answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5648,7 +5743,7 @@
 																		},
 																		"text": {
 																			"value": "Another correct answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5682,7 +5777,7 @@
 																		},
 																		"text": {
 																			"value": "A third correct answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5706,7 +5801,7 @@
 										"data": {},
 										"text": {
 											"value": "Choices can also have feedback, which provides more information to the student if they select that choice. The feedback be displayed below the choice once the student hits submit (or during a review if the question is in the assessment), so it is a good place to let the student know where they went wrong, or to provide elaboration on a correct answer.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5790,7 +5885,7 @@
 												},
 												"text": {
 													"value": "This question has feedback on the incorrect answer, but not the correct one.",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										]
@@ -5828,7 +5923,7 @@
 																		},
 																		"text": {
 																			"value": "This is a correct answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5862,7 +5957,7 @@
 																		},
 																		"text": {
 																			"value": "This is an incorrect answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5887,7 +5982,7 @@
 																		},
 																		"text": {
 																			"value": "Here is some detailed information about the incorrect answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -5911,7 +6006,7 @@
 										"data": {},
 										"text": {
 											"value": "The feedback can contain any of the same nodes as the content and the choices.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5951,7 +6046,7 @@
 										"data": {},
 										"text": {
 											"value": "Multiple-Choice questions can have one of two response types: pick one correct answer or pick all correct answers. To change the response type, use the dropdown above the answer choices.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -5967,7 +6062,7 @@
 										"data": {},
 										"text": {
 											"value": "Pick one correct answer questions allow the student to pick a single choice as their answer. If there is more than one correct choice, the student can select any of the correct choices to get the points for that question.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -6035,7 +6130,7 @@
 																		},
 																		"text": {
 																			"value": "A correct answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6069,7 +6164,7 @@
 																		},
 																		"text": {
 																			"value": "An incorrect answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6103,7 +6198,7 @@
 																		},
 																		"text": {
 																			"value": "Another correct answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6315,7 +6410,7 @@
 										"data": {},
 										"text": {
 											"value": "Questions can also be shuffled or un-shuffled. Shuffled questions will randomize the order of their choices, and un-shuffled questions will retain the order of their choices. By default, questions are shuffled, but this can be turned off by clicking on the toggle-button next to the response type.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -6340,7 +6435,7 @@
 												},
 												"text": {
 													"value": "The answer choices for the question will appear in the exact order they are displayed",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										]
@@ -6378,7 +6473,7 @@
 																		},
 																		"text": {
 																			"value": "A part of the correct answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6412,7 +6507,7 @@
 																		},
 																		"text": {
 																			"value": "Another part of the correct answer",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6446,7 +6541,7 @@
 																		},
 																		"text": {
 																			"value": "All of the above",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6454,6 +6549,1368 @@
 															"children": []
 														}
 													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "c22e809b-b02c-4f46-9588-63dae06417b1",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Input a number Questions",
+											"styleList": [
+												{
+													"end": 14,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "be477582-5d08-42cc-b937-b65e5ddf9d67",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "\"Input a number\" questions require students to input a numeric response. You can define one or more correct answer choices (as well as any number of incorrect answer choices if you want to provide feedback opportunities for common incorrect responses).",
+											"styleList": null
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "3e586556-8463-4a33-b99b-0a6b03a689e4",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "By default, each question has one correct answer. To add more, click the + Add possible answer button below the current choices. To delete a choice, click the X button in the upper right-hand corner of the choice.",
+											"styleList": [
+												{
+													"end": 94,
+													"data": {},
+													"type": "monospace",
+													"start": 75
+												},
+												{
+													"end": 160,
+													"data": {},
+													"type": "monospace",
+													"start": 159
+												}
+											]
+										}
+									},
+									{
+										"data": {},
+										"text": {
+											"value": "Try it! Add and delete a few choices in the following Question. (Make sure you click the X inside of a choice to delete it; the X above the question will delete the whole question)",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												},
+												{
+													"end": 90,
+													"data": {},
+													"type": "monospace",
+													"start": 89
+												},
+												{
+													"end": 129,
+													"data": {},
+													"type": "monospace",
+													"start": 128
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "6d294f16-2501-4783-a756-2ea27a1c8ca3",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "default",
+								"revealAnswer": "default"
+							},
+							"children": [
+								{
+									"id": "d41f248f-57b4-43ad-9efb-fcdccd84c01a",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "What is 2 + 2 = ?",
+													"styleList": [
+														{
+															"end": 13,
+															"data": {},
+															"type": "_latex",
+															"start": 8
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "eddccfe1-f9c3-45ad-8011-e83f874fb739",
+									"type": "ObojoboDraft.Chunks.NumericAssessment",
+									"content": {
+										"units": [
+											{
+												"data": {},
+												"text": {
+													"value": "",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": [
+										{
+											"id": "dbf92bb4-1010-40fb-be28-80a8f43e6f5f",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "e7eb5040-18f7-41be-9654-364db5ec39e4",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "4",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "5a5bea8a-31d1-47f1-a632-92c63ffc116d",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Units",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "12e9aa0e-fd22-481d-aa64-820a42c32e15",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "You can make your questions more specific by specifying the units that the answer is expected in by using the Units Text box.",
+											"styleList": [
+												{
+													"end": 120,
+													"data": {},
+													"type": "monospace",
+													"start": 110
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Preview this module and see how the answer input for this question shows the text \"grams\" after the input box.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "bff8e270-1a25-4e79-a206-30ce41cb2e5f",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "default",
+								"revealAnswer": "default"
+							},
+							"children": [
+								{
+									"id": "3737d707-9837-4404-ac77-b4791b725414",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "How many grams are in 1 kilogram?",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "cefd4339-6c4e-4aca-8100-37adc2e756e3",
+									"type": "ObojoboDraft.Chunks.NumericAssessment",
+									"content": {
+										"units": [
+											{
+												"data": {},
+												"text": {
+													"value": "grams",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": [
+										{
+											"id": "727ff645-db16-4333-9def-d89332669626",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "0af65f54-1671-4196-a260-881c40c25ca8",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "1000",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "86c5b27d-8b7c-4b4c-961e-9244844a7788",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Other numeric types",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "86a9773e-cf99-4926-bc8e-9e8f1f9a9314",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "In addition to decimal values you can also define possible answer choices in scientific notation, fractional values, hexadecimal values, octal values or binary values. The table below shows some examples of the different types of number formats allowed:",
+											"styleList": null
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "13c29c31-a572-4464-888e-f3f42cef0075",
+							"type": "ObojoboDraft.Chunks.Table",
+							"content": {
+								"header": true,
+								"display": "auto",
+								"textGroup": {
+									"numCols": 2,
+									"numRows": 7,
+									"textGroup": [
+										{
+											"text": {
+												"value": "Number Type",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "Valid syntax examples",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "Decimal",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "42, -19.6, 100., 1000000, 1,000,000",
+												"styleList": [
+													{
+														"end": 35,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Scientific Notation",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "1.23e9, 1.23*10^9, 1.23x10^9",
+												"styleList": [
+													{
+														"end": 28,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Fractional",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "99/13, 7/8, 14/16",
+												"styleList": [
+													{
+														"end": 17,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Hexadecimal",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "0xF90F, #F90F, $F90F",
+												"styleList": [
+													{
+														"end": 20,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Octal",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "0o644",
+												"styleList": [
+													{
+														"end": 5,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													}
+												]
+											}
+										},
+										{
+											"text": {
+												"value": "Binary",
+												"styleList": null
+											}
+										},
+										{
+											"text": {
+												"value": "0b1101",
+												"styleList": [
+													{
+														"end": 6,
+														"data": {},
+														"type": "monospace",
+														"start": 0
+													}
+												]
+											}
+										}
+									]
+								}
+							},
+							"children": []
+						},
+						{
+							"id": "96fdd395-cd8c-4f5b-bef1-4f9970cab111",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Preview this question and try some of the possible answer inputs. Then, try adding your own answer choices using some of the other syntaxes.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "0c2f137a-0eec-4f68-af55-a83e67ccf8fc",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "default",
+								"revealAnswer": "default"
+							},
+							"children": [
+								{
+									"id": "c7de7589-147f-42a4-a3f5-60d3ed3d8884",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Here are valid responses to this example question:",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "2647bd64-bd3d-4bee-a299-ce1c4bc079c8",
+									"type": "ObojoboDraft.Chunks.List",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "-19.6",
+													"styleList": [
+														{
+															"end": 5,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "1.23e9",
+													"styleList": [
+														{
+															"end": 6,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "99/13",
+													"styleList": [
+														{
+															"end": 5,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "0xF90F",
+													"styleList": [
+														{
+															"end": 6,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "0o664",
+													"styleList": [
+														{
+															"end": 5,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "0b1101",
+													"styleList": [
+														{
+															"end": 6,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											}
+										],
+										"listStyles": {
+											"type": "unordered",
+											"indents": {
+												"0": {
+													"type": "unordered",
+													"bulletStyle": "disc"
+												}
+											}
+										}
+									},
+									"children": []
+								},
+								{
+									"id": "83784a2e-48b7-40b5-bb6f-dc8d06c38655",
+									"type": "ObojoboDraft.Chunks.NumericAssessment",
+									"content": {
+										"units": [
+											{
+												"data": {},
+												"text": {
+													"value": "",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": [
+										{
+											"id": "81748062-bb7b-4ab0-902f-5b3d48d0d124",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "2e7ee6d2-bbdc-4841-99ae-c301a9b51f49",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "-19.6",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										},
+										{
+											"id": "fa167058-3735-48f9-b666-1be17afb9ab9",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "84ede020-c8a3-4a14-b922-80358b02c8fb",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "1.23e9",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										},
+										{
+											"id": "cc6693c5-883b-4838-a6b1-dbe0e14de49e",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "afe8c604-daa2-4e75-89d9-5ce3598e7fee",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "99/13",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										},
+										{
+											"id": "6575e800-bda3-4849-a61b-dc6368dc309e",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "3d84fcea-b599-4345-94a9-49feb7520ec1",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "0xF90F",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										},
+										{
+											"id": "d3db78b1-2bce-40bd-acca-ca2bd553ff33",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "fd9472db-ac8e-4297-a313-de28113e1932",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "0o664",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										},
+										{
+											"id": "646a1ee8-e096-4d34-b94d-baa9ac458c3b",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "afa5fd86-6b62-49d0-9ec0-9f7e391d6689",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "0b1101",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "ca8c670d-219e-43fe-bba9-c62fc0dfac84",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Answer equivalency",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "08b45ae3-ec03-4593-93ab-d7a42d395c71",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Student responses are accepted if they are of equivalent values. For example, if an answer choice is 1.23e4 then both 1.23e4, 12.3e3 (improper form) and 12300 are all accepted as the same response. In addition, decimal values with enough precision will be accepted for fractional values (and visa versa). For example, the answer 0.333333 will be accepted for the answer choice 1/3, and likewise the answer 2/3 will be accepted for the answer choice 0.666666.",
+											"styleList": [
+												{
+													"end": 107,
+													"data": {},
+													"type": "monospace",
+													"start": 101
+												},
+												{
+													"end": 124,
+													"data": {},
+													"type": "monospace",
+													"start": 118
+												},
+												{
+													"end": 132,
+													"data": {},
+													"type": "monospace",
+													"start": 126
+												},
+												{
+													"end": 158,
+													"data": {},
+													"type": "monospace",
+													"start": 153
+												},
+												{
+													"end": 337,
+													"data": {},
+													"type": "monospace",
+													"start": 329
+												},
+												{
+													"end": 380,
+													"data": {},
+													"type": "monospace",
+													"start": 377
+												},
+												{
+													"end": 409,
+													"data": {},
+													"type": "monospace",
+													"start": 406
+												},
+												{
+													"end": 457,
+													"data": {},
+													"type": "monospace",
+													"start": 449
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Preview this question and try inputting various equivalent values.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "3e57337e-4251-41e8-a3e0-83a4a2170f6b",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "default",
+								"revealAnswer": "default"
+							},
+							"children": [
+								{
+									"id": "eb8bd2b7-1e1e-4881-bf68-8d2972978de0",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Here are the answer choices for this question:",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "b71a3c01-98f2-44a5-ac42-e9ce70d1cd66",
+									"type": "ObojoboDraft.Chunks.List",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "1/3",
+													"styleList": [
+														{
+															"end": 3,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "0.666666",
+													"styleList": [
+														{
+															"end": 8,
+															"data": {},
+															"type": "monospace",
+															"start": 0
+														}
+													]
+												}
+											}
+										],
+										"listStyles": {
+											"type": "unordered",
+											"indents": {
+												"0": {
+													"type": "unordered",
+													"bulletStyle": "disc"
+												}
+											}
+										}
+									},
+									"children": []
+								},
+								{
+									"id": "d07ecb35-bc76-41d3-99b6-d7597ef65c64",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"align": "left",
+													"indent": 0
+												},
+												"text": {
+													"value": "Try also answering 0.333333 and 2/6 instead of 1/3, and 2/3 and 200/300 instead of 0.666666.",
+													"styleList": [
+														{
+															"end": 27,
+															"data": {},
+															"type": "monospace",
+															"start": 19
+														},
+														{
+															"end": 35,
+															"data": {},
+															"type": "monospace",
+															"start": 32
+														},
+														{
+															"end": 50,
+															"data": {},
+															"type": "monospace",
+															"start": 47
+														},
+														{
+															"end": 59,
+															"data": {},
+															"type": "monospace",
+															"start": 56
+														},
+														{
+															"end": 71,
+															"data": {},
+															"type": "monospace",
+															"start": 64
+														},
+														{
+															"end": 91,
+															"data": {},
+															"type": "monospace",
+															"start": 83
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "31203088-db68-4c99-bf38-6c1bc1969cf0",
+									"type": "ObojoboDraft.Chunks.NumericAssessment",
+									"content": {
+										"units": [
+											{
+												"data": {},
+												"text": {
+													"value": "",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": [
+										{
+											"id": "8e55ece4-fa13-4d25-9b6e-fcc2c031e1db",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "fe27853f-109e-49c2-8cd5-ac55d9273139",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "1/3",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										},
+										{
+											"id": "9047f86a-9991-424b-a109-bea6c79331a9",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "bf574b37-0c91-4ae5-87b4-02caf8d878c9",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"answer": "0.666666",
+														"requirement": "exact"
+													},
+													"children": []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "9b759caa-c5f9-4154-998e-cb85481be7ae",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Percent and absolute error",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "fdfed297-3352-4d0a-9293-923a11151549",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "For questions where you expect to give students some leeway, such as scientific or physics questions, you'll want to provide some margin of error.",
+											"styleList": null
+										}
+									},
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! The question below allows for a 1 percent error. Try expanding this to allow for a 5 percent error, then preview this question to experiment with answering the question to see what is and isn't accepted as a correct response. Finally, try changing the Error Type to Absolute, and experiment with accepted responses. With an answer of 0.679 and an absolute error of 5 any value from -4.321 to 5.679 will be accepted.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												},
+												{
+													"end": 282,
+													"data": {},
+													"type": "monospace",
+													"start": 274
+												},
+												{
+													"end": 347,
+													"data": {},
+													"type": "monospace",
+													"start": 342
+												},
+												{
+													"end": 374,
+													"data": {},
+													"type": "monospace",
+													"start": 373
+												},
+												{
+													"end": 396,
+													"data": {},
+													"type": "monospace",
+													"start": 390
+												},
+												{
+													"end": 405,
+													"data": {},
+													"type": "monospace",
+													"start": 400
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "dad4e53d-a607-4ab3-abd2-8bd9e4b74082",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "default",
+								"revealAnswer": "default"
+							},
+							"children": [
+								{
+									"id": "b6bf5c0c-a6c5-4f54-a5bd-80d348bb9f4d",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "What is the molarity of 0.4444 mol of CoCl_2 in 0.654 L of solution?",
+													"styleList": [
+														{
+															"end": 30,
+															"data": {},
+															"type": "_latex",
+															"start": 24
+														},
+														{
+															"end": 44,
+															"data": {},
+															"type": "_latex",
+															"start": 38
+														},
+														{
+															"end": 55,
+															"data": {},
+															"type": "_latex",
+															"start": 48
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "9f47ad2b-08ec-4595-aed2-4decae1f9e69",
+									"type": "ObojoboDraft.Chunks.NumericAssessment",
+									"content": {
+										"units": [
+											{
+												"data": {},
+												"text": {
+													"value": "M",
+													"styleList": [
+														{
+															"end": 1,
+															"data": {},
+															"type": "_latex",
+															"start": 0
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": [
+										{
+											"id": "55e95055-522d-4c9d-83a4-052983a74627",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "379ecb90-8929-4fda-8059-d7b6a65235c8",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"type": "percent",
+														"answer": "0.679",
+														"margin": "1",
+														"requirement": "margin"
+													},
+													"children": []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "8ca75554-85da-4c6e-a822-10abe506a295",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Ranges",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "fa203ba7-7a40-4160-beaf-d8ae5396ed3e",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "You can also more directly provide a range of accepted values by choosing the Range answer type.",
+											"styleList": [
+												{
+													"end": 83,
+													"data": {},
+													"type": "monospace",
+													"start": 78
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Experiment with the start and end values of the answer choice below, then preview this question to try various answers.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "dca65ada-4134-4ec5-9331-a7c3df117d27",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "default",
+								"revealAnswer": "default"
+							},
+							"children": [
+								{
+									"id": "fba38fe7-ec9b-4cf8-bb51-b379b88b89f2",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "To answer this question correctly, input any number from -100 to 100.",
+													"styleList": [
+														{
+															"end": 61,
+															"data": {},
+															"type": "monospace",
+															"start": 57
+														},
+														{
+															"end": 68,
+															"data": {},
+															"type": "monospace",
+															"start": 65
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "cf48a866-2d50-4f64-ad00-5442fc4e81ff",
+									"type": "ObojoboDraft.Chunks.NumericAssessment",
+									"content": {
+										"units": [
+											{
+												"data": {},
+												"text": {
+													"value": "",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": [
+										{
+											"id": "2daf7f46-a9b8-48ef-8a81-03603a847e15",
+											"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "7f91eb57-8659-4635-84e4-dc5516683aa9",
+													"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+													"content": {
+														"end": "100",
+														"start": "-100",
+														"requirement": "range"
+													},
+													"children": []
 												}
 											]
 										}
@@ -6470,7 +7927,7 @@
 										"data": {},
 										"text": {
 											"value": "Question Solution",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -6487,7 +7944,7 @@
 										"data": {},
 										"text": {
 											"value": "The solution will display after the question has been answered. In practice questions, it is accessible after every time that the student hits submit. In the assessment, it is accessible during a full review. It will be displayed regardless of which choices the student selected, so it is a good place to put general post-question information.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -6542,7 +7999,7 @@
 														"data": {},
 														"text": {
 															"value": "The Solution",
-															"styleList": []
+															"styleList": null
 														}
 													}
 												],
@@ -6561,7 +8018,7 @@
 														},
 														"text": {
 															"value": "Some more detail for the student, this can be as long as needed.",
-															"styleList": []
+															"styleList": null
 														}
 													}
 												]
@@ -6583,7 +8040,7 @@
 												},
 												"text": {
 													"value": "This question contains a solution, which will be displayed after submission no matter which choice the student picks",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										]
@@ -6621,7 +8078,7 @@
 																		},
 																		"text": {
 																			"value": "An answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6655,7 +8112,7 @@
 																		},
 																		"text": {
 																			"value": "Another answer choice",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6679,7 +8136,7 @@
 										"data": {},
 										"text": {
 											"value": "Survey Questions",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -6699,7 +8156,7 @@
 										},
 										"text": {
 											"value": "Questions can also be marked as Survey Only, which means they will not be graded.  Survey Only questions do not have correct and incorrect answers, and so toggling the Survey Only button to on will remove the Correct and Incorrect buttons from the Question",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -6741,7 +8198,7 @@
 												},
 												"text": {
 													"value": "A survey question",
-													"styleList": []
+													"styleList": null
 												}
 											}
 										]
@@ -6779,7 +8236,7 @@
 																		},
 																		"text": {
 																			"value": "One survey response",
-																			"styleList": []
+																			"styleList": null
 																		}
 																	}
 																]
@@ -6813,7 +8270,193 @@
 																		},
 																		"text": {
 																			"value": "Another survey response",
-																			"styleList": []
+																			"styleList": null
+																		}
+																	}
+																]
+															},
+															"children": []
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "1979f4de-bcb7-45d2-a739-92e5ce1a8de0",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Other Options",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "27e821b8-02bf-42f8-a4d8-026ad846a7b7",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Reveal Answer Button",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "ca97e973-04c2-4f3d-8e78-a92944efd106",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "By default Input-a-number questions show a Reveal Answer button when answered incorrectly. This is helpful if a student is unable to come up with any correct answers. Multiple-Choice questions don't have any Reveal Answer buttons since it's easy to find the correct answer if a student is unsure. However, you can override this option for any question and decide when (if at all) you want to show this button.",
+											"styleList": [
+												{
+													"end": 25,
+													"data": {},
+													"type": "b",
+													"start": 11
+												},
+												{
+													"end": 182,
+													"data": {},
+													"type": "b",
+													"start": 167
+												},
+												{
+													"end": 221,
+													"data": {},
+													"type": "b",
+													"start": 208
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Change the question below so that the Reveal Answer button is shown even before a student responds to it. Here's how: Click inside the question to focus on it, then click on the (...) menu that appears in the upper right just outside the question. Next, find the Allow Reveal Answer? option and change it to Yes. Save your module and then preview this question and notice how the Reveal Answer button shows up, allowing students to reveal the answer without having to guess first.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												},
+												{
+													"end": 291,
+													"data": {},
+													"type": "b",
+													"start": 271
+												},
+												{
+													"end": 191,
+													"data": {},
+													"type": "monospace",
+													"start": 186
+												},
+												{
+													"end": 319,
+													"data": {},
+													"type": "monospace",
+													"start": 316
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "4141f14f-a7a0-46d0-91ca-22631258e922",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "default",
+								"revealAnswer": "default"
+							},
+							"children": [
+								{
+									"id": "be677775-c262-47c3-9199-959bb37997a9",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "What is 2 + 2 = ?",
+													"styleList": [
+														{
+															"end": 13,
+															"data": {},
+															"type": "_latex",
+															"start": 8
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "8a9cff5a-9b00-4e57-8153-35cd74952c48",
+									"type": "ObojoboDraft.Chunks.MCAssessment",
+									"content": {
+										"shuffle": true,
+										"responseType": "pick-one"
+									},
+									"children": [
+										{
+											"id": "e1e9dc27-533d-47a3-983c-f48de386d39e",
+											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"id": "8b965cf5-f082-48db-9678-470ef65b0333",
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+													"content": {},
+													"children": [
+														{
+															"id": "fc0f5238-98de-4e5e-be51-a6ee0f8cd29b",
+															"type": "ObojoboDraft.Chunks.Text",
+															"content": {
+																"textGroup": [
+																	{
+																		"data": {
+																			"indent": 0
+																		},
+																		"text": {
+																			"value": "4",
+																			"styleList": null
 																		}
 																	}
 																]
