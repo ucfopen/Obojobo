@@ -6564,7 +6564,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Input a number Questions",
+											"value": "Input-a-number Questions",
 											"styleList": [
 												{
 													"end": 14,
@@ -6592,7 +6592,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "\"Input a number\" questions require students to input a numeric response. You can define one or more correct answer choices (as well as any number of incorrect answer choices if you want to provide feedback opportunities for common incorrect responses).",
+											"value": "\"Input-a-number\" questions require students to input a numeric response. You can define one or more correct answer choices (as well as any number of incorrect answer choices if you want to provide feedback opportunities for common incorrect responses).",
 											"styleList": null
 										}
 									}
