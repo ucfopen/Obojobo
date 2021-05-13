@@ -365,7 +365,11 @@ describe('KeyDown Util', () => {
 			children: [
 				{
 					type: HEADING_NODE,
-					children: [{ text: 'someText' }]
+					children: [
+						{ text: 'someText' },
+						{ children: [{ text: 'and' }] },
+						{ text: 'someMoreText' }
+					]
 				}
 			],
 			selection: {
