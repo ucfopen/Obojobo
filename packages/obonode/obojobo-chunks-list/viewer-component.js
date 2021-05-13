@@ -3,6 +3,7 @@ import './viewer-component.scss'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import StyleType from 'obojobo-document-engine/src/scripts/common/text/style-type'
 
 const { TextChunk } = Common.chunk
 const { TextGroupEl } = Common.chunk.textChunk
@@ -27,21 +28,14 @@ const addItemToList = (ul, li, lis) => {
 	return lis.push(li)
 }
 
-const pickColorFromText = (node, indent) => {
-	let bulletColor
-	let textStyles
+const pickColorFromText = textStyles => {
+	let bulletColor = ''
+	const textColor = textStyles.getStyleComparisonsForRange(0, 1, StyleType.COLOR)
 
 	try {
-		// needs try/catch because some nodes don't have a text element
-		if (indent === 1) {
-			textStyles = node.children[0].text.styleList.styles
-			bulletColor = textStyles[textStyles.length - 1].data.text
-		} else if (indent > 1) {
-			textStyles = node.children[0].children[0].text.styleList.styles
-			bulletColor = textStyles[textStyles.length - 1].data.text
-		}
+		bulletColor = textColor.contains[0].data.text
 	} catch (e) {
-		// Reached by nodes that have no child text, they wont be assigned a
+		bulletColor = ''
 	}
 
 	return bulletColor
@@ -62,7 +56,14 @@ const renderEl = (props, node, index, indent) => {
 			)
 		case 'element': {
 			const ElType = node.type
-			const bulletColor = pickColorFromText(node, indent)
+			let bulletColor = ''
+			if (node.type === 'li') {
+				try {
+					bulletColor = pickColorFromText(node.firstChild.text.styleList)
+				} catch (e) {
+					// list either has no text or styled text, no color is needed
+				}
+			}
 
 			return (
 				<ElType

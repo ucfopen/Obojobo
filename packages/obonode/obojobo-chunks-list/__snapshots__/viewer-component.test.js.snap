@@ -18,7 +18,7 @@ exports[`List List component 1`] = `
         start={1}
         style={
           Object {
-            "color": undefined,
+            "color": "",
             "listStyleType": undefined,
           }
         }
@@ -26,7 +26,7 @@ exports[`List List component 1`] = `
         <li
           style={
             Object {
-              "color": undefined,
+              "color": "",
               "listStyleType": "none",
             }
           }
@@ -55,7 +55,7 @@ exports[`List List component with ascending indents 1`] = `
         start={1}
         style={
           Object {
-            "color": undefined,
+            "color": "",
             "listStyleType": undefined,
           }
         }
@@ -63,7 +63,7 @@ exports[`List List component with ascending indents 1`] = `
         <li
           style={
             Object {
-              "color": undefined,
+              "color": "",
               "listStyleType": "none",
             }
           }
@@ -72,7 +72,7 @@ exports[`List List component with ascending indents 1`] = `
             start={1}
             style={
               Object {
-                "color": undefined,
+                "color": "",
                 "listStyleType": undefined,
               }
             }
@@ -80,7 +80,7 @@ exports[`List List component with ascending indents 1`] = `
             <li
               style={
                 Object {
-                  "color": undefined,
+                  "color": "",
                   "listStyleType": "lower-alpha",
                 }
               }
@@ -101,7 +101,7 @@ exports[`List List component with ascending indents 1`] = `
                 start={1}
                 style={
                   Object {
-                    "color": undefined,
+                    "color": "",
                     "listStyleType": undefined,
                   }
                 }
@@ -109,7 +109,7 @@ exports[`List List component with ascending indents 1`] = `
                 <li
                   style={
                     Object {
-                      "color": undefined,
+                      "color": "",
                       "listStyleType": "square",
                     }
                   }
@@ -130,7 +130,7 @@ exports[`List List component with ascending indents 1`] = `
                     start={1}
                     style={
                       Object {
-                        "color": undefined,
+                        "color": "",
                         "listStyleType": undefined,
                       }
                     }
@@ -138,7 +138,7 @@ exports[`List List component with ascending indents 1`] = `
                     <li
                       style={
                         Object {
-                          "color": undefined,
+                          "color": "",
                           "listStyleType": "upper-alpha",
                         }
                       }
@@ -159,7 +159,7 @@ exports[`List List component with ascending indents 1`] = `
                         start="10"
                         style={
                           Object {
-                            "color": undefined,
+                            "color": "",
                             "listStyleType": undefined,
                           }
                         }
@@ -167,7 +167,7 @@ exports[`List List component with ascending indents 1`] = `
                         <li
                           style={
                             Object {
-                              "color": undefined,
+                              "color": "",
                               "listStyleType": "upper-alpha",
                             }
                           }
@@ -188,7 +188,7 @@ exports[`List List component with ascending indents 1`] = `
                             start={1}
                             style={
                               Object {
-                                "color": undefined,
+                                "color": "",
                                 "listStyleType": undefined,
                               }
                             }
@@ -196,7 +196,7 @@ exports[`List List component with ascending indents 1`] = `
                             <li
                               style={
                                 Object {
-                                  "color": undefined,
+                                  "color": "",
                                   "listStyleType": "decimal",
                                 }
                               }
@@ -217,7 +217,7 @@ exports[`List List component with ascending indents 1`] = `
                                 start={1}
                                 style={
                                   Object {
-                                    "color": undefined,
+                                    "color": "",
                                     "listStyleType": undefined,
                                   }
                                 }
@@ -225,7 +225,7 @@ exports[`List List component with ascending indents 1`] = `
                                 <li
                                   style={
                                     Object {
-                                      "color": undefined,
+                                      "color": "",
                                       "listStyleType": "lower-alpha",
                                     }
                                   }
@@ -279,7 +279,7 @@ exports[`List List component with colored Text 1`] = `
         start={1}
         style={
           Object {
-            "color": undefined,
+            "color": "",
             "listStyleType": undefined,
           }
         }
@@ -316,7 +316,7 @@ exports[`List List component with colored Text 1`] = `
             start={1}
             style={
               Object {
-                "color": "#cc0000",
+                "color": "",
                 "listStyleType": undefined,
               }
             }
@@ -324,7 +324,7 @@ exports[`List List component with colored Text 1`] = `
             <li
               style={
                 Object {
-                  "color": undefined,
+                  "color": "#cc0000",
                   "listStyleType": "circle",
                 }
               }
@@ -384,7 +384,7 @@ exports[`List List component with colored Text 1`] = `
             start={1}
             style={
               Object {
-                "color": "#6aa84f",
+                "color": "",
                 "listStyleType": undefined,
               }
             }
@@ -392,7 +392,7 @@ exports[`List List component with colored Text 1`] = `
             <li
               style={
                 Object {
-                  "color": undefined,
+                  "color": "#6aa84f",
                   "listStyleType": "circle",
                 }
               }
@@ -444,7 +444,7 @@ exports[`List List component with inverse indentation 1`] = `
         start={1}
         style={
           Object {
-            "color": undefined,
+            "color": "",
             "listStyleType": undefined,
           }
         }
@@ -452,7 +452,7 @@ exports[`List List component with inverse indentation 1`] = `
         <li
           style={
             Object {
-              "color": undefined,
+              "color": "",
               "listStyleType": "decimal",
             }
           }
@@ -473,7 +473,7 @@ exports[`List List component with inverse indentation 1`] = `
             start={1}
             style={
               Object {
-                "color": undefined,
+                "color": "",
                 "listStyleType": undefined,
               }
             }
@@ -481,7 +481,7 @@ exports[`List List component with inverse indentation 1`] = `
             <li
               style={
                 Object {
-                  "color": undefined,
+                  "color": "",
                   "listStyleType": "none",
                 }
               }
@@ -490,7 +490,7 @@ exports[`List List component with inverse indentation 1`] = `
                 start={1}
                 style={
                   Object {
-                    "color": undefined,
+                    "color": "",
                     "listStyleType": undefined,
                   }
                 }
@@ -498,7 +498,7 @@ exports[`List List component with inverse indentation 1`] = `
                 <li
                   style={
                     Object {
-                      "color": undefined,
+                      "color": "",
                       "listStyleType": "square",
                     }
                   }
@@ -521,7 +521,7 @@ exports[`List List component with inverse indentation 1`] = `
             <li
               style={
                 Object {
-                  "color": undefined,
+                  "color": "",
                   "listStyleType": "lower-alpha",
                 }
               }
@@ -565,7 +565,7 @@ exports[`List List component with irregular indentation 1`] = `
         start={1}
         style={
           Object {
-            "color": undefined,
+            "color": "",
             "listStyleType": undefined,
           }
         }
@@ -573,7 +573,7 @@ exports[`List List component with irregular indentation 1`] = `
         <li
           style={
             Object {
-              "color": undefined,
+              "color": "",
               "listStyleType": "decimal",
             }
           }
@@ -594,7 +594,7 @@ exports[`List List component with irregular indentation 1`] = `
             start={1}
             style={
               Object {
-                "color": undefined,
+                "color": "",
                 "listStyleType": undefined,
               }
             }
@@ -602,7 +602,7 @@ exports[`List List component with irregular indentation 1`] = `
             <li
               style={
                 Object {
-                  "color": undefined,
+                  "color": "",
                   "listStyleType": "none",
                 }
               }
@@ -611,7 +611,7 @@ exports[`List List component with irregular indentation 1`] = `
                 start={1}
                 style={
                   Object {
-                    "color": undefined,
+                    "color": "",
                     "listStyleType": undefined,
                   }
                 }
@@ -619,7 +619,7 @@ exports[`List List component with irregular indentation 1`] = `
                 <li
                   style={
                     Object {
-                      "color": undefined,
+                      "color": "",
                       "listStyleType": "square",
                     }
                   }
@@ -640,7 +640,7 @@ exports[`List List component with irregular indentation 1`] = `
                     start={1}
                     style={
                       Object {
-                        "color": undefined,
+                        "color": "",
                         "listStyleType": undefined,
                       }
                     }
@@ -648,7 +648,7 @@ exports[`List List component with irregular indentation 1`] = `
                     <li
                       style={
                         Object {
-                          "color": undefined,
+                          "color": "",
                           "listStyleType": "none",
                         }
                       }
@@ -657,7 +657,7 @@ exports[`List List component with irregular indentation 1`] = `
                         start="10"
                         style={
                           Object {
-                            "color": undefined,
+                            "color": "",
                             "listStyleType": undefined,
                           }
                         }
@@ -665,7 +665,7 @@ exports[`List List component with irregular indentation 1`] = `
                         <li
                           style={
                             Object {
-                              "color": undefined,
+                              "color": "",
                               "listStyleType": "none",
                             }
                           }
@@ -674,7 +674,7 @@ exports[`List List component with irregular indentation 1`] = `
                             start={1}
                             style={
                               Object {
-                                "color": undefined,
+                                "color": "",
                                 "listStyleType": undefined,
                               }
                             }
@@ -682,7 +682,7 @@ exports[`List List component with irregular indentation 1`] = `
                             <li
                               style={
                                 Object {
-                                  "color": undefined,
+                                  "color": "",
                                   "listStyleType": "none",
                                 }
                               }
@@ -691,7 +691,7 @@ exports[`List List component with irregular indentation 1`] = `
                                 start={1}
                                 style={
                                   Object {
-                                    "color": undefined,
+                                    "color": "",
                                     "listStyleType": undefined,
                                   }
                                 }
@@ -699,7 +699,7 @@ exports[`List List component with irregular indentation 1`] = `
                                 <li
                                   style={
                                     Object {
-                                      "color": undefined,
+                                      "color": "",
                                       "listStyleType": "lower-alpha",
                                     }
                                   }
@@ -728,7 +728,7 @@ exports[`List List component with irregular indentation 1`] = `
                 <li
                   style={
                     Object {
-                      "color": undefined,
+                      "color": "",
                       "listStyleType": "square",
                     }
                   }
@@ -749,7 +749,7 @@ exports[`List List component with irregular indentation 1`] = `
                     start={1}
                     style={
                       Object {
-                        "color": undefined,
+                        "color": "",
                         "listStyleType": undefined,
                       }
                     }
@@ -757,7 +757,7 @@ exports[`List List component with irregular indentation 1`] = `
                     <li
                       style={
                         Object {
-                          "color": undefined,
+                          "color": "",
                           "listStyleType": "none",
                         }
                       }
@@ -766,7 +766,7 @@ exports[`List List component with irregular indentation 1`] = `
                         start="10"
                         style={
                           Object {
-                            "color": undefined,
+                            "color": "",
                             "listStyleType": undefined,
                           }
                         }
@@ -774,7 +774,7 @@ exports[`List List component with irregular indentation 1`] = `
                         <li
                           style={
                             Object {
-                              "color": undefined,
+                              "color": "",
                               "listStyleType": "upper-alpha",
                             }
                           }
@@ -797,7 +797,7 @@ exports[`List List component with irregular indentation 1`] = `
                     <li
                       style={
                         Object {
-                          "color": undefined,
+                          "color": "",
                           "listStyleType": "upper-alpha",
                         }
                       }
