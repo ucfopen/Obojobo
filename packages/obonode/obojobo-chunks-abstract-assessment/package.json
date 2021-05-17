@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-abstract-assessment",
-	"version": "8.0.2",
+	"version": "12.1.0",
 	"license": "AGPL-3.0-only",
 	"description": "AbstractAssessment chunk for Obojobo",
 	"scripts": {
@@ -27,9 +27,9 @@
 		"useTabs": true,
 		"singleQuote": true
 	},
-	"dependencies": {
-		"obojobo-chunks-question": "^8.0.2",
-		"obojobo-lib-utils": "^8.0.2"
+	"peerDependencies": {
+		"obojobo-chunks-question": "^12.1.0",
+		"obojobo-lib-utils": "^12.1.0"
 	},
 	"devDependencies": {
 		"lint-staged": "^10.2.2"

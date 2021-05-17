@@ -61,8 +61,9 @@ const slateToObo = node => {
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
-	const slateNode = Object.assign({}, node)
-	slateNode.children = node.children.map(child => {
+	const clonedNode = JSON.parse(JSON.stringify(node))
+
+	clonedNode.children = clonedNode.children.map(child => {
 		if (child.type === MCASSESSMENT_NODE || child.type === NUMERIC_ASSESSMENT_NODE) {
 			return Common.Registry.getItemForType(child.type).oboToSlate(child)
 		} else {
@@ -70,16 +71,16 @@ const oboToSlate = node => {
 		}
 	})
 
-	if (node.content.solution) {
+	if (clonedNode.content.solution) {
 		const solution = {
 			type: QUESTION_NODE,
 			subtype: SOLUTION_NODE,
-			children: [Common.Registry.getItemForType(PAGE_NODE).oboToSlate(node.content.solution)]
+			children: [Common.Registry.getItemForType(PAGE_NODE).oboToSlate(clonedNode.content.solution)]
 		}
-		slateNode.children.push(solution)
+		clonedNode.children.push(solution)
 	}
 
-	return slateNode
+	return clonedNode
 }
 
 export default { slateToObo, oboToSlate }

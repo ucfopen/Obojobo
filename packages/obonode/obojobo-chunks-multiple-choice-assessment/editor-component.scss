@@ -6,13 +6,10 @@
 	padding-bottom: 0;
 	margin-top: 0;
 
-	> div {
-		> .choice-button {
+	.obojobo-draft--chunks--mc-assessment--choice-button-container {
+		.choice-button {
 			background: $color-bg2;
 			width: 100%;
-		}
-
-		.obojobo-draft--components--button {
 			padding-top: 1rem;
 			padding-bottom: 1rem;
 			display: block;

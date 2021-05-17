@@ -41,7 +41,7 @@ class QuestionBank extends React.Component {
 		this.changeChooseType = this.changeChooseType.bind(this)
 		this.getQuestionList = this.getQuestionList.bind(this)
 		this.importQuestionList = this.importQuestionList.bind(this)
-		this.diplayImportQuestionModal = this.diplayImportQuestionModal.bind(this)
+		this.displayImportQuestionModal = this.displayImportQuestionModal.bind(this)
 	}
 
 	updateNodeFromState() {
@@ -172,7 +172,7 @@ class QuestionBank extends React.Component {
 		})
 	}
 
-	diplayImportQuestionModal() {
+	displayImportQuestionModal() {
 		const Question = Common.Registry.getItemForType(QUESTION_NODE)
 		const questionList = this.getQuestionList(OboModel.getRoot()).map(question =>
 			Question.oboToSlate(question.attributes)
@@ -194,7 +194,7 @@ class QuestionBank extends React.Component {
 				name: 'Import Questions',
 				description: 'Import',
 				type: 'button',
-				action: this.diplayImportQuestionModal
+				action: this.displayImportQuestionModal
 			}
 		]
 
