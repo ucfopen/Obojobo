@@ -1,4 +1,4 @@
-jest.mock('../../../src/scripts/viewer/util/api-util', () => ({
+jest.mock('../../../src/scripts/viewer/util/viewer-api', () => ({
 	postEvent: jest.fn(),
 	getVisitSessionStatus: jest.fn()
 }))
@@ -23,7 +23,7 @@ jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
 
 const Common = require('../../../src/scripts/common/index').default
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
-const APIUtil = require('../../../src/scripts/viewer/util/api-util')
+const ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api')
 const FocusUtil = require('../../../src/scripts/viewer/util/focus-util')
 
 // spy on dispatcher before loading navstore
@@ -40,7 +40,7 @@ describe('NavStore', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		NavStore.setState()
-		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 	})
 
 	test('Regisers events w/ dispatcher', () => {
@@ -48,25 +48,29 @@ describe('NavStore', () => {
 	})
 
 	test('nav:setContext event sets the context', () => {
-		jest.spyOn(NavStore, 'triggerChange')
+		const spy = jest.spyOn(NavStore, 'triggerChange')
 		NavStore.triggerChange.mockReturnValueOnce('')
 
 		eventCallbacks['nav:setContext']({ value: { context: 'fake' } })
 
 		expect(NavStore.triggerChange).toHaveBeenCalled()
+
+		spy.mockRestore()
 	})
 
 	test('nav:setContext event sets the context to the default', () => {
-		jest.spyOn(NavStore, 'triggerChange')
+		const spy = jest.spyOn(NavStore, 'triggerChange')
 		NavStore.triggerChange.mockReturnValueOnce('')
 
 		eventCallbacks['nav:resetContext']({ value: { context: 'practice' } })
 
 		expect(NavStore.triggerChange).toHaveBeenCalled()
+
+		spy.mockRestore()
 	})
 
 	test('nav:rebuildMenu event rebuilds the menu', () => {
-		jest.spyOn(NavStore, 'buildMenu')
+		const spy = jest.spyOn(NavStore, 'buildMenu')
 		NavStore.buildMenu.mockReturnValueOnce('')
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
@@ -74,43 +78,75 @@ describe('NavStore', () => {
 
 		expect(NavStore.buildMenu).toHaveBeenCalledWith('fake')
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+
+		spy.mockRestore()
 	})
 
 	test('nav:gotoPath event calls gotoItem and postEvent', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7,
 			itemsByPath: {
 				fake: { id: 'mock' }
 			},
 			draftId: 'mockDraftId'
 		})
-		jest.spyOn(NavStore, 'gotoItem')
+		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
 		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
 
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ id: 'mock' })
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+
+		spy.mockRestore()
 	})
 
 	test('nav:gotoPath event does not go to incorrect item', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7,
 			itemsByPath: {
 				fake: { id: 'mock' }
 			}
 		})
-		jest.spyOn(NavStore, 'gotoItem')
+		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(false)
 		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
 
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ id: 'mock' })
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+
+		spy.mockRestore()
+	})
+
+	test('nav:gotoPath event does not go to item if nav store not initialized', () => {
+		NavStore.setState({
+			isInitialized: false,
+			navTargetId: 7,
+			itemsByPath: {
+				fake: { id: 'mock' }
+			},
+			draftId: 'mockDraftId'
+		})
+		const spy = jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
+
+		expect(NavStore.gotoItem).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(0)
+		expect(NavStore.pendingTarget).toEqual({
+			type: 'path',
+			target: 'fake'
+		})
+
+		spy.mockRestore()
 	})
 
 	test('nav:setFlag event updates state and calls trigger', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7,
 			itemsById: {
 				fake: { id: 'mock', flags: {} }
@@ -128,12 +164,13 @@ describe('NavStore', () => {
 
 	test('nav:prev changes page and posts event', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7,
 			draftId: 'mockDraftId'
 		})
 
 		// simulate a valid gotoItem Call
-		jest.spyOn(NavStore, 'gotoItem')
+		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
 
 		// simulate nextItem lookup
@@ -141,33 +178,39 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:prev']()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+
+		spy.mockRestore()
 	})
 
 	test('nav:prev does not change to invalid page', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7
 		})
 
 		// simulate a valid gotoItem Call
-		jest.spyOn(NavStore, 'gotoItem')
+		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(false)
 
 		// go
 		eventCallbacks['nav:prev']()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+
+		spy.mockRestore()
 	})
 
 	test('nav:next changes page and posts event', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7,
 			draftId: 'mockDraftId'
 		})
 
 		// simulate a valid gotoItem Call
-		jest.spyOn(NavStore, 'gotoItem')
+		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
 
 		// simulate nextItem lookup
@@ -175,27 +218,33 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:next']()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+
+		spy.mockRestore()
 	})
 
 	test('nav:next does not change to invalid page', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7
 		})
 
 		// simulate a valid gotoItem Call
-		jest.spyOn(NavStore, 'gotoItem')
+		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(false)
 
 		// go
 		eventCallbacks['nav:next']()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+
+		spy.mockRestore()
 	})
 
 	test('nav:goto changes page and posts event', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7,
 			itemsById: {
 				mock: { id: 'mock', flags: {} }
@@ -204,17 +253,45 @@ describe('NavStore', () => {
 		})
 
 		// simulate a valid gotoItem Call
-		jest.spyOn(NavStore, 'gotoItem')
+		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
 
 		// go
 		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+
+		spy.mockRestore()
+	})
+
+	test('nav:goto does nothing if nav store not initialized', () => {
+		NavStore.setState({
+			isInitialized: false,
+			navTargetId: 7,
+			itemsById: {
+				mock: { id: 'mock', flags: {} }
+			},
+			draftId: 'mockDraftId'
+		})
+
+		// simulate a valid gotoItem Call
+		const spy = jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+
+		// go
+		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(NavStore.pendingTarget).toEqual({
+			type: 'goto',
+			target: 'mock'
+		})
+
+		spy.mockRestore()
 	})
 
 	test('nav:goto does not go to a fake page', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 7,
 			itemsById: {
 				mock: { id: 'mock', flags: {} }
@@ -222,17 +299,36 @@ describe('NavStore', () => {
 		})
 
 		// simulate a valid gotoItem Call
-		jest.spyOn(NavStore, 'gotoItem')
+		const gotoItemSpy = jest.spyOn(NavStore, 'gotoItem')
+		const gotoFirstSpy = jest.spyOn(NavStore, 'gotoFirst')
 		NavStore.gotoItem.mockReturnValueOnce(false)
 
-		// go
-		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		// make sure the nav defaults to the first page if an ID isn't found
+		eventCallbacks['nav:goto']({ value: { id: 'does-not-exist' } })
+		expect(gotoFirstSpy).toHaveBeenCalled()
+		expect(gotoItemSpy).not.toHaveBeenCalled()
+
+		gotoItemSpy.mockRestore()
+		gotoFirstSpy.mockRestore()
+	})
+
+	test('nav:goto does nothing if gotoItem returns false', () => {
+		NavStore.setState({
+			isInitialized: true,
+			navTargetId: 'mockId',
+			itemsById: {
+				mockId: { id: 'mockId', flags: {} }
+			}
+		})
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+		eventCallbacks['nav:goto']({ value: { id: 'mockId' } })
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('nav:lock event fires and updates state', () => {
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -245,13 +341,14 @@ describe('NavStore', () => {
 		eventCallbacks['nav:lock']()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('nav:unlock event fires and updates state', () => {
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -263,14 +360,15 @@ describe('NavStore', () => {
 		eventCallbacks['nav:unlock']()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('nav:close event fires and updates state', () => {
 		jest.useFakeTimers()
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -283,14 +381,15 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('nav:close twice only fires one event', () => {
 		jest.useFakeTimers()
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -304,14 +403,15 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0][0]).toBe('navstore:change')
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
 		expect(NavStore.getState()).toHaveProperty('open', false)
 	})
 
 	test('calling the same nav state twice with delay only fires one event', () => {
 		jest.useFakeTimers()
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -324,8 +424,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
 		expect(NavStore.getState()).toHaveProperty('open', false)
 
 		eventCallbacks['nav:close']()
@@ -333,13 +433,14 @@ describe('NavStore', () => {
 
 		// no change
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
 		expect(NavStore.getState()).toHaveProperty('open', false)
 	})
 
 	test('nav:close followed by nav:toggle doesnt call open', () => {
 		jest.useFakeTimers()
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -353,14 +454,15 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0][0]).toBe('navstore:change')
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
 		expect(NavStore.getState()).toHaveProperty('open', false)
 	})
 
 	test('nav:close followed by nav:toggle with delay DOES call open', () => {
 		jest.useFakeTimers()
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -375,15 +477,16 @@ describe('NavStore', () => {
 		eventCallbacks['nav:toggle']()
 		jest.runOnlyPendingTimers()
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(2)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
-		expect(APIUtil.postEvent.mock.calls[1][0]).toHaveProperty('action', 'nav:open')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(2)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent.mock.calls[1][0]).toHaveProperty('action', 'nav:open')
 		expect(NavStore.getState()).toHaveProperty('open', true)
 	})
 
 	test('nav:open event fires and updates state', () => {
 		jest.useFakeTimers()
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'unchanged',
 			draftId: 'mockDraftId'
@@ -396,8 +499,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -405,6 +508,7 @@ describe('NavStore', () => {
 		jest.useFakeTimers()
 
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: 'open',
 			draftId: 'mockDraftId'
@@ -417,14 +521,15 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('nav:toggle event fires and updates state', () => {
 		jest.useFakeTimers()
 		NavStore.setState({
+			isInitialized: true,
 			locked: 'unchanged',
 			open: false,
 			draftId: 'mockDraftId'
@@ -437,8 +542,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -455,7 +560,7 @@ describe('NavStore', () => {
 	})
 
 	test('nav:showChildren event fires and updates state', () => {
-		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		NavStore.setState({ isInitialized: true, itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 
@@ -467,7 +572,7 @@ describe('NavStore', () => {
 	})
 
 	test('nav:hideChildren event fires and updates state', () => {
-		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		NavStore.setState({ isInitialized: true, itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 
@@ -479,7 +584,7 @@ describe('NavStore', () => {
 	})
 
 	test('question:scoreSet sets flag with a score of 100', () => {
-		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		NavStore.setState({ isInitialized: true, itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 
@@ -490,7 +595,7 @@ describe('NavStore', () => {
 	})
 
 	test('question:scoreSet does not set flag if question not found', () => {
-		NavStore.setState({ itemsById: {} })
+		NavStore.setState({ isInitialized: true, itemsById: {} })
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 
@@ -501,7 +606,7 @@ describe('NavStore', () => {
 	})
 
 	test('question:scoreSet sets flag with a score of 100', () => {
-		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		NavStore.setState({ isInitialized: true, itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 
@@ -551,7 +656,7 @@ describe('NavStore', () => {
 	})
 
 	test('buildMenu should reset menu items', () => {
-		jest.spyOn(NavStore, 'generateNav')
+		const spy = jest.spyOn(NavStore, 'generateNav')
 		NavStore.generateNav.mockImplementationOnce(model => model)
 
 		const before = NavStore.getState()
@@ -564,6 +669,8 @@ describe('NavStore', () => {
 		expect(after.itemsById).not.toBe(before.itemsById)
 		expect(after.itemsByPath).not.toBe(before.itemsByPath)
 		expect(after.itemsByFullPath).not.toBe(before.itemsByFullPath)
+
+		spy.mockRestore()
 	})
 
 	test('gotoItem with null returns false', () => {
@@ -571,7 +678,10 @@ describe('NavStore', () => {
 	})
 
 	test('gotoItem with null target returns true', () => {
-		NavStore.setState({ navTargetId: null })
+		NavStore.setState({
+			isInitialized: true,
+			navTargetId: null
+		})
 		NavUtil.getNavTargetModel.mockReturnValueOnce({
 			processTrigger: jest.fn()
 		})
@@ -580,9 +690,10 @@ describe('NavStore', () => {
 
 	test('gotoItem doest do anything when already on that item', () => {
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 'mockId'
 		})
-		expect(NavStore.gotoItem({ id: 'mockId' })).toBe()
+		expect(NavStore.gotoItem({ id: 'mockId' })).toBe(false)
 	})
 
 	test('gotoItem sends triggers events and updates history', () => {
@@ -590,6 +701,7 @@ describe('NavStore', () => {
 		Dispatcher.trigger.mockReturnValueOnce()
 
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 'mockId',
 			navTargetHistory: [],
 			itemsById: {
@@ -613,8 +725,14 @@ describe('NavStore', () => {
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:targetChanged', {
+			value: {
+				from: 'mockId',
+				to: 'newItem'
+			}
+		})
 	})
 
 	test('gotoItem sends updates history with no previous item', () => {
@@ -622,6 +740,7 @@ describe('NavStore', () => {
 		Dispatcher.trigger.mockReturnValueOnce()
 
 		NavStore.setState({
+			isInitialized: true,
 			navTargetId: 'mockId',
 			navTargetHistory: [],
 			itemsById: {
@@ -643,8 +762,14 @@ describe('NavStore', () => {
 		expect(after).toMatchSnapshot()
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:targetChanged', {
+			value: {
+				from: 'mockId',
+				to: 'newItem'
+			}
+		})
 	})
 
 	test('generateNav with no model returns empty object', () => {
@@ -652,7 +777,10 @@ describe('NavStore', () => {
 	})
 
 	test('generateNav with no navItem returns default object', () => {
-		NavStore.setState({ itemsById: {} })
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
 
 		const model = {
 			get: jest
@@ -665,7 +793,7 @@ describe('NavStore', () => {
 			}
 		}
 
-		jest.spyOn(Common.Registry, 'getItemForType')
+		const spy = jest.spyOn(Common.Registry, 'getItemForType')
 		Common.Registry.getItemForType.mockReturnValueOnce({ getNavItem: null })
 
 		expect(NavStore.generateNav(model)).toEqual({
@@ -680,6 +808,8 @@ describe('NavStore', () => {
 			showChildrenOnNavigation: true,
 			type: 'hidden'
 		})
+
+		spy.mockRestore()
 	})
 
 	test('generateNav builds a navItem', () => {
@@ -706,11 +836,12 @@ describe('NavStore', () => {
 				models: [childItem]
 			}
 		}
-		jest.spyOn(Common.Registry, 'getItemForType')
+		const spy = jest.spyOn(Common.Registry, 'getItemForType')
 		Common.Registry.getItemForType.mockReturnValueOnce(item)
 		Common.Registry.getItemForType.mockReturnValueOnce(childItem)
 
 		NavStore.setState({
+			isInitialized: true,
 			itemsByPath: {},
 			itemsByFullPath: {},
 			itemsById: {},
@@ -718,5 +849,102 @@ describe('NavStore', () => {
 		})
 		expect(NavStore.generateNav(model)).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
+
+		spy.mockRestore()
+	})
+
+	test('gotoStartingTarget calls NavUtil.gotoPath for a pending path', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.pendingTarget = {
+			type: 'path',
+			target: 'mockPendingTarget'
+		}
+		NavStore.gotoStartingTarget('mockId', 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPendingTarget')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledTimes(0)
+		expect(NavStore.pendingTarget).toBe(null)
+	})
+
+	test('gotoStartingTarget calls NavUtil.goto for a pending goto', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.pendingTarget = {
+			type: 'goto',
+			target: 'mockPendingTarget'
+		}
+		NavStore.gotoStartingTarget('mockId', 'mockPath')
+
+		expect(NavUtil.goto).toHaveBeenCalledWith('mockPendingTarget')
+		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(0)
+		expect(NavStore.pendingTarget).toBe(null)
+	})
+
+	test('gotoStartingTarget calls gotoPath for the starting path, does nothing else if no startingId and no first target exists', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+		NavUtil.getFirst = () => null
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.gotoStartingTarget(null, 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPath')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledTimes(0)
+	})
+
+	test('gotoStartingTarget calls gotoPath for the starting path, then calls goto if given a starting id', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+		NavUtil.getFirst = () => null
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.gotoStartingTarget('mockId', 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPath')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledWith('mockId')
+		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
+	})
+
+	test('gotoStartingTarget calls gotoPath for the starting path, then calls goto if no starting id BUT a first target exists', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+		NavUtil.getFirst = () => ({ id: 'mockFirstTargetId' })
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.gotoStartingTarget(null, 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPath')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledWith('mockFirstTargetId')
+		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
 	})
 })

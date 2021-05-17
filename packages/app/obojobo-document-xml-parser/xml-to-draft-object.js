@@ -1,15 +1,14 @@
 const convert = require('xml-js')
-
 const nameTransform = require('./src/name-transformer')
 const extensionTransform = require('./src/extension-transform')
 const htmlTransform = require('./src/html-transform')
 const draftJsonTransform = require('./src/draft-json-transform')
 const attrElementToAttrItem = require('./src/attr-element-to-attr-item')
-
 const parseTg = require('./src/text-group-parser')
 const scoreParser = require('./src/score-action-parser')
 const parseTriggers = require('./src/triggers-parser')
 const parseListStyles = require('./src/list-styles-parser')
+const parseUnits = require('./src/units-parser')
 const parseAssessmentRubric = require('./src/assessment-rubric-parser')
 const parseScoreAction = scoreParser.parseScoreAction
 const parseScoreActions = scoreParser.parseScoreActions
@@ -21,6 +20,7 @@ const parsers = {
 	rubric: parseAssessmentRubric,
 	triggers: parseTriggers,
 	listStyles: parseListStyles,
+	units: parseUnits,
 	solution: solAttr => {
 		return solAttr.elements[0]
 	}
@@ -74,7 +74,6 @@ module.exports = (xml, generateIds = false) => {
 	attrElementToAttrItem(root)
 	draftJsonTransform(root, generateIds)
 	__finalPass(root.elements[0])
-	// return root;
 
 	return root.elements[0].children[0]
 }

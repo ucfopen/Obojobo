@@ -5,7 +5,7 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 import MCAssessment from './editor-registration'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
-const MCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
 
 jest.mock('./converter', () => ({}))
 
@@ -34,8 +34,10 @@ describe('MCAssessment editor', () => {
 	})
 
 	test('normalizeNode on MCAssessment calls next if all MCAssessment children are valid', () => {
+		const spy = jest.spyOn(Transforms, 'wrapNodes').mockReturnValue(true)
+
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -48,7 +50,7 @@ describe('MCAssessment editor', () => {
 							content: {},
 							children: [
 								{
-									type: MCHOICE_NODE,
+									type: CHOICE_NODE,
 									content: { indent: 1 },
 									children: [{ text: 'mockCode', b: true }]
 								}
@@ -59,16 +61,18 @@ describe('MCAssessment editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
+
+		spy.mockRestore()
 	})
 
 	test('normalizeNode on MCAssessment calls Transforms on invalid Element children', () => {
-		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
+		const spy = jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -92,16 +96,18 @@ describe('MCAssessment editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
+
+		spy.mockRestore()
 	})
 
 	test('normalizeNode on MCAssessment calls Transforms on invalid Text children', () => {
-		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
+		const spy = jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -119,14 +125,16 @@ describe('MCAssessment editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
+
+		spy.mockRestore()
 	})
 
 	test('normalizeNode on MCAssessment calls Transforms with invalid parent', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -134,7 +142,7 @@ describe('MCAssessment editor', () => {
 					content: {},
 					children: [
 						{
-							type: MCHOICE_NODE,
+							type: CHOICE_NODE,
 							content: { indent: 1 },
 							children: [{ text: 'mockCode', b: true }]
 						}

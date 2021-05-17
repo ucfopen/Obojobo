@@ -22,11 +22,13 @@ exports[`List Editor Node List component when selected 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center toggle-header"
+          contentEditable={false}
         >
           <button
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Switch to ordered
           </button>

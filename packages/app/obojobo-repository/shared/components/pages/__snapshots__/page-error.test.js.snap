@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageError renders when given props 1`] = `
+<html
+  lang="en"
+>
+  <head>
+    <title />
+    <meta
+      charSet="utf-8"
+    />
+    <meta
+      content="IE=edge,chrome=1"
+      httpEquiv="X-UA-Compatible"
+    />
+    <meta
+      content="width=device-width initial-scale=1 minimum-scale=1 user-scalable=yes"
+      id="meta-viewport"
+      name="viewport"
+    />
+    <link
+      as="style"
+      href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
+      rel="preload"
+    />
+    <link
+      href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    className="repository--library"
+  >
+    <div
+      className="layout--wrapper"
+    >
+      <div
+        className="layout--content"
+      >
+        <div
+          className="repository--section-wrapper repository--stick-to-top"
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <nav
+            className="repository--nav"
+          >
+            <a
+              href="/"
+            >
+              <div
+                className="repository--nav--logo"
+              >
+                Obojobo
+              </div>
+            </a>
+            <div
+              className="repository--nav--links--link"
+            >
+              <a
+                href="/library"
+              >
+                Module Library
+              </a>
+            </div>
+            <div
+              className="repository--nav--links--link"
+            >
+              <a
+                href="/dashboard"
+              >
+                Dashboard
+              </a>
+            </div>
+            <div
+              className="repository--nav--current-user"
+            >
+              <button
+                onClick={[Function]}
+              >
+                <div
+                  className="repository--nav--current-user--name"
+                >
+                  firstName lastName
+                </div>
+                <div
+                  className="avatar repository--nav--current-user--avatar"
+                >
+                  <div
+                    className="avatar--image"
+                  >
+                    <img
+                      alt=""
+                      src="/path/to/avatar/img"
+                    />
+                  </div>
+                </div>
+              </button>
+              <div
+                className="repository--nav--current-user--menu is-not-open"
+              >
+                <div
+                  className="repository--nav--current-user--link"
+                >
+                  <a
+                    href="/profile/logout"
+                  >
+                    Log Out
+                  </a>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div
+          className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+        >
+          <div
+            className="repository--section-wrapper--full-width-bg"
+          />
+          <section
+            className="repository--title-banner repository--info-banner"
+          >
+            <h1
+              className="repository--title-banner--title"
+            />
+          </section>
+        </div>
+        <div
+          className="repository--section-wrapper"
+        >
+          <section
+            className="repository--main-content"
+          >
+            <p />
+          </section>
+        </div>
+      </div>
+      <div
+        className="layout--footer"
+      >
+        <footer>
+          <div
+            className="ucf-open-footer"
+          >
+            <div
+              className="ucf-open-image"
+            >
+              <a
+                href="https://ucfopen.github.io"
+              >
+                <div
+                  className="ucf-open-logo"
+                >
+                  UCF Open
+                </div>
+              </a>
+            </div>
+            <div
+              className="ucf-open-desc"
+            >
+              Obojobo is a UCF open source project.
+            </div>
+            <div
+              className="ucf-open-links"
+            >
+              <a
+                href="https://ucfopen.github.io/Obojobo-Docs/"
+              >
+                Documentation
+              </a>
+              <a
+                href="https://github.com/ucfopen/Obojobo"
+              >
+                Obojobo on Github
+              </a>
+              <a
+                href="https://ucfopen.github.io"
+              >
+                About UCF Open
+              </a>
+            </div>
+          </div>
+          <div
+            className="copyright"
+          >
+            <span
+              className="copy"
+            >
+              © 
+              <span
+                id="copyright-date"
+              >
+                2016
+              </span>
+               
+              <a
+                href="https://ucf.edu"
+              >
+                University of Central Florida
+              </a>
+            </span>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
+`;

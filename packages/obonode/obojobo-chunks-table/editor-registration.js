@@ -20,11 +20,11 @@ const plugins = {
 	// They may affect multiple nodes simultaneously
 	insertData(data, editor, next) {
 		// Insert Slate fragments normally
-		if(data.types.includes('application/x-slate-fragment')) return next(data)
+		if (data.types.includes('application/x-slate-fragment')) return next(data)
 
 		// If the node that we will be inserting into is not a Code node use the regular logic
 		const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
-		if(first[0].type !== TABLE_NODE) return next(data)
+		if (first[0].type !== TABLE_NODE) return next(data)
 
 		// When inserting plain text into a Table node insert all lines as rows
 		const plainText = data.getData('text/plain')
@@ -48,16 +48,20 @@ const plugins = {
 
 			case 'Enter':
 				event.preventDefault()
-				if(Range.isCollapsed(editor.selection)) {
-					// Get current Cell
-					const [[,cellPath]] = Editor.nodes(editor, {
+				if (Range.isCollapsed(editor.selection)) {
+					// Getting the table object.
+					const [tablePath] = Editor.nodes(editor, {
 						mode: 'lowest',
-						match: nodeMatch => Element.isElement(nodeMatch) && !editor.isInline()
+						match: nodeMatch => Element.isElement(nodeMatch)
 					})
+
+					// Getting the cell in which we last clicked on.
+					const cellPath = tablePath[1]
+
 					// Check if there is a row below this one
-					const siblingPath = Path.next(cellPath.slice(0,-1))
-					if(Node.has(editor, siblingPath)) {
-						// If there is, jump down to the cell 
+					const siblingPath = Path.next(cellPath.slice(0, -1))
+					if (Node.has(editor, siblingPath)) {
+						// If there is, jump down to the cell
 						// below the current one
 						const focus = Editor.start(editor, siblingPath.concat(cellPath[cellPath.length - 1]))
 						const anchor = Editor.end(editor, siblingPath.concat(cellPath[cellPath.length - 1]))
@@ -78,7 +82,7 @@ const plugins = {
 			default:
 				return <EditorComponent {...props} {...props.attributes} />
 		}
-	},
+	}
 }
 
 const Table = {
@@ -86,6 +90,7 @@ const Table = {
 	menuLabel: 'Table',
 	icon: Icon,
 	isInsertable: true,
+	acceptsInserts: false,
 	isContent: true,
 	helpers: Converter,
 	json: {

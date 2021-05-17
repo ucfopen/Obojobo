@@ -26,23 +26,9 @@ global.oboJestMockConfig = () => {
 		}
 	}
 
-	// get the actual empty.xml
-	const realFs = jest.requireActual('fs')
 	const configPath = path.resolve(__dirname, 'server', 'config')
-	const bypassMock = file => {
-		fs.__setMockFileContents(file, realFs.readFileSync(file))
-	}
-
 	fs.__setMockFileContents(`${configPath}/db.json`, JSON.stringify(dbJson))
-	bypassMock(`${configPath}/lti.json`)
-	bypassMock(`${configPath}/draft.json`)
-	bypassMock(`${configPath}/media.json`)
-	bypassMock(`${configPath}/general.json`)
-	bypassMock(`${configPath}/permission_groups.json`)
-	bypassMock(require.resolve('obojobo-document-engine/documents/empty.xml'))
 }
-
-global.oboJestMockConfig()
 
 // mockVirtual is used when you don't want jest to
 // acknowledge any existing mock in the system
@@ -69,5 +55,6 @@ global.mockStaticDate = () => {
 
 process.on('unhandledRejection', (reason, p) => {
 	// eslint-disable-next-line no-console
-	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+	console.error('Unhandled Rejection at: Promise', p, 'reason:', reason)
+	throw Error('Unhandled Rejection at: Promise')
 })

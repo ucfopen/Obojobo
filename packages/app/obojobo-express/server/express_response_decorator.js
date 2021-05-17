@@ -1,5 +1,5 @@
 const QueryResultError = require('pg-promise').errors.QueryResultError
-const inflector = require('json-inflector')
+const camelcaseKeys = require('camelcase-keys')
 const logger = oboRequire('server/logger')
 const apiUrlRegex = /\/api\/.*/
 const oboEvents = oboRequire('server/obo_events')
@@ -19,9 +19,11 @@ const shouldRespondWithJson = req => {
 	return req.originalUrl.match(apiUrlRegex) || (req.is('json') && req.accepts('json'))
 }
 
-const camelize = o => {
-	return inflector.transform(o, 'camelizeLower')
+const camelizeOptions = {
+	deep: true
 }
+
+const camelize = o => camelcaseKeys(o, camelizeOptions)
 
 const success = (req, res, next, valueObject) => {
 	res.status(200)
@@ -124,8 +126,7 @@ const missing = (req, res, next, message) => {
 	// give other things a chance to execute
 	oboEvents.emit('HTTP_NOT_FOUND', { req, res, next, message })
 	if (res.headersSent || req.responseHandled) return
-
-	res.render('404')
+	res.render('404', message)
 }
 
 const unexpected = (req, res, next, messageOrError) => {

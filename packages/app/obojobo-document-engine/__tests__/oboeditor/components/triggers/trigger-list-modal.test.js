@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 
+import Switch from '../../../../src/scripts/common/components/switch'
 import TriggerListModal from '../../../../src/scripts/oboeditor/components/triggers/trigger-list-modal'
 
 describe('TriggerListModal', () => {
@@ -198,7 +199,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('changes action', () => {
+	test('changes action type', () => {
 		const content = {
 			triggers: [
 				{
@@ -239,20 +240,121 @@ describe('TriggerListModal', () => {
 		}
 		const component = mount(<TriggerListModal content={content} />)
 
+		// make sure this is the expected label/input combo
+		const inputLabel = component.find('label').at(2)
+		expect(inputLabel.props().children).toBe('Item Id')
+
+		// change the value
 		component
 			.find('input')
 			.at(2)
-			.simulate('change', {
-				target: { value: 'mock-id' }
-			})
+			.simulate('change', { target: { type: 'text', value: '10' } })
 
-		component
-			.find('input')
-			.at(2)
-			.simulate('change', { target: null })
+		// check that the value changed
+		expect(
+			component
+				.find('input')
+				.at(2)
+				.props()
+		).toHaveProperty('value', '10')
 
+		// check the change to state
+		expect(component.state()).toHaveProperty('triggers')
+		expect(component.state().triggers[0].actions).toContainEqual({
+			type: 'nav:goto',
+			value: { id: '10' }
+		})
+
+		// check the rendered component
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('changes scroll type', () => {
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [
+						{ type: 'focus:component', value: { id: 1 } },
+						{ type: 'focus:component', value: { id: 1 } }
+					]
+				},
+				{
+					type: 'onUnmount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'animateScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', true)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'preventScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', true)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'jumpScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
+	})
+
+	test('updateActionValue using a switch/checkbox', () => {
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [{ type: 'focus:component', value: { fade: false } }]
+				},
+				{
+					type: 'onUnmount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+		const input = component.find(Switch).find('input')
+		input.simulate('change', { target: { type: 'checkbox', checked: true } })
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', true)
+
+		input.simulate('change', { target: { type: 'checkbox', checked: false } })
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', false)
+	})
+
+	test('getScrollType returns correct value', () => {
+		const action = {
+			value: {
+				animateScroll: false,
+				preventScroll: false
+			}
+		}
+
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('jumpScroll')
+
+		action.value.preventScroll = true
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('preventScroll')
+
+		action.value.animateScroll = true
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
+		action.value.preventScroll = false
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
 	})
 
 	test.each`

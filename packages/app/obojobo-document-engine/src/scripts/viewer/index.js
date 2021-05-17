@@ -1,20 +1,23 @@
-import APIUtil from './util/api-util'
+import ViewerAPI from './util/viewer-api'
 import AssessmentScoreReportView from './assessment/assessment-score-report-view'
 import AssessmentScoreReporter from './assessment/assessment-score-reporter'
 import AssessmentStore from './stores/assessment-store'
+import AssessmentMachineStates from './stores/assessment-store/assessment-machine-states'
 import AssessmentUtil from './util/assessment-util'
+import CurrentAssessmentStates from './util/current-assessment-states'
 import FocusStore from './stores/focus-store'
 import FocusUtil from './util/focus-util'
 import Header from './components/header'
-import LTINetworkStates from './stores/assessment-store/lti-network-states'
-import LTIResyncStates from './stores/assessment-store/lti-resync-states'
 import Logo from './components/logo'
 import MediaStore from './stores/media-store'
 import MediaUtil from './util/media-util'
 import NavStore from './stores/nav-store'
 import NavUtil from './util/nav-util'
 import OboComponent from './components/obo-component'
+import OboQuestionAssessmentComponent from './components/obo-question-assessment-component'
+import Flag from './components/flag'
 import QuestionStore from './stores/question-store'
+import QuestionResponseSendStates from './stores/question-store/question-response-send-states'
 import QuestionUtil from './util/question-util'
 import ViewerApp from './components/viewer-app'
 import getLTIOutcomeServiceHostname from './util/get-lti-outcome-service-hostname'
@@ -24,25 +27,30 @@ export default {
 		ViewerApp,
 		Logo,
 		Header,
-		OboComponent
+		OboComponent,
+		OboQuestionAssessmentComponent,
+		Flag
 	},
 
 	stores: {
 		AssessmentStore,
 		assessmentStore: {
-			LTINetworkStates,
-			LTIResyncStates
+			AssessmentMachineStates
 		},
 		NavStore,
 		MediaStore,
 		QuestionStore,
+		questionStore: {
+			QuestionResponseSendStates
+		},
 		FocusStore
 	},
 
 	util: {
 		AssessmentUtil,
+		CurrentAssessmentStates,
 		NavUtil,
-		APIUtil,
+		ViewerAPI,
 		MediaUtil,
 		QuestionUtil,
 		FocusUtil,

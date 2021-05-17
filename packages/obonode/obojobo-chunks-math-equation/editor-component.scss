@@ -34,7 +34,7 @@
 		z-index: 9;
 
 		&.is-open {
-			bottom: -26.5em;
+			bottom: -33.5em;
 			width: 23em;
 		}
 
@@ -80,10 +80,16 @@
 				text-align: left;
 			}
 
-			input {
+			input,
+			textarea {
 				@include text-input();
 
 				width: 22em;
+			}
+
+			textarea {
+				height: 9em;
+				resize: none;
 			}
 		}
 	}

@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Flag Renders CHOSEN_CORRECTLY 1`] = `
+<div
+  className="obojobo-draft--components--flag is-type-chosen-correctly"
+>
+  <p>
+    Your Answer (Correct)
+  </p>
+</div>
+`;
+
+exports[`Flag Renders CHOSEN_SURVEY 1`] = `
+<div
+  className="obojobo-draft--components--flag is-type-chosen-survey"
+>
+  <p>
+    Your Response
+  </p>
+</div>
+`;
+
+exports[`Flag Renders COULD_HAVE_CHOSEN 1`] = `
+<div
+  className="obojobo-draft--components--flag is-type-could-have-chosen"
+>
+  <p>
+    Also Correct Answer
+  </p>
+</div>
+`;
+
+exports[`Flag Renders SHOULD_HAVE_CHOSEN 1`] = `
+<div
+  className="obojobo-draft--components--flag is-type-should-have-chosen"
+>
+  <p>
+    Correct Answer
+  </p>
+</div>
+`;
+
+exports[`Flag Renders SHOULD_NOT_HAVE_CHOSEN 1`] = `
+<div
+  className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+>
+  <p>
+    Your Answer (Incorrect)
+  </p>
+</div>
+`;
+
+exports[`Flag Renders UNCHOSEN_CORRECTLY 1`] = `null`;
+
+exports[`Flag Renders unexpected flag value 1`] = `
+<div
+  className="obojobo-draft--components--flag is-type-someInvalidType"
+>
+  <p>
+    
+  </p>
+</div>
+`;

@@ -1,6 +1,6 @@
 import Common from 'Common'
 
-import APIUtil from '../util/api-util'
+import ViewerAPI from '../util/viewer-api'
 import MediaUtil from '../util/media-util'
 import NavStore from '../stores/nav-store'
 
@@ -31,13 +31,12 @@ class MediaStore extends Store {
 
 	show(payload) {
 		const id = payload.value.id
-		const model = OboModel.models[id]
 
 		this.state.shown[id] = true
 		this.triggerChange()
 
-		APIUtil.postEvent({
-			draftId: model.getRoot().get('draftId'),
+		ViewerAPI.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
 			action: 'media:show',
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
@@ -51,7 +50,6 @@ class MediaStore extends Store {
 
 	hide(payload) {
 		const id = payload.value.id
-		const model = OboModel.models[id]
 		const actor = payload.value.actor || 'user'
 
 		delete this.state.shown[id]
@@ -59,8 +57,8 @@ class MediaStore extends Store {
 		delete this.state.defaultZoomById[id]
 		this.triggerChange()
 
-		APIUtil.postEvent({
-			draftId: model.getRoot().get('draftId'),
+		ViewerAPI.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
 			action: 'media:hide',
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
@@ -99,8 +97,8 @@ class MediaStore extends Store {
 
 		this.triggerChange()
 
-		APIUtil.postEvent({
-			draftId: model.getRoot().get('draftId'),
+		ViewerAPI.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
 			action: 'media:setZoom',
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
@@ -124,8 +122,8 @@ class MediaStore extends Store {
 
 		this.triggerChange()
 
-		APIUtil.postEvent({
-			draftId: model.getRoot().get('draftId'),
+		ViewerAPI.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
 			action: 'media:resetZoom',
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,

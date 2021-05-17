@@ -35,12 +35,14 @@ exports[`ActionButton Editor Node builds the expected component (with no onClick
         </div>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center add-action"
+          contentEditable={false}
         >
           <button
             className="button"
             contentEditable={false}
             onClick={[Function]}
             onKeyDown={[Function]}
+            type="button"
           >
             Set an action...
           </button>
@@ -115,7 +117,7 @@ exports[`ActionButton Editor Node builds the expected component when selected 1`
             className="trigger"
           >
             <span>
-              Go to "undefined"
+              Go to ""
             </span>
           </div>
           <div
@@ -136,7 +138,7 @@ exports[`ActionButton Editor Node builds the expected component when selected 1`
             className="trigger"
           >
             <span>
-              Open undefined
+              Open ""
             </span>
           </div>
           <div
@@ -212,12 +214,14 @@ exports[`ActionButton Editor Node builds the expected component when selected 1`
         </div>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center add-action"
+          contentEditable={false}
         >
           <button
             className="button"
             contentEditable={false}
             onClick={[Function]}
             onKeyDown={[Function]}
+            type="button"
           >
             Edit Triggers
           </button>
@@ -307,6 +311,6 @@ Object {
 }
 `;
 
-exports[`ActionButton Editor Node handles tabbing 1`] = `"<div><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"trigger-list\\"><div class=\\"title\\">When the button is clicked:</div><div class=\\"trigger\\"><span>Go to \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Go to the previous page</span></div><div class=\\"trigger\\"><span>Go to the next page</span></div><div class=\\"trigger\\"><span>Open undefined</span></div><div class=\\"trigger\\"><span>Lock navigation</span></div><div class=\\"trigger\\"><span>Unlock navigation</span></div><div class=\\"trigger\\"><span>Toggle the navigation drawer</span></div><div class=\\"trigger\\"><span>Close the navigation menu</span></div><div class=\\"trigger\\"><span>Open the navigation menu</span></div><div class=\\"trigger\\"><span>Start an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>End an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Display a popup message</span></div><div class=\\"trigger\\"><span>Scroll to the top of the page</span></div><div class=\\"trigger\\"><span>Focus on \\"undefined\\"</span></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\"><button class=\\"button\\" contenteditable=\\"false\\">Edit Triggers</button></div></div></div></div></div>"`;
+exports[`ActionButton Editor Node handles tabbing 1`] = `"<div><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"trigger-list\\"><div class=\\"title\\">When the button is clicked:</div><div class=\\"trigger\\"><span>Go to \\"\\"</span></div><div class=\\"trigger\\"><span>Go to the previous page</span></div><div class=\\"trigger\\"><span>Go to the next page</span></div><div class=\\"trigger\\"><span>Open \\"\\"</span></div><div class=\\"trigger\\"><span>Lock navigation</span></div><div class=\\"trigger\\"><span>Unlock navigation</span></div><div class=\\"trigger\\"><span>Toggle the navigation drawer</span></div><div class=\\"trigger\\"><span>Close the navigation menu</span></div><div class=\\"trigger\\"><span>Open the navigation menu</span></div><div class=\\"trigger\\"><span>Start an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>End an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Display a popup message</span></div><div class=\\"trigger\\"><span>Scroll to the top of the page</span></div><div class=\\"trigger\\"><span>Focus on \\"undefined\\"</span></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Edit Triggers</button></div></div></div></div></div>"`;
 
-exports[`ActionButton Editor Node opens modal 1`] = `"<div><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"trigger-list\\"><div class=\\"title\\">When the button is clicked:</div><div class=\\"trigger\\"><span>Go to \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Go to the previous page</span></div><div class=\\"trigger\\"><span>Go to the next page</span></div><div class=\\"trigger\\"><span>Open undefined</span></div><div class=\\"trigger\\"><span>Lock navigation</span></div><div class=\\"trigger\\"><span>Unlock navigation</span></div><div class=\\"trigger\\"><span>Toggle the navigation drawer</span></div><div class=\\"trigger\\"><span>Close the navigation menu</span></div><div class=\\"trigger\\"><span>Open the navigation menu</span></div><div class=\\"trigger\\"><span>Start an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>End an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Display a popup message</span></div><div class=\\"trigger\\"><span>Scroll to the top of the page</span></div><div class=\\"trigger\\"><span>Focus on \\"undefined\\"</span></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\"><button class=\\"button\\" contenteditable=\\"false\\">Edit Triggers</button></div></div></div></div></div>"`;
+exports[`ActionButton Editor Node opens modal 1`] = `"<div><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"trigger-list\\"><div class=\\"title\\">When the button is clicked:</div><div class=\\"trigger\\"><span>Go to \\"\\"</span></div><div class=\\"trigger\\"><span>Go to the previous page</span></div><div class=\\"trigger\\"><span>Go to the next page</span></div><div class=\\"trigger\\"><span>Open \\"\\"</span></div><div class=\\"trigger\\"><span>Lock navigation</span></div><div class=\\"trigger\\"><span>Unlock navigation</span></div><div class=\\"trigger\\"><span>Toggle the navigation drawer</span></div><div class=\\"trigger\\"><span>Close the navigation menu</span></div><div class=\\"trigger\\"><span>Open the navigation menu</span></div><div class=\\"trigger\\"><span>Start an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>End an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Display a popup message</span></div><div class=\\"trigger\\"><span>Scroll to the top of the page</span></div><div class=\\"trigger\\"><span>Focus on \\"undefined\\"</span></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Edit Triggers</button></div></div></div></div></div>"`;

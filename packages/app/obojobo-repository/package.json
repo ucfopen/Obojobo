@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-repository",
 	"license": "AGPL-3.0-only",
-	"version": "10.0.0-alpha1",
+	"version": "12.1.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -15,7 +15,7 @@
 		"precommit": "lint-staged"
 	},
 	"engines": {
-		"node": "^12.11.1"
+		"node": "^14.16.0"
 	},
 	"lint-staged": {
 		"**/*.scss": [
@@ -26,24 +26,36 @@
 		]
 	},
 	"dependencies": {
-		"dayjs": "^1.8.27",
+		"dayjs": "^1.10.4",
 		"debounce-promise": "^3.1.2",
 		"express": "~4.17.1",
 		"express-react-views-custom": "https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051",
-		"express-validator": "^5.2.0",
-		"geopattern": "^1.2.3",
+		"express-validator": "^6.10.0",
 		"ignore-styles": "^5.0.1",
 		"lodash.escaperegexp": "^4.1.2",
 		"object-assign": "^4.1.1",
-		"obojobo-express": "^10.0.0-alpha1",
-		"obojobo-lib-utils": "^10.0.0-alpha1",
-		"react-modal": "^3.11.2",
-		"react-redux": "^7.0.3",
+		"react-modal": "^3.12.1",
+		"react-redux": "^7.2.3",
 		"redux": "^4.0.5",
 		"redux-pack": "^0.1.5",
-		"sass-mq": "^5.0.1"
+		"sass-mq": "^5.0.1",
+		"seedrandom": "^2.3.11"
+	},
+	"peerDependencies": {
+		"obojobo-express": "^12.1.0",
+		"obojobo-lib-utils": "^12.1.0"
 	},
 	"jest": {
+		"setupFilesAfterEnv": [
+			"./setupTests.js"
+		],
+		"moduleNameMapper": {
+			"\\.scss$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
+			"\\.css$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
+		},
+		"testMatch": [
+			"/**/*.test.js?(x)"
+		],
 		"collectCoverageFrom": [
 			"*.js",
 			"client/**/*.js",

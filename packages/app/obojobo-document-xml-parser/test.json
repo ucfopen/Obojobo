@@ -1,0 +1,746 @@
+{
+    "id": "9c7e4d32-2e5b-432e-83dc-dbbb923df3b8",
+    "type": "ObojoboDraft.Modules.Module",
+    "content": {
+        "title": "Obojobo Visual Editor Tutorial"
+    },
+    "children": [
+        {
+            "id": "40a16682-bcd9-44f0-aeb6-23d4cb143676",
+            "type": "ObojoboDraft.Sections.Content",
+            "content": {},
+            "children": [
+                {
+                    "id": "p1",
+                    "type": "ObojoboDraft.Pages.Page",
+                    "content": {
+                        "title": "Welcome to the Obojobo Visual Editor",
+                        "vars": [
+                            {
+                                "name": "x",
+                                "definition": "123"
+                            },
+                            {
+                                "name": "y",
+                                "definition": {
+                                    "type": "numeric",
+                                    "min": "0",
+                                    "max": "10"
+                                }
+                            },
+                            [
+                                [
+                                    {
+                                        "name": "p",
+                                        "definition": "p1"
+                                    },
+                                    {
+                                        "name": "q",
+                                        "definition": "q1"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "name": "p",
+                                        "definition": "p2"
+                                    },
+                                    {
+                                        "name": "q",
+                                        "definition": "q2"
+                                    }
+                                ]
+                            ]
+                        ]
+                    },
+                    "children": [
+                        {
+                            "id": "cb446cb0-1528-45a8-8f67-f344a1d044a5",
+                            "type": "ObojoboDraft.Chunks.Heading",
+                            "content": {
+                                "headingLevel": 1,
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Welcome to the Obojobo {{x}}:{{y}}:{{z}} Editor",
+                                            "styleList": []
+                                        },
+                                        "data": {
+                                            "align": "left"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "btn0",
+                            "type": "ObojoboDraft.Chunks.ActionButton",
+                            "content": {
+                                "triggers": [
+                                    {
+                                        "type": "onClick",
+                                        "actions": [
+                                            {
+                                                "type": "variable:clearAll",
+                                                "value": {
+                                                    "id": "p1"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Reset x and y which are {{x}} and {{y}}",
+                                            "styleList": []
+                                        },
+                                        "data": null
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "btn1",
+                            "type": "ObojoboDraft.Chunks.ActionButton",
+                            "content": {
+                                "triggers": [
+                                    {
+                                        "type": "onClick",
+                                        "actions": [
+                                            {
+                                                "type": "variable:clear",
+                                                "value": {
+                                                    "id": "p1",
+                                                    "name": "y"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Reset the value of y which is {{y}}",
+                                            "styleList": []
+                                        },
+                                        "data": null
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "btn2",
+                            "type": "ObojoboDraft.Chunks.ActionButton",
+                            "content": {
+                                "triggers": [
+                                    {
+                                        "type": "onClick",
+                                        "actions": [
+                                            {
+                                                "type": "variable:setValue",
+                                                "value": {
+                                                    "id": "p1",
+                                                    "name": "x",
+                                                    "value": "dogs"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Set the value of x to 'dogs'",
+                                            "styleList": []
+                                        },
+                                        "data": null
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "btn3",
+                            "type": "ObojoboDraft.Chunks.ActionButton",
+                            "content": {
+                                "triggers": [
+                                    {
+                                        "type": "onClick",
+                                        "actions": [
+                                            {
+                                                "type": "variable:setValue",
+                                                "value": {
+                                                    "id": "p1",
+                                                    "name": "z",
+                                                    "value": "sauce"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Set the value of z to 'sauce'",
+                                            "styleList": []
+                                        },
+                                        "data": null
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "f06a3ee9-7e25-4ed6-994f-415b722b9643",
+                            "type": "ObojoboDraft.Chunks.Question",
+                            "content": {},
+                            "children": [
+                                {
+                                    "id": "8064718a-0edc-4126-b3ca-391f71fe94dc",
+                                    "type": "ObojoboDraft.Chunks.Text",
+                                    "content": {
+                                        "textGroup": [
+                                            {
+                                                "text": {
+                                                    "value": "asdf",
+                                                    "styleList": []
+                                                },
+                                                "data": {
+                                                    "indent": "0"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "children": []
+                                },
+                                {
+                                    "id": "b2e94e63-1fb0-44a6-964b-c922d9dc7cc7",
+                                    "type": "ObojoboDraft.Chunks.MCAssessment",
+                                    "content": {
+                                        "shuffle": true,
+                                        "responseType": "pick-one"
+                                    },
+                                    "children": [
+                                        {
+                                            "id": "a0bb78d7-e119-4c92-a6f1-4b897ad0e515",
+                                            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                                            "content": {
+                                                "score": 0
+                                            },
+                                            "children": [
+                                                {
+                                                    "id": "618b367c-6209-45a9-85b6-20d3a2226b5a",
+                                                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                                                    "content": {},
+                                                    "children": [
+                                                        {
+                                                            "id": "5c0be553-da95-47d7-a9f8-c2ebeafcc29d",
+                                                            "type": "ObojoboDraft.Chunks.Text",
+                                                            "content": {
+                                                                "textGroup": [
+                                                                    {
+                                                                        "text": {
+                                                                            "value": "asdf",
+                                                                            "styleList": []
+                                                                        },
+                                                                        "data": {
+                                                                            "indent": "0"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "children": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "921d414e-1739-49c1-bc01-6ea0003d9be6",
+                                            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                                            "content": {
+                                                "score": 0
+                                            },
+                                            "children": [
+                                                {
+                                                    "id": "08c5104a-3315-4143-86fd-d502256bbc64",
+                                                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                                                    "content": {},
+                                                    "children": [
+                                                        {
+                                                            "id": "5f55eb64-5c95-4fe8-8aa2-96cc76bc095a",
+                                                            "type": "ObojoboDraft.Chunks.Text",
+                                                            "content": {
+                                                                "textGroup": [
+                                                                    {
+                                                                        "text": {
+                                                                            "value": "ffff",
+                                                                            "styleList": []
+                                                                        },
+                                                                        "data": {
+                                                                            "indent": "0"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "children": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "5aecff49-7127-4cc6-a680-dfef98cc8a1c",
+                            "type": "ObojoboDraft.Chunks.MathEquation",
+                            "content": {
+                                "label": "",
+                                "latex": "\\int_{t=2}^{17} \\frac{t^6-2t^5-3t^4+15t^3+4t^2-17}{t^4+2t^3-t-2} d t = 1140 -\\frac{2}{9} \\ln(16) + \\frac{41}{9} \\ln(19) - \\frac{41}{9} \\ln(4) + \\frac{5}{6} \\ln(307) - \\frac{5}{6} \\log(7) + \\frac{1}{3 \\sqrt{3}} \\arctan\\left(\\frac{35}{\\sqrt{3}}\\right) - \\frac{1}{3 \\sqrt{3}} \\arctan\\left(\\frac{5}{\\sqrt{3}}\\right)"
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "08accc32-fd44-4982-ab08-e3f291d279de",
+                            "type": "ObojoboDraft.Chunks.MathEquation",
+                            "content": {
+                                "label": "",
+                                "latex": "y=\\frac{a}{b}r"
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "f3db66c6-5e75-46c9-9b08-8e92aa0d65b5",
+                            "type": "ObojoboDraft.Chunks.MathEquation",
+                            "content": {
+                                "label": "",
+                                "latex": "\\begin{matrix} 1 & 0\\\\ 0 & 1 \\end{matrix}"
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "3258887e-a8c3-4fee-bac3-aefa71f350c9",
+                            "type": "ObojoboDraft.Chunks.MathEquation",
+                            "content": {
+                                "label": "",
+                                "latex": "y=\\frac{\\frac{\\frac{a}{b}}{b}}{\\frac{a}{\\frac{a}{b}}}r"
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "6b0dc582-4758-47e2-af17-1c920d59d255",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
+                                            "styleList": []
+                                        },
+                                        "data": {
+                                            "align": "0",
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "e2aff387-1926-4653-aa8e-e77d3afa5fc6",
+                            "type": "ObojoboDraft.Chunks.Heading",
+                            "content": {
+                                "headingLevel": 2,
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Navigation",
+                                            "styleList": []
+                                        },
+                                        "data": null
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "a5eb6860-e51f-45cf-9f5b-ab497c8a8641",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The navigation panel along the left side allows for manipulation of the pages and assessments that make up an Obojobo Module. Pages are identified by the ◯ symbol, and assessments are identified by the Ⓠ symbol.",
+                                            "styleList": []
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "381fd26a-1769-47b5-8233-7929d9d57f62",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Clicking on a page or assessment name navigates to that item and loads its content into the editor. Any altered content on the current page is temporarily saved and can be viewed again by clicking back to that page. If the Obojobo Visual Editor is reloaded without clicking the Save Document button, the temporary changes will be deleted.",
+                                            "styleList": [
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 268,
+                                                    "end": 281
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "8bf17337-1c17-4e07-abf7-a1266b554b8c",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The arrow next to each page or assessment provides a menu with special actions that can be taken on each item. ",
+                                            "styleList": []
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "be267557-40a9-4020-83c4-2778e3cbb566",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Move Up swaps a page with the previous page in the list, and Move Down swaps a page with the next page in the list.",
+                                            "styleList": [
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 0,
+                                                    "end": 7
+                                                },
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 61,
+                                                    "end": 70
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "bec3fc52-a8a0-4ff8-acb3-b9cf8755133d",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Edit Name allows you to change the name of the page. ",
+                                            "styleList": [
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 0,
+                                                    "end": 9
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "value": "Warning: Pages that have the same name will cause issues in the Obojobo viewer.",
+                                            "styleList": [
+                                                {
+                                                    "type": "b",
+                                                    "data": {},
+                                                    "start": 0,
+                                                    "end": 9
+                                                },
+                                                {
+                                                    "type": "b",
+                                                    "data": {},
+                                                    "start": 39,
+                                                    "end": 43
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "be27356b-864b-4d52-852b-f43f2c7aa031",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Delete deletes the entire page, including all of its content.",
+                                            "styleList": [
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 0,
+                                                    "end": 6
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "04416cac-638d-4a3d-8e0f-65028f031d4c",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The last item in the menu is the unique id for the page. Clicking on the id copies it to the clipboard, so you can paste it elsewhere in the Editor. (see Action Buttons for some uses of ids)",
+                                            "styleList": [
+                                                {
+                                                    "type": "b",
+                                                    "data": {},
+                                                    "start": 154,
+                                                    "end": 168
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "91c3d600-b02e-4287-a991-510b6c79f9d2",
+                            "type": "ObojoboDraft.Chunks.Heading",
+                            "content": {
+                                "headingLevel": 2,
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Module Editing Buttons",
+                                            "styleList": []
+                                        },
+                                        "data": null
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "404e69c0-0894-459a-bc94-8c5e828f3bf1",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The buttons at the bottom of the navigation panel provide actions that edit the entire module. ",
+                                            "styleList": []
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "dd848093-f356-4083-8712-7af4f61c443e",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The Add Page button adds a new page to the bottom of the list of pages. The AddAssessment button adds a new assessment at the end of the assessments list.",
+                                            "styleList": [
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 4,
+                                                    "end": 12
+                                                },
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 77,
+                                                    "end": 79
+                                                },
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 79,
+                                                    "end": 89
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "07c8b050-0c5a-43cb-888b-833a19c57af7",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The Rename Module button allows you to rename the entire module and will change the title at the top of the navigation panel.",
+                                            "styleList": [
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 4,
+                                                    "end": 17
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "f6ece631-64ac-47f6-8a66-e2a3d8aaff24",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "The Copy ModuleURL button copies a URL to the clipboard. This URL allows the student to access the Obojobo module.",
+                                            "styleList": [
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 4,
+                                                    "end": 15
+                                                },
+                                                {
+                                                    "type": "monospace",
+                                                    "data": {},
+                                                    "start": 15,
+                                                    "end": 18
+                                                }
+                                            ]
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "09d1d344-e8ea-4578-b7c4-79f25f44db70",
+                            "type": "ObojoboDraft.Chunks.Heading",
+                            "content": {
+                                "headingLevel": 2,
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Adding Content",
+                                            "styleList": []
+                                        },
+                                        "data": null
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "207e3177-94b5-46cf-8c5a-b857933a41eb",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "Within the pages of an Obojobo Module, you can add any of the supported Obojobo nodes. Nodes range from simple Text and Headings to more complex items such as Questions.",
+                                            "styleList": []
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "42b07e1a-bacc-4679-a2ff-a3a74fe144d3",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "text": {
+                                            "value": "When you click on an existing node, two + buttons will appear above and below the node. Hovering over either of these buttons will open up a menu that lists all nodes that can be inserted. Clicking on any of the buttons will insert a new node into the document, either above or below the existing node.",
+                                            "styleList": []
+                                        },
+                                        "data": {
+                                            "indent": "0"
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

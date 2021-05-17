@@ -1,7 +1,8 @@
 import './button.scss'
 
-import Common from '../index'
 import React from 'react'
+import focus from '../page/focus'
+import isOrNot from '../util/isornot'
 
 export default class Button extends React.Component {
 	constructor(props) {
@@ -18,31 +19,26 @@ export default class Button extends React.Component {
 	}
 
 	focus() {
-		Common.page.focus(this.buttonRef)
+		focus(this.buttonRef)
 	}
 
 	render() {
-		let children
 		// if value is empty string
 		// value will still be rendered
 		// eslint-disable-next-line eqeqeq
-		if (this.props.value != null) {
-			children = this.props.value
-		} else {
-			// eslint-disable-next-line no-extra-semi
-			;({ children } = this.props)
-		}
+		const children = this.props.value != null ? this.props.value : this.props.children
 
 		const className =
 			'obojobo-draft--components--button' +
 			(this.props.altAction ? ' alt-action' : '') +
-			Common.util.isOrNot(this.props.isDangerous, 'dangerous') +
+			isOrNot(this.props.isDangerous, 'dangerous') +
 			` align-${this.props.align}` +
 			(this.props.className ? ` ${this.props.className}` : '')
 
 		return (
-			<div className={className}>
+			<div className={className} contentEditable={false}>
 				<button
+					type={this.props.isSubmittable ? 'submit' : 'button'}
 					ref={this.buttonRef}
 					className={'button'}
 					onClick={this.props.onClick}

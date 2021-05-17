@@ -132,7 +132,7 @@ header {
 			border: solid 2px white;
 			border-radius: 12px;
 			height: 19px;
-			background: url('/module-selector/magnifyingglass.png') 5px 50% no-repeat;
+			background: url('./magnifyingglass.png') 5px 50% no-repeat;
 			background-color: white;
 			padding-left: 23px;
 			padding-right: 10px;
@@ -241,7 +241,7 @@ header {
 		}
 
 		#header-title {
-			background: url('/module-selector/personal-library-icon.png') no-repeat;
+			background: url('./personal-library-icon.png') no-repeat;
 			padding: 0 70px 15px 70px;
 			background-size: 50px;
 		}
@@ -265,7 +265,7 @@ header {
 		}
 
 		#header-title {
-			background: url('/module-selector/community-library-icon.png') no-repeat 0 0;
+			background: url('./community-library-icon.png') no-repeat 0 0;
 			padding: 0 65px 15px 65px;
 			background-size: 55px;
 		}
@@ -322,19 +322,12 @@ header {
 	margin-top: 0;
 }
 
-.instance-copy-note {
-	font-size: 12pt;
-	margin-top: 2em;
-	color: #72305a;
-	display: none;
-}
-
 .section {
 	height: 100%;
 }
 
 .section.loading {
-	background: white url('/module-selector/throbber.gif') center center no-repeat;
+	background: white url('./spinner.gif') center center no-repeat;
 }
 
 .section.my-modules {
@@ -430,6 +423,20 @@ header {
 	}
 }
 
+#section-options {
+	display: none;
+
+	.option-list {
+		margin: 0 auto;
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	.buttons {
+		margin-top: 20px;
+	}
+}
+
 #section-module-selection {
 	display: none;
 	text-align: center;
@@ -441,7 +448,7 @@ header {
 	#community-library-button {
 		.wizard-button {
 			background-color: lighten($color-action, 55%);
-			background-image: url('/module-selector/community-library-icon.png');
+			background-image: url('./community-library-icon.png');
 			background-repeat: no-repeat;
 			background-position: center 20px;
 			color: darken($color-action, 10%);
@@ -456,7 +463,7 @@ header {
 	#personal-library-button {
 		.wizard-button {
 			background-color: lighten($color-personal-action, 40%);
-			background-image: url('/module-selector/personal-library-icon.png');
+			background-image: url('./personal-library-icon.png');
 			background-repeat: no-repeat;
 			background-position: center 40px;
 			color: darken($color-personal-action, 30%);
@@ -474,7 +481,7 @@ header {
 	text-align: center;
 
 	.grey-box {
-		background: $color-top-bar-bg url('/assets/images/lti/success-icon.png') no-repeat center 20px;
+		background: $color-top-bar-bg;
 		border: 1px solid #a8a8a8;
 		max-width: 800px;
 		width: 90%;
@@ -522,7 +529,7 @@ header {
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: url('/module-selector/throbber-small.gif') center center no-repeat;
+	background: url('./spinner-small.gif') center center no-repeat;
 	z-index: 100;
 	display: none;
 }

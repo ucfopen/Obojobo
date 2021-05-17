@@ -8,7 +8,8 @@ class Question extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
-			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd
+			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd,
+			'ObojoboDraft.Sections.Assessment:sendToAssessment': this.onSendToAssessment
 		})
 	}
 
@@ -16,7 +17,7 @@ class Question extends DraftNode {
 		return this.toObject()
 	}
 
-	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
+	onAttemptEnd(req, res, assessment, responseHistory = [], currentAttempt) {
 		if (!assessment.contains(this.node)) return
 
 		// Survey type questions have no score:
@@ -25,6 +26,7 @@ class Question extends DraftNode {
 			return
 		}
 
+		// get the responses for this node from history
 		const questionResponses = responseHistory.filter(responseRecord => {
 			return responseRecord.question_id === this.node.id
 		})
@@ -47,6 +49,10 @@ class Question extends DraftNode {
 				currentAttempt.addScore(this.node.id, score)
 			}
 		)
+	}
+
+	onSendToAssessment() {
+		this.node.content.solution = null
 	}
 }
 

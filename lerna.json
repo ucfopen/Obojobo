@@ -2,7 +2,7 @@
   "packages": [
     "packages/**/*"
   ],
-  "version": "10.0.0-alpha1",
+  "version": "12.1.0",
   "command": {
     "command": {
       "run": {
@@ -12,6 +12,8 @@
     "version": {
       "allowBranch": [
         "master",
+        "main",
+        "issue/*",
         "dev/*",
         "hotfix/*"
       ]

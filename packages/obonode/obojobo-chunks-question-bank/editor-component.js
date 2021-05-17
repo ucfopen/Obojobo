@@ -2,16 +2,19 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React, { memo } from 'react'
-import { Transforms, Editor } from 'slate'
+import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
+import ImportQuestionModal from './import-questions-modal'
 
 import emptyQB from './empty-node.json'
 
 const { Button } = Common.components
+const { ModalUtil } = Common.util
+const { OboModel } = Common.models
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 const stopPropagation = event => {
@@ -32,14 +35,13 @@ class QuestionBank extends React.Component {
 		const content = this.props.element.content
 		this.state = this.contentToStateObj(content)
 
-		this.freezeEditor = this.freezeEditor.bind(this)
-		this.unfreezeEditor = this.unfreezeEditor.bind(this)
-
 		this.remove = this.remove.bind(this)
 		this.addQuestion = this.addQuestion.bind(this)
 		this.addQuestionBank = this.addQuestionBank.bind(this)
 		this.changeChooseType = this.changeChooseType.bind(this)
-		this.focusQuestionBank = this.focusQuestionBank.bind(this)
+		this.getQuestionList = this.getQuestionList.bind(this)
+		this.importQuestionList = this.importQuestionList.bind(this)
+		this.displayImportQuestionModal = this.displayImportQuestionModal.bind(this)
 	}
 
 	updateNodeFromState() {
@@ -96,23 +98,6 @@ class QuestionBank extends React.Component {
 		this.setState(newContent) // update the display now
 	}
 
-	freezeEditor() {
-		clearTimeout(window.restoreEditorFocusId)
-		this.props.editor.toggleEditable(false)
-	}
-
-	unfreezeEditor() {
-		window.restoreEditorFocusId = setTimeout(() => {
-			this.updateNodeFromState()
-			this.props.editor.toggleEditable(true)
-		})
-	}
-
-	focusQuestionBank() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
-	}
-
 	displaySettings(editor, element) {
 		const radioGroupName = `${element.id}-choose`
 		return (
@@ -126,8 +111,6 @@ class QuestionBank extends React.Component {
 							value="all"
 							checked={this.state.chooseAll}
 							onChange={this.changeChooseType}
-							onFocus={this.freezeEditor}
-							onBlur={this.unfreezeEditor}
 						/>
 						All questions
 					</label>
@@ -139,8 +122,6 @@ class QuestionBank extends React.Component {
 							value="pick"
 							checked={!this.state.chooseAll}
 							onChange={this.changeChooseType}
-							onFocus={this.freezeEditor}
-							onBlur={this.unfreezeEditor}
 						/>
 						Pick
 					</label>
@@ -151,8 +132,6 @@ class QuestionBank extends React.Component {
 						disabled={this.state.chooseAll}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'choose')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					/>
 				</fieldset>
 				<label className="select">
@@ -161,8 +140,6 @@ class QuestionBank extends React.Component {
 						value={this.state.select}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'select')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					>
 						<option value="sequential">In order</option>
 						<option value="random">Randomly</option>
@@ -173,20 +150,58 @@ class QuestionBank extends React.Component {
 		)
 	}
 
+	getQuestionList(root) {
+		if (root.get('type') === QUESTION_NODE) return [root]
+
+		let questionList = []
+		root.children.forEach(child => {
+			questionList = questionList.concat(this.getQuestionList(child))
+		})
+
+		return questionList
+	}
+
+	importQuestionList(nodes) {
+		const { editor, element } = this.props
+
+		const path = ReactEditor.findPath(editor, element)
+		nodes.forEach((node, index) => {
+			Transforms.insertNodes(editor, node, {
+				at: path.concat(element.children.length + index)
+			})
+		})
+	}
+
+	displayImportQuestionModal() {
+		const Question = Common.Registry.getItemForType(QUESTION_NODE)
+		const questionList = this.getQuestionList(OboModel.getRoot()).map(question =>
+			Question.oboToSlate(question.attributes)
+		)
+
+		ModalUtil.show(
+			<ImportQuestionModal
+				questionList={questionList}
+				editor={this.props.editor}
+				importQuestions={this.importQuestionList}
+			/>
+		)
+	}
+
 	render() {
 		const { editor, element, children } = this.props
+		const contentDescription = [
+			{
+				name: 'Import Questions',
+				description: 'Import',
+				type: 'button',
+				action: this.displayImportQuestionModal
+			}
+		]
+
 		return (
-			<Node {...this.props}>
-				<div
-					className={'obojobo-draft--chunks--question-bank editor-bank'}
-					onClick={this.focusQuestionBank}
-				>
-					<Button
-						className="delete-button"
-						onClick={this.remove}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
-					>
+			<Node {...this.props} contentDescription={contentDescription}>
+				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
+					<Button className="delete-button" onClick={this.remove}>
 						&times;
 					</Button>
 					{this.displaySettings(editor, element, element.content)}

@@ -18,7 +18,7 @@ describe('Rubric editor component', () => {
 
 	test('normalizeNode on Rubric calls next if valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -35,7 +35,7 @@ describe('Rubric editor component', () => {
 			],
 			isInline: () => false
 		}
-		Rubric.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		Rubric.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -43,7 +43,7 @@ describe('Rubric editor component', () => {
 	test('normalizeNode on Rubric calls Transforms if parent is invalid', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -60,8 +60,8 @@ describe('Rubric editor component', () => {
 			],
 			isInline: () => false
 		}
-		
-		Rubric.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+
+		Rubric.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})

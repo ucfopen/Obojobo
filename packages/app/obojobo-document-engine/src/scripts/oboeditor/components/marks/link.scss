@@ -80,8 +80,15 @@
 			text-overflow: ellipsis;
 
 			&:hover {
-				background: transparentize($color: $color-action, $amount: 0.9);
+				background: $color-action-bg;
 			}
 		}
+	}
+}
+
+*[data-hanging-indent='true'] .editor--components--mark--link .href-menu {
+	a {
+		margin-left: 2rem;
+		text-indent: 0;
 	}
 }

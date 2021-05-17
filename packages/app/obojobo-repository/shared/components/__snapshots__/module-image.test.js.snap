@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModuleImage renders 1`] = `
+<div
+  className="repository--module-icon--image"
+>
+  <img
+    height="100%"
+    src="/library/module-icon/undefined"
+    width="100%"
+  />
+</div>
+`;

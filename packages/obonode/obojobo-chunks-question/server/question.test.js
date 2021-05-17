@@ -23,7 +23,8 @@ describe('Question', () => {
 		expect(question.registerEvents).toHaveBeenCalledTimes(1)
 		expect(question.registerEvents.mock.calls[0]).toMatchSnapshot()
 		expect(question.registerEvents).toHaveBeenCalledWith({
-			'ObojoboDraft.Sections.Assessment:attemptEnd': question.onAttemptEnd
+			'ObojoboDraft.Sections.Assessment:attemptEnd': question.onAttemptEnd,
+			'ObojoboDraft.Sections.Assessment:sendToAssessment': question.onSendToAssessment
 		})
 	})
 
@@ -57,6 +58,21 @@ describe('Question', () => {
 	test('calls addScore to 0 and does not yell if no response found', () => {
 		const mockAssessment = { contains: () => true }
 		const responseHistory = [{ question_id: 'someOtherId' }]
+
+		const res = {
+			app: {}
+		}
+
+		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).not.toHaveBeenCalled()
+		question.onAttemptEnd(res, {}, mockAssessment, responseHistory, currentAttempt)
+		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 0)
+	})
+
+	test('chandles an undefined responseHistory', () => {
+		const mockAssessment = { contains: () => true }
+		const responseHistory = undefined
 
 		const res = {
 			app: {}
@@ -113,5 +129,11 @@ describe('Question', () => {
 				type: undefined
 			})
 		)
+	})
+
+	test('onSendToAssessment returns itself as an object', () => {
+		question.node.content.solution = 'solution'
+		question.onSendToAssessment()
+		expect(question.node.content.solution).toBeNull()
 	})
 })

@@ -7,16 +7,21 @@ const injectKatexIfNeeded = async ({ value: draftModel }) => {
 	// AND in text nodes with a styleList item of type _latex
 	// The second can be matched against `"type":"_latex"` without many false positives
 	// However, the html node's classname will generate more false positives
+
+	if (window.katex) {
+		return draftModel
+	}
+
 	const stringModel = JSON.stringify(draftModel)
 
 	if (stringModel.includes('latex')) {
 		const jsProps = {
-			src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js'
+			src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.1/katex.min.js'
 		}
 		const cssProps = {
 			rel: 'stylesheet',
 			type: 'text/css',
-			href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css'
+			href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.1/katex.min.css'
 		}
 		insertDomTag(jsProps, 'script')
 		insertDomTag(cssProps, 'link')

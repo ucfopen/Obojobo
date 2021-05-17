@@ -8,13 +8,14 @@
 	border-radius: 2px;
 	max-height: 85vh;
 	overflow: auto;
-
-	@include mq($until: tablet) {
-		padding: 1.5rem 1.5em;
-	}
+	box-sizing: border-box;
 
 	@include mq($until: mobileLandscape) {
 		padding: 1.5rem 1em;
+	}
+
+	@include mq($until: tablet) {
+		padding: 1rem 0.5em;
 	}
 
 	.obojobo-draft--components--delete-button {

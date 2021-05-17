@@ -34,21 +34,34 @@
 		font-family: $font-default;
 		font-size: 0.8em;
 		color: $color-text-minor;
-		max-width: calc(100% - 10px); //stylelint-disable-line unit-blacklist
+		max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
+
+		&.is-caption-width-text-width {
+			max-width: 100% !important;
+		}
 	}
 
 	&.custom {
 		.container {
+			.figure-box {
+				margin: auto;
+				height: auto;
+			}
+
 			img {
 				margin: 0 auto;
 				height: auto;
 				width: auto;
 				max-height: 100%;
-				max-width: calc(100% - 10px); //stylelint-disable-line unit-blacklist
+				max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
 			}
 
 			figure {
 				margin: 0 auto;
+			}
+
+			figcaption {
+				margin: auto;
 			}
 		}
 	}
@@ -57,11 +70,17 @@
 		@include pad();
 
 		.container {
-			max-width: 18em;
-
+			.figure-box,
 			img {
+				max-width: 18em;
+				margin: auto;
 				width: 100%;
 				box-sizing: border-box;
+			}
+
+			figcaption {
+				max-width: 22em;
+				margin: auto;
 			}
 		}
 	}
@@ -78,6 +97,7 @@
 		}
 
 		.container {
+			.figure-box,
 			img {
 				width: 100%;
 				box-sizing: border-box;
@@ -87,6 +107,7 @@
 
 	&.large {
 		.container {
+			.figure-box,
 			img {
 				width: 100%;
 				border: none;

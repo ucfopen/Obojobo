@@ -8,6 +8,7 @@ const STYLE_ORDER = [
 	StyleType.COMMENT,
 	StyleType.LATEX,
 	StyleType.LINK,
+	StyleType.COLOR,
 	StyleType.QUOTE,
 	StyleType.BOLD,
 	StyleType.STRIKETHROUGH,
@@ -169,6 +170,15 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 			nodeToWrap.text = text
 			return newChild
 		}
+
+		case StyleType.COLOR:
+			newChild = new MockElement('span', {
+				style: { color: styleRange.data.text }
+			})
+			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
+			newChild.addChild(nodeToWrap)
+			nodeToWrap.text = text
+			return newChild
 
 		case StyleType.MONOSPACE:
 			styleType = 'code'

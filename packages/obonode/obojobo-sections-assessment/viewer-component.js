@@ -1,6 +1,6 @@
 import './viewer-component.scss'
 
-import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
+import AssessmentDialog from './components/assessment-dialog'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { FOCUS_ON_ASSESSMENT_CONTENT } from './assessment-event-constants'
 import PostTest from './components/post-test'
@@ -9,23 +9,34 @@ import React from 'react'
 import Test from './components/test'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
+import AssessmentMachineStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-machine-states'
+
 const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
-const { ModalUtil } = Common.util
-const { Dialog } = Common.components.modal
+const { Spinner } = Common.components
+const { ModalPortal } = Common.components.modal
 
 const { AssessmentUtil } = Viewer.util
-const { NavUtil, FocusUtil } = Viewer.util
+const { NavUtil, FocusUtil, CurrentAssessmentStates } = Viewer.util
+
+const {
+	IN_ATTEMPT,
+	SEND_RESPONSES_SUCCESSFUL,
+	SEND_RESPONSES_FAILED,
+	END_ATTEMPT_FAILED,
+	STARTING_ATTEMPT,
+	RESUMING_ATTEMPT,
+	SENDING_RESPONSES,
+	ENDING_ATTEMPT,
+	IMPORTING_ATTEMPT
+} = AssessmentMachineStates
 
 class Assessment extends React.Component {
 	constructor(props) {
 		super()
 		this.state = {
-			isFetching: false,
-			currentStep: Assessment.getCurrentStep(props)
+			curStep: Assessment.getStep(props)
 		}
-		this.onEndAttempt = this.onEndAttempt.bind(this)
-		this.onAttemptEnded = this.onAttemptEnded.bind(this)
 		this.endAttempt = this.endAttempt.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
 
@@ -37,43 +48,131 @@ class Assessment extends React.Component {
 	}
 
 	static getDerivedStateFromProps(nextProps) {
-		const curStep = Assessment.getCurrentStep(nextProps)
+		const curStep = Assessment.getStep(nextProps)
 		return { curStep }
 	}
 
-	static getCurrentStep(props) {
-		const assessment = AssessmentUtil.getAssessmentForModel(
+	static getStep(props) {
+		const state = AssessmentUtil.getAssessmentMachineStateForModel(
 			props.moduleData.assessmentState,
 			props.model
 		)
 
-		if (assessment === null) {
-			return 'pre-test'
-		}
+		switch (state) {
+			case IN_ATTEMPT:
+			case SEND_RESPONSES_SUCCESSFUL:
+			case SEND_RESPONSES_FAILED:
+			case END_ATTEMPT_FAILED:
+			case SENDING_RESPONSES:
+			case ENDING_ATTEMPT: {
+				return 'test'
+			}
 
-		if (assessment.current !== null) {
-			return 'test'
-		}
+			case STARTING_ATTEMPT:
+			case RESUMING_ATTEMPT:
+			case IMPORTING_ATTEMPT: {
+				return 'loading'
+			}
 
-		if (assessment.attempts.length > 0) {
-			return 'post-test'
+			default:
+				return AssessmentUtil.getNumberOfAttemptsCompletedForModel(
+					props.moduleData.assessmentState,
+					props.model
+				) === 0
+					? 'pre-test'
+					: 'post-test'
 		}
+	}
 
-		return 'pre-test'
+	getCurrentAttemptStatus() {
+		return AssessmentUtil.getCurrentAttemptStatus(
+			this.props.moduleData.assessmentState,
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
+	}
+
+	isAttemptReadyToSubmit() {
+		return this.getCurrentAttemptStatus() === CurrentAssessmentStates.READY_TO_SUBMIT
+	}
+
+	isAttemptSubmitting() {
+		return (
+			AssessmentUtil.getAssessmentMachineStateForModel(
+				this.props.moduleData.assessmentState,
+				this.props.model
+			) === ENDING_ATTEMPT
+		)
+	}
+
+	onClickSubmit() {
+		AssessmentUtil.forceSendResponsesForCurrentAttempt(
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
+	}
+
+	endAttempt() {
+		return AssessmentUtil.endAttempt({
+			model: this.props.model,
+			context: this.props.moduleData.navState.context,
+			visitId: this.props.moduleData.navState.visitId
+		})
+	}
+
+	getScoreAction() {
+		return this.props.model.modelState.scoreActions.getActionForScore(
+			AssessmentUtil.getAssessmentScoreForModel(
+				this.props.moduleData.assessmentState,
+				this.props.model
+			)
+		)
+	}
+
+	getAssessmentComponent() {
+		switch (this.state.curStep) {
+			case 'pre-test':
+				return (
+					<PreTest model={this.props.model.children.at(0)} moduleData={this.props.moduleData} />
+				)
+
+			case 'loading':
+				return (
+					<div className="loading-assessment">
+						<Spinner />
+					</div>
+				)
+
+			case 'test':
+				return (
+					<Test
+						model={this.props.model.children.at(1)}
+						moduleData={this.props.moduleData}
+						onClickSubmit={this.onClickSubmit}
+						isAttemptReadyToSubmit={this.isAttemptReadyToSubmit()}
+						isAttemptSubmitting={this.isAttemptSubmitting()}
+					/>
+				)
+
+			case 'post-test':
+				return (
+					<PostTest
+						ref={this.childRef}
+						model={this.props.model}
+						moduleData={this.props.moduleData}
+						scoreAction={this.getScoreAction()}
+					/>
+				)
+		}
 	}
 
 	componentWillUnmount() {
-		// make sure navutil know's we're not in assessment any more
 		NavUtil.resetContext()
-		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
-		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
 	componentDidMount() {
-		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
-		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
-
-		// if we're in an active attempt - notify the navUtil we're in Assessment
+		// If we're in an active attempt - notify the navUtil we're in Assessment
 		const attemptInfo = AssessmentUtil.getCurrentAttemptForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
@@ -91,165 +190,11 @@ class Assessment extends React.Component {
 		}
 	}
 
-	onEndAttempt() {
-		this.setState({ isFetching: true })
-	}
-
-	onAttemptEnded() {
-		this.setState({ isFetching: false })
-	}
-
-	isAttemptComplete() {
-		return AssessmentUtil.isCurrentAttemptComplete(
-			this.props.moduleData.assessmentState,
-			this.props.moduleData.questionState,
-			this.props.model,
-			this.props.moduleData.navState.context
-		)
-	}
-
-	isAssessmentComplete() {
-		return !AssessmentUtil.hasAttemptsRemaining(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-	}
-
-	onClickSubmit() {
-		// disable multiple clicks
-		if (this.state.isFetching) return
-
-		if (!this.isAttemptComplete()) {
-			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
-			return
-		}
-
-		const remainAttempts = AssessmentUtil.getAttemptsRemaining(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-
-		if (remainAttempts === 1) {
-			ModalUtil.show(
-				<Dialog
-					width="32rem"
-					title="This is your last attempt"
-					buttons={[
-						{
-							value: 'Cancel',
-							altAction: true,
-							default: true,
-							onClick: ModalUtil.hide
-						},
-						{
-							value: 'OK - Submit Last Attempt',
-							onClick: this.endAttempt
-						}
-					]}
-				>
-					<p>{"You won't be able to submit another attempt after this one."}</p>
-				</Dialog>
-			)
-		} else {
-			ModalUtil.show(
-				<Dialog
-					width="32rem"
-					title="Just to confirm..."
-					buttons={[
-						{
-							value: 'Cancel',
-							altAction: true,
-							default: true,
-							onClick: ModalUtil.hide
-						},
-						{
-							value: 'OK - Submit',
-							onClick: this.endAttempt
-						}
-					]}
-				>
-					<p>Are you ready to submit?</p>
-				</Dialog>
-			)
-		}
-	}
-
-	endAttempt() {
-		ModalUtil.hide()
-		return AssessmentUtil.endAttempt({
-			model: this.props.model,
-			context: this.props.moduleData.navState.context,
-			visitId: this.props.moduleData.navState.visitId
-		})
-	}
-
-	exitAssessment() {
-		const scoreAction = this.getScoreAction()
-
-		switch (scoreAction.action.value) {
-			case '_next':
-				return NavUtil.goNext()
-
-			case '_prev':
-				return NavUtil.goPrev()
-
-			default:
-				return NavUtil.goto(scoreAction.action.value)
-		}
-	}
-
-	getScoreAction() {
-		const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-		const scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
-
-		if (scoreAction) {
-			return scoreAction
-		}
-
-		return {
-			from: 0,
-			to: 100,
-			message: '',
-			action: {
-				type: 'unlock',
-				value: '_next'
-			}
-		}
-	}
-
 	render() {
-		const childEl = (() => {
-			switch (this.state.curStep) {
-				case 'pre-test':
-					return (
-						<PreTest model={this.props.model.children.at(0)} moduleData={this.props.moduleData} />
-					)
-
-				case 'test':
-					return (
-						<Test
-							model={this.props.model.children.at(1)}
-							moduleData={this.props.moduleData}
-							onClickSubmit={this.onClickSubmit}
-							isAttemptComplete={this.isAttemptComplete()}
-							isFetching={this.state.isFetching}
-						/>
-					)
-
-				case 'post-test':
-					return (
-						<PostTest
-							ref={this.childRef}
-							model={this.props.model}
-							moduleData={this.props.moduleData}
-							scoreAction={this.getScoreAction()}
-						/>
-					)
-			}
-		})()
+		const assessment = AssessmentUtil.getAssessmentForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
 
 		return (
 			<OboComponent
@@ -257,7 +202,28 @@ class Assessment extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--sections--assessment"
 			>
-				{childEl}
+				{this.getAssessmentComponent()}
+
+				<ModalPortal>
+					<AssessmentDialog
+						endAttempt={this.endAttempt}
+						assessmentMachineState={AssessmentUtil.getAssessmentMachineStateForModel(
+							this.props.moduleData.assessmentState,
+							this.props.model
+						)}
+						currentAttemptStatus={this.getCurrentAttemptStatus()}
+						assessmentModel={this.props.model}
+						assessment={assessment}
+						importableScore={AssessmentUtil.getImportableScoreForModel(
+							this.props.moduleData.assessmentState,
+							this.props.model
+						)}
+						numAttemptsRemaining={AssessmentUtil.getAttemptsRemaining(
+							this.props.moduleData.assessmentState,
+							this.props.model
+						)}
+					/>
+				</ModalPortal>
 			</OboComponent>
 		)
 	}

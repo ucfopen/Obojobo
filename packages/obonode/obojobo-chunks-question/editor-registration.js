@@ -15,6 +15,7 @@ const Question = {
 	menuLabel: 'Question',
 	icon: Icon,
 	isInsertable: true,
+	acceptsInserts: false,
 	supportsChildren: true,
 	helpers: Converter,
 	json: {

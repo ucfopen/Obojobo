@@ -4,13 +4,14 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 
 import MCAnswer from './editor-registration'
 
-const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
+import { MC_ANSWER_NODE } from '../constants'
+
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		contentTypes: [ 'ObojoboDraft.Chunks.Text' ]
+		contentTypes: ['ObojoboDraft.Chunks.Text']
 	}
 }))
 
@@ -21,7 +22,7 @@ describe('MCAnswer editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
-				type: MCANSWER_NODE,
+				type: MC_ANSWER_NODE,
 				data: {
 					get: () => {
 						return {}
@@ -42,16 +43,16 @@ describe('MCAnswer editor', () => {
 
 	test('normalizeNode on MCAnswer calls next if all MCAnswer children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCANSWER_NODE,
+							type: MC_ANSWER_NODE,
 							content: {},
 							children: [
 								{
@@ -66,7 +67,7 @@ describe('MCAnswer editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -75,16 +76,16 @@ describe('MCAnswer editor', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCANSWER_NODE,
+							type: MC_ANSWER_NODE,
 							content: {},
 							children: [
 								{
@@ -99,7 +100,7 @@ describe('MCAnswer editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
@@ -108,16 +109,16 @@ describe('MCAnswer editor', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCANSWER_NODE,
+							type: MC_ANSWER_NODE,
 							content: {},
 							children: [{ text: 'mockCode', b: true }]
 						}
@@ -126,18 +127,18 @@ describe('MCAnswer editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on MCFeedback calls Transforms with invalid parent', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCANSWER_NODE,
+					type: MC_ANSWER_NODE,
 					content: {},
 					children: [
 						{

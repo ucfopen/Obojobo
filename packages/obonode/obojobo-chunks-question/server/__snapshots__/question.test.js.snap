@@ -22,6 +22,7 @@ Array [
         Array [
           Object {
             "ObojoboDraft.Sections.Assessment:attemptEnd": [Function],
+            "ObojoboDraft.Sections.Assessment:sendToAssessment": [Function],
           },
         ],
       ],
@@ -55,6 +56,7 @@ exports[`Question registers expected events 1`] = `
 Array [
   Object {
     "ObojoboDraft.Sections.Assessment:attemptEnd": [Function],
+    "ObojoboDraft.Sections.Assessment:sendToAssessment": [Function],
   },
 ]
 `;

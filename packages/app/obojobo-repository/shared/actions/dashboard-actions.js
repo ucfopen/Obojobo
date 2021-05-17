@@ -120,6 +120,17 @@ const apiCreateNewModule = (useTutorial, body = {}) => {
 	return fetch(url, options).then(res => res.json())
 }
 
+const apiGetModuleLock = async draftId => {
+	const res = await fetch(`/api/locks/${draftId}`, defaultOptions())
+	const data = await res.json()
+
+	if (data.status !== 'ok') {
+		throw Error(`Failed to check lock for module with id ${draftId}.`)
+	}
+
+	return data.value
+}
+
 // ================== ACTIONS ===================
 
 const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
@@ -143,6 +154,12 @@ const restoreVersion = (draftId, versionId) => ({
 		versionId
 	},
 	promise: apiRestoreVersion(draftId, versionId)
+})
+
+const CHECK_MODULE_LOCK = 'CHECK_MODULE_LOCK'
+const checkModuleLock = draftId => ({
+	type: CHECK_MODULE_LOCK,
+	promise: apiGetModuleLock(draftId)
 })
 
 const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -229,7 +246,7 @@ const promptUserForModuleFileUpload = async () => {
 
 const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	const file = event.target.files[0]
-	if (!file) boundResolve()
+	if (!file) return boundResolve()
 
 	const reader = new global.FileReader()
 	reader.readAsText(file, 'UTF-8')
@@ -266,6 +283,7 @@ module.exports = {
 	SHOW_VERSION_HISTORY,
 	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
+	CHECK_MODULE_LOCK,
 	filterModules,
 	deleteModule,
 	closeModal,
@@ -279,5 +297,6 @@ module.exports = {
 	showModuleMore,
 	showVersionHistory,
 	restoreVersion,
-	importModuleFile
+	importModuleFile,
+	checkModuleLock
 }

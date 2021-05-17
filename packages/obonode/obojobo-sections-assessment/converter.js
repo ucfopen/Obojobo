@@ -14,7 +14,7 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
  * slateToObo methods for each of its child components, and converts
  * any rubric and score action children back into attributes
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Assessment node 
+ * @returns {Object} An Obojobo Assessment node
  */
 const slateToObo = node => {
 	let Page
@@ -24,12 +24,10 @@ const slateToObo = node => {
 	// Mix the model.content and the node.content to make sure that
 	// all settings are properly preserved
 	const model = OboModel.models[node.id]
-	const content = model
-		? { ...node.content, ...model.get('content') }
-		: node.content
+	const content = model ? { ...node.content, ...model.get('content') } : { ...node.content }
 
-	// Remove rubric if it has been deleted
 	delete content.rubric
+	delete content.scoreActions
 
 	const children = []
 	node.children.forEach(child => {
@@ -66,7 +64,7 @@ const slateToObo = node => {
  * Copies all attributes, and calls the appropriate converters for the children.
  * It also converts the rubric and the score actions into Slate nodes for easy
  * editing.
- * @param {Object} node An Obojobo Assessment node 
+ * @param {Object} node An Obojobo Assessment node
  * @returns {Object} A Slate node
  */
 const oboToSlate = model => {

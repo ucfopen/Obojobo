@@ -38,78 +38,83 @@ const Assessment = {
 				let index = 0
 				for (const [child, childPath] of Node.children(editor, path)) {
 					// The first child should be a page
-					if(index === 0 && child.type !== PAGE_NODE){
-						// If the page is entirely missing, remake it 
-						if(child.type === QUESTION_BANK_NODE || child.type === ACTIONS_NODE || child.type === RUBRIC_NODE){
-							Transforms.insertNodes(
-								editor, 
-								JSON.parse(JSON.stringify(emptyNode.children[0])), 
-								{ at: childPath }
-							)
+					if (index === 0 && child.type !== PAGE_NODE) {
+						// If the page is entirely missing, remake it
+						if (
+							child.type === QUESTION_BANK_NODE ||
+							child.type === ACTIONS_NODE ||
+							child.type === RUBRIC_NODE
+						) {
+							Transforms.insertNodes(editor, JSON.parse(JSON.stringify(emptyNode.children[0])), {
+								at: childPath
+							})
 							return
-						// Otherwise it probably got unwrapped somehow
+							// Otherwise it probably got unwrapped somehow
 						} else {
 							NormalizeUtil.wrapOrphanedSiblings(
-								editor, 
-								[child, childPath], 
-								{ type: PAGE_NODE,  content: {}, children: []}, 
-								node => node.type !== QUESTION_BANK_NODE && node.type !== ACTIONS_NODE && node.type !== RUBRIC_NODE
+								editor,
+								[child, childPath],
+								{ type: PAGE_NODE, content: {}, children: [] },
+								node =>
+									node.type !== QUESTION_BANK_NODE &&
+									node.type !== ACTIONS_NODE &&
+									node.type !== RUBRIC_NODE
 							)
 							return
 						}
 					}
 
 					// The second child should be a question bank
-					if(index === 1 && child.type !== QUESTION_BANK_NODE){
-						// If the questionbank is entirely missing, remake it 
-						if(child.type === ACTIONS_NODE || child.type === RUBRIC_NODE){
-							Transforms.insertNodes(
-								editor, 
-								JSON.parse(JSON.stringify(emptyNode.children[1])), 
-								{ at: childPath }
-							)
+					if (index === 1 && child.type !== QUESTION_BANK_NODE) {
+						// If the questionbank is entirely missing, remake it
+						if (child.type === ACTIONS_NODE || child.type === RUBRIC_NODE) {
+							Transforms.insertNodes(editor, JSON.parse(JSON.stringify(emptyNode.children[1])), {
+								at: childPath
+							})
 							return
-						// Otherwise it probably got unwrapped somehow
+							// Otherwise it probably got unwrapped somehow
 						} else {
 							NormalizeUtil.wrapOrphanedSiblings(
-								editor, 
-								[child, childPath], 
-								{ 
-									type: QUESTION_BANK_NODE,  
+								editor,
+								[child, childPath],
+								{
+									type: QUESTION_BANK_NODE,
 									content: {
 										choose: 1,
 										chooseAll: true,
-										select: "sequential"
-									}, 
+										select: 'sequential'
+									},
 									children: []
-								}, 
-								node => node.type !== PAGE_NODE && node.type !== ACTIONS_NODE && node.type !== RUBRIC_NODE
+								},
+								node =>
+									node.type !== PAGE_NODE && node.type !== ACTIONS_NODE && node.type !== RUBRIC_NODE
 							)
 							return
 						}
 					}
 
-					// The third child should be an Acrtions node
-					if(index === 2 && child.type !== ACTIONS_NODE){
+					// The third child should be an Actions node
+					if (index === 2 && child.type !== ACTIONS_NODE) {
 						// If the actions are entirely missing, remake them
-						if(child.type === RUBRIC_NODE){
-							Transforms.insertNodes(
-								editor, 
-								JSON.parse(JSON.stringify(emptyNode.children[2])), 
-								{ at: childPath }
-							)
+						if (child.type === RUBRIC_NODE) {
+							Transforms.insertNodes(editor, JSON.parse(JSON.stringify(emptyNode.children[2])), {
+								at: childPath
+							})
 							return
-						// Otherwise it probably got unwrapped somehow
+							// Otherwise it probably got unwrapped somehow
 						} else {
 							NormalizeUtil.wrapOrphanedSiblings(
-								editor, 
-								[child, childPath], 
-								{ 
-									type: ACTIONS_NODE,  
-									content: {}, 
+								editor,
+								[child, childPath],
+								{
+									type: ACTIONS_NODE,
+									content: {},
 									children: []
-								}, 
-								node => node.type !== PAGE_NODE && node.type !== QUESTION_BANK_NODE && node.type !== RUBRIC_NODE
+								},
+								node =>
+									node.type !== PAGE_NODE &&
+									node.type !== QUESTION_BANK_NODE &&
+									node.type !== RUBRIC_NODE
 							)
 							return
 						}
@@ -119,52 +124,68 @@ const Assessment = {
 				}
 
 				if (node.children.length < 1) {
-					Transforms.insertNodes(editor, {
-						type: PAGE_NODE,
-						content: {},
-						children:[{ text: '' }]
-					}, { at: path.concat(0) })
+					Transforms.insertNodes(
+						editor,
+						{
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{ at: path.concat(0) }
+					)
 					return
 				}
 
 				if (node.children.length < 2) {
-					Transforms.insertNodes(editor, {
-						type: QUESTION_BANK_NODE,
-						content: {
-							choose: 1,
-							chooseAll: true,
-							select: "sequential"
+					Transforms.insertNodes(
+						editor,
+						{
+							type: QUESTION_BANK_NODE,
+							content: {
+								choose: 1,
+								chooseAll: true,
+								select: 'sequential'
+							},
+							children: [{ text: '' }]
 						},
-						children: [{ text: '' }]
-					}, { at: path.concat(1) })
+						{ at: path.concat(1) }
+					)
 					return
 				}
 
 				if (node.children.length < 3) {
-					Transforms.insertNodes(editor, {
-						type: ACTIONS_NODE,
-						content: {},
-						children: [{ text: '' }]
-					}, { at: path.concat(2) })
+					Transforms.insertNodes(
+						editor,
+						{
+							type: ACTIONS_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{ at: path.concat(2) }
+					)
 					return
 				}
 
 				if (node.children.length < 4) {
-					Transforms.insertNodes(editor,{
-						type: RUBRIC_NODE,
-						content: {
-							type: 'highest',
-							failedResult: 0,
-							passedResult: 100,
-							unableToPassResult: 0,
-							passingAttemptScore: 100,
-							passedType: 'set-value',
-							failedType: 'set-value',
-							unableToPassType: 'no-value',
-							mods: []
+					Transforms.insertNodes(
+						editor,
+						{
+							type: RUBRIC_NODE,
+							content: {
+								type: 'highest',
+								failedResult: 0,
+								passedResult: 100,
+								unableToPassResult: 0,
+								passingAttemptScore: 100,
+								passedType: 'set-value',
+								failedType: 'set-value',
+								unableToPassType: 'no-value',
+								mods: []
+							},
+							children: [{ text: '' }]
 						},
-						children: [{ text: '' }]
-					}, { at: path.concat(3) })
+						{ at: path.concat(3) }
+					)
 					return
 				}
 			}
@@ -176,7 +197,7 @@ const Assessment = {
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
 		}
-	},
+	}
 }
 
 export default Assessment

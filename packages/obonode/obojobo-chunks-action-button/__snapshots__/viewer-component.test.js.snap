@@ -15,12 +15,14 @@ exports[`ActionButton ActionButton component with label 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
         contentEditable={false}
         onClick={[Function]}
         tabIndex="0"
+        type="button"
       >
         Example Label
       </button>
@@ -44,12 +46,14 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
         contentEditable={false}
         onClick={[Function]}
         tabIndex="0"
+        type="button"
       >
         <span
           className="obo-text"

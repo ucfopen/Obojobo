@@ -5,8 +5,10 @@ exports[`Modal Modal 1`] = `
   aria-labelledby="obojobo-draft--components--modal--modal--content"
   className="obojobo-draft--components--modal--modal mockClassName"
   role="dialog"
+  tabIndex="-1"
 >
   <input
+    aria-label="Start of dialog"
     className="first-tab"
     onFocus={[Function]}
     type="text"
@@ -27,6 +29,7 @@ exports[`Modal Modal 1`] = `
     Content
   </div>
   <input
+    aria-label="End of dialog"
     className="last-tab"
     onFocus={[Function]}
     type="text"

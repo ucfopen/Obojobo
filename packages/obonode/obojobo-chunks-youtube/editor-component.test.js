@@ -61,7 +61,7 @@ describe('YouTube Editor Node', () => {
 		component
 			.find('button')
 			.at(0)
-			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+			.simulate('keyDown', { key: 'Tab', shiftKey: true })
 
 		component
 			.find('button')
@@ -73,7 +73,9 @@ describe('YouTube Editor Node', () => {
 			.simulate('keyDown', { key: 'Tab' })
 
 		const tree = component.html()
-		expect(tree).toMatchSnapshot()
+		expect(tree).toMatchInlineSnapshot(
+			`"<div><div class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">×</button></div><div id=\\"obojobo-draft--chunks-you-tube-player-mockId\\" class=\\"obojobo-draft--chunks-you-tube-player\\"></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" tabindex=\\"0\\" contenteditable=\\"false\\">Edit</button></div></div><span class=\\"invisible-text\\"></span></div></div>"`
+		)
 	})
 
 	test('YouTube component deletes self', () => {

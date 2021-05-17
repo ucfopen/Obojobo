@@ -8,11 +8,12 @@ const serial = new XMLSerializer()
 const XML_MODE = 'xml'
 const XML_MIME = 'application/xml'
 const MODULE_NODE_NAME = 'ObojoboDraft.Modules.Module'
+const ASSESSMENT_NODE_NAME = 'ObojoboDraft.Sections.Assessment'
 
 const getFlatList = function(item) {
 	let list = []
 	const model = OboModel.models[item.id]
-	if (model && model.get('type') === 'ObojoboDraft.Sections.Assessment') {
+	if (model && model.get('type') === ASSESSMENT_NODE_NAME) {
 		item.flags.assessment = true
 	}
 	if (item.type !== 'hidden') {
@@ -145,36 +146,41 @@ const EditorUtil = {
 		})
 	},
 	getTitleFromXML(draftModel) {
+		let title = ''
 		try {
+			// convert xml string to XMLDocument
 			const doc = domParser.parseFromString(draftModel, XML_MIME)
+			// find the module element (only one right now)
 			let els = doc.getElementsByTagName('Module')
 			if (els.length === 0) {
 				els = doc.getElementsByTagName(MODULE_NODE_NAME)
 			}
 			if (els.length > 0) {
+				// get the attributes off the module element
 				const el = els[0]
-				const title = el.getAttribute('title')
-				if (!this.isEmptyString(title)) return title
+				const _title = el.getAttribute('title')
+				if (!this.isEmptyString(_title)) title = _title
 			}
-
-			return ''
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return ''
 		}
+
+		return title
 	},
 	getTitleFromJSON(draftModel) {
+		let title = ''
 		try {
 			const json = JSON.parse(draftModel)
-			if (!json.content || this.isEmptyString(json.content.title)) return ''
-
-			return json.content.title
+			if (json.content && !this.isEmptyString(json.content.title)) {
+				title = json.content.title
+			}
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return ''
 		}
+
+		return title
 	},
 	isEmptyString(string) {
 		return !string || !/[^\s]/.test(string)
@@ -204,6 +210,21 @@ const EditorUtil = {
 			el.setAttribute('title', title)
 		}
 		return serial.serializeToString(doc)
+	},
+	getCurrentAssessmentId(models) {
+		for (const id in models) {
+			// Safe checking before accessing multiple nested obj attributes.
+			if (
+				models[id] &&
+				typeof models[id] !== 'undefined' &&
+				models[id].attributes &&
+				typeof models[id].attributes !== 'undefined' &&
+				models[id].attributes.type === ASSESSMENT_NODE_NAME
+			) {
+				return id
+			}
+		}
+		return null
 	}
 }
 

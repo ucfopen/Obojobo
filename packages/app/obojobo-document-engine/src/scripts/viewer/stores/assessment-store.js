@@ -1,294 +1,187 @@
-import APIUtil from '../util/api-util'
-import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
-import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
+import AssessmentAPI from '../util/assessment-api'
 import AssessmentUtil from '../util/assessment-util'
 import Common from 'Common'
-import FocusUtil from '../util/focus-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
+import AssessmentMachineStates from './assessment-store/assessment-machine-states'
 import NavStore from '../stores/nav-store'
-import NavUtil from '../util/nav-util'
-import QuestionStore from './question-store'
-import QuestionUtil from '../util/question-util'
 import React from 'react'
+import AssessmentStateMachine from './assessment-state-machine'
+import AssessmentStateActions from './assessment-store/assessment-state-actions'
+import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
 
-const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
 
 const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
 const { ErrorUtil, ModalUtil } = Common.util
-const { SimpleDialog, Dialog } = Common.components.modal
+
+const { NOT_IN_ATTEMPT } = AssessmentMachineStates
+
+const ATTEMPT_HISTORY_NOT_LOADED = 'none'
 
 const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
 	current: null,
-	currentResponses: [],
 	attempts: [],
+	unfinishedAttempt: null,
 	highestAssessmentScoreAttempts: [],
 	highestAttemptScoreAttempts: [],
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
 	ltiResyncState: LTIResyncStates.NO_RESYNC_ATTEMPTED,
-	isShowingAttemptHistory: false
+	attemptHistoryNetworkState: ATTEMPT_HISTORY_NOT_LOADED,
+	isScoreImported: false
 })
+
+const getNewAssessmentSummary = assessmentId => ({
+	assessmentId,
+	importUsed: false,
+	scores: [],
+	unfinishedAttemptId: null
+})
+
+const arrayToObject = (a, key) => {
+	const o = {}
+	a.forEach(v => {
+		if (v && v[key]) {
+			o[v[key]] = v
+		}
+	})
+
+	return o
+}
 
 class AssessmentStore extends Store {
 	constructor() {
 		super('assessmentstore')
 
 		Dispatcher.on('assessment:startAttempt', payload => {
-			this.tryStartAttempt(payload.value.id)
+			this.startAttempt(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:importAttempt', payload => {
+			this.importAttempt(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:abandonImport', payload => {
+			this.abandonImport(payload.value.id)
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.tryEndAttempt(payload.value.id, payload.value.context)
+			this.endAttempt(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:forceSendResponses', payload => {
+			this.forceSendResponses(payload.value.id)
 		})
 
 		Dispatcher.on('assessment:resendLTIScore', payload => {
 			this.tryResendLTIScore(payload.value.id)
 		})
 
-		Dispatcher.on('question:setResponse', payload => {
-			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
+		Dispatcher.on('assessment:acknowledgeEndAttemptSuccessful', payload => {
+			this.acknowledgeEndAttemptSuccessful(payload.value.id)
 		})
 
-		Dispatcher.on('viewer:closeAttempted', shouldPrompt => {
+		Dispatcher.on('assessment:acknowledgeStartAttemptFailed', payload => {
+			this.acknowledgeStartAttemptFailed(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:acknowledgeEndAttemptFailed', payload => {
+			this.acknowledgeEndAttemptFailed(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:acknowledgeResumeAttemptFailed', payload => {
+			this.acknowledgeResumeAttemptFailed(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:acknowledgeImportAttemptFailed', payload => {
+			this.acknowledgeImportAttemptFailed(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:resumeAttempt', payload => {
+			this.resumeAttempt(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:continueAttempt', payload => {
+			this.continueAttempt(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:acknowledgeFetchHistoryFailed', payload => {
+			this.acknowledgeFetchHistoryFailed(payload.value.id, payload.value.retry)
+		})
+
+		Dispatcher.on('window:closeAttempt', shouldPrompt => {
 			if (AssessmentUtil.isInAssessment(this.state)) {
 				shouldPrompt()
 			}
 		})
+
+		Dispatcher.on('nav:targetChanged', payload => {
+			const navTargetModel = OboModel.models[payload.value.to]
+			const assessment = AssessmentUtil.getAssessmentForModel(this.state, navTargetModel)
+
+			if (!assessment || assessment.attemptHistoryNetworkState === 'loaded') {
+				return
+			}
+
+			const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, navTargetModel)
+			if (machine.getCurrentState() === NOT_IN_ATTEMPT) {
+				machine.send(AssessmentStateActions.FETCH_ATTEMPT_HISTORY)
+			}
+		})
 	}
 
-	init(attemptsByAssessment) {
+	getAssessmentModels() {
+		return Object.values(OboModel.models).filter(
+			model => model.get('type') === ASSESSMENT_NODE_TYPE
+		)
+	}
+
+	init(extensions) {
+		const ext = { assessmentSummary: [], importableScore: null }
+		const filteredExtArrays = extensions
+			? extensions.filter(val => val.name === ASSESSMENT_NODE_TYPE)
+			: []
+		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
+
 		this.state = {
-			assessments: {}
+			assessments: {}, // assessments found in attempt history
+			machines: {},
+			importableScores: arrayToObject([ext.importableScore], 'assessmentId'),
+			assessmentSummaries: arrayToObject(ext.assessmentSummary, 'assessmentId')
 		}
 
-		// necessary?
-		if (!attemptsByAssessment) return
-		this.updateAttempts(attemptsByAssessment)
-	}
+		// Find all the assessments:
+		this.getAssessmentModels().forEach(model => {
+			const id = model.get('id')
 
-	updateAttempts(attemptsByAssessment) {
-		let unfinishedAttempt = null
-		const assessments = this.state.assessments
-		let assessment
-
-		attemptsByAssessment.forEach(assessmentItem => {
-			const assessId = assessmentItem.assessmentId
-			const attempts = assessmentItem.attempts
-
-			if (!assessments[assessId]) {
-				assessments[assessId] = getNewAssessmentObject(assessId)
-			} else {
-				assessments[assessId].attempts = []
+			if (!this.state.assessmentSummaries[id]) {
+				this.state.assessmentSummaries[id] = getNewAssessmentSummary(id)
 			}
 
-			assessments[assessId].lti = assessmentItem.ltiState
-			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
-				attempts,
-				'attemptScore'
-			)
-			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
-				attempts,
-				'assessmentScore'
-			)
-
-			attempts.forEach(attempt => {
-				assessment = assessments[attempt.assessmentId]
-
-				// Server returns responses in an array, but we use a object keyed by the questionId:
-				if (Array.isArray(attempt.responses)) {
-					const responsesById = {}
-					attempt.responses.forEach(r => {
-						responsesById[r.id] = r.response
-					})
-					attempt.responses = responsesById
-				}
-
-				if (!attempt.isFinished) {
-					unfinishedAttempt = attempt
-				} else {
-					assessment.attempts.push(attempt)
-				}
-			})
-		})
-
-		for (const assessment in assessments) {
-			assessments[assessment].attempts.forEach(attempt => {
-				const scoreObject = {}
-				attempt.questionScores.forEach(score => {
-					scoreObject[score.id] = score
-				})
-				const stateToUpdate = {
-					scores: scoreObject,
-					responses: attempt.responses
-				}
-
-				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
-			})
-		}
-
-		if (unfinishedAttempt) {
-			return ModalUtil.show(
-				<SimpleDialog
-					ok
-					title="Resume Attempt"
-					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
-					preventEsc
-				>
-					<p>
-						It looks like you were in the middle of an attempt. We&apos;ll resume where you left
-						off.
-					</p>
-				</SimpleDialog>,
-				true
-			)
-		}
-	}
-
-	onResumeAttemptConfirm(unfinishedAttempt) {
-		ModalUtil.hide()
-
-		return APIUtil.resumeAttempt({
-			draftId: unfinishedAttempt.draftId,
-			attemptId: unfinishedAttempt.attemptId,
-			visitId: NavStore.getState().visitId
-		}).then(response => {
-			this.startAttempt(response.value)
-			this.triggerChange()
-		})
-	}
-
-	tryStartAttempt(id) {
-		const model = OboModel.models[id]
-
-		return APIUtil.startAttempt({
-			draftId: model.getRoot().get('draftId'),
-			assessmentId: model.get('id'),
-			visitId: NavStore.getState().visitId
-		})
-			.then(res => {
-				if (res.status === 'error') {
-					switch (res.value.message.toLowerCase()) {
-						case 'attempt limit reached':
-							ErrorUtil.show(
-								'No attempts left',
-								'You have attempted this assessment the maximum number of times available.'
-							)
-							break
-
-						default:
-							ErrorUtil.errorResponse(res)
-					}
-				} else {
-					this.startAttempt(res.value)
-				}
-
-				this.triggerChange()
-			})
-			.catch(e => {
-				console.error(e) /* eslint-disable-line no-console */
-			})
-	}
-
-	startAttempt(startAttemptResp) {
-		const id = startAttemptResp.assessmentId
-		const model = OboModel.models[id]
-
-		model.children.at(1).children.reset()
-		for (const child of Array.from(startAttemptResp.questions)) {
-			const c = OboModel.create(child)
-			model.children.at(1).children.add(c)
-		}
-
-		if (!this.state.assessments[id]) {
 			this.state.assessments[id] = getNewAssessmentObject(id)
+			this.state.machines[id] = new AssessmentStateMachine(id, this.state)
+			this.state.machines[id].start(this.triggerChange.bind(this))
+		})
+
+		if (ext.importableScore) {
+			this.displayScoreImportNotice()
+		}
+	}
+
+	doMachineAction(id, command) {
+		const assessmentModel = OboModel.models[id]
+
+		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
+
+		if (!machine) {
+			ErrorUtil.show('Assessment ID not found', `Couldn't find an assessment with ID "${id}".`)
+			throw 'No machine exists for this assessment - Unable to run ' + command
 		}
 
-		this.state.assessments[id].current = startAttemptResp
-
-		NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)
-		NavUtil.rebuildMenu(model.getRoot())
-		NavUtil.goto(id)
-
-		model.processTrigger('onStartAttempt')
-		Dispatcher.trigger('assessment:attemptStarted', id)
-	}
-
-	tryEndAttempt(id, context) {
-		const model = OboModel.models[id]
-		const assessment = this.state.assessments[id]
-		return APIUtil.endAttempt({
-			attemptId: assessment.current.attemptId,
-			draftId: model.getRoot().get('draftId'),
-			visitId: NavStore.getState().visitId
-		})
-			.then(res => {
-				if (res.status === 'error') {
-					return ErrorUtil.errorResponse(res)
-				}
-				this.endAttempt(res.value, context)
-				return this.triggerChange()
-			})
-			.catch(e => {
-				console.error(e) /* eslint-disable-line no-console */
-			})
-	}
-
-	onCloseResultsDialog() {
-		ModalUtil.hide()
-		FocusUtil.focusOnNavTarget()
-	}
-
-	endAttempt(endAttemptResp, context) {
-		const assessId = endAttemptResp.assessmentId
-		const assessment = this.state.assessments[assessId]
-		const model = OboModel.models[assessId]
-
-		assessment.current.state.chosen.forEach(question => {
-			if (question.type === QUESTION_NODE_TYPE) {
-				QuestionUtil.hideQuestion(question.id, context)
-			}
-		})
-
-		assessment.currentResponses.forEach(questionId =>
-			QuestionUtil.clearResponse(questionId, context)
-		)
-
-		assessment.current = null
-
-		this.updateAttempts([endAttemptResp])
-
-		model.processTrigger('onEndAttempt')
-
-		Dispatcher.trigger('assessment:attemptEnded', assessId)
-
-		const attempt = AssessmentUtil.getLastAttemptForModel(this.state, model)
-		const reporter = new AssessmentScoreReporter({
-			assessmentRubric: model.modelState.rubric.toObject(),
-			totalNumberOfAttemptsAllowed: model.modelState.attempts,
-			allAttempts: assessment.attempts
-		})
-
-		const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
-		ModalUtil.show(
-			<Dialog
-				modalClassName="obojobo-draft--sections--assessment--results-modal"
-				centered
-				buttons={[
-					{
-						value: `Show ${assessmentLabel} Overview`,
-						onClick: this.onCloseResultsDialog.bind(this),
-						default: true
-					}
-				]}
-				title={`Attempt ${attempt.attemptNumber} Results`}
-				width="35rem"
-			>
-				<AssessmentScoreReportView report={reporter.getReportFor(attempt.attemptNumber)} />
-			</Dialog>
-		)
+		machine.send(command)
 	}
 
 	tryResendLTIScore(assessmentId) {
@@ -298,9 +191,9 @@ class AssessmentStore extends Store {
 		assessment.ltiNetworkState = LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE
 		this.triggerChange()
 
-		return APIUtil.resendLTIAssessmentScore({
+		return AssessmentAPI.resendLTIAssessmentScore({
 			draftId: assessmentModel.getRoot().get('draftId'),
-			assessmentId: assessmentModel.get('id'),
+			assessmentId,
 			visitId: NavStore.getState().visitId
 		})
 			.then(res => {
@@ -314,7 +207,6 @@ class AssessmentStore extends Store {
 					AssessmentUtil.getAssessmentForModel(this.state, assessmentModel),
 					res.value
 				)
-				return this.triggerChange()
 			})
 			.catch(e => {
 				console.error(e) /* eslint-disable-line no-console */
@@ -334,25 +226,96 @@ class AssessmentStore extends Store {
 		this.triggerChange()
 	}
 
-	trySetResponse(questionId) {
-		const model = OboModel.models[questionId]
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
-
-		if (!assessment || !assessment.currentResponses) {
-			// Resolve false if not an error but couldn't do anything because not in an attempt
-			return Promise.resolve(false)
-		}
-
-		assessment.currentResponses.push(questionId)
-		this.triggerChange()
-	}
-
 	getState() {
 		return this.state
 	}
 
 	setState(newState) {
 		return (this.state = newState)
+	}
+
+	displayScoreImportNotice() {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'Score Import Available',
+				message: `You previously completed this module in another course or assignment. The option to import your highest score will be shown when you start the assessment.`
+			}
+		})
+	}
+
+	displayImportAlreadyUsed() {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'Score Already Imported',
+				message:
+					'You have already imported a score for this module in this course, no attempts remain.'
+			}
+		})
+	}
+
+	displayPreAttemptImportScoreNotice(highestScore) {
+		return new Promise(resolve => {
+			const shouldImport = choice => resolve(choice)
+
+			ModalUtil.show(
+				<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={shouldImport} />
+			)
+		})
+	}
+
+	startAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.START_ATTEMPT)
+	}
+
+	importAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.IMPORT_ATTEMPT)
+	}
+
+	abandonImport(id) {
+		this.doMachineAction(id, AssessmentStateActions.ABANDON_IMPORT)
+	}
+
+	endAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.END_ATTEMPT)
+	}
+
+	forceSendResponses(id) {
+		this.doMachineAction(id, AssessmentStateActions.SEND_RESPONSES)
+	}
+
+	acknowledgeEndAttemptSuccessful(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeStartAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeEndAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeResumeAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeImportAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeFetchHistoryFailed(id, retry = false) {
+		this.doMachineAction(
+			id,
+			retry ? AssessmentStateActions.FETCH_ATTEMPT_HISTORY : AssessmentStateActions.ACKNOWLEDGE
+		)
+	}
+
+	resumeAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.RESUME_ATTEMPT)
+	}
+
+	continueAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.CONTINUE_ATTEMPT)
 	}
 }
 

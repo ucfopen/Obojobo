@@ -12,7 +12,7 @@ exports[`IFrame IFrame component renders 1`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -21,11 +21,13 @@ exports[`IFrame IFrame component renders 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -48,11 +50,13 @@ exports[`IFrame IFrame component renders 1`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -78,7 +82,7 @@ exports[`IFrame IFrame component renders 2`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -87,11 +91,13 @@ exports[`IFrame IFrame component renders 2`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -114,11 +120,13 @@ exports[`IFrame IFrame component renders 2`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -144,7 +152,7 @@ exports[`IFrame IFrame component renders 3`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -153,11 +161,13 @@ exports[`IFrame IFrame component renders 3`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -180,11 +190,13 @@ exports[`IFrame IFrame component renders 3`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -210,7 +222,7 @@ exports[`IFrame IFrame component renders 4`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -219,11 +231,13 @@ exports[`IFrame IFrame component renders 4`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -246,11 +260,13 @@ exports[`IFrame IFrame component renders 4`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -276,7 +292,7 @@ exports[`IFrame IFrame component renders 5`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -285,11 +301,13 @@ exports[`IFrame IFrame component renders 5`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -312,11 +330,13 @@ exports[`IFrame IFrame component renders 5`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -342,7 +362,7 @@ exports[`IFrame IFrame component renders 6`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -351,11 +371,13 @@ exports[`IFrame IFrame component renders 6`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -378,11 +400,13 @@ exports[`IFrame IFrame component renders 6`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -408,7 +432,7 @@ exports[`IFrame IFrame component renders 7`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -438,11 +462,13 @@ exports[`IFrame IFrame component renders 7`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -465,7 +491,7 @@ exports[`IFrame IFrame component renders 8`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -495,11 +521,13 @@ exports[`IFrame IFrame component renders 8`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -522,7 +550,7 @@ exports[`IFrame IFrame component renders 9`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -552,11 +580,13 @@ exports[`IFrame IFrame component renders 9`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -579,7 +609,7 @@ exports[`IFrame IFrame component renders 10`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -609,11 +639,13 @@ exports[`IFrame IFrame component renders 10`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -636,7 +668,7 @@ exports[`IFrame IFrame component renders 11`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -666,11 +698,13 @@ exports[`IFrame IFrame component renders 11`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -693,7 +727,7 @@ exports[`IFrame IFrame component renders 12`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -723,11 +757,13 @@ exports[`IFrame IFrame component renders 12`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -750,7 +786,7 @@ exports[`IFrame IFrame component renders 13`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -759,11 +795,13 @@ exports[`IFrame IFrame component renders 13`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -786,11 +824,13 @@ exports[`IFrame IFrame component renders 13`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -816,7 +856,7 @@ exports[`IFrame IFrame component renders 14`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -825,11 +865,13 @@ exports[`IFrame IFrame component renders 14`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -852,11 +894,13 @@ exports[`IFrame IFrame component renders 14`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -882,7 +926,7 @@ exports[`IFrame IFrame component renders 15`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -891,11 +935,13 @@ exports[`IFrame IFrame component renders 15`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -918,11 +964,13 @@ exports[`IFrame IFrame component renders 15`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -948,7 +996,7 @@ exports[`IFrame IFrame component renders 16`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -957,11 +1005,13 @@ exports[`IFrame IFrame component renders 16`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -984,11 +1034,13 @@ exports[`IFrame IFrame component renders 16`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -1014,7 +1066,7 @@ exports[`IFrame IFrame component renders 17`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1023,11 +1075,13 @@ exports[`IFrame IFrame component renders 17`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -1050,11 +1104,13 @@ exports[`IFrame IFrame component renders 17`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -1080,7 +1136,7 @@ exports[`IFrame IFrame component renders 18`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1089,11 +1145,13 @@ exports[`IFrame IFrame component renders 18`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -1116,11 +1174,13 @@ exports[`IFrame IFrame component renders 18`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -1146,7 +1206,7 @@ exports[`IFrame IFrame component renders 19`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1176,11 +1236,13 @@ exports[`IFrame IFrame component renders 19`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -1203,7 +1265,7 @@ exports[`IFrame IFrame component renders 20`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1233,11 +1295,13 @@ exports[`IFrame IFrame component renders 20`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -1260,7 +1324,7 @@ exports[`IFrame IFrame component renders 21`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1290,11 +1354,13 @@ exports[`IFrame IFrame component renders 21`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -1317,7 +1383,7 @@ exports[`IFrame IFrame component renders 22`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1347,11 +1413,13 @@ exports[`IFrame IFrame component renders 22`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -1374,7 +1442,7 @@ exports[`IFrame IFrame component renders 23`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1404,11 +1472,13 @@ exports[`IFrame IFrame component renders 23`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -1431,7 +1501,7 @@ exports[`IFrame IFrame component renders 24`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"
@@ -1461,11 +1531,13 @@ exports[`IFrame IFrame component renders 24`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
+            type="button"
           >
             View Content
           </button>
@@ -1488,7 +1560,7 @@ exports[`IFrame IFrame component renders 25`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-missing-src is-scaled-up"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-missing-src is-scaled-up is-sizing-fixed"
   >
     <div
       className="container"

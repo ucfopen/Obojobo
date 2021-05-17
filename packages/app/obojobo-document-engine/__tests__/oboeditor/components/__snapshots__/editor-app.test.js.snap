@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditorApp EditorApp component displays xml 1`] = `"<div class=\\"visual-editor--editor-app\\"></div>"`;
+exports[`EditorApp EditorApp component displays xml in xml mode 1`] = `"<div class=\\"visual-editor--editor-app\\"><div class=\\"obojobo-draft--components--modal-container is-not-active\\"><div class=\\"content legacy\\"></div><div class=\\"content portal\\" id=\\"obojobo-draft--components--modal-container--content\\"></div></div></div>"`;
 
-exports[`EditorApp EditorApp component renders error messsage 1`] = `"<div class=\\"viewer--viewer-app--visit-error\\"><h1>Error</h1><h2>someType</h2><div>someMessage</div></div>"`;
+exports[`EditorApp EditorApp component renders modal 1`] = `"<div class=\\"visual-editor--editor-app\\"><div class=\\"obojobo-draft--components--modal-container is-active\\"><div class=\\"content legacy\\">mock component</div><div class=\\"content portal\\" id=\\"obojobo-draft--components--modal-container--content\\"></div></div></div>"`;
 
-exports[`EditorApp EditorApp component renders modal 1`] = `"<div class=\\"visual-editor--editor-app\\"><div class=\\"obojobo-draft--components--modal-container\\"><div class=\\"content\\">mock component</div></div></div>"`;
-
-exports[`EditorApp EditorApp component with no draft 1`] = `"<div class=\\"visual-editor--editor-app\\"></div>"`;
-
-exports[`EditorApp component renders 1`] = `"<div class=\\"visual-editor--editor-app\\"></div>"`;
+exports[`EditorApp component renders 1`] = `"<div class=\\"visual-editor--editor-app\\"><div class=\\"obojobo-draft--components--modal-container is-not-active\\"><div class=\\"content legacy\\"></div><div class=\\"content portal\\" id=\\"obojobo-draft--components--modal-container--content\\"></div></div></div>"`;

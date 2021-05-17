@@ -1,9 +1,9 @@
 import './visual-editor.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
+import ColorMarks from './marks/color-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
@@ -46,7 +46,7 @@ class VisualEditor extends React.Component {
 
 		this.state = {
 			value: json,
-			saved: true,
+			saveState: 'saveSuccessful',
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
 			contentRect: null
@@ -70,6 +70,7 @@ class VisualEditor extends React.Component {
 		this.onResized = this.onResized.bind(this)
 		this.renderElement = this.renderElement.bind(this)
 		this.setEditorFocus = this.setEditorFocus.bind(this)
+		this.onClick = this.onClick.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -81,7 +82,7 @@ class VisualEditor extends React.Component {
 	}
 
 	markUnsaved() {
-		return this.setState({ saved: false })
+		return this.setState({ saveState: '' })
 	}
 
 	// All plugins are passed the following parameters:
@@ -125,6 +126,7 @@ class VisualEditor extends React.Component {
 			.filter(item => item)
 
 		const markPlugins = [
+			ColorMarks.plugins,
 			BasicMarks.plugins,
 			LinkMark.plugins,
 			ScriptMarks.plugins,
@@ -193,7 +195,7 @@ class VisualEditor extends React.Component {
 			//eslint-disable-next-line
 			return undefined // Returning undefined will allow browser to close normally
 		}
-		if (!this.state.saved) {
+		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
@@ -202,7 +204,9 @@ class VisualEditor extends React.Component {
 	}
 
 	onKeyDownGlobal(event) {
-		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+		const ctrlOrMetaKey = event.ctrlKey || event.metaKey
+
+		if (event.key === 's' && ctrlOrMetaKey) {
 			event.preventDefault()
 			return this.saveModule(this.props.draftId)
 		}
@@ -218,7 +222,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open top insert menu: - and _ account for users potentially using the shift key
-		if ((event.key === '-' || event.key === '_') && (event.ctrlKey || event.metaKey)) {
+		if ((event.key === '-' || event.key === '_') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -242,7 +246,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open bottom insert menu: = and + account for users potentially using the shift key
-		if ((event.key === '=' || event.key === '+') && (event.ctrlKey || event.metaKey)) {
+		if ((event.key === '=' || event.key === '+') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -266,12 +270,8 @@ class VisualEditor extends React.Component {
 			)
 		}
 
-		// Open top insert menu: i and I occur on different systems as the key when shift is held
-		if (
-			(event.key === 'i' || event.key === 'I') &&
-			(event.ctrlKey || event.metaKey) &&
-			event.shiftKey
-		) {
+		// Open chunk settings dialog
+		if ((event.key === 'i' || event.key === 'I') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -300,9 +300,8 @@ class VisualEditor extends React.Component {
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
-		this.setState({ value, saved: false })
-
-		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
+		this.setState({ value })
+		this.markUnsaved()
 	}
 
 	onResized(event) {
@@ -341,7 +340,9 @@ class VisualEditor extends React.Component {
 		if (prevProps.page.id !== this.props.page.id) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			this.exportToJSON(prevProps.page, prevState.value)
+			if (OboModel.models[prevProps.page.id]) {
+				this.exportToJSON(prevProps.page, prevState.value)
+			}
 			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
 				this.setEditorFocus()
@@ -391,8 +392,17 @@ class VisualEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
-		this.setState({ saved: true })
-		return APIUtil.postDraft(draftId, JSON.stringify(json))
+		this.setState({ saveState: 'saving' })
+
+		return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
+			if (isSaved) {
+				if (this.state.saveState === 'saving') {
+					this.setState({ saveState: 'saveSuccessful' })
+				}
+			} else {
+				this.setState({ saveState: 'saveFailed' })
+			}
+		})
 	}
 
 	exportToJSON(page, value) {
@@ -517,6 +527,20 @@ class VisualEditor extends React.Component {
 		ReactEditor.focus(this.editor)
 	}
 
+	onClick(event) {
+		/*
+			As for Slate 0.57.2, triple-click causes selection to bleed into the node below which causes focus to jump down when typing
+			The following solution detects when bleeding happends (focus.offset === 0) and reduces by 1
+			We can disregard this when Slate fixes the problem
+		*/
+		if (event.detail === 3) {
+			const { focus } = this.editor.selection
+			if (focus.offset === 0) {
+				Transforms.move(this.editor, { distance: 1, unit: 'offset', reverse: true, edge: 'end' })
+			}
+		}
+	}
+
 	render() {
 		const className =
 			'editor--page-editor ' +
@@ -539,7 +563,7 @@ class VisualEditor extends React.Component {
 								onSave={this.saveModule}
 								reload={this.reload}
 								switchMode={this.props.switchMode}
-								saved={this.state.saved}
+								saveState={this.state.saveState}
 								mode={'visual'}
 								insertableItems={this.props.insertableItems}
 								togglePlaceholders={this.togglePlaceholders}
@@ -566,6 +590,7 @@ class VisualEditor extends React.Component {
 								readOnly={!this.state.editable || this.props.readOnly}
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
+								onClick={this.onClick}
 							/>
 						</VisualEditorErrorBoundry>
 					</div>

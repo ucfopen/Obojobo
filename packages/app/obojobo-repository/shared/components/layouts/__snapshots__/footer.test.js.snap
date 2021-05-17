@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders 1`] = `
+<footer>
+  <div
+    className="ucf-open-footer"
+  >
+    <div
+      className="ucf-open-image"
+    >
+      <a
+        href="https://ucfopen.github.io"
+      >
+        <div
+          className="ucf-open-logo"
+        >
+          UCF Open
+        </div>
+      </a>
+    </div>
+    <div
+      className="ucf-open-desc"
+    >
+      Obojobo is a UCF open source project.
+    </div>
+    <div
+      className="ucf-open-links"
+    >
+      <a
+        href="https://ucfopen.github.io/Obojobo-Docs/"
+      >
+        Documentation
+      </a>
+      <a
+        href="https://github.com/ucfopen/Obojobo"
+      >
+        Obojobo on Github
+      </a>
+      <a
+        href="https://ucfopen.github.io"
+      >
+        About UCF Open
+      </a>
+    </div>
+  </div>
+  <div
+    className="copyright"
+  >
+    <span
+      className="copy"
+    >
+      © 
+      <span
+        id="copyright-date"
+      >
+        2016
+      </span>
+       
+      <a
+        href="https://ucf.edu"
+      >
+        University of Central Florida
+      </a>
+    </span>
+  </div>
+</footer>
+`;

@@ -30,8 +30,7 @@ class RepositoryCollection {
 				return new RepositoryCollection(selectResult)
 			})
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
-				return Promise.reject(error)
+				throw logger.logError('Collection fetchById Error', error)
 			})
 	}
 
@@ -57,6 +56,7 @@ class RepositoryCollection {
 				return new RepositoryCollection(insertResult)
 			})
 	}
+
 	loadRelatedDrafts() {
 		const joinOn = `
 			JOIN repository_map_drafts_to_collections
@@ -72,8 +72,7 @@ class RepositoryCollection {
 				return this
 			})
 			.catch(error => {
-				logger.error('loadModules Error', error.message)
-				return Promise.reject(error)
+				throw logger.logError('loadModules Error', error)
 			})
 	}
 }

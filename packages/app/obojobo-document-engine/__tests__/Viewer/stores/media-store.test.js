@@ -1,6 +1,6 @@
 jest.mock('../../../src/scripts/common/flux/dispatcher')
 jest.mock('../../../src/scripts/common/models/obo-model')
-jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/util/viewer-api')
 jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({
 	getState: () => ({
 		visitId: 'mock-visit-id'
@@ -8,7 +8,7 @@ jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({
 }))
 
 import MediaStore from '../../../src/scripts/viewer/stores/media-store'
-import APIUtil from '../../../src/scripts/viewer/util/api-util'
+import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import OboModel from '../../../src/scripts/common/models/obo-model'
 
@@ -25,6 +25,9 @@ describe('Media Store', () => {
 				get: () => 'mocked-id'
 			}
 		}
+		OboModel.getRoot = () => ({
+			get: () => 'root-id'
+		})
 	})
 
 	test('init will init state', () => {
@@ -75,7 +78,7 @@ describe('Media Store', () => {
 			defaultZoomById: {},
 			zoomById: {}
 		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
 			action: 'media:show',
 			eventVersion: '1.0.0',
@@ -104,7 +107,7 @@ describe('Media Store', () => {
 			zoomById: { 'other-id': 0.5 },
 			defaultZoomById: { 'other-id': 2 }
 		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
 			action: 'media:hide',
 			eventVersion: '1.0.0',
@@ -125,7 +128,7 @@ describe('Media Store', () => {
 			value: { id: 'mocked-id' }
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
 			action: 'media:hide',
 			eventVersion: '1.0.0',
@@ -151,7 +154,7 @@ describe('Media Store', () => {
 			zoomById: { 'mocked-id': 2 },
 			defaultZoomById: {}
 		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
 			action: 'media:setZoom',
 			eventVersion: '1.0.0',
@@ -182,7 +185,7 @@ describe('Media Store', () => {
 			},
 			defaultZoomById: {}
 		})
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
@@ -196,7 +199,7 @@ describe('Media Store', () => {
 			zoomById: {},
 			defaultZoomById: {}
 		})
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
@@ -208,7 +211,7 @@ describe('Media Store', () => {
 			zoomById: {},
 			defaultZoomById: {}
 		})
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
@@ -225,7 +228,7 @@ describe('Media Store', () => {
 			},
 			defaultZoomById: {}
 		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
 			action: 'media:resetZoom',
 			eventVersion: '1.0.0',
@@ -257,7 +260,7 @@ describe('Media Store', () => {
 				'mocked-id': 2
 			}
 		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
 			action: 'media:resetZoom',
 			eventVersion: '1.0.0',
@@ -287,7 +290,7 @@ describe('Media Store', () => {
 			},
 			defaultZoomById: {}
 		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
 			action: 'media:resetZoom',
 			eventVersion: '1.0.0',
@@ -315,7 +318,7 @@ describe('Media Store', () => {
 				'mocked-id': 2
 			}
 		})
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:defaultZoomSet', {
 			id: 'mocked-id',
 			zoom: 2
@@ -332,7 +335,7 @@ describe('Media Store', () => {
 				'mocked-id': 1
 			}
 		})
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:defaultZoomSet', {
 			id: 'mocked-id',
 			zoom: 1
