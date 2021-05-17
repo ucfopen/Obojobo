@@ -13,9 +13,11 @@ const {
 	DELETE_MODULE,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
+	SELECT_MODULE,
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
-	RESTORE_VERSION
+	RESTORE_VERSION,
+	DESELECT_MODULE
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -95,6 +97,20 @@ function DashboardReducer(state, action) {
 				...state,
 				filteredModules: filterModules(state.myModules, action.searchString),
 				moduleSearchString: action.searchString
+			}
+
+		case SELECT_MODULE:
+			return {
+				...state,
+				selectedModules: [...state.selectedModules, action.module],
+				multiSelectMode: true
+			}
+
+		case DESELECT_MODULE:
+			return {
+				...state,
+				selectedModules: state.selectedModules.filter(m => m.draftId !== action.module.draftId),
+				multiSelectMode: state.selectedModules.length > 1
 			}
 
 		case CLEAR_PEOPLE_SEARCH_RESULTS:

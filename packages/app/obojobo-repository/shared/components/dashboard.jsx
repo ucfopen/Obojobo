@@ -91,6 +91,14 @@ const renderModalDialog = props => {
 	)
 }
 
+const getModuleCount = modules => {
+	if (modules.length === 1) {
+		return '1 Module Selected: '
+	} else {
+		return `${modules.length} Modules Selected:`
+	}
+}
+
 const getSortMethod = sortOrder => {
 	let sortFn
 	switch (sortOrder) {
@@ -110,24 +118,25 @@ const getSortMethod = sortOrder => {
 	return sortFn
 }
 
-const renderModules = (modules, sortOrder, newModuleId) => {
-	const sortFn = getSortMethod(sortOrder)
-	return modules
-		.sort(sortFn)
-		.map(draft => (
-			<Module isNew={draft.draftId === newModuleId} key={draft.draftId} hasMenu={true} {...draft} />
-		))
-}
-
-const Dashboard = props => {
+function Dashboard(props) {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 	const [newModuleId, setNewModuleId] = useState(null)
+
+	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
+	const [selectStates, setSelectStates] = useState(moduleList.map(() => false))
 
 	const handleCreateNewModule = useTutorial => {
 		props.createNewModule(useTutorial).then(data => {
 			data.payload.value.sort(getSortMethod('newest'))
 			setNewModuleId(data.payload.value[0].draftId)
 		})
+	}
+
+	const handleSelectModule = (draft, index) => {
+		selectStates[index] = !selectStates[index]
+		setSelectStates([...selectStates])
+
+		selectStates[index] ? props.selectModule(draft) : props.deselectModule(draft)
 	}
 
 	// Set a cookie when sortOrder changes on the client
@@ -141,29 +150,44 @@ const Dashboard = props => {
 		}, [sortOrder])
 	}
 
+	// idea: SELECT_MODULES/DESELECT_MODULES in redux
+	//       takes array instead of single module
+
 	return (
 		<span id="dashboard-root">
 			<RepositoryNav
 				userId={props.currentUser.id}
 				avatarUrl={props.currentUser.avatarUrl}
 				displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
-				noticeCount={0}
-			/>
+				noticeCount={0} />
 			<RepositoryBanner title={props.title} className="default-bg" facts={props.facts} />
 			<div className="repository--section-wrapper">
 				<section className="repository--main-content">
-					<div className="repository--main-content--control-bar">
-						<MultiButton title="New Module">
-							<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
-							<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
-							<Button onClick={props.importModuleFile}>Upload...</Button>
-						</MultiButton>
-						<Search
-							value={props.moduleSearchString}
-							placeholder="Filter..."
-							onChange={props.filterModules}
-						/>
-					</div>
+					{props.multiSelectMode ? 
+						<div className="repository--main-content--control-bar is-multi-select-mode">
+							<span className="stuff">{getModuleCount(props.selectedModules)}</span>
+							<div>
+								<Button className="multi-select secondary-button">Share...</Button>
+							</div>
+							<div>
+								<Button className="multi-select secondary-button">Download XML</Button>
+								<Button className="multi-select secondary-button">Download JSON</Button>
+							</div>
+							<Button className="multi-select secondary-button dangerous-button">Delete All</Button>
+							<Button className="close-button">×</Button>
+						</div> :
+						<div className="repository--main-content--control-bar is-not-multi-select-mode">
+							<MultiButton title="New Module">
+								<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
+								<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
+								<Button onClick={props.importModuleFile}>Upload...</Button>
+							</MultiButton>
+							<Search
+								value={props.moduleSearchString}
+								placeholder="Filter..."
+								onChange={props.filterModules} />
+						</div>
+					}
 					<div className="repository--main-content--title">
 						<span>My Modules</span>
 						<div className="repository--main-content--sort">
@@ -179,11 +203,18 @@ const Dashboard = props => {
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
 								<div className="repository--item-list--collection--item--multi-wrapper">
-									{renderModules(
-										props.filteredModules ? props.filteredModules : props.myModules,
-										sortOrder,
-										newModuleId
-									)}
+									{moduleList
+										.sort(getSortMethod(sortOrder))
+										.map((draft, index) => (
+											<Module
+												isNew={draft.draftId === newModuleId}
+												isSelected={selectStates[index]}
+												isMultiSelectMode={props.multiSelectMode}
+												onSelect={() => handleSelectModule(draft, index)}
+												key={draft.draftId}
+												hasMenu={true}
+												{...draft} />
+										))}
 								</div>
 							</div>
 						</div>

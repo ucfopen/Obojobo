@@ -6,5 +6,21 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-bottom: $size-spacing-vertical-big;
+
+		&.is-multi-select-mode {
+			border: 1px solid $color-banner-bg;
+			border-radius: 0.15em;
+
+			.stuff {
+				font-size: 0.8em;
+				margin-left: 1.0em;
+				width: 17em;
+			}
+
+			button.secondary-button {
+				margin: 0.3em 0.2em;
+				font-size: 0.65em;
+			}
+		}
 	}
 }

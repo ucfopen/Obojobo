@@ -33,7 +33,14 @@
 		}
 	}
 
-	&.is-open {
+	> input {
+		position: absolute;
+		z-index: 1;
+		left: 0.3em;
+		top: 0.3em;
+	}
+
+	&.is-open, &.is-selected {
 		background-color: $color-banner-bg;
 	}
 

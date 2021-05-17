@@ -222,6 +222,18 @@ const filterModules = searchString => ({
 	searchString
 })
 
+const SELECT_MODULE = 'SELECT_MODULE'
+const selectModule = module => ({
+	type: SELECT_MODULE,
+	module
+})
+
+const DESELECT_MODULE = 'DESELECT_MODULE'
+const deselectModule = module => ({
+	type: DESELECT_MODULE,
+	module
+})
+
 const SHOW_MODULE_MORE = 'SHOW_MODULE_MORE'
 const showModuleMore = module => ({
 	type: SHOW_MODULE_MORE,
@@ -279,12 +291,16 @@ module.exports = {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	FILTER_MODULES,
+	SELECT_MODULE,
+	DESELECT_MODULE,
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
 	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
 	filterModules,
+	selectModule,
+	deselectModule,
 	deleteModule,
 	closeModal,
 	deleteModulePermissions,
