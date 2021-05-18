@@ -64,7 +64,7 @@ class Modal extends React.Component {
 					type="text"
 					onFocus={this.onTabTrapFocus}
 				/>
-				{!this.props.onClose ? (
+				{this.props.onClose ? (
 					<DeleteButton ref={this.deleteButtonRef} onClick={this.props.onClose} />
 				) : null}
 				<div className="content" id="obojobo-draft--components--modal--modal--content">

@@ -9,18 +9,14 @@ const Module = props => {
 	let timeOutId
 	const [isMenuOpen, setMenuOpen] = useState(false)
 	const onCloseMenu = () => setMenuOpen(false)
-	const onToggleMenu = e => {
-		setMenuOpen(!isMenuOpen)
-		e.preventDefault() // block the event from bubbling out to the parent href
-	}
 	const handleClick = e => {
-		if (props.isMultiSelectMode) {
-			props.onSelect()
+		if (props.isMultiSelectMode || e.shiftKey || e.metaKey) {
+			props.onSelect(e)
 		} else {
-			onToggleMenu()
+			setMenuOpen(!isMenuOpen)
 		}
 
-		e.preventDefault();
+		e.preventDefault() // block the event from bubbling out to the parent href
 	}
 	// Handle keyboard focus
 	const onBlurHandler = () => {
@@ -45,6 +41,7 @@ const Module = props => {
 			onFocus={onFocusHandler}
 		>
 			<input
+				className={props.isMultiSelectMode ? 'is-multi-select-mode' : 'is-not-multi-select-mode'}
 				type="checkbox"
 				checked={props.isSelected}
 				onClick={props.onSelect}

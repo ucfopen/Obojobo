@@ -33,11 +33,16 @@
 		}
 	}
 
-	> input {
+	input {
 		position: absolute;
+		display: none;
 		z-index: 1;
 		left: 0.3em;
 		top: 0.3em;
+
+		&.is-multi-select-mode {
+			display: block;
+		}
 	}
 
 	&.is-open, &.is-selected {
@@ -60,6 +65,10 @@
 		}
 
 		.repository--module-icon--menu-control-button {
+			display: block;
+		}
+
+		input {
 			display: block;
 		}
 	}

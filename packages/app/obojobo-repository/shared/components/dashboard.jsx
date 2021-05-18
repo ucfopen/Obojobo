@@ -121,10 +121,11 @@ const getSortMethod = sortOrder => {
 function Dashboard(props) {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 	const [newModuleId, setNewModuleId] = useState(null)
+	const [lastSelectedIndex, setLastSelectedIndex] = useState(null)
 
 	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
 	const [selectStates, setSelectStates] = useState(moduleList.map(() => false))
-
+	
 	const handleCreateNewModule = useTutorial => {
 		props.createNewModule(useTutorial).then(data => {
 			data.payload.value.sort(getSortMethod('newest'))
@@ -132,11 +133,26 @@ function Dashboard(props) {
 		})
 	}
 
-	const handleSelectModule = (draft, index) => {
-		selectStates[index] = !selectStates[index]
-		setSelectStates([...selectStates])
+	const handleSelectModule = (event, draftId, index) => {
+		if (event.shiftKey) {
+			// Accommodates for group selecting backwards in the list and prevents duplicate selections
+			const [startIdx, endIdx] = lastSelectedIndex < index ? [lastSelectedIndex + 1, index + 1] : [index, lastSelectedIndex]
+			const idList = moduleList.map(m => m.draftId)
+			selectStates.fill(true, startIdx, endIdx)
+			props.selectModules(idList.slice(startIdx, endIdx))
+		} else {
+			selectStates[index] = !selectStates[index]
+			selectStates[index] ? props.selectModules([draftId]) : props.deselectModules([draftId])
+		}
 
-		selectStates[index] ? props.selectModule(draft) : props.deselectModule(draft)
+		setSelectStates([...selectStates])
+		setLastSelectedIndex(index)
+	}
+
+	const deselectAll = () => {
+		props.deselectModules(props.selectedModules)
+		selectStates.fill(false)
+		setSelectStates([...selectStates])
 	}
 
 	// Set a cookie when sortOrder changes on the client
@@ -149,9 +165,6 @@ function Dashboard(props) {
 			document.cookie = `sortOrder=${sortOrder}; expires=${expires.toUTCString()}; path=/dashboard`
 		}, [sortOrder])
 	}
-
-	// idea: SELECT_MODULES/DESELECT_MODULES in redux
-	//       takes array instead of single module
 
 	return (
 		<span id="dashboard-root">
@@ -174,7 +187,7 @@ function Dashboard(props) {
 								<Button className="multi-select secondary-button">Download JSON</Button>
 							</div>
 							<Button className="multi-select secondary-button dangerous-button">Delete All</Button>
-							<Button className="close-button">×</Button>
+							<Button className="close-button" onClick={deselectAll}>×</Button>
 						</div> :
 						<div className="repository--main-content--control-bar is-not-multi-select-mode">
 							<MultiButton title="New Module">
@@ -210,7 +223,7 @@ function Dashboard(props) {
 												isNew={draft.draftId === newModuleId}
 												isSelected={selectStates[index]}
 												isMultiSelectMode={props.multiSelectMode}
-												onSelect={() => handleSelectModule(draft, index)}
+												onSelect={e => handleSelectModule(e, draft.draftId, index)}
 												key={draft.draftId}
 												hasMenu={true}
 												{...draft} />
