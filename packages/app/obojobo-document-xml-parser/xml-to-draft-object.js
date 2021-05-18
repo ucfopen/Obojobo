@@ -21,7 +21,7 @@ const parsers = {
 	rubric: parseAssessmentRubric,
 	triggers: parseTriggers,
 	listStyles: parseListStyles,
-	vars: parseVars,
+	variables: parseVars,
 	units: parseUnits,
 	solution: solAttr => {
 		return solAttr.elements[0]

@@ -99,8 +99,8 @@ router
 					draftId: req.currentDocument.draftId,
 					isPreview: req.currentVisit.is_preview,
 					contentId: req.currentDocument.contentId,
-					payload: { visitId: req.currentVisit.id },
-					eventVersion: '1.0.0',
+					payload: { visitId: req.currentVisit.id, variables: variableValues },
+					eventVersion: '1.1.0',
 					visitId: req.currentVisit.id,
 					caliperPayload: createViewerSessionLoggedInEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },

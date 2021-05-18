@@ -141,6 +141,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	onSave() {
+		console.log('onSave!')
 		// Save the internal content to the editor state
 		const error =
 			this.props.saveContent(this.props.content, this.state.content) ||
@@ -156,6 +157,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	toggleOpen(event) {
+		console.log('to', this.state.isOpen, this.state.needsUpdate)
 		stopPropagation(event)
 
 		if (this.state.isOpen) {
@@ -196,6 +198,8 @@ class MoreInfoBox extends React.Component {
 		ModalUtil.hide()
 
 		if (!modalState) return // do not save changes
+
+		console.log('closed', { ...this.state.content, ...modalState })
 
 		this.setState(prevState => ({
 			content: { ...prevState.content, ...modalState },
@@ -321,7 +325,7 @@ class MoreInfoBox extends React.Component {
 											<span>{variables.map(variable => '$' + variable.name).join(', ')}</span>
 										) : null}
 									</span>
-									<Button className="trigger-button" onClick={this.showVariablesModal}>
+									<Button altAction className="trigger-button" onClick={this.showVariablesModal}>
 										✎ Edit
 									</Button>
 								</div>

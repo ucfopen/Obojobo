@@ -27,11 +27,11 @@ class DraftNode {
 	}
 
 	generateVariable(req, res, variableValues) {
-		if (!this.node.content.vars) {
+		if (!this.node.content.variables) {
 			return
 		}
 
-		this.node.content.vars.forEach(v => {
+		this.node.content.variables.forEach(v => {
 			variableValues.push({
 				id: this.node.id + ':' + v.name,
 				value: VariableGenerator.generateOne(v)

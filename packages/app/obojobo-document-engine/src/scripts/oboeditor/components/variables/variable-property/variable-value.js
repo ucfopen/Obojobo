@@ -53,7 +53,7 @@ const VariableValues = props => {
 		}
 	}
 
-	const onBurMax = e => {
+	const onBlurMax = e => {
 		const maxName = e.target.name
 		const maxValue = e.target.value
 
@@ -145,7 +145,7 @@ const VariableValues = props => {
 							name="valueMax"
 							value={variable.valueMax || ''}
 							onChange={onChange}
-							onBlur={onBurMax}
+							onBlur={onBlurMax}
 						/>
 					</label>
 					<label className="variable-values--group">
@@ -168,7 +168,7 @@ const VariableValues = props => {
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
 							onChange={onChange}
-							onBlur={onBurMax}
+							onBlur={onBlurMax}
 							aria-label="Enter the maximum number of decimal places"
 						/>
 					</label>
@@ -198,7 +198,7 @@ const VariableValues = props => {
 							name="sizeMax"
 							value={variable.sizeMax || ''}
 							onChange={onChange}
-							onBlur={onBurMax}
+							onBlur={onBlurMax}
 							aria-label="Enter the maximum size for the list"
 						/>
 					</label>
@@ -254,7 +254,7 @@ const VariableValues = props => {
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
 							onChange={onChange}
-							onBlur={onBurMax}
+							onBlur={onBlurMax}
 							aria-label="Enter the maximum number of decimal places for the variable"
 						/>
 					</label>
@@ -284,7 +284,7 @@ const VariableValues = props => {
 							name="sizeMax"
 							value={variable.sizeMax || ''}
 							onChange={onChange}
-							onBlur={onBurMax}
+							onBlur={onBlurMax}
 							aria-label="Enter the minimum list size for the variable"
 						/>
 					</label>
@@ -383,7 +383,7 @@ const VariableValues = props => {
 							name="chooseMax"
 							value={variable.chooseMax || ''}
 							onChange={onChange}
-							onBlur={onBurMax}
+							onBlur={onBlurMax}
 							aria-label="Enter the maximum number of values to choose from the list."
 						/>
 					</div>

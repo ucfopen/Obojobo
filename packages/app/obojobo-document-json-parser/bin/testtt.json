@@ -1,0 +1,68 @@
+{
+	"id": "m",
+	"type": "ObojoboDraft.Modules.Module",
+	"content": {
+		"title": "My Obojobo Module Title",
+		"vars": [{ "name": "x", "type": "static-value", "value": "1234" }]
+	},
+	"draftId": "fe092006-2bbe-4622-b2e4-2083a0e0a65d",
+	"contentId": "9ad9e419-6330-485f-b0a8-68672974a8ce",
+	"rev": "9ad9e419-6330-485f-b0a8-68672974a8ce",
+	"children": [
+		{
+			"id": "fc1983b7-fb61-4bd6-a77f-25a567a17b45",
+			"type": "ObojoboDraft.Sections.Content",
+			"content": {},
+			"children": [
+				{
+					"id": "814956ae-1596-42b5-8b70-2c90e2be5f33",
+					"type": "ObojoboDraft.Pages.Page",
+					"content": {
+						"title": "Example content page"
+					},
+					"children": [
+						{
+							"id": "c18c1b3f-e647-43e5-ac9c-1012a3a71d0b",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left"
+										},
+										"text": {
+											"value": "Your Title {{$x}} Here",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 1
+							},
+							"children": []
+						},
+						{
+							"id": "84094427-0918-4dad-8b17-bbeb78105dcf",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": "0",
+											"hangingIndent": "false"
+										},
+										"text": {
+											"value": "Your content here",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

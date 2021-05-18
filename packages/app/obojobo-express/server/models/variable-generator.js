@@ -181,6 +181,8 @@ class VariableGenerator {
 		// 	throw 'Missing required name property!'
 		// }
 
+		console.log('generateOne', def)
+
 		let value = null
 
 		switch (def.type) {

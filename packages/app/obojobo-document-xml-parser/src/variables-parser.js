@@ -5,7 +5,7 @@ const parseVars = el => {
 
 const parseVariable = el => {
 	switch (el.name) {
-		case 'v':
+		case 'var':
 			return parseV(el)
 	}
 }

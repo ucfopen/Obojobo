@@ -16,7 +16,7 @@ const typeList = [
 	PICK_LIST
 ]
 const mapTypeToString = {
-	[STATIC_VALUE]: 'Static Number of Text Value',
+	[STATIC_VALUE]: 'Static Number or Text Value',
 	[RANDOM_NUMBER]: 'Random Number',
 	[STATIC_LIST]: 'Static List',
 	[RANDOM_LIST]: 'Random List',

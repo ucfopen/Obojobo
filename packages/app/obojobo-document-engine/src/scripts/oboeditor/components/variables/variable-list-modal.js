@@ -7,19 +7,169 @@ import VariableProperty from './variable-property/variable-property'
 import NewVariable from './new-variable/new-variable'
 import VariableBlock from './variable-block'
 import { RANDOM_NUMBER, RANDOM_LIST } from './constants'
+import withoutUndefined from '../../../common/util/without-undefined'
+import { getParsedRange } from '../../../common/util/range-parsing'
 
 const { Button } = Common.components
 const { SimpleDialog } = Common.components.modal
 
+const rangesToIndividualValues = vars => {
+	if (!vars) {
+		return []
+	}
+
+	return vars.map(v => {
+		console.log('reading ', v)
+		switch (v.type) {
+			case 'random-list': {
+				const size = getParsedRange(v.size)
+				const decimalPlaces = getParsedRange(v.decimalPlaces)
+				const value = getParsedRange(v.value)
+
+				return {
+					name: v.name,
+					type: v.type,
+					sizeMin: size.min,
+					sizeMax: size.max,
+					decimalPlacesMin: decimalPlaces.min,
+					decimalPlacesMax: decimalPlaces.max,
+					valueMin: value.min,
+					valueMax: value.max,
+					unique: v.unique
+				}
+			}
+
+			case 'random-sequence': {
+				const size = getParsedRange(v.size)
+
+				return {
+					name: v.name,
+					type: v.type,
+					sizeMin: size.min,
+					sizeMax: size.max,
+					start: v.start,
+					step: v.step,
+					seriesType: v.seriesType
+				}
+			}
+
+			case 'random-number': {
+				const value = getParsedRange(v.value)
+				const decimalPlaces = getParsedRange(v.decimalPlaces)
+
+				return {
+					name: v.name,
+					type: v.type,
+					valueMin: value.min,
+					valueMax: value.max,
+					decimalPlacesMin: decimalPlaces.min,
+					decimalPlacesMax: decimalPlaces.max
+				}
+			}
+
+			case 'pick-list': {
+				const choose = getParsedRange(v.choose)
+
+				return {
+					name: v.name,
+					type: v.type,
+					chooseMin: choose.min,
+					chooseMax: choose.max,
+					value: v.value,
+					ordered: v.ordered
+				}
+			}
+
+			case 'pick-one':
+			case 'static-value':
+			case 'static-list': {
+				return {
+					name: v.name,
+					type: v.type,
+					value: v.value
+				}
+			}
+
+			default:
+				throw 'Unexpected type!'
+		}
+	})
+}
+
+const individualValuesToRanges = vars => {
+	if (!vars) {
+		return []
+	}
+
+	return vars.map(v => {
+		switch (v.type) {
+			case 'random-list': {
+				return {
+					name: v.name,
+					type: v.type,
+					size: `[${v.sizeMin},${v.sizeMax}]`,
+					decimalPlaces: `[${v.decimalPlacesMin},${v.decimalPlacesMax}]`,
+					value: `[${v.valueMin},${v.valueMax}]`,
+					unique: v.unique
+				}
+			}
+
+			case 'random-sequence': {
+				return {
+					name: v.name,
+					type: v.type,
+					size: `[${v.sizeMin},${v.sizeMax}]`,
+					start: v.start,
+					step: v.step,
+					seriesType: v.seriesType
+				}
+			}
+
+			case 'random-number': {
+				return {
+					name: v.name,
+					type: v.type,
+					value: `[${v.valueMin},${v.valueMax}]`,
+					decimalPlaces: `[${v.decimalPlacesMin},${v.decimalPlacesMax}]`
+				}
+			}
+
+			case 'pick-list': {
+				return {
+					name: v.name,
+					type: v.type,
+					choose: `[${v.chooseMin},${v.chooseMax}]`,
+					value: v.value,
+					ordered: v.ordered
+				}
+			}
+
+			case 'pick-one':
+			case 'static-value':
+			case 'static-list': {
+				return {
+					name: v.name,
+					type: v.type,
+					value: v.value
+				}
+			}
+
+			default:
+				throw 'Unexpected type!'
+		}
+	})
+}
+
 const VariableListModal = props => {
+	console.log('vlm', props)
 	const firstRef = useRef() // First element to fucus on when open the modal
 	const tabRef = useRef() // First element to focus on when open a variable
 
 	const [currSelect, setCurrSelect] = useState(0)
 	const [creatingVariable, setCreatingVariable] = useState(false)
-	const [variables, setVariables] = useState([...(props.content.variables || [])])
+	const [variables, setVariables] = useState(rangesToIndividualValues(props.content.variables))
 
-	const onClickVarible = index => {
+	const onClickVariable = index => {
 		setCreatingVariable(false)
 		setCurrSelect(index)
 		tabRef.current.focus() // Tab focus on the first element
@@ -111,7 +261,7 @@ const VariableListModal = props => {
 		<SimpleDialog
 			ok
 			title="Variables"
-			onConfirm={() => props.onClose({ variables })}
+			onConfirm={() => props.onClose({ variables: individualValuesToRanges(variables) })}
 			focusOnFirstElement={focusOnFirstElement}
 		>
 			<div className="variable-list-modal">
@@ -124,9 +274,9 @@ const VariableListModal = props => {
 							isSelected={index === currSelect}
 							creatingVariable={creatingVariable}
 							firstRef={index === 0 ? firstRef : null}
-							onClickVarible={onClickVarible}
+							onClickVariable={onClickVariable}
 							index={index}
-							onClick={() => onClickVarible(index)}
+							onClick={() => onClickVariable(index)}
 						/>
 					))}
 

@@ -18,6 +18,7 @@ class VariableStore extends Store {
 	}
 
 	_addMultiple(context, values) {
+		console.log('add mult', context, values, this)
 		values.forEach(({ id, value }) => {
 			const [ownerId, varName] = id.split(':')
 			this._add(context, ownerId, varName, value)
