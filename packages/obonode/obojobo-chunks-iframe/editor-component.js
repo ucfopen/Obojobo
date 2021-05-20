@@ -13,6 +13,8 @@ import {
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 
 import IframeProperties from './iframe-properties-modal'
+import NewIframeModal from './new-iframe-modal'
+import EditIframeModal from './edit-iframe-modal'
 
 import './editor-component.scss'
 
@@ -30,6 +32,7 @@ class IFrame extends React.Component {
 		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 		this.onCloseIFramePropertiesModal = this.onCloseIFramePropertiesModal.bind(this)
+		this.changeAdvancedProperties = this.changeAdvancedProperties.bind(this)
 	}
 
 	focusIframe() {
@@ -50,6 +53,7 @@ class IFrame extends React.Component {
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseIFramePropertiesModal}
 			/>
+			// <NewIframeModal />
 		)
 
 		freezeEditor(this.props.editor)
@@ -61,12 +65,45 @@ class IFrame extends React.Component {
 	}
 
 	changeProperties(content) {
+		// const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		// Transforms.setNodes(
+		// 	this.props.editor,
+		// 	{ content: { ...this.props.element.content, ...content } },
+		// 	{ at: path }
+		// )
+		// this.onCloseIFramePropertiesModal()
+		// ------
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
 			{ content: { ...this.props.element.content, ...content } },
 			{ at: path }
 		)
+
+		// Closes New Iframe modal
+		this.onCloseIFramePropertiesModal()
+
+		// Opens Edit Iframe modal
+		ModalUtil.show(
+			<EditIframeModal
+				content={this.props.element.content}
+				onConfirm={this.changeAdvancedProperties}
+				onCancel={this.onCloseIFramePropertiesModal}
+			/>
+		)
+
+		freezeEditor(this.props.editor)
+	}
+
+	changeAdvancedProperties(content) {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...content } },
+			{ at: path }
+		)
+
+		// Closes New Iframe modal
 		this.onCloseIFramePropertiesModal()
 	}
 
