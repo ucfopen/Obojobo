@@ -22,6 +22,7 @@ exports[`ActionButton ActionButton component with label 1`] = `
         contentEditable={false}
         onClick={[Function]}
         tabIndex="0"
+        type="button"
       >
         Example Label
       </button>
@@ -52,6 +53,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
         contentEditable={false}
         onClick={[Function]}
         tabIndex="0"
+        type="button"
       >
         <span
           className="obo-text"

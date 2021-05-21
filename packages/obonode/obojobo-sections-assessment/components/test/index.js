@@ -33,11 +33,15 @@ class AssessmentTest extends React.Component {
 	render() {
 		const Component = this.props.model.getComponentClass()
 
-		let submitButtonText = 'Loading ...'
-		if (!this.props.isAttemptComplete) {
-			submitButtonText = 'Submit (Not all questions have been answered)'
-		} else if (!this.props.isFetching) {
-			submitButtonText = 'Submit'
+		let buttonLabel
+		let buttonAriaLabel
+		if (this.props.isAttemptSubmitting) {
+			buttonLabel = buttonAriaLabel = 'Loading ...'
+		} else if (!this.props.isAttemptReadyToSubmit) {
+			buttonLabel = 'Submit'
+			buttonAriaLabel = 'Submit (Not all questions have been saved)'
+		} else {
+			buttonLabel = buttonAriaLabel = 'Submit'
 		}
 
 		return (
@@ -45,10 +49,16 @@ class AssessmentTest extends React.Component {
 				<Component model={this.props.model} moduleData={this.props.moduleData} />
 				<div className="submit-button">
 					<Button
-						disabled={this.props.isFetching}
+						ariaLabel={buttonAriaLabel}
+						disabled={this.props.isAttemptSubmitting}
 						onClick={this.props.onClickSubmit}
-						value={submitButtonText}
+						value={buttonLabel}
 					/>
+					{!this.props.isAttemptReadyToSubmit ? (
+						<span aria-hidden className="incomplete-notice">
+							(Not all questions have been saved)
+						</span>
+					) : null}
 				</div>
 			</div>
 		)

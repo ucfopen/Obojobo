@@ -1,0 +1,164 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--numeric-assessment {
+	$color-border: transparentize($color-shadow, 0.25);
+
+	.obojobo-draft--chunks--numeric-assessment--numeric-feedback {
+		border-radius: 0.25em;
+		margin-right: 1em;
+		background: rgba(255, 255, 255, 0.5);
+		margin-top: 1em;
+	}
+
+	> .input-section {
+		> .input-container {
+			display: flex;
+
+			> .numeric-assessment--input {
+				@include text-input();
+
+				width: 11.3em;
+
+				&:disabled {
+					background: transparentize($color-bg, 0.3);
+					border: 1px solid $color-transparent;
+				}
+			}
+
+			> .units {
+				display: inline-block;
+				white-space: pre;
+				line-height: 1.9em;
+				vertical-align: middle;
+				margin-left: 0.5em;
+			}
+
+			> .matching-correct-answer {
+				color: $color-correct;
+				font-size: 0.8em;
+				font-family: $font-default;
+				display: inline-block;
+				white-space: nowrap;
+				vertical-align: middle;
+				margin-left: 1em;
+				line-height: 2.4em;
+
+				> .value {
+					font-family: $font-monospace;
+				}
+			}
+		}
+
+		> .review {
+			> .correct-answers {
+				margin-top: 2em;
+				font-size: 0.8em;
+				font-family: $font-default;
+
+				h2 {
+					color: $color-text;
+					font-size: 1em;
+					font-weight: bold;
+				}
+
+				ul {
+					list-style-position: inside;
+					padding: 0 1em;
+				}
+
+				.value {
+					font-family: $font-monospace;
+				}
+			}
+
+			> .no-correct-answers {
+				margin-top: 1em;
+				display: inline-block;
+			}
+
+			> .obojobo-draft--components--flag {
+				position: absolute;
+				left: -5.3em;
+				top: 1.1em;
+
+				&.is-size-small {
+					left: -1.9em;
+					top: 0.3em;
+				}
+			}
+		}
+	}
+
+	&.is-long-response {
+		> .input-section > .input-container > .numeric-assessment--input {
+			width: 100%;
+		}
+	}
+
+	&.is-mode-assessment {
+		/* prettier-ignore */
+		> .input-section > .input-container > .obojobo-draft--chunks--numeric-assessment--input-more-info > .obojobo-draft--components--more-info-button > .info {
+			top: -140%;
+
+			&::before {
+				top: 71%;
+			}
+		}
+	}
+
+	&.is-correct {
+		background: transparentize($color-correct, 0.9);
+
+		&.is-mode-practice::before {
+			content: '✔';
+			position: absolute;
+			top: 0.75em; //0.65em;
+			display: block;
+			color: $color-correct;
+			font-size: 2.5em;
+			transform: translate(-50%, -50%);
+			left: 0.6em;
+			animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+
+			@include mq($until: desktop) {
+				font-size: 1.5em;
+				top: 1.3em;
+				left: 0.8em;
+			}
+
+			@include mq($until: tablet) {
+				font-size: 1.2em;
+				top: 0.6em;
+				left: 0.7em;
+			}
+		}
+	}
+
+	&.is-not-correct {
+		background: transparentize($color-incorrect, 0.9);
+
+		&.is-mode-practice::before {
+			content: '✖';
+			position: absolute;
+			top: 0.75em; //0.65em;
+			display: block;
+			color: $color-incorrect;
+			font-size: 2.5em;
+			transform: translate(-50%, -50%);
+			left: 0.6em;
+			animation: obojobo-draft--animation--fadein 0.4s;
+
+			@include mq($until: desktop) {
+				font-size: 1.5em;
+				top: 1.3em;
+				left: 0.75em;
+			}
+
+			@include mq($until: tablet) {
+				font-size: 1.2em;
+				top: 0.5em;
+				left: 0.5em;
+			}
+		}
+	}
+}

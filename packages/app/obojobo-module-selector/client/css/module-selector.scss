@@ -327,7 +327,7 @@ header {
 }
 
 .section.loading {
-	background: white url('./throbber.gif') center center no-repeat;
+	background: white url('./spinner.gif') center center no-repeat;
 }
 
 .section.my-modules {
@@ -529,7 +529,7 @@ header {
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: url('./throbber-small.gif') center center no-repeat;
+	background: url('./spinner-small.gif') center center no-repeat;
 	z-index: 100;
 	display: none;
 }

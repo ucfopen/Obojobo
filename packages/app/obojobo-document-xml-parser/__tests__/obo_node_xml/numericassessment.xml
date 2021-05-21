@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+	<Module>
+		<NumericAssessment>
+			<units>
+				<textGroup>
+					<t>
+						<latex>m/s^2</latex>
+					</t>
+				</textGroup>
+			</units>
+			<p>The answer is 1</p>
+			<NumericChoice score="100">
+				<NumericAnswer answer="1" requirement="exact" />
+				<NumericFeedback>
+					<p>Feedback</p>
+				</NumericFeedback>
+			</NumericChoice>
+		</NumericAssessment>
+	</Module>
+</ObjoboDraftDoc>

@@ -3,11 +3,15 @@
 .oboeditor-component {
 	position: relative;
 
+	&.is-selected {
+		z-index: $z-index-above-content;
+	}
+
 	.component-toolbar {
 		position: absolute;
 		height: 100%;
 		top: 0;
-		left: 1em;
+		left: 1.1em;
 		border: 2px dotted $color-shadow;
 		width: 0.1em;
 		user-select: none;

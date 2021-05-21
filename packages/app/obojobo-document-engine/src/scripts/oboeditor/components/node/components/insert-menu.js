@@ -15,6 +15,7 @@ class InsertMenu extends React.PureComponent {
 
 		this.itemRefs = {}
 		this.menu = []
+		this.menuWithoutSeparators = []
 		this.timeOutId = null
 		this.openMenu = this.openMenu.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
@@ -36,12 +37,16 @@ class InsertMenu extends React.PureComponent {
 		// accessed via up and down arrows
 		this.menu = []
 		this.props.dropOptions.forEach(item => {
+			if (!item.separator) {
+				this.menuWithoutSeparators.push(this.itemRefs[item.name])
+			}
+
 			this.menu.push(this.itemRefs[item.name])
 		})
 
 		// When the menu is open, focus on the current dropdown item
 		if (this.state.isOpen || this.props.open) {
-			this.menu[this.state.currentFocus].focus()
+			this.menuWithoutSeparators[this.state.currentFocus].focus()
 		}
 	}
 
@@ -62,7 +67,7 @@ class InsertMenu extends React.PureComponent {
 			case 'ArrowDown':
 				event.preventDefault()
 				this.setState(currentState => ({
-					currentFocus: (currentState.currentFocus + 1) % this.menu.length
+					currentFocus: (currentState.currentFocus + 1) % this.menuWithoutSeparators.length
 				}))
 				break
 
@@ -73,7 +78,9 @@ class InsertMenu extends React.PureComponent {
 			case 'ArrowUp':
 				event.preventDefault()
 				this.setState(currentState => ({
-					currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
+					currentFocus:
+						(currentState.currentFocus + this.menuWithoutSeparators.length - 1) %
+						this.menuWithoutSeparators.length
 				}))
 				break
 		}
@@ -95,7 +102,11 @@ class InsertMenu extends React.PureComponent {
 		clearTimeout(this.timeOutId)
 	}
 
-	renderItem(item) {
+	renderItem(item, index) {
+		if (item.separator) {
+			return <div key={index} className="separator"></div>
+		}
+
 		const Icon = item.icon
 		return (
 			<div key={item.name} className="insert-button">
@@ -132,7 +143,7 @@ class InsertMenu extends React.PureComponent {
 				<button className={'drop-icon'} onClick={this.openMenu} tabIndex="-1">
 					{this.props.icon}
 				</button>
-				{this.props.dropOptions.map(item => this.renderItem(item))}
+				{this.props.dropOptions.map((item, index) => this.renderItem(item, index))}
 			</div>
 		)
 	}

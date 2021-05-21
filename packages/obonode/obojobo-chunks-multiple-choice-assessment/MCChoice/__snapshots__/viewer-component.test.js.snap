@@ -1,65 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCChoice viewer-component MCChoice component 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-mockMode"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={false}
     checked={false}
     disabled={false}
-    name="id"
+    name="mock-parent-id"
     onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -67,73 +33,65 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice component in review mode - chosen correctly 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-review"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={true}
     checked={true}
-    disabled={true}
-    name="id"
+    disabled={false}
+    name="mock-parent-id"
     onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
-      <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-chosen-correctly"
-      >
-        <p>
-          Your Answer (Correct)
-        </p>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -141,73 +99,776 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice component in review mode - could have chosen 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-review"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    A correct response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    An incorrect response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    A correct response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    An incorrect response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={false}
     checked={false}
     disabled={true}
-    name="id"
+    name="mock-parent-id"
     onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
       <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-could-have-chosen"
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
       >
         <p>
           Also Correct Answer
         </p>
       </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -215,499 +876,72 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice component in review mode - should have chosen 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-review"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={false}
     checked={false}
     disabled={true}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
-  />
-  <div
-    className="children"
-  >
-    <div>
-      <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-could-have-chosen"
-      >
-        <p>
-          Also Correct Answer
-        </p>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span />
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice component in review mode - should not have chosen 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-unchosen-correctly is-mode-review"
-  data-focussed={false}
-  data-id="choice2"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice2"
-  tabIndex={-1}
->
-  <input
-    aria-checked={false}
-    checked={false}
-    disabled={true}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice2"
-  />
-  <div
-    className="children"
-  >
-    <div>
-      <div />
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span />
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice component in review mode - survey question - this item NOT selected 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-unchosen-correctly is-mode-review"
-  data-focussed={false}
-  data-id="choice2"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice2"
-  tabIndex={-1}
->
-  <input
-    aria-checked={false}
-    checked={false}
-    disabled={true}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice2"
-  />
-  <div
-    className="children"
-  >
-    <div>
-      <div />
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span />
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice component in review mode - survey question - this item selected 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct is-type-chosen-survey is-mode-review"
-  data-focussed={false}
-  data-id="choice1"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
-  tabIndex={-1}
->
-  <input
-    aria-checked={true}
-    checked={true}
-    disabled={true}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
-  />
-  <div
-    className="children"
-  >
-    <div>
-      <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-chosen-survey"
-      >
-        <p>
-          Your Response
-        </p>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span />
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice component in review mode - unchosen correctly 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-unchosen-correctly is-mode-review"
-  data-focussed={false}
-  data-id="choice2"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice2"
-  tabIndex={-1}
->
-  <input
-    aria-checked={false}
-    checked={false}
-    disabled={true}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice2"
-  />
-  <div
-    className="children"
-  >
-    <div>
-      <div />
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span />
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice component in review mode with no score data 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-should-have-chosen is-mode-review"
-  data-focussed={false}
-  data-id="choice1"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
-  tabIndex={-1}
->
-  <input
-    aria-checked={false}
-    checked={false}
-    disabled={true}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
-  />
-  <div
-    className="children"
-  >
-    <div>
-      <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-should-have-chosen"
-      >
-        <p>
-          Correct Answer
-        </p>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span />
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice component pick-all in review mode - chosen correctly 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-review"
-  data-focussed={false}
-  data-id="choice1"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
-  tabIndex={-1}
->
-  <input
-    aria-checked={true}
-    checked={true}
-    disabled={true}
-    name="id"
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice1"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
       <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-chosen-correctly"
+        className="obojobo-draft--components--flag is-type-chosen-correctly"
       >
         <p>
           Your Answer (Correct)
         </p>
       </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -715,147 +949,39 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice component pick-all in review mode - should have chosen 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-should-have-chosen is-mode-review"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
-  tabIndex={-1}
->
-  <input
-    aria-checked={false}
-    checked={false}
-    disabled={true}
-    name="id"
-    onChange={[Function]}
-    role="checkbox"
-    type="checkbox"
-    value="choice1"
-  />
-  <div
-    className="children"
-  >
-    <div>
-      <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-should-have-chosen"
-      >
-        <p>
-          Correct Answer
-        </p>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span />
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice component pick-all in review mode - should not have chosen 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-should-not-have-chosen is-mode-review"
-  data-focussed={false}
-  data-id="choice2"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice2"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={true}
     checked={true}
     disabled={true}
-    name="id"
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice2"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
       <div
-        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-should-not-have-chosen"
+        className="obojobo-draft--components--flag is-type-should-not-have-chosen"
       >
         <p>
           Your Answer (Incorrect)
         </p>
       </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -863,67 +989,39 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice component pick-all in review mode - unchosen correctly 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-unchosen-correctly is-mode-review"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
   data-focussed={false}
-  data-id="choice2"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice2"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={false}
     checked={false}
     disabled={true}
-    name="id"
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice2"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
-      <div />
       <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer"
-        tabIndex={-1}
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
       >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+        <p>
+          Also Correct Answer
+        </p>
+      </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -931,66 +1029,32 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-undefined"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={false}
     checked={false}
-    disabled={false}
-    name="id"
+    disabled={true}
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice1"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -998,66 +1062,39 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-correct 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-undefined"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={false}
     checked={false}
-    disabled={false}
-    name="id"
+    disabled={true}
+    name="mock-parent-id"
     onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <div
     className="children"
   >
     <div>
       <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
       >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+        <p>
+          Also Correct Answer
+        </p>
+      </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <span />
@@ -1065,261 +1102,58 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice renders empty div if error is thrown 1`] = `<div />`;
-
-exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not Pick All, Correct) 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-undefined"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
-    aria-checked={true}
-    checked={true}
-    disabled={false}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice1"
-  />
-  <span
-    className="for-screen-reader-only"
-  >
-    Your correct response:
-  </span>
-  <div
-    className="children"
-  >
-    <div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      className="feedback"
-    >
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-        data-focussed={false}
-        data-id="choice1-feedback"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-        id="obo-choice1-feedback"
-        tabIndex={-1}
-      >
-        <span
-          className="for-screen-reader-only"
-        >
-          . Feedback for this answer choice:
-        </span>
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-feedback-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-feedback-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not Pick All, Incorrect) 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct is-type-should-not-have-chosen is-mode-undefined"
-  data-focussed={false}
-  data-id="choice2"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice2"
-  tabIndex={-1}
->
-  <input
-    aria-checked={true}
-    checked={true}
-    disabled={false}
-    name="id"
-    onChange={[Function]}
-    role="radio"
-    type="radio"
-    value="choice2"
-  />
-  <span
-    className="for-screen-reader-only"
-  >
-    Your incorrect response:
-  </span>
-  <div
-    className="children"
-  >
-    <div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      className="feedback"
-    >
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
-        data-focussed={false}
-        data-id="choice2-feedback"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-        id="obo-choice2-feedback"
-        tabIndex={-1}
-      >
-        <span
-          className="for-screen-reader-only"
-        >
-          . Feedback for this answer choice:
-        </span>
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-feedback-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-feedback-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</label>
-`;
-
-exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick All, Correct) 1`] = `
-<label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-undefined"
-  data-focussed={false}
-  data-id="choice1"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
-  tabIndex={-1}
->
-  <input
-    aria-checked={true}
-    checked={true}
-    disabled={false}
-    name="id"
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice1"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1331,112 +1165,46 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
   >
     <div>
       <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
+        className="obojobo-draft--components--flag is-type-chosen-correctly"
       >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+        <p>
+          Your Answer (Correct)
+        </p>
+      </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <div
       className="feedback"
     >
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-        data-focussed={false}
-        data-id="choice1-feedback"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-        id="obo-choice1-feedback"
-        tabIndex={-1}
-      >
-        <span
-          className="for-screen-reader-only"
-        >
-          . Feedback for this answer choice:
-        </span>
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-feedback-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-feedback-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCFeedback
       </div>
     </div>
   </div>
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick All, Incorrect) 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct is-type-should-not-have-chosen is-mode-undefined"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review"
   data-focussed={false}
-  data-id="choice2"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice2"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={true}
     checked={true}
-    disabled={false}
-    name="id"
+    disabled={true}
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice2"
+    value="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1448,112 +1216,383 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
   >
     <div>
       <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer"
-        tabIndex={-1}
+        className="obojobo-draft--components--flag is-type-should-not-have-chosen"
       >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+        <p>
+          Your Answer (Incorrect)
+        </p>
+      </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <div
       className="feedback"
     >
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
-        data-focussed={false}
-        data-id="choice2-feedback"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-        id="obo-choice2-feedback"
-        tabIndex={-1}
-      >
-        <span
-          className="for-screen-reader-only"
-        >
-          . Feedback for this answer choice:
-        </span>
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-feedback-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-feedback-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCFeedback
       </div>
     </div>
   </div>
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice that is selected and submitted - survey question 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct is-type-chosen-survey is-mode-undefined"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
+      >
+        <p>
+          Also Correct Answer
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="default",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={true}
     checked={true}
     disabled={false}
-    name="id"
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice1"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1564,113 +1603,897 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted - sur
     className="children"
   >
     <div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <div
       className="feedback"
     >
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-        data-focussed={false}
-        data-id="choice1-feedback"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-        id="obo-choice1-feedback"
-        tabIndex={-1}
-      >
-        <span
-          className="for-screen-reader-only"
-        >
-          . Feedback for this answer choice:
-        </span>
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-feedback-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-feedback-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCFeedback
       </div>
     </div>
   </div>
 </label>
 `;
 
-exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] = `
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 2`] = `
 <label
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-undefined"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
   data-focussed={false}
-  data-id="choice1"
+  data-id="mock-id"
   data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-  id="obo-choice1"
+  data-type="mock-id"
+  id="mock-dom-id"
   tabIndex={-1}
 >
   <input
     aria-checked={true}
     checked={true}
     disabled={false}
-    name="id"
+    name="mock-parent-id"
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="choice1"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-survey"
+      >
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-survey"
+      >
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    An incorrect response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-survey"
+      >
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1682,89 +2505,2681 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] =
   >
     <div>
       <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer"
-        tabIndex={-1}
+        className="obojobo-draft--components--flag is-type-chosen-survey"
       >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
       </div>
     </div>
     <div
       className="feedback"
     >
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-        data-focussed={false}
-        data-id="choice1-feedback"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-        id="obo-choice1-feedback"
-        tabIndex={-1}
-      >
-        <span
-          className="for-screen-reader-only"
-        >
-          . Feedback for this answer choice:
-        </span>
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-feedback-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-feedback-text"
-          tabIndex={-1}
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="obo-text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
+      <div>
+        MCFeedback
       </div>
     </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-all",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your correct response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your incorrect response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your correct response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your incorrect response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
+      >
+        <p>
+          Also Correct Answer
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-correctly"
+      >
+        <p>
+          Your Answer (Correct)
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+      >
+        <p>
+          Your Answer (Incorrect)
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
+      >
+        <p>
+          Also Correct Answer
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
+      >
+        <p>
+          Also Correct Answer
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your correct response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-correctly"
+      >
+        <p>
+          Your Answer (Correct)
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your incorrect response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+      >
+        <p>
+          Your Answer (Incorrect)
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-could-have-chosen"
+      >
+        <p>
+          Also Correct Answer
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="default",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="assessment",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="practice",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={false}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-survey"
+      >
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-survey"
+      >
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="false",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your incorrect response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-survey"
+      >
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="{"ids": [Array]}") = "is-selected is-correct-choice is-type-chosen-survey is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct-choice is-type-chosen-survey is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your correct response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="obojobo-draft--components--flag is-type-chosen-survey"
+      >
+        <p>
+          Your Response
+        </p>
+      </div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div>
+        MCFeedback
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
+  </div>
+</label>
+`;
+
+exports[`MCChoice viewer-component construct(responseType="pick-one",questionType="survey",mode="review",questionSubmitted="true",score="$score",response="null") = "is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review" 2`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-dom-id"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    disabled={true}
+    name="mock-parent-id"
+    onChange={[Function]}
+    role="radio"
+    type="radio"
+    value="mock-id"
+  />
+  <div
+    className="children"
+  >
+    <div>
+      <div>
+        MCAnswer
+      </div>
+    </div>
+    <span />
   </div>
 </label>
 `;

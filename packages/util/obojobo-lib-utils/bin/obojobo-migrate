@@ -1,16 +1,23 @@
 #!/usr/bin/env node
-/*
+/* =============================================================
+WHAT
+Run database migrations from all obojobo-* packages. Use db-migrate
+docs for some options.
 
-This script is meant to be used as a proxy to db-migrate commands
-It consolidate all the migration files that have been registered
-by any obojobo-* module currently installed (see obojobo-express/index.js)
+WHY
+This script is a proxy to db-migrate commands but it consolidates all
+the migration files that have been registered by any obojobo-* module
+currently installed (ex: obojobo-express/index.js).  Any package can
+add migrations so this is needed to gather them together.
 
-running: `obojobo-migrate up`
+HOW
+yarn run obojobo-migrate up
 will execute: `db-migrate up --config /path/to/obojobo-express/config/db.json --migrations-dir /path/to/tmp/dir`
 
-running: `obojobo-migrate create add-a-table`
+yarn run obojobo-migrate create add-a-table
 will execute: `db-migrate create add-a-table --config /path/to/obojobo-express/config/db.json --migrations-dir /path/to/this/packages/migrations`
- */
+============================================================= */
+
 
 const path = require('path')
 const { getAllOboNodeRegistryDirsByType } = require('../index')

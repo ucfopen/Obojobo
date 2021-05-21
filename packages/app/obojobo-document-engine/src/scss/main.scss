@@ -25,6 +25,8 @@ body {
 	transition: opacity $duration-animation-default * 2;
 	height: 100%;
 	overflow: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
 	&.is-loaded {
 		opacity: 1;
@@ -44,9 +46,18 @@ body {
 	&.is-loaded {
 		opacity: 1;
 	}
+
+	> .root > .obojobo-draft--components--spinner {
+		width: 2em;
+		height: 2em;
+		left: 50%;
+		top: 10vw;
+		transform: translate(-50%, 0);
+		opacity: 0.3;
+	}
 }
 
-#viewer-app-loading {
+#app-loading {
 	background: $color-bg;
 	box-sizing: border-box;
 	width: 14em;
@@ -89,8 +100,8 @@ body {
 		word-break: break-word;
 	}
 
-	> .throbber {
-		@keyframes main-throbber-rotating {
+	> .spinner {
+		@keyframes main-spinner-rotating {
 			from {
 				transform: translate(-50%, 0) rotate(0deg);
 			}
@@ -107,7 +118,7 @@ body {
 		left: 50%;
 		top: 1.25em;
 		opacity: 0.3;
-		animation: main-throbber-rotating 1.5s linear infinite;
+		animation: main-spinner-rotating 1.5s linear infinite;
 
 		> svg {
 			width: 1em;
