@@ -61,7 +61,15 @@
 			}
 
 			figcaption {
-				@include pad(1.25);
+				@include pad(1 / 0.8);
+
+				@include mq($until: desktop) {
+					@include pad(0.75 / 0.8);
+				}
+
+				@include mq($until: tablet) {
+					@include pad(0.3 / 0.8);
+				}
 
 				margin: auto;
 			}
