@@ -121,11 +121,11 @@ const getSortMethod = sortOrder => {
 function Dashboard(props) {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 	const [newModuleId, setNewModuleId] = useState(null)
-	const [lastSelectedIndex, setLastSelectedIndex] = useState(null)
+	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
 
 	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
 	const [selectStates, setSelectStates] = useState(moduleList.map(() => false))
-	
+
 	const handleCreateNewModule = useTutorial => {
 		props.createNewModule(useTutorial).then(data => {
 			data.payload.value.sort(getSortMethod('newest'))
@@ -134,12 +134,15 @@ function Dashboard(props) {
 	}
 
 	const handleSelectModule = (event, draftId, index) => {
-		if (event.shiftKey) {
+		if (event.shiftKey && lastSelectedIndex !== index) {
 			// Accommodates for group selecting backwards in the list and prevents duplicate selections
-			const [startIdx, endIdx] = lastSelectedIndex < index ? [lastSelectedIndex + 1, index + 1] : [index, lastSelectedIndex]
+			const [startIdx, endIdx] =
+				lastSelectedIndex < index ? [lastSelectedIndex, index + 1] : [index, lastSelectedIndex + 1]
 			const idList = moduleList.map(m => m.draftId)
 			selectStates.fill(true, startIdx, endIdx)
-			props.selectModules(idList.slice(startIdx, endIdx))
+			props.selectModules(
+				idList.slice(startIdx, endIdx).filter(id => !props.selectedModules.includes(id))
+			)
 		} else {
 			selectStates[index] = !selectStates[index]
 			selectStates[index] ? props.selectModules([draftId]) : props.deselectModules([draftId])
@@ -151,8 +154,14 @@ function Dashboard(props) {
 
 	const deselectAll = () => {
 		props.deselectModules(props.selectedModules)
-		selectStates.fill(false)
-		setSelectStates([...selectStates])
+		setSelectStates([...selectStates.fill(false)])
+	}
+
+	const deleteModules = draftIds => {
+		const response = confirm(`Delete ${draftIds.length} selected modules?`) //eslint-disable-line no-alert, no-undef
+		if (!response) return
+		props.bulkDeleteModules(draftIds)
+		setSelectStates([...selectStates.fill(false)])
 	}
 
 	// Set a cookie when sortOrder changes on the client
@@ -172,23 +181,25 @@ function Dashboard(props) {
 				userId={props.currentUser.id}
 				avatarUrl={props.currentUser.avatarUrl}
 				displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
-				noticeCount={0} />
+				noticeCount={0}
+			/>
 			<RepositoryBanner title={props.title} className="default-bg" facts={props.facts} />
 			<div className="repository--section-wrapper">
 				<section className="repository--main-content">
-					{props.multiSelectMode ? 
+					{props.multiSelectMode ? (
 						<div className="repository--main-content--control-bar is-multi-select-mode">
-							<span className="stuff">{getModuleCount(props.selectedModules)}</span>
-							<div>
-								<Button className="multi-select secondary-button">Share...</Button>
-							</div>
-							<div>
-								<Button className="multi-select secondary-button">Download XML</Button>
-								<Button className="multi-select secondary-button">Download JSON</Button>
-							</div>
-							<Button className="multi-select secondary-button dangerous-button">Delete All</Button>
-							<Button className="close-button" onClick={deselectAll}>×</Button>
-						</div> :
+							<span className="module-count">{getModuleCount(props.selectedModules)}</span>
+							<Button
+								className="multi-select secondary-button dangerous-button"
+								onClick={() => deleteModules(props.selectedModules)}
+							>
+								Delete All
+							</Button>
+							<Button className="close-button" onClick={deselectAll}>
+								×
+							</Button>
+						</div>
+					) : (
 						<div className="repository--main-content--control-bar is-not-multi-select-mode">
 							<MultiButton title="New Module">
 								<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
@@ -198,9 +209,10 @@ function Dashboard(props) {
 							<Search
 								value={props.moduleSearchString}
 								placeholder="Filter..."
-								onChange={props.filterModules} />
+								onChange={props.filterModules}
+							/>
 						</div>
-					}
+					)}
 					<div className="repository--main-content--title">
 						<span>My Modules</span>
 						<div className="repository--main-content--sort">
@@ -216,18 +228,17 @@ function Dashboard(props) {
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
 								<div className="repository--item-list--collection--item--multi-wrapper">
-									{moduleList
-										.sort(getSortMethod(sortOrder))
-										.map((draft, index) => (
-											<Module
-												isNew={draft.draftId === newModuleId}
-												isSelected={selectStates[index]}
-												isMultiSelectMode={props.multiSelectMode}
-												onSelect={e => handleSelectModule(e, draft.draftId, index)}
-												key={draft.draftId}
-												hasMenu={true}
-												{...draft} />
-										))}
+									{moduleList.sort(getSortMethod(sortOrder)).map((draft, index) => (
+										<Module
+											isNew={draft.draftId === newModuleId}
+											isSelected={selectStates[index]}
+											isMultiSelectMode={props.multiSelectMode}
+											onSelect={e => handleSelectModule(e, draft.draftId, index)}
+											key={draft.draftId}
+											hasMenu={true}
+											{...draft}
+										/>
+									))}
 								</div>
 							</div>
 						</div>

@@ -18,6 +18,7 @@ import { create, act } from 'react-test-renderer'
 
 import Dashboard from './dashboard'
 import MultiButton from './multi-button'
+import Button from './button'
 import Module from './module'
 import Search from './search'
 
@@ -100,6 +101,8 @@ describe('Dashboard', () => {
 			draftPermissions: {},
 			myCollections: [],
 			myModules: [],
+			selectedModules: [],
+			multiSelectMode: false,
 			sortOrder: 'alphabetical',
 			moduleCount: 0,
 			moduleSearchString: '',
@@ -144,7 +147,8 @@ describe('Dashboard', () => {
 		//numerous changes to check for within the main content area
 		const mainContent = component.root.findByProps({ className: 'repository--main-content' })
 		//some in the control bar
-		const expectedControlBarClasses = 'repository--main-content--control-bar'
+		const expectedControlBarClasses =
+			'repository--main-content--control-bar is-not-multi-select-mode'
 		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
 
 		expect(controlBar.children.length).toBe(2)
@@ -205,6 +209,28 @@ describe('Dashboard', () => {
 		expect(component.root.findAllByType(ReactModal).length).toBe(0)
 	}
 
+	const expectMultiSelectDashboardRender = () => {
+		dashboardProps.myModules = [...standardMyModules]
+		dashboardProps.multiSelectMode = true
+		const reusableComponent = <Dashboard {...dashboardProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
+		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+
+		expect(controlBar.children.length).toBe(3)
+		expect(component.root.findAllByType(Search).length).toBe(0)
+
+		expectMultiSelectOptions(controlBar)
+
+		const moduleComponents = component.root.findAllByType(Module)
+		expect(moduleComponents.length).toBe(5)
+		expect(moduleComponents[0].props.isMultiSelectMode).toBe(true)
+	}
+
 	const expectNormalModulesAreaClassesWithTitle = (mainContent, title) => {
 		const expectedModulesTitleClasses = 'repository--main-content--title'
 		expect(mainContent.children[1].props.className).toBe(expectedModulesTitleClasses)
@@ -218,6 +244,12 @@ describe('Dashboard', () => {
 		expect(multiButton.children[0].children[0].children[0]).toBe('New Module')
 		expect(multiButton.children[1].children[0].children[0]).toBe('New Tutorial')
 		expect(multiButton.children[2].children[0].children[0]).toBe('Upload...')
+	}
+
+	const expectMultiSelectOptions = controlBar => {
+		expect(controlBar.children[0].props.className).toBe('module-count')
+		expect(controlBar.children[1].children[0].children[0]).toBe('Delete All')
+		expect(controlBar.children[2].children[0].children[0]).toBe('×')
 	}
 
 	const expectCookiePropForPath = (prop, value, path) => {
@@ -239,6 +271,10 @@ describe('Dashboard', () => {
 
 	test('renders with default props', () => {
 		expectDashboardRender()
+	})
+
+	test('renders with multiSelectMode=true', () => {
+		expectMultiSelectDashboardRender()
 	})
 
 	test('renders filtered modules properly', () => {
@@ -345,6 +381,110 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.importModuleFile).toHaveBeenCalledTimes(1)
 		dashboardProps.importModuleFile.mockReset()
+	})
+
+	test('"Delete All" and "Deselect All" buttons call functions appropriately', async () => {
+		dashboardProps.bulkDeleteModules = jest.fn()
+		dashboardProps.deselectModules = jest.fn()
+		dashboardProps.selectedModules = ['mockId2']
+		dashboardProps.multiSelectMode = true
+		const component = create(<Dashboard {...dashboardProps} />)
+
+		const deleteAllButton = component.root.findAllByType(Button)[0]
+		expect(deleteAllButton.children[0].children[0]).toBe('Delete All')
+
+		window.confirm = jest.fn()
+		window.confirm.mockReturnValueOnce(false)
+		await act(async () => {
+			const mockClickEvent = {
+				preventDefault: jest.fn()
+			}
+			deleteAllButton.props.onClick(mockClickEvent)
+		})
+		expect(dashboardProps.bulkDeleteModules).not.toHaveBeenCalled()
+
+		window.confirm.mockReturnValueOnce(true)
+		await act(async () => {
+			const mockClickEvent = {
+				preventDefault: jest.fn()
+			}
+			deleteAllButton.props.onClick(mockClickEvent)
+		})
+		expect(dashboardProps.bulkDeleteModules).toHaveBeenCalledTimes(1)
+
+		const deselectAllButton = component.root.findAllByType(Button)[1]
+		expect(deselectAllButton.children[0].children[0]).toBe('×')
+
+		await act(async () => {
+			deselectAllButton.props.onClick()
+		})
+		expect(dashboardProps.deselectModules).toHaveBeenCalled()
+	})
+
+	test('selecting module calls functions appropriately', () => {
+		dashboardProps.myModules = [...standardMyModules]
+		dashboardProps.selectModules = jest.fn()
+		dashboardProps.deselectModules = jest.fn()
+
+		const component = create(<Dashboard {...dashboardProps} />)
+		const moduleComponents = component.root.findAllByType(Module)
+		expect(moduleComponents[0].props.isSelected).toBe(false)
+
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[0].props.onSelect(mockClickEvent)
+		})
+		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
+		expect(moduleComponents[0].props.isSelected).toBe(true)
+
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[0].props.onSelect(mockClickEvent)
+		})
+		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
+		expect(moduleComponents[0].props.isSelected).toBe(false)
+	})
+
+	test('selecting modules with shift calls functions appropriately', () => {
+		dashboardProps.myModules = [...standardMyModules]
+		dashboardProps.selectModules = jest.fn()
+		dashboardProps.deselectModules = jest.fn()
+
+		const component = create(<Dashboard {...dashboardProps} />)
+		const moduleComponents = component.root.findAllByType(Module)
+
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[2].props.onSelect(mockClickEvent)
+		})
+		expect(moduleComponents[0].props.isSelected).toBe(false)
+		expect(moduleComponents[1].props.isSelected).toBe(false)
+		expect(moduleComponents[2].props.isSelected).toBe(true)
+
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: true
+			}
+			moduleComponents[0].props.onSelect(mockClickEvent)
+		})
+		expect(moduleComponents[0].props.isSelected).toBe(true)
+		expect(moduleComponents[1].props.isSelected).toBe(true)
+		expect(moduleComponents[2].props.isSelected).toBe(true)
+
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: true
+			}
+			moduleComponents[4].props.onSelect(mockClickEvent)
+		})
+		expect(moduleComponents[3].props.isSelected).toBe(true)
+		expect(moduleComponents[4].props.isSelected).toBe(true)
 	})
 
 	test('renders "Module Options" dialog', () => {

@@ -11,6 +11,7 @@ const {
 	CLEAR_PEOPLE_SEARCH_RESULTS,
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
+	BULK_DELETE_MODULES,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	SELECT_MODULES,
@@ -68,6 +69,21 @@ function DashboardReducer(state, action) {
 				success: prevState => {
 					const filteredModules = filterModules(action.payload.value, state.moduleSearchString)
 					return { ...prevState, myModules: action.payload.value, filteredModules }
+				}
+			})
+
+		case BULK_DELETE_MODULES:
+			return handle(state, action, {
+				// update myModules, re-apply the filter, and exit multi-select mode
+				success: prevState => {
+					const filteredModules = filterModules(action.payload.value, state.moduleSearchString)
+					return {
+						...prevState,
+						myModules: action.payload.value,
+						filteredModules,
+						selectedModules: [],
+						multiSelectMode: false
+					}
 				}
 			})
 
