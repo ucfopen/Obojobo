@@ -45,7 +45,8 @@
 		}
 	}
 
-	&.is-open, &.is-selected {
+	&.is-open,
+	&.is-selected {
 		background-color: $color-banner-bg;
 	}
 
