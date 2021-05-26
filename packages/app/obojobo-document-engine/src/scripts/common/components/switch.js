@@ -4,7 +4,13 @@ import './switch.scss'
 /* istanbul ignore next */
 const noOp = () => {}
 
-const SwitchCore = ({ checked = false, onChange = noOp, title, forwardedRef }) => (
+const SwitchCore = ({
+	checked = false,
+	onChange = noOp,
+	title,
+	description,
+	forwardedRef
+}) => (
 	<div className="obojobo-draft--components--switch">
 		{title ? <span contentEditable={false}>{title}</span> : null}
 		<label className="switch">
@@ -17,6 +23,8 @@ const SwitchCore = ({ checked = false, onChange = noOp, title, forwardedRef }) =
 			/>
 			<div className="switch-slider round" />
 		</label>
+		<br/>
+		<small>{description && description}</small>
 	</div>
 )
 

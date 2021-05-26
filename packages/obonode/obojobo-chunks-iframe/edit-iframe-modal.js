@@ -1,7 +1,10 @@
 import React from 'react'
 import Common from 'Common'
 
+const { Switch } = Common.components
 const { SimpleDialog } = Common.components.modal
+import IFrameSizingTypes from './iframe-sizing-types'
+import { MEDIA, WEBPAGE } from './iframe-content-types'
 
 import './edit-iframe-modal.scss'
 
@@ -9,22 +12,112 @@ class EditIframeModal extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {
-			autoload: false
+		const defaultState = {
+			contentType: MEDIA,
+			autoload: false,
+			border: false,
+			fit: '',
+			initialZoom: 1,
+			src: '',
+			title: '',
+			width: 640,
+			height: 480,
+			controls: '',
+			sizing: IFrameSizingTypes.FIXED,
+			openAdvancedOptions: false,
+			openSizingDimensions: false
 		}
 
-		this.inputRef = React.createRef();
+		this.state = { ...defaultState, ...props.content }
 
-		this.onChangeAutoload = this.onChangeAutoload.bind(this);
+		this.inputRef = React.createRef()
+
+		this.handleFitChange = this.handleFitChange.bind(this)
+		this.handleZoomChange = this.handleZoomChange.bind(this)
+		this.onChangeAutoload = this.onChangeAutoload.bind(this)
+		this.handleWidthChange = this.handleWidthChange.bind(this)
+		this.handleTitleChange = this.handleTitleChange.bind(this)
+		this.handleHeightChange = this.handleHeightChange.bind(this)
+		this.handleSizingChange = this.handleSizingChange.bind(this)
+		this.handleBorderChange = this.handleBorderChange.bind(this)
+		this.handleSourceChange = this.handleSourceChange.bind(this)
+		this.openAdvancedOptions = this.openAdvancedOptions.bind(this)
+		this.openSizingDimensions = this.openSizingDimensions.bind(this)
+		this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
+	}
+
+	openAdvancedOptions() {
+		this.setState({ openAdvancedOptions: !this.state.openAdvancedOptions })
+	}
+
+	openSizingDimensions() {
+		this.setState({ openSizingDimensions: !this.state.openSizingDimensions })
+	}
+
+	handleControlChange(property, event) {
+		const controls = new Set(this.state.controls.split(','))
+
+		// Use checked value to determine the control string for the changed property
+		// Use controlList values to determine control strings for unchanged properties
+		if (event.target.checked) {
+			controls.add(property)
+		} else {
+			controls.delete(property)
+		}
+
+		this.setState({ controls: [...controls].join(',') })
 	}
 
 	onChangeAutoload(event) {
-		const autoload = event.target.value
-		this.setState({ autoload });
+		this.setState({ autoload: event.target.value === 'true' })
+	}
+
+	handleFitChange(e) {
+		this.setState({ fit: e.target.value })
+	}
+
+	handleZoomChange(e) {
+		this.setState({ initialZoom: e.target.value })
+	}
+
+	handleSizingChange(e) {
+		this.setState({ sizing: e.target.value })
+	}
+
+	handleTitleChange(e) {
+		this.setState({ title: e.target.value })
+	}
+
+	handleBorderChange(e) {
+		this.setState({ border: e.target.checked })
+	}
+
+	handleWidthChange(e) {
+		this.setState({ width: e.target.value })
+	}
+
+	handleHeightChange(e) {
+		this.setState({ height: e.target.value })
+	}
+
+	handleContentTypeChange(e) {
+		this.setState({ contentType: e.target.value })
+	}
+
+	handleSourceChange(e) {
+		this.props.onCancel()
+		this.props.goBack(e, this.state.src)
 	}
 
 	render() {
-		console.log(this.props.element.content)
+		console.log(this.props.content)
+
+		const controlList = this.state.controls ? this.state.controls.split(',') : []
+
+		const isSizingSetToTextOrMaxWidth =
+			this.state.sizing === IFrameSizingTypes.TEXT_WIDTH ||
+			this.state.sizing === IFrameSizingTypes.MAX_WIDTH
+
 		return (
 			<SimpleDialog
 				cancelOk
@@ -33,96 +126,255 @@ class EditIframeModal extends React.Component {
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
-				<header>
-					<label htmlFor='src-input'>Source</label>
-					<input
-						id='src-input'
-						disabled
-						value={''}
-					/>
-					<button>Change...</button>
-				</header>
-				<div className='content-type'>
-					<label htmlFor='content-type-container'>Content Type</label>
-					<div id='content-type-label'>
-						<label htmlFor='video-or-media'>
+				<div className='edit-iframe-modal'>
+					<header>
+						<label htmlFor='src-input'>Source:</label>
+						<div>
 							<input
-								id='video-or-media'
-								type='checkbox'
+								id='src-input'
+								disabled
+								value={this.state.src}
 							/>
-							<div className='video-or-media-icon'></div>
-							<span>Video or other media</span>
+							<button onClick={this.handleSourceChange}>Change...</button>
+						</div>
+					</header>
+					<div className='content-type'>
+						<label
+							id='content-type-options-label'
+							htmlFor='content-type-options-container'
+						>
+							Content type:
 						</label>
-						<label htmlFor='embedded-webpage'>
-							<input
-								id='embedded-webpage'
-								type='checkbox'
-							/>
-							<div className='embedded-webpage-icon'></div>
-							<span>Embedded webpage</span>
-						</label>
+						<div id='content-type-options-container'>
+							<div className='content-type-options'>
+								<label htmlFor='video-or-media'>
+									<input
+										id='video-or-media'
+										type='radio'
+										name='content-type-option'
+										value={MEDIA}
+										checked={this.state.contentType === MEDIA}
+										onChange={this.handleContentTypeChange}
+									/>
+									<div>
+										<div className='video-or-media-icon'></div>
+										<span>Video or other media</span>
+									</div>
+								</label>
+								<label htmlFor='embedded-webpage'>
+									<input
+										id='embedded-webpage'
+										type='radio'
+										name='content-type-option'
+										value={WEBPAGE}
+										checked={this.state.contentType === WEBPAGE}
+										onChange={this.handleContentTypeChange}
+									/>
+									<div>
+										<div className='embedded-webpage-icon'></div>
+										<span>Embedded webpage</span>
+									</div>
+								</label>
+							</div>
+							<small>This helps determine how the embedded content is best displayed</small>
+						</div>
 					</div>
-				</div>
-				<p className='title'>Options</p>
-				<div className='sizing'>
-					<label htmlFor='sizing-container'>Sizing</label>
-					<div id='sizing-container'>
-						<label htmlFor='max-width'>
-							<input
-								id='max-width'
-								type='checkbox'
-							/>
-							<div className='max-width-icon'></div>
-							<p>Responsive - full width</p>
-							<small>Grows up to the largest size (wider thant text)</small>
-						</label>
-						<label htmlFor='text-width'>
-							<input
-								id='text-width'
-								type='checkbox'
-							/>
-							<div className='text-width-icon'></div>
-							<p>Responsive - text width</p>
-							<small>Grows up to the same width as the text</small>
-						</label>
-						<label htmlFor='fixed-width'>
-							<input
-								id='fixed-width'
-								type='checkbox'
-							/>
-							<div className='fixed-width-icon'></div>
-							<p>Fixed size</p>
-							<small>Shows at set pixel dimensions</small>
-						</label>
+					<p className='title'>Options</p>
+					<div className='sizing'>
+						<label htmlFor='sizing-options-container'>Sizing</label>
+						<div id='sizing-options-container'>
+							<div className='sizing-options'>
+								<label htmlFor='max-width'>
+									<input
+										id='max-width'
+										type='radio'
+										name='sizing-option'
+										value={IFrameSizingTypes.MAX_WIDTH}
+										checked={this.state.sizing === IFrameSizingTypes.MAX_WIDTH}
+										onChange={this.handleSizingChange}
+									/>
+									<div className='icon max-width-icon'></div>
+									<div className='sizing-description'>
+										<p className='sizing-title'>Responsive - full width</p>
+										<p>Grows up to the largest size (wider thant text)</p>
+									</div>
+								</label>
+								<label htmlFor='text-width'>
+									<input
+										id='text-width'
+										type='radio'
+										name='sizing-option'
+										value={IFrameSizingTypes.TEXT_WIDTH}
+										checked={this.state.sizing === IFrameSizingTypes.TEXT_WIDTH}
+										onChange={this.handleSizingChange}
+									/>
+									<div className='icon text-width-icon'></div>
+									<div className='sizing-description'>
+										<p className='sizing-title'>Responsive - text width</p>
+										<p>Grows up to the same width as the text</p>
+									</div>
+								</label>
+								<label htmlFor='fixed-width'>
+									<input
+										id='fixed-width'
+										type='radio'
+										name='sizing-option'
+										value={IFrameSizingTypes.FIXED}
+										checked={this.state.sizing === IFrameSizingTypes.FIXED}
+										onChange={this.handleSizingChange}
+									/>
+									<div className='icon fixed-width-icon'></div>
+									<div className='sizing-description'>
+										<p className='sizing-title'>Fixed size</p>
+										<p>Shows at set pixel dimensions</p>
+									</div>
+								</label>
+							</div>
+							<button onClick={this.openSizingDimensions}>
+								{this.state.openSizingDimensions ? (
+									<span>Close dimensions</span>
+								) : (
+									<span>Edit dimensions</span>
+								)}
+							</button>
+						</div>
 					</div>
-					<button>Edit dimensions</button>
-				</div>
-				<div className='loading-container'>
-					<label htmlFor='loading-select'>
-						Loading:
-						<select id='loading-select' onChange={this.onChangeAutoload}>
-							<option value={false}>Load when student sees IFrame</option>
-							<option value={true}>Load right away (Not recommended)</option>
-						</select>
-					</label>
-					{this.state.autoload && (
-						<small>This option might cause your module to load or run slowly</small>
+					{this.state.openSizingDimensions && (
+						<div className='dimensions-container'>
+							<div className='left-padding'></div>
+							<div className='dimensions'>
+								<input
+									type='number'
+									min='1'
+									max='20000'
+									step='1'
+									placeholder={isSizingSetToTextOrMaxWidth ? '--' : 'Width'}
+									aria-label='Width'
+									value={isSizingSetToTextOrMaxWidth ? '' : this.state.width}
+									onChange={this.handleWidthChange}
+									disabled={isSizingSetToTextOrMaxWidth}
+								/>
+								<span className='pixels'>px <span className='lighter'>×</span></span>
+								<input
+									type='number'
+									min='1'
+									max='20000'
+									step='1'
+									placeholder='Height'
+									aria-label='Height'
+									value={this.state.height}
+									onChange={this.handleHeightChange}
+								/>
+								<span className='pixels'>px</span>
+							</div>
+						</div>
 					)}
+					<div className='loading-container'>
+						<label htmlFor='loading-select'>Loading:</label>
+						<div id='loading-select'>
+							<select onChange={this.onChangeAutoload}>
+								<option value={false}>Load when student sees IFrame</option>
+								<option value={true}>Load right away (Not recommended)</option>
+							</select>
+							{this.state.autoload && (
+								<small>
+									<div className='warning-icon'></div>
+									This option might cause your module to load or run slowly
+								</small>
+							)}
+						</div>
+					</div>
+					<div className='title-container'>
+						<label htmlFor='title-input'>Title:</label>
+						<div id='title-input'>
+							<input
+								type='text'
+								placeholder='E.g.: The difference between speed and velocity'
+								value={this.state.title}
+								onChange={this.handleTitleChange}
+							/>
+							<small>This will be shown before the IFrame is loaded</small>
+						</div>
+					</div>
+					<div className='advanced-options-container'>
+						<button
+							className='button-advanced-options'
+							onClick={this.openAdvancedOptions}
+						>
+							{this.state.openAdvancedOptions ? (
+								<span>Close advanced options</span>
+							) : (
+								<span>Show all options (advanced)</span>
+							)}
+						</button>
+						{this.state.openAdvancedOptions && (
+							<div className='advanced-options'>
+								<div className='fit-container'>
+									<label htmlFor='select-fit'>Fit:</label>
+									<select
+										id='select-fit'
+										value={this.state.fit || 'scale'}
+										onChange={this.handleFitChange}
+									>
+										<option value='scale'>Scale</option>
+										<option value='scroll'>Scroll</option>
+									</select>
+								</div>
+								<div className='initial-zoom-container'>
+									<label htmlFor='initial-zoom'>Initial <br/> Zoom:</label>
+									<input
+										id='initial-zoom'
+										min='0.01'
+										max='1000'
+										step='.01'
+										type='number'
+										placeholder='Decimal Value'
+										value={this.state.initialZoom}
+										onChange={this.handleZoomChange}
+									/>
+								</div>
+								<p className='title'>Controls</p>
+								<div className='controls'>
+									<div className='border-container'>
+										<Switch
+											title='Border'
+											description='Adds a border around your embedded IFrame'
+											checked={this.state.border}
+											onChange={this.handleBorderChange}
+										/>
+									</div>
+									<div className='reload-container'>
+										<Switch
+											title='Reload'
+											description='Adds a control option to reload the contents of the IFrame'
+											checked={controlList.includes('reload')}
+											onChange={this.handleControlChange.bind(this, 'reload')}
+										/>
+									</div>
+									<div className='new-window-container'>
+										<Switch
+											title='New Window'
+											description='Allows the IFrame to be opened in a new window'
+											checked={controlList.includes('new-window')}
+											onChange={this.handleControlChange.bind(this, 'new-window')}
+										/>
+									</div>
+									<div className='zoom-container'>
+										<Switch
+											title='Zoom'
+											description='Allows students to zoom in and out on the IFrame contents'
+											checked={controlList.includes('zoom')}
+											onChange={this.handleControlChange.bind(this, 'zoom')}
+										/>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
 				</div>
-				<div className='title-container'>
-					<label htmlFor='title-input'>
-						Title:
-						<input
-							id='title-input'
-							type='text'
-						/>
-					</label>
-					<small>This will be shown before the IFrame is loaded</small>
-				</div>
-				<button>Show all options (advanced)...</button>
 			</SimpleDialog>
 		)
 	}
 }
 
-export default EditIframeModal;
+export default EditIframeModal

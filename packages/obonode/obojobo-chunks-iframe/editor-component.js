@@ -12,7 +12,6 @@ import {
 	unfreezeEditor
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 
-import IframeProperties from './iframe-properties-modal'
 import NewIframeModal from './new-iframe-modal'
 import EditIframeModal from './edit-iframe-modal'
 
@@ -25,14 +24,14 @@ const isOrNot = Common.util.isOrNot
 class IFrame extends React.Component {
 	constructor(props) {
 		super(props)
-		this.focusIframe = this.focusIframe.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
-		this.showIFramePropertiesModal = this.showIFramePropertiesModal.bind(this)
-		this.changeProperties = this.changeProperties.bind(this)
-		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+		this.focusIframe = this.focusIframe.bind(this)
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
-		this.onCloseIFramePropertiesModal = this.onCloseIFramePropertiesModal.bind(this)
-		this.changeAdvancedProperties = this.changeAdvancedProperties.bind(this)
+		this.changeProperties = this.changeProperties.bind(this)
+		this.showNewIframeModal = this.showNewIframeModal.bind(this)
+		this.openEditIframeModal = this.openEditIframeModal.bind(this)
+		this.onCloseAnIFrameModal = this.onCloseAnIFrameModal.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 	}
 
 	focusIframe() {
@@ -44,58 +43,46 @@ class IFrame extends React.Component {
 		})
 	}
 
-	showIFramePropertiesModal(event) {
+	showNewIframeModal(event, src) {
 		event.preventDefault()
 		event.stopPropagation()
+		const content = Object.assign({}, this.props.element.content)
+		if (src) content.src = src;
+
 		ModalUtil.show(
-			<IframeProperties
-				content={this.props.element.content}
-				onConfirm={this.changeProperties}
-				onCancel={this.onCloseIFramePropertiesModal}
+			<NewIframeModal
+				content={content}
+				onConfirm={this.openEditIframeModal}
+				onCancel={this.onCloseAnIFrameModal}
 			/>
-			// <NewIframeModal />
 		)
 
 		freezeEditor(this.props.editor)
 	}
 
-	onCloseIFramePropertiesModal() {
+	onCloseAnIFrameModal() {
 		ModalUtil.hide()
 		unfreezeEditor(this.props.editor)
 	}
 
-	changeProperties(content) {
-		// const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		// Transforms.setNodes(
-		// 	this.props.editor,
-		// 	{ content: { ...this.props.element.content, ...content } },
-		// 	{ at: path }
-		// )
-		// this.onCloseIFramePropertiesModal()
-		// ------
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(
-			this.props.editor,
-			{ content: { ...this.props.element.content, ...content } },
-			{ at: path }
-		)
+	openEditIframeModal(content) {
+		// Closes new Iframe modal
+		this.onCloseAnIFrameModal()
 
-		// Closes New Iframe modal
-		this.onCloseIFramePropertiesModal()
-
-		// Opens Edit Iframe modal
+		// Opens edit Iframe modal
 		ModalUtil.show(
 			<EditIframeModal
-				content={this.props.element.content}
-				onConfirm={this.changeAdvancedProperties}
-				onCancel={this.onCloseIFramePropertiesModal}
+				content={content}
+				onConfirm={this.changeProperties}
+				onCancel={this.onCloseAnIFrameModal}
+				goBack={this.showNewIframeModal}
 			/>
 		)
 
 		freezeEditor(this.props.editor)
 	}
 
-	changeAdvancedProperties(content) {
+	changeProperties(content) {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
@@ -104,7 +91,7 @@ class IFrame extends React.Component {
 		)
 
 		// Closes New Iframe modal
-		this.onCloseIFramePropertiesModal()
+		this.onCloseAnIFrameModal()
 	}
 
 	getTitle(src, title) {
@@ -177,7 +164,7 @@ class IFrame extends React.Component {
 							</span>
 							<Button
 								className="properties-button"
-								onClick={this.showIFramePropertiesModal}
+								onClick={this.showNewIframeModal}
 								onKeyDown={this.returnFocusOnTab}
 								tabIndex={selected ? 0 : -1}
 							>

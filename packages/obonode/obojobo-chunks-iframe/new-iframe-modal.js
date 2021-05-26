@@ -2,6 +2,7 @@ import React from 'react'
 import Common from 'Common'
 
 const { SimpleDialog } = Common.components.modal
+import { MEDIA, WEBPAGE } from './iframe-content-types'
 
 import './new-iframe-modal.scss'
 
@@ -9,10 +10,12 @@ class NewIframeModal extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {
+		const defaultState = {
 			src: '',
-			loadingIframe: false
+			contentType: MEDIA
 		}
+
+		this.state = { ...defaultState, ...props.content }
 
 		this.inputRef = React.createRef();
 
@@ -30,7 +33,10 @@ class NewIframeModal extends React.Component {
 	}
 
 	handleSourceChange(event) {
-		this.setState({ src: event.target.value, loadingIframe: true });
+		const src = event.target.value;
+		const contentType = src.includes('<iframe') ? MEDIA : WEBPAGE;
+
+		this.setState({ src, contentType });
 	}
 
 	render() {
@@ -54,25 +60,27 @@ class NewIframeModal extends React.Component {
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
-				<header>
-					<p>Paste either an iframe embed code or a URL to embed:</p>
-					<input
-						type='text'
-						placeholder='<iframe src="https://example.com"/> or "https://example.com"'
-						ref={this.inputRef}
-						value={this.state.src || ''}
-						onChange={this.handleSourceChange}
-					/>
-				</header>
-				<div className='preview'>
-					<p>Embedded preview:</p>
-					{this.state.src ? (
-						previewContent
-					) : (
-						<div className='no-preview'>
-							<span>Paste a link or embed code above to see the preview</span>
-						</div>
-					)}
+				<div className='new-iframe-modal'>
+					<header>
+						<p>Paste either an iframe embed code or a URL to embed:</p>
+						<input
+							type='text'
+							placeholder='<iframe src="https://example.com"/> or "https://example.com"'
+							ref={this.inputRef}
+							value={this.state.src || ''}
+							onChange={this.handleSourceChange}
+						/>
+					</header>
+					<div className='preview'>
+						<p>Embedded preview:</p>
+						{this.state.src ? (
+							previewContent
+						) : (
+							<div className='no-preview'>
+								<span>Paste a link or embed code above to see the preview</span>
+							</div>
+						)}
+					</div>
 				</div>
 			</SimpleDialog>
 		)
