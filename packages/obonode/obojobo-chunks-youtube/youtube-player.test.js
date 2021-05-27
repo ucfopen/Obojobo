@@ -94,21 +94,25 @@ describe('YouTubePlayer', () => {
 })
 
 describe('YouTubePlayer events', () => {
+	let onStateChange
+	let getCurrentTime
+	let player
+
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.mock('obojobo-document-engine/src/scripts/viewer')
 		jest.mock('./youtube-player')
+
+		onStateChange = jest.fn()
+		getCurrentTime = jest.fn()
+		getCurrentTime.mockReturnValue(2) // simulates a currentPlayHeadPosition to compared with the currentState.playHeadPosition
+
+		player = {
+			getCurrentTime: getCurrentTime
+		}
 	})
 
 	test('Unstarted event is received', () => {
-		const onStateChange = jest.fn()
-		const getCurrentTime = jest.fn()
-		getCurrentTime.mockReturnValue(2)
-
-		const player = {
-			getCurrentTime: getCurrentTime
-		}
-
 		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
 		component.instance().player = player
 
@@ -118,14 +122,6 @@ describe('YouTubePlayer events', () => {
 		expect(spy).toHaveBeenCalled()
 	})
 	test('Cued event is received', () => {
-		const onStateChange = jest.fn()
-		const getCurrentTime = jest.fn()
-		getCurrentTime.mockReturnValue(2)
-
-		const player = {
-			getCurrentTime: getCurrentTime
-		}
-
 		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
 		component.instance().player = player
 
@@ -135,14 +131,6 @@ describe('YouTubePlayer events', () => {
 		expect(spy).toHaveBeenCalled()
 	})
 	test('Ended event is received', () => {
-		const onStateChange = jest.fn()
-		const getCurrentTime = jest.fn()
-		getCurrentTime.mockReturnValue(2)
-
-		const player = {
-			getCurrentTime: getCurrentTime
-		}
-
 		MediaUtil.mediaEnded = jest.fn()
 
 		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
@@ -155,13 +143,6 @@ describe('YouTubePlayer events', () => {
 	})
 
 	test('Paused event is received', () => {
-		const onStateChange = jest.fn()
-		const getCurrentTime = jest.fn()
-		getCurrentTime.mockReturnValue(2)
-
-		const player = {
-			getCurrentTime: getCurrentTime
-		}
 		MediaUtil.mediaPaused = jest.fn()
 
 		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
@@ -174,26 +155,9 @@ describe('YouTubePlayer events', () => {
 	})
 
 	test('Buffering event is received', () => {
-		const onStateChange = jest.fn()
-
-		const getCurrentTime = jest.fn()
-		getCurrentTime.mockReturnValue(2)
-
-		const player = {
-			getCurrentTime: getCurrentTime
-		}
-		const currentState = {
-			actor: 'user',
-			action: 'unstarted',
-			playHeadPosition: 0,
-			isPossibleSeekTo: false,
-			playHeadPositionBeforeSeekTo: 0
-		}
 		MediaUtil.mediaBuffering = jest.fn()
 
-		const component = mount(
-			<YouTubePlayer onStateChange={onStateChange} player={player} currentState={currentState} />
-		)
+		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
 		component.instance().player = player
 
 		//tests for the video buffering when unstarted
@@ -215,27 +179,10 @@ describe('YouTubePlayer events', () => {
 	})
 
 	test('Playing and SeekTo event is received', () => {
-		const onStateChange = jest.fn()
-
-		const getCurrentTime = jest.fn()
-		getCurrentTime.mockReturnValue(2)
-
-		const player = {
-			getCurrentTime: getCurrentTime
-		}
-		const currentState = {
-			actor: 'user',
-			action: 'unstarted',
-			playHeadPosition: 0,
-			isPossibleSeekTo: false,
-			playHeadPositionBeforeSeekTo: 0
-		}
 		MediaUtil.mediaPlayed = jest.fn()
 		MediaUtil.mediaSeekTo = jest.fn()
 
-		const component = mount(
-			<YouTubePlayer onStateChange={onStateChange} player={player} currentState={currentState} />
-		)
+		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
 		component.instance().player = player
 
 		//tests for the video playing
