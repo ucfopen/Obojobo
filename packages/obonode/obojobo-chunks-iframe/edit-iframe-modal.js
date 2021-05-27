@@ -4,7 +4,7 @@ import Common from 'Common'
 const { Switch } = Common.components
 const { SimpleDialog } = Common.components.modal
 import IFrameSizingTypes from './iframe-sizing-types'
-import { MEDIA, WEBPAGE } from './iframe-content-types'
+import IFrameContentTypes from './iframe-content-types'
 
 import './edit-iframe-modal.scss'
 
@@ -13,7 +13,7 @@ class EditIframeModal extends React.Component {
 		super(props)
 
 		const defaultState = {
-			contentType: MEDIA,
+			contentType: IFrameContentTypes.MEDIA,
 			autoload: false,
 			border: false,
 			fit: '',
@@ -152,8 +152,8 @@ class EditIframeModal extends React.Component {
 										id='video-or-media'
 										type='radio'
 										name='content-type-option'
-										value={MEDIA}
-										checked={this.state.contentType === MEDIA}
+										value={IFrameContentTypes.MEDIA}
+										checked={this.state.contentType === IFrameContentTypes.MEDIA}
 										onChange={this.handleContentTypeChange}
 									/>
 									<div>
@@ -166,8 +166,8 @@ class EditIframeModal extends React.Component {
 										id='embedded-webpage'
 										type='radio'
 										name='content-type-option'
-										value={WEBPAGE}
-										checked={this.state.contentType === WEBPAGE}
+										value={IFrameContentTypes.WEBPAGE}
+										checked={this.state.contentType === IFrameContentTypes.WEBPAGE}
 										onChange={this.handleContentTypeChange}
 									/>
 									<div>

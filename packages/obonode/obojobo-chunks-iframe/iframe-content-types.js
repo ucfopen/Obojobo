@@ -1,2 +1,4 @@
-export const MEDIA = 'media'
-export const WEBPAGE = 'webpage'
+export default {
+	MEDIA: 'media',
+	WEBPAGE: 'webpage'
+}
