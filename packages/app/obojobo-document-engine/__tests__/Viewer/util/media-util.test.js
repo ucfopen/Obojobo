@@ -16,6 +16,67 @@ describe('MediaUtil', () => {
 		jest.resetAllMocks()
 	})
 
+	test('mediaPlayed', () => {
+		MediaUtil.mediaPlayed('user', 0)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:played', {
+			value: {
+				actor: 'user',
+				playHeadPosition: 0
+			}
+		})
+	})
+
+	test('mediaPaused', () => {
+		MediaUtil.mediaPaused('user', 0)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:pause', {
+			value: {
+				actor: 'user',
+				playHeadPosition: 0
+			}
+		})
+	})
+
+	test('mediaEnded', () => {
+		MediaUtil.mediaEnded('youtube', 0)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:ended', {
+			value: {
+				actor: 'youtube',
+				playHeadPosition: 0
+			}
+		})
+	})
+
+	test('mediaSeekTo', () => {
+		MediaUtil.mediaSeekTo('user', 100, 0)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:seekTo', {
+			value: {
+				actor: 'user',
+				playHeadPosition: 100,
+				previousPlayHeadPosition: 0
+			}
+		})
+	})
+
+	test('mediaBuffering', () => {
+		MediaUtil.mediaBuffering('youtube', 50)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:buffering', {
+			value: {
+				actor: 'youtube',
+				playHeadPosition: 50
+			}
+		})
+	})
+
 	test('show', () => {
 		MediaUtil.show('mocked-id')
 

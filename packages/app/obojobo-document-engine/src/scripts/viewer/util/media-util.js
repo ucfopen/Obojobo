@@ -4,6 +4,52 @@ import { DEFAULT_ZOOM } from '../stores/media-store/media-constants'
 const { Dispatcher } = Common.flux
 
 const MediaUtil = {
+	mediaPlayed(actor, playHeadPosition) {
+		return Dispatcher.trigger('media:played', {
+			value: {
+				actor,
+				playHeadPosition
+			}
+		})
+	},
+
+	mediaPaused(actor, playHeadPosition) {
+		return Dispatcher.trigger('media:pause', {
+			value: {
+				actor,
+				playHeadPosition
+			}
+		})
+	},
+
+	mediaEnded(actor, playHeadPosition) {
+		return Dispatcher.trigger('media:ended', {
+			value: {
+				actor,
+				playHeadPosition
+			}
+		})
+	},
+
+	mediaSeekTo(actor, playHeadPosition, previousPlayHeadPosition) {
+		return Dispatcher.trigger('media:seekTo', {
+			value: {
+				actor,
+				playHeadPosition,
+				previousPlayHeadPosition
+			}
+		})
+	},
+
+	mediaBuffering(actor, playHeadPosition) {
+		return Dispatcher.trigger('media:buffering', {
+			value: {
+				actor,
+				playHeadPosition
+			}
+		})
+	},
+
 	show(id) {
 		return Dispatcher.trigger('media:show', {
 			value: {

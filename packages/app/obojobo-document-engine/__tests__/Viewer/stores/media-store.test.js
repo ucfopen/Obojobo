@@ -64,7 +64,12 @@ describe('Media Store', () => {
 			'media:hide': expect.any(Function),
 			'media:setZoom': expect.any(Function),
 			'media:resetZoom': expect.any(Function),
-			'media:setDefaultZoom': expect.any(Function)
+			'media:setDefaultZoom': expect.any(Function),
+			'media:played': expect.any(Function),
+			'media:ended': expect.any(Function),
+			'media:pause': expect.any(Function),
+			'media:seekTo': expect.any(Function),
+			'media:buffering': expect.any(Function)
 		})
 	})
 
@@ -339,6 +344,101 @@ describe('Media Store', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:defaultZoomSet', {
 			id: 'mocked-id',
 			zoom: 1
+		})
+	})
+	test('media played', () => {
+		MediaStore.played({ value: { actor: 'user', playHeadPosition: 2 } })
+
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			draftId: 'root-id',
+			action: 'media:played',
+			eventVersion: '1.0.0',
+			visitId: 'mock-visit-id',
+			payload: {
+				playHeadPosition: 2,
+				actor: 'user'
+			}
+		})
+	})
+	test('media paused', () => {
+		MediaStore.pause({
+			value: {
+				actor: 'user',
+				playHeadPosition: 0
+			}
+		})
+
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			draftId: 'root-id',
+			action: 'media:pause',
+			eventVersion: '1.0.0',
+			visitId: 'mock-visit-id',
+			payload: {
+				playHeadPosition: 0,
+				actor: 'user'
+			}
+		})
+	})
+
+	test('media ended', () => {
+		MediaStore.ended({
+			value: {
+				actor: 'youtube',
+				playHeadPosition: 100
+			}
+		})
+
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			draftId: 'root-id',
+			action: 'media:ended',
+			eventVersion: '1.0.0',
+			visitId: 'mock-visit-id',
+			payload: {
+				playHeadPosition: 100,
+				actor: 'youtube'
+			}
+		})
+	})
+
+	test('media seekTo', () => {
+		MediaStore.seekTo({
+			value: {
+				actor: 'user',
+				playHeadPosition: 100,
+				previousPlayHeadPosition: 0
+			}
+		})
+
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			draftId: 'root-id',
+			action: 'media:seekTo',
+			eventVersion: '1.0.0',
+			visitId: 'mock-visit-id',
+			payload: {
+				previousPlayHeadPosition: 0,
+				playHeadPosition: 100,
+				actor: 'user'
+			}
+		})
+	})
+
+	test('media buffering', () => {
+		MediaStore.buffering({
+			value: {
+				actor: 'youtube',
+				playHeadPosition: 50
+			}
+		})
+
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			draftId: 'root-id',
+			action: 'media:buffering',
+			eventVersion: '1.0.0',
+			visitId: 'mock-visit-id',
+			payload: {
+				playHeadPosition: 50,
+				actor: 'youtube'
+			}
 		})
 	})
 })
