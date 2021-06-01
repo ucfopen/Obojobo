@@ -18,6 +18,8 @@
 				@include text-input();
 
 				width: 11.3em;
+				height: 1.5em;
+				align-self: center;
 
 				&:disabled {
 					background: transparentize($color-bg, 0.3);

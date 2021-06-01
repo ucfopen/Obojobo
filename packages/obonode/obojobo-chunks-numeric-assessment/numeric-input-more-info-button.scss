@@ -4,7 +4,8 @@
 	display: inline-block;
 	position: absolute;
 	left: 0.8em;
-	top: 1.1em;
+	top: 50%;
+	transform: translateY(-50%);
 
 	.container {
 		font-family: $font-default;
