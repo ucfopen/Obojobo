@@ -383,12 +383,15 @@ describe('Dashboard', () => {
 		dashboardProps.importModuleFile.mockReset()
 	})
 
-	test('"Delete All" and "Deselect All" buttons call functions appropriately', async () => {
+	test('"Delete All" button calls functions appropriately', async () => {
 		dashboardProps.bulkDeleteModules = jest.fn()
-		dashboardProps.deselectModules = jest.fn()
-		dashboardProps.selectedModules = ['mockId2']
+		dashboardProps.selectedModules = ['mockId', 'mockId2']
 		dashboardProps.multiSelectMode = true
-		const component = create(<Dashboard {...dashboardProps} />)
+		const reusableComponent = <Dashboard {...dashboardProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
 
 		const deleteAllButton = component.root.findAllByType(Button)[0]
 		expect(deleteAllButton.children[0].children[0]).toBe('Delete All')
@@ -411,22 +414,36 @@ describe('Dashboard', () => {
 			deleteAllButton.props.onClick(mockClickEvent)
 		})
 		expect(dashboardProps.bulkDeleteModules).toHaveBeenCalledTimes(1)
+	})
+
+	test('"Deselect All" button calls functions appropriately', () => {
+		dashboardProps.deselectModules = jest.fn()
+		dashboardProps.selectedModules = ['mockId', 'mockId2']
+		dashboardProps.multiSelectMode = true
+		const reusableComponent = <Dashboard {...dashboardProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
 
 		const deselectAllButton = component.root.findAllByType(Button)[1]
 		expect(deselectAllButton.children[0].children[0]).toBe('×')
 
-		await act(async () => {
+		act(() => {
 			deselectAllButton.props.onClick()
 		})
-		expect(dashboardProps.deselectModules).toHaveBeenCalled()
+		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockId', 'mockId2'])
 	})
 
 	test('selecting module calls functions appropriately', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.selectModules = jest.fn()
 		dashboardProps.deselectModules = jest.fn()
+		let component
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
 
-		const component = create(<Dashboard {...dashboardProps} />)
 		const moduleComponents = component.root.findAllByType(Module)
 		expect(moduleComponents[0].props.isSelected).toBe(false)
 
@@ -437,6 +454,14 @@ describe('Dashboard', () => {
 			moduleComponents[0].props.onSelect(mockClickEvent)
 		})
 		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId2'])
+
+		dashboardProps.selectedModules = ['mockDraftId2']
+		dashboardProps.multiSelectMode = true
+
+		act(() => {
+			component.update(<Dashboard {...dashboardProps} />)
+		})
 		expect(moduleComponents[0].props.isSelected).toBe(true)
 
 		act(() => {
@@ -446,45 +471,41 @@ describe('Dashboard', () => {
 			moduleComponents[0].props.onSelect(mockClickEvent)
 		})
 		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
-		expect(moduleComponents[0].props.isSelected).toBe(false)
+		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockDraftId2'])
 	})
 
 	test('selecting modules with shift calls functions appropriately', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.selectModules = jest.fn()
-		dashboardProps.deselectModules = jest.fn()
+		let component
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
 
-		const component = create(<Dashboard {...dashboardProps} />)
 		const moduleComponents = component.root.findAllByType(Module)
 
 		act(() => {
 			const mockClickEvent = {
-				shiftKey: false
+				shiftKey: true
 			}
 			moduleComponents[2].props.onSelect(mockClickEvent)
 		})
-		expect(moduleComponents[0].props.isSelected).toBe(false)
-		expect(moduleComponents[1].props.isSelected).toBe(false)
-		expect(moduleComponents[2].props.isSelected).toBe(true)
+		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith([
+			'mockDraftId2',
+			'mockDraftId4',
+			'mockDraftId3'
+		])
+		dashboardProps.selectModules.mockReset()
 
 		act(() => {
 			const mockClickEvent = {
 				shiftKey: true
 			}
-			moduleComponents[0].props.onSelect(mockClickEvent)
+			moduleComponents[1].props.onSelect(mockClickEvent)
 		})
-		expect(moduleComponents[0].props.isSelected).toBe(true)
-		expect(moduleComponents[1].props.isSelected).toBe(true)
-		expect(moduleComponents[2].props.isSelected).toBe(true)
-
-		act(() => {
-			const mockClickEvent = {
-				shiftKey: true
-			}
-			moduleComponents[4].props.onSelect(mockClickEvent)
-		})
-		expect(moduleComponents[3].props.isSelected).toBe(true)
-		expect(moduleComponents[4].props.isSelected).toBe(true)
+		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId4', 'mockDraftId3'])
 	})
 
 	test('renders "Module Options" dialog', () => {

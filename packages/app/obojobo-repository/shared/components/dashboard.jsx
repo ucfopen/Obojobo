@@ -124,7 +124,6 @@ function Dashboard(props) {
 	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
 
 	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
-	const [selectStates, setSelectStates] = useState(moduleList.map(() => false))
 
 	const handleCreateNewModule = useTutorial => {
 		props.createNewModule(useTutorial).then(data => {
@@ -139,29 +138,22 @@ function Dashboard(props) {
 			const [startIdx, endIdx] =
 				lastSelectedIndex < index ? [lastSelectedIndex, index + 1] : [index, lastSelectedIndex + 1]
 			const idList = moduleList.map(m => m.draftId)
-			selectStates.fill(true, startIdx, endIdx)
 			props.selectModules(
 				idList.slice(startIdx, endIdx).filter(id => !props.selectedModules.includes(id))
 			)
 		} else {
-			selectStates[index] = !selectStates[index]
-			selectStates[index] ? props.selectModules([draftId]) : props.deselectModules([draftId])
+			props.selectedModules.includes(draftId)
+				? props.deselectModules([draftId])
+				: props.selectModules([draftId])
 		}
 
-		setSelectStates([...selectStates])
 		setLastSelectedIndex(index)
-	}
-
-	const deselectAll = () => {
-		props.deselectModules(props.selectedModules)
-		setSelectStates([...selectStates.fill(false)])
 	}
 
 	const deleteModules = draftIds => {
 		const response = confirm(`Delete ${draftIds.length} selected modules?`) //eslint-disable-line no-alert, no-undef
 		if (!response) return
 		props.bulkDeleteModules(draftIds)
-		setSelectStates([...selectStates.fill(false)])
 	}
 
 	// Set a cookie when sortOrder changes on the client
@@ -195,7 +187,10 @@ function Dashboard(props) {
 							>
 								Delete All
 							</Button>
-							<Button className="close-button" onClick={deselectAll}>
+							<Button
+								className="close-button"
+								onClick={() => props.deselectModules(props.selectedModules)}
+							>
 								×
 							</Button>
 						</div>
@@ -231,7 +226,7 @@ function Dashboard(props) {
 									{moduleList.sort(getSortMethod(sortOrder)).map((draft, index) => (
 										<Module
 											isNew={draft.draftId === newModuleId}
-											isSelected={selectStates[index]}
+											isSelected={props.selectedModules.includes(draft.draftId)}
 											isMultiSelectMode={props.multiSelectMode}
 											onSelect={e => handleSelectModule(e, draft.draftId, index)}
 											key={draft.draftId}
