@@ -91,7 +91,10 @@ class MCAssessment extends React.Component {
 				</div>
 				<div className="choices-container">
 					{this.props.children}
-					<div contentEditable={false}>
+					<div
+						contentEditable={false}
+						className="obojobo-draft--chunks--mc-assessment--choice-button-container"
+					>
 						<Button className={'choice-button'} onClick={this.addChoice}>
 							{'+ Add possible answer'}
 						</Button>

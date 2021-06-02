@@ -54,6 +54,7 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
     className="choices-container"
   >
     <div
+      className="obojobo-draft--chunks--mc-assessment--choice-button-container"
       contentEditable={false}
     >
       <div
