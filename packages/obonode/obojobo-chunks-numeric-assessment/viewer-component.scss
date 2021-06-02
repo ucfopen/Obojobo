@@ -114,11 +114,11 @@
 		&.is-mode-practice::before {
 			content: '✔';
 			position: absolute;
-			top: 0.75em; //0.65em;
+			top: 50%;
 			display: block;
 			color: $color-correct;
 			font-size: 2.5em;
-			transform: translate(-50%, -50%);
+			transform: translate(-50%, -55%);
 			left: 0.6em;
 			animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
 
@@ -142,11 +142,11 @@
 		&.is-mode-practice::before {
 			content: '✖';
 			position: absolute;
-			top: 0.75em; //0.65em;
+			top: 50%;
 			display: block;
 			color: $color-incorrect;
 			font-size: 2.5em;
-			transform: translate(-50%, -50%);
+			transform: translate(-50%, -55%);
 			left: 0.6em;
 			animation: obojobo-draft--animation--fadein 0.4s;
 
