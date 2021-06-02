@@ -93,6 +93,10 @@
 						margin-left: 0.1em;
 						margin-right: 0.1em;
 					}
+
+					.id-buttons {
+						display: flex;
+					}
 				}
 
 				label {
@@ -101,25 +105,25 @@
 					margin: auto 0;
 				}
 
+				input {
+					@include text-input();
+
+					&.id-input {
+						margin-right: 0.2em;
+					}
+				}
+
 				input,
 				select {
 					flex: auto;
 					font-size: 0.7em;
 					box-sizing: border-box;
-				}
-
-				input {
-					@include text-input();
 
 					&:read-only {
 						background: $color-bg2;
 						border: 1px solid $color-bg2;
 						color: $color-text-minor;
 						cursor: default;
-					}
-
-					&.id-input {
-						margin-right: 0.2em;
 					}
 				}
 
