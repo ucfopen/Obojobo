@@ -48,6 +48,10 @@
 	&.is-open,
 	&.is-selected {
 		background-color: $color-banner-bg;
+
+		input {
+			display: block;
+		}
 	}
 
 	&.is-new {
@@ -66,10 +70,6 @@
 		}
 
 		.repository--module-icon--menu-control-button {
-			display: block;
-		}
-
-		input {
 			display: block;
 		}
 	}

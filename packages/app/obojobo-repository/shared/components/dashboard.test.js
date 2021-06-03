@@ -207,6 +207,8 @@ describe('Dashboard', () => {
 
 		// Shouldn't be any modal dialogs open, either
 		expect(component.root.findAllByType(ReactModal).length).toBe(0)
+
+		component.unmount()
 	}
 
 	const expectMultiSelectDashboardRender = () => {
@@ -229,6 +231,8 @@ describe('Dashboard', () => {
 		const moduleComponents = component.root.findAllByType(Module)
 		expect(moduleComponents.length).toBe(5)
 		expect(moduleComponents[0].props.isMultiSelectMode).toBe(true)
+
+		component.unmount()
 	}
 
 	const expectNormalModulesAreaClassesWithTitle = (mainContent, title) => {
@@ -325,6 +329,8 @@ describe('Dashboard', () => {
 		expect(moduleComponents.length).toBe(2)
 		expect(moduleComponents[0].props.draftId).toBe('mockDraftId4')
 		expect(moduleComponents[1].props.draftId).toBe('mockDraftId3')
+
+		component.unmount()
 	})
 
 	test('"New Module" and "Upload..." buttons call functions appropriately', async () => {
@@ -381,6 +387,8 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.importModuleFile).toHaveBeenCalledTimes(1)
 		dashboardProps.importModuleFile.mockReset()
+
+		component.unmount()
 	})
 
 	test('"Delete All" button calls functions appropriately', async () => {
@@ -393,27 +401,27 @@ describe('Dashboard', () => {
 			component = create(reusableComponent)
 		})
 
+		const mockClickEvent = {
+			preventDefault: jest.fn()
+		}
+
 		const deleteAllButton = component.root.findAllByType(Button)[0]
 		expect(deleteAllButton.children[0].children[0]).toBe('Delete All')
 
-		window.confirm = jest.fn()
-		window.confirm.mockReturnValueOnce(false)
+		window.prompt = jest.fn()
+		window.prompt.mockReturnValueOnce('NOT DELETE')
 		await act(async () => {
-			const mockClickEvent = {
-				preventDefault: jest.fn()
-			}
 			deleteAllButton.props.onClick(mockClickEvent)
 		})
 		expect(dashboardProps.bulkDeleteModules).not.toHaveBeenCalled()
 
-		window.confirm.mockReturnValueOnce(true)
+		window.prompt.mockReturnValueOnce('DELETE')
 		await act(async () => {
-			const mockClickEvent = {
-				preventDefault: jest.fn()
-			}
 			deleteAllButton.props.onClick(mockClickEvent)
 		})
 		expect(dashboardProps.bulkDeleteModules).toHaveBeenCalledTimes(1)
+
+		component.unmount()
 	})
 
 	test('"Deselect All" button calls functions appropriately', () => {
@@ -433,6 +441,31 @@ describe('Dashboard', () => {
 			deselectAllButton.props.onClick()
 		})
 		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockId', 'mockId2'])
+
+		component.unmount()
+	})
+
+	test('pressing Esc when multiSelectMode=true calls functions appropriately', () => {
+		dashboardProps.deselectModules = jest.fn()
+		let component
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
+
+		// eslint-disable-next-line no-undef
+		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }))
+		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(0)
+
+		dashboardProps.multiSelectMode = true
+		act(() => {
+			component.update(<Dashboard {...dashboardProps} />)
+		})
+
+		// eslint-disable-next-line no-undef
+		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }))
+		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
+
+		component.unmount()
 	})
 
 	test('selecting module calls functions appropriately', () => {
@@ -472,6 +505,8 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockDraftId2'])
+
+		component.unmount()
 	})
 
 	test('selecting modules with shift calls functions appropriately', () => {
@@ -506,6 +541,8 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId4', 'mockDraftId3'])
+
+		component.unmount()
 	})
 
 	test('renders "Module Options" dialog', () => {
@@ -528,6 +565,8 @@ describe('Dashboard', () => {
 
 		dialogComponent.props.onClose()
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
+
+		component.unmount()
 	})
 
 	test('renders "Module Access" dialog', () => {
@@ -550,6 +589,8 @@ describe('Dashboard', () => {
 
 		dialogComponent.props.onClose()
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
+
+		component.unmount()
 	})
 
 	test('renders "Version History" dialog and runs callbacks properly', () => {
@@ -571,6 +612,8 @@ describe('Dashboard', () => {
 
 		dialogComponent.props.onClose()
 		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)
+
+		component.unmount()
 	})
 
 	test('renders no dialogs if props.dialog value is unsupported', () => {
@@ -581,5 +624,7 @@ describe('Dashboard', () => {
 		})
 
 		expect(component.root.findAllByType(ReactModal).length).toBe(0)
+
+		component.unmount()
 	})
 })

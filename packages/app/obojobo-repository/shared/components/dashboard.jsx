@@ -125,6 +125,12 @@ function Dashboard(props) {
 
 	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
 
+	const onKeyUp = e => {
+		if (e.key === 'Escape' && props.multiSelectMode && props.deselectModules) {
+			props.deselectModules(props.selectedModules)
+		}
+	}
+
 	const handleCreateNewModule = useTutorial => {
 		props.createNewModule(useTutorial).then(data => {
 			data.payload.value.sort(getSortMethod('newest'))
@@ -151,8 +157,10 @@ function Dashboard(props) {
 	}
 
 	const deleteModules = draftIds => {
-		const response = confirm(`Delete ${draftIds.length} selected modules?`) //eslint-disable-line no-alert, no-undef
-		if (!response) return
+		const response = prompt(
+			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
+		) //eslint-disable-line no-alert, no-undef
+		if (response !== 'DELETE') return
 		props.bulkDeleteModules(draftIds)
 	}
 
@@ -166,6 +174,13 @@ function Dashboard(props) {
 			document.cookie = `sortOrder=${sortOrder}; expires=${expires.toUTCString()}; path=/dashboard`
 		}, [sortOrder])
 	}
+
+	useEffect(() => {
+		document.addEventListener('keyup', onKeyUp)
+		return () => {
+			document.removeEventListener('keyup', onKeyUp)
+		}
+	}, [onKeyUp])
 
 	return (
 		<span id="dashboard-root">

@@ -11,12 +11,16 @@ const Module = props => {
 	const onCloseMenu = () => setMenuOpen(false)
 	const handleClick = e => {
 		if (props.isMultiSelectMode || e.shiftKey || e.metaKey) {
-			props.onSelect(e)
+			onSelectModule(e)
 		} else {
 			setMenuOpen(!isMenuOpen)
 		}
 
 		e.preventDefault() // block the event from bubbling out to the parent href
+	}
+	const onSelectModule = e => {
+		onCloseMenu()
+		props.onSelect(e)
 	}
 	// Handle keyboard focus
 	const onBlurHandler = () => {
@@ -44,7 +48,7 @@ const Module = props => {
 				className={props.isMultiSelectMode ? 'is-multi-select-mode' : 'is-not-multi-select-mode'}
 				type="checkbox"
 				checked={props.isSelected}
-				onClick={props.onSelect}
+				onClick={onSelectModule}
 			/>
 			{props.hasMenu ? (
 				<button onClick={handleClick}>
