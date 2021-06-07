@@ -47,7 +47,7 @@ class IFrame extends React.Component {
 		event.preventDefault()
 		event.stopPropagation()
 		const content = Object.assign({}, this.props.element.content)
-		if (src) content.src = src;
+		content.src = src
 
 		ModalUtil.show(
 			<NewIframeModal
@@ -66,10 +66,10 @@ class IFrame extends React.Component {
 	}
 
 	openEditIframeModal(content) {
-		// Closes new Iframe modal
+		// Closes new IFrame modal
 		this.onCloseAnIFrameModal()
 
-		// Opens edit Iframe modal
+		// Opens edit IFrame modal
 		ModalUtil.show(
 			<EditIframeModal
 				content={content}
@@ -90,7 +90,6 @@ class IFrame extends React.Component {
 			{ at: path }
 		)
 
-		// Closes New Iframe modal
 		this.onCloseAnIFrameModal()
 	}
 

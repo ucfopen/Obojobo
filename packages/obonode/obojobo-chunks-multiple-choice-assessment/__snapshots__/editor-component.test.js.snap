@@ -48,6 +48,8 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
           className="switch-slider round"
         />
       </label>
+      <br />
+      <small />
     </div>
   </div>
   <div

@@ -110,7 +110,7 @@ describe('IFrame Editor Node', () => {
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
-	test('IFrame component edits properties', () => {
+	test('IFrame component opens modals accordingly', () => {
 		const component = mount(
 			<IFrame
 				element={{
@@ -132,11 +132,15 @@ describe('IFrame Editor Node', () => {
 			/>
 		)
 
+		// Testing opening NewIFrameModal
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
+		expect(ModalUtil.show).toHaveBeenCalled()
 
+		// Testing opening EditIFrameModal
+		component.instance().openEditIframeModal()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 

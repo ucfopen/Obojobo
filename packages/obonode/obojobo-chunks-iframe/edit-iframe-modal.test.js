@@ -17,15 +17,13 @@ const testRendererOptions = {
 	}
 }
 
-describe('IFrame Properties Modal', () => {
+describe('EditIframeModal', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
 
 	test('EditIframeModal component mounts as expected', () => {
-		const component = mount(
-			<EditIFrameModal content={{ src: '' }} />
-		)
+		const component = mount(<EditIFrameModal content={{ src: '' }} />)
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
@@ -34,23 +32,17 @@ describe('IFrame Properties Modal', () => {
 	test('EditIframeModal component calls onConfirm from props', () => {
 		const onConfirm = jest.fn()
 
-		const component = mount(
-			<EditIFrameModal
-				content={{ src: '' }}
-				onConfirm={onConfirm}
-			/>
-		)
+		const component = mount(<EditIFrameModal content={{ src: '' }} onConfirm={onConfirm} />)
 
-		component.find('button').at(4).simulate('click')
+		component
+			.find('button')
+			.at(4)
+			.simulate('click')
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
 	test('EditIframeModal component changes title', () => {
-		const component = mount(
-			<EditIFrameModal
-				content={{ src: '' }}
-			/>
-		)
+		const component = mount(<EditIFrameModal content={{ src: '' }} />)
 
 		component
 			.find('input')
@@ -61,9 +53,7 @@ describe('IFrame Properties Modal', () => {
 
 	test('EditIFrameModal component changes border', () => {
 		const testRenderer = TestRenderer.create(
-			<EditIFrameModal
-				content={{ src: '' }}
-			/>,
+			<EditIFrameModal content={{ src: '' }} />,
 			testRendererOptions
 		)
 
@@ -92,9 +82,7 @@ describe('IFrame Properties Modal', () => {
 
 	test('IFrameProperties component changes fit', () => {
 		const testRenderer = TestRenderer.create(
-			<EditIFrameModal
-				content={{ src: '' }}
-			/>,
+			<EditIFrameModal content={{ src: '' }} />,
 			testRendererOptions
 		)
 
@@ -120,12 +108,13 @@ describe('IFrame Properties Modal', () => {
 	})
 
 	test('EditIFrameModal component changes width', () => {
-		const component = mount(
-			<EditIFrameModal content={{ src: '' }} />
-		)
+		const component = mount(<EditIFrameModal content={{ src: '' }} />)
 
 		// Opening dimensions section to render special dimension inputs.
-		component.find('button').at(1).simulate('click')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
 		// Actual testing starts here.
 		const widthInput = component.find('input').at(7)
@@ -148,7 +137,10 @@ describe('IFrame Properties Modal', () => {
 		)
 
 		// Opening dimensions section to render special dimension inputs.
-		component.find('button').at(1).simulate('click')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
 		// Actual testing starts here.
 		const widthInput = component.find('input').at(7)
@@ -161,12 +153,13 @@ describe('IFrame Properties Modal', () => {
 	})
 
 	test('EditIFrameModal component changes height', () => {
-		const component = mount(
-			<EditIFrameModal content={{ src: '' }} />
-		)
+		const component = mount(<EditIFrameModal content={{ src: '' }} />)
 
 		// Opening dimensions section to render special dimension inputs.
-		component.find('button').at(1).simulate('click')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
 		// Actual testing starts here.
 		const heightInput = component.find('input').at(8)
@@ -179,12 +172,13 @@ describe('IFrame Properties Modal', () => {
 	})
 
 	test('EditIFrameModal component changes initial zoom', () => {
-		const component = mount(
-			<EditIFrameModal content={{ src: '' }} />
-		)
+		const component = mount(<EditIFrameModal content={{ src: '' }} />)
 
 		// Opening advanced options to render special configs.
-		component.find('button').at(2).simulate('click')
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
 
 		// Actual testing starts here.
 		const zoomInput = component.find('input').at(8)
@@ -195,9 +189,7 @@ describe('IFrame Properties Modal', () => {
 
 	test('EditIFrameModal component changes autoload', () => {
 		const testRenderer = TestRenderer.create(
-			<EditIFrameModal
-				content={{ src: '', autoload: true }}
-			/>,
+			<EditIFrameModal content={{ src: '', autoload: true }} />,
 			testRendererOptions
 		)
 
@@ -223,7 +215,7 @@ describe('IFrame Properties Modal', () => {
 		const testRenderer = TestRenderer.create(
 			<EditIFrameModal
 				content={{
-					src:'',
+					src: ''
 				}}
 			/>,
 			testRendererOptions
@@ -260,9 +252,7 @@ describe('IFrame Properties Modal', () => {
 
 	test('EditIFrameModal component changes New Window', () => {
 		const testRenderer = TestRenderer.create(
-			<EditIFrameModal
-				content={{ src: '' }}
-			/>,
+			<EditIFrameModal content={{ src: '' }} />,
 			testRendererOptions
 		)
 
@@ -291,9 +281,7 @@ describe('IFrame Properties Modal', () => {
 
 	test('EditIFrameModal component changes Zoom', () => {
 		const testRenderer = TestRenderer.create(
-			<EditIFrameModal
-				content={{ src: '' }}
-			/>,
+			<EditIFrameModal content={{ src: '' }} />,
 			testRendererOptions
 		)
 
@@ -359,11 +347,7 @@ describe('IFrame Properties Modal', () => {
 		const goBack = jest.fn()
 
 		const testRenderer = TestRenderer.create(
-			<EditIFrameModal
-				content={{ src: '' }}
-				onCancel={onCancel}
-				goBack={goBack}
-			/>,
+			<EditIFrameModal content={{ src: '' }} onCancel={onCancel} goBack={goBack} />,
 			testRendererOptions
 		)
 

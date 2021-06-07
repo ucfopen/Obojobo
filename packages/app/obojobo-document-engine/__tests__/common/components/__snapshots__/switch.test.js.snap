@@ -22,6 +22,8 @@ exports[`Switch Switch renders correctly with all options set 1`] = `
       className="switch-slider round"
     />
   </label>
+  <br />
+  <small />
 </div>
 `;
 
@@ -42,5 +44,7 @@ exports[`Switch Switch renders correctly with no options set 1`] = `
       className="switch-slider round"
     />
   </label>
+  <br />
+  <small />
 </div>
 `;
