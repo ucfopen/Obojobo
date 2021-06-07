@@ -2,7 +2,6 @@ import React from 'react'
 import { mount } from 'enzyme'
 import TestRenderer from 'react-test-renderer'
 import NewIFrameModal from './new-iframe-modal'
-// import IFrameSizingTypes from './iframe-sizing-types'
 import IFrameContentTypes from './iframe-content-types'
 
 const testRendererOptions = {

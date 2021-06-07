@@ -110,8 +110,6 @@ class EditIframeModal extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.content)
-
 		const controlList = this.state.controls ? this.state.controls.split(',') : []
 
 		const isSizingSetToTextOrMaxWidth =
@@ -124,7 +122,6 @@ class EditIframeModal extends React.Component {
 				title="Edit Embedded IFrame"
 				onConfirm={() => this.props.onConfirm(this.state)}
 				onCancel={this.props.onCancel}
-				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className='edit-iframe-modal'>
 					<header>
@@ -272,7 +269,10 @@ class EditIframeModal extends React.Component {
 					<div className='loading-container'>
 						<label htmlFor='loading-select'>Loading:</label>
 						<div id='loading-select'>
-							<select onChange={this.onChangeAutoload}>
+							<select
+								value={this.state.autoload || false}
+								onChange={this.onChangeAutoload}
+							>
 								<option value={false}>Load when student sees IFrame</option>
 								<option value={true}>Load right away (Not recommended)</option>
 							</select>
