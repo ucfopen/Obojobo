@@ -88,6 +88,15 @@
 					display: flex;
 					height: 2em;
 					margin: 0.3em 0;
+
+					button {
+						margin-left: 0.1em;
+						margin-right: 0.1em;
+					}
+
+					.id-buttons {
+						display: flex;
+					}
 				}
 
 				label {
@@ -100,7 +109,7 @@
 					@include text-input();
 
 					&.id-input {
-						margin-right: 0.3em;
+						margin-right: 0.2em;
 					}
 				}
 
@@ -109,6 +118,13 @@
 					flex: auto;
 					font-size: 0.7em;
 					box-sizing: border-box;
+
+					&:read-only {
+						background: $color-bg2;
+						border: 1px solid $color-bg2;
+						color: $color-text-minor;
+						cursor: default;
+					}
 				}
 
 				&.assessment-settings {
