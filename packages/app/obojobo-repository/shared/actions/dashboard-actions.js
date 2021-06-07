@@ -210,6 +210,12 @@ const deleteModule = draftId => ({
 	promise: apiDeleteModule(draftId).then(apiGetMyModules)
 })
 
+const BULK_DELETE_MODULES = 'BULK_DELETE_MODULES'
+const bulkDeleteModules = draftIds => ({
+	type: BULK_DELETE_MODULES,
+	promise: Promise.all(draftIds.map(id => apiDeleteModule(id))).then(apiGetMyModules)
+})
+
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false) => ({
 	type: CREATE_NEW_MODULE,
@@ -220,6 +226,18 @@ const FILTER_MODULES = 'FILTER_MODULES'
 const filterModules = searchString => ({
 	type: FILTER_MODULES,
 	searchString
+})
+
+const SELECT_MODULES = 'SELECT_MODULES'
+const selectModules = draftIds => ({
+	type: SELECT_MODULES,
+	draftIds
+})
+
+const DESELECT_MODULES = 'DESELECT_MODULES'
+const deselectModules = draftIds => ({
+	type: DESELECT_MODULES,
+	draftIds
 })
 
 const SHOW_MODULE_MORE = 'SHOW_MODULE_MORE'
@@ -278,14 +296,20 @@ module.exports = {
 	CLEAR_PEOPLE_SEARCH_RESULTS,
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
+	BULK_DELETE_MODULES,
 	FILTER_MODULES,
+	SELECT_MODULES,
+	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
 	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
 	filterModules,
+	selectModules,
+	deselectModules,
 	deleteModule,
+	bulkDeleteModules,
 	closeModal,
 	deleteModulePermissions,
 	searchForUser,

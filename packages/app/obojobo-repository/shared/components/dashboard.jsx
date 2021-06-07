@@ -91,6 +91,14 @@ const renderModalDialog = props => {
 	)
 }
 
+const getModuleCount = modules => {
+	if (modules.length === 1) {
+		return '1 Module Selected: '
+	} else {
+		return `${modules.length} Modules Selected:`
+	}
+}
+
 const getSortMethod = sortOrder => {
 	let sortFn
 	switch (sortOrder) {
@@ -110,24 +118,50 @@ const getSortMethod = sortOrder => {
 	return sortFn
 }
 
-const renderModules = (modules, sortOrder, newModuleId) => {
-	const sortFn = getSortMethod(sortOrder)
-	return modules
-		.sort(sortFn)
-		.map(draft => (
-			<Module isNew={draft.draftId === newModuleId} key={draft.draftId} hasMenu={true} {...draft} />
-		))
-}
-
-const Dashboard = props => {
+function Dashboard(props) {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 	const [newModuleId, setNewModuleId] = useState(null)
+	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
+
+	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
+
+	const onKeyUp = e => {
+		if (e.key === 'Escape' && props.multiSelectMode && props.deselectModules) {
+			props.deselectModules(props.selectedModules)
+		}
+	}
 
 	const handleCreateNewModule = useTutorial => {
 		props.createNewModule(useTutorial).then(data => {
 			data.payload.value.sort(getSortMethod('newest'))
 			setNewModuleId(data.payload.value[0].draftId)
 		})
+	}
+
+	const handleSelectModule = (event, draftId, index) => {
+		if (event.shiftKey && lastSelectedIndex !== index) {
+			// Accommodates for group selecting backwards in the list and prevents duplicate selections
+			const [startIdx, endIdx] =
+				lastSelectedIndex < index ? [lastSelectedIndex, index + 1] : [index, lastSelectedIndex + 1]
+			const idList = moduleList.map(m => m.draftId)
+			props.selectModules(
+				idList.slice(startIdx, endIdx).filter(id => !props.selectedModules.includes(id))
+			)
+		} else {
+			props.selectedModules.includes(draftId)
+				? props.deselectModules([draftId])
+				: props.selectModules([draftId])
+		}
+
+		setLastSelectedIndex(index)
+	}
+
+	const deleteModules = draftIds => {
+		const response = prompt(
+			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
+		) //eslint-disable-line no-alert, no-undef
+		if (response !== 'DELETE') return
+		props.bulkDeleteModules(draftIds)
 	}
 
 	// Set a cookie when sortOrder changes on the client
@@ -141,6 +175,13 @@ const Dashboard = props => {
 		}, [sortOrder])
 	}
 
+	useEffect(() => {
+		document.addEventListener('keyup', onKeyUp)
+		return () => {
+			document.removeEventListener('keyup', onKeyUp)
+		}
+	}, [onKeyUp])
+
 	return (
 		<span id="dashboard-root">
 			<RepositoryNav
@@ -152,18 +193,36 @@ const Dashboard = props => {
 			<RepositoryBanner title={props.title} className="default-bg" facts={props.facts} />
 			<div className="repository--section-wrapper">
 				<section className="repository--main-content">
-					<div className="repository--main-content--control-bar">
-						<MultiButton title="New Module">
-							<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
-							<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
-							<Button onClick={props.importModuleFile}>Upload...</Button>
-						</MultiButton>
-						<Search
-							value={props.moduleSearchString}
-							placeholder="Filter..."
-							onChange={props.filterModules}
-						/>
-					</div>
+					{props.multiSelectMode ? (
+						<div className="repository--main-content--control-bar is-multi-select-mode">
+							<span className="module-count">{getModuleCount(props.selectedModules)}</span>
+							<Button
+								className="multi-select secondary-button dangerous-button"
+								onClick={() => deleteModules(props.selectedModules)}
+							>
+								Delete All
+							</Button>
+							<Button
+								className="close-button"
+								onClick={() => props.deselectModules(props.selectedModules)}
+							>
+								×
+							</Button>
+						</div>
+					) : (
+						<div className="repository--main-content--control-bar is-not-multi-select-mode">
+							<MultiButton title="New Module">
+								<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
+								<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
+								<Button onClick={props.importModuleFile}>Upload...</Button>
+							</MultiButton>
+							<Search
+								value={props.moduleSearchString}
+								placeholder="Filter..."
+								onChange={props.filterModules}
+							/>
+						</div>
+					)}
 					<div className="repository--main-content--title">
 						<span>My Modules</span>
 						<div className="repository--main-content--sort">
@@ -179,11 +238,17 @@ const Dashboard = props => {
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
 								<div className="repository--item-list--collection--item--multi-wrapper">
-									{renderModules(
-										props.filteredModules ? props.filteredModules : props.myModules,
-										sortOrder,
-										newModuleId
-									)}
+									{moduleList.sort(getSortMethod(sortOrder)).map((draft, index) => (
+										<Module
+											isNew={draft.draftId === newModuleId}
+											isSelected={props.selectedModules.includes(draft.draftId)}
+											isMultiSelectMode={props.multiSelectMode}
+											onSelect={e => handleSelectModule(e, draft.draftId, index)}
+											key={draft.draftId}
+											hasMenu={true}
+											{...draft}
+										/>
+									))}
 								</div>
 							</div>
 						</div>
