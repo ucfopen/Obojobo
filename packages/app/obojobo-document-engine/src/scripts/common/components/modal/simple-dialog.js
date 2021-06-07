@@ -54,7 +54,7 @@ class SimpleDialog extends React.Component {
 					default: true
 				}
 			]
-		} else if (this.props.cancelOrCustomYes){
+		} else if (this.props.cancelOrCustomYes) {
 			buttons = [
 				{
 					value: 'Cancel',

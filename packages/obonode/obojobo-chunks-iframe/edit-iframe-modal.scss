@@ -24,11 +24,11 @@
 			align-items: center;
 
 			#src-input {
-				margin-right: 5px;
-				padding: 0.7em;
+				margin-right: 0.5em;
+				padding: 0.61em 0.7em;
 				font-size: 0.8em;
 				border-radius: 0.4em;
-				border: 1px solid $color-neutral-text;
+				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				flex: 1;
 				font-family: $font-default;
@@ -36,7 +36,7 @@
 
 			button {
 				color: $color-action;
-				border: 1px solid $color-action;
+				border: 0.1em solid $color-action;
 				border-radius: 0.4em;
 				background: $color-bg;
 				padding: 0.78em;
@@ -88,16 +88,16 @@
 				}
 
 				label[for='video-or-media'] {
-					border-top: 1px solid $color-neutral;
-					border-left: 1px solid $color-neutral;
-					border-bottom: 1px solid $color-neutral;
+					border-top: 0.1em solid $color-neutral;
+					border-left: 0.1em solid $color-neutral;
+					border-bottom: 0.1em solid $color-neutral;
 					border-top-left-radius: 0.2em;
 					border-bottom-left-radius: 0.2em;
 					padding: 0.5em 0.8em 0.5em 0.4em;
 				}
 
 				label[for='embedded-webpage'] {
-					border: 1px solid $color-neutral;
+					border: 0.1em solid $color-neutral;
 					border-top-right-radius: 0.2em;
 					border-bottom-right-radius: 0.2em;
 					padding: 0.5em 0.8em 0.5em 0.4em;
@@ -105,14 +105,14 @@
 
 				.video-or-media-icon {
 					background: url('./video-icon.svg') no-repeat center;
-					width: 120px;
-					height: 60px;
+					width: 5.5em;
+					height: 2.75em;
 				}
 
 				.embedded-webpage-icon {
 					background: url('./embeddable-webpage-icon.svg') no-repeat center;
-					width: 120px;
-					height: 60px;
+					width: 5.5em;
+					height: 2.75em;
 				}
 			}
 
@@ -133,7 +133,7 @@
 		display: flex;
 		text-align: left;
 
-		label[for=sizing-options-container] {
+		label[for='sizing-options-container'] {
 			width: 20%;
 		}
 
@@ -143,12 +143,12 @@
 
 			.sizing-options {
 				border-radius: 0.2em;
-				border: 1px solid $color-neutral;
+				border: 0.1em solid $color-neutral;
 				padding: 0.4em;
 
-				label[for=max-width],
-				label[for=text-width],
-				label[for=fixed-width] {
+				label[for='max-width'],
+				label[for='text-width'],
+				label[for='fixed-width'] {
 					display: flex;
 					align-items: center;
 					gap: 0.9em;
@@ -167,9 +167,9 @@
 
 				.icon {
 					width: 25%;
-					height: 90px;
+					height: 5em;
 					background-color: $color-bg;
-					border: 1px solid $color-neutral;
+					border: 0.1em solid $color-neutral;
 					border-radius: 0.2em;
 				}
 
@@ -219,7 +219,7 @@
 				border-radius: 0.4em;
 				font-family: $font-default;
 				font-size: 0.8em;
-				border: 1px solid $color-neutral-text;
+				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 			}
 
@@ -238,7 +238,7 @@
 		margin-top: 1em;
 		text-align: left;
 
-		label[for=loading-select] {
+		label[for='loading-select'] {
 			width: 20%;
 			margin-top: 0.4em;
 		}
@@ -251,7 +251,7 @@
 				padding: 0.7em;
 				font-size: 0.8em;
 				border-radius: 0.4em;
-				border: 1px solid $color-neutral-text;
+				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				width: 100%;
 				font-family: $font-default;
@@ -266,8 +266,8 @@
 
 				.warning-icon {
 					margin-right: 0.5em;
-					width: 20px;
-					height: 20px;
+					width: 1.3em;
+					height: 1.3em;
 					background: url('./warning-icon.svg') no-repeat center;
 				}
 			}
@@ -279,7 +279,7 @@
 		margin-top: 1em;
 		text-align: left;
 
-		label[for=title-input] {
+		label[for='title-input'] {
 			width: 20%;
 			margin-top: 0.4em;
 		}
@@ -292,7 +292,7 @@
 				padding: 0.7em;
 				font-size: 0.8em;
 				border-radius: 0.4em;
-				border: 1px solid $color-neutral-text;
+				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				width: 100%;
 				font-family: $font-default;
@@ -329,7 +329,7 @@
 			margin-top: 1em;
 			text-align: left;
 
-			label[for=select-fit] {
+			label[for='select-fit'] {
 				width: 20%;
 			}
 
@@ -337,7 +337,7 @@
 				padding: 0.7em;
 				font-size: 0.8em;
 				border-radius: 0.4em;
-				border: 1px solid $color-neutral-text;
+				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				width: 80%;
 				font-family: $font-default;
@@ -350,7 +350,7 @@
 			margin-top: 1em;
 			text-align: left;
 
-			label[for=initial-zoom] {
+			label[for='initial-zoom'] {
 				width: 20%;
 			}
 
@@ -358,7 +358,7 @@
 				padding: 0.7em;
 				font-size: 0.8em;
 				border-radius: 0.4em;
-				border: 1px solid $color-neutral-text;
+				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				width: 80%;
 				font-family: $font-default;
@@ -372,7 +372,7 @@
 			.reload-container,
 			.new-window-container,
 			.zoom-container {
-				border: 1px solid $color-neutral;
+				border: 0.1em solid $color-neutral;
 				padding: 0.7em;
 				border-radius: 0.4em;
 			}

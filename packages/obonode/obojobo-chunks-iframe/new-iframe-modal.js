@@ -21,7 +21,7 @@ class NewIframeModal extends React.Component {
 			openPreviewNotWorkingSection: false
 		}
 
-		this.inputRef = React.createRef();
+		this.inputRef = React.createRef()
 
 		this.handleSourceChange = this.handleSourceChange.bind(this)
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
@@ -38,43 +38,42 @@ class NewIframeModal extends React.Component {
 	}
 
 	handleSourceChange(event) {
-		const src = event.target.value;
-		const contentType =
-			src.includes('<iframe') ? IFrameContentTypes.MEDIA : IFrameContentTypes.WEBPAGE;
+		const src = event.target.value
+		const contentType = src.includes('<iframe')
+			? IFrameContentTypes.MEDIA
+			: IFrameContentTypes.WEBPAGE
 
-		this.setState({ src, contentType });
+		this.setState({ src, contentType })
 	}
 
 	openPreviewNotWorkingSection() {
-		this.setState({ openPreviewNotWorkingSection: true });
+		this.setState({ openPreviewNotWorkingSection: true })
 	}
 
 	render() {
-		const previewContent =
-			<div className='preview-with-iframe'>
-				<iframe
-					src={this.state.src}
-				></iframe>
+		const previewContent = (
+			<div className="preview-with-iframe">
+				<iframe src={this.state.src}></iframe>
 				<div>
 					<p>Does the preview look good?</p>
 					{this.state.openPreviewNotWorkingSection ? (
-						<div className='preview-not-working'>
+						<div className="preview-not-working">
 							<span>
-								If the preview above is not what you expected, keep in mind that some pages
-								inside your IFrame may restrict their content, thus not allowing them to be shown
-								within Obojobo. Also, if you are trying to embed media instead of an IFrame, make
-								sure to paste your IFrame&apos;s embed code (starting with &lt;iframe...) and not only the regular URL.
+								If the preview above is not what you expected, keep in mind that some pages inside
+								your IFrame may restrict their content, thus not allowing them to be shown within
+								Obojobo. Also, if you are trying to embed media instead of an IFrame, make sure to
+								paste your IFrame&apos;s embed code (starting with &lt;iframe...) and not only the
+								regular URL.
 							</span>
 						</div>
 					) : (
-						<button
-							onClick={this.openPreviewNotWorkingSection}
-						>
+						<button onClick={this.openPreviewNotWorkingSection}>
 							No, the preview isn&apos;t working
 						</button>
 					)}
 				</div>
 			</div>
+		)
 
 		return (
 			<SimpleDialog
@@ -85,23 +84,23 @@ class NewIframeModal extends React.Component {
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
-				<div className='new-iframe-modal'>
+				<div className="new-iframe-modal">
 					<header>
 						<p>Paste either an iframe embed code or a URL to embed:</p>
 						<input
-							type='text'
+							type="text"
 							placeholder='<iframe src="https://example.com"/> or "https://example.com"'
 							ref={this.inputRef}
 							value={this.state.src || ''}
 							onChange={this.handleSourceChange}
 						/>
 					</header>
-					<div className='preview'>
+					<div className="preview">
 						<p>Embedded preview:</p>
 						{this.state.src ? (
 							previewContent
 						) : (
-							<div className='no-preview'>
+							<div className="no-preview">
 								<span>Paste a link or embed code above to see the preview</span>
 							</div>
 						)}
