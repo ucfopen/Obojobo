@@ -127,7 +127,7 @@ class EditIframeModal extends React.Component {
 					<header>
 						<label htmlFor="src-input">Source:</label>
 						<div>
-							<input id="src-input" disabled value={this.state.src} />
+							<input id="src-input" disabled value={this.state.src} ref={this.inputRef} />
 							<button onClick={this.handleSourceChange}>Change...</button>
 						</div>
 					</header>

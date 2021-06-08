@@ -12,6 +12,8 @@ class NewIframeModal extends React.Component {
 
 		const defaultState = {
 			src: '',
+			width: 640,
+			height: 480,
 			srcFormatted: '',
 			contentType: IFrameContentTypes.MEDIA
 		}
@@ -40,23 +42,35 @@ class NewIframeModal extends React.Component {
 
 	handleSourceChange(event) {
 		const src = event.target.value
-		let srcFormatted = ''
+		let srcFormatted,
+			width,
+			height = ''
 
 		const contentType = src.includes('<iframe')
 			? IFrameContentTypes.MEDIA
 			: IFrameContentTypes.WEBPAGE
 
-		// Extracting iframe's src address (if detected content type is MEDIA)
 		if (contentType === IFrameContentTypes.MEDIA) {
+			// Extracting iframe's src address (if detected content type is MEDIA)
 			srcFormatted = src
 				.split('src="')
+				.pop()
+				.split('"')[0]
+
+			// Extracting width and height as well
+			width = src
+				.split('width="')
+				.pop()
+				.split('"')[0]
+			height = src
+				.split('height="')
 				.pop()
 				.split('"')[0]
 		} else {
 			srcFormatted = src
 		}
 
-		this.setState({ src, srcFormatted, contentType })
+		this.setState({ src, srcFormatted, contentType, width, height })
 	}
 
 	openPreviewNotWorkingSection() {
