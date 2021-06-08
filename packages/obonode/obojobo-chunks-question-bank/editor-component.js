@@ -89,6 +89,7 @@ class QuestionBank extends React.Component {
 		event.stopPropagation()
 		const chooseAll = event.target.value === 'all'
 		this.setState({ chooseAll }) // update the display now
+		this.updateNodeFromState()
 	}
 
 	onChangeContent(key, event) {
@@ -96,6 +97,7 @@ class QuestionBank extends React.Component {
 		if (key === 'choose') val = Math.max(parseInt(val, 10), 1)
 		const newContent = { [key]: val }
 		this.setState(newContent) // update the display now
+		this.updateNodeFromState()
 	}
 
 	displaySettings(editor, element) {

@@ -1,5 +1,277 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Rubric editor Rubric section correctly renders rubric summary 1`] = `
+<div
+  className="rubric pad is-type-highest"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor Rubric section correctly renders rubric summary 2`] = `
+<div
+  className="rubric pad is-type-pass-fail"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor Rubric section correctly renders rubric summary 3`] = `
+<div
+  className="rubric pad is-type-pass-fail"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor Rubric section correctly renders rubric summary 4`] = `
+<div
+  className="rubric pad is-type-pass-fail"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor Rubric section correctly renders rubric summary 5`] = `
+<div
+  className="rubric pad is-type-pass-fail"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor Rubric section correctly renders rubric summary 6`] = `
+<div
+  className="rubric pad is-type-pass-fail"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor Rubric section correctly renders rubric summary 7`] = `
+<div
+  className="rubric pad is-type-pass-fail"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor Rubric section correctly renders rubric summary 8`] = `
+<div
+  className="rubric pad is-type-pass-fail"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
+    </button>
+  </div>
+</div>
+`;
+
 exports[`Rubric editor Rubric section renders 1`] = `
 <div
   className="rubric pad is-type-undefined"
@@ -16,6 +288,19 @@ exports[`Rubric editor Rubric section renders 1`] = `
       type="button"
     >
       Edit Assessment Rubric
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+  >
+    <button
+      aria-label="Click for a summary of your current rubric settings"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      type="button"
+    >
+      ?
     </button>
   </div>
 </div>
