@@ -140,7 +140,10 @@ describe('IFrame Editor Node', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 
 		// Testing opening EditIFrameModal
-		component.instance().openEditIframeModal()
+		component.instance().openEditIframeModal({
+			src: 'mock-src',
+			srcFormatted: 'mock-formatted-src'
+		})
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 

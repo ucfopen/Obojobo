@@ -70,21 +70,23 @@ describe('NewIFrameModal', () => {
 	})
 
 	test('NewIFrameModal component changes src', () => {
-		const component = mount(
+		const component = TestRenderer.create(
 			<NewIFrameModal
 				content={{
 					src: '',
 					contentType: IFrameContentTypes.MEDIA
 				}}
-			/>
+			/>,
+			testRendererOptions
 		)
 
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { value: 'changed' } })
+		const startState = component.toJSON()
+		const input = component.root.findAllByType('input')[1]
+		input.props.onChange({ target: { value: 'https://' } })
 
-		expect(component.html()).toMatchSnapshot()
+		const endState = component.toJSON()
+		expect(endState).toMatchSnapshot()
+		expect(startState).not.toEqual(endState)
 	})
 
 	test('NewIFrameModal component correctly detects content type', () => {

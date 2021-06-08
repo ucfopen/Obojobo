@@ -70,6 +70,7 @@ class IFrame extends React.Component {
 		this.onCloseAnIFrameModal()
 
 		// Opens edit IFrame modal
+		content.src = content.srcFormatted
 		ModalUtil.show(
 			<EditIframeModal
 				content={content}
