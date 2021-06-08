@@ -141,7 +141,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	onSave() {
-		console.log('onSave!')
+		console.log('onSave!', this.props.content, this.state.content)
 		// Save the internal content to the editor state
 		const error =
 			this.props.saveContent(this.props.content, this.state.content) ||
@@ -201,10 +201,15 @@ class MoreInfoBox extends React.Component {
 
 		console.log('closed', { ...this.state.content, ...modalState })
 
-		this.setState(prevState => ({
-			content: { ...prevState.content, ...modalState },
-			needsUpdate: true
-		}))
+		this.setState(
+			prevState => ({
+				content: { ...prevState.content, ...modalState },
+				needsUpdate: true
+			}),
+			() => {
+				this.onSave()
+			}
+		)
 	}
 
 	renderItem(item) {

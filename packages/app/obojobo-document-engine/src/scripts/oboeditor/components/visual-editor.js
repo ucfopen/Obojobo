@@ -29,7 +29,7 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor, Editor, Element, Transforms, Range } from 'slate'
+import { createEditor, Editor, Element, Transforms, Range, Text } from 'slate'
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import { withHistory } from 'slate-history'
 
@@ -489,6 +489,30 @@ class VisualEditor extends React.Component {
 			return item.plugins.decorate(entry, this.editor)
 		}
 
+		console.log('decorate', entry)
+		const [node, path] = entry
+
+		if (node && Text.isText(node)) {
+			const varRegex = /\{\{(.+?)\}\}/g
+
+			const { text } = node
+
+			const match = varRegex.exec(text)
+			console.log('match', match)
+
+			if (match) {
+				console.log(text.substring(match.index, match.index + match[0].length))
+				return [
+					{
+						anchor: { path, offset: match.index },
+						focus: { path, offset: match.index + match[0].length },
+						highlight: true,
+						variable: text.substring(match.index + 2, match.index + 2 + match[0].length - 4)
+					}
+				]
+			}
+		}
+
 		return []
 	}
 
@@ -506,6 +530,16 @@ class VisualEditor extends React.Component {
 			return (
 				<span {...props} {...attributes}>
 					<span contentEditable={false} data-placeholder={leaf.placeholder} />
+					{children}
+				</span>
+			)
+		}
+
+		console.log('renderLeaf', props)
+
+		if (leaf.highlight) {
+			return (
+				<span className="todo--highlight" data-var={leaf.variable} {...attributes}>
 					{children}
 				</span>
 			)

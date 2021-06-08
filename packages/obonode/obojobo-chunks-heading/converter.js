@@ -31,6 +31,7 @@ const slateToObo = node => {
 		children: [],
 		content: withoutUndefined({
 			triggers: node.content.triggers,
+			variables: node.content.variables,
 			headingLevel: node.content.headingLevel,
 			textGroup: [line]
 		})
