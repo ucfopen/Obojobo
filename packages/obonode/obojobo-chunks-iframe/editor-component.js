@@ -71,13 +71,21 @@ class IFrame extends React.Component {
 	}
 
 	getTitle(src, title) {
+		const charLimit = 50
+
 		if (src === null) {
 			return 'IFrame missing src attribute'
 		} else if (title) {
 			return title
 		}
 
-		return src.replace(/^https?:\/\//, '')
+		const displayedTitle = src.replace(/^https?:\/\//, '')
+
+		if (displayedTitle.length > charLimit) {
+			return displayedTitle.substring(0, charLimit) + '...'
+		}
+
+		return displayedTitle
 	}
 
 	deleteNode() {

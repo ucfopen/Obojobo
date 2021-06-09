@@ -29,13 +29,21 @@ const getControlsOptions = modelState => {
 }
 
 const getDisplayedTitle = modelState => {
+	const charLimit = 50
+
 	if (modelState.src === null) {
 		return 'IFrame missing src attribute'
 	} else if (modelState.title) {
 		return modelState.title
 	}
 
-	return (modelState.src || '').replace(/^https?:\/\//, '')
+	const displayedTitle = (modelState.src || '').replace(/^https?:\/\//, '')
+
+	if (displayedTitle.length > charLimit) {
+		return displayedTitle.substring(0, charLimit) + '...'
+	}
+
+	return displayedTitle
 }
 
 const getAriaRegionLabel = (modelState, displayedTitle) => {
