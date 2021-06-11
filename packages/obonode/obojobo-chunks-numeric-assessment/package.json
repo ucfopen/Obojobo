@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-numeric-assessment",
-	"version": "12.2.0-alpha.0",
+	"version": "12.2.0",
 	"license": "AGPL-3.0-only",
 	"description": "NumericAssessment chunk for Obojobo",
 	"scripts": {
@@ -30,8 +30,8 @@
 		"big.js": "^6.1.1"
 	},
 	"peerDependencies": {
-		"obojobo-chunks-question": "^12.2.0-alpha.0",
-		"obojobo-lib-utils": "^12.2.0-alpha.0"
+		"obojobo-chunks-question": "^12.2.0",
+		"obojobo-lib-utils": "^12.2.0"
 	},
 	"jest": {
 		"testMatch": [
