@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-repository",
 	"license": "AGPL-3.0-only",
-	"version": "12.3.0-alpha.0",
+	"version": "12.3.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -42,8 +42,8 @@
 		"seedrandom": "^2.3.11"
 	},
 	"peerDependencies": {
-		"obojobo-express": "^12.3.0-alpha.0",
-		"obojobo-lib-utils": "^12.3.0-alpha.0"
+		"obojobo-express": "^12.3.0",
+		"obojobo-lib-utils": "^12.3.0"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [
