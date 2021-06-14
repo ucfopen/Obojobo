@@ -280,6 +280,8 @@ class EditorApp extends React.Component {
 			// revisions will always load in visual mode
 			// currently this used for viewing version history
 			return this.loadDraftRevision(draftId, revisionId)
+				.then(this.removeLoadingNotice)
+				.catch(this.removeLoadingNotice)
 		}
 
 		return this.reloadDraft(draftId, this.state.mode)
@@ -296,7 +298,7 @@ class EditorApp extends React.Component {
 				Dispatcher.on('window:inactive', this.onWindowInactive)
 				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive)
 			})
-			.catch(() => {})
+			.catch(this.removeLoadingNotice)
 	}
 
 	removeLoadingNotice() {

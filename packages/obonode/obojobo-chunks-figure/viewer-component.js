@@ -14,7 +14,6 @@ const Figure = props => {
 	const content = props.model.modelState
 	const customStyle = {}
 	const captionStyle = {}
-	// console.log(content.captionWidth)
 	if (content.size === 'custom') {
 		if (content.width) {
 			customStyle.width = content.width + 'px'

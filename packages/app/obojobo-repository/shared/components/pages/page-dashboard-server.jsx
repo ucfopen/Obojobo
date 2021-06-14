@@ -22,6 +22,8 @@ PageDashboardServer.defaultProps = {
 	selectedModule: {},
 	draftPermissions: {},
 	myModules: [],
+	selectedModules: [],
+	multiSelectMode: false,
 	moduleSearchString: '',
 	shareSearchString: '',
 	versionHistory: {

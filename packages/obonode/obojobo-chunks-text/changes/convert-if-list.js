@@ -10,7 +10,7 @@ const convertIfList = function(entry, editor, event) {
 	const nodeRange = Editor.range(editor, nodePath)
 	const cursor = editor.selection
 	const cursorOffset = cursor.anchor.offset
-	const nodeIdx = cursor.anchor.path[1]
+	const nodeIdx = cursor.anchor.path[cursor.anchor.path.length - 2]
 	const nodeStr = node.children[nodeIdx].children[0].text
 	const listPrefix = nodeStr.substring(0, cursorOffset)
 
