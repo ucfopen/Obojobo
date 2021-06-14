@@ -72,7 +72,7 @@ describe('ModProperties Modal', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(0)
 			.simulate('click')
 
 		expect(component.state('mods').length).toEqual(1)
@@ -89,7 +89,7 @@ describe('ModProperties Modal', () => {
 
 		component
 			.find('button')
-			.at(4)
+			.at(3)
 			.simulate('click')
 
 		expect(component.state('mods').length).toEqual(2)
