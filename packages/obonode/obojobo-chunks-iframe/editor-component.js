@@ -71,8 +71,6 @@ class IFrame extends React.Component {
 	}
 
 	getTitle(src, title) {
-		const charLimit = 50
-
 		if (src === null) {
 			return 'IFrame missing src attribute'
 		} else if (title) {
@@ -80,6 +78,7 @@ class IFrame extends React.Component {
 		}
 
 		const displayedTitle = src.replace(/^https?:\/\//, '')
+		const charLimit = 50
 
 		if (displayedTitle.length > charLimit) {
 			return displayedTitle.substring(0, charLimit) + '...'

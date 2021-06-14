@@ -29,8 +29,6 @@ const getControlsOptions = modelState => {
 }
 
 const getDisplayedTitle = modelState => {
-	const charLimit = 50
-
 	if (modelState.src === null) {
 		return 'IFrame missing src attribute'
 	} else if (modelState.title) {
@@ -38,6 +36,7 @@ const getDisplayedTitle = modelState => {
 	}
 
 	const displayedTitle = (modelState.src || '').replace(/^https?:\/\//, '')
+	const charLimit = 50
 
 	if (displayedTitle.length > charLimit) {
 		return displayedTitle.substring(0, charLimit) + '...'
