@@ -15,14 +15,14 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db.createTable('user_perm_overrides', {
+	return db.createTable('user_perms', {
 		user_id: { type: 'bigserial', primaryKey: true },
 		perms: { type: 'text[]' }
 	})
 }
 
 exports.down = function(db) {
-	return db.dropTable('user_perm_overrides')
+	return db.dropTable('user_perms')
 }
 
 exports._meta = {

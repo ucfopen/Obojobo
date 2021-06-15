@@ -56,7 +56,7 @@ function DataGridDrafts({ rows = [], onSelectedDraftsChanged }) {
 				keyField={'draftId'}
 				dense={true}
 				pagination={true}
-				paginationPerPage={4}
+				// paginationPerPage={4}
 				selectableRows={true}
 				onSelectedRowsChange={({ selectedRows }) =>
 					onSelectedDraftsChanged(selectedRows.map(row => row.draftId))

@@ -20,23 +20,9 @@ const PageStatsServer = props => {
 }
 
 PageStatsServer.defaultProps = {
-	dialog: null,
-	selectedModule: {},
-	draftPermissions: {},
-	myModules: [],
-	selectedModules: [],
-	multiSelectMode: false,
-	moduleSearchString: '',
-	shareSearchString: '',
-	versionHistory: {
+	assessmentStats: {
 		hasFetched: false,
 		isFetching: false,
-		items: []
-	},
-	searchPeople: {
-		hasFetched: false,
-		isFetching: false,
-		timestamp: 3,
 		items: []
 	}
 }

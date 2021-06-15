@@ -45,6 +45,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 					/>
 					<span>Include preview attempt data</span>
 				</label>
+				<hr />
 				<label>
 					<input
 						type="checkbox"

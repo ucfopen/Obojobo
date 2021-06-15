@@ -1,8 +1,5 @@
-require('./data-grid-attempts.scss')
-
 const React = require('react')
-const DataTable = require('react-data-table-component').default
-const ButtonLink = require('../button-link')
+const DataGridScores = require('./data-grid-scores')
 
 const columns = [
 	{
@@ -176,77 +173,16 @@ const columns = [
 	}
 ]
 
-const simpleColumns = columns.filter(col => !col.advanced)
-
-const getColumns = (columns, showAdvancedFields) => {
-	return showAdvancedFields ? columns : simpleColumns
-}
-
-const statsToCSV = (showAdvancedFields, attempts) => {
-	const filteredColumns = columns.filter(c => showAdvancedFields || !c.advanced)
-	const cols = `"${filteredColumns.map(c => c.name).join('","')}"`
-	const colOrder = filteredColumns.map(c => c.selector)
-	const rows = attempts.map(attempt => `"${colOrder.map(key => attempt[key]).join('","')}"`)
-	return `${cols}\n${rows.join('\n')}`
-}
-
-const getFileName = (
-	filteredRows,
-	{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }
-) => {
-	const drafts = [...new Set(filteredRows.map(row => row.draftId))]
-	return (
-		[
-			'attempt-scores',
-			showIncompleteAttempts ? 'with-incomplete-attempts' : '',
-			showPreviewAttempts ? 'with-preview-attempts' : '',
-			showAdvancedFields ? 'with-advanced-fields' : ''
-		]
-			.filter(s => s)
-			.join('-') +
-		'__' +
-		drafts.join('_')
-	)
-}
-
-const filterRows = (rows, { showIncompleteAttempts, showPreviewAttempts }) => {
-	if (showIncompleteAttempts && showPreviewAttempts) {
-		return rows
-	}
-
-	return rows.filter(
-		row =>
-			(showIncompleteAttempts || row.completedAt !== null) &&
-			(showPreviewAttempts || !row.isPreview)
-	)
-}
-
-function DataGridAttempts({ rows = [], filterSettings }) {
-	const filteredRows = filterRows(rows, filterSettings)
-
+function DataGridAttempts({ attempts = [], filterSettings }) {
 	return (
 		<div className="repository--data-grid-attempts">
-			<div className="data-grid">
-				<DataTable
-					title="All Attempts"
-					columns={getColumns(columns, filterSettings.showAdvancedFields)}
-					data={filteredRows}
-					striped={true}
-					keyField={'attemptId'}
-					dense={true}
-				/>
-			</div>
-			{filteredRows.length > 0 ? (
-				<ButtonLink
-					url={`data:text/csv;charset=utf-8,${escape(
-						statsToCSV(filterSettings.showAdvancedFields, filteredRows)
-					)}`}
-					download={getFileName(filteredRows, filterSettings)}
-				>
-					⬇️&nbsp;&nbsp;&nbsp;Download Table as CSV File ({filteredRows.length} row
-					{filteredRows.length === 1 ? '' : 's'})
-				</ButtonLink>
-			) : null}
+			<DataGridScores
+				tableName="Attempt Scores"
+				csvFileName="attempt-scores"
+				columns={columns}
+				rows={attempts}
+				filterSettings={filterSettings}
+			/>
 		</div>
 	)
 }
