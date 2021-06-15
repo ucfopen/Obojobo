@@ -93,7 +93,14 @@ describe('Dashboard', () => {
 				id: 99,
 				avatarUrl: '/path/to/avatar',
 				firstName: 'firstName',
-				lastName: 'lastName'
+				lastName: 'lastName',
+				perms: [
+					'canViewEditor',
+					'canEditDrafts',
+					'canDeleteDrafts',
+					'canCreateDrafts',
+					'canPreviewDrafts'
+				]
 			},
 
 			dialog: null,

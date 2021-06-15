@@ -21,7 +21,7 @@ const apiGetAssessmentAnalytics = draftId => {
 				attempt.attemptScore = attempt.attemptResult ? attempt.attemptResult.attemptScore : null
 				attempt.assessmentStatus = attempt.scoreDetails ? attempt.scoreDetails.status : null
 				attempt.modRewardTotal = attempt.scoreDetails ? attempt.scoreDetails.rewardTotal : null
-				attempt.isInvalid = attempt.state && attempt.state.invalid === true ? true : false
+				attempt.isInvalid = attempt.state && attempt.state.invalid
 
 				return attempt
 			})
