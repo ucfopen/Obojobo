@@ -1,0 +1,59 @@
+@import '../../../client/css/defaults';
+
+.repository--assessment-stats {
+	background: $color-bg;
+	height: 100%;
+	border-radius: $dimension-rounded-radius;
+	padding: 1em;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+
+	.settings {
+		display: flex;
+		flex-direction: column;
+		font-size: 0.8em;
+		line-height: 1.7em;
+		padding-bottom: 1em;
+	}
+
+	.view-mode {
+		margin-bottom: 1em;
+
+		> span {
+			display: inline-block;
+			width: 5em;
+		}
+
+		select {
+			@include select-input();
+
+			font-size: 0.8em;
+		}
+	}
+
+	.filters {
+		> span {
+			display: inline-block;
+			width: 5em;
+		}
+	}
+
+	.repository--assessment-stats-filter-controls {
+		display: inline-block;
+	}
+
+	.repository--data-grid-assessments,
+	.repository--data-grid-attempts {
+		border: 1px solid $color-shadow;
+		border-radius: $dimension-rounded-radius;
+
+		.data-grid {
+			width: calc(100% - 1px);
+
+			.rdt_TableHeader {
+				background: transparent;
+			}
+		}
+	}
+}

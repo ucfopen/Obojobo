@@ -205,6 +205,17 @@ router
 			})
 	})
 
+router
+	.route('/api/assessments/:draftId/analytics')
+	.get([requireCurrentUser, requireCurrentDocument])
+	.get((req, res) => {
+		return AssessmentModel.fetchAttemptHistoryAnalytics(req.currentDocument.draftId)
+			.then(res.success)
+			.catch(error => {
+				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
+			})
+	})
+
 // register the event listeners
 require('./events')
 

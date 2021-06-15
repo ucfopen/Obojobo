@@ -1,0 +1,15 @@
+.repository--assessment-stats-filter-controls {
+	.container {
+		display: flex;
+		flex-direction: column;
+
+		input {
+			margin-right: 0.5em;
+			margin-left: 0;
+		}
+
+		label {
+			cursor: pointer;
+		}
+	}
+}

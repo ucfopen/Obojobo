@@ -34,12 +34,14 @@
 		"ignore-styles": "^5.0.1",
 		"lodash.escaperegexp": "^4.1.2",
 		"object-assign": "^4.1.1",
+		"react-data-table-component": "^6.11.7",
 		"react-modal": "^3.12.1",
 		"react-redux": "^7.2.3",
 		"redux": "^4.0.5",
 		"redux-pack": "^0.1.5",
 		"sass-mq": "^5.0.1",
-		"seedrandom": "^2.3.11"
+		"seedrandom": "^2.3.11",
+		"styled-components": "^5.3.0"
 	},
 	"peerDependencies": {
 		"obojobo-express": "^12.2.0-alpha.0",

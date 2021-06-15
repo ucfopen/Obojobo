@@ -113,7 +113,99 @@ class AssessmentModel {
 			}))
 	}
 
-	static fetchAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
+	static fetchAttemptHistoryAnalytics(draftId) {
+		return db.manyOrNone(
+			`
+				SELECT
+					U.username as user_username,
+					U.first_name as user_first_name,
+					U.last_name as user_last_name,
+					U.roles as user_roles,
+					S.id AS assessment_score_id,
+					S.user_id,
+					S.draft_id,
+					S.assessment_id,
+					S.attempt_id,
+					S.score AS assessment_score,
+					S.is_preview,
+					S.score_details as assessment_score_details,
+					S.draft_content_id,
+					S.is_imported,
+					S.imported_assessment_score_id,
+					A.state as attempt_state,
+					A.result as attempt_result,
+					A.created_at,
+					A.completed_at,
+					A.resource_link_id,
+					A.imported_attempt_id,
+					L.status AS lti_status,
+					L.status_details as lti_status_details,
+					L.gradebook_status AS lti_gradebook_status,
+					L.score_sent as lti_score_sent,
+					N.data ->> 'context_id' AS context_id,
+					N.data ->> 'context_title' AS course_title,
+					N.data ->> 'resource_link_title' AS resource_link_title,
+					N.data ->> 'launch_presentation_return_url' AS launch_presentation_return_url,
+					C.content -> 'content' ->> 'title' AS module_title
+				FROM
+					(
+						SELECT
+							MAX(id) AS id,
+							assessment_score_id,
+							launch_id,
+							status,
+							status_details,
+							gradebook_status,
+							score_sent
+						FROM
+							lti_assessment_scores
+						GROUP BY
+							assessment_score_id,
+							launch_id,
+							status,
+							status_details,
+							gradebook_status,
+							score_sent
+						ORDER BY id
+					) L
+				LEFT JOIN
+					assessment_scores S
+				ON
+					L.assessment_score_id = S.id
+				LEFT JOIN
+					attempts A
+				ON
+					S.attempt_id = A.id
+				LEFT JOIN
+					launches N
+				ON
+					L.launch_id = N.id
+				LEFT JOIN
+					users U
+				ON
+					S.user_id = U.id
+				LEFT JOIN
+					drafts_content C
+				ON
+					A.draft_content_id = C.id
+				WHERE
+					S.draft_id = $[draftId]
+				ORDER BY
+					A.created_at
+				`,
+			{
+				draftId
+			}
+		)
+	}
+
+	static fetchAttemptsForUserDraftAndResourceLinkId(
+		userId,
+		draftId,
+		isPreview,
+		resourceLinkId,
+		optionalAssessmentId = null
+	) {
 		return db
 			.manyOrNone(
 				`
@@ -202,7 +294,7 @@ class AssessmentModel {
 		optionalAssessmentId = null
 	) {
 		const assessments = new Map()
-		const attempts = await AssessmentModel.fetchAttempts(
+		const attempts = await AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId(
 			userId,
 			draftId,
 			isPreview,

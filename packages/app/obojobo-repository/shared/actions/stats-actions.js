@@ -131,6 +131,7 @@ const apiGetModuleLock = async draftId => {
 	return data.value
 }
 
+//@TODO - This is duplicated right now in dashboard actions
 const apiGetAssessmentAnalytics = draftId => {
 	return fetch(`/api/assessments/${draftId}/analytics`)
 		.then(res => res.json())
@@ -161,13 +162,6 @@ const showVersionHistory = module => ({
 	type: SHOW_VERSION_HISTORY,
 	meta: { module },
 	promise: apiGetVersionHistory(module.draftId)
-})
-
-const SHOW_ASSESSMENT_SCORE_DATA = 'SHOW_ASSESSMENT_SCORE_DATA'
-const showAssessmentScoreData = module => ({
-	type: SHOW_ASSESSMENT_SCORE_DATA,
-	meta: { module },
-	promise: apiGetAssessmentAnalytics(module.draftId)
 })
 
 const RESTORE_VERSION = 'RESTORE_VERSION'
@@ -276,6 +270,12 @@ const importModuleFile = searchString => ({
 	promise: promptUserForModuleFileUpload(searchString)
 })
 
+const LOAD_MODULE_ASSESSMENT_ANALYTICS = 'LOAD_MODULE_ASSESSMENT_ANALYTICS'
+const loadModuleAssessmentAnalytics = draftIds => ({
+	type: LOAD_MODULE_ASSESSMENT_ANALYTICS,
+	promise: Promise.all(draftIds.map(id => apiGetAssessmentAnalytics(id)))
+})
+
 const promptUserForModuleFileUpload = async () => {
 	return new Promise((resolve, reject) => {
 		const fileSelector = document.createElement('input')
@@ -329,7 +329,7 @@ module.exports = {
 	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
-	SHOW_ASSESSMENT_SCORE_DATA,
+	LOAD_MODULE_ASSESSMENT_ANALYTICS,
 	filterModules,
 	selectModules,
 	deselectModules,
@@ -348,5 +348,5 @@ module.exports = {
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock,
-	showAssessmentScoreData
+	loadModuleAssessmentAnalytics
 }

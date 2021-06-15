@@ -48,6 +48,16 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Add or remove collaborators.</div>
 
 				<Button
+					id="moduleOptionsDialog-assessmentScoreData"
+					onClick={() => {
+						props.showAssessmentScoreData(props)
+					}}
+				>
+					Assessment Stats
+				</Button>
+				<div className="label">View assessment score data</div>
+
+				<Button
 					id="moduleOptionsDialog-showVersionHistoryButton"
 					onClick={() => props.showVersionHistory(props)}
 				>

@@ -1,4 +1,4 @@
-const Dashboard = require('./dashboard')
+const Stats = require('./stats')
 const connect = require('react-redux').connect
 const {
 	closeModal,
@@ -13,11 +13,10 @@ const {
 	bulkDeleteModules,
 	showModulePermissions,
 	showVersionHistory,
-	showAssessmentScoreData,
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock
-} = require('../actions/dashboard-actions')
+} = require('../actions/stats-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
 	createNewModule,
@@ -32,7 +31,6 @@ const mapActionsToProps = {
 	bulkDeleteModules,
 	showModulePermissions,
 	showVersionHistory,
-	showAssessmentScoreData,
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock
@@ -40,4 +38,4 @@ const mapActionsToProps = {
 module.exports = connect(
 	mapStoreStateToProps,
 	mapActionsToProps
-)(Dashboard)
+)(Stats)

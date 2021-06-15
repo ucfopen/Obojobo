@@ -13,6 +13,7 @@ const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
+const AssessmentScoreDataDialog = require('./assessment-score-data-dialog')
 
 const renderOptionsDialog = props => (
 	<ModuleOptionsDialog
@@ -22,6 +23,7 @@ const renderOptionsDialog = props => (
 		deleteModule={props.deleteModule}
 		onClose={props.closeModal}
 		showVersionHistory={props.showVersionHistory}
+		showAssessmentScoreData={props.showAssessmentScoreData}
 	/>
 )
 
@@ -53,6 +55,22 @@ const renderVersionHistoryDialog = props => (
 	/>
 )
 
+const renderAssessmentScoreDataDialog = props => {
+	return (
+		<AssessmentScoreDataDialog
+			{...props.selectedModule}
+			title={`${props.selectedModule.title} - Assessment Scores`}
+			onClose={props.closeModal}
+			isHistoryLoading={props.attempts.isFetching}
+			hasHistoryLoaded={props.attempts.hasFetched}
+			attempts={props.attempts.items}
+			restoreVersion={props.restoreVersion}
+			checkModuleLock={props.checkModuleLock}
+			currentUserId={props.currentUser.id}
+		/>
+	)
+}
+
 const renderModalDialog = props => {
 	let dialog
 	let title
@@ -70,6 +88,11 @@ const renderModalDialog = props => {
 		case 'module-version-history':
 			title = 'Module Version History'
 			dialog = renderVersionHistoryDialog(props)
+			break
+
+		case 'module-assessment-score-data':
+			title = 'Module Assessment Score Data'
+			dialog = renderAssessmentScoreDataDialog(props)
 			break
 
 		default:
@@ -186,6 +209,7 @@ function Dashboard(props) {
 		<span id="dashboard-root">
 			<RepositoryNav
 				userId={props.currentUser.id}
+				userPerms={props.currentUser.perms}
 				avatarUrl={props.currentUser.avatarUrl}
 				displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
 				noticeCount={0}

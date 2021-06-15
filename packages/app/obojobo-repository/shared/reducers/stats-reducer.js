@@ -18,9 +18,8 @@ const {
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
-	RESTORE_VERSION,
-	SHOW_ASSESSMENT_SCORE_DATA
-} = require('../actions/dashboard-actions')
+	RESTORE_VERSION
+} = require('../actions/stats-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
 	items,
@@ -49,7 +48,7 @@ function filterModules(modules, searchString) {
 	)
 }
 
-function DashboardReducer(state, action) {
+function StatsReducer(state, action) {
 	switch (action.type) {
 		case CREATE_NEW_MODULE:
 			return handle(state, action, {
@@ -185,28 +184,6 @@ function DashboardReducer(state, action) {
 				})
 			})
 
-		case SHOW_ASSESSMENT_SCORE_DATA:
-			return handle(state, action, {
-				start: prevState => ({
-					...prevState,
-					dialog: 'module-assessment-score-data',
-					selectedModule: action.meta.module,
-					attempts: {
-						isFetching: true,
-						hasFetched: false,
-						items: []
-					}
-				}),
-				success: prevState => ({
-					...prevState,
-					attempts: {
-						isFetching: false,
-						hasFetched: true,
-						items: action.payload
-					}
-				})
-			})
-
 		case RESTORE_VERSION:
 			return handle(state, action, {
 				start: prevState => ({
@@ -232,4 +209,4 @@ function DashboardReducer(state, action) {
 	}
 }
 
-module.exports = DashboardReducer
+module.exports = StatsReducer
