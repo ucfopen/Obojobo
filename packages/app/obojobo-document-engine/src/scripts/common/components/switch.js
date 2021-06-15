@@ -6,7 +6,11 @@ const noOp = () => {}
 
 const SwitchCore = ({ checked = false, onChange = noOp, title, description, forwardedRef }) => (
 	<div className="obojobo-draft--components--switch">
-		{title ? <span contentEditable={false}>{title}</span> : null}
+		<div className="text-content">
+			{title ? <span contentEditable={false}>{title}</span> : null}
+			<br />
+			<small>{description && description}</small>
+		</div>
 		<label className="switch">
 			<input
 				className="switch-slider"
@@ -17,8 +21,6 @@ const SwitchCore = ({ checked = false, onChange = noOp, title, description, forw
 			/>
 			<div className="switch-slider round" />
 		</label>
-		<br />
-		<small>{description && description}</small>
 	</div>
 )
 

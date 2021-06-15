@@ -7,6 +7,10 @@
 	transform: translate3d(0, 0, 0);
 	z-index: 1;
 
+	.text-content {
+		width: 85%;
+	}
+
 	> span {
 		padding-right: 0.5em;
 		vertical-align: middle;

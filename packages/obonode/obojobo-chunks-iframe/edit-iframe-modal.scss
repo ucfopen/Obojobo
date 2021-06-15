@@ -51,9 +51,6 @@
 	}
 
 	.content-type {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
 		margin: 1em 0;
 		text-align: left;
 
@@ -61,11 +58,14 @@
 			width: 20%;
 		}
 
-		#content-type-options-container {
-			width: 80%;
+		.content-type-options-container {
 			text-align: left;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 
-			.content-type-options {
+			#content-type-options {
+				width: 80%;
 				display: flex;
 				align-items: center;
 				text-align: center;
@@ -115,11 +115,12 @@
 					height: 2.75em;
 				}
 			}
+		}
 
-			small {
-				color: $color-neutral-text;
-				font-size: 0.7em;
-			}
+		small {
+			color: $color-neutral-text;
+			font-size: 0.7em;
+			margin-left: 20%;
 		}
 	}
 

@@ -8,7 +8,7 @@ import IFrameContentTypes from './iframe-content-types'
 // mock ref.current.focus and ref.current.select on inputs
 const testRendererOptions = {
 	createNodeMock: element => {
-		if (element.type === 'input') {
+		if (element.type === 'button') {
 			return {
 				focus: () => {},
 				select: () => {}

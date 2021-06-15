@@ -30,7 +30,7 @@ class EditIframeModal extends React.Component {
 
 		this.state = { ...defaultState, ...props.content }
 
-		this.inputRef = React.createRef()
+		this.changeBtnRef = React.createRef()
 
 		this.handleFitChange = this.handleFitChange.bind(this)
 		this.handleZoomChange = this.handleZoomChange.bind(this)
@@ -44,6 +44,10 @@ class EditIframeModal extends React.Component {
 		this.openAdvancedOptions = this.openAdvancedOptions.bind(this)
 		this.openSizingDimensions = this.openSizingDimensions.bind(this)
 		this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
+	}
+
+	componentDidMount() {
+		this.changeBtnRef.current.focus()
 	}
 
 	openAdvancedOptions() {
@@ -127,16 +131,18 @@ class EditIframeModal extends React.Component {
 					<header>
 						<label htmlFor="src-input">Source:</label>
 						<div>
-							<input id="src-input" disabled value={this.state.src} ref={this.inputRef} />
-							<button onClick={this.handleSourceChange}>Change...</button>
+							<input id="src-input" disabled value={this.state.src} />
+							<button ref={this.changeBtnRef} onClick={this.handleSourceChange}>
+								Change...
+							</button>
 						</div>
 					</header>
 					<div className="content-type">
-						<label id="content-type-options-label" htmlFor="content-type-options-container">
-							Content type:
-						</label>
-						<div id="content-type-options-container">
-							<div className="content-type-options">
+						<div className="content-type-options-container">
+							<label id="content-type-options-label" htmlFor="content-type-options">
+								Content type:
+							</label>
+							<div id="content-type-options">
 								<label htmlFor="video-or-media">
 									<input
 										id="video-or-media"
@@ -166,8 +172,8 @@ class EditIframeModal extends React.Component {
 									</div>
 								</label>
 							</div>
-							<small>This helps determine how the embedded content is best displayed</small>
 						</div>
+						<small>This helps determine how the embedded content is best displayed</small>
 					</div>
 					<p className="title">Options</p>
 					<div className="sizing">
