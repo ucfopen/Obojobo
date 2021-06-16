@@ -1,0 +1,86 @@
+@import '~styles/includes';
+
+.component.obojobo-draft--chunks--numeric-assessment {
+	$color-border: #dfdfdf;
+
+	background-color: $color-bg2;
+	padding: 0.5em;
+	padding-bottom: 0;
+	margin-top: 0;
+
+	&.is-type-survey {
+		display: none;
+	}
+
+	.add-answer-btn {
+		margin: 1rem auto;
+		margin-bottom: 0;
+		display: block;
+		padding-bottom: 1rem;
+	}
+
+	.units-container {
+		display: flex;
+		margin-left: 2.5em;
+		margin-right: 2.5em;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 0.5em;
+
+		.label {
+			font-family: $font-default;
+			font-weight: bold;
+			font-size: 0.8em;
+			white-space: nowrap;
+		}
+
+		.units-input {
+			display: inline-block;
+			border: 1px solid $color-border;
+			background: white;
+			margin-left: 0.5em;
+			border-radius: $dimension-rounded-radius;
+			width: 100%;
+			padding: 0.2em 0.5em;
+		}
+	}
+
+	.obojobo-draft--chunks--abstract-assessment--choice {
+		background: $color-bg;
+		border-bottom: 1px solid $color-border;
+
+		&:nth-child(2) {
+			border-top-left-radius: $dimension-rounded-radius;
+			border-top-right-radius: $dimension-rounded-radius;
+		}
+
+		&:nth-last-child(2) {
+			border-bottom: none;
+			border-bottom-left-radius: $dimension-rounded-radius;
+			border-bottom-right-radius: $dimension-rounded-radius;
+		}
+
+		.delete-button {
+			top: 0.9em;
+			right: 0.9em;
+		}
+
+		.correct-button {
+			top: 5.7em;
+		}
+
+		.add-feedback {
+			left: inherit;
+			right: 2.5em;
+			bottom: 1em;
+		}
+
+		> .children {
+			padding-top: 0;
+		}
+
+		.obojobo-draft--chunks--abstract-assessment--feedback {
+			margin-top: 2.2em;
+		}
+	}
+}

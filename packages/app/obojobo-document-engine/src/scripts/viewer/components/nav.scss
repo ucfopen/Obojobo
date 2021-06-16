@@ -10,7 +10,7 @@
 	top: 0;
 	left: 0;
 	bottom: 0;
-	z-index: $z-index-above-content;
+	z-index: 0;
 	font-family: $font-default;
 	color: $color-text;
 	background: $color-nav-bg;
@@ -373,11 +373,16 @@
 		}
 	}
 
-	&.is-not-open .toggle-button {
-		transform: rotate(180deg);
+	&.is-not-open {
+		z-index: $z-index-above-content;
+		left: -$dimension-nav-menu;
 
-		&:not(:hover) {
-			background-image: url('./hamburger.svg');
+		.toggle-button {
+			transform: rotate(180deg);
+
+			&:not(:hover) {
+				background-image: url('./hamburger.svg');
+			}
 		}
 	}
 
@@ -394,10 +399,6 @@
 				}
 			}
 		}
-	}
-
-	&.is-not-open {
-		left: -$dimension-nav-menu;
 	}
 
 	&.is-not-enabled {

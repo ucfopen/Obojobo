@@ -12,8 +12,6 @@ describe('MCAssessment adapter', () => {
 		const attrs = {
 			content: {
 				responseType: 'pick-one',
-				correctLabels: 'Correct!|Great job!',
-				incorrectLabels: 'Incorrect|wrong',
 				shuffle: false
 			}
 		}
@@ -28,32 +26,6 @@ describe('MCAssessment adapter', () => {
 		const attrs = {
 			content: {
 				responseType: 'pick-one'
-			}
-		}
-
-		MCAssessmentAdapter.construct(model, attrs)
-
-		expect(model).toMatchSnapshot()
-	})
-
-	test('construct builds with correctLabels', () => {
-		const model = { modelState: {} }
-		const attrs = {
-			content: {
-				correctLabels: 'Correct!|Great job!'
-			}
-		}
-
-		MCAssessmentAdapter.construct(model, attrs)
-
-		expect(model).toMatchSnapshot()
-	})
-
-	test('construct builds with incorrectLabels', () => {
-		const model = { modelState: {} }
-		const attrs = {
-			content: {
-				incorrectLabels: 'Incorrect|wrong'
 			}
 		}
 
@@ -90,24 +62,18 @@ describe('MCAssessment adapter', () => {
 		const a = {
 			modelState: {
 				responseType: 'pick-one',
-				correctLabels: 'Correct!|Great job!',
-				incorrectLabels: 'Incorrect|wrong',
 				shuffle: true
 			}
 		}
 		const attrs = {
 			content: {
 				responseType: 'pick-one',
-				correctLabels: 'Correct!|Great job!',
-				incorrectLabels: 'Incorrect|wrong',
 				shuffle: true
 			}
 		}
 		const b = {
 			modelState: {
 				responseType: null,
-				correctLabels: null,
-				incorrectLabels: null,
 				shuffle: false
 			}
 		}
@@ -135,8 +101,6 @@ describe('MCAssessment adapter', () => {
 		const attrs = {
 			content: {
 				responseType: 'pick-one',
-				correctLabels: 'Correct!|Great job!',
-				incorrectLabels: 'Incorrect|wrong',
 				shuffle: true
 			}
 		}

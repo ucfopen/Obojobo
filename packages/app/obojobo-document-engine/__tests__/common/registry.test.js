@@ -1,5 +1,11 @@
 import { Registry } from '../../src/scripts/common/registry'
 
+jest.mock('obojobo-document-engine/config/insert_menu.json', () => [
+	'SomeObojoboChunk1',
+	'|',
+	'SomeObojoboChunk2'
+])
+
 describe('Registry', () => {
 	beforeEach(() => {
 		Registry.init()
@@ -31,6 +37,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -64,6 +71,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -133,6 +141,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -180,6 +189,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -223,6 +233,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -265,6 +276,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -306,6 +318,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -461,22 +474,29 @@ describe('Registry', () => {
 	})
 
 	test('insertableItems processes the items the first time its called', () => {
-		Registry.registerModel('insertable', {
+		Registry.registerModel('SomeObojoboChunk1', {
 			type: 'chunk',
 			default: false,
 			__testValue: 1,
 			isInsertable: true
 		})
-		expect(Registry.insertableItems.length).toEqual(1)
-
-		Registry.registerModel('insertable', {
+		Registry.registerModel('UnrecognizedChunk', {
 			type: 'chunk',
 			default: false,
 			__testValue: 1,
 			isInsertable: true
 		})
+		// Expect two items: SomeObojoboChunk1 and a separator
+		expect(Registry.insertableItems.length).toEqual(2)
 
-		expect(Registry.insertableItems.length).toEqual(1)
+		// Registering this after getting insertableItems has no effect
+		Registry.registerModel('SomeObojoboChunk2', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isInsertable: true
+		})
+		expect(Registry.insertableItems.length).toEqual(2)
 	})
 
 	test('contentTypes processes the items the first time its called', () => {

@@ -17,13 +17,38 @@ const LayoutDefault = props => (
 			/>
 			{props.appCSSUrl ? <link rel="stylesheet" media="screen" href={props.appCSSUrl} /> : null}
 			<link
-				rel="stylesheet"
-				media="screen"
-				href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i"
+				rel="preload"
+				as="style"
+				href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
 			/>
+			<link
+				rel="stylesheet"
+				href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
+			></link>
 			{props.headerJs.map((url, index) => (
 				<script key={index} src={url}></script>
 			))}
+			{props.appScriptUrl ? (
+				<React.Fragment>
+					<script
+						referrerPolicy="no-referrer"
+						crossOrigin="anonymous"
+						defer
+						src={`//unpkg.com/react@${reactVersion}/umd/react.${
+							props.isDev ? 'development' : 'production.min'
+						}.js`}
+					></script>
+					<script
+						referrerPolicy="no-referrer"
+						crossOrigin="anonymous"
+						defer
+						src={`//unpkg.com/react-dom@${reactVersion}/umd/react-dom.${
+							props.isDev ? 'development' : 'production.min'
+						}.js`}
+					></script>
+					<script defer src={props.appScriptUrl}></script>
+				</React.Fragment>
+			) : null}
 		</head>
 		<body className={props.className}>
 			<div className="layout--wrapper">
@@ -32,25 +57,6 @@ const LayoutDefault = props => (
 					<Footer />
 				</div>
 			</div>
-			{props.appScriptUrl ? (
-				<React.Fragment>
-					<script
-						referrerPolicy="no-referrer"
-						crossOrigin="anonymous"
-						src={`//unpkg.com/react@${reactVersion}/umd/react.${
-							props.isDev ? 'development' : 'production.min'
-						}.js`}
-					></script>
-					<script
-						referrerPolicy="no-referrer"
-						crossOrigin="anonymous"
-						src={`//unpkg.com/react-dom@${reactVersion}/umd/react-dom.${
-							props.isDev ? 'development' : 'production.min'
-						}.js`}
-					></script>
-					<script src={props.appScriptUrl}></script>
-				</React.Fragment>
-			) : null}
 		</body>
 	</html>
 )

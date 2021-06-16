@@ -302,8 +302,6 @@ class VisualEditor extends React.Component {
 
 		this.setState({ value })
 		this.markUnsaved()
-
-		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
 	}
 
 	onResized(event) {

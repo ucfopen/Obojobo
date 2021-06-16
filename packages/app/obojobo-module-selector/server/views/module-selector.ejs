@@ -12,9 +12,17 @@
 				webpackAssetPath('module-selector.js')
 			]
 
-			const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700']
+			const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700&display=swap']
 		%>
 		<%- include('../../../obojobo-express/server/views/partials/head', {title, css, fonts}) %>
+		<%
+			if (typeof footerJs !== 'undefined')
+			{
+				footerJs.forEach(function(href) { %>
+					<script defer src="<%= href %>"></script>
+				<% })
+			}
+		%>
 	</head>
 	<body>
 		<section id="section-options">
@@ -179,25 +187,8 @@
 			<input type="hidden" name="data" value="<%= opaqueData %>" />
 		</form>
 
-
 		<script type="text/javascript">
 			window.__isAssignment = <%= isAssignment ? 'true' : 'false' %>
 		</script>
-
-		<%
-			if (typeof inlines !== 'undefined')
-			{
-				inlines.forEach(function(inline)
-				{ %>
-			<script><% - js %></script>
-			<% })
-			}
-			if (typeof footerJs !== 'undefined')
-			{
-				footerJs.forEach(function(href) { %>
-				<script src="<%= href %>"></script>
-				<% })
-			}
-		%>
 	</body>
 </html>

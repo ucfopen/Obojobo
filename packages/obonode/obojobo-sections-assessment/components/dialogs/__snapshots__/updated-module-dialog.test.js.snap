@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
+exports[`UpdatedModuleDialog UpdatedModuleDialog component 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog "
   style={
@@ -13,8 +13,10 @@ exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
     aria-labelledby="obojobo-draft--components--modal--modal--content"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
+    tabIndex="-1"
   >
     <input
+      aria-label="Start of dialog"
       className="first-tab"
       onFocus={[Function]}
       type="text"
@@ -62,6 +64,7 @@ exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
             className="button"
             contentEditable={false}
             onClick={[MockFunction]}
+            type="button"
           >
             Close Dialog
           </button>
@@ -74,6 +77,7 @@ exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
             className="button"
             contentEditable={false}
             onClick={[MockFunction]}
+            type="button"
           >
             Restart
           </button>
@@ -81,6 +85,7 @@ exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
       </div>
     </div>
     <input
+      aria-label="End of dialog"
       className="last-tab"
       onFocus={[Function]}
       type="text"

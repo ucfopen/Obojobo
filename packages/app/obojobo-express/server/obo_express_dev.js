@@ -57,7 +57,7 @@ const defaultResourceLinkId = 'obojobo-dev-resource-id'
 const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 	// add the required oauth params to the given prams
 	const oauthParams = {
-		oauth_nonce: Math.round(new Date().getTime() / 1000.0),
+		oauth_nonce: Math.round(new Date().getTime()),
 		oauth_timestamp: Math.round(new Date().getTime() / 1000.0),
 		oauth_callback: 'about:blank',
 		oauth_consumer_key: oauthKey,

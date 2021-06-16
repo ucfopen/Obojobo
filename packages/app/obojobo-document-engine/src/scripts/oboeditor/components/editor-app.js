@@ -108,6 +108,7 @@ class EditorApp extends React.Component {
 		OboModel.clearAll()
 		const json = JSON.parse(draftModel)
 		const obomodel = OboModel.create(json)
+
 		EditorStore.init(
 			obomodel,
 			json.content.start,
@@ -279,10 +280,15 @@ class EditorApp extends React.Component {
 			// revisions will always load in visual mode
 			// currently this used for viewing version history
 			return this.loadDraftRevision(draftId, revisionId)
+				.then(this.removeLoadingNotice)
+				.catch(this.removeLoadingNotice)
 		}
 
 		return this.reloadDraft(draftId, this.state.mode)
-			.then(() => this.startRenewEditLockInterval(draftId))
+			.then(() => {
+				this.removeLoadingNotice()
+				this.startRenewEditLockInterval(draftId)
+			})
 			.then(() => {
 				enableWindowCloseDispatcher()
 				Dispatcher.on('window:closeNow', this.onWindowClose)
@@ -292,7 +298,14 @@ class EditorApp extends React.Component {
 				Dispatcher.on('window:inactive', this.onWindowInactive)
 				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive)
 			})
-			.catch(() => {})
+			.catch(this.removeLoadingNotice)
+	}
+
+	removeLoadingNotice() {
+		const loadingEl = document.getElementById('app-loading')
+		if (loadingEl && loadingEl.parentElement) {
+			loadingEl.parentElement.removeChild(loadingEl)
+		}
 	}
 
 	onWindowClose() {
@@ -378,7 +391,7 @@ class EditorApp extends React.Component {
 			)
 		}
 
-		if (this.state.loading) return <p>Loading</p>
+		if (this.state.loading) return null
 
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
@@ -388,9 +401,7 @@ class EditorApp extends React.Component {
 					warning={this.editLocks.idleTimeUntilWarningMs}
 				/>
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
-				{modalItem && modalItem.component ? (
-					<ModalContainer>{modalItem.component}</ModalContainer>
-				) : null}
+				<ModalContainer modalItem={modalItem} />
 			</div>
 		)
 	}
