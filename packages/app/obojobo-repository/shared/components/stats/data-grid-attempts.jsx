@@ -221,7 +221,7 @@ const filterRows = (rows, { showIncompleteAttempts, showPreviewAttempts }) => {
 	)
 }
 
-function DataGridAttempts({ rows = [], filterSettings }) {
+function DataGridAttempts({ rows = [], filterSettings, searchSettings }) {
 	const filteredRows = filterRows(rows, filterSettings)
 
 	return (

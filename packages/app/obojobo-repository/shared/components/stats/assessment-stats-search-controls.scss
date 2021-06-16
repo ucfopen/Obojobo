@@ -1,0 +1,38 @@
+@import '../../../client/css/defaults';
+
+.repository--assessment-stats-search-controls {
+	.search-by-text {
+		margin-top: 1em;
+		display: flex;
+		align-items: center;
+	}
+
+	.search-by-date {
+		margin-top: 1em;
+		display: flex;
+		align-items: center;
+	}
+
+	label {
+		width: 6em;
+	}
+
+	select {
+		@include select-input();
+
+		margin-right: 0.5em;
+		font-size: 0.8em;
+	}
+
+	input {
+		border-radius: $dimension-rounded-radius;
+		padding: 0.8em 3em 0.8em 0.5em;
+		font-size: 0.8em;
+		border: 1px solid $color-text-minor;
+		margin-right: 0.5em;
+	}
+
+	div {
+		display: inline-block;
+	}
+}

@@ -4,24 +4,42 @@ const React = require('react')
 const DataGridAttempts = require('./data-grid-attempts')
 const DataGridAssessments = require('./data-grid-assessments')
 const AssessmentStatsFilterControls = require('./assessment-stats-filter-controls')
+const AssessmentStatsSearchControls = require('./assessment-stats-search-controls')
 
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
 const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
-const renderDataGrid = (viewMode, attempts, filterSettings) => {
+const renderDataGrid = (viewMode, attempts, filterSettings, searchSettings, searchContent) => {
 	switch (viewMode) {
 		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
-			return <DataGridAssessments rows={attempts} filterSettings={filterSettings} />
+			return (
+				<DataGridAssessments
+					rows={attempts}
+					filterSettings={filterSettings}
+					searchSettings={searchSettings}
+					searchContent={searchContent}
+				/>
+			)
 
 		case VIEW_MODE_ALL_ATTEMPTS:
-			return <DataGridAttempts rows={attempts} filterSettings={filterSettings} />
+			return (
+				<DataGridAttempts
+					rows={attempts}
+					filterSettings={filterSettings}
+					searchSettings={searchSettings}
+					searchContent={searchContent}
+				/>
+			)
 	}
 
 	return null
 }
 
 const AssessmentStats = ({ attempts }) => {
+	console.log(attempts)
 	const [viewMode, setViewMode] = React.useState(VIEW_MODE_FINAL_ASSESSMENT_SCORE)
+	const [searchSettings, setSearchSettings] = React.useState('')
+	const [searchContent, setSearchContent] = React.useState('')
 	const [filterSettings, setFilterSettings] = React.useState({
 		showIncompleteAttempts: false,
 		showPreviewAttempts: false
@@ -47,10 +65,14 @@ const AssessmentStats = ({ attempts }) => {
 						filterSettings={filterSettings}
 						onChangeFilterSettings={setFilterSettings}
 					/>
+					<AssessmentStatsSearchControls
+						onChangeSearchSettings={setSearchSettings}
+						onChangeSearchContent={setSearchContent}
+					/>
 				</div>
 			</div>
 
-			{renderDataGrid(viewMode, attempts, filterSettings)}
+			{renderDataGrid(viewMode, attempts, filterSettings, searchSettings, searchContent)}
 		</div>
 	)
 }

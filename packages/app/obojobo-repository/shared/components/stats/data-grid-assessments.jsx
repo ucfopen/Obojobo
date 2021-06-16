@@ -122,7 +122,9 @@ const statsToCSV = (showAdvancedFields, attempts) => {
 
 const getAssessmentScoresFromAttempts = (
 	attempts,
-	{ showIncompleteAttempts, showPreviewAttempts }
+	{ showIncompleteAttempts, showPreviewAttempts },
+	searchSettings,
+	searchContent
 ) => {
 	const assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId = {}
 
@@ -173,6 +175,21 @@ const getAssessmentScoresFromAttempts = (
 			}
 		})
 
+	console.log(searchSettings)
+	console.log(searchContent)
+
+	const rows = assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId;
+	if (rows && rows.length > 0) {
+		rows.filter(row => {
+			if (searchSettings === 'attemptTime') {
+				return row;
+			}else {
+				return row[searchSettings].toLowerCase().match(searchContent) && true;
+			}
+		})
+	}
+
+		console.log(Object.values(assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId))
 	return Object.values(assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId)
 }
 
@@ -195,8 +212,8 @@ const getFileName = (
 	)
 }
 
-function DataGridAssessments({ rows = [], filterSettings }) {
-	const assessmentScores = getAssessmentScoresFromAttempts(rows, filterSettings)
+function DataGridAssessments({ rows = [], filterSettings, searchSettings, searchContent }) {
+	const assessmentScores = getAssessmentScoresFromAttempts(rows, filterSettings, searchSettings, searchContent)
 
 	return (
 		<div className="repository--data-grid-assessments">
