@@ -1,8 +1,5 @@
-require('./data-grid-assessments.scss')
-
 const React = require('react')
-const DataTable = require('react-data-table-component').default
-const ButtonLink = require('../button-link')
+const DataGridScores = require('./data-grid-scores')
 
 const columns = [
 	{
@@ -106,138 +103,96 @@ const columns = [
 	}
 ]
 
-const simpleColumns = columns.filter(col => !col.advanced)
+const composeKey = ({ draftId, userId, resourceLinkId, assessmentId }) =>
+	draftId + ' ' + userId + ' ' + resourceLinkId + ' ' + assessmentId
 
-const getColumns = (columns, showAdvancedFields) => {
-	return showAdvancedFields ? columns : simpleColumns
-}
-
-const statsToCSV = (showAdvancedFields, attempts) => {
-	const filteredColumns = columns.filter(c => showAdvancedFields || !c.advanced)
-	const cols = `"${filteredColumns.map(c => c.name).join('","')}"`
-	const colOrder = filteredColumns.map(c => c.selector)
-	const rows = attempts.map(attempt => `"${colOrder.map(key => attempt[key]).join('","')}"`)
-	return `${cols}\n${rows.join('\n')}`
-}
-
-const getAssessmentScoresFromAttempts = (
-	attempts,
-	{ showIncompleteAttempts, showPreviewAttempts },
-	searchSettings,
-	searchContent
-) => {
+const getAssessmentScoresFromAttempts = (attempts, searchSettings, searchContent) => {
 	const assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId = {}
 
-	attempts
-		.filter(
-			row =>
-				(showIncompleteAttempts || row.completedAt !== null) &&
-				(showPreviewAttempts || !row.isPreview)
-		)
-		.forEach(attemptRow => {
-			const key =
-				attemptRow.draftId +
-				':' +
-				attemptRow.userId +
-				':' +
-				attemptRow.resourceLinkId +
-				':' +
-				attemptRow.assessmentId
+	attempts.forEach(attemptRow => {
+		const key = composeKey(attemptRow)
 
-			if (!assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]) {
-				assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key] = {
-					draftId: attemptRow.draftId,
-					draftContentId: attemptRow.draftContentId,
-					resourceLinkId: attemptRow.resourceLinkId,
-					assessmentId: attemptRow.assessmentId,
-					username: attemptRow.userUsername,
-					userFirstName: attemptRow.userFirstName,
-					userLastName: attemptRow.userLastName,
-					userRoles: attemptRow.userRoles,
-					isPreview: attemptRow.isPreview,
-					contextId: attemptRow.contextId,
-					courseTitle: attemptRow.courseTitle,
-					resourceLinkTitle: attemptRow.resourceLinkTitle,
-					launchPresentationReturnUrl: attemptRow.launchPresentationReturnUrl,
-					moduleTitle: attemptRow.moduleTitle,
-					highestAssessmentScore: null
-				}
+		if (!assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]) {
+			assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key] = {
+				draftId: attemptRow.draftId,
+				draftContentId: attemptRow.draftContentId,
+				resourceLinkId: attemptRow.resourceLinkId,
+				assessmentId: attemptRow.assessmentId,
+				username: attemptRow.userUsername,
+				userFirstName: attemptRow.userFirstName,
+				userLastName: attemptRow.userLastName,
+				userRoles: attemptRow.userRoles,
+				isPreview: attemptRow.isPreview,
+				contextId: attemptRow.contextId,
+				courseTitle: attemptRow.courseTitle,
+				resourceLinkTitle: attemptRow.resourceLinkTitle,
+				launchPresentationReturnUrl: attemptRow.launchPresentationReturnUrl,
+				moduleTitle: attemptRow.moduleTitle,
+				highestAssessmentScore: null,
+				completedAt: attemptRow.completedAt ? attemptRow.completedAt : null
 			}
+		}
 
-			const assessmentRow = assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]
+		const assessmentRow = assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]
 
-			if (
-				attemptRow.completedAt !== null &&
-				attemptRow.assessmentScore !== null &&
-				attemptRow.assessmentScore > assessmentRow.highestAssessmentScore
-			) {
-				assessmentRow.highestAssessmentScore = attemptRow.assessmentScore
-			}
-		})
+		if (
+			attemptRow.completedAt !== null &&
+			attemptRow.assessmentScore !== null &&
+			attemptRow.assessmentScore > assessmentRow.highestAssessmentScore
+		) {
+			assessmentRow.highestAssessmentScore = attemptRow.assessmentScore
+		}
+	})
 
-	console.log(searchSettings)
-	console.log(searchContent)
-
+	const text = searchContent.text;
+	const dates = searchContent.date;
 	const rows = assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId;
+
 	if (rows && rows.length > 0) {
-		rows.filter(row => {
-			if (searchSettings === 'attemptTime') {
-				return row;
-			}else {
-				return row[searchSettings].toLowerCase().match(searchContent) && true;
-			}
-		})
+		// Filtering according to starting and ending dates.
+		if (dates) {
+			rows.filter(row => {
+				const dateCompleted = new Date(row.completedAt)
+				const start = dates.start ? new Date(dates.start) : null
+				const end = dates.end ? new Date(dates.end) : null
+
+				if (!start && !end) return row
+				if (!start) return dateCompleted <= end
+				if (!end) return dateCompleted >= start
+
+				return dateCompleted >= start && dateCompleted <= end
+			})
+		}
+
+		if (text) {
+			let param = searchSettings
+							.split("-")
+							.map(word => word.charAt(0).toUpperCase() + word.substring(1))
+							.join("")
+			param = param.charAt(0).toLowerCase() + param.substring(1)
+
+			// Filtering according to search params (course title, user's first name, etc)
+			rows.filter(row => {
+				return row[param].toLowerCase().match(text) && true;
+			})
+		}
 	}
 
-		console.log(Object.values(assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId))
-	return Object.values(assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId)
+	return Object.values(rows)
 }
 
-const getFileName = (
-	filteredRows,
-	{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }
-) => {
-	const drafts = [...new Set(filteredRows.map(row => row.draftId))]
-	return (
-		[
-			'final-assessment-scores',
-			showIncompleteAttempts ? 'with-incomplete-attempts' : '',
-			showPreviewAttempts ? 'with-preview-attempts' : '',
-			showAdvancedFields ? 'with-advanced-fields' : ''
-		]
-			.filter(s => s)
-			.join('-') +
-		'__' +
-		drafts.join('_')
-	)
-}
-
-function DataGridAssessments({ rows = [], filterSettings, searchSettings, searchContent }) {
-	const assessmentScores = getAssessmentScoresFromAttempts(rows, filterSettings, searchSettings, searchContent)
+function DataGridAssessments({ attempts = [], filterSettings, searchSettings, searchContent }) {
+	const assessmentScores = getAssessmentScoresFromAttempts(attempts, searchSettings, searchContent)
 
 	return (
 		<div className="repository--data-grid-assessments">
-			<div className="data-grid">
-				<DataTable
-					title="Final Assessment Scores"
-					columns={getColumns(columns, filterSettings.showAdvancedFields)}
-					data={assessmentScores}
-					striped={true}
-					keyField={'attemptId'}
-					dense={true}
-				/>
-			</div>
-			{assessmentScores.length > 0 ? (
-				<ButtonLink
-					url={`data:text/csv;charset=utf-8,${escape(
-						statsToCSV(filterSettings.showAdvancedFields, assessmentScores)
-					)}`}
-					download={getFileName(assessmentScores, filterSettings)}
-				>
-					⬇️&nbsp;&nbsp;&nbsp;Download Table as CSV File ({assessmentScores.length} row
-					{assessmentScores.length === 1 ? '' : 's'})
-				</ButtonLink>
-			) : null}
+			<DataGridScores
+				tableName="Final Assessment Scores"
+				csvFileName="final-assessment-scores"
+				columns={columns}
+				rows={assessmentScores}
+				filterSettings={filterSettings}
+			/>
 		</div>
 	)
 }

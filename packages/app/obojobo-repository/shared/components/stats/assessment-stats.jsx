@@ -9,12 +9,12 @@ const AssessmentStatsSearchControls = require('./assessment-stats-search-control
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
 const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
-const renderDataGrid = (viewMode, attempts, filterSettings, searchSettings, searchContent) => {
+const renderDataGrid = (viewMode, filteredAttempts, filterSettings, searchSettings, searchContent) => {
 	switch (viewMode) {
 		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
 			return (
 				<DataGridAssessments
-					rows={attempts}
+					attempts={filteredAttempts}
 					filterSettings={filterSettings}
 					searchSettings={searchSettings}
 					searchContent={searchContent}
@@ -24,7 +24,7 @@ const renderDataGrid = (viewMode, attempts, filterSettings, searchSettings, sear
 		case VIEW_MODE_ALL_ATTEMPTS:
 			return (
 				<DataGridAttempts
-					rows={attempts}
+					attempts={filteredAttempts}
 					filterSettings={filterSettings}
 					searchSettings={searchSettings}
 					searchContent={searchContent}
@@ -35,8 +35,19 @@ const renderDataGrid = (viewMode, attempts, filterSettings, searchSettings, sear
 	return null
 }
 
+const filterAttempts = (attempts, { showIncompleteAttempts, showPreviewAttempts }) => {
+	if (showIncompleteAttempts && showPreviewAttempts) {
+		return attempts
+	}
+
+	return attempts.filter(
+		attempt =>
+			(showIncompleteAttempts || attempt.completedAt !== null) &&
+			(showPreviewAttempts || !attempt.isPreview)
+	)
+}
+
 const AssessmentStats = ({ attempts }) => {
-	console.log(attempts)
 	const [viewMode, setViewMode] = React.useState(VIEW_MODE_FINAL_ASSESSMENT_SCORE)
 	const [searchSettings, setSearchSettings] = React.useState('')
 	const [searchContent, setSearchContent] = React.useState('')
@@ -48,6 +59,8 @@ const AssessmentStats = ({ attempts }) => {
 	const onChangeViewMode = event => {
 		setViewMode(event.target.value)
 	}
+
+	const filteredAttempts = filterAttempts(attempts, filterSettings)
 
 	return (
 		<div className="repository--assessment-stats">
@@ -72,7 +85,7 @@ const AssessmentStats = ({ attempts }) => {
 				</div>
 			</div>
 
-			{renderDataGrid(viewMode, attempts, filterSettings, searchSettings, searchContent)}
+			{renderDataGrid(viewMode, filteredAttempts, filterSettings, searchSettings, searchContent)}
 		</div>
 	)
 }

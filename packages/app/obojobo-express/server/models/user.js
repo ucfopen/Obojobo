@@ -58,7 +58,7 @@ class User {
 				`
 				SELECT *
 				FROM users U
-				LEFT JOIN user_perm_overrides P
+				LEFT JOIN user_perms P
 				ON U.id = P.user_id
 				WHERE id =  $[userId]
 				`,

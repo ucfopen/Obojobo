@@ -76,10 +76,7 @@ describe('repository api route', () => {
 		jest.resetAllMocks()
 		mockCurrentUser = {
 			id: 99,
-			canViewEditor: true,
-			canPreviewDrafts: true,
-			canCreateDrafts: true,
-			canDeleteDrafts: true
+			hasPermission: () => true
 		}
 		mockCurrentDocument = {}
 		Collection = require('../models/collection')

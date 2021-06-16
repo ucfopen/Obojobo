@@ -5,6 +5,8 @@ const React = require('react')
 const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchContent }) => {
 	const [param, setParam] = React.useState('');
 	const [textInput, setTextInput] = React.useState('');
+	const [startDate, setStartDate] = React.useState(null);
+	const [endDate, setEndDate] = React.useState(null);
 
 	const handleSearchSettingsChange = (event) => {
 		const value = event.target.value;
@@ -15,22 +17,31 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 	const handleSearchContentChange = (event) => {
 		const value = event.target.value;
 		setTextInput(value);
-		onChangeSearchContent(value);
+		onChangeSearchContent({
+			text: value,
+			date: { start: startDate, end: endDate }
+		});
 	}
 
 	const handleDateSearchStartDate = (event) => {
-		console.log(event.target.value)
+		const date = event.target.value
+		setStartDate(date)
+		onChangeSearchContent({
+			text: textInput,
+			date: { start: date, end: endDate }
+		});
 	}
 
 	const handleDateSearchEndDate = (event) => {
-		console.log(event.target.value)
+		const date = event.target.value;
+		setEndDate(date)
+		onChangeSearchContent({
+			text: textInput,
+			date: { start: startDate, end: date }
+		});
 	}
 
-	const showTextInput =
-		param === "course-title" ||
-		param === "resource-link-title" ||
-		param === "user-first-name" ||
-		param === "user-last-name"
+	const showTextInput = param !== ""
 
 	const textPlaceholder =
 		param.split("-").map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(" ")
@@ -55,7 +66,7 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 					/>
 				)}
 			</div>
-			<div className='search-by-date'>
+			<div className="search-by-date">
 				<label htmlFor="date-range">Select a date range: </label>
 				<div className="date-range">
 					<input
