@@ -115,6 +115,17 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
+	test('fetchAttemptHistoryAnalytics calls db.manyOrNone', () => {
+		AssessmentModel.fetchAttemptHistoryAnalytics('mock-draft-id')
+
+		expect(db.manyOrNone).toHaveBeenCalledTimes(1)
+		expect(db.manyOrNone.mock.calls[0][1]).toMatchInlineSnapshot(`
+		Object {
+		  "draftId": "mock-draft-id",
+		}
+	`)
+	})
+
 	test('fetchAttemptsForUserDraftAndResourceLinkId returns an array AssessmentModel', async () => {
 		db.manyOrNone.mockResolvedValueOnce([makeMockAttempt()])
 

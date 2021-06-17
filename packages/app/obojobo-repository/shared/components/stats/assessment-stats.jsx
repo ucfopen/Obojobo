@@ -10,14 +10,13 @@ const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
 const renderDataGrid = (viewMode, filteredAttempts, filterSettings) => {
 	switch (viewMode) {
-		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
-			return <DataGridAssessments attempts={filteredAttempts} filterSettings={filterSettings} />
-
 		case VIEW_MODE_ALL_ATTEMPTS:
 			return <DataGridAttempts attempts={filteredAttempts} filterSettings={filterSettings} />
-	}
 
-	return null
+		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
+		default:
+			return <DataGridAssessments attempts={filteredAttempts} filterSettings={filterSettings} />
+	}
 }
 
 const filterAttempts = (attempts, { showIncompleteAttempts, showPreviewAttempts }) => {

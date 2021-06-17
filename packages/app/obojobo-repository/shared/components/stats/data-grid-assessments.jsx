@@ -1,5 +1,6 @@
 const React = require('react')
 const DataGridScores = require('./data-grid-scores')
+const getAssessmentStatsFromAttemptStats = require('../../util/get-assessment-stats-from-attempt-stats')
 
 const columns = [
 	{
@@ -103,51 +104,8 @@ const columns = [
 	}
 ]
 
-const composeKey = ({ draftId, userId, resourceLinkId, assessmentId }) =>
-	draftId + ' ' + userId + ' ' + resourceLinkId + ' ' + assessmentId
-
-const getAssessmentScoresFromAttempts = attempts => {
-	const assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId = {}
-
-	attempts.forEach(attemptRow => {
-		const key = composeKey(attemptRow)
-
-		if (!assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]) {
-			assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key] = {
-				draftId: attemptRow.draftId,
-				draftContentId: attemptRow.draftContentId,
-				resourceLinkId: attemptRow.resourceLinkId,
-				assessmentId: attemptRow.assessmentId,
-				username: attemptRow.userUsername,
-				userFirstName: attemptRow.userFirstName,
-				userLastName: attemptRow.userLastName,
-				userRoles: attemptRow.userRoles,
-				isPreview: attemptRow.isPreview,
-				contextId: attemptRow.contextId,
-				courseTitle: attemptRow.courseTitle,
-				resourceLinkTitle: attemptRow.resourceLinkTitle,
-				launchPresentationReturnUrl: attemptRow.launchPresentationReturnUrl,
-				moduleTitle: attemptRow.moduleTitle,
-				highestAssessmentScore: null
-			}
-		}
-
-		const assessmentRow = assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]
-
-		if (
-			attemptRow.completedAt !== null &&
-			attemptRow.assessmentScore !== null &&
-			attemptRow.assessmentScore > assessmentRow.highestAssessmentScore
-		) {
-			assessmentRow.highestAssessmentScore = attemptRow.assessmentScore
-		}
-	})
-
-	return Object.values(assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId)
-}
-
 function DataGridAssessments({ attempts = [], filterSettings }) {
-	const assessmentScores = getAssessmentScoresFromAttempts(attempts)
+	const assessmentScores = getAssessmentStatsFromAttemptStats(attempts)
 
 	return (
 		<div className="repository--data-grid-assessments">

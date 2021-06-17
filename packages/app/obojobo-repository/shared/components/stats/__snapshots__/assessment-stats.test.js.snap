@@ -1,0 +1,402 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
+<div
+  className="repository--assessment-stats"
+>
+  <div
+    className="settings"
+  >
+    <label
+      className="view-mode"
+    >
+      <span>
+        Showing:
+      </span>
+      <select
+        onChange={[Function]}
+        value="final-assessment-scores"
+      >
+        <option
+          value="final-assessment-scores"
+        >
+          Final Assessment Scores
+        </option>
+        <option
+          value="all-attempts"
+        >
+          All Attempt Scores
+        </option>
+      </select>
+    </label>
+    <div
+      className="filters"
+    >
+      <span>
+        Filters:
+      </span>
+      <div
+        className="repository--assessment-stats-filter-controls"
+      >
+        <div
+          className="container"
+        >
+          <label>
+            <input
+              checked={false}
+              className="show-incomplete-attempts"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Include incomplete attempt data
+            </span>
+          </label>
+          <label>
+            <input
+              checked={false}
+              className="show-preview-attempts"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Include preview attempt data
+            </span>
+          </label>
+          <hr />
+          <label>
+            <input
+              className="show-advanced-fields"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Show advanced fields
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="repository--data-grid-assessments"
+  >
+    <div
+      className="repository--data-grid-scores"
+    >
+      <div
+        className="data-grid"
+      >
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "advanced": false,
+                "name": "Course Title",
+                "selector": "courseTitle",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Resource Link Title",
+                "selector": "resourceLinkTitle",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "URL",
+                "selector": "launchPresentationReturnUrl",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "First Name",
+                "selector": "userFirstName",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Last Name",
+                "selector": "userLastName",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Final Assessment Score",
+                "selector": "highestAssessmentScore",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Preview Mode",
+                "selector": "isPreview",
+                "sortable": true,
+              },
+            ]
+          }
+          data={
+            Array [
+              Object {
+                "assessmentId": "Assessment-1",
+                "contextId": undefined,
+                "courseTitle": undefined,
+                "draftContentId": "Version-1",
+                "draftId": "Draft-A",
+                "highestAssessmentScore": 0,
+                "isPreview": false,
+                "launchPresentationReturnUrl": undefined,
+                "moduleTitle": undefined,
+                "resourceLinkId": "Resource-X",
+                "resourceLinkTitle": undefined,
+                "userFirstName": undefined,
+                "userId": "User-Alpha",
+                "userLastName": undefined,
+                "userRoles": undefined,
+                "username": undefined,
+              },
+            ]
+          }
+          dense={true}
+          keyField="attemptId"
+          striped={true}
+          title="Final Assessment Scores"
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <a
+        className="repository--button "
+        download="final-assessment-scores__Draft-A"
+        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22false%22"
+      >
+        ⬇️   Download Table as CSV File (
+        1
+         row
+        
+        )
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
+<div
+  className="repository--assessment-stats"
+>
+  <div
+    className="settings"
+  >
+    <label
+      className="view-mode"
+    >
+      <span>
+        Showing:
+      </span>
+      <select
+        onChange={[Function]}
+        value="all-attempts"
+      >
+        <option
+          value="final-assessment-scores"
+        >
+          Final Assessment Scores
+        </option>
+        <option
+          value="all-attempts"
+        >
+          All Attempt Scores
+        </option>
+      </select>
+    </label>
+    <div
+      className="filters"
+    >
+      <span>
+        Filters:
+      </span>
+      <div
+        className="repository--assessment-stats-filter-controls"
+      >
+        <div
+          className="container"
+        >
+          <label>
+            <input
+              checked={false}
+              className="show-incomplete-attempts"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Include incomplete attempt data
+            </span>
+          </label>
+          <label>
+            <input
+              checked={false}
+              className="show-preview-attempts"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Include preview attempt data
+            </span>
+          </label>
+          <hr />
+          <label>
+            <input
+              className="show-advanced-fields"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Show advanced fields
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="repository--data-grid-attempts"
+  >
+    <div
+      className="repository--data-grid-scores"
+    >
+      <div
+        className="data-grid"
+      >
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "advanced": false,
+                "name": "Course Title",
+                "selector": "courseTitle",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Resource Link Title",
+                "selector": "resourceLinkTitle",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "URL",
+                "selector": "launchPresentationReturnUrl",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "First Name",
+                "selector": "userFirstName",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Last Name",
+                "selector": "userLastName",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Attempt ID",
+                "selector": "attemptId",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Imported Attempt ID",
+                "selector": "importedAttemptId",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Attempt Score",
+                "selector": "attemptScore",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Assessment Score",
+                "selector": "assessmentScore",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Started Time",
+                "selector": "createdAt",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Submitted Time",
+                "selector": "completedAt",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Preview Mode",
+                "selector": "isPreview",
+                "sortable": true,
+              },
+            ]
+          }
+          data={
+            Array [
+              Object {
+                "assessmentId": "Assessment-1",
+                "assessmentScore": null,
+                "completedAt": "mock-date",
+                "draftContentId": "Version-1",
+                "draftId": "Draft-A",
+                "isPreview": false,
+                "resourceLinkId": "Resource-X",
+                "userId": "User-Alpha",
+              },
+              Object {
+                "assessmentId": "Assessment-1",
+                "assessmentScore": 0,
+                "completedAt": "mock-date",
+                "draftContentId": "Version-1",
+                "draftId": "Draft-A",
+                "isPreview": false,
+                "resourceLinkId": "Resource-X",
+                "userId": "User-Alpha",
+              },
+            ]
+          }
+          dense={true}
+          keyField="attemptId"
+          striped={true}
+          title="Attempt Scores"
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <a
+        className="repository--button "
+        download="attempt-scores__Draft-A"
+        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20Score%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-date%22%2C%22false%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22%22%2C%22mock-date%22%2C%22false%22"
+      >
+        ⬇️   Download Table as CSV File (
+        2
+         row
+        s
+        )
+      </a>
+    </div>
+  </div>
+</div>
+`;

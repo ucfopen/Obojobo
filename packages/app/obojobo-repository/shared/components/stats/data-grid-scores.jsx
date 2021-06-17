@@ -5,10 +5,9 @@ const ButtonLink = require('../button-link')
 const getColumns = (columns, showAdvancedFields) =>
 	showAdvancedFields ? columns : columns.filter(col => !col.advanced)
 
-const toCSV = (columns, showAdvancedFields, attempts) => {
-	const filteredColumns = columns.filter(c => showAdvancedFields || !c.advanced)
-	const cols = `"${filteredColumns.map(c => c.name).join('","')}"`
-	const colOrder = filteredColumns.map(c => c.selector)
+const toCSV = (columns, attempts) => {
+	const cols = `"${columns.map(c => c.name).join('","')}"`
+	const colOrder = columns.map(c => c.selector)
 	const rows = attempts.map(attempt => `"${colOrder.map(key => attempt[key]).join('","')}"`)
 	return `${cols}\n${rows.join('\n')}`
 }
@@ -19,6 +18,7 @@ const getFileName = (
 	{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }
 ) => {
 	const drafts = [...new Set(attempts.map(row => row.draftId))]
+
 	return (
 		[
 			csvFileName,
@@ -46,12 +46,14 @@ const getTableName = (tableName, { showIncompleteAttempts, showPreviewAttempts }
 }
 
 function DataGridScores({ columns, rows = [], tableName, csvFileName, filterSettings }) {
+	const filteredColumns = getColumns(columns, filterSettings.showAdvancedFields)
+
 	return (
 		<div className="repository--data-grid-scores">
 			<div className="data-grid">
 				<DataTable
 					title={getTableName(tableName, filterSettings)}
-					columns={getColumns(columns, filterSettings.showAdvancedFields)}
+					columns={filteredColumns}
 					data={rows}
 					striped={true}
 					keyField={'attemptId'}
@@ -60,9 +62,7 @@ function DataGridScores({ columns, rows = [], tableName, csvFileName, filterSett
 			</div>
 			{rows.length > 0 ? (
 				<ButtonLink
-					url={`data:text/csv;charset=utf-8,${escape(
-						toCSV(columns, filterSettings.showAdvancedFields, rows)
-					)}`}
+					url={`data:text/csv;charset=utf-8,${escape(toCSV(filteredColumns, rows))}`}
 					download={getFileName(csvFileName, rows, filterSettings)}
 				>
 					⬇️&nbsp;&nbsp;&nbsp;Download Table as CSV File ({rows.length} row

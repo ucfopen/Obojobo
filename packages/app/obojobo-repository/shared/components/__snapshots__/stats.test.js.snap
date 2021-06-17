@@ -1,0 +1,642 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stats Renders loaded state correctly 1`] = `
+<span
+  id="stats-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div>
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "name": "Draft ID",
+                "selector": "draftId",
+                "sortable": true,
+              },
+              Object {
+                "name": "Title",
+                "selector": "title",
+                "sortable": true,
+              },
+              Object {
+                "name": "Created At",
+                "selector": "createdAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Updated At",
+                "selector": "updatedAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Latest Version",
+                "selector": "latestVersion",
+                "sortable": true,
+              },
+              Object {
+                "name": "Revision Count",
+                "selector": "revisionCount",
+                "sortable": true,
+              },
+            ]
+          }
+          data={Array []}
+          dense={true}
+          keyField="draftId"
+          onSelectedRowsChange={[Function]}
+          pagination={true}
+          selectableRows={true}
+          striped={true}
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Load stats for 0 selected modules
+      </button>
+      <div
+        className="stats"
+      >
+        <div
+          className="repository--assessment-stats"
+        >
+          <div
+            className="settings"
+          >
+            <label
+              className="view-mode"
+            >
+              <span>
+                Showing:
+              </span>
+              <select
+                onChange={[Function]}
+                value="final-assessment-scores"
+              >
+                <option
+                  value="final-assessment-scores"
+                >
+                  Final Assessment Scores
+                </option>
+                <option
+                  value="all-attempts"
+                >
+                  All Attempt Scores
+                </option>
+              </select>
+            </label>
+            <div
+              className="filters"
+            >
+              <span>
+                Filters:
+              </span>
+              <div
+                className="repository--assessment-stats-filter-controls"
+              >
+                <div
+                  className="container"
+                >
+                  <label>
+                    <input
+                      checked={false}
+                      className="show-incomplete-attempts"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    <span>
+                      Include incomplete attempt data
+                    </span>
+                  </label>
+                  <label>
+                    <input
+                      checked={false}
+                      className="show-preview-attempts"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    <span>
+                      Include preview attempt data
+                    </span>
+                  </label>
+                  <hr />
+                  <label>
+                    <input
+                      className="show-advanced-fields"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    <span>
+                      Show advanced fields
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="repository--data-grid-assessments"
+          >
+            <div
+              className="repository--data-grid-scores"
+            >
+              <div
+                className="data-grid"
+              >
+                <div
+                  className="react-data-table-component"
+                  columns={
+                    Array [
+                      Object {
+                        "advanced": false,
+                        "name": "Course Title",
+                        "selector": "courseTitle",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
+                        "name": "Resource Link Title",
+                        "selector": "resourceLinkTitle",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
+                        "cell": [Function],
+                        "name": "URL",
+                        "selector": "launchPresentationReturnUrl",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
+                        "name": "First Name",
+                        "selector": "userFirstName",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
+                        "name": "Last Name",
+                        "selector": "userLastName",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
+                        "cell": [Function],
+                        "name": "Final Assessment Score",
+                        "selector": "highestAssessmentScore",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
+                        "cell": [Function],
+                        "name": "Preview Mode",
+                        "selector": "isPreview",
+                        "sortable": true,
+                      },
+                    ]
+                  }
+                  data={Array []}
+                  dense={true}
+                  keyField="attemptId"
+                  striped={true}
+                  title="Final Assessment Scores"
+                >
+                  react-data-table-component
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Stats Renders loading state correctly 1`] = `
+<span
+  id="stats-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div>
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "name": "Draft ID",
+                "selector": "draftId",
+                "sortable": true,
+              },
+              Object {
+                "name": "Title",
+                "selector": "title",
+                "sortable": true,
+              },
+              Object {
+                "name": "Created At",
+                "selector": "createdAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Updated At",
+                "selector": "updatedAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Latest Version",
+                "selector": "latestVersion",
+                "sortable": true,
+              },
+              Object {
+                "name": "Revision Count",
+                "selector": "revisionCount",
+                "sortable": true,
+              },
+            ]
+          }
+          data={Array []}
+          dense={true}
+          keyField="draftId"
+          onSelectedRowsChange={[Function]}
+          pagination={true}
+          selectableRows={true}
+          striped={true}
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Load stats for 0 selected modules
+      </button>
+      <div
+        className="stats"
+      >
+        Loading...
+      </div>
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Stats Renders non-loaded non-fetching state correctly 1`] = `
+<span
+  id="stats-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div>
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "name": "Draft ID",
+                "selector": "draftId",
+                "sortable": true,
+              },
+              Object {
+                "name": "Title",
+                "selector": "title",
+                "sortable": true,
+              },
+              Object {
+                "name": "Created At",
+                "selector": "createdAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Updated At",
+                "selector": "updatedAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Latest Version",
+                "selector": "latestVersion",
+                "sortable": true,
+              },
+              Object {
+                "name": "Revision Count",
+                "selector": "revisionCount",
+                "sortable": true,
+              },
+            ]
+          }
+          data={Array []}
+          dense={true}
+          keyField="draftId"
+          onSelectedRowsChange={[Function]}
+          pagination={true}
+          selectableRows={true}
+          striped={true}
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Load stats for 0 selected modules
+      </button>
+      <div
+        className="stats"
+      />
+    </section>
+  </div>
+</span>
+`;

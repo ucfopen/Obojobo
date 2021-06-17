@@ -31,6 +31,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 			<div className="container">
 				<label>
 					<input
+						className="show-incomplete-attempts"
 						type="checkbox"
 						checked={filterSettings.showIncompleteAttempts}
 						onChange={onChangeShowIncompleteAttempts}
@@ -39,6 +40,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 				</label>
 				<label>
 					<input
+						className="show-preview-attempts"
 						type="checkbox"
 						checked={filterSettings.showPreviewAttempts}
 						onChange={onChangeShowPreviewAttempts}
@@ -48,6 +50,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 				<hr />
 				<label>
 					<input
+						className="show-advanced-fields"
 						type="checkbox"
 						checked={filterSettings.showAdvancedFields}
 						onChange={onChangeShowAdvancedFields}

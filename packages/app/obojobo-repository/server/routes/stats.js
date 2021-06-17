@@ -14,20 +14,12 @@ router
 	.route('/stats')
 	.get([requireCurrentUser, requireCanViewSystemStats])
 	.get((req, res) => {
-		let sortOrder = 'newest'
-		const cookies = req.headers.cookie.split(';')
-		const cookieSort = cookies.find(cookie => cookie.includes('sortOrder'))
-
-		if (cookieSort) {
-			sortOrder = cookieSort.split('=')[1]
-		}
-
 		return DraftSummary.fetchAll().then(allModules => {
 			const props = {
 				title: 'Stats',
 				allModules: allModules.map(m => JSON.parse(JSON.stringify(m))),
-				sortOrder,
 				currentUser: req.currentUser,
+				doggo: true,
 				// must use webpackAssetPath for all webpack assets to work in dev and production!
 				appCSSUrl: webpackAssetPath('stats.css'),
 				appJsUrl: webpackAssetPath('stats.js')

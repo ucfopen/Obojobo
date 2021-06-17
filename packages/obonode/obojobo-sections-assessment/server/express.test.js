@@ -464,6 +464,45 @@ describe('server/express', () => {
 		})
 	})
 
+	test('GET /api/assessments/:draftId/analytics', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		AssessmentModel.fetchAttemptHistoryAnalytics.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/assessments/:draftId/analytics')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchAttemptHistoryAnalytics).toHaveBeenCalledWith(
+			mockCurrentDocument.draftId
+		)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
+	})
+
+	test('GET /api/assessments/:draftId/analytics fails', async () => {
+		expect.hasAssertions()
+		AssessmentModel.fetchAttemptHistoryAnalytics.mockRejectedValueOnce()
+
+		const response = await request(app)
+			.get('/api/assessments/:draftId/analytics')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+	})
+
 	test('POST /api/assessments/:draftId/:assessmentId/import-score', async () => {
 		expect.hasAssertions()
 		requireCurrentVisit.mockImplementationOnce((req, res, next) => {

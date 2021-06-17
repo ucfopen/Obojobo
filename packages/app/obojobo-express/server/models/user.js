@@ -30,7 +30,7 @@ class User {
 		this.roles = roles
 		this.perms = [
 			...new Set(
-				(perms || []).concat(
+				perms.concat(
 					Object.keys(config.permissionGroups).filter(permName =>
 						this.hasOneOfRole(config.permissionGroups[permName])
 					)

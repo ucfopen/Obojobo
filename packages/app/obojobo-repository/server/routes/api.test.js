@@ -144,6 +144,28 @@ describe('repository api route', () => {
 			})
 	})
 
+	test('get /drafts-all returns the expected response', () => {
+		const mockResult = [
+			{ draftId: 'mockDraftId1', title: 'whatever1' },
+			{ draftId: 'mockDraftId2', title: 'whatever2' },
+			{ draftId: 'mockDraftId3', title: 'whatever3' }
+		]
+
+		DraftSummary.fetchAll = jest.fn()
+		DraftSummary.fetchAll.mockResolvedValueOnce(mockResult)
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/drafts-all')
+			.then(response => {
+				expect(DraftSummary.fetchAll).toHaveBeenCalled()
+
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toEqual(mockResult)
+			})
+	})
+
 	test('get /drafts/:draftId/revisions/ returns the expected response, no after - hasMoreResults false', () => {
 		const mockResult = {
 			revisions: [

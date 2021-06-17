@@ -61,12 +61,8 @@ const renderAssessmentScoreDataDialog = props => {
 			{...props.selectedModule}
 			title={`${props.selectedModule.title} - Assessment Scores`}
 			onClose={props.closeModal}
-			isHistoryLoading={props.attempts.isFetching}
-			hasHistoryLoaded={props.attempts.hasFetched}
+			isAttemptsLoading={props.attempts.isFetching}
 			attempts={props.attempts.items}
-			restoreVersion={props.restoreVersion}
-			checkModuleLock={props.checkModuleLock}
-			currentUserId={props.currentUser.id}
 		/>
 	)
 }

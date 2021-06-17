@@ -1,0 +1,230 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
+<div
+  className="repository--data-grid-assessments"
+>
+  <div
+    className="repository--data-grid-scores"
+  >
+    <div
+      className="data-grid"
+    >
+      <div
+        className="react-data-table-component"
+        columns={
+          Array [
+            Object {
+              "advanced": false,
+              "name": "Course Title",
+              "selector": "courseTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Resource Link Title",
+              "selector": "resourceLinkTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "URL",
+              "selector": "launchPresentationReturnUrl",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "First Name",
+              "selector": "userFirstName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Last Name",
+              "selector": "userLastName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Final Assessment Score",
+              "selector": "highestAssessmentScore",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Preview Mode",
+              "selector": "isPreview",
+              "sortable": true,
+            },
+          ]
+        }
+        data={
+          Array [
+            Object {
+              "assessmentId": undefined,
+              "contextId": undefined,
+              "courseTitle": undefined,
+              "draftContentId": undefined,
+              "draftId": "mock-draft-id",
+              "highestAssessmentScore": undefined,
+              "isPreview": false,
+              "launchPresentationReturnUrl": "mock-url",
+              "moduleTitle": undefined,
+              "resourceLinkId": undefined,
+              "resourceLinkTitle": undefined,
+              "userFirstName": undefined,
+              "userId": undefined,
+              "userLastName": undefined,
+              "userRoles": undefined,
+              "username": undefined,
+            },
+            Object {
+              "assessmentId": undefined,
+              "contextId": undefined,
+              "courseTitle": undefined,
+              "draftContentId": undefined,
+              "draftId": "mock-draft-id2",
+              "highestAssessmentScore": undefined,
+              "isPreview": true,
+              "launchPresentationReturnUrl": "mock-url",
+              "moduleTitle": undefined,
+              "resourceLinkId": undefined,
+              "resourceLinkTitle": undefined,
+              "userFirstName": undefined,
+              "userId": undefined,
+              "userLastName": undefined,
+              "userRoles": undefined,
+              "username": undefined,
+            },
+          ]
+        }
+        dense={true}
+        keyField="attemptId"
+        striped={true}
+        title="Final Assessment Scores"
+      >
+        react-data-table-component
+      </div>
+    </div>
+    <a
+      className="repository--button "
+      download="final-assessment-scores__mock-draft-id_mock-draft-id2"
+      href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22false%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22true%22"
+    >
+      ⬇️   Download Table as CSV File (
+      2
+       row
+      s
+      )
+    </a>
+  </div>
+</div>
+`;
+
+exports[`DataGridAssessments DataGridAssessments renders without attempts 1`] = `
+<div
+  className="repository--data-grid-assessments"
+>
+  <div
+    className="repository--data-grid-scores"
+  >
+    <div
+      className="data-grid"
+    >
+      <div
+        className="react-data-table-component"
+        columns={
+          Array [
+            Object {
+              "advanced": false,
+              "name": "Course Title",
+              "selector": "courseTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Resource Link Title",
+              "selector": "resourceLinkTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "URL",
+              "selector": "launchPresentationReturnUrl",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "First Name",
+              "selector": "userFirstName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Last Name",
+              "selector": "userLastName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Final Assessment Score",
+              "selector": "highestAssessmentScore",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Preview Mode",
+              "selector": "isPreview",
+              "sortable": true,
+            },
+          ]
+        }
+        data={Array []}
+        dense={true}
+        keyField="attemptId"
+        striped={true}
+        title="Final Assessment Scores"
+      >
+        react-data-table-component
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DataGridAssessments DataGridAttempts columns with cell components render as expected 1`] = `
+<div
+  style={
+    Object {
+      "overflow": "hidden",
+      "textOverflow": "ellipsis",
+      "whiteSpace": "nowrap",
+    }
+  }
+>
+  <a
+    href="mock-url"
+    target="_blank"
+  >
+    mock-url
+  </a>
+</div>
+`;
+
+exports[`DataGridAssessments DataGridAttempts columns with cell components render as expected 2`] = `
+<div>
+  null
+</div>
+`;
+
+exports[`DataGridAssessments DataGridAttempts columns with cell components render as expected 3`] = `
+<div>
+  false
+</div>
+`;

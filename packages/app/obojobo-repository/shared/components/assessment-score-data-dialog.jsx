@@ -6,7 +6,7 @@ const Button = require('./button')
 const Loading = require('./loading')
 const AssessmentStats = require('./stats/assessment-stats')
 
-const AssessmentScoreDataDialog = ({ draftId, title, onClose, isHistoryLoading, attempts }) => {
+const AssessmentScoreDataDialog = ({ draftId, title, onClose, isAttemptsLoading, attempts }) => {
 	return (
 		<div className="assessment-score-data-dialog">
 			<div className="assessment-score-data-dialog--header">
@@ -17,7 +17,7 @@ const AssessmentScoreDataDialog = ({ draftId, title, onClose, isHistoryLoading, 
 				</Button>
 			</div>
 			<div className="assessment-score-data-dialog--body">
-				<Loading isLoading={isHistoryLoading} loadingText={'Loading attempt data...'}>
+				<Loading isLoading={isAttemptsLoading} loadingText={'Loading attempt data...'}>
 					<AssessmentStats attempts={attempts} />
 				</Loading>
 			</div>
