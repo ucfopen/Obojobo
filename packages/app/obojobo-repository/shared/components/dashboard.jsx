@@ -176,9 +176,10 @@ function Dashboard(props) {
 	}
 
 	const deleteModules = draftIds => {
+		//eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
 			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
-		) //eslint-disable-line no-alert, no-undef
+		)
 		if (response !== 'DELETE') return
 		props.bulkDeleteModules(draftIds)
 	}

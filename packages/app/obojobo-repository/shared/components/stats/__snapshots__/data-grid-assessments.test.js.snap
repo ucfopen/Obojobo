@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DataGridAssessments DataGridAssessments columns with cell components render as expected 1`] = `
+<div
+  style={
+    Object {
+      "overflow": "hidden",
+      "textOverflow": "ellipsis",
+      "whiteSpace": "nowrap",
+    }
+  }
+>
+  <a
+    href="mock-url"
+    rel="noreferrer"
+    target="_blank"
+  >
+    mock-url
+  </a>
+</div>
+`;
+
+exports[`DataGridAssessments DataGridAssessments columns with cell components render as expected 2`] = `
+<div>
+  null
+</div>
+`;
+
+exports[`DataGridAssessments DataGridAssessments columns with cell components render as expected 3`] = `
+<div>
+  false
+</div>
+`;
+
 exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
 <div
   className="repository--data-grid-assessments"
@@ -195,36 +227,5 @@ exports[`DataGridAssessments DataGridAssessments renders without attempts 1`] = 
       </div>
     </div>
   </div>
-</div>
-`;
-
-exports[`DataGridAssessments DataGridAttempts columns with cell components render as expected 1`] = `
-<div
-  style={
-    Object {
-      "overflow": "hidden",
-      "textOverflow": "ellipsis",
-      "whiteSpace": "nowrap",
-    }
-  }
->
-  <a
-    href="mock-url"
-    target="_blank"
-  >
-    mock-url
-  </a>
-</div>
-`;
-
-exports[`DataGridAssessments DataGridAttempts columns with cell components render as expected 2`] = `
-<div>
-  null
-</div>
-`;
-
-exports[`DataGridAssessments DataGridAttempts columns with cell components render as expected 3`] = `
-<div>
-  false
 </div>
 `;

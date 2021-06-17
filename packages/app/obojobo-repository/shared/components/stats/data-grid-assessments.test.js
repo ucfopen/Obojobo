@@ -51,7 +51,7 @@ describe('DataGridAssessments', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('DataGridAttempts columns with cell components render as expected', () => {
+	test('DataGridAssessments columns with cell components render as expected', () => {
 		const component = renderer.create(
 			<DataGridAssessments filterSettings={getTestProps().filterSettings} />
 		)

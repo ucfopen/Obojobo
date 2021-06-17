@@ -2,6 +2,19 @@ const React = require('react')
 const DataGridScores = require('./data-grid-scores')
 const getAssessmentStatsFromAttemptStats = require('../../util/get-assessment-stats-from-attempt-stats')
 
+const cellURL = row => (
+	<div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+		<a target="_blank" rel="noreferrer" href={row.launchPresentationReturnUrl}>
+			{row.launchPresentationReturnUrl}
+		</a>
+	</div>
+)
+
+const cellString = selector => {
+	const fn = row => <div>{String(row[selector])}</div>
+	return fn
+}
+
 const columns = [
 	{
 		name: 'Course ID',
@@ -30,13 +43,7 @@ const columns = [
 	{
 		name: 'URL',
 		selector: 'launchPresentationReturnUrl',
-		cell: row => (
-			<div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-				<a target="_blank" href={row.launchPresentationReturnUrl}>
-					{row.launchPresentationReturnUrl}
-				</a>
-			</div>
-		),
+		cell: cellURL,
 		sortable: true,
 		advanced: false
 	},
@@ -93,14 +100,14 @@ const columns = [
 		sortable: true,
 		advanced: false,
 		selector: 'highestAssessmentScore',
-		cell: row => <div>{String(row.highestAssessmentScore)}</div>
+		cell: cellString('highestAssessmentScore')
 	},
 	{
 		name: 'Preview Mode',
 		sortable: true,
 		advanced: false,
 		selector: 'isPreview',
-		cell: row => <div>{String(row.isPreview)}</div>
+		cell: cellString('isPreview')
 	}
 ]
 

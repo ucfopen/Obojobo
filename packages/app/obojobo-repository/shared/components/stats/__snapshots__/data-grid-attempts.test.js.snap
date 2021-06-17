@@ -12,6 +12,7 @@ exports[`DataGridAttempts DataGridAttempts columns with cell components render a
 >
   <a
     href="mock-url"
+    rel="noreferrer"
     target="_blank"
   >
     mock-url
