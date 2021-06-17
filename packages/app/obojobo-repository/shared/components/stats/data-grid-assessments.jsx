@@ -106,7 +106,7 @@ const columns = [
 const composeKey = ({ draftId, userId, resourceLinkId, assessmentId }) =>
 	draftId + ' ' + userId + ' ' + resourceLinkId + ' ' + assessmentId
 
-const getAssessmentScoresFromAttempts = (attempts, searchSettings, searchContent) => {
+const getAssessmentScoresFromAttempts = (attempts) => {
 	const assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId = {}
 
 	attempts.forEach(attemptRow => {
@@ -144,41 +144,7 @@ const getAssessmentScoresFromAttempts = (attempts, searchSettings, searchContent
 		}
 	})
 
-	const text = searchContent.text;
-	const dates = searchContent.date;
-	const rows = assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId;
-
-	if (rows && rows.length > 0) {
-		// Filtering according to starting and ending dates.
-		if (dates) {
-			rows.filter(row => {
-				const dateCompleted = new Date(row.completedAt)
-				const start = dates.start ? new Date(dates.start) : null
-				const end = dates.end ? new Date(dates.end) : null
-
-				if (!start && !end) return row
-				if (!start) return dateCompleted <= end
-				if (!end) return dateCompleted >= start
-
-				return dateCompleted >= start && dateCompleted <= end
-			})
-		}
-
-		if (text) {
-			let param = searchSettings
-							.split("-")
-							.map(word => word.charAt(0).toUpperCase() + word.substring(1))
-							.join("")
-			param = param.charAt(0).toLowerCase() + param.substring(1)
-
-			// Filtering according to search params (course title, user's first name, etc)
-			rows.filter(row => {
-				return row[param].toLowerCase().match(text) && true;
-			})
-		}
-	}
-
-	return Object.values(rows)
+	return Object.values(assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId)
 }
 
 function DataGridAssessments({ attempts = [], filterSettings, searchSettings, searchContent }) {
@@ -192,6 +158,8 @@ function DataGridAssessments({ attempts = [], filterSettings, searchSettings, se
 				columns={columns}
 				rows={assessmentScores}
 				filterSettings={filterSettings}
+				searchSettings={searchSettings}
+				searchContent={searchContent}
 			/>
 		</div>
 	)

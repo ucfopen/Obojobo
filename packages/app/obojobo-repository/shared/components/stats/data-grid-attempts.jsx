@@ -173,7 +173,7 @@ const columns = [
 	}
 ]
 
-function DataGridAttempts({ attempts = [], filterSettings }) {
+function DataGridAttempts({ attempts = [], filterSettings, searchSettings, searchContent }) {
 	return (
 		<div className="repository--data-grid-attempts">
 			<DataGridScores
@@ -182,6 +182,8 @@ function DataGridAttempts({ attempts = [], filterSettings }) {
 				columns={columns}
 				rows={attempts}
 				filterSettings={filterSettings}
+				searchSettings={searchSettings}
+				searchContent={searchContent}
 			/>
 		</div>
 	)

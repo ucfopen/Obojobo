@@ -45,7 +45,52 @@ const getTableName = (tableName, { showIncompleteAttempts, showPreviewAttempts }
 	return tableName
 }
 
-function DataGridScores({ columns, rows = [], tableName, csvFileName, filterSettings }) {
+const searchDataBasedOnParams = (rows, searchSettings, searchContent) => {
+	const text = searchContent.text;
+	const dates = searchContent.date;
+
+	if (rows && rows.length > 0) {
+		// Filtering according to starting and ending dates.
+		if (dates) {
+			rows = rows.filter(row => {
+				const dateCompleted = new Date(row.completedAt)
+				const start = dates.start ? new Date(dates.start) : null
+				const end = dates.end ? new Date(dates.end) : null
+
+				if (!start && !end) return row
+				if (!start) return dateCompleted <= end
+				if (!end) return dateCompleted >= start
+
+				return dateCompleted >= start && dateCompleted <= end
+			})
+		}
+
+		if (text) {
+			let param = searchSettings
+							.split("-")
+							.map(word => word.charAt(0).toUpperCase() + word.substring(1))
+							.join("")
+			param = param.charAt(0).toLowerCase() + param.substring(1)
+
+			// Filtering according to search params (course title, user's first name, etc)
+			rows = rows.filter(row => {
+				return row[param] && row[param].toLowerCase().match(text.toLowerCase());
+			})
+		}
+	}
+	return rows;
+}
+
+function DataGridScores({
+		columns,
+		rows = [],
+		tableName,
+		csvFileName,
+		filterSettings,
+		searchSettings,
+		searchContent
+}) {
+	rows = searchDataBasedOnParams(rows, searchSettings, searchContent)
 	return (
 		<div className="repository--data-grid-scores">
 			<div className="data-grid">
