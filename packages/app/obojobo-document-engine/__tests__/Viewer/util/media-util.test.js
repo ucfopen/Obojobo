@@ -17,62 +17,86 @@ describe('MediaUtil', () => {
 	})
 
 	test('mediaPlayed', () => {
-		MediaUtil.mediaPlayed('user', 0)
+		MediaUtil.mediaPlayed('user', 0, 'mocked-url', 'mocked-id')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:played', {
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:play', {
 			value: {
 				actor: 'user',
-				playHeadPosition: 0
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
 
 	test('mediaPaused', () => {
-		MediaUtil.mediaPaused('user', 0)
+		MediaUtil.mediaPaused('user', 0, 'mocked-url', 'mocked-id')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:pause', {
 			value: {
 				actor: 'user',
-				playHeadPosition: 0
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
 
 	test('mediaEnded', () => {
-		MediaUtil.mediaEnded('youtube', 0)
+		MediaUtil.mediaEnded('youtube', 0, 'mocked-url', 'mocked-id')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:ended', {
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:end', {
 			value: {
 				actor: 'youtube',
-				playHeadPosition: 0
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
 
 	test('mediaSeekTo', () => {
-		MediaUtil.mediaSeekTo('user', 100, 0)
+		MediaUtil.mediaSeekTo('user', 100, 0, 'mocked-url', 'mocked-id')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:seekTo', {
 			value: {
 				actor: 'user',
-				playHeadPosition: 100,
-				previousPlayHeadPosition: 0
+				playheadPosition: 100,
+				previousPlayheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
 
 	test('mediaBuffering', () => {
-		MediaUtil.mediaBuffering('youtube', 50)
+		MediaUtil.mediaBuffering('youtube', 50, 'mocked-url', 'mocked-id')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:buffering', {
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:buffer', {
 			value: {
 				actor: 'youtube',
-				playHeadPosition: 50
+				playheadPosition: 50,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
+			}
+		})
+	})
+
+	test('mediaUnloaded', () => {
+		MediaUtil.mediaUnloaded('user', 0, 'mocked-url', 'mocked-id')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:unload', {
+			value: {
+				actor: 'user',
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})

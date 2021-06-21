@@ -4,48 +4,76 @@ import { DEFAULT_ZOOM } from '../stores/media-store/media-constants'
 const { Dispatcher } = Common.flux
 
 const MediaUtil = {
-	mediaPlayed(actor, playHeadPosition) {
-		return Dispatcher.trigger('media:played', {
+	mediaPlayed(actor, playheadPosition, url, nodeId, secondsWatched) {
+		// console.log(nodeId)
+		return Dispatcher.trigger('media:play', {
 			value: {
 				actor,
-				playHeadPosition
+				playheadPosition,
+				url,
+				nodeId,
+				secondsWatched
 			}
 		})
 	},
 
-	mediaPaused(actor, playHeadPosition) {
+	mediaPaused(actor, playheadPosition, url, nodeId, secondsWatched) {
 		return Dispatcher.trigger('media:pause', {
 			value: {
 				actor,
-				playHeadPosition
+				playheadPosition,
+				url,
+				nodeId,
+				secondsWatched
 			}
 		})
 	},
 
-	mediaEnded(actor, playHeadPosition) {
-		return Dispatcher.trigger('media:ended', {
+	mediaEnded(actor, playheadPosition, url, nodeId, secondsWatched) {
+		return Dispatcher.trigger('media:end', {
 			value: {
 				actor,
-				playHeadPosition
+				playheadPosition,
+				url,
+				nodeId,
+				secondsWatched
 			}
 		})
 	},
 
-	mediaSeekTo(actor, playHeadPosition, previousPlayHeadPosition) {
+	mediaSeekTo(actor, playheadPosition, previousPlayheadPosition, url, nodeId, secondsWatched) {
 		return Dispatcher.trigger('media:seekTo', {
 			value: {
 				actor,
-				playHeadPosition,
-				previousPlayHeadPosition
+				playheadPosition,
+				previousPlayheadPosition,
+				url,
+				nodeId,
+				secondsWatched
 			}
 		})
 	},
 
-	mediaBuffering(actor, playHeadPosition) {
-		return Dispatcher.trigger('media:buffering', {
+	mediaBuffering(actor, playheadPosition, url, nodeId, secondsWatched) {
+		return Dispatcher.trigger('media:buffer', {
 			value: {
 				actor,
-				playHeadPosition
+				playheadPosition,
+				url,
+				nodeId,
+				secondsWatched
+			}
+		})
+	},
+
+	mediaUnloaded(actor, playheadPosition, url, nodeId, secondsWatched) {
+		return Dispatcher.trigger('media:unload', {
+			value: {
+				actor,
+				playheadPosition,
+				url,
+				nodeId,
+				secondsWatched
 			}
 		})
 	},

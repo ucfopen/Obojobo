@@ -2,6 +2,7 @@ import React from 'react'
 import Common from 'Common'
 import insertDomTag from 'obojobo-document-engine/src/scripts/common/util/insert-dom-tag'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import { getStandardizedURLFromVideoId } from './parse-youtube-url'
 
 const { uuid } = Common.util
 const MediaUtil = Viewer.util.MediaUtil
@@ -11,7 +12,7 @@ const MediaUtil = Viewer.util.MediaUtil
 // They'll all get called once it loads
 const instanceCallbacksForYouTubeReady = []
 
-// single global hangler that notifies all registered YouTubePlayer Components
+// single global handler that notifies all registered YouTubePlayer Components
 const onYouTubeIframeAPIReadyHandler = () => {
 	// call every registered callback when ready
 	instanceCallbacksForYouTubeReady.forEach(cb => cb())
@@ -22,14 +23,18 @@ class YouTubePlayer extends React.Component {
 		super(props)
 		this.playerId = `obojobo-draft--chunks-you-tube-player-${uuid()}`
 		this.player = null
+		this.url = null
 		this.loadVideo = this.loadVideo.bind(this)
 		this.onStateChange = this.onStateChange.bind(this)
+		this.currentTime = null
+		this.previousTime = null
 		this.currentState = {
 			actor: 'youtube',
 			action: 'unstarted',
-			playHeadPosition: 0,
+			playheadPosition: 0,
 			isPossibleSeekTo: false,
-			playHeadPositionBeforeSeekTo: 0
+			playheadPositionBeforeSeekTo: 0,
+			secondsWatched: 0
 		}
 	}
 
@@ -49,6 +54,25 @@ class YouTubePlayer extends React.Component {
 		}
 
 		this.loadVideo()
+	}
+
+	componentWillUnmount() {
+		if (this.currentState.action !== 'ended') {
+			const currentPlayheadPosition = Math.floor(this.player.getCurrentTime())
+			const previousSecondsWatched = this.currentState.secondsWatched
+
+			this.previousTime = this.currentTime
+			this.currentTime = Date.now() / 1000
+			const currentSecondsWatched = previousSecondsWatched + (this.currentTime - this.previousTime)
+
+			MediaUtil.mediaUnloaded(
+				'user',
+				currentPlayheadPosition,
+				this.url,
+				this.nodeId,
+				Math.floor(currentSecondsWatched)
+			)
+		}
 	}
 
 	loadYouTubeAPIWithCallback(onReadyCallBack) {
@@ -71,6 +95,7 @@ class YouTubePlayer extends React.Component {
 		}
 
 		const { videoId, startTime, endTime } = this.props.content
+		this.url = getStandardizedURLFromVideoId(videoId)
 
 		if (this.player) {
 			this.player.cueVideoById({
@@ -107,52 +132,81 @@ class YouTubePlayer extends React.Component {
 	}
 
 	onStateChange(playerState) {
-		const currentPlayHeadPosition = Math.floor(this.player.getCurrentTime())
+		const currentPlayheadPosition = Math.floor(this.player.getCurrentTime())
+		const previousSecondsWatched = this.currentState.secondsWatched
+
+		this.previousTime = this.currentTime
+		this.currentTime = Date.now() / 1000
+		const currentSecondsWatched = previousSecondsWatched + (this.currentTime - this.previousTime)
 
 		switch (playerState.data) {
 			case -1: // video unstarted
 				this.currentState = {
 					actor: 'youtube',
 					action: 'unstarted',
-					playHeadPosition: currentPlayHeadPosition,
+					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
-					playHeadPositionBeforeSeekTo: 0
+					playheadPositionBeforeSeekTo: 0,
+					secondsWatched: 0
 				}
 				break
 			case 0: // video ended
 				this.currentState = {
 					actor: 'youtube',
 					action: 'ended',
-					playHeadPosition: currentPlayHeadPosition,
+					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
-					playHeadPositionBeforeSeekTo: 0
+					playheadPositionBeforeSeekTo: 0,
+					secondsWatched: Math.floor(currentSecondsWatched)
 				}
-				MediaUtil.mediaEnded(this.currentState.actor, this.currentState.playHeadPosition)
+				MediaUtil.mediaEnded(
+					this.currentState.actor,
+					this.currentState.playheadPosition,
+					this.url,
+					this.props.nodeId,
+					this.currentState.secondsWatched
+				)
 				break
 			case 1: // video playing
-				this.currentState = this.playOrSeekToEvent(this.currentState, currentPlayHeadPosition)
+				this.currentState = this.playOrSeekToEvent(this.currentState, currentPlayheadPosition)
 
 				if (this.currentState.isPossibleSeekTo) {
 					this.currentState.isPossibleSeekTo = false
 					MediaUtil.mediaSeekTo(
 						this.currentState.actor,
-						this.currentState.playHeadPosition,
-						this.currentState.playHeadPositionBeforeSeekTo
+						this.currentState.playheadPosition,
+						this.currentState.playheadPositionBeforeSeekTo,
+						this.url,
+						this.props.nodeId,
+						this.currentState.secondsWatched
 					)
 				} else {
-					MediaUtil.mediaPlayed(this.currentState.actor, this.currentState.playHeadPosition)
+					MediaUtil.mediaPlayed(
+						this.currentState.actor,
+						this.currentState.playheadPosition,
+						this.url,
+						this.props.nodeId,
+						this.currentState.secondsWatched
+					)
 				}
 				break
 			case 2: // video paused
 				this.currentState = {
 					actor: 'user',
 					action: 'paused',
-					playHeadPosition: currentPlayHeadPosition,
-					isPossibleSeekTo: this.currentState.playHeadPosition !== currentPlayHeadPosition,
-					playHeadPositionBeforeSeekTo: this.currentState.playHeadPosition
+					playheadPosition: currentPlayheadPosition,
+					isPossibleSeekTo: this.currentState.playheadPosition !== currentPlayheadPosition,
+					playheadPositionBeforeSeekTo: this.currentState.playheadPosition,
+					secondsWatched: Math.floor(currentSecondsWatched)
 				}
 
-				MediaUtil.mediaPaused(this.currentState.actor, this.currentState.playHeadPosition)
+				MediaUtil.mediaPaused(
+					this.currentState.actor,
+					this.currentState.playheadPosition,
+					this.url,
+					this.props.nodeId,
+					this.currentState.secondsWatched
+				)
 				break
 			case 3: // video buffering
 				if (this.currentState.action === 'unstarted') {
@@ -164,32 +218,40 @@ class YouTubePlayer extends React.Component {
 				}
 
 				this.currentState.action = 'buffering'
-				this.currentState.playHeadPosition = currentPlayHeadPosition
+				this.currentState.playheadPosition = currentPlayheadPosition
+				this.currentState.secondsWatched = Math.floor(currentSecondsWatched)
 
-				MediaUtil.mediaBuffering(this.currentState.actor, this.currentState.playHeadPosition)
+				MediaUtil.mediaBuffering(
+					this.currentState.actor,
+					this.currentState.playheadPosition,
+					this.url,
+					this.props.nodeId,
+					this.currentState.secondsWatched
+				)
 				break
 			case 5: // video cued
 				this.currentState = {
 					actor: 'youtube',
 					action: 'cued',
-					playHeadPosition: currentPlayHeadPosition,
+					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
-					playHeadPositionBeforeSeekTo: 0
+					playheadPositionBeforeSeekTo: 0,
+					secondsWatched: 0
 				}
 				break
 		}
 	}
 
-	playOrSeekToEvent(currentState, currentPlayHeadPosition) {
+	playOrSeekToEvent(currentState, currentPlayheadPosition) {
 		switch (currentState.action) {
 			case 'buffering':
 				if (
-					currentState.playHeadPosition === currentPlayHeadPosition &&
+					currentState.playheadPosition === currentPlayheadPosition &&
 					currentState.actor === 'user'
 				) {
 					currentState.actor = 'user'
 				}
-				if (currentState.playHeadPosition !== currentPlayHeadPosition) {
+				if (currentState.playheadPosition !== currentPlayheadPosition) {
 					currentState.isPossibleSeekTo = true
 				}
 				break
@@ -198,13 +260,13 @@ class YouTubePlayer extends React.Component {
 				break
 			case 'paused':
 				currentState.actor = 'user'
-				currentState.isPossibleSeekTo = !(currentState.playHeadPosition === currentPlayHeadPosition)
+				currentState.isPossibleSeekTo = !(currentState.playheadPosition === currentPlayheadPosition)
 				break
 			default:
 				currentState.actor = 'youtube'
 		}
 		currentState.action = 'playing'
-		currentState.playHeadPosition = currentPlayHeadPosition
+		currentState.playheadPosition = currentPlayheadPosition
 
 		return currentState
 	}

@@ -94,7 +94,6 @@ describe('YouTubePlayer', () => {
 })
 
 describe('YouTubePlayer events', () => {
-	let onStateChange
 	let getCurrentTime
 	let player
 
@@ -103,9 +102,8 @@ describe('YouTubePlayer events', () => {
 		jest.mock('obojobo-document-engine/src/scripts/viewer')
 		jest.mock('./youtube-player')
 
-		onStateChange = jest.fn()
 		getCurrentTime = jest.fn()
-		getCurrentTime.mockReturnValue(2) // simulates a currentPlayHeadPosition to compared with the currentState.playHeadPosition
+		getCurrentTime.mockReturnValue(2) // simulates a currentPlayheadPosition to compared with the currentState.playheadPosition
 
 		player = {
 			getCurrentTime: getCurrentTime
@@ -113,110 +111,212 @@ describe('YouTubePlayer events', () => {
 	})
 
 	test('Unstarted event is received', () => {
-		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
+		const component = mount(<YouTubePlayer />)
 		component.instance().player = player
+		component.instance().currentState = {
+			actor: 'user',
+			action: 'paused',
+			secondsWatched: 15,
+			...component.instance().currentState
+		}
 
-		const spy = jest.spyOn(component.instance(), 'onStateChange')
 		component.instance().onStateChange({ data: -1 })
 
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'youtube',
+				action: 'unstarted',
+				secondsWatched: 0
+			})
+		)
 	})
-	test('Cued event is received', () => {
-		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
-		component.instance().player = player
 
-		const spy = jest.spyOn(component.instance(), 'onStateChange')
+	test('Cued event is received', () => {
+		const component = mount(<YouTubePlayer />)
+		component.instance().player = player
+		component.instance().currentState = {
+			actor: 'user',
+			action: 'paused',
+			secondsWatched: 15,
+			...component.instance().currentState
+		}
+
 		component.instance().onStateChange({ data: 5 })
 
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'youtube',
+				action: 'cued',
+				secondsWatched: 0
+			})
+		)
 	})
+
 	test('Ended event is received', () => {
 		MediaUtil.mediaEnded = jest.fn()
+		Date.now = jest.fn().mockReturnValue(2000)
 
-		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
+		const component = mount(<YouTubePlayer />)
 		component.instance().player = player
+		component.instance().currentState = {
+			...component.instance().currentState
+		}
 
-		const spy = jest.spyOn(component.instance(), 'onStateChange')
 		component.instance().onStateChange({ data: 0 })
 
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'youtube',
+				action: 'ended',
+				secondsWatched: 2
+			})
+		)
+		expect(MediaUtil.mediaEnded).toHaveBeenCalledTimes(1)
 	})
 
 	test('Paused event is received', () => {
 		MediaUtil.mediaPaused = jest.fn()
+		Date.now = jest.fn().mockReturnValue(2000)
 
-		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
+		const component = mount(<YouTubePlayer />)
 		component.instance().player = player
+		component.instance().currentState.secondsWatched = 5
 
-		const spy = jest.spyOn(component.instance(), 'onStateChange')
 		component.instance().onStateChange({ data: 2 })
 
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'user',
+				action: 'paused',
+				secondsWatched: 7
+			})
+		)
+		expect(MediaUtil.mediaPaused).toHaveBeenCalledTimes(1)
 	})
 
 	test('Buffering event is received', () => {
 		MediaUtil.mediaBuffering = jest.fn()
 
-		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
+		const component = mount(<YouTubePlayer />)
 		component.instance().player = player
 
-		//tests for the video buffering when unstarted
-		const spy = jest.spyOn(component.instance(), 'onStateChange')
+		// tests for the video buffering when unstarted
 		component.instance().onStateChange({ data: 3 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'user',
+				action: 'buffering'
+			})
+		)
+		expect(MediaUtil.mediaBuffering).toHaveBeenCalledTimes(1)
 
-		//modifies current state to mock the video buffering due to a skip
+		// modifies current state to mock the video buffering due to a skip
 		component.instance().currentState.action = 'paused'
 		component.instance().currentState.actor = 'user'
 
 		component.instance().onStateChange({ data: 3 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'user',
+				action: 'buffering'
+			})
+		)
+		expect(MediaUtil.mediaBuffering).toHaveBeenCalledTimes(2)
 
-		//modifies current state to mock the video randomly buffering
+		// modifies current state to mock the video randomly buffering
 		component.instance().currentState.action = 'playing'
 		component.instance().onStateChange({ data: 3 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'youtube',
+				action: 'buffering'
+			})
+		)
+		expect(MediaUtil.mediaBuffering).toHaveBeenCalledTimes(3)
 	})
 
 	test('Playing and SeekTo event is received', () => {
 		MediaUtil.mediaPlayed = jest.fn()
 		MediaUtil.mediaSeekTo = jest.fn()
 
-		const component = mount(<YouTubePlayer onStateChange={onStateChange} player={player} />)
+		const component = mount(<YouTubePlayer />)
 		component.instance().player = player
 
-		//tests for the video playing
-		const spy = jest.spyOn(component.instance(), 'onStateChange')
+		// tests for the video playing
 		component.instance().onStateChange({ data: 1 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'user',
+				action: 'playing'
+			})
+		)
+		expect(MediaUtil.mediaPlayed).toHaveBeenCalledTimes(1)
 
-		//checks for possible double playing event
+		// checks for possible double playing event
 		component.instance().currentState.action = 'playing'
 		component.instance().onStateChange({ data: 1 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'youtube',
+				action: 'playing'
+			})
+		)
+		expect(MediaUtil.mediaPlayed).toHaveBeenCalledTimes(2)
 
-		//test video playing after buffering
+		// test video playing after buffering
 		component.instance().currentState.action = 'buffering'
 		component.instance().currentState.actor = 'user'
-		component.instance().currentState.playHeadPosition = 2
+		component.instance().currentState.playheadPosition = 2
 
 		component.instance().onStateChange({ data: 1 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'user',
+				action: 'playing'
+			})
+		)
+		expect(MediaUtil.mediaPlayed).toHaveBeenCalledTimes(3)
 
-		//test video playing after buffering after a skip
+		// test video playing after buffering after a skip
 		component.instance().currentState.action = 'buffering'
 		component.instance().currentState.actor = 'youtube'
-		component.instance().currentState.playHeadPosition = 100
-		component.instance().currentState.isPossibleSeekTo = true
+		component.instance().currentState.playheadPosition = 100
 
 		component.instance().onStateChange({ data: 1 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'youtube',
+				action: 'playing'
+			})
+		)
+		expect(MediaUtil.mediaSeekTo).toHaveBeenCalledTimes(1)
 
-		//test for a seekTo event
+		// test for a seekTo event
 		component.instance().currentState.action = 'paused'
-		component.instance().currentState.playHeadPosition = 100
+		component.instance().currentState.playheadPosition = 100
 
 		component.instance().onStateChange({ data: 1 })
-		expect(spy).toHaveBeenCalled()
+		expect(component.instance().currentState).toEqual(
+			expect.objectContaining({
+				actor: 'user',
+				action: 'playing'
+			})
+		)
+		expect(MediaUtil.mediaSeekTo).toHaveBeenCalledTimes(2)
+	})
+
+	test('Unload event is received', () => {
+		MediaUtil.mediaUnloaded = jest.fn()
+
+		let component = mount(<YouTubePlayer />)
+		component.instance().currentState.action = 'ended'
+		component.unmount()
+		expect(MediaUtil.mediaUnloaded).not.toHaveBeenCalled()
+
+		component = mount(<YouTubePlayer />)
+		component.instance().currentState.action = 'playing'
+		component.instance().player = player
+		component.unmount()
+		expect(MediaUtil.mediaUnloaded).toHaveBeenCalled()
 	})
 })

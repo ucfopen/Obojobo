@@ -65,11 +65,12 @@ describe('Media Store', () => {
 			'media:setZoom': expect.any(Function),
 			'media:resetZoom': expect.any(Function),
 			'media:setDefaultZoom': expect.any(Function),
-			'media:played': expect.any(Function),
-			'media:ended': expect.any(Function),
+			'media:play': expect.any(Function),
+			'media:end': expect.any(Function),
 			'media:pause': expect.any(Function),
 			'media:seekTo': expect.any(Function),
-			'media:buffering': expect.any(Function)
+			'media:buffer': expect.any(Function),
+			'media:unload': expect.any(Function)
 		})
 	})
 
@@ -346,25 +347,38 @@ describe('Media Store', () => {
 			zoom: 1
 		})
 	})
+
 	test('media played', () => {
-		MediaStore.played({ value: { actor: 'user', playHeadPosition: 2 } })
+		MediaStore.play({
+			value: {
+				actor: 'user',
+				playheadPosition: 2,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
+			}
+		})
 
 		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
-			action: 'media:played',
+			action: 'media:play',
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				playHeadPosition: 2,
-				actor: 'user'
+				actor: 'user',
+				playheadPosition: 2,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
+
 	test('media paused', () => {
 		MediaStore.pause({
 			value: {
 				actor: 'user',
-				playHeadPosition: 0
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 
@@ -374,28 +388,34 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				playHeadPosition: 0,
-				actor: 'user'
+				actor: 'user',
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
 
 	test('media ended', () => {
-		MediaStore.ended({
+		MediaStore.end({
 			value: {
 				actor: 'youtube',
-				playHeadPosition: 100
+				playheadPosition: 100,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 
 		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
-			action: 'media:ended',
+			action: 'media:end',
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				playHeadPosition: 100,
-				actor: 'youtube'
+				actor: 'youtube',
+				playheadPosition: 100,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
@@ -404,8 +424,10 @@ describe('Media Store', () => {
 		MediaStore.seekTo({
 			value: {
 				actor: 'user',
-				playHeadPosition: 100,
-				previousPlayHeadPosition: 0
+				playheadPosition: 100,
+				previousPlayheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 
@@ -415,29 +437,59 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				previousPlayHeadPosition: 0,
-				playHeadPosition: 100,
-				actor: 'user'
+				actor: 'user',
+				playheadPosition: 100,
+				previousPlayheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
 
 	test('media buffering', () => {
-		MediaStore.buffering({
+		MediaStore.buffer({
 			value: {
 				actor: 'youtube',
-				playHeadPosition: 50
+				playheadPosition: 50,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 
 		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'root-id',
-			action: 'media:buffering',
+			action: 'media:buffer',
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				playHeadPosition: 50,
-				actor: 'youtube'
+				actor: 'youtube',
+				playheadPosition: 50,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
+			}
+		})
+	})
+
+	test('media unloaded', () => {
+		MediaStore.unload({
+			value: {
+				actor: 'user',
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
+			}
+		})
+
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			draftId: 'root-id',
+			action: 'media:unload',
+			eventVersion: '1.0.0',
+			visitId: 'mock-visit-id',
+			payload: {
+				actor: 'user',
+				playheadPosition: 0,
+				url: 'mocked-url',
+				nodeId: 'mocked-id'
 			}
 		})
 	})
