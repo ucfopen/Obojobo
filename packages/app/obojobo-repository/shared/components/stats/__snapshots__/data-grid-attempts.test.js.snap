@@ -40,17 +40,29 @@ exports[`DataGridAttempts DataGridAttempts columns with cell components render a
 
 exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 5`] = `
 <div>
-  mock-reward
+  undefined
 </div>
 `;
 
 exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 6`] = `
 <div>
-  false
+  mock-reward
 </div>
 `;
 
 exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 7`] = `
+<div>
+  undefined
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 8`] = `
+<div>
+  false
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 9`] = `
 <div>
   false
 </div>
@@ -116,6 +128,12 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
             },
             Object {
               "advanced": false,
+              "name": "Attempt #",
+              "selector": "attemptNumber",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
               "cell": [Function],
               "name": "Attempt Score",
               "selector": "attemptScore",
@@ -123,6 +141,28 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
             },
             Object {
               "advanced": false,
+              "cell": [Function],
+              "name": "Assessment Status",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Un-modded Assessment Score",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Mod Reward Total",
+              "selector": "modRewardTotal",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
               "name": "Assessment Score",
               "selector": "assessmentScore",
               "sortable": true,
@@ -175,7 +215,18 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
           ]
         }
         dense={true}
-        keyField="attemptId"
+        pagination={true}
+        paginationComponentOptions={
+          Object {
+            "noRowsPerPage": true,
+          }
+        }
+        paginationPerPage={250}
+        paginationRowsPerPageOptions={
+          Array [
+            250,
+          ]
+        }
         striped={true}
         title="Attempt Scores"
       >
@@ -185,9 +236,11 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
     <a
       className="repository--button "
       download="attempt-scores__mock-draft-id_mock-draft-id2"
-      href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20Score%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22mock-attempt-score%22%2C%22%22%2C%22%22%2C%22%22%2C%22true%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22mock-attempt-score%22%2C%22%22%2C%22%22%2C%22%22%2C%22false%22"
+      href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20%23%22%2C%22Attempt%20Score%22%2C%22Assessment%20Status%22%2C%22Un-modded%20Assessment%20Score%22%2C%22Mod%20Reward%20Total%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22true%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22false%22"
     >
-      ⬇️   Download Table as CSV File (
+      ⬇️   Download 
+      
+       Table as CSV File (
       2
        row
       s
@@ -257,6 +310,12 @@ exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
             },
             Object {
               "advanced": false,
+              "name": "Attempt #",
+              "selector": "attemptNumber",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
               "cell": [Function],
               "name": "Attempt Score",
               "selector": "attemptScore",
@@ -264,6 +323,28 @@ exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
             },
             Object {
               "advanced": false,
+              "cell": [Function],
+              "name": "Assessment Status",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Un-modded Assessment Score",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Mod Reward Total",
+              "selector": "modRewardTotal",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
               "name": "Assessment Score",
               "selector": "assessmentScore",
               "sortable": true,
@@ -291,7 +372,18 @@ exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
         }
         data={Array []}
         dense={true}
-        keyField="attemptId"
+        pagination={true}
+        paginationComponentOptions={
+          Object {
+            "noRowsPerPage": true,
+          }
+        }
+        paginationPerPage={250}
+        paginationRowsPerPageOptions={
+          Array [
+            250,
+          ]
+        }
         striped={true}
         title="Attempt Scores"
       >

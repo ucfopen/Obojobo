@@ -8,4 +8,20 @@
 	.repository--section-wrapper {
 		max-width: inherit;
 	}
+
+	.repository--data-grid-drafts-container {
+		height: 30em;
+		overflow: scroll;
+		margin-bottom: 1em;
+	}
+
+	.repository--assessment-stats {
+		height: 50em;
+	}
+
+	.repository--drafts-search {
+		padding: 0.25em;
+		width: 14em;
+		margin-bottom: 1em;
+	}
 }

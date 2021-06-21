@@ -1,10 +1,10 @@
 const { handle } = require('redux-pack')
 
-const { LOAD_MODULE_ASSESSMENT_ANALYTICS } = require('../actions/stats-actions')
+const { LOAD_MODULE_ASSESSMENT_DETAILS } = require('../actions/stats-actions')
 
 function StatsReducer(state, action) {
 	switch (action.type) {
-		case LOAD_MODULE_ASSESSMENT_ANALYTICS:
+		case LOAD_MODULE_ASSESSMENT_DETAILS:
 			return handle(state, action, {
 				start: prevState => ({
 					...prevState,

@@ -7,7 +7,7 @@ jest.mock('redux-pack', () => {
 
 const statsReducer = require('./stats-reducer')
 
-const { LOAD_MODULE_ASSESSMENT_ANALYTICS } = require('../actions/stats-actions')
+const { LOAD_MODULE_ASSESSMENT_DETAILS } = require('../actions/stats-actions')
 
 const Pack = require('redux-pack')
 
@@ -23,7 +23,7 @@ describe('Stats Reducer', () => {
 		Pack.handle.mockClear()
 	})
 
-	test('LOAD_MODULE_ASSESSMENT_ANALYTICS action modifies state correctly', () => {
+	test('LOAD_MODULE_ASSESSMENT_DETAILS action modifies state correctly', () => {
 		const initialState = {
 			assessmentStats: {
 				isFetching: false,
@@ -44,7 +44,7 @@ describe('Stats Reducer', () => {
 			}
 		]
 		const action = {
-			type: LOAD_MODULE_ASSESSMENT_ANALYTICS,
+			type: LOAD_MODULE_ASSESSMENT_DETAILS,
 			payload: mockAttemptItems
 		}
 

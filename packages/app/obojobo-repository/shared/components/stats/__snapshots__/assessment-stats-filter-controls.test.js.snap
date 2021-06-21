@@ -38,7 +38,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>
@@ -83,7 +83,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>
@@ -128,7 +128,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>
@@ -173,7 +173,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>
@@ -218,7 +218,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>
@@ -263,7 +263,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>
@@ -308,7 +308,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>
@@ -353,7 +353,7 @@ exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncomp
         type="checkbox"
       />
       <span>
-        Show advanced fields
+        Include advanced fields
       </span>
     </label>
   </div>

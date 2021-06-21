@@ -464,19 +464,19 @@ describe('server/express', () => {
 		})
 	})
 
-	test('GET /api/assessments/:draftId/analytics', async () => {
+	test('GET /api/assessments/:draftId/details', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
-		AssessmentModel.fetchAttemptHistoryAnalytics.mockResolvedValueOnce(mockReturnValue)
+		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
 
 		const response = await request(app)
-			.get('/api/assessments/:draftId/analytics')
+			.get('/api/assessments/:draftId/details')
 			.type('application/json')
 
 		expect(response.statusCode).toBe(200)
 		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
 		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-		expect(AssessmentModel.fetchAttemptHistoryAnalytics).toHaveBeenCalledWith(
+		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith(
 			mockCurrentDocument.draftId
 		)
 		expect(response.body).toEqual({
@@ -485,12 +485,12 @@ describe('server/express', () => {
 		})
 	})
 
-	test('GET /api/assessments/:draftId/analytics fails', async () => {
+	test('GET /api/assessments/:draftId/details fails', async () => {
 		expect.hasAssertions()
-		AssessmentModel.fetchAttemptHistoryAnalytics.mockRejectedValueOnce()
+		AssessmentModel.fetchAttemptHistoryDetails.mockRejectedValueOnce()
 
 		const response = await request(app)
-			.get('/api/assessments/:draftId/analytics')
+			.get('/api/assessments/:draftId/details')
 			.type('application/json')
 
 		expect(response.statusCode).toBe(500)

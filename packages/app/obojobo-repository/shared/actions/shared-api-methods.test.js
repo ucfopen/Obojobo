@@ -1,6 +1,6 @@
 const {
-	apiGetAssessmentAnalyticsForMultipleDrafts,
-	apiGetAssessmentAnalyticsForDraft
+	apiGetAssessmentDetailsForMultipleDrafts,
+	apiGetAssessmentDetailsForDraft
 } = require('./shared-api-methods')
 
 describe('sharedAPIMethods', () => {
@@ -36,8 +36,8 @@ describe('sharedAPIMethods', () => {
 		global.fetch = originalFetch
 	})
 
-	test('apiGetAssessmentAnalyticsForDraft returns expected object', async () => {
-		const result = await apiGetAssessmentAnalyticsForDraft('draft-id-1')
+	test('apiGetAssessmentDetailsForDraft returns expected object', async () => {
+		const result = await apiGetAssessmentDetailsForDraft('draft-id-1')
 
 		expect(global.fetch).toHaveBeenCalledTimes(1)
 		expect(result).toEqual([
@@ -48,7 +48,10 @@ describe('sharedAPIMethods', () => {
 				assessmentStatus: null,
 				attemptScore: null,
 				isInvalid: false,
-				modRewardTotal: null
+				modRewardTotal: null,
+				assessmentScore: null,
+				attemptNumber: 1,
+				unmoddedAssessmentScore: null
 			},
 			{
 				draftId: 'draft-id-1',
@@ -57,13 +60,16 @@ describe('sharedAPIMethods', () => {
 				assessmentStatus: null,
 				attemptScore: null,
 				isInvalid: false,
-				modRewardTotal: null
+				modRewardTotal: null,
+				assessmentScore: null,
+				attemptNumber: 2,
+				unmoddedAssessmentScore: null
 			}
 		])
 	})
 
-	test('apiGetAssessmentAnalyticsForMultipleDrafts returns expected object', async () => {
-		const result = await apiGetAssessmentAnalyticsForMultipleDrafts(['draft-id-1', 'draft-id-2'])
+	test('apiGetAssessmentDetailsForMultipleDrafts returns expected object', async () => {
+		const result = await apiGetAssessmentDetailsForMultipleDrafts(['draft-id-1', 'draft-id-2'])
 
 		expect(global.fetch).toHaveBeenCalledTimes(2)
 		expect(result).toEqual([
@@ -74,7 +80,10 @@ describe('sharedAPIMethods', () => {
 				assessmentStatus: null,
 				attemptScore: null,
 				isInvalid: false,
-				modRewardTotal: null
+				modRewardTotal: null,
+				assessmentScore: null,
+				attemptNumber: 1,
+				unmoddedAssessmentScore: null
 			},
 			{
 				draftId: 'draft-id-1',
@@ -83,7 +92,10 @@ describe('sharedAPIMethods', () => {
 				assessmentStatus: null,
 				attemptScore: null,
 				isInvalid: false,
-				modRewardTotal: null
+				modRewardTotal: null,
+				assessmentScore: null,
+				attemptNumber: 2,
+				unmoddedAssessmentScore: null
 			},
 			{
 				draftId: 'draft-id-2',
@@ -92,7 +104,10 @@ describe('sharedAPIMethods', () => {
 				assessmentStatus: null,
 				attemptScore: null,
 				isInvalid: false,
-				modRewardTotal: null
+				modRewardTotal: null,
+				assessmentScore: null,
+				attemptNumber: 1,
+				unmoddedAssessmentScore: null
 			},
 			{
 				draftId: 'draft-id-2',
@@ -101,7 +116,10 @@ describe('sharedAPIMethods', () => {
 				assessmentStatus: null,
 				attemptScore: null,
 				isInvalid: false,
-				modRewardTotal: null
+				modRewardTotal: null,
+				assessmentScore: null,
+				attemptNumber: 2,
+				unmoddedAssessmentScore: null
 			}
 		])
 	})

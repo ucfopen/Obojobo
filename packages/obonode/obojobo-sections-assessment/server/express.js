@@ -206,10 +206,10 @@ router
 	})
 
 router
-	.route('/api/assessments/:draftId/analytics')
+	.route('/api/assessments/:draftId/details')
 	.get([requireCurrentUser, requireCurrentDocument])
 	.get((req, res) => {
-		return AssessmentModel.fetchAttemptHistoryAnalytics(req.currentDocument.draftId)
+		return AssessmentModel.fetchAttemptHistoryDetails(req.currentDocument.draftId)
 			.then(res.success)
 			.catch(error => {
 				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)

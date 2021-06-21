@@ -53,4 +53,30 @@ describe('DataGridDrafts', () => {
 
 		expect(onSelectedDraftsChanged).toHaveBeenCalledWith(['draft-id-1', 'draft-id-2'])
 	})
+
+	test('Preview cell renders as expected', () => {
+		const component = renderer.create(
+			<DataGridDrafts
+				rows={[
+					{
+						draftId: 'mock-draft-id',
+						title: 'mock-title',
+						createdAt: 'mock-created-at',
+						updatedAt: 'mock-updated-at',
+						latestVersion: 'mock-latest-version',
+						revisionCount: 'revision-count'
+					}
+				]}
+				onSelectedDraftsChanged={jest.fn()}
+			/>
+		)
+
+		const cols = component.root.findByProps({ className: 'react-data-table-component' }).props
+			.columns
+		const cellPreview = cols[cols.length - 1].cell
+
+		const cellPreviewComponent = renderer.create(cellPreview({ draftId: 'mock-draft-id' }))
+		const tree = cellPreviewComponent.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
 })

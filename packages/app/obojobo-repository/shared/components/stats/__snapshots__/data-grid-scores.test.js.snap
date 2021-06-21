@@ -36,7 +36,18 @@ exports[`DataGridScores DataGridScores renders correctly 1`] = `
         ]
       }
       dense={true}
-      keyField="attemptId"
+      pagination={true}
+      paginationComponentOptions={
+        Object {
+          "noRowsPerPage": true,
+        }
+      }
+      paginationPerPage={250}
+      paginationRowsPerPageOptions={
+        Array [
+          250,
+        ]
+      }
       striped={true}
       title="Mock Table Name"
     >
@@ -48,7 +59,9 @@ exports[`DataGridScores DataGridScores renders correctly 1`] = `
     download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
     href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
   >
-    ⬇️   Download Table as CSV File (
+    ⬇️   Download 
+    
+     Table as CSV File (
     2
      row
     s
@@ -85,7 +98,18 @@ exports[`DataGridScores DataGridScores renders one row 1`] = `
         ]
       }
       dense={true}
-      keyField="attemptId"
+      pagination={true}
+      paginationComponentOptions={
+        Object {
+          "noRowsPerPage": true,
+        }
+      }
+      paginationPerPage={250}
+      paginationRowsPerPageOptions={
+        Array [
+          250,
+        ]
+      }
       striped={true}
       title="Mock Table Name"
     >
@@ -97,7 +121,9 @@ exports[`DataGridScores DataGridScores renders one row 1`] = `
     download="mock-csv-file-name__mock-draft-id"
     href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22"
   >
-    ⬇️   Download Table as CSV File (
+    ⬇️   Download 
+    
+     Table as CSV File (
     1
      row
     
@@ -118,7 +144,18 @@ exports[`DataGridScores DataGridScores renders when no rows given 1`] = `
       columns={Array []}
       data={Array []}
       dense={true}
-      keyField="attemptId"
+      pagination={true}
+      paginationComponentOptions={
+        Object {
+          "noRowsPerPage": true,
+        }
+      }
+      paginationPerPage={250}
+      paginationRowsPerPageOptions={
+        Array [
+          250,
+        ]
+      }
       striped={true}
     >
       react-data-table-component

@@ -108,6 +108,12 @@ const columns = [
 		advanced: false
 	},
 	{
+		name: 'Attempt #',
+		selector: 'attemptNumber',
+		sortable: true,
+		advanced: false
+	},
+	{
 		name: 'Attempt Score',
 		selector: 'attemptScore',
 		cell: cellString('attemptScore'),
@@ -119,18 +125,26 @@ const columns = [
 		selector: 'assessmentStatus',
 		cell: cellString('assessmentStatus'),
 		sortable: true,
-		advanced: true
+		advanced: false
+	},
+	{
+		name: 'Un-modded Assessment Score',
+		selector: 'assessmentStatus',
+		cell: cellString('unmoddedAssessmentScore'),
+		sortable: true,
+		advanced: false
 	},
 	{
 		name: 'Mod Reward Total',
 		selector: 'modRewardTotal',
 		cell: cellString('modRewardTotal'),
 		sortable: true,
-		advanced: true
+		advanced: false
 	},
 	{
 		name: 'Assessment Score',
 		selector: 'assessmentScore',
+		cell: cellString('assessmentScore'),
 		sortable: true,
 		advanced: false
 	},

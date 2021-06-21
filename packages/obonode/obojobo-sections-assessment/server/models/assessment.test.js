@@ -115,8 +115,8 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
-	test('fetchAttemptHistoryAnalytics calls db.manyOrNone', () => {
-		AssessmentModel.fetchAttemptHistoryAnalytics('mock-draft-id')
+	test('fetchAttemptHistoryDetails calls db.manyOrNone', () => {
+		AssessmentModel.fetchAttemptHistoryDetails('mock-draft-id')
 
 		expect(db.manyOrNone).toHaveBeenCalledTimes(1)
 		expect(db.manyOrNone.mock.calls[0][1]).toMatchInlineSnapshot(`

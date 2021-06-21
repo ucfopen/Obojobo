@@ -1,16 +1,16 @@
 // =================== API =======================
 
-const { apiGetAssessmentAnalyticsForMultipleDrafts } = require('./shared-api-methods')
+const { apiGetAssessmentDetailsForMultipleDrafts } = require('./shared-api-methods')
 
 // ================== ACTIONS ===================
 
-const LOAD_MODULE_ASSESSMENT_ANALYTICS = 'LOAD_MODULE_ASSESSMENT_ANALYTICS'
-const loadModuleAssessmentAnalytics = draftIds => ({
-	type: LOAD_MODULE_ASSESSMENT_ANALYTICS,
-	promise: apiGetAssessmentAnalyticsForMultipleDrafts(draftIds)
+const LOAD_MODULE_ASSESSMENT_DETAILS = 'LOAD_MODULE_ASSESSMENT_DETAILS'
+const loadModuleAssessmentDetails = draftIds => ({
+	type: LOAD_MODULE_ASSESSMENT_DETAILS,
+	promise: apiGetAssessmentDetailsForMultipleDrafts(draftIds)
 })
 
 module.exports = {
-	LOAD_MODULE_ASSESSMENT_ANALYTICS,
-	loadModuleAssessmentAnalytics
+	LOAD_MODULE_ASSESSMENT_DETAILS,
+	loadModuleAssessmentDetails
 }

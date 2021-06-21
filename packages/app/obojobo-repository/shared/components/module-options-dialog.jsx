@@ -55,7 +55,7 @@ const ModuleOptionsDialog = props => (
 				>
 					Assessment Stats
 				</Button>
-				<div className="label">View assessment score data</div>
+				<div className="label">View scores by student.</div>
 
 				<Button
 					id="moduleOptionsDialog-showVersionHistoryButton"

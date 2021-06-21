@@ -100,7 +100,15 @@ exports[`Stats Renders loaded state correctly 1`] = `
     <section
       className="repository--main-content"
     >
-      <div>
+      <input
+        className="repository--drafts-search"
+        onChange={[Function]}
+        placeholder="Search (By title or draftId)"
+        value=""
+      />
+      <div
+        className="repository--data-grid-drafts-container"
+      >
         <div
           className="react-data-table-component"
           columns={
@@ -135,15 +143,50 @@ exports[`Stats Renders loaded state correctly 1`] = `
                 "selector": "revisionCount",
                 "sortable": true,
               },
+              Object {
+                "cell": [Function],
+                "name": "Preview",
+              },
             ]
           }
-          data={Array []}
+          data={
+            Array [
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-1",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-1",
+                "updatedAt": "mock-updated-at",
+              },
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-2",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-2",
+                "updatedAt": "mock-updated-at",
+              },
+            ]
+          }
           dense={true}
           keyField="draftId"
           onSelectedRowsChange={[Function]}
           pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={100}
+          paginationRowsPerPageOptions={
+            Array [
+              100,
+            ]
+          }
           selectableRows={true}
           striped={true}
+          title="Modules (2 Results)"
         >
           react-data-table-component
         </div>
@@ -223,12 +266,13 @@ exports[`Stats Renders loaded state correctly 1`] = `
                   <hr />
                   <label>
                     <input
+                      checked={true}
                       className="show-advanced-fields"
                       onChange={[Function]}
                       type="checkbox"
                     />
                     <span>
-                      Show advanced fields
+                      Include advanced fields
                     </span>
                   </label>
                 </div>
@@ -249,9 +293,21 @@ exports[`Stats Renders loaded state correctly 1`] = `
                   columns={
                     Array [
                       Object {
+                        "advanced": true,
+                        "name": "Course ID",
+                        "selector": "contextId",
+                        "sortable": true,
+                      },
+                      Object {
                         "advanced": false,
                         "name": "Course Title",
                         "selector": "courseTitle",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "Resource Link ID",
+                        "selector": "resourceLinkId",
                         "sortable": true,
                       },
                       Object {
@@ -268,6 +324,36 @@ exports[`Stats Renders loaded state correctly 1`] = `
                         "sortable": true,
                       },
                       Object {
+                        "advanced": true,
+                        "name": "Draft ID",
+                        "selector": "draftId",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "Draft Content ID",
+                        "selector": "draftContentId",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "Module Title",
+                        "selector": "moduleTitle",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "Assessment ID",
+                        "selector": "assessmentId",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "Username",
+                        "selector": "username",
+                        "sortable": true,
+                      },
+                      Object {
                         "advanced": false,
                         "name": "First Name",
                         "selector": "userFirstName",
@@ -277,6 +363,12 @@ exports[`Stats Renders loaded state correctly 1`] = `
                         "advanced": false,
                         "name": "Last Name",
                         "selector": "userLastName",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "User Roles",
+                        "selector": "userRoles",
                         "sortable": true,
                       },
                       Object {
@@ -297,7 +389,18 @@ exports[`Stats Renders loaded state correctly 1`] = `
                   }
                   data={Array []}
                   dense={true}
-                  keyField="attemptId"
+                  pagination={true}
+                  paginationComponentOptions={
+                    Object {
+                      "noRowsPerPage": true,
+                    }
+                  }
+                  paginationPerPage={250}
+                  paginationRowsPerPageOptions={
+                    Array [
+                      250,
+                    ]
+                  }
                   striped={true}
                   title="Final Assessment Scores"
                 >
@@ -413,7 +516,15 @@ exports[`Stats Renders loading state correctly 1`] = `
     <section
       className="repository--main-content"
     >
-      <div>
+      <input
+        className="repository--drafts-search"
+        onChange={[Function]}
+        placeholder="Search (By title or draftId)"
+        value=""
+      />
+      <div
+        className="repository--data-grid-drafts-container"
+      >
         <div
           className="react-data-table-component"
           columns={
@@ -448,15 +559,50 @@ exports[`Stats Renders loading state correctly 1`] = `
                 "selector": "revisionCount",
                 "sortable": true,
               },
+              Object {
+                "cell": [Function],
+                "name": "Preview",
+              },
             ]
           }
-          data={Array []}
+          data={
+            Array [
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-1",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-1",
+                "updatedAt": "mock-updated-at",
+              },
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-2",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-2",
+                "updatedAt": "mock-updated-at",
+              },
+            ]
+          }
           dense={true}
           keyField="draftId"
           onSelectedRowsChange={[Function]}
           pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={100}
+          paginationRowsPerPageOptions={
+            Array [
+              100,
+            ]
+          }
           selectableRows={true}
           striped={true}
+          title="Modules (2 Results)"
         >
           react-data-table-component
         </div>
@@ -578,7 +724,15 @@ exports[`Stats Renders non-loaded non-fetching state correctly 1`] = `
     <section
       className="repository--main-content"
     >
-      <div>
+      <input
+        className="repository--drafts-search"
+        onChange={[Function]}
+        placeholder="Search (By title or draftId)"
+        value=""
+      />
+      <div
+        className="repository--data-grid-drafts-container"
+      >
         <div
           className="react-data-table-component"
           columns={
@@ -613,15 +767,50 @@ exports[`Stats Renders non-loaded non-fetching state correctly 1`] = `
                 "selector": "revisionCount",
                 "sortable": true,
               },
+              Object {
+                "cell": [Function],
+                "name": "Preview",
+              },
             ]
           }
-          data={Array []}
+          data={
+            Array [
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-1",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-1",
+                "updatedAt": "mock-updated-at",
+              },
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-2",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-2",
+                "updatedAt": "mock-updated-at",
+              },
+            ]
+          }
           dense={true}
           keyField="draftId"
           onSelectedRowsChange={[Function]}
           pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={100}
+          paginationRowsPerPageOptions={
+            Array [
+              100,
+            ]
+          }
           selectableRows={true}
           striped={true}
+          title="Modules (2 Results)"
         >
           react-data-table-component
         </div>
