@@ -1,5 +1,19 @@
 const React = require('react')
 const DataGridScores = require('./data-grid-scores')
+const getAssessmentStatsFromAttemptStats = require('../../util/get-assessment-stats-from-attempt-stats')
+
+const cellURL = row => (
+	<div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+		<a target="_blank" rel="noreferrer" href={row.launchPresentationReturnUrl}>
+			{row.launchPresentationReturnUrl}
+		</a>
+	</div>
+)
+
+const cellString = selector => {
+	const fn = row => <div>{String(row[selector])}</div>
+	return fn
+}
 
 const columns = [
 	{
@@ -29,13 +43,7 @@ const columns = [
 	{
 		name: 'URL',
 		selector: 'launchPresentationReturnUrl',
-		cell: row => (
-			<div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-				<a target="_blank" href={row.launchPresentationReturnUrl}>
-					{row.launchPresentationReturnUrl}
-				</a>
-			</div>
-		),
+		cell: cellURL,
 		sortable: true,
 		advanced: false
 	},
@@ -92,63 +100,19 @@ const columns = [
 		sortable: true,
 		advanced: false,
 		selector: 'highestAssessmentScore',
-		cell: row => <div>{String(row.highestAssessmentScore)}</div>
+		cell: cellString('highestAssessmentScore')
 	},
 	{
 		name: 'Preview Mode',
 		sortable: true,
 		advanced: false,
 		selector: 'isPreview',
-		cell: row => <div>{String(row.isPreview)}</div>
+		cell: cellString('isPreview')
 	}
 ]
 
-const composeKey = ({ draftId, userId, resourceLinkId, assessmentId }) =>
-	draftId + ' ' + userId + ' ' + resourceLinkId + ' ' + assessmentId
-
-const getAssessmentScoresFromAttempts = (attempts) => {
-	const assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId = {}
-
-	attempts.forEach(attemptRow => {
-		const key = composeKey(attemptRow)
-
-		if (!assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]) {
-			assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key] = {
-				draftId: attemptRow.draftId,
-				draftContentId: attemptRow.draftContentId,
-				resourceLinkId: attemptRow.resourceLinkId,
-				assessmentId: attemptRow.assessmentId,
-				username: attemptRow.userUsername,
-				userFirstName: attemptRow.userFirstName,
-				userLastName: attemptRow.userLastName,
-				userRoles: attemptRow.userRoles,
-				isPreview: attemptRow.isPreview,
-				contextId: attemptRow.contextId,
-				courseTitle: attemptRow.courseTitle,
-				resourceLinkTitle: attemptRow.resourceLinkTitle,
-				launchPresentationReturnUrl: attemptRow.launchPresentationReturnUrl,
-				moduleTitle: attemptRow.moduleTitle,
-				highestAssessmentScore: null,
-				completedAt: attemptRow.completedAt ? attemptRow.completedAt : null
-			}
-		}
-
-		const assessmentRow = assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId[key]
-
-		if (
-			attemptRow.completedAt !== null &&
-			attemptRow.assessmentScore !== null &&
-			attemptRow.assessmentScore > assessmentRow.highestAssessmentScore
-		) {
-			assessmentRow.highestAssessmentScore = attemptRow.assessmentScore
-		}
-	})
-
-	return Object.values(assessmentScoresByDraftAndUserAndResourceLinkIdAndAssessmentId)
-}
-
 function DataGridAssessments({ attempts = [], filterSettings, searchSettings, searchContent }) {
-	const assessmentScores = getAssessmentScoresFromAttempts(attempts, searchSettings, searchContent)
+	const assessmentScores = getAssessmentStatsFromAttemptStats(attempts)
 
 	return (
 		<div className="repository--data-grid-assessments">

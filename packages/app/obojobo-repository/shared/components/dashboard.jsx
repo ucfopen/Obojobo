@@ -61,12 +61,8 @@ const renderAssessmentScoreDataDialog = props => {
 			{...props.selectedModule}
 			title={`${props.selectedModule.title} - Assessment Scores`}
 			onClose={props.closeModal}
-			isHistoryLoading={props.attempts.isFetching}
-			hasHistoryLoaded={props.attempts.hasFetched}
+			isAttemptsLoading={props.attempts.isFetching}
 			attempts={props.attempts.items}
-			restoreVersion={props.restoreVersion}
-			checkModuleLock={props.checkModuleLock}
-			currentUserId={props.currentUser.id}
 		/>
 	)
 }
@@ -180,9 +176,10 @@ function Dashboard(props) {
 	}
 
 	const deleteModules = draftIds => {
+		//eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
 			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
-		) //eslint-disable-line no-alert, no-undef
+		)
 		if (response !== 'DELETE') return
 		props.bulkDeleteModules(draftIds)
 	}

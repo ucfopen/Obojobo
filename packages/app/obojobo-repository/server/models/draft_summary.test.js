@@ -16,6 +16,29 @@ describe('DraftSummary Model', () => {
 		editor: 'visual'
 	}
 
+	const mockRawDraftSummaries = [
+		{
+			draft_id: 'mockDraftId',
+			updated_at: new Date().toISOString(),
+			created_at: new Date().toISOString(),
+			latest_version: 'mockLatestVersionId',
+			revision_count: 1,
+			title: 'mockDraftTitle',
+			user_id: 0,
+			editor: 'visual'
+		},
+		{
+			draft_id: 'mockDraftId',
+			updated_at: new Date().toISOString(),
+			created_at: new Date().toISOString(),
+			latest_version: 'mockLatestVersionId',
+			revision_count: 1,
+			title: 'mockDraftTitle',
+			user_id: 0,
+			editor: 'visual'
+		}
+	]
+
 	const mockRawRevisionHistory = [
 		{
 			id: 'mockDraftVersionId1',
@@ -124,6 +147,32 @@ describe('DraftSummary Model', () => {
 		expect(summary.revisionCount).toBe(1)
 		expect(summary.editor).toBe('visual')
 	}
+
+	test('fetchAll generates the correct query and returns a DraftSummary object', () => {
+		db.manyOrNone = jest.fn()
+		db.manyOrNone.mockResolvedValueOnce(mockRawDraftSummaries)
+
+		const query = queryBuilder('TRUE')
+
+		return DraftSummary.fetchAll().then(summaries => {
+			expect(db.manyOrNone).toHaveBeenCalledWith(query)
+			expect(summaries.length).toBe(2)
+			expectIsMockSummary(summaries[0])
+			expectIsMockSummary(summaries[1])
+		})
+	})
+
+	test('fetchAll returns error when no match is found in the database', () => {
+		expect.hasAssertions()
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.manyOrNone.mockRejectedValueOnce(mockError)
+
+		return DraftSummary.fetchAll().catch(err => {
+			expect(logger.logError).toHaveBeenCalledWith('DraftSummary fetchAll Error', mockError)
+			expect(err).toBe(mockError)
+		})
+	})
 
 	test('fetchById generates the correct query and returns a DraftSummary object', () => {
 		db.one = jest.fn()

@@ -1,5 +1,10 @@
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
+
+jest.mock('./shared-api-methods', () => ({
+	apiGetAssessmentAnalyticsForDraft: () => Promise.resolve()
+}))
+
 dayjs.extend(advancedFormat)
 
 describe('Dashboard Actions', () => {
@@ -999,6 +1004,18 @@ describe('Dashboard Actions', () => {
 					isRestored: i === finalHistory.length - 1 ? true : undefined // eslint-disable-line no-undefined
 				})
 			}
+		})
+	})
+
+	test('loadModuleAssessmentAnalytics returns expected object', async () => {
+		const result = await DashboardActions.showAssessmentScoreData(['draft-id-1', 'draft-id-2'])
+
+		expect(result).toEqual({
+			type: 'SHOW_ASSESSMENT_SCORE_DATA',
+			meta: {
+				module: ['draft-id-1', 'draft-id-2']
+			},
+			promise: expect.any(Promise)
 		})
 	})
 

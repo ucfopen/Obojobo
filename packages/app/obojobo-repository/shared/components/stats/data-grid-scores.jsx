@@ -5,10 +5,9 @@ const ButtonLink = require('../button-link')
 const getColumns = (columns, showAdvancedFields) =>
 	showAdvancedFields ? columns : columns.filter(col => !col.advanced)
 
-const toCSV = (columns, showAdvancedFields, attempts) => {
-	const filteredColumns = columns.filter(c => showAdvancedFields || !c.advanced)
-	const cols = `"${filteredColumns.map(c => c.name).join('","')}"`
-	const colOrder = filteredColumns.map(c => c.selector)
+const toCSV = (columns, attempts) => {
+	const cols = `"${columns.map(c => c.name).join('","')}"`
+	const colOrder = columns.map(c => c.selector)
 	const rows = attempts.map(attempt => `"${colOrder.map(key => attempt[key]).join('","')}"`)
 	return `${cols}\n${rows.join('\n')}`
 }
@@ -19,6 +18,7 @@ const getFileName = (
 	{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }
 ) => {
 	const drafts = [...new Set(attempts.map(row => row.draftId))]
+
 	return (
 		[
 			csvFileName,
@@ -53,6 +53,7 @@ const searchDataBasedOnParams = (rows, searchSettings, searchContent) => {
 		// Filtering according to starting and ending dates.
 		if (dates) {
 			rows = rows.filter(row => {
+				if (!row.completedAt) return row.completedAt;
 				const dateCompleted = new Date(row.completedAt)
 				const start = dates.start ? new Date(dates.start) : null
 				const end = dates.end ? new Date(dates.end) : null
@@ -90,13 +91,14 @@ function DataGridScores({
 		searchSettings,
 		searchContent
 }) {
+	const filteredColumns = getColumns(columns, filterSettings.showAdvancedFields)
 	rows = searchDataBasedOnParams(rows, searchSettings, searchContent)
 	return (
 		<div className="repository--data-grid-scores">
 			<div className="data-grid">
 				<DataTable
 					title={getTableName(tableName, filterSettings)}
-					columns={getColumns(columns, filterSettings.showAdvancedFields)}
+					columns={filteredColumns}
 					data={rows}
 					striped={true}
 					keyField={'attemptId'}
@@ -105,9 +107,7 @@ function DataGridScores({
 			</div>
 			{rows.length > 0 ? (
 				<ButtonLink
-					url={`data:text/csv;charset=utf-8,${escape(
-						toCSV(columns, filterSettings.showAdvancedFields, rows)
-					)}`}
+					url={`data:text/csv;charset=utf-8,${escape(toCSV(filteredColumns, rows))}`}
 					download={getFileName(csvFileName, rows, filterSettings)}
 				>
 					⬇️&nbsp;&nbsp;&nbsp;Download Table as CSV File ({rows.length} row

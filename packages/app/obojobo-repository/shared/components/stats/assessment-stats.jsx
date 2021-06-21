@@ -11,16 +11,6 @@ const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
 const renderDataGrid = (viewMode, filteredAttempts, filterSettings, searchSettings, searchContent) => {
 	switch (viewMode) {
-		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
-			return (
-				<DataGridAssessments
-					attempts={filteredAttempts}
-					filterSettings={filterSettings}
-					searchSettings={searchSettings}
-					searchContent={searchContent}
-				/>
-			)
-
 		case VIEW_MODE_ALL_ATTEMPTS:
 			return (
 				<DataGridAttempts
@@ -30,9 +20,18 @@ const renderDataGrid = (viewMode, filteredAttempts, filterSettings, searchSettin
 					searchContent={searchContent}
 				/>
 			)
-	}
 
-	return null
+		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
+		default:
+			return (
+				<DataGridAssessments
+					attempts={filteredAttempts}
+					filterSettings={filterSettings}
+					searchSettings={searchSettings}
+					searchContent={searchContent}
+				/>
+			)
+	}
 }
 
 const filterAttempts = (attempts, { showIncompleteAttempts, showPreviewAttempts }) => {

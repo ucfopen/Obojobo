@@ -1,6 +1,19 @@
 const React = require('react')
 const DataGridScores = require('./data-grid-scores')
 
+const cellURL = row => (
+	<div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+		<a target="_blank" rel="noreferrer" href={row.launchPresentationReturnUrl}>
+			{row.launchPresentationReturnUrl}
+		</a>
+	</div>
+)
+
+const cellString = selector => {
+	const fn = row => <div>{String(row[selector])}</div>
+	return fn
+}
+
 const columns = [
 	{
 		name: 'Course ID',
@@ -29,13 +42,7 @@ const columns = [
 	{
 		name: 'URL',
 		selector: 'launchPresentationReturnUrl',
-		cell: row => (
-			<div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-				<a target="_blank" href={row.launchPresentationReturnUrl}>
-					{row.launchPresentationReturnUrl}
-				</a>
-			</div>
-		),
+		cell: cellURL,
 		sortable: true,
 		advanced: false
 	},
@@ -96,28 +103,28 @@ const columns = [
 	{
 		name: 'Imported Attempt ID',
 		selector: 'importedAttemptId',
-		cell: row => <div>{String(row.importedAttemptId)}</div>,
+		cell: cellString('importedAttemptId'),
 		sortable: true,
 		advanced: false
 	},
 	{
 		name: 'Attempt Score',
 		selector: 'attemptScore',
-		cell: row => <div>{String(row.attemptScore)}</div>,
+		cell: cellString('attemptScore'),
 		sortable: true,
 		advanced: false
 	},
 	{
 		name: 'Assessment Status',
 		selector: 'assessmentStatus',
-		cell: row => <div>{String(row.assessmentStatus)}</div>,
+		cell: cellString('assessmentStatus'),
 		sortable: true,
 		advanced: true
 	},
 	{
 		name: 'Mod Reward Total',
 		selector: 'modRewardTotal',
-		cell: row => <div>{String(row.modRewardTotal)}</div>,
+		cell: cellString('modRewardTotal'),
 		sortable: true,
 		advanced: true
 	},
@@ -160,14 +167,14 @@ const columns = [
 	{
 		name: 'Invalid',
 		selector: 'isInvalid',
-		cell: row => <div>{String(row.isInvalid)}</div>,
+		cell: cellString('isInvalid'),
 		sortable: true,
 		advanced: true
 	},
 	{
 		name: 'Preview Mode',
 		selector: 'isPreview',
-		cell: row => <div>{String(row.isPreview)}</div>,
+		cell: cellString('isPreview'),
 		sortable: true,
 		advanced: false
 	}

@@ -1,6 +1,8 @@
 const debouncePromise = require('debounce-promise')
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
+const { apiGetAssessmentAnalyticsForDraft } = require('./shared-api-methods')
+
 dayjs.extend(advancedFormat)
 // =================== API =======================
 
@@ -131,23 +133,6 @@ const apiGetModuleLock = async draftId => {
 	return data.value
 }
 
-const apiGetAssessmentAnalytics = draftId => {
-	return fetch(`/api/assessments/${draftId}/analytics`)
-		.then(res => res.json())
-		.then(res => res.value)
-		.then(attempts =>
-			attempts.map(attempt => {
-				attempt.userRoles = attempt.userRoles.join(',')
-				attempt.attemptScore = attempt.attemptResult ? attempt.attemptResult.attemptScore : null
-				attempt.assessmentStatus = attempt.scoreDetails ? attempt.scoreDetails.status : null
-				attempt.modRewardTotal = attempt.scoreDetails ? attempt.scoreDetails.rewardTotal : null
-				attempt.isInvalid = attempt.state && attempt.state.invalid
-
-				return attempt
-			})
-		)
-}
-
 // ================== ACTIONS ===================
 
 const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
@@ -167,7 +152,7 @@ const SHOW_ASSESSMENT_SCORE_DATA = 'SHOW_ASSESSMENT_SCORE_DATA'
 const showAssessmentScoreData = module => ({
 	type: SHOW_ASSESSMENT_SCORE_DATA,
 	meta: { module },
-	promise: apiGetAssessmentAnalytics(module.draftId)
+	promise: apiGetAssessmentAnalyticsForDraft(module.draftId)
 })
 
 const RESTORE_VERSION = 'RESTORE_VERSION'

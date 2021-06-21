@@ -12,11 +12,6 @@ const columns = [
 		selector: 'title',
 		sortable: true
 	},
-	// {
-	// 	name: 'Is Owned By Me',
-	// 	selector: 'isOwnedByMe',
-	// 	sortable: true
-	// },
 	{
 		name: 'Created At',
 		selector: 'createdAt',
@@ -39,13 +34,6 @@ const columns = [
 	}
 ]
 
-const statsToCSV = attempts => {
-	const cols = `"${columns.map(c => c.name).join('","')}"`
-	const colOrder = columns.map(c => c.selector)
-	const rows = attempts.map(attempt => `"${colOrder.map(key => attempt[key]).join('","')}"`)
-	return `${cols}\n${rows.join('\n')}`
-}
-
 function DataGridDrafts({ rows = [], onSelectedDraftsChanged }) {
 	return (
 		<div>
@@ -56,15 +44,11 @@ function DataGridDrafts({ rows = [], onSelectedDraftsChanged }) {
 				keyField={'draftId'}
 				dense={true}
 				pagination={true}
-				// paginationPerPage={4}
 				selectableRows={true}
 				onSelectedRowsChange={({ selectedRows }) =>
 					onSelectedDraftsChanged(selectedRows.map(row => row.draftId))
 				}
 			/>
-			<a href={`data:text/csv;charset=utf-8,${escape(statsToCSV(rows))}`} download="filename.csv">
-				download
-			</a>
 		</div>
 	)
 }
