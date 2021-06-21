@@ -59,6 +59,7 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 				</select>
 				{showTextInput && (
 					<input
+						className='text-input'
 						type="text"
 						value={textInput}
 						onChange={handleSearchContentChange}
