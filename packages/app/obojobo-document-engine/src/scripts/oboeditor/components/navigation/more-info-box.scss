@@ -118,13 +118,13 @@
 					flex: auto;
 					font-size: 0.7em;
 					box-sizing: border-box;
+				}
 
-					&:read-only {
-						background: $color-bg2;
-						border: 1px solid $color-bg2;
-						color: $color-text-minor;
-						cursor: default;
-					}
+				input:read-only {
+					background: $color-bg2;
+					border: 1px solid $color-bg2;
+					color: $color-text-minor;
+					cursor: default;
 				}
 
 				&.assessment-settings {

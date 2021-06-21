@@ -176,7 +176,7 @@ function Dashboard(props) {
 	}
 
 	const deleteModules = draftIds => {
-		//eslint-disable-next-line no-alert, no-undef
+		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
 			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
 		)
@@ -192,8 +192,14 @@ function Dashboard(props) {
 			const expires = new Date()
 			expires.setFullYear(expires.getFullYear() + 1)
 			document.cookie = `sortOrder=${sortOrder}; expires=${expires.toUTCString()}; path=/dashboard`
+			setLastSelectedIndex(0)
 		}, [sortOrder])
 	}
+
+	useEffect(() => {
+		// Reset last selected index when leaving multi-select mode
+		if (!props.multiSelectMode) setLastSelectedIndex(0)
+	}, [props.multiSelectMode])
 
 	useEffect(() => {
 		document.addEventListener('keyup', onKeyUp)
