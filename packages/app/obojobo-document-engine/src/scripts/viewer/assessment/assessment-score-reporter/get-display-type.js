@@ -4,6 +4,7 @@ import {
 	TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100,
+	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED,
 	TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE,
@@ -22,6 +23,7 @@ const getDisplayType = ({ rubricType, mods, status, statusResult, isAttemptScore
 	const isAttemptRubric = rubricType === 'attempt'
 	const isPassFailRubric = rubricType === 'pass-fail'
 	const isRewardedMods = mods.length > 0
+	const isResult100 = parseFloat(statusResult) === 100
 	const isResultNumeric = Number.isFinite(parseFloat(statusResult))
 	const isResultNoScore = statusResult === 'no-score'
 	const isResultAttemptScore = statusResult === '$attempt_score'
@@ -41,6 +43,9 @@ const getDisplayType = ({ rubricType, mods, status, statusResult, isAttemptScore
 	}
 	if (isPassFailRubric && passed && isResultNumeric && !isAttemptScore100) {
 		return TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100
+	}
+	if (isPassFailRubric && passed & isResultNumeric && isAttemptScore100 && !isResult100) {
+		return TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100
 	}
 	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && !isRewardedMods) {
 		return TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED
