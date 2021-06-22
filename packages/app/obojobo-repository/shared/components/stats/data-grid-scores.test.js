@@ -36,6 +36,11 @@ describe('DataGridScores', () => {
 			showIncompleteAttempts: false,
 			showPreviewAttempts: false,
 			showAdvancedFields: false
+		},
+		searchSettings: 'mock-setting',
+		searchContent: {
+			text: '',
+			date: { start: null, end: null }
 		}
 	})
 
@@ -185,6 +190,11 @@ describe('DataGridScores', () => {
 					showPreviewAttempts: false,
 					showAdvancedFields: false
 				}}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: 'mock-course-title',
+					date: { start: null, end: null }
+				}}
 			/>
 		)
 
@@ -197,6 +207,108 @@ describe('DataGridScores', () => {
 
 		const component = renderer.create(<DataGridScores {...props} />)
 
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('DataGridScores uses search filters as expected', () => {
+		let props = {};
+		Object.assign(props, getTestProps())
+		props.rows = []
+
+		const mockStartDate = new Date().getDate() - 1
+		const mockEndDate = new Date()
+
+		let component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: 'mock-course-title',
+					date: { start: mockStartDate, end: mockEndDate }
+				}}
+			/>
+		)
+
+		// With no rows
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// With at least 1 row
+		props = getTestProps()
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: 'mock-course-title',
+					date: { start: mockStartDate, end: mockEndDate }
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// With only a text parameter (e.g. student's first name)
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: 'mock-course-title',
+					date: { start: null, end: null }
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// With only starting date parameter
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: '',
+					date: { start: mockStartDate, end: null }
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// With only ending date parameter
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: '',
+					date: { start: null, end: mockEndDate }
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// With only starting and ending date parameters
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: '',
+					date: { start: mockStartDate, end: mockEndDate }
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// With both text and date parameters.
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: 'mock-course-title',
+					date: { start: mockStartDate, end: mockEndDate }
+				}}
+			/>
+		)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 })
