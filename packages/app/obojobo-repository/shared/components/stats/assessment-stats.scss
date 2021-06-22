@@ -9,6 +9,14 @@
 	display: flex;
 	gap: 1em;
 
+	hr {
+		width: 100%;
+		height: 1px;
+		border: none;
+		border-bottom: 1px solid $color-shadow;
+		margin: 0;
+	}
+
 	.settings {
 		display: flex;
 		flex-direction: column;
@@ -17,16 +25,19 @@
 	}
 
 	.view-mode {
+		display: flex;
+		align-items: center;
 		margin-bottom: 1em;
 
 		> span {
 			display: inline-block;
-			width: 6em;
+			width: 5.5em;
 		}
 
 		select {
 			@include select-input();
 
+			border: 1px solid $color-shadow;
 			font-size: 0.8em;
 		}
 	}
@@ -87,6 +98,6 @@
 
 	.repository--assessment-stats-filter-controls {
 		display: inline-block;
-		margin-top: 0.5em;
+		margin-top: 1em;
 	}
 }

@@ -60,12 +60,110 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
             </option>
           </select>
         </label>
+        <hr />
         <div
           className="filters"
         >
-          <span>
-            Filters:
-          </span>
+          <div
+            className="repository--assessment-stats-search-controls"
+          >
+            <div
+              className="search-by-text"
+            >
+              <label
+                htmlFor="repository--assessment-stats-search-controls--search-by"
+              >
+                Search by: 
+              </label>
+              <div
+                className="controls"
+              >
+                <select
+                  id="repository--assessment-stats-search-controls--search-by"
+                  onChange={[Function]}
+                >
+                  <option
+                    value=""
+                  >
+                    Select one...
+                  </option>
+                  <option
+                    value="course-title"
+                  >
+                    Course title
+                  </option>
+                  <option
+                    value="resource-link-title"
+                  >
+                    Resource link title
+                  </option>
+                  <option
+                    value="user-first-name"
+                  >
+                    First name
+                  </option>
+                  <option
+                    value="user-last-name"
+                  >
+                    Last name
+                  </option>
+                </select>
+              </div>
+            </div>
+            <hr />
+            <div
+              className="search-by-date"
+            >
+              <span
+                className="label"
+              >
+                Filter attempts by date range:
+              </span>
+              <label>
+                <span>
+                  From:
+                </span>
+                <div
+                  className="date-range"
+                >
+                  <input
+                    onChange={[Function]}
+                    type="date"
+                    value=""
+                  />
+                  <button
+                    className="repository--button secondary-button"
+                    disabled={true}
+                    onClick={[Function]}
+                  >
+                    × Clear
+                  </button>
+                </div>
+              </label>
+              <label>
+                <span>
+                  To:
+                </span>
+                <div
+                  className="date-range"
+                >
+                  <input
+                    onChange={[Function]}
+                    type="date"
+                    value=""
+                  />
+                  <button
+                    className="repository--button secondary-button"
+                    disabled={true}
+                    onClick={[Function]}
+                  >
+                    × Clear
+                  </button>
+                </div>
+              </label>
+            </div>
+          </div>
+          <hr />
           <div
             className="repository--assessment-stats-filter-controls"
           >
@@ -106,70 +204,6 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   Include advanced fields
                 </span>
               </label>
-            </div>
-          </div>
-          <div
-            className="repository--assessment-stats-search-controls"
-          >
-            <div
-              className="search-by-text"
-            >
-              <label
-                htmlFor="search-by"
-              >
-                Search by: 
-              </label>
-              <select
-                id="search-by"
-                onChange={[Function]}
-              >
-                <option
-                  value=""
-                >
-                  Attribute
-                </option>
-                <option
-                  value="course-title"
-                >
-                  Course title
-                </option>
-                <option
-                  value="resource-link-title"
-                >
-                  Resource link title
-                </option>
-                <option
-                  value="user-first-name"
-                >
-                  First name
-                </option>
-                <option
-                  value="user-last-name"
-                >
-                  Last name
-                </option>
-              </select>
-            </div>
-            <div
-              className="search-by-date"
-            >
-              <label
-                htmlFor="date-range"
-              >
-                Select a date range: 
-              </label>
-              <div
-                className="date-range"
-              >
-                <input
-                  onChange={[Function]}
-                  type="date"
-                />
-                <input
-                  onChange={[Function]}
-                  type="date"
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -321,12 +355,110 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
             </option>
           </select>
         </label>
+        <hr />
         <div
           className="filters"
         >
-          <span>
-            Filters:
-          </span>
+          <div
+            className="repository--assessment-stats-search-controls"
+          >
+            <div
+              className="search-by-text"
+            >
+              <label
+                htmlFor="repository--assessment-stats-search-controls--search-by"
+              >
+                Search by: 
+              </label>
+              <div
+                className="controls"
+              >
+                <select
+                  id="repository--assessment-stats-search-controls--search-by"
+                  onChange={[Function]}
+                >
+                  <option
+                    value=""
+                  >
+                    Select one...
+                  </option>
+                  <option
+                    value="course-title"
+                  >
+                    Course title
+                  </option>
+                  <option
+                    value="resource-link-title"
+                  >
+                    Resource link title
+                  </option>
+                  <option
+                    value="user-first-name"
+                  >
+                    First name
+                  </option>
+                  <option
+                    value="user-last-name"
+                  >
+                    Last name
+                  </option>
+                </select>
+              </div>
+            </div>
+            <hr />
+            <div
+              className="search-by-date"
+            >
+              <span
+                className="label"
+              >
+                Filter attempts by date range:
+              </span>
+              <label>
+                <span>
+                  From:
+                </span>
+                <div
+                  className="date-range"
+                >
+                  <input
+                    onChange={[Function]}
+                    type="date"
+                    value=""
+                  />
+                  <button
+                    className="repository--button secondary-button"
+                    disabled={true}
+                    onClick={[Function]}
+                  >
+                    × Clear
+                  </button>
+                </div>
+              </label>
+              <label>
+                <span>
+                  To:
+                </span>
+                <div
+                  className="date-range"
+                >
+                  <input
+                    onChange={[Function]}
+                    type="date"
+                    value=""
+                  />
+                  <button
+                    className="repository--button secondary-button"
+                    disabled={true}
+                    onClick={[Function]}
+                  >
+                    × Clear
+                  </button>
+                </div>
+              </label>
+            </div>
+          </div>
+          <hr />
           <div
             className="repository--assessment-stats-filter-controls"
           >
@@ -367,70 +499,6 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   Include advanced fields
                 </span>
               </label>
-            </div>
-          </div>
-          <div
-            className="repository--assessment-stats-search-controls"
-          >
-            <div
-              className="search-by-text"
-            >
-              <label
-                htmlFor="search-by"
-              >
-                Search by: 
-              </label>
-              <select
-                id="search-by"
-                onChange={[Function]}
-              >
-                <option
-                  value=""
-                >
-                  Attribute
-                </option>
-                <option
-                  value="course-title"
-                >
-                  Course title
-                </option>
-                <option
-                  value="resource-link-title"
-                >
-                  Resource link title
-                </option>
-                <option
-                  value="user-first-name"
-                >
-                  First name
-                </option>
-                <option
-                  value="user-last-name"
-                >
-                  Last name
-                </option>
-              </select>
-            </div>
-            <div
-              className="search-by-date"
-            >
-              <label
-                htmlFor="date-range"
-              >
-                Select a date range: 
-              </label>
-              <div
-                className="date-range"
-              >
-                <input
-                  onChange={[Function]}
-                  type="date"
-                />
-                <input
-                  onChange={[Function]}
-                  type="date"
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -582,12 +650,110 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
             </option>
           </select>
         </label>
+        <hr />
         <div
           className="filters"
         >
-          <span>
-            Filters:
-          </span>
+          <div
+            className="repository--assessment-stats-search-controls"
+          >
+            <div
+              className="search-by-text"
+            >
+              <label
+                htmlFor="repository--assessment-stats-search-controls--search-by"
+              >
+                Search by: 
+              </label>
+              <div
+                className="controls"
+              >
+                <select
+                  id="repository--assessment-stats-search-controls--search-by"
+                  onChange={[Function]}
+                >
+                  <option
+                    value=""
+                  >
+                    Select one...
+                  </option>
+                  <option
+                    value="course-title"
+                  >
+                    Course title
+                  </option>
+                  <option
+                    value="resource-link-title"
+                  >
+                    Resource link title
+                  </option>
+                  <option
+                    value="user-first-name"
+                  >
+                    First name
+                  </option>
+                  <option
+                    value="user-last-name"
+                  >
+                    Last name
+                  </option>
+                </select>
+              </div>
+            </div>
+            <hr />
+            <div
+              className="search-by-date"
+            >
+              <span
+                className="label"
+              >
+                Filter attempts by date range:
+              </span>
+              <label>
+                <span>
+                  From:
+                </span>
+                <div
+                  className="date-range"
+                >
+                  <input
+                    onChange={[Function]}
+                    type="date"
+                    value=""
+                  />
+                  <button
+                    className="repository--button secondary-button"
+                    disabled={true}
+                    onClick={[Function]}
+                  >
+                    × Clear
+                  </button>
+                </div>
+              </label>
+              <label>
+                <span>
+                  To:
+                </span>
+                <div
+                  className="date-range"
+                >
+                  <input
+                    onChange={[Function]}
+                    type="date"
+                    value=""
+                  />
+                  <button
+                    className="repository--button secondary-button"
+                    disabled={true}
+                    onClick={[Function]}
+                  >
+                    × Clear
+                  </button>
+                </div>
+              </label>
+            </div>
+          </div>
+          <hr />
           <div
             className="repository--assessment-stats-filter-controls"
           >
@@ -628,70 +794,6 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   Include advanced fields
                 </span>
               </label>
-            </div>
-          </div>
-          <div
-            className="repository--assessment-stats-search-controls"
-          >
-            <div
-              className="search-by-text"
-            >
-              <label
-                htmlFor="search-by"
-              >
-                Search by: 
-              </label>
-              <select
-                id="search-by"
-                onChange={[Function]}
-              >
-                <option
-                  value=""
-                >
-                  Attribute
-                </option>
-                <option
-                  value="course-title"
-                >
-                  Course title
-                </option>
-                <option
-                  value="resource-link-title"
-                >
-                  Resource link title
-                </option>
-                <option
-                  value="user-first-name"
-                >
-                  First name
-                </option>
-                <option
-                  value="user-last-name"
-                >
-                  Last name
-                </option>
-              </select>
-            </div>
-            <div
-              className="search-by-date"
-            >
-              <label
-                htmlFor="date-range"
-              >
-                Select a date range: 
-              </label>
-              <div
-                className="date-range"
-              >
-                <input
-                  onChange={[Function]}
-                  type="date"
-                />
-                <input
-                  onChange={[Function]}
-                  type="date"
-                />
-              </div>
             </div>
           </div>
         </div>

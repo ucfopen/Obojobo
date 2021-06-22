@@ -3,6 +3,11 @@
 .repository--assessment-stats-filter-controls {
 	width: 100%;
 
+	hr {
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+
 	.container {
 		display: flex;
 		flex-direction: column;
@@ -16,18 +21,11 @@
 		label {
 			cursor: pointer;
 			display: flex;
-			align-items: baseline;
+			align-items: center;
 
 			span {
 				white-space: nowrap;
 			}
-		}
-
-		hr {
-			width: 100%;
-			height: 1px;
-			border: none;
-			border-bottom: 1px solid $color-shadow;
 		}
 	}
 }

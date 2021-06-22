@@ -9,7 +9,13 @@ const AssessmentStatsSearchControls = require('./assessment-stats-search-control
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
 const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
-const renderDataGrid = (viewMode, filteredAttempts, filterSettings, searchSettings, searchContent) => {
+const renderDataGrid = (
+	viewMode,
+	filteredAttempts,
+	filterSettings,
+	searchSettings,
+	searchContent
+) => {
 	switch (viewMode) {
 		case VIEW_MODE_ALL_ATTEMPTS:
 			return (
@@ -68,20 +74,22 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 			<div className="settings">
 				<label className="view-mode">
 					<span>Showing:</span>
+
 					<select onChange={onChangeViewMode} value={viewMode}>
 						<option value={VIEW_MODE_FINAL_ASSESSMENT_SCORE}>Final Assessment Scores</option>
 						<option value={VIEW_MODE_ALL_ATTEMPTS}>All Attempt Scores</option>
 					</select>
 				</label>
+				<hr />
 				<div className="filters">
-					<span>Filters:</span>
-					<AssessmentStatsFilterControls
-						filterSettings={filterSettings}
-						onChangeFilterSettings={setFilterSettings}
-					/>
 					<AssessmentStatsSearchControls
 						onChangeSearchSettings={setSearchSettings}
 						onChangeSearchContent={setSearchContent}
+					/>
+					<hr />
+					<AssessmentStatsFilterControls
+						filterSettings={filterSettings}
+						onChangeFilterSettings={setFilterSettings}
 					/>
 				</div>
 			</div>

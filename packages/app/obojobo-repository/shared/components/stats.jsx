@@ -2,7 +2,7 @@ require('./modal.scss')
 require('./stats.scss')
 
 const React = require('react')
-const { useState, useEffect } = require('react')
+const { useState } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Button = require('./button')
@@ -47,7 +47,7 @@ function Stats({ currentUser, title, allModules, assessmentStats, loadModuleAsse
 						module.draftId.indexOf(lcSearch) > -1 ||
 						module.title.toLowerCase().indexOf(lcSearch) > -1
 					)
-			  })
+			  }) //eslint-disable-line no-mixed-spaces-and-tabs
 
 	return (
 		<span id="stats-root">

@@ -1,6 +1,9 @@
 import React from 'react'
 import renderer, { act } from 'react-test-renderer'
+import Button from '../button'
 import AssessmentStatsSearchControls from './assessment-stats-search-controls'
+
+jest.mock('obojobo-document-engine/src/scripts/common/util/debounce', () => (ms, fn) => fn)
 
 describe('AssessmentStatsSearchControls', () => {
 	test('AssessmentStatsSearchControls renders correctly', () => {})
@@ -21,7 +24,9 @@ describe('AssessmentStatsSearchControls', () => {
 			/>
 		)
 
-		const select = component.root.findByProps({ id: 'search-by' })
+		const select = component.root.findByProps({
+			id: 'repository--assessment-stats-search-controls--search-by'
+		})
 
 		expect(onChangeSearchSettings).not.toHaveBeenCalled()
 		expect(onChangeSearchContent).not.toHaveBeenCalled()
@@ -37,19 +42,45 @@ describe('AssessmentStatsSearchControls', () => {
 		act(() => {
 			textInput.props.onChange({ target: { value: 'test' } })
 		})
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(1)
-
-		// Change date inputs
-		const dateStart = component.root.findAllByProps({ type: 'date' })[0]
 		act(() => {
-			dateStart.props.onChange({ target : { value: new Date() } })
+			textInput.props.onChange({ target: { value: '' } })
 		})
 		expect(onChangeSearchContent).toHaveBeenCalledTimes(2)
 
-		const dateEnd = component.root.findAllByProps({ type: 'date' })[1]
+		// Change date inputs
+		let dateStart = component.root.findAllByProps({ type: 'date' })[0]
 		act(() => {
-			dateEnd.props.onChange({ target : { value: new Date() } })
+			dateStart.props.onChange({ target: { value: new Date() } })
 		})
 		expect(onChangeSearchContent).toHaveBeenCalledTimes(3)
+
+		// Clear date input
+		dateStart = component.root.findAllByProps({ type: 'date' })[0]
+		act(() => {
+			dateStart.props.onChange({ target: { value: new Date() } })
+		})
+		expect(dateStart.props.value).not.toBe('')
+		act(() => {
+			component.root.findAllByType(Button)[0].props.onClick()
+		})
+		expect(dateStart.props.value).toBe('')
+		expect(onChangeSearchContent).toHaveBeenCalledTimes(4)
+
+		let dateEnd = component.root.findAllByProps({ type: 'date' })[1]
+		act(() => {
+			dateEnd.props.onChange({ target: { value: new Date() } })
+		})
+		expect(onChangeSearchContent).toHaveBeenCalledTimes(5)
+
+		dateEnd = component.root.findAllByProps({ type: 'date' })[1]
+		act(() => {
+			dateEnd.props.onChange({ target: { value: new Date() } })
+		})
+		expect(dateEnd.props.value).not.toBe('')
+		act(() => {
+			component.root.findAllByType(Button)[1].props.onClick()
+		})
+		expect(dateEnd.props.value).toBe('')
+		expect(onChangeSearchContent).toHaveBeenCalledTimes(6)
 	})
 })
