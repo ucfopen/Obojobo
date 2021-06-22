@@ -95,7 +95,7 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
             <option
               value=""
             >
-              Select a search parameter
+              Attribute
             </option>
             <option
               value="course-title"
@@ -338,6 +338,70 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
               Include advanced fields
             </span>
           </label>
+        </div>
+      </div>
+      <div
+        className="repository--assessment-stats-search-controls"
+      >
+        <div
+          className="search-by-text"
+        >
+          <label
+            htmlFor="search-by"
+          >
+            Search by: 
+          </label>
+          <select
+            id="search-by"
+            onChange={[Function]}
+          >
+            <option
+              value=""
+            >
+              Attribute
+            </option>
+            <option
+              value="course-title"
+            >
+              Course title
+            </option>
+            <option
+              value="resource-link-title"
+            >
+              Resource link title
+            </option>
+            <option
+              value="user-first-name"
+            >
+              First name
+            </option>
+            <option
+              value="user-last-name"
+            >
+              Last name
+            </option>
+          </select>
+        </div>
+        <div
+          className="search-by-date"
+        >
+          <label
+            htmlFor="date-range"
+          >
+            Select a date range: 
+          </label>
+          <div
+            className="date-range"
+          >
+            <input
+              onChange={[Function]}
+              type="date"
+            />
+            <input
+              onChange={[Function]}
+              type="date"
+            />
+          </div>
         </div>
       </div>
     </div>

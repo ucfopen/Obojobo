@@ -23,7 +23,20 @@ exports[`DataGridScores DataGridScores renders correctly 1`] = `
           },
         ]
       }
-      data={Array []}
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+          },
+          Object {
+            "completedAt": "2021-06-21T15:32:30.255Z",
+            "draftId": "mock-draft-id2",
+            "exampleId": "mock-example-id2",
+          },
+        ]
+      }
       dense={true}
       pagination={true}
       paginationComponentOptions={
@@ -43,6 +56,19 @@ exports[`DataGridScores DataGridScores renders correctly 1`] = `
       react-data-table-component
     </div>
   </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    2
+     row
+    s
+    )
+  </a>
 </div>
 `;
 
@@ -65,7 +91,15 @@ exports[`DataGridScores DataGridScores renders one row 1`] = `
           },
         ]
       }
-      data={Array []}
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+          },
+        ]
+      }
       dense={true}
       pagination={true}
       paginationComponentOptions={
@@ -85,6 +119,19 @@ exports[`DataGridScores DataGridScores renders one row 1`] = `
       react-data-table-component
     </div>
   </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    1
+     row
+    
+    )
+  </a>
 </div>
 `;
 
@@ -265,7 +312,20 @@ exports[`DataGridScores DataGridScores uses search filters as expected 4`] = `
           },
         ]
       }
-      data={Array []}
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+          },
+          Object {
+            "completedAt": "2021-06-21T15:32:30.255Z",
+            "draftId": "mock-draft-id2",
+            "exampleId": "mock-example-id2",
+          },
+        ]
+      }
       dense={true}
       pagination={true}
       paginationComponentOptions={
@@ -285,6 +345,19 @@ exports[`DataGridScores DataGridScores uses search filters as expected 4`] = `
       react-data-table-component
     </div>
   </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    2
+     row
+    s
+    )
+  </a>
 </div>
 `;
 
@@ -307,7 +380,20 @@ exports[`DataGridScores DataGridScores uses search filters as expected 5`] = `
           },
         ]
       }
-      data={Array []}
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+          },
+          Object {
+            "completedAt": "2021-06-21T15:32:30.255Z",
+            "draftId": "mock-draft-id2",
+            "exampleId": "mock-example-id2",
+          },
+        ]
+      }
       dense={true}
       pagination={true}
       paginationComponentOptions={
@@ -327,10 +413,91 @@ exports[`DataGridScores DataGridScores uses search filters as expected 5`] = `
       react-data-table-component
     </div>
   </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    2
+     row
+    s
+    )
+  </a>
 </div>
 `;
 
 exports[`DataGridScores DataGridScores uses search filters as expected 6`] = `
+<div
+  className="repository--data-grid-scores"
+>
+  <div
+    className="data-grid"
+  >
+    <div
+      className="react-data-table-component"
+      columns={
+        Array [
+          Object {
+            "advanced": false,
+            "name": "Draft ID",
+            "selector": "draftId",
+            "sortable": true,
+          },
+        ]
+      }
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+          },
+          Object {
+            "completedAt": "2021-06-21T15:32:30.255Z",
+            "draftId": "mock-draft-id2",
+            "exampleId": "mock-example-id2",
+          },
+        ]
+      }
+      dense={true}
+      pagination={true}
+      paginationComponentOptions={
+        Object {
+          "noRowsPerPage": true,
+        }
+      }
+      paginationPerPage={250}
+      paginationRowsPerPageOptions={
+        Array [
+          250,
+        ]
+      }
+      striped={true}
+      title="Mock Table Name"
+    >
+      react-data-table-component
+    </div>
+  </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    2
+     row
+    s
+    )
+  </a>
+</div>
+`;
+
+exports[`DataGridScores DataGridScores uses search filters as expected 7`] = `
 <div
   className="repository--data-grid-scores"
 >
@@ -372,7 +539,7 @@ exports[`DataGridScores DataGridScores uses search filters as expected 6`] = `
 </div>
 `;
 
-exports[`DataGridScores DataGridScores uses search filters as expected 7`] = `
+exports[`DataGridScores DataGridScores uses search filters as expected 8`] = `
 <div
   className="repository--data-grid-scores"
 >

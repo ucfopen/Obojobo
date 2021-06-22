@@ -126,7 +126,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 <option
                   value=""
                 >
-                  Select a search parameter
+                  Attribute
                 </option>
                 <option
                   value="course-title"
@@ -387,7 +387,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 <option
                   value=""
                 >
-                  Select a search parameter
+                  Attribute
                 </option>
                 <option
                   value="course-title"
@@ -648,7 +648,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 <option
                   value=""
                 >
-                  Select a search parameter
+                  Attribute
                 </option>
                 <option
                   value="course-title"

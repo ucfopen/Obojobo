@@ -50,8 +50,8 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 		<div className="repository--assessment-stats-search-controls">
 			<div className="search-by-text">
 				<label htmlFor="search-by">Search by: </label>
-				<select id='search-by' onChange={handleSearchSettingsChange}>
-					<option value="">Select a search parameter</option>
+				<select id="search-by" onChange={handleSearchSettingsChange}>
+					<option value="">Attribute</option>
 					<option value="course-title">Course title</option>
 					<option value="resource-link-title">Resource link title</option>
 					<option value="user-first-name">First name</option>
@@ -59,7 +59,7 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 				</select>
 				{showTextInput && (
 					<input
-						className='text-input'
+						className="text-input"
 						type="text"
 						value={textInput}
 						onChange={handleSearchContentChange}

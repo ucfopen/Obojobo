@@ -97,6 +97,7 @@ exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
           Array [
             Object {
               "assessmentId": undefined,
+              "completedAt": null,
               "contextId": undefined,
               "courseTitle": undefined,
               "draftContentId": undefined,
@@ -115,6 +116,7 @@ exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
             },
             Object {
               "assessmentId": undefined,
+              "completedAt": null,
               "contextId": undefined,
               "courseTitle": undefined,
               "draftContentId": undefined,

@@ -295,7 +295,7 @@ exports[`Stats Renders loaded state correctly 1`] = `
                     <option
                       value=""
                     >
-                      Select a search parameter
+                      Attribute
                     </option>
                     <option
                       value="course-title"

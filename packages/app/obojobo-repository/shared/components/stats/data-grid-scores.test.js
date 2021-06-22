@@ -27,8 +27,8 @@ describe('DataGridScores', () => {
 			}
 		],
 		rows: [
-			{ draftId: 'mock-draft-id', exampleId: 'mock-example-id' },
-			{ draftId: 'mock-draft-id2', exampleId: 'mock-example-id2' }
+			{ draftId: 'mock-draft-id', exampleId: 'mock-example-id', completedAt: '2021-02-04T13:55:30.255Z' },
+			{ draftId: 'mock-draft-id2', exampleId: 'mock-example-id2', completedAt: '2021-06-21T15:32:30.255Z' }
 		],
 		tableName: 'Mock Table Name',
 		csvFileName: 'mock-csv-file-name',
@@ -37,10 +37,10 @@ describe('DataGridScores', () => {
 			showPreviewAttempts: false,
 			showAdvancedFields: false
 		},
-		searchSettings: 'mock-setting',
+		searchSettings: 'draft-id',
 		searchContent: {
-			text: '',
-			date: { start: null, end: null }
+			text: 'mock',
+			date: null
 		}
 	})
 
@@ -165,7 +165,7 @@ describe('DataGridScores', () => {
 			/>
 		)
 
-		expect(component1.root.findByType('a').props.href).toMatchSnapshot()
+		expect(component1.root.findByType("a").props.href).toMatchSnapshot()
 
 		const component2 = renderer.create(
 			<DataGridScores
@@ -178,7 +178,7 @@ describe('DataGridScores', () => {
 			/>
 		)
 
-		expect(component2.root.findByType('a').props.href).toMatchSnapshot()
+		expect(component2.root.findByType("a").props.href).toMatchSnapshot()
 	})
 
 	test('DataGridScores renders when no rows given', () => {
@@ -299,6 +299,23 @@ describe('DataGridScores', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 
 		// With both text and date parameters.
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchSettings={'course-title'}
+				searchContent={{
+					text: 'mock-course-title',
+					date: { start: mockStartDate, end: mockEndDate }
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// Edge case where rows don't have the completedAt attribute
+		props.rows = [
+			{ draftId: 'mock-draft-id', exampleId: 'mock-example-id' },
+			{ draftId: 'mock-draft-id2', exampleId: 'mock-example-id2' }
+		]
 		component = renderer.create(
 			<DataGridScores
 				{...props}

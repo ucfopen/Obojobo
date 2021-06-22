@@ -32,6 +32,11 @@ describe('DataGridAssessments', () => {
 			showIncompleteAttempts: false,
 			showPreviewAttempts: false,
 			showAdvancedFields: false
+		},
+		searchSettings: 'draft-id',
+		searchContent: {
+			text: 'mock',
+			date: null
 		}
 	})
 
@@ -44,7 +49,14 @@ describe('DataGridAssessments', () => {
 
 	test('DataGridAssessments renders without attempts', () => {
 		const component = renderer.create(
-			<DataGridAssessments filterSettings={getTestProps().filterSettings} />
+			<DataGridAssessments
+				filterSettings={getTestProps().filterSettings}
+				searchSettings='draft-id'
+				searchContent={{
+					text: 'mock',
+					date: null
+				}}
+			/>
 		)
 
 		const tree = component.toJSON()
@@ -53,7 +65,14 @@ describe('DataGridAssessments', () => {
 
 	test('DataGridAssessments columns with cell components render as expected', () => {
 		const component = renderer.create(
-			<DataGridAssessments filterSettings={getTestProps().filterSettings} />
+			<DataGridAssessments
+				filterSettings={getTestProps().filterSettings}
+				searchSettings='draft-id'
+				searchContent={{
+					text: 'mock',
+					date: null
+				}}
+			/>
 		)
 		const columns = component.root.findByProps({ className: 'react-data-table-component' }).props
 			.columns

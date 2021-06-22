@@ -40,6 +40,11 @@ describe('DataGridAttempts', () => {
 			showIncompleteAttempts: false,
 			showPreviewAttempts: false,
 			showAdvancedFields: false
+		},
+		searchSettings: 'draft-id',
+		searchContent: {
+			text: 'mock',
+			date: null
 		}
 	})
 
@@ -52,7 +57,14 @@ describe('DataGridAttempts', () => {
 
 	test('DataGridAttempts renders with no attempts', () => {
 		const component = renderer.create(
-			<DataGridAttempts filterSettings={getTestProps().filterSettings} />
+			<DataGridAttempts
+				filterSettings={getTestProps().filterSettings}
+				searchSettings='draft-id'
+				searchContent={{
+					text: 'mock',
+					date: null
+				}}
+			/>
 		)
 
 		const tree = component.toJSON()
@@ -66,6 +78,11 @@ describe('DataGridAttempts', () => {
 					showIncompleteAttempts: true,
 					showPreviewAttempts: true,
 					showAdvancedFields: true
+				}}
+				searchSettings='draft-id'
+				searchContent={{
+					text: 'mock',
+					date: null
 				}}
 			/>
 		)
