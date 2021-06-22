@@ -64,7 +64,9 @@ describe('AssessmentStats', () => {
 
 		// Change the select to view attempts instead of final assessment score:
 		act(() => {
-			component.root.findAllByType('select')[0].props.onChange({ target: { value: 'all-attempts' } })
+			component.root
+				.findAllByType('select')[0]
+				.props.onChange({ target: { value: 'all-attempts' } })
 		})
 
 		const tree2 = component.toJSON()
@@ -137,7 +139,9 @@ describe('AssessmentStats', () => {
 			component.root
 				.findByProps({ className: 'show-preview-attempts' })
 				.props.onChange({ target: { checked: false } })
-			component.root.findAllByType('select')[0].props.onChange({ target: { value: 'all-attempts' } })
+			component.root
+				.findAllByType('select')[0]
+				.props.onChange({ target: { value: 'all-attempts' } })
 		})
 		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
 		expect(DataGrid.props.data.length).toEqual(2)

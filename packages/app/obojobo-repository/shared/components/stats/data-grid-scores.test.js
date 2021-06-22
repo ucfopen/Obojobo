@@ -27,8 +27,16 @@ describe('DataGridScores', () => {
 			}
 		],
 		rows: [
-			{ draftId: 'mock-draft-id', exampleId: 'mock-example-id', completedAt: '2021-02-04T13:55:30.255Z' },
-			{ draftId: 'mock-draft-id2', exampleId: 'mock-example-id2', completedAt: '2021-06-21T15:32:30.255Z' }
+			{
+				draftId: 'mock-draft-id',
+				exampleId: 'mock-example-id',
+				completedAt: '2021-02-04T13:55:30.255Z'
+			},
+			{
+				draftId: 'mock-draft-id2',
+				exampleId: 'mock-example-id2',
+				completedAt: '2021-06-21T15:32:30.255Z'
+			}
 		],
 		tableName: 'Mock Table Name',
 		csvFileName: 'mock-csv-file-name',
@@ -165,7 +173,7 @@ describe('DataGridScores', () => {
 			/>
 		)
 
-		expect(component1.root.findByType("a").props.href).toMatchSnapshot()
+		expect(component1.root.findByType('a').props.href).toMatchSnapshot()
 
 		const component2 = renderer.create(
 			<DataGridScores
@@ -178,7 +186,7 @@ describe('DataGridScores', () => {
 			/>
 		)
 
-		expect(component2.root.findByType("a").props.href).toMatchSnapshot()
+		expect(component2.root.findByType('a').props.href).toMatchSnapshot()
 	})
 
 	test('DataGridScores renders when no rows given', () => {
@@ -211,7 +219,7 @@ describe('DataGridScores', () => {
 	})
 
 	test('DataGridScores uses search filters as expected', () => {
-		let props = {};
+		let props = {}
 		Object.assign(props, getTestProps())
 		props.rows = []
 

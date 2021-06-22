@@ -51,7 +51,7 @@ describe('DataGridAssessments', () => {
 		const component = renderer.create(
 			<DataGridAssessments
 				filterSettings={getTestProps().filterSettings}
-				searchSettings='draft-id'
+				searchSettings="draft-id"
 				searchContent={{
 					text: 'mock',
 					date: null
@@ -67,7 +67,7 @@ describe('DataGridAssessments', () => {
 		const component = renderer.create(
 			<DataGridAssessments
 				filterSettings={getTestProps().filterSettings}
-				searchSettings='draft-id'
+				searchSettings="draft-id"
 				searchContent={{
 					text: 'mock',
 					date: null

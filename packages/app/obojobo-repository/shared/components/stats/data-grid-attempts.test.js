@@ -59,7 +59,7 @@ describe('DataGridAttempts', () => {
 		const component = renderer.create(
 			<DataGridAttempts
 				filterSettings={getTestProps().filterSettings}
-				searchSettings='draft-id'
+				searchSettings="draft-id"
 				searchContent={{
 					text: 'mock',
 					date: null
@@ -79,7 +79,7 @@ describe('DataGridAttempts', () => {
 					showPreviewAttempts: true,
 					showAdvancedFields: true
 				}}
-				searchSettings='draft-id'
+				searchSettings="draft-id"
 				searchContent={{
 					text: 'mock',
 					date: null
