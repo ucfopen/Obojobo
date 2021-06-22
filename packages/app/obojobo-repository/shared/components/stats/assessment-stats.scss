@@ -60,12 +60,22 @@
 
 		.data-grid {
 			width: calc(100% - 1px);
+			height: calc(100% - 5em);
 			flex-grow: 1;
 			display: flex;
 			flex-direction: column;
 
+			// Tweaks to the react-data-table-component
+			> div:first-child {
+				flex-grow: 0;
+			}
+
+			> div:nth-child(2) {
+				overflow-y: scroll;
+				flex-grow: 1;
+			}
+
 			> div:last-child {
-				height: 100%;
 				border-bottom: 1px solid $color-shadow;
 			}
 

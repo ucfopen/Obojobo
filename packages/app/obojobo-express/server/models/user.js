@@ -14,7 +14,7 @@ class User {
 		username = null,
 		createdAt = Date.now(),
 		roles = [],
-		perms = []
+		perms = null
 	} = {}) {
 		if (firstName === null) throw Error('Missing first name for new user')
 		if (lastName === null) throw Error('Missing last name for new user')

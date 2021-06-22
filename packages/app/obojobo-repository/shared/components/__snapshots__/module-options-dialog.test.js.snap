@@ -86,7 +86,7 @@ exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard
       <div
         className="label"
       >
-        View assessment score data
+        View scores by student.
       </div>
       <button
         className="repository--button "

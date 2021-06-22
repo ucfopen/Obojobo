@@ -113,7 +113,7 @@ class AssessmentModel {
 			}))
 	}
 
-	static fetchAttemptHistoryAnalytics(draftId) {
+	static fetchAttemptHistoryDetails(draftId) {
 		return db.manyOrNone(
 			`
 				SELECT
@@ -151,23 +151,17 @@ class AssessmentModel {
 					(
 						SELECT
 							MAX(id) AS id,
-							assessment_score_id,
-							launch_id,
-							status,
-							status_details,
-							gradebook_status,
-							score_sent
+							assessment_score_id
 						FROM
 							lti_assessment_scores
 						GROUP BY
-							assessment_score_id,
-							launch_id,
-							status,
-							status_details,
-							gradebook_status,
-							score_sent
+							assessment_score_id
 						ORDER BY id
-					) L
+					) T1
+				LEFT JOIN
+					lti_assessment_scores L
+				ON
+					T1.id = L.id
 				LEFT JOIN
 					assessment_scores S
 				ON

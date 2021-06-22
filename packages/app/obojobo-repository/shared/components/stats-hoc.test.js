@@ -24,7 +24,7 @@ describe('stats HOC', () => {
 
 		expect(ReactRedux.connect).toHaveBeenCalledTimes(1)
 		expect(ReactRedux.connect).toHaveBeenCalledWith(expect.any(Function), {
-			loadModuleAssessmentAnalytics: StatsActions.loadModuleAssessmentAnalytics
+			loadModuleAssessmentDetails: StatsActions.loadModuleAssessmentDetails
 		})
 
 		expect(mockReduxConnectReturn).toHaveBeenCalledTimes(1)

@@ -46,14 +46,16 @@ const filterAttempts = (attempts, { showIncompleteAttempts, showPreviewAttempts 
 	)
 }
 
-const AssessmentStats = ({ attempts }) => {
+const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 	const [viewMode, setViewMode] = React.useState(VIEW_MODE_FINAL_ASSESSMENT_SCORE)
 	const [searchSettings, setSearchSettings] = React.useState('')
 	const [searchContent, setSearchContent] = React.useState('')
-	const [filterSettings, setFilterSettings] = React.useState({
-		showIncompleteAttempts: false,
-		showPreviewAttempts: false
-	})
+	const [filterSettings, setFilterSettings] = React.useState(
+		Object.assign(
+			{ showIncompleteAttempts: false, showPreviewAttempts: false, showAdvancedFields: false },
+			defaultFilterSettings
+		)
+	)
 
 	const onChangeViewMode = event => {
 		setViewMode(event.target.value)

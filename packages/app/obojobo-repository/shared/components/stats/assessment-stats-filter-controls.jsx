@@ -55,7 +55,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 						checked={filterSettings.showAdvancedFields}
 						onChange={onChangeShowAdvancedFields}
 					/>
-					<span>Show advanced fields</span>
+					<span>Include advanced fields</span>
 				</label>
 			</div>
 		</div>

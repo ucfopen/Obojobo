@@ -66,12 +66,13 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
           <hr />
           <label>
             <input
+              checked={false}
               className="show-advanced-fields"
               onChange={[Function]}
               type="checkbox"
             />
             <span>
-              Show advanced fields
+              Include advanced fields
             </span>
           </label>
         </div>
@@ -226,7 +227,18 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
             ]
           }
           dense={true}
-          keyField="attemptId"
+          pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={250}
+          paginationRowsPerPageOptions={
+            Array [
+              250,
+            ]
+          }
           striped={true}
           title="Final Assessment Scores"
         >
@@ -238,7 +250,9 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
         download="final-assessment-scores__Draft-A"
         href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22false%22"
       >
-        ⬇️   Download Table as CSV File (
+        ⬇️   Download 
+        
+         Table as CSV File (
         1
          row
         
@@ -315,12 +329,13 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
           <hr />
           <label>
             <input
+              checked={false}
               className="show-advanced-fields"
               onChange={[Function]}
               type="checkbox"
             />
             <span>
-              Show advanced fields
+              Include advanced fields
             </span>
           </label>
         </div>
@@ -386,6 +401,12 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
               },
               Object {
                 "advanced": false,
+                "name": "Attempt #",
+                "selector": "attemptNumber",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
                 "cell": [Function],
                 "name": "Attempt Score",
                 "selector": "attemptScore",
@@ -393,6 +414,28 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
               },
               Object {
                 "advanced": false,
+                "cell": [Function],
+                "name": "Assessment Status",
+                "selector": "assessmentStatus",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Un-modded Assessment Score",
+                "selector": "assessmentStatus",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Mod Reward Total",
+                "selector": "modRewardTotal",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
                 "name": "Assessment Score",
                 "selector": "assessmentScore",
                 "sortable": true,
@@ -443,7 +486,18 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
             ]
           }
           dense={true}
-          keyField="attemptId"
+          pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={250}
+          paginationRowsPerPageOptions={
+            Array [
+              250,
+            ]
+          }
           striped={true}
           title="Attempt Scores"
         >
@@ -453,9 +507,11 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
       <a
         className="repository--button "
         download="attempt-scores__Draft-A"
-        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20Score%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-date%22%2C%22false%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22%22%2C%22mock-date%22%2C%22false%22"
+        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20%23%22%2C%22Attempt%20Score%22%2C%22Assessment%20Status%22%2C%22Un-modded%20Assessment%20Score%22%2C%22Mod%20Reward%20Total%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22null%22%2C%22%22%2C%22mock-date%22%2C%22false%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22%22%2C%22mock-date%22%2C%22false%22"
       >
-        ⬇️   Download Table as CSV File (
+        ⬇️   Download 
+        
+         Table as CSV File (
         2
          row
         s

@@ -97,12 +97,13 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               <hr />
               <label>
                 <input
+                  checked={false}
                   className="show-advanced-fields"
                   onChange={[Function]}
                   type="checkbox"
                 />
                 <span>
-                  Show advanced fields
+                  Include advanced fields
                 </span>
               </label>
             </div>
@@ -235,7 +236,18 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               }
               data={Array []}
               dense={true}
-              keyField="attemptId"
+              pagination={true}
+              paginationComponentOptions={
+                Object {
+                  "noRowsPerPage": true,
+                }
+              }
+              paginationPerPage={250}
+              paginationRowsPerPageOptions={
+                Array [
+                  250,
+                ]
+              }
               striped={true}
               title="Final Assessment Scores"
             >
@@ -346,12 +358,13 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               <hr />
               <label>
                 <input
+                  checked={false}
                   className="show-advanced-fields"
                   onChange={[Function]}
                   type="checkbox"
                 />
                 <span>
-                  Show advanced fields
+                  Include advanced fields
                 </span>
               </label>
             </div>
@@ -484,7 +497,18 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               }
               data={Array []}
               dense={true}
-              keyField="attemptId"
+              pagination={true}
+              paginationComponentOptions={
+                Object {
+                  "noRowsPerPage": true,
+                }
+              }
+              paginationPerPage={250}
+              paginationRowsPerPageOptions={
+                Array [
+                  250,
+                ]
+              }
               striped={true}
               title="Final Assessment Scores"
             >
@@ -595,12 +619,13 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               <hr />
               <label>
                 <input
+                  checked={false}
                   className="show-advanced-fields"
                   onChange={[Function]}
                   type="checkbox"
                 />
                 <span>
-                  Show advanced fields
+                  Include advanced fields
                 </span>
               </label>
             </div>
@@ -755,7 +780,18 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 ]
               }
               dense={true}
-              keyField="attemptId"
+              pagination={true}
+              paginationComponentOptions={
+                Object {
+                  "noRowsPerPage": true,
+                }
+              }
+              paginationPerPage={250}
+              paginationRowsPerPageOptions={
+                Array [
+                  250,
+                ]
+              }
               striped={true}
               title="Final Assessment Scores"
             >
@@ -767,7 +803,9 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
             download="final-assessment-scores__"
             href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22"
           >
-            ⬇️   Download Table as CSV File (
+            ⬇️   Download 
+            
+             Table as CSV File (
             1
              row
             

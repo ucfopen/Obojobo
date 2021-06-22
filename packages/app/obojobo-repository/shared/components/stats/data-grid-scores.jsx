@@ -8,7 +8,10 @@ const getColumns = (columns, showAdvancedFields) =>
 const toCSV = (columns, attempts) => {
 	const cols = `"${columns.map(c => c.name).join('","')}"`
 	const colOrder = columns.map(c => c.selector)
-	const rows = attempts.map(attempt => `"${colOrder.map(key => attempt[key]).join('","')}"`)
+	const rows = attempts.map(
+		attempt =>
+			`"${colOrder.map(key => (attempt[key] === null ? 'null' : attempt[key])).join('","')}"`
+	)
 	return `${cols}\n${rows.join('\n')}`
 }
 
@@ -101,8 +104,11 @@ function DataGridScores({
 					columns={filteredColumns}
 					data={rows}
 					striped={true}
-					keyField={'attemptId'}
 					dense={true}
+					pagination={true}
+					paginationPerPage={250}
+					paginationRowsPerPageOptions={[250]}
+					paginationComponentOptions={{ noRowsPerPage: true }}
 				/>
 			</div>
 			{rows.length > 0 ? (
@@ -110,7 +116,8 @@ function DataGridScores({
 					url={`data:text/csv;charset=utf-8,${escape(toCSV(filteredColumns, rows))}`}
 					download={getFileName(csvFileName, rows, filterSettings)}
 				>
-					⬇️&nbsp;&nbsp;&nbsp;Download Table as CSV File ({rows.length} row
+					⬇️&nbsp;&nbsp;&nbsp;Download {filterSettings.showAdvancedFields ? 'Advanced' : ''} Table
+					as CSV File ({rows.length} row
 					{rows.length === 1 ? '' : 's'})
 				</ButtonLink>
 			) : null}

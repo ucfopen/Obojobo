@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DataGridDrafts DataGridDrafts renders correctly with no rows 1`] = `
-<div>
+<div
+  className="repository--data-grid-drafts-container"
+>
   <div
     className="react-data-table-component"
     columns={
@@ -35,6 +37,10 @@ exports[`DataGridDrafts DataGridDrafts renders correctly with no rows 1`] = `
           "name": "Revision Count",
           "selector": "revisionCount",
           "sortable": true,
+        },
+        Object {
+          "cell": [Function],
+          "name": "Preview",
         },
       ]
     }
@@ -43,8 +49,20 @@ exports[`DataGridDrafts DataGridDrafts renders correctly with no rows 1`] = `
     keyField="draftId"
     onSelectedRowsChange={[Function]}
     pagination={true}
+    paginationComponentOptions={
+      Object {
+        "noRowsPerPage": true,
+      }
+    }
+    paginationPerPage={100}
+    paginationRowsPerPageOptions={
+      Array [
+        100,
+      ]
+    }
     selectableRows={true}
     striped={true}
+    title="Modules (0 Results)"
   >
     react-data-table-component
   </div>
@@ -52,7 +70,9 @@ exports[`DataGridDrafts DataGridDrafts renders correctly with no rows 1`] = `
 `;
 
 exports[`DataGridDrafts DataGridDrafts renders correctly with rows 1`] = `
-<div>
+<div
+  className="repository--data-grid-drafts-container"
+>
   <div
     className="react-data-table-component"
     columns={
@@ -86,6 +106,10 @@ exports[`DataGridDrafts DataGridDrafts renders correctly with rows 1`] = `
           "name": "Revision Count",
           "selector": "revisionCount",
           "sortable": true,
+        },
+        Object {
+          "cell": [Function],
+          "name": "Preview",
         },
       ]
     }
@@ -105,10 +129,32 @@ exports[`DataGridDrafts DataGridDrafts renders correctly with rows 1`] = `
     keyField="draftId"
     onSelectedRowsChange={[Function]}
     pagination={true}
+    paginationComponentOptions={
+      Object {
+        "noRowsPerPage": true,
+      }
+    }
+    paginationPerPage={100}
+    paginationRowsPerPageOptions={
+      Array [
+        100,
+      ]
+    }
     selectableRows={true}
     striped={true}
+    title="Modules (1 Results)"
   >
     react-data-table-component
   </div>
 </div>
+`;
+
+exports[`DataGridDrafts Preview cell renders as expected 1`] = `
+<a
+  href="/preview/mock-draft-id"
+  rel="noreferrer"
+  target="_blank"
+>
+  Open Preview
+</a>
 `;

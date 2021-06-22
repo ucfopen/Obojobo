@@ -12,18 +12,16 @@ const defaultOptions = () => ({
 	}
 })
 
-const apiGetAssessmentAnalyticsForDraft = draftId => {
-	return fetch(`/api/assessments/${draftId}/analytics`, defaultOptions())
+const apiGetAssessmentDetailsForDraft = draftId => {
+	return fetch(`/api/assessments/${draftId}/details`, defaultOptions())
 		.then(res => res.json())
 		.then(res => parseAttemptReport(res.value))
 }
 
-const apiGetAssessmentAnalyticsForMultipleDrafts = draftIds =>
-	Promise.all(draftIds.map(id => apiGetAssessmentAnalyticsForDraft(id))).then(result =>
-		result.flat()
-	)
+const apiGetAssessmentDetailsForMultipleDrafts = draftIds =>
+	Promise.all(draftIds.map(id => apiGetAssessmentDetailsForDraft(id))).then(result => result.flat())
 
 module.exports = {
-	apiGetAssessmentAnalyticsForMultipleDrafts,
-	apiGetAssessmentAnalyticsForDraft
+	apiGetAssessmentDetailsForMultipleDrafts,
+	apiGetAssessmentDetailsForDraft
 }
