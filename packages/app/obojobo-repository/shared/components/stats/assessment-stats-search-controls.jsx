@@ -1,6 +1,6 @@
 require('./assessment-stats-search-controls.scss')
 
-const debounce = require('obojobo-document-engine/src/scripts/common/util/debounce')
+const { useDebouncedCallback } = require('use-debounce')
 const React = require('react')
 const Button = require('../button')
 
@@ -12,46 +12,45 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 	const [startDate, setStartDate] = React.useState('')
 	const [endDate, setEndDate] = React.useState('')
 
-	const debouncedOnChangeSearchContent = debounce(SEARCH_INPUT_DEBOUNCE_MS, onChangeSearchContent)
+	const debouncedOnChangeSearchContent = useDebouncedCallback(searchTerm => {
+		onChangeSearchContent({
+			text: searchTerm,
+			date: { start: startDate, end: endDate }
+		})
+	}, SEARCH_INPUT_DEBOUNCE_MS)
 
 	const handleSearchSettingsChange = event => {
 		const value = event.target.value
+
 		setParam(value)
 		onChangeSearchSettings(value)
 	}
 
 	const handleSearchContentChange = event => {
 		const value = event.target.value
-		setTextInput(value)
 
+		setTextInput(value)
+		debouncedOnChangeSearchContent(value)
+
+		// If the user clears out the input go ahead and update the search without a delay
 		if (value.length === 0) {
-			onChangeSearchContent({
-				text: value,
-				date: { start: startDate, end: endDate }
-			})
-		} else {
-			debouncedOnChangeSearchContent({
-				text: value,
-				date: { start: startDate, end: endDate }
-			})
+			debouncedOnChangeSearchContent.flush()
 		}
 	}
 
-	const handleDateSearchStartDate = event => {
-		const date = event.target.value
-		setStartDate(date)
+	const onChangeStartDate = newDate => {
+		setStartDate(newDate)
 		onChangeSearchContent({
 			text: textInput,
-			date: { start: date, end: endDate }
+			date: { start: newDate, end: endDate }
 		})
 	}
 
-	const handleDateSearchEndDate = event => {
-		const date = event.target.value
-		setEndDate(date)
+	const onChangeEndDate = newDate => {
+		setEndDate(newDate)
 		onChangeSearchContent({
 			text: textInput,
-			date: { start: startDate, end: date }
+			date: { start: startDate, end: newDate }
 		})
 	}
 
@@ -94,10 +93,14 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 				<label>
 					<span>From:</span>
 					<div className="date-range">
-						<input value={startDate} type="date" onChange={handleDateSearchStartDate} />
+						<input
+							value={startDate}
+							type="date"
+							onChange={event => onChangeStartDate(event.target.value)}
+						/>
 						<Button
 							disabled={startDate === ''}
-							onClick={() => setStartDate('')}
+							onClick={() => onChangeStartDate('')}
 							className="secondary-button"
 						>
 							&times; Clear
@@ -108,10 +111,14 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 				<label>
 					<span>To:</span>
 					<div className="date-range">
-						<input value={endDate} type="date" onChange={handleDateSearchEndDate} />
+						<input
+							value={endDate}
+							type="date"
+							onChange={event => onChangeEndDate(event.target.value)}
+						/>
 						<Button
 							disabled={endDate === ''}
-							onClick={() => setEndDate('')}
+							onClick={() => onChangeEndDate('')}
 							className="secondary-button"
 						>
 							&times; Clear

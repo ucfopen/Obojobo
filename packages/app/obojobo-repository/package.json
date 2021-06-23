@@ -41,7 +41,8 @@
 		"redux-pack": "^0.1.5",
 		"sass-mq": "^5.0.1",
 		"seedrandom": "^2.3.11",
-		"styled-components": "^5.3.0"
+		"styled-components": "^5.3.0",
+		"use-debounce": "^7.0.0"
 	},
 	"peerDependencies": {
 		"obojobo-express": "^12.3.0",
