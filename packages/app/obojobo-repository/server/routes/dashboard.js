@@ -8,9 +8,8 @@ const {
 	requireCanPreviewDrafts
 } = require('obojobo-express/server/express_validators')
 const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../../shared/repository-constants')
-const { userHasPermissionToCollection } = require('obojobo-repository/server/services/permissions')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 const { getUserModuleCount } = require('../services/count')
-
 const short = require('short-uuid')
 
 const defaultOptions = {
@@ -22,7 +21,7 @@ const defaultOptions = {
 }
 
 const renderDashboard = (req, res, options) => {
-	let moduleSortOrder = 'alphabetical'
+	let moduleSortOrder = 'newest'
 	let collectionSortOrder = 'alphabetical'
 	const cookies = req.headers.cookie.split(';')
 	const cookieModuleSort = cookies.find(cookie => cookie.includes('moduleSortOrder'))
@@ -104,29 +103,31 @@ router
 	.route('/collections/:nameOrId')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get(async (req, res) => {
-		const urlParts = req.params.nameOrId.split('-')
-		const translator = short()
-		const collectionId = translator.toUUID(urlParts[urlParts.length - 1])
+		try {
+			const urlParts = req.params.nameOrId.split('-')
+			const translator = short()
+			const collectionId = translator.toUUID(urlParts[urlParts.length - 1])
 
-		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, collectionId)
+			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
+				req.currentUser.id,
+				collectionId
+			)
 
-		if (!hasPerms) {
-			return res.notAuthorized('You must be the author of this collection to view this page')
+			if (!hasPerms) {
+				return res.notAuthorized('You must be the author of this collection to view this page')
+			}
+
+			const collection = await CollectionSummary.fetchById(collectionId)
+			const options = {
+				...defaultOptions,
+				collection,
+				mode: MODE_COLLECTION
+			}
+
+			renderDashboard(req, res, options)
+		} catch (error) {
+			res.missing()
 		}
-
-		CollectionSummary.fetchById(collectionId)
-			.then(collection => {
-				const options = {
-					...defaultOptions,
-					collection,
-					mode: MODE_COLLECTION
-				}
-
-				renderDashboard(req, res, options)
-			})
-			.catch(() => {
-				return res.missing()
-			})
 	})
 
 module.exports = router

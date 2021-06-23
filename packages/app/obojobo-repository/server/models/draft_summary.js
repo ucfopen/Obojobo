@@ -51,7 +51,8 @@ class DraftSummary {
 		this.editor = editor
 		this.json = content
 		this.revisionId = id
-		this.userFullName = `${first_name} ${last_name}`
+
+		if (first_name && last_name) this.userFullName = `${first_name} ${last_name}`
 		if (revision_count) this.revisionCount = Number(revision_count)
 	}
 
@@ -60,8 +61,7 @@ class DraftSummary {
 			.one(buildQuery('drafts.id = $[id]'), { id })
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
-				return Promise.reject('Error Loading DraftSummary by id')
+				throw logger.logError('DraftSummary fetchById Error', error)
 			})
 	}
 
@@ -154,8 +154,7 @@ class DraftSummary {
 			.any(buildQuery(whereSQL, joinSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchAndJoinWhere Error', error.message, joinSQL, whereSQL, queryValues)
-				return Promise.reject('Error loading DraftSummary by query')
+				throw logger.logError('Error loading DraftSummary by query', error)
 			})
 	}
 
@@ -164,8 +163,7 @@ class DraftSummary {
 			.any(buildQuery(whereSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
-				return Promise.reject('Error loading DraftSummary by query')
+				throw logger.logError('Error loading DraftSummary by query', error)
 			})
 	}
 
@@ -175,11 +173,11 @@ class DraftSummary {
 		count = Math.max(Math.min(MAX_COUNT, count), MIN_COUNT)
 		count += 1 // add 1 so we'll know if there are more to get after count
 
-		let whereQuery = 'drafts_content.draft_id = $[draftId]'
+		let whereAfterversion = ''
 		// if afterVersionId is provided, we'll reduce
 		// the results to any revisions saved before afterVersionId
 		if (afterVersionId) {
-			whereQuery += `
+			whereAfterversion = `
 				AND drafts_content.created_at < (
 					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
 				)`
@@ -197,7 +195,8 @@ class DraftSummary {
 			JOIN users
 				ON drafts_content.user_id = users.id
 			WHERE
-				${whereQuery}
+				drafts_content.draft_id = $[draftId]
+				${whereAfterversion}
 			ORDER BY
 				drafts_content.created_at DESC
 			LIMIT $[count];
@@ -218,12 +217,17 @@ class DraftSummary {
 	static fetchDraftRevisionById(draftId, revisionId) {
 		const query = `
 			SELECT
-				id,
-				draft_id,
-				created_at,
-				content
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
 			FROM drafts_content
-			WHERE draft_id = $[draftId] AND id = $[revisionId]
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId] AND drafts_content.id = $[revisionId]
 		`
 
 		return db

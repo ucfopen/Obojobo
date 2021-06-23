@@ -5,18 +5,13 @@ jest.mock('../../../server/db')
 jest.mock('../../../server/logger')
 jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
 jest.mock('obojobo-document-json-parser/json-to-xml-parser')
-jest.mock('obojobo-repository/server/services/permissions', () => ({
-	userHasPermissionToDraft: jest.fn(),
-	userHasPermissionToCollection: jest.fn()
-}))
+jest.mock('obojobo-repository/server/models/draft_permissions')
 
 import DraftModel from '../../../server/models/draft'
+const CollectionModel = require('obojobo-repository/server/models/collection')
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
-const {
-	userHasPermissionToDraft,
-	userHasPermissionToCollection
-} = require('obojobo-repository/server/services/permissions')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 
 // don't use our existing express mock, we're using supertest
 jest.unmock('express')
@@ -72,10 +67,9 @@ describe('api draft route', () => {
 		db.any.mockReset()
 		xml.mockReset()
 		jsonToXml.mockReset()
-		userHasPermissionToDraft.mockReset()
-		userHasPermissionToDraft.mockResolvedValue(true)
-		userHasPermissionToCollection.mockReset()
-		userHasPermissionToCollection.mockResolvedValue(true)
+		DraftPermissions.userHasPermissionToDraft.mockReset()
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValue(true)
+		CollectionModel.addModule.mockReset()
 	})
 	afterEach(() => {})
 
@@ -366,7 +360,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user is not the author', () => {
 		expect.assertions(5)
-		userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: true } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
@@ -392,7 +386,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user does not have canViewEditor rights AND is not the author', () => {
 		expect.assertions(4)
-		userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: false } // mock current logged in user
 
 		return request(app)
@@ -507,20 +501,21 @@ describe('api draft route', () => {
 	// new draft
 
 	test('new draft returns success', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
 			})
 	})
 
 	test('new draft with "application/json" returns success', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 
 		return request(app)
@@ -534,13 +529,14 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
 			})
 	})
 
 	test('new draft with "application/xml" returns success', () => {
-		expect.assertions(5)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		xml.mockReturnValueOnce({})
 
@@ -555,8 +551,9 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
 				expect(xml).toHaveBeenCalled()
 			})
 	})
@@ -641,18 +638,19 @@ describe('api draft route', () => {
 	//when the request body has a 'collectionId' corresponding to a collection
 	// owned by the current user
 	test('new draft is automatically added to a specified collection', () => {
-		const CollectionModel = require('obojobo-repository/server/models/collection')
+		expect.hasAssertions()
 
-		userHasPermissionToCollection.mockResolvedValueOnce(true)
-		CollectionModel.addModule = jest.fn()
+		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
 
-		expect.assertions(6)
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.send({ collectionId: 'mockCollectionId' })
 			.then(async response => {
-				expect(userHasPermissionToCollection).toHaveBeenCalledWith(99, 'mockCollectionId')
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledWith(
+					99,
+					'mockCollectionId'
+				)
 				expect(CollectionModel.addModule).toHaveBeenCalledWith(
 					'mockCollectionId',
 					'mockDraftId',
@@ -662,17 +660,15 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response.body).toHaveProperty('value.id', 'mockDraftId')
+				expect(response.body).toHaveProperty('value.contentId', 'mockContentId')
 			})
 	})
 
 	//when the request body has a 'collectionId' corresponding to a collection
 	// not owned by the current user
 	test('new draft is not created if specified collection is not owned by user', () => {
-		const CollectionModel = require('obojobo-repository/server/models/collection')
-
-		userHasPermissionToCollection.mockResolvedValueOnce(false)
-		CollectionModel.addModule = jest.fn()
+		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(false)
 
 		expect.assertions(7)
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
@@ -680,7 +676,10 @@ describe('api draft route', () => {
 			.post('/api/drafts/new')
 			.send({ collectionId: 'mockCollectionId' })
 			.then(async response => {
-				expect(userHasPermissionToCollection).toHaveBeenCalledWith(99, 'mockCollectionId')
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledWith(
+					99,
+					'mockCollectionId'
+				)
 				expect(CollectionModel.addModule).not.toHaveBeenCalled()
 
 				expect(response.header['content-type']).toContain('application/json')
@@ -694,15 +693,55 @@ describe('api draft route', () => {
 	// new tutorial
 
 	test('new tutorial returns success', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/tutorial')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
+			})
+	})
+
+	test('new tutorial returns success when added to a collection', () => {
+		expect.hasAssertions()
+		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
+		CollectionModel.addModule.mockResolvedValueOnce(true)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/tutorial')
+			.type('application/json')
+			.send('{"collectionId":55}')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
+				expect(response).toHaveProperty('body.value.collectionId', 55)
+			})
+	})
+
+	test('new tutorial returns error when user does not have perms to collection', () => {
+		expect.hasAssertions()
+		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(false)
+		CollectionModel.addModule.mockResolvedValueOnce(true)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/tutorial')
+			.type('application/json')
+			.send('{"collectionId":55}')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response).toHaveProperty('body.status', 'error')
+				expect(response).toHaveProperty(
+					'body.value.message',
+					'You must have permissions to the requested collection to add a new module to it.'
+				)
 			})
 	})
 
@@ -946,7 +985,7 @@ describe('api draft route', () => {
 	test('delete 401s when a user tries deleting a draft they do not own', () => {
 		expect.assertions(5)
 
-		userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
 
 		return request(app)

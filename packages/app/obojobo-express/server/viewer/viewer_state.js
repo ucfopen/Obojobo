@@ -37,6 +37,7 @@ function get(userId, contentId, resourceLinkId) {
 				WHERE view_state.user_id = $[userId] AND
 				view_state.draft_content_id = $[contentId] AND
 				view_state.resource_link_id = $[resourceLinkId]
+				LIMIT 1
 			`,
 			{
 				userId,

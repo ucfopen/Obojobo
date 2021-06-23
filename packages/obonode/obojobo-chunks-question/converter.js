@@ -13,7 +13,7 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
  * if the Question has a Solution child.  It also calls the appropriate
  * slateToObo methods for each of its child components
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Question node 
+ * @returns {Object} An Obojobo Question node
  */
 const slateToObo = node => {
 	const children = []
@@ -24,7 +24,7 @@ const slateToObo = node => {
 
 	node.children.forEach(child => {
 		switch (child.type) {
-			// Handles Solution nodes - 
+			// Handles Solution nodes -
 			case QUESTION_NODE:
 				content.solution = Common.Registry.getItemForType(PAGE_NODE).slateToObo(child.children[0])
 				break
@@ -51,7 +51,7 @@ const slateToObo = node => {
  * Generates a Slate node from an Obojobo Question node.
  * Copies all attributes, and calls the appropriate converters for the children
  * It also converts the content.solution data into a child of the question
- * @param {Object} node An Obojobo Question node 
+ * @param {Object} node An Obojobo Question node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {

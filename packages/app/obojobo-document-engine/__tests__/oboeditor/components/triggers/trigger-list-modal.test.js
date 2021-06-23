@@ -255,6 +255,71 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('changes scroll type', () => {
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [
+						{ type: 'focus:component', value: { id: 1 } },
+						{ type: 'focus:component', value: { id: 1 } }
+					]
+				},
+				{
+					type: 'onUnmount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'animateScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', true)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'preventScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', true)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'jumpScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
+	})
+
+	test('getScrollType returns correct value', () => {
+		const action = {
+			value: {
+				animateScroll: false,
+				preventScroll: false
+			}
+		}
+
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('jumpScroll')
+
+		action.value.preventScroll = true
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('preventScroll')
+
+		action.value.animateScroll = true
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
+		action.value.preventScroll = false
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
+	})
+
 	test.each`
 		type
 		${'nav:goto'}

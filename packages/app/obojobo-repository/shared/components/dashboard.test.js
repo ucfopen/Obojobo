@@ -665,12 +665,21 @@ describe('Dashboard', () => {
 		dashboardProps.createNewModule = jest.fn()
 		dashboardProps.importModuleFile = jest.fn()
 		const component = create(<Dashboard {...dashboardProps} />)
-
 		// four buttons under the 'New Module +' MultiButton component
 		const multiButton = component.root.findByType(MultiButton).children[0]
 
 		// 'New Collection' button should call createNewCollection with no arguments
 		expect(multiButton.children[0].children[0].children[0]).toBe('New Collection')
+		// const setNewModuleId = jest.fn()
+		// const handleClick = jest.spyOn(React, 'useState')
+		// handleClick.mockImplementation(newModuleId => [newModuleId, setNewModuleId])
+
+		// // three buttons under the 'New Module +' MultiButton component
+		// const multiButton = component.root.findByType(MultiButton).children[0]
+
+		// // 'New Module' button should call createNewModule with false
+		// expect(multiButton.children[0].children[0].children[0]).toBe('New Module')
+		// dashboardProps.createNewModule.mockResolvedValue(newModule)
 		multiButton.children[0].props.onClick()
 		expect(dashboardProps.createNewCollection).toHaveBeenCalledTimes(1)
 		dashboardProps.createNewCollection.mockReset()

@@ -102,6 +102,8 @@ const renderVersionHistoryDialog = props => (
 		hasHistoryLoaded={props.versionHistory.hasFetched}
 		versionHistory={props.versionHistory.items}
 		restoreVersion={props.restoreVersion}
+		checkModuleLock={props.checkModuleLock}
+		currentUserId={props.currentUser.id}
 	/>
 )
 
@@ -221,7 +223,7 @@ const getSortMethod = sortOrder => {
 	return sortFn
 }
 
-const renderModules = (modules, sortOrder, newModuleButton) => {
+const renderModules = (modules, sortOrder, newModuleId, newModuleButton) => {
 	if (modules.length < 1) {
 		return (
 			<p className="repository--item-list--collection--empty-placeholder">
@@ -234,7 +236,11 @@ const renderModules = (modules, sortOrder, newModuleButton) => {
 	}
 
 	const sortFn = getSortMethod(sortOrder)
-	return modules.sort(sortFn).map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
+	return modules
+		.sort(sortFn)
+		.map(draft => (
+			<Module isNew={draft.draftId === newModuleId} key={draft.draftId} hasMenu={true} {...draft} />
+		))
 }
 
 const renderCollections = (collections, sortOrder, newCollectionButton) => {
@@ -289,6 +295,7 @@ const renderCollectionManageArea = props => {
 const Dashboard = props => {
 	const [moduleSortOrder, setModuleSortOrder] = useState(props.moduleSortOrder)
 	const [collectionSortOrder, setCollectionSortOrder] = useState(props.collectionSortOrder)
+	const [newModuleId, setNewModuleId] = useState(null)
 
 	// Set a cookie when moduleSortOrder or collectionSortOrder change on the client
 	// can't undefine document to test this 'else' case without breaking everything
@@ -460,8 +467,12 @@ const Dashboard = props => {
 	}
 
 	const onNewModuleClick = useTutorial => {
-		props.createNewModule(useTutorial, createNewModuleOptions)
+		props.createNewModule(useTutorial, createNewModuleOptions).then(data => {
+			data.payload.value.sort(getSortMethod('newest'))
+			setNewModuleId(data.payload.value[0].draftId)
+		})
 	}
+
 	const newModuleButtonRender = <Button onClick={() => onNewModuleClick(false)}>New Module</Button>
 
 	return (
@@ -498,6 +509,7 @@ const Dashboard = props => {
 									{renderModules(
 										props.filteredModules ? props.filteredModules : props.myModules,
 										moduleSortOrder,
+										newModuleId,
 										newModuleButtonRender
 									)}
 									{allModulesButtonRender}

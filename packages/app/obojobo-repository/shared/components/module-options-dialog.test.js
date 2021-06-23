@@ -32,7 +32,7 @@ describe('ModuleOptionsDialog', () => {
 		window.confirm = originalConfirm
 	})
 
-	test('ModuleOptionsDialog renders correctly with standard expected props', () => {
+	test('renders correctly with standard expected props', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)

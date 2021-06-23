@@ -7,11 +7,12 @@ import React from 'react'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import AssessmentAPI from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/viewer-api')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-api')
 jest.mock('obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
@@ -268,13 +269,13 @@ describe('PostTest', () => {
 
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
-				assessmentScoreDetails: {
+				scoreDetails: {
 					attemptNumber: 'mockAttemptNumber'
 				}
 			}
 		])
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValue(null)
-		APIUtil.reviewAttempt.mockResolvedValue({})
+		AssessmentAPI.reviewAttempt.mockResolvedValue({})
 
 		moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -335,7 +336,7 @@ describe('PostTest', () => {
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValue(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValue([
 			{
-				assessmentScoreDetails: {
+				scoreDetails: {
 					attemptNumber: 'mockAttemptNumber'
 				}
 			}
@@ -361,7 +362,7 @@ describe('PostTest', () => {
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
-				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
 			}
 		])
 
@@ -386,7 +387,34 @@ describe('PostTest', () => {
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
-				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
+			}
+		])
+		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(true)
+
+		const component = renderer.create(
+			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
+		)
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
+
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
+	})
+
+	test('PostTest component with review with imported score', () => {
+		model.modelState.review = FULL_REVIEW_AFTER_ALL
+		moduleData.assessmentState = { importHasBeenUsed: true }
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			{
+				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
 			}
 		])
 		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(true)
@@ -411,7 +439,7 @@ describe('PostTest', () => {
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
-				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
 			}
 		])
 		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(false)
@@ -438,7 +466,7 @@ describe('PostTest', () => {
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
-				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
 			}
 		])
 		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(false)
@@ -469,7 +497,7 @@ describe('PostTest', () => {
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
-				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
 			}
 		])
 

@@ -1,0 +1,13 @@
+.git
+node_modules
+coverage
+packages/**/node_modules
+packages/**/__mocks__
+packages/**/__tests__
+packages/**/__snapshots__
+packages/**/*.test.js
+packages/**/*.test.jsx
+packages/**/*.test.js.snap
+packages/**/*.test.jsx.snap
+docker/dockerfiles
+docker/docker-compose.yml

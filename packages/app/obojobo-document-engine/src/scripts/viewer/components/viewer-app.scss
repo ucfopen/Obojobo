@@ -110,7 +110,7 @@
 		}
 	}
 
-	&.is-open-nav.is-enabled-nav {
+	&.is-open-nav.is-not-disabled-nav {
 		padding-left: $dimension-nav-menu;
 		padding-top: 0;
 

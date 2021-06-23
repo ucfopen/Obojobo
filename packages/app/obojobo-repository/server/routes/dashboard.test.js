@@ -1,6 +1,6 @@
 jest.mock('../models/collection_summary')
 jest.mock('../models/draft_summary')
-jest.mock('../services/permissions')
+jest.mock('../models/draft_permissions')
 jest.mock('../services/count')
 jest.mock('short-uuid')
 jest.unmock('fs') // need fs working for view rendering
@@ -13,6 +13,8 @@ jest.mock(
 	}),
 	{ virtual: true }
 )
+
+jest.setTimeout(10000) // extend test timeout?
 
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
@@ -49,9 +51,8 @@ const componentPropsDesiredProperties = [
 
 let CollectionSummary
 let DraftSummary
-let PermissionsServices
 let CountServices
-
+let DraftPermissions
 let short
 
 // setup express server
@@ -120,8 +121,9 @@ describe('repository dashboard route', () => {
 		}
 		CollectionSummary = require('../models/collection_summary')
 		DraftSummary = require('../models/draft_summary')
-		PermissionsServices = require('../services/permissions')
 		CountServices = require('../services/count')
+		DraftSummary = require('../models/draft_summary')
+		DraftPermissions = require('../models/draft_permissions')
 
 		//there's extra express garbage attached to the props we care about
 		//this roundabout solution exists to only pull out the ones we want
@@ -284,7 +286,7 @@ describe('repository dashboard route', () => {
 					currentUser: mockCurrentUser,
 					mode: MODE_ALL,
 					moduleCount: 5,
-					moduleSortOrder: 'alphabetical',
+					moduleSortOrder: 'newest',
 					collectionSortOrder: 'alphabetical',
 					myCollections: mockCollectionSummary,
 					myModules: mockModuleSummary
@@ -302,7 +304,7 @@ describe('repository dashboard route', () => {
 			toUUID: mockShortToUUID
 		})
 
-		PermissionsServices.userHasPermissionToCollection.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
 
 		CountServices.getUserModuleCount.mockResolvedValueOnce(5)
 
@@ -327,8 +329,8 @@ describe('repository dashboard route', () => {
 				expect(mockShortToUUID).toHaveBeenCalledTimes(1)
 				expect(mockShortToUUID).toHaveBeenCalledWith('mockCollectionShortId')
 
-				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
-				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					'mockCollectionLongId'
 				)
@@ -358,7 +360,7 @@ describe('repository dashboard route', () => {
 					currentUser: mockCurrentUser,
 					mode: MODE_COLLECTION,
 					moduleCount: 5,
-					moduleSortOrder: 'alphabetical',
+					moduleSortOrder: 'newest',
 					collectionSortOrder: 'newest',
 					myCollections: mockCollectionSummary,
 					myModules: mockModuleSummary
@@ -376,7 +378,7 @@ describe('repository dashboard route', () => {
 			toUUID: mockShortToUUID
 		})
 
-		PermissionsServices.userHasPermissionToCollection.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(false)
 
 		CollectionSummary.fetchById = jest.fn()
 
@@ -395,8 +397,8 @@ describe('repository dashboard route', () => {
 				expect(mockShortToUUID).toHaveBeenCalledTimes(1)
 				expect(mockShortToUUID).toHaveBeenCalledWith('mockCollectionShortId')
 
-				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
-				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					'mockCollectionLongId'
 				)
@@ -425,7 +427,7 @@ describe('repository dashboard route', () => {
 			toUUID: mockShortToUUID
 		})
 
-		PermissionsServices.userHasPermissionToCollection.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
 
 		CollectionSummary.fetchById = jest.fn()
 		CollectionSummary.fetchById.mockRejectedValueOnce(new Error('database error'))
@@ -445,8 +447,8 @@ describe('repository dashboard route', () => {
 				expect(mockShortToUUID).toHaveBeenCalledTimes(1)
 				expect(mockShortToUUID).toHaveBeenCalledWith('mockCollectionShortId')
 
-				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
-				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
+				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					'mockCollectionLongId'
 				)

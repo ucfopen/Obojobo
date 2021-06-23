@@ -65,7 +65,9 @@ const API = {
 			credentials: 'include',
 			body: formData
 		}).then(processJsonResults)
-	}
+	},
+
+	processJsonResults
 }
 
 module.exports = API

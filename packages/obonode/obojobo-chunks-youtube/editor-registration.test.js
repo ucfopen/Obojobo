@@ -12,7 +12,7 @@ describe('YouTube editor', () => {
 		const node = { type: YOUTUBE_NODE }
 		expect(YouTube.plugins.isVoid(node, {}, jest.fn())).toEqual(true)
 	})
-	
+
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },

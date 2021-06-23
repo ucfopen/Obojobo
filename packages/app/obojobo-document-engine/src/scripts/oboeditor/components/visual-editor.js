@@ -1,6 +1,5 @@
 import './visual-editor.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
@@ -70,6 +69,7 @@ class VisualEditor extends React.Component {
 		this.onResized = this.onResized.bind(this)
 		this.renderElement = this.renderElement.bind(this)
 		this.setEditorFocus = this.setEditorFocus.bind(this)
+		this.onClick = this.onClick.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -202,7 +202,9 @@ class VisualEditor extends React.Component {
 	}
 
 	onKeyDownGlobal(event) {
-		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+		const ctrlOrMetaKey = event.ctrlKey || event.metaKey
+
+		if (event.key === 's' && ctrlOrMetaKey) {
 			event.preventDefault()
 			return this.saveModule(this.props.draftId)
 		}
@@ -218,7 +220,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open top insert menu: - and _ account for users potentially using the shift key
-		if ((event.key === '-' || event.key === '_') && (event.ctrlKey || event.metaKey)) {
+		if ((event.key === '-' || event.key === '_') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -242,7 +244,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open bottom insert menu: = and + account for users potentially using the shift key
-		if ((event.key === '=' || event.key === '+') && (event.ctrlKey || event.metaKey)) {
+		if ((event.key === '=' || event.key === '+') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -266,12 +268,8 @@ class VisualEditor extends React.Component {
 			)
 		}
 
-		// Open top insert menu: i and I occur on different systems as the key when shift is held
-		if (
-			(event.key === 'i' || event.key === 'I') &&
-			(event.ctrlKey || event.metaKey) &&
-			event.shiftKey
-		) {
+		// Open chunk settings dialog
+		if ((event.key === 'i' || event.key === 'I') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -341,7 +339,9 @@ class VisualEditor extends React.Component {
 		if (prevProps.page.id !== this.props.page.id) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			this.exportToJSON(prevProps.page, prevState.value)
+			if (OboModel.models[prevProps.page.id]) {
+				this.exportToJSON(prevProps.page, prevState.value)
+			}
 			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
 				this.setEditorFocus()
@@ -391,8 +391,10 @@ class VisualEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
-		this.setState({ saved: true })
-		return APIUtil.postDraft(draftId, JSON.stringify(json))
+
+		return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
+			this.setState({ saved: isSaved })
+		})
 	}
 
 	exportToJSON(page, value) {
@@ -517,6 +519,20 @@ class VisualEditor extends React.Component {
 		ReactEditor.focus(this.editor)
 	}
 
+	onClick(event) {
+		/*
+			As for Slate 0.57.2, triple-click causes selection to bleed into the node below which causes focus to jump down when typing
+			The following solution detects when bleeding happends (focus.offset === 0) and reduces by 1
+			We can disregard this when Slate fixes the problem
+		*/
+		if (event.detail === 3) {
+			const { focus } = this.editor.selection
+			if (focus.offset === 0) {
+				Transforms.move(this.editor, { distance: 1, unit: 'offset', reverse: true, edge: 'end' })
+			}
+		}
+	}
+
 	render() {
 		const className =
 			'editor--page-editor ' +
@@ -566,6 +582,7 @@ class VisualEditor extends React.Component {
 								readOnly={!this.state.editable || this.props.readOnly}
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
+								onClick={this.onClick}
 							/>
 						</VisualEditorErrorBoundry>
 					</div>

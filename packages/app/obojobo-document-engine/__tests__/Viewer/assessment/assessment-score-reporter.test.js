@@ -30,43 +30,55 @@ jest.mock(
 
 describe('AssessmentScoreReporter', () => {
 	test('getReportFor calls helper methods', () => {
+		const assessmentRubric = { type: 'attempt' }
+		const allScoreDetails = [
+			{
+				status: {}
+			}
+		]
+		const totalNumberOfAttemptsAllowed = 100
+
 		new AssessmentScoreReporter({
-			assessmentRubric: {
-				type: 'attempt'
-			},
-			allAttempts: [
-				{
-					assessmentScoreDetails: {}
-				}
-			],
-			totalNumberOfAttemptsAllowed: 100
+			assessmentRubric,
+			allScoreDetails,
+			totalNumberOfAttemptsAllowed
 		}).getReportFor(1)
 
-		expect(getTextItems).toHaveBeenCalled()
-		expect(getReportDetailsForAttempt).toHaveBeenCalled()
-		expect(getReportDisplayValuesForAttempt).toHaveBeenCalled()
-		expect(getScoreChangeDescription).toHaveBeenCalled()
-		expect(getScoreComparisionData).toHaveBeenCalled()
+		expect(getTextItems).toHaveBeenCalledTimes(1)
+		expect(getReportDetailsForAttempt).toHaveBeenCalledTimes(1)
+		expect(getReportDisplayValuesForAttempt).toHaveBeenCalledTimes(1)
+		expect(getScoreChangeDescription).toHaveBeenCalledTimes(1)
+		expect(getScoreComparisionData).toHaveBeenCalledTimes(1)
 	})
 
 	test('throws error when given bad input', () => {
-		try {
-			new AssessmentScoreReporter(
-				{
-					type: 'attempt'
-				},
-				[],
-				100
-			).getReportFor(0)
+		const assessmentRubric = { type: 'attempt' }
+		const allScoreDetails = []
+		const totalNumberOfAttemptsAllowed = 100
+		const asr = new AssessmentScoreReporter({
+			assessmentRubric,
+			allScoreDetails,
+			totalNumberOfAttemptsAllowed
+		})
+		expect(() => {
+			asr.getReportFor(0)
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"getReportFor parameter is not zero-indexed - Use \\"1\\" for first attempt."`
+		)
+	})
 
-			expect('this').toBe('not called')
-		} catch (e) {
-			expect(e.message).toBe(
-				'attemptNumberToGenerateReportFor parameter is not zero-indexed - Use "1" for first attempt'
-			)
-			return
-		}
+	test('getReportFor calls helper methods', () => {
+		const assessmentRubric = { type: 'attempt' }
+		const allScoreDetails = [{}]
+		const totalNumberOfAttemptsAllowed = 100
 
-		expect('this').toBe('not called')
+		const asr = new AssessmentScoreReporter({
+			assessmentRubric,
+			allScoreDetails,
+			totalNumberOfAttemptsAllowed
+		})
+		expect(() => {
+			asr.getReportFor(1)
+		}).toThrowErrorMatchingInlineSnapshot(`"Error, score details for attempt 1 were not loaded."`)
 	})
 })

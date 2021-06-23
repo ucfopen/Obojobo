@@ -27,7 +27,11 @@ const Module = props => {
 	return (
 		<div
 			onMouseLeave={onCloseMenu}
-			className={'repository--module-icon ' + (isMenuOpen ? 'is-open' : 'is-not-open')}
+			className={
+				'repository--module-icon ' +
+				(isMenuOpen ? 'is-open ' : 'is-not-open ') +
+				(props.isNew ? 'is-new' : 'is-not-new')
+			}
 			onBlur={onBlurHandler}
 			onFocus={onFocusHandler}
 		>

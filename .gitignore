@@ -2,3 +2,7 @@ node_modules
 coverage
 yarn-error.log
 .vscode
+.DS_Store
+lerna-debug.log
+docker/node-packages/*.tgz
+*.bak

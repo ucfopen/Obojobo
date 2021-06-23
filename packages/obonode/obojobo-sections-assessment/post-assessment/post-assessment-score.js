@@ -39,13 +39,12 @@ class PostAssessmentScore extends React.Component {
 		const dataFor = this.props.element.content.for
 		return (
 			<div>
-				<div className={'action-data'}>
-					<h2 contentEditable={false}>{'Score Range: ' + dataFor + ' '}</h2>
+				<div className={'action-data'} contentEditable={false}>
+					<h2>{'Score Range: ' + dataFor + ' '}</h2>
 					<button
 						className="range-edit"
 						onClick={this.showRangeModal}
 						aria-label="Edit Score Range"
-						contentEditable={false}
 					>
 						✎
 					</button>

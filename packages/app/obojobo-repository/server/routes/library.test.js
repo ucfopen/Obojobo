@@ -1,7 +1,7 @@
 jest.mock('../models/collection')
 jest.mock('../models/draft_summary')
 jest.mock('obojobo-express/server/models/user')
-jest.mock('../services/permissions')
+jest.mock('../models/draft_permissions')
 jest.mock('geopattern')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
@@ -14,6 +14,8 @@ jest.mock(
 	{ virtual: true }
 )
 
+jest.setTimeout(10000) // extend test timeout?
+
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 let GeoPattern
@@ -21,7 +23,7 @@ let GeoPattern
 let Collection
 let DraftSummary
 let UserModel
-let PermissionsServices
+let DraftPermissions
 
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
@@ -73,7 +75,7 @@ describe('repository library route', () => {
 		Collection = require('../models/collection')
 		DraftSummary = require('../models/draft_summary')
 		UserModel = require('obojobo-express/server/models/user')
-		PermissionsServices = require('../services/permissions')
+		DraftPermissions = require('../models/draft_permissions')
 	})
 
 	const expectPageTitleToBe = (response, title) => {
@@ -200,7 +202,7 @@ describe('repository library route', () => {
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce(mockUser)
 
-		PermissionsServices.userHasPermissionToCopy.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
 
 		return request(app)
 			.get(`/library/${publicLibCollectionId}`)
@@ -209,8 +211,8 @@ describe('repository library route', () => {
 				expect(DraftSummary.fetchById).toHaveBeenCalledWith(publicLibCollectionId)
 				expect(UserModel.fetchById).toHaveBeenCalledTimes(1)
 				expect(UserModel.fetchById).toHaveBeenCalledWith(99)
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					'mockDraftId'
 				)
@@ -234,7 +236,7 @@ describe('repository library route', () => {
 				expect(DraftSummary.fetchById).toHaveBeenCalledTimes(1)
 				expect(DraftSummary.fetchById).toHaveBeenCalledWith(publicLibCollectionId)
 				expect(UserModel.fetchById).not.toHaveBeenCalled()
-				expect(PermissionsServices.userHasPermissionToCopy).not.toHaveBeenCalled()
+				expect(DraftPermissions.userHasPermissionToCopy).not.toHaveBeenCalled()
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(404)
 			})
@@ -262,7 +264,7 @@ describe('repository library route', () => {
 				expect(DraftSummary.fetchById).toHaveBeenCalledWith(publicLibCollectionId)
 				expect(UserModel.fetchById).toHaveBeenCalledTimes(1)
 				expect(UserModel.fetchById).toHaveBeenCalledWith(99)
-				expect(PermissionsServices.userHasPermissionToCopy).not.toHaveBeenCalled()
+				expect(DraftPermissions.userHasPermissionToCopy).not.toHaveBeenCalled()
 				expect(response.statusCode).toBe(500)
 				expect(response.error).toHaveProperty('text', 'Server Error: database error')
 			})
@@ -289,7 +291,7 @@ describe('repository library route', () => {
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce(mockUser)
 
-		PermissionsServices.userHasPermissionToCopy.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
 
 		return request(app)
 			.get(`/library/${publicLibCollectionId}`)
@@ -297,7 +299,7 @@ describe('repository library route', () => {
 				expect(DraftSummary.fetchById).toHaveBeenCalledTimes(1)
 				expect(DraftSummary.fetchById).toHaveBeenCalledWith(publicLibCollectionId)
 				expect(UserModel.fetchById).not.toHaveBeenCalled()
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					'mockDraftId'
 				)

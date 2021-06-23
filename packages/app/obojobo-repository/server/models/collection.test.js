@@ -26,10 +26,10 @@ describe('Collection Model', () => {
 	test('constructor initializes expected default properties', () => {
 		const c = new CollectionModel({})
 
-		expect(c.id).toBe(null)
+		expect(c.id).toBeNull()
 		expect(c.title).toBe('')
-		expect(c.userId).toBe(null)
-		expect(c.createdAt).toBe(null)
+		expect(c.userId).toBeNull()
+		expect(c.createdAt).toBeNull()
 	})
 
 	test('constructor initializes expected properties from provided object', () => {
@@ -56,22 +56,19 @@ describe('Collection Model', () => {
 	})
 
 	test('fetchById returns error when no match is found in the database', () => {
-		logger.error = jest.fn()
-
 		expect.hasAssertions()
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
 
-		db.one.mockRejectedValueOnce(new Error('not found in db'))
+		db.one.mockRejectedValueOnce(mockError)
 
 		return CollectionModel.fetchById('mockCollectionId').catch(err => {
-			expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')
-			expect(err).toBeInstanceOf(Error)
-			expect(err.message).toBe('not found in db')
+			expect(logger.logError).toHaveBeenCalledWith('Collection fetchById Error', mockError)
+			expect(err).toBe(mockError)
 		})
 	})
 
 	test('createWithUser with no title returns a collection and logs its creation', () => {
-		logger.info = jest.fn()
-
 		expect.hasAssertions()
 		const userId = 1
 		const mockNewRawCollection = {
@@ -229,13 +226,14 @@ describe('Collection Model', () => {
 	})
 
 	test('loadRelatedDrafts returns errors if DraftSummary.fetchAndJoinWhere fails', () => {
-		logger.error = jest.fn()
-
+		expect.hasAssertions()
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
 		const DraftSummary = require('./draft_summary')
 		DraftSummary.fetchAndJoinWhere = jest.fn()
 
 		db.one.mockResolvedValueOnce(mockRawCollection)
-		DraftSummary.fetchAndJoinWhere.mockRejectedValueOnce(new Error('not found in db'))
+		DraftSummary.fetchAndJoinWhere.mockRejectedValueOnce(mockError)
 
 		const joinSQL = `
 			JOIN repository_map_drafts_to_collections
@@ -251,9 +249,7 @@ describe('Collection Model', () => {
 				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
 					collectionId: 'mockCollectionId'
 				})
-				expect(error).toBeInstanceOf(Error)
-				expect(error.message).toBe('not found in db')
-				expect(logger.error).toHaveBeenCalledWith('loadModules Error', 'not found in db')
+				expect(error).toBe(mockError)
 			})
 	})
 })
