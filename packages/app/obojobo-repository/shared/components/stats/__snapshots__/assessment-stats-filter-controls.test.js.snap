@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=false showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=false showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=true showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=true showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=false showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=false showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=true showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsFilterControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=true showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;

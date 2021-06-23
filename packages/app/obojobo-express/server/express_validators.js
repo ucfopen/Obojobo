@@ -26,7 +26,7 @@ const requireCurrentUser = (req, res, next, permission = null) => {
 		.requireCurrentUser()
 		.then(user => {
 			if (!user || typeof user !== 'object') throw 'Missing User'
-			if (permission && !user[permission]) throw 'Not Authorized'
+			if (permission !== null && !user.hasPermission(permission)) throw 'Not Authorized'
 			next()
 		})
 		.catch(error => {
@@ -113,6 +113,9 @@ exports.requireCanDeleteDrafts = (req, res, next) =>
 
 exports.requireCanPreviewDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canPreviewDrafts')
+
+exports.requireCanViewSystemStats = (req, res, next) =>
+	requireCurrentUser(req, res, next, 'canViewSystemStats')
 
 exports.checkValidationRules = (req, res, next) => {
 	const errors = validationResult(req)
