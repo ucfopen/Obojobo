@@ -3,11 +3,11 @@
 		"xml-formatter": "^2.4.0"
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^12.3.0",
-		"obojobo-lib-utils": "^12.3.0"
+		"obojobo-document-engine": "^13.0.0-alpha.0",
+		"obojobo-lib-utils": "^13.0.0-alpha.0"
 	},
 	"name": "obojobo-document-json-parser",
-	"version": "12.3.0",
+	"version": "13.0.0-alpha.0",
 	"license": "AGPL-3.0-only",
 	"main": "",
 	"scripts": {
