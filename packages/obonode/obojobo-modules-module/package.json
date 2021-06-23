@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-modules-module",
-	"version": "12.2.0",
+	"version": "12.3.0",
 	"license": "AGPL-3.0-only",
 	"description": "Default Module node for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^12.2.0"
+		"obojobo-lib-utils": "^12.3.0"
 	},
 	"jest": {
 		"testMatch": [
