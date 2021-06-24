@@ -15,6 +15,7 @@ Object {
   "nav:resetContext": [Function],
   "nav:setContext": [Function],
   "nav:setFlag": [Function],
+  "nav:setRedAlert": [Function],
   "nav:showChildren": [Function],
   "nav:toggle": [Function],
   "nav:unlock": [Function],
@@ -276,6 +277,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -292,6 +294,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -308,6 +311,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
