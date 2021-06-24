@@ -32,7 +32,7 @@ class MediaStore extends Store {
 	}
 
 	play(payload) {
-		const { actor, playheadPosition, url, nodeId, secondsWatched } = payload.value
+		const { actor, playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -43,14 +43,13 @@ class MediaStore extends Store {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	}
 
 	pause(payload) {
-		const { actor, playheadPosition, url, nodeId, secondsWatched } = payload.value
+		const { actor, playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -61,14 +60,13 @@ class MediaStore extends Store {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	}
 
 	end(payload) {
-		const { actor, playheadPosition, url, nodeId, secondsWatched } = payload.value
+		const { actor, playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -79,21 +77,13 @@ class MediaStore extends Store {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	}
 
 	seekTo(payload) {
-		const {
-			actor,
-			playheadPosition,
-			previousPlayheadPosition,
-			url,
-			nodeId,
-			secondsWatched
-		} = payload.value
+		const { actor, playheadPosition, previousPlayheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -105,14 +95,13 @@ class MediaStore extends Store {
 				playheadPosition,
 				previousPlayheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	}
 
 	buffer(payload) {
-		const { actor, playheadPosition, url, nodeId, secondsWatched } = payload.value
+		const { actor, playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -123,14 +112,13 @@ class MediaStore extends Store {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	}
 
 	unload(payload) {
-		const { actor, playheadPosition, url, nodeId, secondsWatched } = payload.value
+		const { actor, playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -141,8 +129,7 @@ class MediaStore extends Store {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	}

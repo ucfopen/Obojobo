@@ -116,7 +116,6 @@ describe('YouTubePlayer events', () => {
 		component.instance().currentState = {
 			actor: 'user',
 			action: 'paused',
-			secondsWatched: 15,
 			...component.instance().currentState
 		}
 
@@ -125,8 +124,7 @@ describe('YouTubePlayer events', () => {
 		expect(component.instance().currentState).toEqual(
 			expect.objectContaining({
 				actor: 'youtube',
-				action: 'unstarted',
-				secondsWatched: 0
+				action: 'unstarted'
 			})
 		)
 	})
@@ -137,7 +135,6 @@ describe('YouTubePlayer events', () => {
 		component.instance().currentState = {
 			actor: 'user',
 			action: 'paused',
-			secondsWatched: 15,
 			...component.instance().currentState
 		}
 
@@ -146,15 +143,13 @@ describe('YouTubePlayer events', () => {
 		expect(component.instance().currentState).toEqual(
 			expect.objectContaining({
 				actor: 'youtube',
-				action: 'cued',
-				secondsWatched: 0
+				action: 'cued'
 			})
 		)
 	})
 
 	test('Ended event is received', () => {
 		MediaUtil.mediaEnded = jest.fn()
-		Date.now = jest.fn().mockReturnValue(2000)
 
 		const component = mount(<YouTubePlayer />)
 		component.instance().player = player
@@ -167,8 +162,7 @@ describe('YouTubePlayer events', () => {
 		expect(component.instance().currentState).toEqual(
 			expect.objectContaining({
 				actor: 'youtube',
-				action: 'ended',
-				secondsWatched: 2
+				action: 'ended'
 			})
 		)
 		expect(MediaUtil.mediaEnded).toHaveBeenCalledTimes(1)
@@ -176,19 +170,16 @@ describe('YouTubePlayer events', () => {
 
 	test('Paused event is received', () => {
 		MediaUtil.mediaPaused = jest.fn()
-		Date.now = jest.fn().mockReturnValue(2000)
 
 		const component = mount(<YouTubePlayer />)
 		component.instance().player = player
-		component.instance().currentState.secondsWatched = 5
 
 		component.instance().onStateChange({ data: 2 })
 
 		expect(component.instance().currentState).toEqual(
 			expect.objectContaining({
 				actor: 'user',
-				action: 'paused',
-				secondsWatched: 7
+				action: 'paused'
 			})
 		)
 		expect(MediaUtil.mediaPaused).toHaveBeenCalledTimes(1)

@@ -33,8 +33,7 @@ class YouTubePlayer extends React.Component {
 			action: 'unstarted',
 			playheadPosition: 0,
 			isPossibleSeekTo: false,
-			playheadPositionBeforeSeekTo: 0,
-			secondsWatched: 0
+			playheadPositionBeforeSeekTo: 0
 		}
 	}
 
@@ -59,19 +58,8 @@ class YouTubePlayer extends React.Component {
 	componentWillUnmount() {
 		if (this.currentState.action !== 'ended') {
 			const currentPlayheadPosition = Math.floor(this.player.getCurrentTime())
-			const previousSecondsWatched = this.currentState.secondsWatched
 
-			this.previousTime = this.currentTime
-			this.currentTime = Date.now() / 1000
-			const currentSecondsWatched = previousSecondsWatched + (this.currentTime - this.previousTime)
-
-			MediaUtil.mediaUnloaded(
-				'user',
-				currentPlayheadPosition,
-				this.url,
-				this.nodeId,
-				Math.floor(currentSecondsWatched)
-			)
+			MediaUtil.mediaUnloaded('user', currentPlayheadPosition, this.url, this.nodeId)
 		}
 	}
 
@@ -133,11 +121,6 @@ class YouTubePlayer extends React.Component {
 
 	onStateChange(playerState) {
 		const currentPlayheadPosition = Math.floor(this.player.getCurrentTime())
-		const previousSecondsWatched = this.currentState.secondsWatched
-
-		this.previousTime = this.currentTime
-		this.currentTime = Date.now() / 1000
-		const currentSecondsWatched = previousSecondsWatched + (this.currentTime - this.previousTime)
 
 		switch (playerState.data) {
 			case -1: // video unstarted
@@ -146,8 +129,7 @@ class YouTubePlayer extends React.Component {
 					action: 'unstarted',
 					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
-					playheadPositionBeforeSeekTo: 0,
-					secondsWatched: 0
+					playheadPositionBeforeSeekTo: 0
 				}
 				break
 			case 0: // video ended
@@ -156,15 +138,13 @@ class YouTubePlayer extends React.Component {
 					action: 'ended',
 					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
-					playheadPositionBeforeSeekTo: 0,
-					secondsWatched: Math.floor(currentSecondsWatched)
+					playheadPositionBeforeSeekTo: 0
 				}
 				MediaUtil.mediaEnded(
 					this.currentState.actor,
 					this.currentState.playheadPosition,
 					this.url,
-					this.props.nodeId,
-					this.currentState.secondsWatched
+					this.props.nodeId
 				)
 				break
 			case 1: // video playing
@@ -177,16 +157,14 @@ class YouTubePlayer extends React.Component {
 						this.currentState.playheadPosition,
 						this.currentState.playheadPositionBeforeSeekTo,
 						this.url,
-						this.props.nodeId,
-						this.currentState.secondsWatched
+						this.props.nodeId
 					)
 				} else {
 					MediaUtil.mediaPlayed(
 						this.currentState.actor,
 						this.currentState.playheadPosition,
 						this.url,
-						this.props.nodeId,
-						this.currentState.secondsWatched
+						this.props.nodeId
 					)
 				}
 				break
@@ -196,16 +174,14 @@ class YouTubePlayer extends React.Component {
 					action: 'paused',
 					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: this.currentState.playheadPosition !== currentPlayheadPosition,
-					playheadPositionBeforeSeekTo: this.currentState.playheadPosition,
-					secondsWatched: Math.floor(currentSecondsWatched)
+					playheadPositionBeforeSeekTo: this.currentState.playheadPosition
 				}
 
 				MediaUtil.mediaPaused(
 					this.currentState.actor,
 					this.currentState.playheadPosition,
 					this.url,
-					this.props.nodeId,
-					this.currentState.secondsWatched
+					this.props.nodeId
 				)
 				break
 			case 3: // video buffering
@@ -219,14 +195,12 @@ class YouTubePlayer extends React.Component {
 
 				this.currentState.action = 'buffering'
 				this.currentState.playheadPosition = currentPlayheadPosition
-				this.currentState.secondsWatched = Math.floor(currentSecondsWatched)
 
 				MediaUtil.mediaBuffering(
 					this.currentState.actor,
 					this.currentState.playheadPosition,
 					this.url,
-					this.props.nodeId,
-					this.currentState.secondsWatched
+					this.props.nodeId
 				)
 				break
 			case 5: // video cued
@@ -235,8 +209,7 @@ class YouTubePlayer extends React.Component {
 					action: 'cued',
 					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
-					playheadPositionBeforeSeekTo: 0,
-					secondsWatched: 0
+					playheadPositionBeforeSeekTo: 0
 				}
 				break
 		}

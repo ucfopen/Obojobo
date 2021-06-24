@@ -4,76 +4,70 @@ import { DEFAULT_ZOOM } from '../stores/media-store/media-constants'
 const { Dispatcher } = Common.flux
 
 const MediaUtil = {
-	mediaPlayed(actor, playheadPosition, url, nodeId, secondsWatched) {
+	mediaPlayed(actor, playheadPosition, url, nodeId) {
 		// console.log(nodeId)
 		return Dispatcher.trigger('media:play', {
 			value: {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	},
 
-	mediaPaused(actor, playheadPosition, url, nodeId, secondsWatched) {
+	mediaPaused(actor, playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:pause', {
 			value: {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	},
 
-	mediaEnded(actor, playheadPosition, url, nodeId, secondsWatched) {
+	mediaEnded(actor, playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:end', {
 			value: {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	},
 
-	mediaSeekTo(actor, playheadPosition, previousPlayheadPosition, url, nodeId, secondsWatched) {
+	mediaSeekTo(actor, playheadPosition, previousPlayheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:seekTo', {
 			value: {
 				actor,
 				playheadPosition,
 				previousPlayheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	},
 
-	mediaBuffering(actor, playheadPosition, url, nodeId, secondsWatched) {
+	mediaBuffering(actor, playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:buffer', {
 			value: {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	},
 
-	mediaUnloaded(actor, playheadPosition, url, nodeId, secondsWatched) {
+	mediaUnloaded(actor, playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:unload', {
 			value: {
 				actor,
 				playheadPosition,
 				url,
-				nodeId,
-				secondsWatched
+				nodeId
 			}
 		})
 	},
