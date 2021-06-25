@@ -30,7 +30,8 @@ describe('PageModule', () => {
 			id: 99,
 			avatarUrl: '/path/to/avatar/img',
 			firstName: 'firstName',
-			lastName: 'lastName'
+			lastName: 'lastName',
+			perms: []
 		}
 
 		mockModule = {

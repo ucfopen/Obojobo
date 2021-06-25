@@ -261,7 +261,7 @@ describe('api visits route', () => {
 	test('/start in preview works and doesnt care about matching draft_content_ids', () => {
 		expect.assertions(4)
 		mockCurrentVisit.is_preview = true
-		mockCurrentUser = { id: 99, canViewEditor: true }
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' }
 		mockCurrentDocument = {
 			draftId: validUUID(),
 			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),

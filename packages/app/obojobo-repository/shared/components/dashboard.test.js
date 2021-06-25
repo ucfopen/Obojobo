@@ -26,6 +26,7 @@ import ReactModal from 'react-modal'
 import ModulePermissionsDialog from './module-permissions-dialog'
 import ModuleOptionsDialog from './module-options-dialog'
 import VersionHistoryDialog from './version-history-dialog'
+import AssessmentScoreDataDialog from './assessment-score-data-dialog'
 
 describe('Dashboard', () => {
 	const standardMyModules = [
@@ -93,7 +94,14 @@ describe('Dashboard', () => {
 				id: 99,
 				avatarUrl: '/path/to/avatar',
 				firstName: 'firstName',
-				lastName: 'lastName'
+				lastName: 'lastName',
+				perms: [
+					'canViewEditor',
+					'canEditDrafts',
+					'canDeleteDrafts',
+					'canCreateDrafts',
+					'canPreviewDrafts'
+				]
 			},
 
 			dialog: null,
@@ -114,6 +122,11 @@ describe('Dashboard', () => {
 				items: []
 			},
 			versionHistory: {
+				isFetching: false,
+				hasFetched: false,
+				items: []
+			},
+			attempts: {
 				isFetching: false,
 				hasFetched: false,
 				items: []
@@ -388,6 +401,8 @@ describe('Dashboard', () => {
 		expect(dashboardProps.importModuleFile).toHaveBeenCalledTimes(1)
 		dashboardProps.importModuleFile.mockReset()
 
+		handleClick.mockRestore()
+
 		component.unmount()
 	})
 
@@ -609,6 +624,25 @@ describe('Dashboard', () => {
 
 		dialogComponent.props.restoreVersion()
 		expect(dashboardProps.restoreVersion).toHaveBeenCalledTimes(1)
+
+		dialogComponent.props.onClose()
+		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)
+
+		component.unmount()
+	})
+
+	test('renders "Assessment Scores" dialog and runs callbacks properly', () => {
+		dashboardProps.dialog = 'module-assessment-score-data'
+		dashboardProps.selectedModule.title = 'Mock Module Title'
+
+		let component
+		act(() => {
+			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		expectDialogToBeRendered(component, AssessmentScoreDataDialog, 'Module Assessment Score Data')
+		const dialogComponent = component.root.findByType(AssessmentScoreDataDialog)
+		expect(dialogComponent.props.title).toBe('Mock Module Title - Assessment Scores')
 
 		dialogComponent.props.onClose()
 		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)

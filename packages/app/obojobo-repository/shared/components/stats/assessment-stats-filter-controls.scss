@@ -1,0 +1,31 @@
+@import '../../../client/css/defaults';
+
+.repository--assessment-stats-filter-controls {
+	width: 100%;
+
+	hr {
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		input {
+			margin-right: 0.5em;
+			margin-left: 0;
+		}
+
+		label {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+
+			span {
+				white-space: nowrap;
+			}
+		}
+	}
+}

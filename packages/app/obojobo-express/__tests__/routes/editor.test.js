@@ -50,7 +50,7 @@ app.use('/', oboRequire('server/routes/editor'))
 describe('editor route', () => {
 	beforeEach(() => {
 		db.any.mockReset()
-		mockCurrentUser = { id: 99, canViewEditor: true } // should meet auth requirements
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // should meet auth requirements
 		mockCurrentDocument = {}
 	})
 
@@ -73,7 +73,7 @@ describe('editor route', () => {
 
 	test('get visual editor rejects users without canViewEditor permission', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
+		mockCurrentUser = { id: 99, hasPermission: () => false } // shouldn't meet auth requirements
 		mockCurrentUser.isGuest = () => false
 		return request(app)
 			.get('/visual/draft/mockId')
@@ -86,7 +86,7 @@ describe('editor route', () => {
 
 	test('get visual editor rejects without canViewEditor access', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
+		mockCurrentUser = { id: 99, hasPermission: () => false } // shouldn't meet auth requirements
 		mockCurrentUser.isGuest = () => false
 		return request(app)
 			.get('/visual/draft/mockId')
@@ -99,7 +99,7 @@ describe('editor route', () => {
 
 	test('get visual editor handles readOnly setting', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // should meet auth requirements
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // should meet auth requirements
 		mockCurrentUser.isGuest = () => false
 
 		return request(app)

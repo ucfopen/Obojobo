@@ -66,10 +66,7 @@ describe('repository library route', () => {
 		jest.resetAllMocks()
 		mockCurrentUser = {
 			id: 99,
-			canViewEditor: true,
-			canPreviewDrafts: true,
-			canCreateDrafts: true,
-			canDeleteDrafts: true
+			perms: []
 		}
 		trianglify = require('trianglify')
 		trianglify.mockReturnValue({

@@ -13,6 +13,7 @@ const {
 	bulkDeleteModules,
 	showModulePermissions,
 	showVersionHistory,
+	showAssessmentScoreData,
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock
@@ -31,6 +32,7 @@ const mapActionsToProps = {
 	bulkDeleteModules,
 	showModulePermissions,
 	showVersionHistory,
+	showAssessmentScoreData,
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock

@@ -23,6 +23,7 @@ const {
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
+	SHOW_ASSESSMENT_SCORE_DATA,
 	RESTORE_VERSION
 } = require('../actions/dashboard-actions')
 
@@ -609,6 +610,54 @@ describe('Dashboard Reducer', () => {
 			isFetching: false,
 			hasFetched: true,
 			items: mockHistoryItems
+		})
+	})
+
+	test('SHOW_ASSESSMENT_SCORE_DATA action modifies state correctly', () => {
+		const initialState = {
+			assessmentStats: {
+				isFetching: false,
+				hasFetched: false,
+				items: []
+			}
+		}
+
+		const mockAttemptItems = [
+			{
+				id: 'mockAttemptId1'
+			},
+			{
+				id: 'mockAttemptId2'
+			},
+			{
+				id: 'mockAttemptId3'
+			}
+		]
+		const action = {
+			type: SHOW_ASSESSMENT_SCORE_DATA,
+			payload: mockAttemptItems,
+			meta: {
+				module: jest.fn()
+			}
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+		let newState
+
+		newState = handleStart(handler)
+		expect(newState.attempts).toEqual({
+			isFetching: true,
+			hasFetched: false,
+			items: []
+		})
+
+		newState = handleSuccess(handler)
+		expect(newState.attempts).not.toEqual(initialState.attempts)
+		expect(newState.attempts).toEqual({
+			isFetching: false,
+			hasFetched: true,
+			items: mockAttemptItems
 		})
 	})
 

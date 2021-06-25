@@ -267,6 +267,9 @@ describe('render-settings', () => {
 		expect(t({ src: 'src', title: null })).toBe('src')
 		expect(t({ src: 'src', title: 'title' })).toBe('title')
 		expect(t({ src: false, title: null })).toBe('')
+		expect(
+			t({ src: 'mockVeryLongSrcThatHasManyCharsAndExceedsTheMaxDisplaySize', title: null })
+		).toBe('mockVeryLongSrcThatHasManyCharsAndExceedsTheMaxDis...')
 	})
 
 	test('getAriaRegionLabel', () => {

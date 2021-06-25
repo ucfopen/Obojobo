@@ -80,7 +80,7 @@ describe('repository dashboard route', () => {
 		jest.resetAllMocks()
 		mockCurrentUser = {
 			id: 99,
-			canPreviewDrafts: true
+			hasPermission: perm => perm === 'canPreviewDrafts'
 		}
 		DraftSummary = require('../models/draft_summary')
 

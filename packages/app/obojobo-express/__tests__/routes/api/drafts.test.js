@@ -72,7 +72,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns xml without conversion for non-json modules when accept header is xml', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 		// mock the document returned by fetchById
@@ -103,7 +103,7 @@ describe('api draft route', () => {
 
 	test('get full draft converts json to xml for json modules when accept header is xml', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
@@ -136,7 +136,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns json for json modules when accept headers is json', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
@@ -168,7 +168,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns a specific version when requested', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
@@ -206,7 +206,7 @@ describe('api draft route', () => {
 
 	test('get full draft errors on invalid contentId query value', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
@@ -242,7 +242,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns json for json modules when accept header is something weird', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
@@ -274,7 +274,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns json for xml modules when accept header is json', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
@@ -305,7 +305,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns json for xml modules when accept header is something weird', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
@@ -336,7 +336,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user does not have canViewEditor rights', () => {
 		expect.assertions(4)
-		mockCurrentUser = { id: 99, canViewEditor: false } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: () => false } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 		// mock the document returned by fetchById
@@ -358,7 +358,7 @@ describe('api draft route', () => {
 	test('get full draft returns 401 if user is not the author', () => {
 		expect.assertions(5)
 		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
-		mockCurrentUser = { id: 88, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 88, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 		// mock the document returned by fetchById
@@ -384,7 +384,7 @@ describe('api draft route', () => {
 	test('get full draft returns 401 if user does not have canViewEditor rights AND is not the author', () => {
 		expect.assertions(4)
 		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
-		mockCurrentUser = { id: 88, canViewEditor: false } // mock current logged in user
+		mockCurrentUser = { id: 88, hasPermission: () => false } // mock current logged in user
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -398,7 +398,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 404 when no items found', () => {
 		expect.assertions(5)
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a failure to find the draft
 		const mockError = new pgp.errors.QueryResultError(
 			pgp.errors.queryResultErrorCode.noData,
@@ -499,7 +499,7 @@ describe('api draft route', () => {
 
 	test('new draft returns success', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.then(response => {
@@ -513,7 +513,7 @@ describe('api draft route', () => {
 
 	test('new draft with "application/json" returns success', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 
 		return request(app)
 			.post('/api/drafts/new')
@@ -529,7 +529,7 @@ describe('api draft route', () => {
 
 	test('new draft with "application/xml" returns success', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		xml.mockReturnValueOnce({})
 
 		return request(app)
@@ -550,7 +550,7 @@ describe('api draft route', () => {
 
 	test('new draft with invalid xml', () => {
 		expect.assertions(5)
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		xml.mockReturnValueOnce(null)
 
 		return request(app)
@@ -568,7 +568,7 @@ describe('api draft route', () => {
 
 	test('new draft with invalid xml', () => {
 		expect.assertions(5)
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		xml.mockImplementation(() => {
 			throw new Error()
 		})
@@ -588,7 +588,7 @@ describe('api draft route', () => {
 
 	test('new draft requires a login', () => {
 		expect.assertions(5)
-		mockCurrentUser = { id: 99, canCreateDrafts: false } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: () => false } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.then(response => {
@@ -603,7 +603,7 @@ describe('api draft route', () => {
 	test('new draft 500s when createWithContent fails', () => {
 		expect.assertions(5)
 		DraftModel.createWithContent.mockRejectedValueOnce()
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.then(response => {
@@ -619,7 +619,7 @@ describe('api draft route', () => {
 
 	test('new tutorial returns success', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/tutorial')
 			.then(response => {
@@ -633,7 +633,7 @@ describe('api draft route', () => {
 
 	test('new tutorial requires a login', () => {
 		expect.assertions(5)
-		mockCurrentUser = { id: 99, canCreateDrafts: false } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: () => false } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/tutorial')
 			.then(response => {
@@ -648,7 +648,7 @@ describe('api draft route', () => {
 	test('new draft 500s when createWithContent fails', () => {
 		expect.assertions(5)
 		DraftModel.createWithContent.mockRejectedValueOnce()
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/tutorial')
 			.then(response => {
@@ -665,7 +665,7 @@ describe('api draft route', () => {
 	test('updating a draft with xml returns successfully', () => {
 		expect.assertions(5)
 		xml.mockReturnValueOnce({})
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -685,7 +685,7 @@ describe('api draft route', () => {
 
 	test('updating a draft with json returns successfully', () => {
 		expect.assertions(3)
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -703,7 +703,7 @@ describe('api draft route', () => {
 	test('updating a draft errors when xmlToDraftObject returns invalid object', () => {
 		expect.assertions(6)
 		xml.mockImplementationOnce(null)
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
@@ -727,7 +727,7 @@ describe('api draft route', () => {
 		xml.mockImplementationOnce(() => {
 			throw 'some-error'
 		})
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
@@ -748,7 +748,7 @@ describe('api draft route', () => {
 
 	test('updating a draft requires canCreateDrafts', () => {
 		expect.assertions(5)
-		mockCurrentUser = { id: 99, canCreateDrafts: false } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: () => false } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
@@ -766,7 +766,7 @@ describe('api draft route', () => {
 	test('update draft detects duplicate ids', () => {
 		expect.assertions(5)
 		xml.mockReturnValueOnce({})
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		DraftModel.findDuplicateIds.mockReturnValueOnce('duplicate-id') // mock the findDuplicateIds method
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -788,7 +788,7 @@ describe('api draft route', () => {
 	test('updating 500s when findDuplicateIds errors', () => {
 		expect.assertions(5)
 		xml.mockReturnValueOnce({})
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		DraftModel.findDuplicateIds.mockImplementationOnce(() => {
 			throw 'oh no'
 		}) // mock the findDuplicateIds method
@@ -810,7 +810,7 @@ describe('api draft route', () => {
 
 	test('delete errors with permissions before draftID validation', () => {
 		expect.assertions(4)
-		mockCurrentUser = { id: 99, canDeleteDrafts: false }
+		mockCurrentUser = { id: 99, hasPermission: () => false }
 		return request(app)
 			.delete('/api/drafts/6')
 			.then(response => {
@@ -825,7 +825,7 @@ describe('api draft route', () => {
 
 	test('delete rejects draft ids that arent UUIDs', () => {
 		expect.assertions(6)
-		mockCurrentUser = { id: 99, canDeleteDrafts: true }
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' }
 		return request(app)
 			.delete('/api/drafts/6')
 			.type('application/json')
@@ -842,7 +842,7 @@ describe('api draft route', () => {
 	test('delete draft returns successfully', () => {
 		expect.assertions(4)
 		DraftModel.deleteByIdAndUser.mockResolvedValueOnce('mock-db-result')
-		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.then(response => {
@@ -856,7 +856,7 @@ describe('api draft route', () => {
 	test('delete 500s when the database errors', () => {
 		expect.assertions(5)
 		DraftModel.deleteByIdAndUser.mockRejectedValueOnce('oh no')
-		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.then(response => {

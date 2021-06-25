@@ -18,6 +18,9 @@ Array [
     "firstName": "Roger",
     "id": 3,
     "lastName": "Wilco",
+    "perms": Array [
+      "canDoThing",
+    ],
     "roles": Array [
       "roleName",
       "otherRoleName",
@@ -33,6 +36,7 @@ Object {
   "firstName": "Guest",
   "id": 5,
   "lastName": "Guest",
+  "perms": Array [],
   "roles": Array [],
   "username": "guest",
 }
@@ -42,7 +46,9 @@ exports[`user model fetchById fetches one from the database 2`] = `
 Array [
   "
 				SELECT *
-				FROM users
+				FROM users U
+				LEFT JOIN user_perms P
+				ON U.id = P.user_id
 				WHERE id =  $[userId]
 				",
   Object {
@@ -69,6 +75,9 @@ Array [
     "firstName": "Roger",
     "id": 10,
     "lastName": "Wilco",
+    "perms": Array [
+      "canDoThing",
+    ],
     "roles": Array [
       "roleName",
       "otherRoleName",

@@ -10,7 +10,8 @@ const {
 	requireCurrentUser,
 	requireCurrentDocument,
 	checkValidationRules,
-	check
+	check,
+	requireCanViewSystemStats
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
@@ -33,6 +34,15 @@ router
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
 		return DraftSummary.fetchByUserId(req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+router
+	.route('/drafts-all')
+	.get([requireCurrentUser, requireCanViewSystemStats])
+	.get((req, res) => {
+		return DraftSummary.fetchAll()
 			.then(res.success)
 			.catch(res.unexpected)
 	})

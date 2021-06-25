@@ -21,6 +21,7 @@ app.on('mount', app => {
 	app.use('/api', require('./routes/api'))
 	app.use('/', require('./routes/dashboard'))
 	app.use('/', require('./routes/library'))
+	app.use('/', require('./routes/stats'))
 
 	// register the event listeners
 	require('./events')

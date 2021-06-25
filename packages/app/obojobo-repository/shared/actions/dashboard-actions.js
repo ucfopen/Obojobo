@@ -1,6 +1,8 @@
 const debouncePromise = require('debounce-promise')
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
+const { apiGetAssessmentDetailsForDraft } = require('./shared-api-methods')
+
 dayjs.extend(advancedFormat)
 // =================== API =======================
 
@@ -74,7 +76,7 @@ const apiGetVersionHistory = async draftId => {
 	// convert the result to what we need
 	return history.map((draft, index) => ({
 		createdAt: new Date(draft.createdAt),
-		createdAtDisplay: dayjs(draft.createdAt).format('MMMM Do - h:mm A'),
+		createdAtDisplay: dayjs(draft.createdAt).format('MMM Do YYYY - h:mm A'),
 		id: draft.revisionId,
 		username: draft.userFullName,
 		selected: index === 0,
@@ -144,6 +146,13 @@ const showVersionHistory = module => ({
 	type: SHOW_VERSION_HISTORY,
 	meta: { module },
 	promise: apiGetVersionHistory(module.draftId)
+})
+
+const SHOW_ASSESSMENT_SCORE_DATA = 'SHOW_ASSESSMENT_SCORE_DATA'
+const showAssessmentScoreData = module => ({
+	type: SHOW_ASSESSMENT_SCORE_DATA,
+	meta: { module },
+	promise: apiGetAssessmentDetailsForDraft(module.draftId)
 })
 
 const RESTORE_VERSION = 'RESTORE_VERSION'
@@ -305,6 +314,7 @@ module.exports = {
 	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
+	SHOW_ASSESSMENT_SCORE_DATA,
 	filterModules,
 	selectModules,
 	deselectModules,
@@ -322,5 +332,6 @@ module.exports = {
 	showVersionHistory,
 	restoreVersion,
 	importModuleFile,
-	checkModuleLock
+	checkModuleLock,
+	showAssessmentScoreData
 }

@@ -18,7 +18,8 @@ const {
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
-	RESTORE_VERSION
+	RESTORE_VERSION,
+	SHOW_ASSESSMENT_SCORE_DATA
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -177,6 +178,28 @@ function DashboardReducer(state, action) {
 				success: prevState => ({
 					...prevState,
 					versionHistory: {
+						isFetching: false,
+						hasFetched: true,
+						items: action.payload
+					}
+				})
+			})
+
+		case SHOW_ASSESSMENT_SCORE_DATA:
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					dialog: 'module-assessment-score-data',
+					selectedModule: action.meta.module,
+					attempts: {
+						isFetching: true,
+						hasFetched: false,
+						items: []
+					}
+				}),
+				success: prevState => ({
+					...prevState,
+					attempts: {
 						isFetching: false,
 						hasFetched: true,
 						items: action.payload
