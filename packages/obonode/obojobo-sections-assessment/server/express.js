@@ -235,16 +235,16 @@ router
 				if (!currentUserHasPermissionToDraft) {
 					const anonUUIDsByUserId = {}
 					attemptsDetails = attemptsDetails.map(attemptDetails => {
-						if (!anonUUIDsByUserId[attemptDetails.userId]) {
-							anonUUIDsByUserId[attemptDetails.userId] = uuid()
+						if (!anonUUIDsByUserId[attemptDetails.user_id]) {
+							anonUUIDsByUserId[attemptDetails.user_id] = uuid()
 						}
 
-						const userAnonUUID = anonUUIDsByUserId[attemptDetails.userId]
+						const userAnonUUID = anonUUIDsByUserId[attemptDetails.user_id]
 
-						attemptDetails.userUsername = `(anonymized-${userAnonUUID})`
-						attemptDetails.userFirstName = `(anonymized-${userAnonUUID})`
-						attemptDetails.userLastName = `(anonymized-${userAnonUUID})`
-						attemptDetails.userId = `(anonymized-${userAnonUUID})`
+						attemptDetails.user_username = `(anonymized-${userAnonUUID})`
+						attemptDetails.user_first_name = `(anonymized-${userAnonUUID})`
+						attemptDetails.user_last_name = `(anonymized-${userAnonUUID})`
+						attemptDetails.user_id = `(anonymized-${userAnonUUID})`
 
 						return attemptDetails
 					})
