@@ -473,10 +473,10 @@ describe('server/express', () => {
 		expect.hasAssertions()
 		const mockReturnValue = [
 			{
-				userUsername: 'Test',
-				userFirstName: 'First',
-				userLastName: 'Last',
-				userId: 'user-id'
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
 			}
 		]
 		requireCurrentUser.mockImplementationOnce((req, res, next) => {
@@ -515,10 +515,10 @@ describe('server/express', () => {
 		expect.hasAssertions()
 		const mockReturnValue = [
 			{
-				userUsername: 'Test',
-				userFirstName: 'First',
-				userLastName: 'Last',
-				userId: 'user-id'
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
 			}
 		]
 		requireCurrentUser.mockImplementationOnce((req, res, next) => {
@@ -557,24 +557,24 @@ describe('server/express', () => {
 		expect.hasAssertions()
 		const mockReturnValue = [
 			{
-				userUsername: 'Test',
-				userFirstName: 'First',
-				userLastName: 'Last',
-				userId: 'user-id',
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id',
 				attemptId: 'attempt-1'
 			},
 			{
-				userUsername: 'Test2',
-				userFirstName: 'First2',
-				userLastName: 'Last2',
+				user_username: 'Test2',
+				user_first_name: 'First2',
+				user_last_name: 'Last2',
 				userId: 'user-id2',
 				attemptId: 'attempt-2'
 			},
 			{
-				userUsername: 'Test',
-				userFirstName: 'First',
-				userLastName: 'Last',
-				userId: 'user-id',
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id',
 				attemptId: 'attempt-3'
 			}
 		]
@@ -629,10 +629,10 @@ describe('server/express', () => {
 		expect.hasAssertions()
 		const mockReturnValue = [
 			{
-				userUsername: 'Test',
-				userFirstName: 'First',
-				userLastName: 'Last',
-				userId: 'user-id'
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
 			}
 		]
 		requireCurrentUser.mockImplementationOnce((req, res, next) => {
