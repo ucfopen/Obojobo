@@ -13,17 +13,41 @@
 	> .input-section {
 		> .input-container {
 			display: flex;
+			align-items: center;
 
 			> .numeric-assessment--input {
 				@include text-input();
 
 				width: 11.3em;
 				height: 1.5em;
-				align-self: center;
 
 				&:disabled {
 					background: transparentize($color-bg, 0.3);
 					border: 1px solid $color-transparent;
+				}
+			}
+
+			> .result-symbol {
+				width: 0;
+				position: relative;
+			}
+
+			> .review-flag {
+				width: 0;
+				z-index: $z-index-above-content;
+
+				> .obojobo-draft--components--flag {
+					position: relative;
+					left: -9.5em;
+
+					@include mq($until: desktop) {
+						top: -2em;
+						left: -9em;
+					}
+
+					@include mq($until: tablet) {
+						left: -7em;
+					}
 				}
 			}
 
@@ -77,17 +101,6 @@
 				margin-top: 1em;
 				display: inline-block;
 			}
-
-			> .obojobo-draft--components--flag {
-				position: absolute;
-				left: -5.3em;
-				top: 1.1em;
-
-				&.is-size-small {
-					left: -1.9em;
-					top: 0.3em;
-				}
-			}
 		}
 	}
 
@@ -111,27 +124,29 @@
 	&.is-correct {
 		background: transparentize($color-correct, 0.9);
 
-		&.is-mode-practice::before {
-			content: '✔';
-			position: absolute;
-			top: 50%;
-			display: block;
-			color: $color-correct;
-			font-size: 2.5em;
-			transform: translate(-50%, -55%);
-			left: 0.6em;
-			animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+		&.is-mode-practice {
+			.input-container {
+				.result-symbol::before {
+					content: '✔';
+					position: relative;
+					display: block;
+					color: $color-correct;
+					font-size: 2.5em;
+					left: -1em;
+					animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
 
-			@include mq($until: desktop) {
-				font-size: 1.5em;
-				top: 1.3em;
-				left: 0.8em;
-			}
+					@include mq($until: desktop) {
+						font-size: 1.5em;
+						left: -1.1em;
+					}
 
-			@include mq($until: tablet) {
-				font-size: 1.2em;
-				top: 0.6em;
-				left: 0.7em;
+					@include mq($until: tablet) {
+						font-size: 1.2em;
+						position: relative;
+						left: -0.5em;
+						transform: translateY(-110%);
+					}
+				}
 			}
 		}
 	}
@@ -139,27 +154,29 @@
 	&.is-not-correct {
 		background: transparentize($color-incorrect, 0.9);
 
-		&.is-mode-practice::before {
-			content: '✖';
-			position: absolute;
-			top: 50%;
-			display: block;
-			color: $color-incorrect;
-			font-size: 2.5em;
-			transform: translate(-50%, -55%);
-			left: 0.6em;
-			animation: obojobo-draft--animation--fadein 0.4s;
+		&.is-mode-practice {
+			.input-container {
+				.result-symbol::before {
+					content: '✖';
+					position: relative;
+					display: block;
+					color: $color-incorrect;
+					font-size: 2.5em;
+					left: -1em;
+					animation: obojobo-draft--animation--fadein 0.4s;
 
-			@include mq($until: desktop) {
-				font-size: 1.5em;
-				top: 1.3em;
-				left: 0.75em;
-			}
+					@include mq($until: desktop) {
+						font-size: 1.5em;
+						left: -1.1em;
+					}
 
-			@include mq($until: tablet) {
-				font-size: 1.2em;
-				top: 0.5em;
-				left: 0.5em;
+					@include mq($until: tablet) {
+						font-size: 1.2em;
+						position: relative;
+						left: -0.5em;
+						transform: translateY(-110%);
+					}
+				}
 			}
 		}
 	}

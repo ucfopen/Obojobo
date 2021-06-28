@@ -6,6 +6,7 @@
 	left: 0.8em;
 	top: 50%;
 	transform: translateY(-50%);
+	z-index: $z-index-above-all;
 
 	.container {
 		font-family: $font-default;
@@ -45,5 +46,14 @@
 				}
 			}
 		}
+	}
+
+	@include mq($until: desktop) {
+		left: 0.4em;
+	}
+
+	@include mq($until: tablet) {
+		left: 0.1em;
+		transform: translateY(-165%);
 	}
 }
