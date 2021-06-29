@@ -157,7 +157,11 @@ const ColorPicker = props => {
 						onChange={onChangeColorValue}
 						placeholder="#000000"
 					/>
-					<Button className="ok-button" disabled={userColorString !== '' && safeColorString === ''}>
+					<Button
+						className="ok-button"
+						disabled={userColorString !== '' && safeColorString === ''}
+						onClick={onSubmit}
+					>
 						OK
 					</Button>
 				</form>
