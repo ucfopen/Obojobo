@@ -28,10 +28,11 @@ class IFrame extends React.Component {
 		this.focusIframe = this.focusIframe.bind(this)
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 		this.changeProperties = this.changeProperties.bind(this)
-		this.showNewIframeModal = this.showNewIframeModal.bind(this)
+		this.openNewIframeModal = this.openNewIframeModal.bind(this)
 		this.openEditIframeModal = this.openEditIframeModal.bind(this)
 		this.onCloseAnIFrameModal = this.onCloseAnIFrameModal.bind(this)
 		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+		this.decideWhichModalToOpen = this.decideWhichModalToOpen.bind(this)
 	}
 
 	focusIframe() {
@@ -43,9 +44,29 @@ class IFrame extends React.Component {
 		})
 	}
 
-	showNewIframeModal(event, src) {
+	decideWhichModalToOpen(event, src) {
 		event.preventDefault()
 		event.stopPropagation()
+
+		// This function should only be called with the second param 'src'
+		// if the NewIframeModal is opened by the EditIFrameModal (through
+		// the 'Change...' button)
+		if (src) {
+			this.openNewIframeModal(src)
+			return
+		}
+
+		// If IFrame contains a previously set src, opens EditIFrameModal instead
+		// of NewIFrameModal
+		if (this.props.element.content.src) {
+			this.openEditIframeModal(this.props.element.content)
+			return
+		}
+
+		this.openNewIframeModal()
+	}
+
+	openNewIframeModal(src) {
 		const content = Object.assign({}, this.props.element.content)
 		content.src = src
 
@@ -70,13 +91,15 @@ class IFrame extends React.Component {
 		this.onCloseAnIFrameModal()
 
 		// Opens edit IFrame modal
-		content.src = content.srcFormatted
 		ModalUtil.show(
 			<EditIframeModal
-				content={content}
+				content={{
+					...content,
+					src: content.srcFormatted ? content.srcFormatted : content.src
+				}}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseAnIFrameModal}
-				goBack={this.showNewIframeModal}
+				goBack={this.decideWhichModalToOpen}
 			/>
 		)
 
@@ -171,7 +194,7 @@ class IFrame extends React.Component {
 							</span>
 							<Button
 								className="properties-button"
-								onClick={this.showNewIframeModal}
+								onClick={this.decideWhichModalToOpen}
 								onKeyDown={this.returnFocusOnTab}
 								tabIndex={selected ? 0 : -1}
 							>

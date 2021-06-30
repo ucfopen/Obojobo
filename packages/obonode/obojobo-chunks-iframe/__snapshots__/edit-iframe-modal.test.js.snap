@@ -81,6 +81,8 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -101,6 +103,8 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -143,9 +147,12 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -173,9 +180,16 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -200,9 +214,11 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -253,7 +269,7 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -410,7 +426,7 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -617,6 +633,8 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -637,6 +655,8 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -679,9 +699,12 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -709,9 +732,16 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -736,9 +766,11 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -789,7 +821,7 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -946,7 +978,7 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -1153,6 +1185,8 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -1173,6 +1207,8 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -1215,9 +1251,12 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -1245,9 +1284,16 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -1272,9 +1318,11 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -1325,7 +1373,7 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -1482,7 +1530,7 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -1689,6 +1737,8 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -1709,6 +1759,8 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -1751,9 +1803,12 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -1781,9 +1836,16 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -1808,9 +1870,11 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -1861,7 +1925,7 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -2225,6 +2289,8 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -2245,6 +2311,8 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -2287,9 +2355,12 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -2317,9 +2388,16 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -2344,9 +2422,11 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -2397,7 +2477,7 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -2554,7 +2634,7 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -2761,6 +2841,8 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -2781,6 +2863,8 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -2823,9 +2907,12 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -2853,9 +2940,16 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -2880,9 +2974,11 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -2933,7 +3029,7 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -3090,7 +3186,7 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -3297,6 +3393,8 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -3317,6 +3415,8 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -3359,9 +3459,12 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -3389,9 +3492,16 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -3416,9 +3526,11 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -3469,7 +3581,7 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -3644,6 +3756,8 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -3664,6 +3778,8 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -3706,9 +3822,12 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -3736,9 +3855,16 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -3763,9 +3889,11 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -3816,7 +3944,7 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -3985,6 +4113,8 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -4005,6 +4135,8 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -4047,9 +4179,12 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -4077,9 +4212,16 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -4104,9 +4246,11 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -4157,7 +4301,7 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -4314,7 +4458,7 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -4521,6 +4665,8 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -4541,6 +4687,8 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -4583,9 +4731,12 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -4613,9 +4764,16 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -4640,9 +4798,11 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -4693,7 +4853,7 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -4850,7 +5010,7 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -4976,19 +5136,19 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
 </div>
 `;
 
-exports[`EditIframeModal EditIFrameModal component changes content type 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\" checked=\\"\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student sees IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`EditIframeModal EditIFrameModal component changes content type 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\" style=\\"background-color: rgb(229, 217, 227); color: rgb(103, 20, 189);\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\" checked=\\"\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student clicks IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`EditIframeModal EditIFrameModal component changes height 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\" checked=\\"\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Close dimensions</span></button></div></div><div class=\\"dimensions-container\\"><div class=\\"left-padding\\"></div><div class=\\"dimensions\\"><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"pixels\\">px <span class=\\"lighter\\">×</span></span><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"999\\"><span class=\\"pixels\\">px</span></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student sees IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`EditIframeModal EditIFrameModal component changes height 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\" style=\\"background-color: rgb(229, 217, 227); color: rgb(103, 20, 189);\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\" checked=\\"\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Close dimensions</span></button></div></div><div class=\\"dimensions-container\\"><div class=\\"left-padding\\"></div><div class=\\"dimensions\\"><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"--\\" aria-label=\\"Width\\" disabled=\\"\\" value=\\"\\"><span class=\\"pixels\\">px <span class=\\"lighter\\">×</span></span><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"999\\"><span class=\\"pixels\\">px</span></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student clicks IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`EditIframeModal EditIFrameModal component changes initial zoom 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\" checked=\\"\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student sees IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Close advanced options</span></button><div class=\\"advanced-options\\"><div class=\\"fit-container\\"><label for=\\"select-fit\\">Fit:</label><select id=\\"select-fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div class=\\"initial-zoom-container\\"><label for=\\"initial-zoom\\">Initial <br> Zoom:</label><input id=\\"initial-zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"333\\"></div><p class=\\"title\\">Controls</p><div class=\\"controls\\"><div class=\\"border-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">Border</span><br><small>Adds a border around your embedded IFrame</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div><div class=\\"reload-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">Reload</span><br><small>Adds a control option to reload the contents of the IFrame</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div><div class=\\"new-window-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">New Window</span><br><small>Allows the IFrame to be opened in a new window</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div><div class=\\"zoom-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">Zoom</span><br><small>Allows students to zoom in and out on the IFrame contents</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div></div></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`EditIframeModal EditIFrameModal component changes initial zoom 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\" style=\\"background-color: rgb(229, 217, 227); color: rgb(103, 20, 189);\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\" checked=\\"\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student clicks IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Close advanced options</span></button><div class=\\"advanced-options\\"><div class=\\"fit-container\\"><label for=\\"select-fit\\">Fit:</label><select id=\\"select-fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div class=\\"initial-zoom-container\\"><label for=\\"initial-zoom\\">Initial <br> Zoom:</label><input id=\\"initial-zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"333\\"></div><p class=\\"title\\">Controls</p><div class=\\"controls\\"><div class=\\"border-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">Border</span><br><small>Adds a border around your embedded IFrame</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div><div class=\\"reload-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">Reload</span><br><small>Adds a control option to reload the contents of the IFrame</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\" checked=\\"\\"><div class=\\"switch-slider round\\"></div></label></div></div><div class=\\"new-window-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">New Window</span><br><small>Allows the IFrame to be opened in a new window</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div><div class=\\"zoom-container\\"><div class=\\"obojobo-draft--components--switch\\"><div class=\\"text-content\\"><span contenteditable=\\"false\\">Zoom</span><br><small>Allows students to zoom in and out on the IFrame contents</small></div><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div></div></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`EditIframeModal EditIFrameModal component changes sizing 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\" checked=\\"\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student sees IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`EditIframeModal EditIFrameModal component changes sizing 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\" style=\\"background-color: rgb(229, 217, 227); color: rgb(103, 20, 189);\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\" checked=\\"\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student clicks IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`EditIframeModal EditIFrameModal component changes width 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\" checked=\\"\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Close dimensions</span></button></div></div><div class=\\"dimensions-container\\"><div class=\\"left-padding\\"></div><div class=\\"dimensions\\"><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"600\\"><span class=\\"pixels\\">px <span class=\\"lighter\\">×</span></span><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"pixels\\">px</span></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student sees IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`EditIframeModal EditIFrameModal component changes width 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\" style=\\"background-color: rgb(229, 217, 227); color: rgb(103, 20, 189);\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\" checked=\\"\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Close dimensions</span></button></div></div><div class=\\"dimensions-container\\"><div class=\\"left-padding\\"></div><div class=\\"dimensions\\"><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"--\\" aria-label=\\"Width\\" disabled=\\"\\" value=\\"\\"><span class=\\"pixels\\">px <span class=\\"lighter\\">×</span></span><input type=\\"number\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"pixels\\">px</span></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student clicks IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`EditIframeModal EditIframeModal component changes title 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\" checked=\\"\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student sees IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"changed\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`EditIframeModal EditIframeModal component changes title 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\" style=\\"background-color: rgb(229, 217, 227); color: rgb(103, 20, 189);\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\" checked=\\"\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student clicks IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"changed\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`EditIframeModal EditIframeModal component mounts as expected 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\" checked=\\"\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student sees IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`EditIframeModal EditIframeModal component mounts as expected 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">Edit Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"edit-iframe-modal\\"><header><label for=\\"src-input\\">Source:</label><div><input id=\\"src-input\\" disabled=\\"\\" value=\\"\\"><button>Change...</button></div></header><div class=\\"content-type\\"><div class=\\"content-type-options-container\\"><label id=\\"content-type-options-label\\" for=\\"content-type-options\\">Content type:</label><div id=\\"content-type-options\\"><label for=\\"video-or-media\\"><input id=\\"video-or-media\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"media\\" checked=\\"\\"><div><div class=\\"video-or-media-icon\\"></div><span>Video or other media</span></div></label><label for=\\"embedded-webpage\\"><input id=\\"embedded-webpage\\" type=\\"radio\\" name=\\"content-type-option\\" value=\\"webpage\\"><div><div class=\\"embedded-webpage-icon\\"></div><span>Embedded webpage</span></div></label></div></div><small>This helps determine how the embedded content is best displayed</small></div><p class=\\"title\\">Options</p><div class=\\"sizing\\"><label for=\\"sizing-options-container\\">Sizing</label><div id=\\"sizing-options-container\\"><div class=\\"sizing-options\\"><label for=\\"max-width\\"><input id=\\"max-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"max-width\\"><div class=\\"icon max-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - full width</p><p>Grows up to the largest size (wider thant text)</p></div></label><label for=\\"text-width\\" style=\\"background-color: rgb(229, 217, 227); color: rgb(103, 20, 189);\\"><input id=\\"text-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"text-width\\" checked=\\"\\"><div class=\\"icon text-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Responsive - text width</p><p>Grows up to the same width as the text</p></div></label><label for=\\"fixed-width\\"><input id=\\"fixed-width\\" type=\\"radio\\" name=\\"sizing-option\\" value=\\"fixed\\"><div class=\\"icon fixed-width-icon\\"></div><div class=\\"sizing-description\\"><p class=\\"sizing-title\\">Fixed size</p><p>Shows at set pixel dimensions</p></div></label></div><button><span>Edit dimensions</span></button></div></div><div class=\\"loading-container\\"><label for=\\"loading-select\\">Loading:</label><div id=\\"loading-select\\"><select><option value=\\"false\\">Load when student clicks IFrame</option><option value=\\"true\\">Load right away (Not recommended)</option></select></div></div><div class=\\"title-container\\"><label for=\\"title-input\\">Title:</label><div id=\\"title-input\\"><input type=\\"text\\" placeholder=\\"E.g.: The difference between speed and velocity\\" value=\\"\\"><small>This will be shown before the IFrame is loaded</small></div></div><div class=\\"advanced-options-container\\"><button class=\\"button-advanced-options\\"><span>Show all options (advanced)</span></button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
 exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
 <div
@@ -5071,6 +5231,8 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -5091,6 +5253,8 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -5133,9 +5297,12 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -5163,9 +5330,16 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -5190,9 +5364,11 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -5243,7 +5419,7 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -5400,7 +5576,7 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"
@@ -5607,6 +5783,8 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -5627,6 +5805,8 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -5669,9 +5849,12 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
               >
                 <div
                   className="sizing-options"
+                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -5699,9 +5882,16 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                   </label>
                   <label
                     htmlFor="text-width"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#e5d9e3",
+                        "color": "#6714bd",
+                      }
+                    }
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       id="text-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -5726,9 +5916,11 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                   </label>
                   <label
                     htmlFor="fixed-width"
+                    onClick={[Function]}
+                    style={Object {}}
                   >
                     <input
-                      checked={true}
+                      checked={false}
                       id="fixed-width"
                       name="sizing-option"
                       onChange={[Function]}
@@ -5779,7 +5971,7 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                   <option
                     value={false}
                   >
-                    Load when student sees IFrame
+                    Load when student clicks IFrame
                   </option>
                   <option
                     value={true}
@@ -5936,7 +6128,7 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                         className="switch"
                       >
                         <input
-                          checked={false}
+                          checked={true}
                           className="switch-slider"
                           onChange={[Function]}
                           type="checkbox"

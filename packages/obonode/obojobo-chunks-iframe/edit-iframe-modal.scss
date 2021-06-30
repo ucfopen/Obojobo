@@ -24,14 +24,12 @@
 			align-items: center;
 
 			#src-input {
+				@include text-input();
+
 				margin-right: 0.5em;
-				padding: 0.61em 0.7em;
-				font-size: 0.8em;
-				border-radius: 0.4em;
-				border: 0.1em solid $color-neutral-text;
+				padding: 0.61em;
 				box-sizing: border-box;
 				flex: 1;
-				font-family: $font-default;
 			}
 
 			button {
@@ -40,6 +38,7 @@
 				border-radius: 0.4em;
 				background: $color-bg;
 				padding: 0.78em;
+				box-sizing: border-box;
 
 				&:hover {
 					cursor: pointer;
@@ -54,15 +53,15 @@
 		margin: 1em 0;
 		text-align: left;
 
-		#content-type-options-label {
-			width: 20%;
-		}
-
 		.content-type-options-container {
 			text-align: left;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
+			#content-type-options-label {
+				width: 20%;
+			}
 
 			#content-type-options {
 				width: 80%;
@@ -88,19 +87,29 @@
 				}
 
 				label[for='video-or-media'] {
-					border-top: 0.1em solid $color-neutral;
-					border-left: 0.1em solid $color-neutral;
-					border-bottom: 0.1em solid $color-neutral;
+					cursor: pointer;
+					border: 0.12em solid $color-neutral;
 					border-top-left-radius: 0.2em;
 					border-bottom-left-radius: 0.2em;
 					padding: 0.5em 0.8em 0.5em 0.4em;
+					transition: 0.2s;
+					width: 50%;
 				}
 
 				label[for='embedded-webpage'] {
-					border: 0.1em solid $color-neutral;
+					cursor: pointer;
+					border: 0.12em solid $color-neutral;
 					border-top-right-radius: 0.2em;
 					border-bottom-right-radius: 0.2em;
 					padding: 0.5em 0.8em 0.5em 0.4em;
+					transition: 0.2s;
+					width: 50%;
+				}
+
+				label[for='video-or-media']:hover,
+				label[for='embedded-webpage']:hover {
+					border: 0.12em solid $color-action;
+					transition: 0.2s;
 				}
 
 				.video-or-media-icon {
@@ -120,7 +129,10 @@
 		small {
 			color: $color-neutral-text;
 			font-size: 0.7em;
+			margin-top: 0.5em;
 			margin-left: 20%;
+			display: block;
+			min-width: 80%;
 		}
 	}
 
@@ -144,8 +156,7 @@
 
 			.sizing-options {
 				border-radius: 0.2em;
-				border: 0.1em solid $color-neutral;
-				padding: 0.4em;
+				border: 0.12em solid $color-neutral;
 
 				label[for='max-width'],
 				label[for='text-width'],
@@ -154,7 +165,9 @@
 					align-items: center;
 					gap: 0.9em;
 					text-align: left;
-					margin-bottom: 0.4em;
+					cursor: pointer;
+					padding: 0.4em;
+					transition: 0.1s;
 
 					p {
 						font-size: 0.8em;
@@ -163,6 +176,11 @@
 
 					.sizing-title {
 						font-weight: 600;
+					}
+
+					&:hover {
+						transition: 0.1s;
+						background-color: $color-action-hover;
 					}
 				}
 
@@ -177,14 +195,17 @@
 				.max-width-icon {
 					padding: 0 0.43em;
 					background: url('./max-width-icon.svg') no-repeat center;
+					background-color: $color-bg;
 				}
 
 				.text-width-icon {
 					background: url('./text-width-icon.svg') no-repeat center;
+					background-color: $color-bg;
 				}
 
 				.fixed-width-icon {
 					background: url('./custom-width-icon.svg') no-repeat center;
+					background-color: $color-bg;
 				}
 			}
 
@@ -216,11 +237,8 @@
 			text-align: left;
 
 			input {
-				padding: 0.4em 0.7em;
-				border-radius: 0.4em;
-				font-family: $font-default;
-				font-size: 0.8em;
-				border: 0.1em solid $color-neutral-text;
+				@include text-input();
+
 				box-sizing: border-box;
 			}
 
@@ -249,18 +267,16 @@
 			text-align: left;
 
 			select {
-				padding: 0.7em;
+				@include select-input();
+
 				font-size: 0.8em;
-				border-radius: 0.4em;
-				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				width: 100%;
-				font-family: $font-default;
+				border: 1px solid $color-shadow;
 			}
 
 			small {
 				display: flex;
-				align-items: center;
 				color: $color-neutral-text;
 				font-size: 0.7em;
 				margin-top: 0.3em;
@@ -290,13 +306,11 @@
 			text-align: left;
 
 			input {
+				@include text-input();
+
 				padding: 0.7em;
-				font-size: 0.8em;
-				border-radius: 0.4em;
-				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				width: 100%;
-				font-family: $font-default;
 			}
 
 			small {
@@ -335,13 +349,12 @@
 			}
 
 			#select-fit {
-				padding: 0.7em;
+				@include select-input();
+
 				font-size: 0.8em;
-				border-radius: 0.4em;
-				border: 0.1em solid $color-neutral-text;
 				box-sizing: border-box;
 				width: 80%;
-				font-family: $font-default;
+				border: 1px solid $color-shadow;
 			}
 		}
 
@@ -356,13 +369,10 @@
 			}
 
 			#initial-zoom {
-				padding: 0.7em;
-				font-size: 0.8em;
-				border-radius: 0.4em;
-				border: 0.1em solid $color-neutral-text;
-				box-sizing: border-box;
+				@include text-input();
+
 				width: 80%;
-				font-family: $font-default;
+				box-sizing: border-box;
 			}
 		}
 

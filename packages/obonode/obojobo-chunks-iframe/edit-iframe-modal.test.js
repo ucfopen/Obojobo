@@ -118,7 +118,7 @@ describe('EditIframeModal', () => {
 
 		// Actual testing starts here.
 		const widthInput = component.find('input').at(7)
-		expect(widthInput.prop('placeholder')).toBe('Width')
+		expect(widthInput.prop('placeholder')).toBe('--')
 		expect(component.state().width).toBe(640)
 
 		widthInput.simulate('change', { target: { value: 600 } })

@@ -23,12 +23,21 @@ class EditIframeModal extends React.Component {
 			width: 640,
 			height: 480,
 			controls: '',
-			sizing: IFrameSizingTypes.FIXED,
+			sizing: IFrameSizingTypes.TEXT_WIDTH,
 			openAdvancedOptions: false,
 			openSizingDimensions: false
 		}
 
-		this.state = { ...defaultState, ...props.content }
+		this.state = {
+			...defaultState,
+			...props.content,
+			contentTypeVideoOrMedia: {},
+			contentTypeEmbeddedWebpage: {},
+			sizingStyle: {},
+			sizingMaxWidthStyle: {},
+			sizingTextWidthStyle: {},
+			sizingFixedWidthStyle: {}
+		}
 
 		this.changeBtnRef = React.createRef()
 
@@ -43,11 +52,19 @@ class EditIframeModal extends React.Component {
 		this.handleSourceChange = this.handleSourceChange.bind(this)
 		this.openAdvancedOptions = this.openAdvancedOptions.bind(this)
 		this.openSizingDimensions = this.openSizingDimensions.bind(this)
+		this.handleSizingClickStyle = this.handleSizingClickStyle.bind(this)
 		this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
+		this.handleContentTypeClickStyle = this.handleContentTypeClickStyle.bind(this)
+		this.updateSettingsBasedOnContentType = this.updateSettingsBasedOnContentType.bind(this)
 	}
 
 	componentDidMount() {
 		this.changeBtnRef.current.focus()
+		this.updateSettingsBasedOnContentType(this.state.contentType)
+
+		// Setting styles of selected inputs based on props from new-iframe-modal
+		this.handleContentTypeClickStyle(this.state.contentType)
+		this.handleSizingClickStyle(this.state.sizing)
 	}
 
 	openAdvancedOptions() {
@@ -56,6 +73,63 @@ class EditIframeModal extends React.Component {
 
 	openSizingDimensions() {
 		this.setState({ openSizingDimensions: !this.state.openSizingDimensions })
+	}
+
+	handleContentTypeClickStyle(/*contentType*/) {
+		// @TODO: Decide whether or not this will make to production (it adds
+		// the purple border around the selected content type option).
+		// if (contentType === IFrameContentTypes.MEDIA) {
+		// 	this.setState({
+		// 		contentTypeVideoOrMedia: {
+		// 			border: '0.12em solid #6714bd' // $color-action
+		// 		},
+		// 		contentTypeEmbeddedWebpage: {}
+		// 	})
+		// }else if (contentType === IFrameContentTypes.WEBPAGE) {
+		// 	this.setState({
+		// 		contentTypeVideoOrMedia: {},
+		// 		contentTypeEmbeddedWebpage: {
+		// 			border: '0.12em solid #6714bd' // $color-action
+		// 		}
+		// 	})
+		// }
+	}
+
+	handleSizingClickStyle(sizing) {
+		// @TODO: Decide whether or not this will make to production (it adds
+		// the purple border around the sizing options).
+		// if (
+		// 	sizing === IFrameSizingTypes.FIXED ||
+		// 	sizing === IFrameSizingTypes.TEXT_WIDTH ||
+		// 	sizing === IFrameSizingTypes.MAX_WIDTH
+		// ) {
+		// 	// $color-action
+		// 	this.setState({ sizingStyle: { border: '0.12em solid #6714bd' } })
+		// }else {
+		// 	this.setState({ sizingStyle: {} })
+		// }
+
+		this.setState({
+			sizingMaxWidthStyle:
+				sizing === IFrameSizingTypes.MAX_WIDTH
+					? { backgroundColor: '#e5d9e3', color: '#6714bd' }
+					: {},
+			sizingTextWidthStyle:
+				sizing === IFrameSizingTypes.TEXT_WIDTH
+					? { backgroundColor: '#e5d9e3', color: '#6714bd' }
+					: {},
+			sizingFixedWidthStyle:
+				sizing === IFrameSizingTypes.FIXED ? { backgroundColor: '#e5d9e3', color: '#6714bd' } : {}
+		})
+	}
+
+	updateSettingsBasedOnContentType(contentType) {
+		// Default configuration based on content type selection
+		if (contentType === IFrameContentTypes.MEDIA) {
+			this.setState({ fit: 'scale', controls: ',reload' })
+		} else {
+			this.setState({ fit: 'scroll', controls: ',reload,new-window,zoom' })
+		}
 	}
 
 	handleControlChange(property, event) {
@@ -105,7 +179,9 @@ class EditIframeModal extends React.Component {
 	}
 
 	handleContentTypeChange(e) {
-		this.setState({ contentType: e.target.value })
+		const contentType = e.target.value
+		this.setState({ contentType })
+		this.updateSettingsBasedOnContentType(contentType)
 	}
 
 	handleSourceChange(e) {
@@ -143,7 +219,11 @@ class EditIframeModal extends React.Component {
 								Content type:
 							</label>
 							<div id="content-type-options">
-								<label htmlFor="video-or-media">
+								<label
+									htmlFor="video-or-media"
+									onClick={() => this.handleContentTypeClickStyle(IFrameContentTypes.MEDIA)}
+									style={this.state.contentTypeVideoOrMedia}
+								>
 									<input
 										id="video-or-media"
 										type="radio"
@@ -157,7 +237,11 @@ class EditIframeModal extends React.Component {
 										<span>Video or other media</span>
 									</div>
 								</label>
-								<label htmlFor="embedded-webpage">
+								<label
+									htmlFor="embedded-webpage"
+									onClick={() => this.handleContentTypeClickStyle(IFrameContentTypes.WEBPAGE)}
+									style={this.state.contentTypeEmbeddedWebpage}
+								>
 									<input
 										id="embedded-webpage"
 										type="radio"
@@ -179,8 +263,12 @@ class EditIframeModal extends React.Component {
 					<div className="sizing">
 						<label htmlFor="sizing-options-container">Sizing</label>
 						<div id="sizing-options-container">
-							<div className="sizing-options">
-								<label htmlFor="max-width">
+							<div className="sizing-options" style={this.state.sizingStyle}>
+								<label
+									style={this.state.sizingMaxWidthStyle}
+									htmlFor="max-width"
+									onClick={() => this.handleSizingClickStyle(IFrameSizingTypes.MAX_WIDTH)}
+								>
 									<input
 										id="max-width"
 										type="radio"
@@ -195,7 +283,11 @@ class EditIframeModal extends React.Component {
 										<p>Grows up to the largest size (wider thant text)</p>
 									</div>
 								</label>
-								<label htmlFor="text-width">
+								<label
+									style={this.state.sizingTextWidthStyle}
+									htmlFor="text-width"
+									onClick={() => this.handleSizingClickStyle(IFrameSizingTypes.TEXT_WIDTH)}
+								>
 									<input
 										id="text-width"
 										type="radio"
@@ -210,7 +302,11 @@ class EditIframeModal extends React.Component {
 										<p>Grows up to the same width as the text</p>
 									</div>
 								</label>
-								<label htmlFor="fixed-width">
+								<label
+									style={this.state.sizingFixedWidthStyle}
+									htmlFor="fixed-width"
+									onClick={() => this.handleSizingClickStyle(IFrameSizingTypes.FIXED)}
+								>
 									<input
 										id="fixed-width"
 										type="radio"
@@ -271,7 +367,7 @@ class EditIframeModal extends React.Component {
 						<label htmlFor="loading-select">Loading:</label>
 						<div id="loading-select">
 							<select value={this.state.autoload || false} onChange={this.onChangeAutoload}>
-								<option value={false}>Load when student sees IFrame</option>
+								<option value={false}>Load when student clicks IFrame</option>
 								<option value={true}>Load right away (Not recommended)</option>
 							</select>
 							{this.state.autoload && (

@@ -63,21 +63,11 @@ exports[`NewIFrameModal NewIFrameModal component changes src 1`] = `
                 Embedded preview:
               </p>
               <div
-                className="preview-with-iframe"
+                className="no-preview"
               >
-                <iframe
-                  src="https://"
-                />
-                <div>
-                  <p>
-                    Does the preview look good?
-                  </p>
-                  <button
-                    onClick={[Function]}
-                  >
-                    No, the preview isn't working
-                  </button>
-                </div>
+                <span>
+                  Make sure you are using a valid URL or an IFrame embed code
+                </span>
               </div>
             </div>
           </div>
@@ -187,21 +177,11 @@ exports[`NewIFrameModal NewIFrameModal component correctly detects content type 
                 Embedded preview:
               </p>
               <div
-                className="preview-with-iframe"
+                className="no-preview"
               >
-                <iframe
-                  src="<iframe src='https://'></iframe"
-                />
-                <div>
-                  <p>
-                    Does the preview look good?
-                  </p>
-                  <button
-                    onClick={[Function]}
-                  >
-                    No, the preview isn't working
-                  </button>
-                </div>
+                <span>
+                  Make sure you are using a valid URL or an IFrame embed code
+                </span>
               </div>
             </div>
           </div>
@@ -311,21 +291,11 @@ exports[`NewIFrameModal NewIFrameModal component correctly detects content type 
                 Embedded preview:
               </p>
               <div
-                className="preview-with-iframe"
+                className="no-preview"
               >
-                <iframe
-                  src="https://"
-                />
-                <div>
-                  <p>
-                    Does the preview look good?
-                  </p>
-                  <button
-                    onClick={[Function]}
-                  >
-                    No, the preview isn't working
-                  </button>
-                </div>
+                <span>
+                  Make sure you are using a valid URL or an IFrame embed code
+                </span>
               </div>
             </div>
           </div>
@@ -444,18 +414,16 @@ exports[`NewIFrameModal NewIFrameModal component opens section explaining why th
                 <iframe
                   src="https://"
                 />
-                <div>
+                <section>
                   <p>
                     Does the preview look good?
                   </p>
                   <div
                     className="preview-not-working"
                   >
-                    <span>
-                      If the preview above is not what you expected, keep in mind that some pages inside your IFrame may restrict their content, thus not allowing them to be shown within Obojobo. Also, if you are trying to embed media instead of an IFrame, make sure to paste your IFrame's embed code (starting with &lt;iframe...) and not only the regular URL.
-                    </span>
+                    If the preview above is not what you expected, keep in mind that some pages inside your IFrame may restrict their content, thus not allowing them to be shown within Obojobo. Also, if you are trying to embed media instead of an IFrame, make sure to paste your IFrame's embed code (starting with &lt;iframe...) and not only the regular URL.
                   </div>
-                </div>
+                </section>
               </div>
             </div>
           </div>
