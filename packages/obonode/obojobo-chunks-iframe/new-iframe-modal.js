@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Common from 'Common'
+const { useDebouncedCallback } = require('use-debounce')
 import { isIframeLoadedCorrectly } from './check-iframe-src'
 
 const { SimpleDialog } = Common.components.modal
@@ -7,49 +8,48 @@ import IFrameContentTypes from './iframe-content-types'
 
 import './new-iframe-modal.scss'
 
-class NewIframeModal extends React.Component {
-	constructor(props) {
-		super(props)
+const SOURCE_CHANGE_DEBOUNCE_MS = 500
 
-		const defaultState = {
-			src: '',
-			width: 640,
-			height: 480,
-			srcFormatted: '',
-			contentType: IFrameContentTypes.MEDIA
-		}
+const NewIframeModal = (props) => {
+	const [content, setContent] = useState({
+		src: '',
+		width: 640,
+		height: 480,
+		srcToLoad: '',
+		contentType: IFrameContentTypes.MEDIA
+	})
+	const [iframeLoaded, setIframeLoaded] = useState(true)
+	const [openPreviewNotWorking, setOpenPreviewNotWorking] = useState(false)
+	const inputRef = useRef(null)
 
-		this.state = {
-			...defaultState,
-			...props.content,
-			iframeLoaded: true,
-			openPreviewNotWorkingSection: false
-		}
+	useEffect(() => {
+		setContent({
+			...content,
+			...props.content
+		})
 
-		this.inputRef = React.createRef()
+		focusOnFirstElement()
+	}, [])
 
-		this.handleSourceChange = this.handleSourceChange.bind(this)
-		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
-		this.openPreviewNotWorkingSection = this.openPreviewNotWorkingSection.bind(this)
+	const focusOnFirstElement = () => inputRef.current.focus()
+
+	const debounceOnSourceChange = useDebouncedCallback(src => {
+		// Transform to self-calling function
+		handleSourceToLoad(src)
+	}, SOURCE_CHANGE_DEBOUNCE_MS)
+
+	const handleSourceToLoad = (src) => {
+		setContent({ ...content, srcToLoad: src })
 	}
 
-	componentDidMount() {
-		this.inputRef.current.focus()
-		this.inputRef.current.select()
-	}
-
-	focusOnFirstElement() {
-		this.inputRef.current.focus()
-	}
-
-	handleSourceChange(event) {
-		const src = event.target.value
-		let srcFormatted,
-			width,
-			height = ''
+	const handleSourceChange = (event) => {
+		let src = event.target.value
+		let width, height = ''
 
 		if (!isIframeLoadedCorrectly(src)) {
-			this.setState({ src, iframeLoaded: false })
+			setContent({ ...content, src })
+			setIframeLoaded(false)
+			debounceOnSourceChange(src)
 			return
 		}
 
@@ -59,12 +59,12 @@ class NewIframeModal extends React.Component {
 
 		if (contentType === IFrameContentTypes.MEDIA) {
 			// Extracting iframe's src address (if detected content type is MEDIA)
-			srcFormatted = src
+			src = src
 				.split('src="')
 				.pop()
 				.split('"')[0]
 
-			// Extracting width and height as well
+			// Extracting width and height
 			width = src
 				.split('width="')
 				.pop()
@@ -73,78 +73,75 @@ class NewIframeModal extends React.Component {
 				.split('height="')
 				.pop()
 				.split('"')[0]
-		} else {
-			srcFormatted = src
 		}
 
-		this.setState({ src, srcFormatted, contentType, width, height, iframeLoaded: true })
+		setContent({ ...content, src, contentType, width, height })
+		setIframeLoaded(true)
+		debounceOnSourceChange(src)
 	}
 
-	openPreviewNotWorkingSection() {
-		this.setState({ openPreviewNotWorkingSection: true })
-	}
+	const openPreviewNotWorkingSection = () => setOpenPreviewNotWorking(true)
 
-	render() {
-		const previewContent = (
-			<div className="preview-with-iframe">
-				<iframe src={this.state.src}></iframe>
-				<section>
-					<p>Does the preview look good?</p>
-					{this.state.openPreviewNotWorkingSection ? (
-						<div className="preview-not-working">
-							If the preview above is not what you expected, keep in mind that some pages inside
-							your IFrame may restrict their content, thus not allowing them to be shown within
-							Obojobo. Also, if you are trying to embed media instead of an IFrame, make sure to
-							paste your IFrame&apos;s embed code (starting with &lt;iframe...) and not only the
-							regular URL.
-						</div>
-					) : (
-						<button onClick={this.openPreviewNotWorkingSection}>
-							No, the preview isn&apos;t working
-						</button>
-					)}
-				</section>
-			</div>
-		)
-
-		return (
-			<SimpleDialog
-				cancelOrCustomYes
-				customYes="Preview is good - Continue..."
-				title="New Embedded IFrame"
-				onConfirm={() => this.props.onConfirm(this.state)}
-				onCancel={this.props.onCancel}
-				focusOnFirstElement={this.focusOnFirstElement}
-			>
-				<div className="new-iframe-modal">
-					<header>
-						<p>Paste either an iframe embed code or a URL to embed:</p>
-						<input
-							type="text"
-							placeholder='<iframe src="https://example.com"/> or "https://example.com"'
-							ref={this.inputRef}
-							value={this.state.src || ''}
-							onChange={this.handleSourceChange}
-						/>
-					</header>
-					<div className="preview">
-						<p>Embedded preview:</p>
-						{this.state.src && this.state.iframeLoaded ? (
-							previewContent
-						) : (
-							<div className="no-preview">
-								{this.state.iframeLoaded || this.state.src === '' ? (
-									<span>Paste a link or embed code above to see the preview</span>
-								) : (
-									<span>Make sure you are using a valid URL or an IFrame embed code</span>
-								)}
-							</div>
-						)}
+	const previewContent = (
+		<div className="preview-with-iframe">
+			<iframe src={content.srcToLoad}></iframe>
+			<section>
+				<p>Does the preview look good?</p>
+				{openPreviewNotWorking ? (
+					<div className="preview-not-working">
+						If the preview above is not what you expected, keep in mind that some pages inside
+						your IFrame may restrict their content, thus not allowing them to be shown within
+						Obojobo. Also, if you are trying to embed media instead of an IFrame, make sure to
+						paste your IFrame&apos;s embed code (starting with &lt;iframe...) and not only the
+						regular URL.
 					</div>
+				) : (
+					<button onClick={openPreviewNotWorkingSection}>
+						No, the preview isn&apos;t working
+					</button>
+				)}
+			</section>
+		</div>
+	)
+
+	return (
+		<SimpleDialog
+			cancelOrCustomYes
+			customYes="Preview is good - Continue..."
+			title="New Embedded IFrame"
+			onConfirm={() => props.onConfirm(content)}
+			onCancel={props.onCancel}
+			focusOnFirstElement={focusOnFirstElement}
+		>
+			<div className="new-iframe-modal">
+				<header>
+					<p>Paste either an iframe embed code or a URL to embed:</p>
+					<input
+						type="text"
+						placeholder='<iframe src="https://example.com"/> or "https://example.com"'
+						ref={inputRef}
+						value={content.src || ''}
+						onChange={handleSourceChange}
+					/>
+				</header>
+				<div className="preview">
+					<p>Embedded preview:</p>
+					{content.src && iframeLoaded ? (
+						previewContent
+					) : (
+						<div className="no-preview">
+							{iframeLoaded || content.src === '' ? (
+								<span>Paste a link or embed code above to see the preview</span>
+							) : (
+								<span>Make sure you are using a valid URL or an IFrame embed code</span>
+							)}
+						</div>
+					)}
 				</div>
-			</SimpleDialog>
-		)
-	}
+			</div>
+		</SimpleDialog>
+	)
+
 }
 
 export default NewIframeModal

@@ -81,8 +81,6 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -103,8 +101,6 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -147,7 +143,6 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 1`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -633,8 +628,6 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -655,8 +648,6 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -699,7 +690,6 @@ exports[`EditIframeModal EditIFrameModal component changes New Window 2`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -1185,8 +1175,6 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -1207,8 +1195,6 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -1251,7 +1237,6 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 1`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -1737,8 +1722,6 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -1759,8 +1742,6 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -1803,7 +1784,6 @@ exports[`EditIframeModal EditIFrameModal component changes Reload 2`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -2289,8 +2269,6 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -2311,8 +2289,6 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -2355,7 +2331,6 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 1`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -2841,8 +2816,6 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -2863,8 +2836,6 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -2907,7 +2878,6 @@ exports[`EditIframeModal EditIFrameModal component changes Zoom 2`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -3393,8 +3363,6 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -3415,8 +3383,6 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -3459,7 +3425,6 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 1`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -3756,8 +3721,6 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -3778,8 +3741,6 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -3822,7 +3783,6 @@ exports[`EditIframeModal EditIFrameModal component changes autoload 2`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -4113,8 +4073,6 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -4135,8 +4093,6 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -4179,7 +4135,6 @@ exports[`EditIframeModal EditIFrameModal component changes border 1`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -4665,8 +4620,6 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -4687,8 +4640,6 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -4731,7 +4682,6 @@ exports[`EditIframeModal EditIFrameModal component changes border 2`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -5231,8 +5181,6 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -5253,8 +5201,6 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -5297,7 +5243,6 @@ exports[`EditIframeModal IFrameProperties component changes fit 1`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"
@@ -5783,8 +5728,6 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                 >
                   <label
                     htmlFor="video-or-media"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={true}
@@ -5805,8 +5748,6 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
                   </label>
                   <label
                     htmlFor="embedded-webpage"
-                    onClick={[Function]}
-                    style={Object {}}
                   >
                     <input
                       checked={false}
@@ -5849,7 +5790,6 @@ exports[`EditIframeModal IFrameProperties component changes fit 2`] = `
               >
                 <div
                   className="sizing-options"
-                  style={Object {}}
                 >
                   <label
                     htmlFor="max-width"

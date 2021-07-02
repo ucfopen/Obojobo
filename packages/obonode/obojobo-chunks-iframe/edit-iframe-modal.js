@@ -19,6 +19,7 @@ class EditIframeModal extends React.Component {
 			fit: '',
 			initialZoom: 1,
 			src: '',
+			srcToLoad: '',
 			title: '',
 			width: 640,
 			height: 480,
@@ -31,9 +32,6 @@ class EditIframeModal extends React.Component {
 		this.state = {
 			...defaultState,
 			...props.content,
-			contentTypeVideoOrMedia: {},
-			contentTypeEmbeddedWebpage: {},
-			sizingStyle: {},
 			sizingMaxWidthStyle: {},
 			sizingTextWidthStyle: {},
 			sizingFixedWidthStyle: {}
@@ -54,7 +52,6 @@ class EditIframeModal extends React.Component {
 		this.openSizingDimensions = this.openSizingDimensions.bind(this)
 		this.handleSizingClickStyle = this.handleSizingClickStyle.bind(this)
 		this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
-		this.handleContentTypeClickStyle = this.handleContentTypeClickStyle.bind(this)
 		this.updateSettingsBasedOnContentType = this.updateSettingsBasedOnContentType.bind(this)
 	}
 
@@ -63,7 +60,6 @@ class EditIframeModal extends React.Component {
 		this.updateSettingsBasedOnContentType(this.state.contentType)
 
 		// Setting styles of selected inputs based on props from new-iframe-modal
-		this.handleContentTypeClickStyle(this.state.contentType)
 		this.handleSizingClickStyle(this.state.sizing)
 	}
 
@@ -75,40 +71,8 @@ class EditIframeModal extends React.Component {
 		this.setState({ openSizingDimensions: !this.state.openSizingDimensions })
 	}
 
-	handleContentTypeClickStyle(/*contentType*/) {
-		// @TODO: Decide whether or not this will make to production (it adds
-		// the purple border around the selected content type option).
-		// if (contentType === IFrameContentTypes.MEDIA) {
-		// 	this.setState({
-		// 		contentTypeVideoOrMedia: {
-		// 			border: '0.12em solid #6714bd' // $color-action
-		// 		},
-		// 		contentTypeEmbeddedWebpage: {}
-		// 	})
-		// }else if (contentType === IFrameContentTypes.WEBPAGE) {
-		// 	this.setState({
-		// 		contentTypeVideoOrMedia: {},
-		// 		contentTypeEmbeddedWebpage: {
-		// 			border: '0.12em solid #6714bd' // $color-action
-		// 		}
-		// 	})
-		// }
-	}
-
 	handleSizingClickStyle(sizing) {
-		// @TODO: Decide whether or not this will make to production (it adds
-		// the purple border around the sizing options).
-		// if (
-		// 	sizing === IFrameSizingTypes.FIXED ||
-		// 	sizing === IFrameSizingTypes.TEXT_WIDTH ||
-		// 	sizing === IFrameSizingTypes.MAX_WIDTH
-		// ) {
-		// 	// $color-action
-		// 	this.setState({ sizingStyle: { border: '0.12em solid #6714bd' } })
-		// }else {
-		// 	this.setState({ sizingStyle: {} })
-		// }
-
+		// color-action: #6714bd;
 		this.setState({
 			sizingMaxWidthStyle:
 				sizing === IFrameSizingTypes.MAX_WIDTH
@@ -219,11 +183,7 @@ class EditIframeModal extends React.Component {
 								Content type:
 							</label>
 							<div id="content-type-options">
-								<label
-									htmlFor="video-or-media"
-									onClick={() => this.handleContentTypeClickStyle(IFrameContentTypes.MEDIA)}
-									style={this.state.contentTypeVideoOrMedia}
-								>
+								<label htmlFor="video-or-media">
 									<input
 										id="video-or-media"
 										type="radio"
@@ -237,11 +197,7 @@ class EditIframeModal extends React.Component {
 										<span>Video or other media</span>
 									</div>
 								</label>
-								<label
-									htmlFor="embedded-webpage"
-									onClick={() => this.handleContentTypeClickStyle(IFrameContentTypes.WEBPAGE)}
-									style={this.state.contentTypeEmbeddedWebpage}
-								>
+								<label htmlFor="embedded-webpage">
 									<input
 										id="embedded-webpage"
 										type="radio"
@@ -263,7 +219,7 @@ class EditIframeModal extends React.Component {
 					<div className="sizing">
 						<label htmlFor="sizing-options-container">Sizing</label>
 						<div id="sizing-options-container">
-							<div className="sizing-options" style={this.state.sizingStyle}>
+							<div className="sizing-options">
 								<label
 									style={this.state.sizingMaxWidthStyle}
 									htmlFor="max-width"

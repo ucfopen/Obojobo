@@ -1,8 +1,18 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 import NewIFrameModal from './new-iframe-modal'
 import IFrameContentTypes from './iframe-content-types'
+
+jest.mock('use-debounce', () => ({
+	useDebouncedCallback: cb => {
+		const fn = () => {
+			cb()
+		}
+
+		return fn
+	}
+}))
 
 const testRendererOptions = {
 	createNodeMock: element => {
@@ -55,18 +65,17 @@ describe('NewIFrameModal', () => {
 	})
 
 	test('NewIFrameModal component focuses on first element', () => {
-		const component = mount(
+		const component = TestRenderer.create(
 			<NewIFrameModal
 				content={{
 					src: '',
 					contentType: IFrameContentTypes.MEDIA
 				}}
-			/>
+			/>,
+			testRendererOptions
 		)
 
-		component.instance().focusOnFirstElement()
-
-		expect(component.html()).toMatchSnapshot()
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('NewIFrameModal component changes src', () => {
@@ -82,7 +91,9 @@ describe('NewIFrameModal', () => {
 
 		const startState = component.toJSON()
 		const input = component.root.findAllByType('input')[1]
-		input.props.onChange({ target: { value: 'https://' } })
+		act(() => {
+			input.props.onChange({ target: { value: 'https://' } })
+		})
 
 		const endState = component.toJSON()
 		expect(endState).toMatchSnapshot()
@@ -94,7 +105,7 @@ describe('NewIFrameModal', () => {
 			<NewIFrameModal
 				content={{
 					src: '',
-					contentType: IFrameContentTypes.WEBPAGE
+					contentType: IFrameContentTypes.MEDIA
 				}}
 			/>,
 			testRendererOptions
@@ -103,14 +114,18 @@ describe('NewIFrameModal', () => {
 		const input = component.root.findAllByType('input')[1]
 
 		// Changing the src input to trigger a content type detection (Detection: Media)
-		input.props.onChange({ target: { value: "<iframe src='https://'></iframe" } })
+		act(() => {
+			input.props.onChange({ target: { value: "<iframe src='https://www'></iframe>" } })
+		})
 
 		let endState = component.toJSON()
 		expect(endState).toMatchSnapshot()
 		expect(startState).not.toEqual(endState)
 
 		// Changing the src input to trigger a content type detection (Detection: Webpage)
-		input.props.onChange({ target: { value: 'https://' } })
+		act(() => {
+			input.props.onChange({ target: { value: 'https://www' } })
+		})
 
 		endState = component.toJSON()
 		expect(endState).toMatchSnapshot()
@@ -118,20 +133,40 @@ describe('NewIFrameModal', () => {
 	})
 
 	test('NewIFrameModal component opens section explaining why the iframe preview is not working', () => {
-		const component = TestRenderer.create(
+		const component = mount(
 			<NewIFrameModal
 				content={{
 					src: 'https://',
+					contentType: IFrameContentTypes.WEBPAGE
+				}}
+			/>
+		)
+
+		component.find('button').at(0).simulate('click')
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('NewIFrameModal shows message after invalid src is typed', () => {
+		const component = TestRenderer.create(
+			<NewIFrameModal
+				content={{
+					src: 'mock-src',
 					contentType: IFrameContentTypes.WEBPAGE
 				}}
 			/>,
 			testRendererOptions
 		)
 
-		// Closes the preview-not-working section
-		const button = component.root.findAllByType('button')[0]
-		button.props.onClick()
+		const startState = component.toJSON()
+		const input = component.root.findAllByType('input')[1]
 
-		expect(component.toJSON()).toMatchSnapshot()
+		// Changing empty src input to invalid embed code or url
+		act(() => {
+			input.props.onChange({ target: { value: 'mock-invalid' } })
+		})
+
+		const endState = component.toJSON()
+		expect(endState).toMatchSnapshot()
+		expect(startState).not.toEqual(endState)
 	})
 })

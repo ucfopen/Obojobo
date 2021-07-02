@@ -68,7 +68,7 @@ class IFrame extends React.Component {
 
 	openNewIframeModal(src) {
 		const content = Object.assign({}, this.props.element.content)
-		content.src = src
+		content.src = content.srcToLoad = src
 
 		ModalUtil.show(
 			<NewIframeModal
@@ -93,10 +93,7 @@ class IFrame extends React.Component {
 		// Opens edit IFrame modal
 		ModalUtil.show(
 			<EditIframeModal
-				content={{
-					...content,
-					src: content.srcFormatted ? content.srcFormatted : content.src
-				}}
+				content={{ ...content }}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseAnIFrameModal}
 				goBack={this.decideWhichModalToOpen}
