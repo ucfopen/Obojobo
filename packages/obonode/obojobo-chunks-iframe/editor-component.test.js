@@ -238,4 +238,42 @@ describe('IFrame Editor Node', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
+
+	test('IFrame opens EditIFrameModal when a src is set', () => {
+		const component = renderer.create(
+			<IFrame
+				element={{
+					content: {
+						src: 'mock-src'
+					}
+				}}
+			/>
+		)
+		const button = component.root.findAllByType('button')[1]
+		button.props.onClick({
+			preventDefault: () => {},
+			stopPropagation: () => {}
+		})
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('IFrame opens NewIFrameModal after onChange... is pressed', () => {
+		const component = renderer.create(
+			<IFrame
+				element={{
+					content: {
+						controls: '',
+						border: false,
+						initialZoom: 1
+					}
+				}}
+			/>
+		)
+		const button = component.root.findAllByType('button')[1]
+		button.props.onClick({
+			preventDefault: () => {},
+			stopPropagation: () => {}
+		}, 'mock-src-to-change')
+		expect(component.toJSON()).toMatchSnapshot()
+	})
 })

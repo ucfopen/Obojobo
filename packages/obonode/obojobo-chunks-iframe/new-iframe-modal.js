@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react'
-import Common from 'Common'
-const { useDebouncedCallback } = require('use-debounce')
-import { isIframeLoadedCorrectly } from './check-iframe-src'
-
-const { SimpleDialog } = Common.components.modal
-import IFrameContentTypes from './iframe-content-types'
-
 import './new-iframe-modal.scss'
 
+import React, { useEffect, useState, useRef } from 'react'
+import Common from 'Common'
+import IFrameContentTypes from './iframe-content-types'
+const { useDebouncedCallback } = require('use-debounce')
+const { SimpleDialog } = Common.components.modal
+import { parseURLOrEmbedCode } from 'obojobo-document-engine/src/scripts/oboeditor/util/url-embed-code-check'
+
 const SOURCE_CHANGE_DEBOUNCE_MS = 500
+const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
 const NewIframeModal = (props) => {
 	const [content, setContent] = useState({
@@ -46,7 +46,7 @@ const NewIframeModal = (props) => {
 		let src = event.target.value
 		let width, height = ''
 
-		if (!isIframeLoadedCorrectly(src)) {
+		if (!parseURLOrEmbedCode(src, IFRAME_NODE)) {
 			setContent({ ...content, src })
 			setIframeLoaded(false)
 			debounceOnSourceChange(src)

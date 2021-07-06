@@ -1,3 +1,5 @@
+import './edit-iframe-modal.scss'
+
 import React from 'react'
 import Common from 'Common'
 
@@ -5,8 +7,6 @@ const { Switch } = Common.components
 const { SimpleDialog } = Common.components.modal
 import IFrameSizingTypes from './iframe-sizing-types'
 import IFrameContentTypes from './iframe-content-types'
-
-import './edit-iframe-modal.scss'
 
 class EditIframeModal extends React.Component {
 	constructor(props) {
