@@ -10,7 +10,7 @@ import { parseURLOrEmbedCode } from 'obojobo-document-engine/src/scripts/oboedit
 const SOURCE_CHANGE_DEBOUNCE_MS = 500
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
-const NewIframeModal = (props) => {
+const NewIframeModal = props => {
 	const [content, setContent] = useState({
 		src: '',
 		width: 640,
@@ -38,13 +38,14 @@ const NewIframeModal = (props) => {
 		handleSourceToLoad(src)
 	}, SOURCE_CHANGE_DEBOUNCE_MS)
 
-	const handleSourceToLoad = (src) => {
+	const handleSourceToLoad = src => {
 		setContent({ ...content, srcToLoad: src })
 	}
 
-	const handleSourceChange = (event) => {
+	const handleSourceChange = event => {
 		let src = event.target.value
-		let width, height = ''
+		let width,
+			height = ''
 
 		if (!parseURLOrEmbedCode(src, IFRAME_NODE)) {
 			setContent({ ...content, src })
@@ -89,16 +90,13 @@ const NewIframeModal = (props) => {
 				<p>Does the preview look good?</p>
 				{openPreviewNotWorking ? (
 					<div className="preview-not-working">
-						If the preview above is not what you expected, keep in mind that some pages inside
-						your IFrame may restrict their content, thus not allowing them to be shown within
-						Obojobo. Also, if you are trying to embed media instead of an IFrame, make sure to
-						paste your IFrame&apos;s embed code (starting with &lt;iframe...) and not only the
-						regular URL.
+						If the preview above is not what you expected, keep in mind that some pages inside your
+						IFrame may restrict their content, thus not allowing them to be shown within Obojobo.
+						Also, if you are trying to embed media instead of an IFrame, make sure to paste your
+						IFrame&apos;s embed code (starting with &lt;iframe...) and not only the regular URL.
 					</div>
 				) : (
-					<button onClick={openPreviewNotWorkingSection}>
-						No, the preview isn&apos;t working
-					</button>
+					<button onClick={openPreviewNotWorkingSection}>No, the preview isn&apos;t working</button>
 				)}
 			</section>
 		</div>
@@ -141,7 +139,6 @@ const NewIframeModal = (props) => {
 			</div>
 		</SimpleDialog>
 	)
-
 }
 
 export default NewIframeModal

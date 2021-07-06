@@ -142,7 +142,10 @@ describe('NewIFrameModal', () => {
 			/>
 		)
 
-		component.find('button').at(0).simulate('click')
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 		expect(component.html()).toMatchSnapshot()
 	})
 

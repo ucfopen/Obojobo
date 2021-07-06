@@ -66,12 +66,15 @@ const parseURLOrEmbedCode = (videoIdOrUrlOrEmbedCode, nodeType) => {
 	// Try to parse as a URL (IFrame checks should stop here)
 	try {
 		url = new URL(videoIdOrUrlOrEmbedCode)
-		if (nodeType === IFRAME_NODE && url && (url.protocol === 'http:' || url.protocol === 'https:')) {
+		if (
+			nodeType === IFRAME_NODE &&
+			url &&
+			(url.protocol === 'http:' || url.protocol === 'https:')
+		) {
 			return url
-		}else if (nodeType === IFRAME_NODE) {
+		} else if (nodeType === IFRAME_NODE) {
 			return false
 		}
-
 	} catch (e) {
 		// Assume the user may have pasted a video ID
 		videoId = videoIdOrUrlOrEmbedCode

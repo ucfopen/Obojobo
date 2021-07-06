@@ -1,5 +1,6 @@
 import {
-	parseURLOrEmbedCode, getStandardizedURLFromVideoId
+	parseURLOrEmbedCode,
+	getStandardizedURLFromVideoId
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/url-embed-code-check'
 
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
@@ -103,11 +104,11 @@ describe('parseURLOrEmbedCode works as expected for Youtube nodes', () => {
 
 		userString = '<iframe width="560" height="315" src="http://mock-url.com">'
 		info = parseURLOrEmbedCode(userString, IFRAME_NODE)
-		expect(info).toStrictEqual(new URL("http://mock-url.com"))
+		expect(info).toStrictEqual(new URL('http://mock-url.com'))
 
 		userString = '<iframe width="560" height="315" src="https://mock-url.com">'
 		info = parseURLOrEmbedCode(userString, IFRAME_NODE)
-		expect(info).toStrictEqual(new URL("https://mock-url.com"))
+		expect(info).toStrictEqual(new URL('https://mock-url.com'))
 
 		userString = 'htxp://mock'
 		info = parseURLOrEmbedCode(userString, IFRAME_NODE)

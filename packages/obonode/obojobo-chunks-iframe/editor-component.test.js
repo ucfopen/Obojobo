@@ -270,10 +270,13 @@ describe('IFrame Editor Node', () => {
 			/>
 		)
 		const button = component.root.findAllByType('button')[1]
-		button.props.onClick({
-			preventDefault: () => {},
-			stopPropagation: () => {}
-		}, 'mock-src-to-change')
+		button.props.onClick(
+			{
+				preventDefault: () => {},
+				stopPropagation: () => {}
+			},
+			'mock-src-to-change'
+		)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 })

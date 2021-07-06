@@ -3,7 +3,8 @@ import './youtube-properties-modal.scss'
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import {
-	parseURLOrEmbedCode, getStandardizedURLFromVideoId
+	parseURLOrEmbedCode,
+	getStandardizedURLFromVideoId
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/url-embed-code-check'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 
