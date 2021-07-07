@@ -452,7 +452,7 @@ export default class Question extends React.Component {
 			case FOCUS_TARGET_RESULTS:
 				if (this.getScore() !== null) {
 					delete this.nextFocus
-					focus(this.resultsRef.current, false)
+					focus(this.resultsRef.current, true)
 				}
 				break
 
