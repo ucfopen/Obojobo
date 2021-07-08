@@ -93,7 +93,7 @@ class IFrameProperties extends React.Component {
 	}
 
 	handleControlChange(property, event) {
-		const controls = new Set(this.state.controls.split(','))
+		const controls = new Set(this.state.controls.split(',').filter(control => control !== ''))
 
 		// Use checked value to determine the control string for the changed property
 		// Use controlList values to determine control strings for unchanged properties
