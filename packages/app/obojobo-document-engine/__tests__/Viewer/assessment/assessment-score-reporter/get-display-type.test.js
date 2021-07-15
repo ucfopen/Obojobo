@@ -3,10 +3,8 @@ import {
 	TYPE_ATTEMPT_WITH_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED,
-	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100,
+	TYPE_PASSFAIL_PASSED_GIVEN_SCORE,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100,
-	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED,
-	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED,
 	TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_SCORE,
@@ -102,9 +100,7 @@ describe('getDisplayType', () => {
 		//
 		// Pass/Fail type where score < 100 and no mods rewarded
 		//
-		expect(tc('pass-fail', p, '100', 0, 0)).toEqual(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100
-		)
+		expect(tc('pass-fail', p, '100', 0, 0)).toEqual(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(tc('pass-fail', f, '100', 0, 0)).toEqual(TYPE_PASSFAIL_FAILED_GIVEN_SCORE)
 		expect(tc('pass-fail', u, '100', 0, 0)).toEqual(TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE)
 		expect(tc('pass-fail', p, attScore, 0, 0)).toEqual(
@@ -126,9 +122,7 @@ describe('getDisplayType', () => {
 		//
 		// Pass/Fail type where score === 100 and no mods rewarded
 		//
-		expect(tc('pass-fail', p, '100', 1, 0)).toEqual(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED
-		)
+		expect(tc('pass-fail', p, '100', 1, 0)).toEqual(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(tc('pass-fail', f, '100', 1, 0)).toEqual(TYPE_PASSFAIL_FAILED_GIVEN_SCORE)
 		expect(tc('pass-fail', u, '100', 1, 0)).toEqual(TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE)
 		expect(tc('pass-fail', p, '90', 1, 0)).toEqual(
@@ -153,9 +147,7 @@ describe('getDisplayType', () => {
 		//
 		// Pass/Fail type where score < 100 and mods rewarded
 		//
-		expect(tc('pass-fail', p, '100', 0, 1)).toEqual(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100
-		)
+		expect(tc('pass-fail', p, '100', 0, 1)).toEqual(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(tc('pass-fail', f, '100', 0, 1)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
 		expect(tc('pass-fail', u, '100', 0, 1)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
 		expect(tc('pass-fail', p, attScore, 0, 1)).toEqual(
@@ -173,9 +165,7 @@ describe('getDisplayType', () => {
 		//
 		// Pass/Fail type where score === 100 and mods rewarded
 		//
-		expect(tc('pass-fail', p, '100', 1, 1)).toEqual(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED
-		)
+		expect(tc('pass-fail', p, '100', 1, 1)).toEqual(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(tc('pass-fail', p, '90', 1, 1)).toEqual(
 			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100
 		)
