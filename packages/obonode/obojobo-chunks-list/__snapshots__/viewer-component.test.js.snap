@@ -11,7 +11,7 @@ exports[`List List component 1`] = `
   tabIndex={-1}
 >
   <div
-    className="text-chunk obojobo-draft--chunks--list pad"
+    className="text-chunk obojobo-draft--chunks--list pad is-spacing-compact"
   >
     <div>
       <ol
@@ -46,7 +46,7 @@ exports[`List List component with ascending indents 1`] = `
   tabIndex={-1}
 >
   <div
-    className="text-chunk obojobo-draft--chunks--list pad"
+    className="text-chunk obojobo-draft--chunks--list pad is-spacing-compact"
   >
     <div>
       <ol
@@ -256,7 +256,7 @@ exports[`List List component with inverse indentation 1`] = `
   tabIndex={-1}
 >
   <div
-    className="text-chunk obojobo-draft--chunks--list pad"
+    className="text-chunk obojobo-draft--chunks--list pad is-spacing-compact"
   >
     <div>
       <ol
@@ -370,7 +370,7 @@ exports[`List List component with irregular indentation 1`] = `
   tabIndex={-1}
 >
   <div
-    className="text-chunk obojobo-draft--chunks--list pad"
+    className="text-chunk obojobo-draft--chunks--list pad is-spacing-compact"
   >
     <div>
       <ol

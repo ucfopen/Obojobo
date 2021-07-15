@@ -16,4 +16,16 @@
 			padding-left: 2em;
 		}
 	}
+
+	&.is-spacing-moderate {
+		li {
+			margin: 0.5em 0;
+		}
+	}
+
+	&.is-spacing-generous {
+		li {
+			margin: 1em 0;
+		}
+	}
 }

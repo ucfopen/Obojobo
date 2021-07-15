@@ -258,6 +258,32 @@ class MoreInfoBox extends React.Component {
 				)
 		}
 	}
+	renderMoreInfoBox() {
+		const contentDescription = []
+
+		if (this.props.type === 'ObojoboDraft.Chunks.List') {
+			contentDescription.push({
+				name: 'spacing',
+				description: 'List',
+				type: 'select',
+				values: [
+					{
+						value: 'compact',
+						description: 'compact'
+					},
+					{
+						value: 'moderate',
+						description: 'moderate'
+					},
+					{
+						value: 'generous',
+						description: 'generous'
+					}
+				]
+			})
+		}
+		return contentDescription.map(description => this.renderItem(description))
+	}
 
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
@@ -286,6 +312,11 @@ class MoreInfoBox extends React.Component {
 									</Button>
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
+								{this.props.type !== 'ObojoboDraft.Chunks.List' ? null : (
+									<div>
+										<span>{this.renderMoreInfoBox()}</span>
+									</div>
+								)}
 							</div>
 							<div>
 								<span className="triggers">

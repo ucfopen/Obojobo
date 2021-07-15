@@ -129,7 +129,7 @@ const List = props => {
 
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
-			<TextChunk className="obojobo-draft--chunks--list pad">
+			<TextChunk className={`obojobo-draft--chunks--list pad is-spacing-${data.spacing}`}>
 				<div data-indent={data.indent}>{renderEl(props, rootUl, 0, 0)}</div>
 			</TextChunk>
 		</OboComponent>

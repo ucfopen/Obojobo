@@ -7,7 +7,11 @@ const { TextGroupAdapter } = Common.chunk.textChunk
 const Adapter = {
 	construct(model, attrs) {
 		TextGroupAdapter.construct(model, attrs)
-
+		model.setStateProp('spacing', 'compact', p => p.toLowerCase(), [
+			'compact',
+			'moderate',
+			'generous'
+		])
 		if (attrs && attrs.content && attrs.content.listStyles) {
 			model.modelState.listStyles = ListStyles.fromDescriptor(attrs.content.listStyles)
 		} else {
@@ -18,11 +22,13 @@ const Adapter = {
 	clone(model, clone) {
 		TextGroupAdapter.clone(model, clone)
 		clone.modelState.listStyles = model.modelState.listStyles.clone()
+		clone.modelState.spacing = model.modelState.spacing
 	},
 
 	toJSON(model, json) {
 		TextGroupAdapter.toJSON(model, json)
 		json.content.listStyles = model.modelState.listStyles.toDescriptor()
+		json.content.spacing = model.modelState.spacing
 	},
 
 	toText(model) {
