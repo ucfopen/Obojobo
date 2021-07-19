@@ -1,5 +1,10 @@
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
+
+jest.mock('./shared-api-methods', () => ({
+	apiGetAssessmentDetailsForDraft: () => Promise.resolve()
+}))
+
 dayjs.extend(advancedFormat)
 
 describe('Dashboard Actions', () => {
@@ -646,7 +651,9 @@ describe('Dashboard Actions', () => {
 			for (let i = 0; i < 3; i++) {
 				expect(finalHistory[i]).toEqual({
 					createdAt: new Date(mockRevisionHistoryList[i].createdAt),
-					createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format('MMMM Do - h:mm A'),
+					createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
 					id: mockRevisionHistoryList[i].revisionId,
 					username: mockRevisionHistoryList[i].userFullName,
 					selected: i === 0,
@@ -750,7 +757,9 @@ describe('Dashboard Actions', () => {
 			for (let i = 0; i < 3; i++) {
 				expect(finalHistory[j]).toEqual({
 					createdAt: new Date(mockRevisionHistoryList1[i].createdAt),
-					createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format('MMMM Do - h:mm A'),
+					createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
 					id: mockRevisionHistoryList1[i].revisionId,
 					username: mockRevisionHistoryList1[i].userFullName,
 					selected: j === 0,
@@ -761,7 +770,9 @@ describe('Dashboard Actions', () => {
 			for (let i = 0; i < 3; i++) {
 				expect(finalHistory[j]).toEqual({
 					createdAt: new Date(mockRevisionHistoryList2[i].createdAt),
-					createdAtDisplay: dayjs(mockRevisionHistoryList2[i].createdAt).format('MMMM Do - h:mm A'),
+					createdAtDisplay: dayjs(mockRevisionHistoryList2[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
 					id: mockRevisionHistoryList2[i].revisionId,
 					username: mockRevisionHistoryList2[i].userFullName,
 					selected: j === 0,
@@ -852,7 +863,9 @@ describe('Dashboard Actions', () => {
 			for (let i = 0; i < 3; i++) {
 				expect(finalHistory[i]).toEqual({
 					createdAt: new Date(mockRevisionHistoryList1[i].createdAt),
-					createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format('MMMM Do - h:mm A'),
+					createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
 					id: mockRevisionHistoryList1[i].revisionId,
 					username: mockRevisionHistoryList1[i].userFullName,
 					selected: i === 0,
@@ -990,7 +1003,9 @@ describe('Dashboard Actions', () => {
 			for (let i = 0; i < 3; i++) {
 				expect(finalHistory[i]).toEqual({
 					createdAt: new Date(mockRevisionHistoryList[i].createdAt),
-					createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format('MMMM Do - h:mm A'),
+					createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
 					id: mockRevisionHistoryList[i].revisionId,
 					username: mockRevisionHistoryList[i].userFullName,
 					selected: i === 0,
@@ -999,6 +1014,18 @@ describe('Dashboard Actions', () => {
 					isRestored: i === finalHistory.length - 1 ? true : undefined // eslint-disable-line no-undefined
 				})
 			}
+		})
+	})
+
+	test('loadModuleAssessmentDetails returns expected object', async () => {
+		const result = await DashboardActions.showAssessmentScoreData(['draft-id-1', 'draft-id-2'])
+
+		expect(result).toEqual({
+			type: 'SHOW_ASSESSMENT_SCORE_DATA',
+			meta: {
+				module: ['draft-id-1', 'draft-id-2']
+			},
+			promise: expect.any(Promise)
 		})
 	})
 

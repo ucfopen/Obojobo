@@ -18,7 +18,7 @@ describe('current user middleware', () => {
 		mockUser = {
 			id: 1,
 			username: 'mock-user',
-			canSeeThroughWalls: true
+			hasPermission: perm => perm === 'canSeeThroughWalls'
 		}
 
 		mockDocument = {
@@ -93,7 +93,7 @@ describe('current user middleware', () => {
 	})
 
 	test('requireCurrentUser resolves when permission is invalid', () => {
-		mockUser.canSeeThroughWalls = false
+		mockUser.hasPermission = () => false
 		mockRes.notAuthorized = jest.fn()
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return expect(
@@ -102,7 +102,7 @@ describe('current user middleware', () => {
 	})
 
 	test('requireCurrentUser resolves when permission is invalid', () => {
-		mockUser.canSeeThroughWalls = false
+		mockUser.hasPermission = () => false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return expect(
 			Validators.requireCurrentUser(mockReq, mockRes, mockNext, 'canSeeThroughWalls')
@@ -119,7 +119,7 @@ describe('current user middleware', () => {
 
 	test('requireCurrentUser does NOT call next when permission is invalid', () => {
 		expect.assertions(1)
-		mockUser.canSeeThroughWalls = false
+		mockUser.hasPermission = () => false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCurrentUser(mockReq, mockRes, mockNext, 'canSeeThroughWalls').then(
 			() => {
@@ -390,7 +390,7 @@ describe('current user middleware', () => {
 	// requireCanViewEditor tests
 
 	test('requireCanViewEditor calls next and has no validation errors', () => {
-		mockUser.canViewEditor = true
+		mockUser.hasPermission = perm => perm === 'canViewEditor'
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanViewEditor(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(1)
@@ -400,7 +400,7 @@ describe('current user middleware', () => {
 	})
 
 	test('requireCanViewEditor doesnt call next and has errors', () => {
-		mockUser.canViewEditor = false
+		mockUser.hasPermission = () => false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanViewEditor(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(0)
@@ -412,7 +412,7 @@ describe('current user middleware', () => {
 	// requireCanCreateDrafts
 
 	test('requireCanCreateDrafts calls next and has no validation errors', () => {
-		mockUser.canCreateDrafts = true
+		mockUser.hasPermission = perm => perm === 'canCreateDrafts'
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanCreateDrafts(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(1)
@@ -422,7 +422,7 @@ describe('current user middleware', () => {
 	})
 
 	test('requireCanCreateDrafts doesnt call next and has errors', () => {
-		mockUser.canCreateDrafts = false
+		mockUser.hasPermission = () => false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanCreateDrafts(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(0)
@@ -434,7 +434,7 @@ describe('current user middleware', () => {
 	// requireCanDeleteDrafts
 
 	test('requireCanDeleteDrafts calls next and has no validation errors', () => {
-		mockUser.canDeleteDrafts = true
+		mockUser.hasPermission = perm => perm === 'canDeleteDrafts'
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanDeleteDrafts(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(1)
@@ -444,7 +444,7 @@ describe('current user middleware', () => {
 	})
 
 	test('requireCanDeleteDrafts doesnt call next and has errors', () => {
-		mockUser.canDeleteDrafts = false
+		mockUser.hasPermission = () => false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanDeleteDrafts(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(0)
@@ -456,7 +456,7 @@ describe('current user middleware', () => {
 	// requireCanPreviewDrafts
 
 	test('requireCanPreviewDrafts calls next and has no validation errors', () => {
-		mockUser.canPreviewDrafts = true
+		mockUser.hasPermission = perm => perm === 'canPreviewDrafts'
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanPreviewDrafts(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(1)
@@ -466,9 +466,31 @@ describe('current user middleware', () => {
 	})
 
 	test('requireCanPreviewDrafts doesnt call next and has errors', () => {
-		mockUser.canPreviewDrafts = false
+		mockUser.hasPermission = () => false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanPreviewDrafts(mockReq, mockRes, mockNext).then(() => {
+			expect(mockNext).toHaveBeenCalledTimes(0)
+			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(1)
+			expect(mockReq._validationErrors).toBeUndefined()
+		})
+	})
+
+	// requireCanViewSystemStats
+
+	test('requireCanViewSystemStats calls next and has no validation errors', () => {
+		mockUser.hasPermission = perm => perm === 'canViewSystemStats'
+		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
+		return Validators.requireCanViewSystemStats(mockReq, mockRes, mockNext).then(() => {
+			expect(mockNext).toHaveBeenCalledTimes(1)
+			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(0)
+			expect(mockReq._validationErrors).toBeUndefined()
+		})
+	})
+
+	test('requireCanViewSystemStats doesnt call next and has errors', () => {
+		mockUser.hasPermission = () => false
+		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
+		return Validators.requireCanViewSystemStats(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(0)
 			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(1)
 			expect(mockReq._validationErrors).toBeUndefined()
