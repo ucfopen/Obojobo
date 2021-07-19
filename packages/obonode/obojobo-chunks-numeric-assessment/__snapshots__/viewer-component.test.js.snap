@@ -86,6 +86,9 @@ exports[`NumericAssessment NumericAssessment renders a correct response 1`] = `
     <div
       className="input-container"
     >
+      <div
+        className="result-symbol"
+      />
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
@@ -142,6 +145,17 @@ exports[`NumericAssessment NumericAssessment renders a correct response in revie
     <div
       className="input-container"
     >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-chosen-correctly"
+        >
+          <p>
+            Your Answer (Correct)
+          </p>
+        </div>
+      </div>
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
@@ -180,15 +194,7 @@ exports[`NumericAssessment NumericAssessment renders a correct response in revie
     </div>
     <div
       className="review"
-    >
-      <div
-        className="obojobo-draft--components--flag is-type-chosen-correctly"
-      >
-        <p>
-          Your Answer (Correct)
-        </p>
-      </div>
-    </div>
+    />
   </div>
 </div>
 `;
@@ -209,6 +215,9 @@ exports[`NumericAssessment NumericAssessment renders a response correct within t
     <div
       className="input-container"
     >
+      <div
+        className="result-symbol"
+      />
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
@@ -278,6 +287,9 @@ exports[`NumericAssessment NumericAssessment renders an incorrect response 1`] =
     <div
       className="input-container"
     >
+      <div
+        className="result-symbol"
+      />
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
@@ -331,6 +343,17 @@ exports[`NumericAssessment NumericAssessment renders an incorrect response in re
     <div
       className="input-container"
     >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+        >
+          <p>
+            Your Answer (Incorrect)
+          </p>
+        </div>
+      </div>
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
@@ -367,13 +390,6 @@ exports[`NumericAssessment NumericAssessment renders an incorrect response in re
     <div
       className="review"
     >
-      <div
-        className="obojobo-draft--components--flag is-type-should-not-have-chosen"
-      >
-        <p>
-          Your Answer (Incorrect)
-        </p>
-      </div>
       <div
         className="correct-answers"
       >
@@ -428,6 +444,17 @@ exports[`NumericAssessment NumericAssessment renders an incorrect response in re
     <div
       className="input-container"
     >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+        >
+          <p>
+            Your Answer (Incorrect)
+          </p>
+        </div>
+      </div>
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
@@ -464,13 +491,6 @@ exports[`NumericAssessment NumericAssessment renders an incorrect response in re
     <div
       className="review"
     >
-      <div
-        className="obojobo-draft--components--flag is-type-should-not-have-chosen"
-      >
-        <p>
-          Your Answer (Incorrect)
-        </p>
-      </div>
       <div
         className="correct-answers"
       >
@@ -501,6 +521,17 @@ exports[`NumericAssessment NumericAssessment renders an incorrect response in re
     <div
       className="input-container"
     >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+        >
+          <p>
+            Your Answer (Incorrect)
+          </p>
+        </div>
+      </div>
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
@@ -537,13 +568,6 @@ exports[`NumericAssessment NumericAssessment renders an incorrect response in re
     <div
       className="review"
     >
-      <div
-        className="obojobo-draft--components--flag is-type-should-not-have-chosen"
-      >
-        <p>
-          Your Answer (Incorrect)
-        </p>
-      </div>
       <div
         className="correct-answers"
       >
@@ -584,6 +608,9 @@ exports[`NumericAssessment NumericAssessment still renders when NumericAnswerEva
     <div
       className="input-container"
     >
+      <div
+        className="result-symbol"
+      />
       <input
         aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
         autoComplete="off"
