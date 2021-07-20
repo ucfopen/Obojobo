@@ -54,13 +54,31 @@ const List = props => {
 			/>
 		)
 	}
+	const contentDescription = [{
+					name: 'spacing',
+					description: 'List',
+					type: 'select',
+					values: [
+						{
+							value: 'compact',
+							description: 'Compact'
+						},
+						{
+							value: 'moderate',
+							description: 'Moderate'
+						},
+						{
+							value: 'generous',
+							description: 'Generous'
+						}
+					]
+				}]
 
 	return (
-		<Node {...props}>
+		<Node {...props} contentDescription={contentDescription}>
 			<div
 				className={`text-chunk obojobo-draft--chunks--list pad is-spacing-${props.element.content.spacing}`}
 			>
-				{/* {props.element.content.spacing} */}
 				{props.children}
 				{switchButton}
 			</div>

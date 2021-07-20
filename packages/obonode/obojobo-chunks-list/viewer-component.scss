@@ -7,7 +7,7 @@
 		margin-bottom: 0;
 		margin-top: 0;
 	}
-
+	
 	> div > ul,
 	> div > ol {
 		padding-left: 3.5em;
@@ -16,10 +16,15 @@
 			padding-left: 2em;
 		}
 	}
-
 	&.is-spacing-moderate {
 		li {
 			margin: 0.5em 0;
+		}
+		ul div:first-child li{
+			margin-top: 0;
+		}
+		ul div:last-child li{
+			margin-bottom: 0;
 		}
 	}
 
@@ -27,5 +32,12 @@
 		li {
 			margin: 1em 0;
 		}
+		ul div:first-child li{
+			margin-top: 0;
+		}
+		ul div:last-child li{
+			margin-bottom: 0;
+		}
+		
 	}
 }

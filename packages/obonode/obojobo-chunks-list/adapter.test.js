@@ -11,17 +11,13 @@ const TextGroupAdapter = Common.chunk.textChunk.TextGroupAdapter
 
 describe('ActionButton adapter', () => {
 	test('construct builds without attributes', () => {
-		// const model = { modelState: {} }
 		const model = new OboModel({})
-		// TextGroupAdapter.construct = jest.fn()
-
 		ListAdapter.construct(model)
 
 		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		// const model = { modelState: {} }
 		const model = new OboModel({})
 		const attrs = {
 			content: {
@@ -29,8 +25,6 @@ describe('ActionButton adapter', () => {
 				spacing: 'compact'
 			}
 		}
-
-		// TextGroupAdapter.construct = jest.fn()
 		ListStyles.fromDescriptor = jest.fn().mockReturnValueOnce('mockStyle')
 
 		ListAdapter.construct(model, attrs)
