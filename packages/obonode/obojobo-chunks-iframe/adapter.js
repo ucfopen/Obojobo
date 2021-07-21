@@ -4,6 +4,7 @@ import IFrameMediaTypes from './iframe-media-types'
 import IFrameFitTypes from './iframe-fit-types'
 import IFrameControlTypes from './iframe-control-types'
 import IFrameSizingTypes from './iframe-sizing-types'
+import IFrameContentTypes from './iframe-content-types'
 
 const cloneProps = Common.util.cloneProps
 const propsList = [
@@ -12,12 +13,13 @@ const propsList = [
 	'width',
 	'height',
 	'initialZoom',
-	'border',
 	'autoload',
 	'fit',
 	'title',
 	'controls',
-	'sizing'
+	'sizing',
+	'contentType',
+	'controlsChanged'
 ]
 
 export default {
@@ -27,30 +29,27 @@ export default {
 			IFrameMediaTypes.MEDIA
 		])
 
-		let defaultBorder
 		let defaultFit
 		let defaultControls
 
 		switch (model.modelState.type) {
 			case IFrameMediaTypes.WEBPAGE:
-				defaultBorder = true
 				defaultFit = IFrameFitTypes.SCROLL
 				defaultControls = [
 					IFrameControlTypes.ZOOM,
 					IFrameControlTypes.RELOAD,
-					IFrameControlTypes.NEW_WINDOW
+					IFrameControlTypes.NEW_WINDOW,
+					IFrameControlTypes.BORDER
 				]
 				break
 
 			case IFrameMediaTypes.MEDIA:
 			default:
-				defaultBorder = false
 				defaultFit = IFrameFitTypes.SCALE
 				defaultControls = [IFrameControlTypes.RELOAD]
 				break
 		}
 
-		model.setStateProp('border', defaultBorder)
 		model.setStateProp('fit', defaultFit, p => p.toLowerCase(), [
 			IFrameFitTypes.SCROLL,
 			IFrameFitTypes.SCALE
@@ -65,6 +64,8 @@ export default {
 			p.split(',').map(c => c.toLowerCase().replace(/ /g, ''))
 		)
 		model.setStateProp('sizing', IFrameSizingTypes.FIXED)
+		model.setStateProp('contentType', IFrameContentTypes.MEDIA)
+		model.setStateProp('controlsChanged', false)
 	},
 
 	clone(model, clone) {

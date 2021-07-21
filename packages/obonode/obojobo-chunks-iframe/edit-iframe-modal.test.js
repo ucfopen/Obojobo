@@ -81,22 +81,20 @@ describe('EditIframeModal', () => {
 	})
 
 	test('IFrameProperties component changes fit', () => {
-		const testRenderer = TestRenderer.create(
+		let testRenderer = TestRenderer.create(
 			<EditIFrameModal content={{ src: '' }} />,
 			testRendererOptions
 		)
 
 		// Opening advanced options to render special configs.
-		const button = testRenderer.root.findAllByType('button')[2]
+		let button = testRenderer.root.findAllByType('button')[2]
 		button.props.onClick()
 
 		// Actual testing starts here.
-		const startState = testRenderer.toJSON()
+		let startState = testRenderer.toJSON()
 		expect(startState).toMatchSnapshot()
 
-		const testInstance = testRenderer.root
-
-		const select = testInstance.findByProps({ id: 'select-fit' })
+		const select = testRenderer.root.findByProps({ id: 'select-fit' })
 		select.props.onChange({ target: { value: 'changed' } })
 
 		// Capturing the changes
@@ -105,6 +103,19 @@ describe('EditIframeModal', () => {
 		// Comparing the snapshots
 		expect(endState).toMatchSnapshot()
 		expect(startState).not.toEqual(endState)
+
+		// Testing if a default scale is set to the component if 'this.state.fit'
+		// is empty/undefined/somehow renders false in a || condition
+		testRenderer = TestRenderer.create(
+			<EditIFrameModal content={{ src: '', fit: '', controlsChanged: true }} />,
+			testRendererOptions
+		)
+
+		button = testRenderer.root.findAllByType('button')[2]
+		button.props.onClick()
+
+		startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
 	})
 
 	test('EditIFrameModal component changes width', () => {
@@ -235,7 +246,7 @@ describe('EditIframeModal', () => {
 
 		// Executing that switch's onChange
 		autoloadSwitch.props.onChange({ target: { checked: true } })
-		expect(testInstance.instance.state.controls).toBe(',reload')
+		expect(testInstance.instance.state.controls).toBe('reload')
 
 		// Capturing the changes
 		const endState = testRenderer.toJSON()
@@ -326,11 +337,11 @@ describe('EditIframeModal', () => {
 	})
 
 	test('EditIFrameModal component changes content type', () => {
-		const component = mount(
+		let component = mount(
 			<EditIFrameModal
 				content={{
 					src: '',
-					contentType: IFrameContentTypes.MEDIA
+					contentType: IFrameContentTypes.MEDIA,
 				}}
 			/>
 		)
@@ -339,6 +350,33 @@ describe('EditIframeModal', () => {
 			.find('#embedded-webpage')
 			.at(0)
 			.simulate('change', { target: { value: IFrameContentTypes.WEBPAGE } })
+		expect(component.html()).toMatchSnapshot()
+
+		component = mount(
+			<EditIFrameModal
+				content={{
+					src: '',
+					contentType: IFrameContentTypes.MEDIA,
+					controlsChanged: true
+				}}
+			/>
+		)
+		expect(component.html()).toMatchSnapshot()
+
+		component = mount(
+			<EditIFrameModal
+				content={{
+					src: '',
+					contentType: IFrameContentTypes.WEBPAGE,
+					controlsChanged: true
+				}}
+			/>
+		)
+
+		component
+			.find('#video-or-media')
+			.at(0)
+			.simulate('change', { target: { value: IFrameContentTypes.MEDIA } })
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -356,5 +394,54 @@ describe('EditIframeModal', () => {
 
 		expect(onCancel).toHaveBeenCalled()
 		expect(goBack).toHaveBeenCalled()
+	})
+
+	test('EditIFrameModal changes hover and click states as expected', () => {
+		const onCancel = jest.fn()
+		const goBack = jest.fn()
+
+		const testRenderer = TestRenderer.create(
+			<EditIFrameModal content={{ src: '' }} onCancel={onCancel} goBack={goBack} />,
+			testRendererOptions
+		)
+
+		// Max-width label
+		let label = testRenderer.root.findAllByType('label')[5]
+		label.props.onClick()
+
+		let startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
+
+		label.props.onClick()
+
+		let endState = testRenderer.toJSON()
+		expect(endState).toMatchSnapshot()
+		expect(startState).not.toEqual(endState)
+
+		// Text-width label
+		label = testRenderer.root.findAllByType('label')[6]
+		label.props.onClick()
+
+		startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
+
+		label.props.onClick()
+
+		endState = testRenderer.toJSON()
+		expect(endState).toMatchSnapshot()
+		expect(startState).not.toEqual(endState)
+
+		// Fixed width label
+		label = testRenderer.root.findAllByType('label')[7]
+		label.props.onClick()
+
+		startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
+
+		label.props.onClick()
+
+		endState = testRenderer.toJSON()
+		expect(endState).toMatchSnapshot()
+		expect(startState).not.toEqual(endState)
 	})
 })

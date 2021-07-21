@@ -15,18 +15,17 @@ class EditIframeModal extends React.Component {
 		const defaultState = {
 			contentType: IFrameContentTypes.MEDIA,
 			autoload: false,
-			border: false,
 			fit: '',
 			initialZoom: 1,
 			src: '',
-			srcToLoad: '',
 			title: '',
 			width: 640,
 			height: 480,
 			controls: '',
 			sizing: IFrameSizingTypes.TEXT_WIDTH,
 			openAdvancedOptions: false,
-			openSizingDimensions: false
+			openSizingDimensions: false,
+			controlsChanged: false
 		}
 
 		this.state = {
@@ -46,7 +45,6 @@ class EditIframeModal extends React.Component {
 		this.handleTitleChange = this.handleTitleChange.bind(this)
 		this.handleHeightChange = this.handleHeightChange.bind(this)
 		this.handleSizingChange = this.handleSizingChange.bind(this)
-		this.handleBorderChange = this.handleBorderChange.bind(this)
 		this.handleSourceChange = this.handleSourceChange.bind(this)
 		this.openAdvancedOptions = this.openAdvancedOptions.bind(this)
 		this.openSizingDimensions = this.openSizingDimensions.bind(this)
@@ -57,7 +55,11 @@ class EditIframeModal extends React.Component {
 
 	componentDidMount() {
 		this.changeBtnRef.current.focus()
-		this.updateSettingsBasedOnContentType(this.state.contentType)
+
+		this.updateSettingsBasedOnContentType(
+			this.state.contentType,
+			!this.state.controlsChanged
+		)
 
 		// Setting styles of selected inputs based on props from new-iframe-modal
 		this.handleSizingClickStyle(this.state.sizing)
@@ -87,12 +89,18 @@ class EditIframeModal extends React.Component {
 		})
 	}
 
-	updateSettingsBasedOnContentType(contentType) {
+	updateSettingsBasedOnContentType(contentType, setToDefault) {
 		// Default configuration based on content type selection
 		if (contentType === IFrameContentTypes.MEDIA) {
-			this.setState({ fit: 'scale', controls: ',reload' })
+			this.setState({
+				fit: setToDefault ? 'scale' : this.state.fit,
+				controls: setToDefault ? 'reload' : this.state.controls
+			})
 		} else {
-			this.setState({ fit: 'scroll', controls: ',reload,new-window,zoom' })
+			this.setState({
+				fit: setToDefault ? 'scroll' : this.state.fit,
+				controls: setToDefault ? 'reload,new-window,zoom,border' : this.state.controls
+			})
 		}
 	}
 
@@ -107,7 +115,7 @@ class EditIframeModal extends React.Component {
 			controls.delete(property)
 		}
 
-		this.setState({ controls: [...controls].join(',') })
+		this.setState({ controls: [...controls].join(','), controlsChanged: true })
 	}
 
 	onChangeAutoload(event) {
@@ -130,10 +138,6 @@ class EditIframeModal extends React.Component {
 		this.setState({ title: e.target.value })
 	}
 
-	handleBorderChange(e) {
-		this.setState({ border: e.target.checked })
-	}
-
 	handleWidthChange(e) {
 		this.setState({ width: e.target.value })
 	}
@@ -145,7 +149,7 @@ class EditIframeModal extends React.Component {
 	handleContentTypeChange(e) {
 		const contentType = e.target.value
 		this.setState({ contentType })
-		this.updateSettingsBasedOnContentType(contentType)
+		this.updateSettingsBasedOnContentType(contentType, true)
 	}
 
 	handleSourceChange(e) {
@@ -388,8 +392,8 @@ class EditIframeModal extends React.Component {
 										<Switch
 											title="Border"
 											description="Adds a border around your embedded IFrame"
-											checked={this.state.border}
-											onChange={this.handleBorderChange}
+											checked={controlList.includes('border')}
+											onChange={this.handleControlChange.bind(this, 'border')}
 										/>
 									</div>
 									<div className="reload-container">

@@ -12,7 +12,7 @@ const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
 const NewIframeModal = props => {
 	const [content, setContent] = useState({
-		src: '',
+		src: props.content.src || '',
 		width: 640,
 		height: 480,
 		srcToLoad: '',
@@ -27,6 +27,12 @@ const NewIframeModal = props => {
 			...content,
 			...props.content
 		})
+
+		if (props.content.src) {
+			// The user clicked on the Change... button (They are coming from
+			// the edit-iframe-modal)
+			handleSourceChange({ target: { value: props.content.src }})
+		}
 
 		focusOnFirstElement()
 	}, [])

@@ -133,20 +133,26 @@ describe('NewIFrameModal', () => {
 	})
 
 	test('NewIFrameModal component opens section explaining why the iframe preview is not working', () => {
-		const component = mount(
+		const onConfirm = jest.fn()
+		const onCancel = jest.fn()
+
+		const component = TestRenderer.create(
 			<NewIFrameModal
 				content={{
-					src: 'https://',
+					src: 'https://mock.com',
 					contentType: IFrameContentTypes.WEBPAGE
 				}}
-			/>
+				onConfirm={onConfirm}
+				onCancel={onCancel}
+			/>,
+			testRendererOptions
 		)
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-		expect(component.html()).toMatchSnapshot()
+		const button = component.root.findAllByType('button')[0]
+		act(() => {
+			button.props.onClick()
+		})
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('NewIFrameModal shows message after invalid src is typed', () => {
