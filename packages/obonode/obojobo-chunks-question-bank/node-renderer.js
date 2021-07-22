@@ -4,6 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import IndentMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/indent-marks'
 import LinkMark from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/link-mark'
 import ScriptMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/script-marks'
+import ColorMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/color-marks'
 
 import React from 'react'
 import { createEditor } from 'slate'
@@ -25,7 +26,8 @@ class NodeRenderer extends React.Component {
 			LinkMark.plugins,
 			ScriptMarks.plugins,
 			AlignMarks.plugins,
-			IndentMarks.plugins
+			IndentMarks.plugins,
+			ColorMarks.plugins
 		]
 
 		this.renderLeafPlugins = this.plugins.filter(plugins => plugins.renderLeaf)

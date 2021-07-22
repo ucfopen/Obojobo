@@ -1,0 +1,1228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rubric editor modal Rubric modal renders 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog "
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+      tabIndex="-1"
+    >
+      <input
+        aria-label="Start of dialog"
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <h1
+          className="heading"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Assessment Scoring
+        </h1>
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            className="rubric-modal"
+          >
+            <p>
+              The recorded score for this module is the highest assessment score, and will be sent to any connected gradebook.
+               
+            </p>
+            <fieldset
+              className="assessment-score add-padding-bottom"
+            >
+              <legend>
+                How do you want to determine the recorded score?
+              </legend>
+              <label>
+                <input
+                  checked={false}
+                  name="score-type"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  type="radio"
+                  value="highest"
+                />
+                Use the highest attempt score.
+              </label>
+              <label>
+                <input
+                  checked={true}
+                  name="score-type"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  type="radio"
+                  value="pass-fail"
+                />
+                Calculate based on a threshold (pass/fail)
+              </label>
+            </fieldset>
+            <div
+              className="threshold-properties-section"
+            >
+              <fieldset
+                className="pass-fail"
+              >
+                <legend>
+                  Pass & Fail Rules
+                </legend>
+                <p>
+                  In this mode, you can customize passing and failing scores, what do do when students are out of attempts, and set more complex penalty and extra credit rules.
+                </p>
+                <div
+                  className="to-pass"
+                >
+                  <p>
+                    To 
+                    <b>
+                      pass
+                    </b>
+                    , students must achieve an attempt score of at least
+                  </p>
+                  <input
+                    max="100"
+                    min="0"
+                    name="passingAttemptScore"
+                    onChange={[Function]}
+                    onClick={[Function]}
+                    type="number"
+                    value={100}
+                  />
+                  <span>
+                    %
+                  </span>
+                </div>
+                <div
+                  className="when-passing"
+                >
+                  <p>
+                    When 
+                    <b>
+                      passing
+                    </b>
+                    , set the assessment score to
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$attempt_score"
+                      />
+                      The attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="specified-value"
+                    >
+                      <input
+                        checked={false}
+                        id="specified-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Specified value:
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="passedResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={100}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="when-failing"
+                >
+                  <p>
+                    When 
+                    <b>
+                      failing
+                    </b>
+                    ,
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="set-score-to-attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="set-score-to-attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$attempt_score"
+                      />
+                      Set the assessment score to the attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="dont-set-score"
+                    >
+                      <input
+                        checked={false}
+                        id="dont-set-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-score"
+                      />
+                      Don't set the score (no score will be sent to the gradebook)
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="set-score-to-specific-value"
+                    >
+                      <input
+                        checked={false}
+                        id="set-score-to-specific-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Set the assessment score to specified value
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="failedResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={0}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="out-of-attempts"
+                >
+                  <p>
+                    And if the student is 
+                    <b>
+                      out of attempts and still did not pass
+                    </b>
+                    ,
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-no-value"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-no-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-value"
+                      />
+                      Don't do anything, the failing rule will still apply
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-highest-attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-highest-attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$highest_attempt_score"
+                      />
+                      Set the assessment score to the highest attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-no-score"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-no-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-score"
+                      />
+                      Don't set assessment the score (no score will be sent to the gradebook)
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-set-value"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-set-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Set the assessment score to specified value
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="unableToPassResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={0}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+              </fieldset>
+              <div
+                className="mods"
+              >
+                <header>
+                  <div
+                    className="title"
+                  >
+                    Extra Credit & Penalties
+                  </div>
+                  <div
+                    className="obojobo-draft--components--button is-not-dangerous align-center"
+                    contentEditable={false}
+                  >
+                    <button
+                      className="button"
+                      contentEditable={false}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <span>
+                        Edit...
+                      </span>
+                    </button>
+                  </div>
+                </header>
+                <ul>
+                  <li>
+                    <b>
+                      <span
+                        className="reward"
+                      >
+                        Add
+                      </span>
+                       
+                      3
+                      %
+                    </b>
+                    <span>
+                       If a student passes on 
+                      the last attempt
+                       
+                    </span>
+                  </li>
+                  <li>
+                    <b>
+                      <span
+                        className="reward"
+                      >
+                        Add
+                      </span>
+                       
+                      3
+                      %
+                    </b>
+                    <span>
+                       If a student passes on 
+                      attempt 1
+                       
+                    </span>
+                  </li>
+                  <li>
+                    <b>
+                      <span
+                        className="deduct"
+                      >
+                        Deduct
+                      </span>
+                       
+                      3
+                      %
+                    </b>
+                    <span>
+                       
+                      If a student passes on attempt 
+                      1
+                       through 
+                      the last attempt
+                       
+                    </span>
+                  </li>
+                  <li>
+                    <b>
+                      <span
+                        className="deduct"
+                      >
+                        Deduct
+                      </span>
+                       
+                      3
+                      %
+                    </b>
+                    <span>
+                       
+                      If a student passes on attempt 
+                      the last attempt
+                       through 
+                      5
+                       
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        aria-label="End of dialog"
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog "
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+      tabIndex="-1"
+    >
+      <input
+        aria-label="Start of dialog"
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <h1
+          className="heading"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Assessment Scoring
+        </h1>
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            className="rubric-modal"
+          >
+            <p>
+              The recorded score for this module is the highest assessment score, and will be sent to any connected gradebook.
+               
+            </p>
+            <fieldset
+              className="assessment-score add-padding-bottom"
+            >
+              <legend>
+                How do you want to determine the recorded score?
+              </legend>
+              <label>
+                <input
+                  checked={false}
+                  name="score-type"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  type="radio"
+                  value="highest"
+                />
+                Use the highest attempt score.
+              </label>
+              <label>
+                <input
+                  checked={true}
+                  name="score-type"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  type="radio"
+                  value="pass-fail"
+                />
+                Calculate based on a threshold (pass/fail)
+              </label>
+            </fieldset>
+            <div
+              className="threshold-properties-section"
+            >
+              <fieldset
+                className="pass-fail"
+              >
+                <legend>
+                  Pass & Fail Rules
+                </legend>
+                <p>
+                  In this mode, you can customize passing and failing scores, what do do when students are out of attempts, and set more complex penalty and extra credit rules.
+                </p>
+                <div
+                  className="to-pass"
+                >
+                  <p>
+                    To 
+                    <b>
+                      pass
+                    </b>
+                    , students must achieve an attempt score of at least
+                  </p>
+                  <input
+                    max="100"
+                    min="0"
+                    name="passingAttemptScore"
+                    onChange={[Function]}
+                    onClick={[Function]}
+                    type="number"
+                    value={100}
+                  />
+                  <span>
+                    %
+                  </span>
+                </div>
+                <div
+                  className="when-passing"
+                >
+                  <p>
+                    When 
+                    <b>
+                      passing
+                    </b>
+                    , set the assessment score to
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$attempt_score"
+                      />
+                      The attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="specified-value"
+                    >
+                      <input
+                        checked={false}
+                        id="specified-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Specified value:
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="passedResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value="$attempt_score"
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="when-failing"
+                >
+                  <p>
+                    When 
+                    <b>
+                      failing
+                    </b>
+                    ,
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="set-score-to-attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="set-score-to-attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$attempt_score"
+                      />
+                      Set the assessment score to the attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="dont-set-score"
+                    >
+                      <input
+                        checked={false}
+                        id="dont-set-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-score"
+                      />
+                      Don't set the score (no score will be sent to the gradebook)
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="set-score-to-specific-value"
+                    >
+                      <input
+                        checked={false}
+                        id="set-score-to-specific-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Set the assessment score to specified value
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="failedResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={0}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="out-of-attempts"
+                >
+                  <p>
+                    And if the student is 
+                    <b>
+                      out of attempts and still did not pass
+                    </b>
+                    ,
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-no-value"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-no-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-value"
+                      />
+                      Don't do anything, the failing rule will still apply
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-highest-attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-highest-attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$highest_attempt_score"
+                      />
+                      Set the assessment score to the highest attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-no-score"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-no-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-score"
+                      />
+                      Don't set assessment the score (no score will be sent to the gradebook)
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-set-value"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-set-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Set the assessment score to specified value
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="unableToPassResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={0}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+              </fieldset>
+              <div
+                className="mods"
+              >
+                <header>
+                  <div
+                    className="title"
+                  >
+                    Extra Credit & Penalties
+                  </div>
+                  <div
+                    className="obojobo-draft--components--button is-not-dangerous align-center"
+                    contentEditable={false}
+                  >
+                    <button
+                      className="button"
+                      contentEditable={false}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <span>
+                        Edit...
+                      </span>
+                    </button>
+                  </div>
+                </header>
+                <ul />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        aria-label="End of dialog"
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog "
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+      tabIndex="-1"
+    >
+      <input
+        aria-label="Start of dialog"
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <h1
+          className="heading"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Assessment Scoring
+        </h1>
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            className="rubric-modal"
+          >
+            <p>
+              The recorded score for this module is the highest assessment score, and will be sent to any connected gradebook.
+               
+            </p>
+            <fieldset
+              className="assessment-score add-padding-bottom"
+            >
+              <legend>
+                How do you want to determine the recorded score?
+              </legend>
+              <label>
+                <input
+                  checked={false}
+                  name="score-type"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  type="radio"
+                  value="highest"
+                />
+                Use the highest attempt score.
+              </label>
+              <label>
+                <input
+                  checked={true}
+                  name="score-type"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  type="radio"
+                  value="pass-fail"
+                />
+                Calculate based on a threshold (pass/fail)
+              </label>
+            </fieldset>
+            <div
+              className="threshold-properties-section"
+            >
+              <fieldset
+                className="pass-fail"
+              >
+                <legend>
+                  Pass & Fail Rules
+                </legend>
+                <p>
+                  In this mode, you can customize passing and failing scores, what do do when students are out of attempts, and set more complex penalty and extra credit rules.
+                </p>
+                <div
+                  className="to-pass"
+                >
+                  <p>
+                    To 
+                    <b>
+                      pass
+                    </b>
+                    , students must achieve an attempt score of at least
+                  </p>
+                  <input
+                    max="100"
+                    min="0"
+                    name="passingAttemptScore"
+                    onChange={[Function]}
+                    onClick={[Function]}
+                    type="number"
+                    value={100}
+                  />
+                  <span>
+                    %
+                  </span>
+                </div>
+                <div
+                  className="when-passing"
+                >
+                  <p>
+                    When 
+                    <b>
+                      passing
+                    </b>
+                    , set the assessment score to
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$attempt_score"
+                      />
+                      The attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="specified-value"
+                    >
+                      <input
+                        checked={false}
+                        id="specified-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Specified value:
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="passedResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={100}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="when-failing"
+                >
+                  <p>
+                    When 
+                    <b>
+                      failing
+                    </b>
+                    ,
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="set-score-to-attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="set-score-to-attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$attempt_score"
+                      />
+                      Set the assessment score to the attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="dont-set-score"
+                    >
+                      <input
+                        checked={false}
+                        id="dont-set-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-score"
+                      />
+                      Don't set the score (no score will be sent to the gradebook)
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="set-score-to-specific-value"
+                    >
+                      <input
+                        checked={false}
+                        id="set-score-to-specific-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Set the assessment score to specified value
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="failedResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={0}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="out-of-attempts"
+                >
+                  <p>
+                    And if the student is 
+                    <b>
+                      out of attempts and still did not pass
+                    </b>
+                    ,
+                  </p>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-no-value"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-no-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-value"
+                      />
+                      Don't do anything, the failing rule will still apply
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-highest-attempt-score"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-highest-attempt-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="$highest_attempt_score"
+                      />
+                      Set the assessment score to the highest attempt score
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-no-score"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-no-score"
+                        onChange={[Function]}
+                        type="radio"
+                        value="no-score"
+                      />
+                      Don't set assessment the score (no score will be sent to the gradebook)
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="out-of-attempts-set-value"
+                    >
+                      <input
+                        checked={false}
+                        id="out-of-attempts-set-value"
+                        onChange={[Function]}
+                        type="radio"
+                        value="set-value"
+                      />
+                      Set the assessment score to specified value
+                    </label>
+                    <input
+                      disabled={true}
+                      max="100"
+                      min="0"
+                      name="unableToPassResult"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="number"
+                      value={0}
+                    />
+                    <span>
+                      %
+                    </span>
+                  </div>
+                </div>
+              </fieldset>
+              <div
+                className="mods"
+              >
+                <header>
+                  <div
+                    className="title"
+                  >
+                    Extra Credit & Penalties
+                  </div>
+                  <div
+                    className="obojobo-draft--components--button is-not-dangerous align-center"
+                    contentEditable={false}
+                  >
+                    <button
+                      className="button"
+                      contentEditable={false}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <span>
+                        Edit...
+                      </span>
+                    </button>
+                  </div>
+                </header>
+                <ul />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        aria-label="End of dialog"
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;

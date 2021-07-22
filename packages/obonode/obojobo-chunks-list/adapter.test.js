@@ -18,13 +18,14 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('construct builds with attributes', () => {
-		const model = new OboModel({})
 		const attrs = {
 			content: {
 				listStyles: 'mockStyle',
-				spacing: 'compact'
+				spacing: 'Moderate'
 			}
 		}
+		const model = new OboModel(attrs)
+
 		ListStyles.fromDescriptor = jest.fn().mockReturnValueOnce('mockStyle')
 
 		ListAdapter.construct(model, attrs)

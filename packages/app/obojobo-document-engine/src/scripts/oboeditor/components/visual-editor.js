@@ -3,6 +3,7 @@ import './visual-editor.scss'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
+import ColorMarks from './marks/color-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
@@ -125,6 +126,7 @@ class VisualEditor extends React.Component {
 			.filter(item => item)
 
 		const markPlugins = [
+			ColorMarks.plugins,
 			BasicMarks.plugins,
 			LinkMark.plugins,
 			ScriptMarks.plugins,
@@ -300,8 +302,6 @@ class VisualEditor extends React.Component {
 
 		this.setState({ value })
 		this.markUnsaved()
-
-		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
 	}
 
 	onResized(event) {

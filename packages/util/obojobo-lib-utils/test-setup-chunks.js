@@ -99,11 +99,13 @@ afterEach(() => {
 	}
 })
 
-// @TODO enable this to cause failtures for unhandled rejections
-// if (!process.env.LISTENING_TO_UNHANDLED_REJECTION) {
-// 	process.on('unhandledRejection', reason => {
-// 		throw reason
-// 	})
-// 	// Avoid memory leak by adding too many listeners
-// 	process.env.LISTENING_TO_UNHANDLED_REJECTION = true
-// }
+// Cause test failtures when we're able to capture an unhandled rejection
+// They usually happen after the test that caused them occured
+// so this will throw the error and fail the tests
+if (!process.env.LISTENING_TO_UNHANDLED_REJECTION) {
+	process.on('unhandledRejection', reason => {
+		throw reason
+	})
+	// Avoid memory leak by adding too many listeners
+	process.env.LISTENING_TO_UNHANDLED_REJECTION = true
+}

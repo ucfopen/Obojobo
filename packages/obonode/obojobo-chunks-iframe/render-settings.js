@@ -35,7 +35,14 @@ const getDisplayedTitle = modelState => {
 		return modelState.title
 	}
 
-	return (modelState.src || '').replace(/^https?:\/\//, '')
+	const displayedTitle = (modelState.src || '').replace(/^https?:\/\//, '')
+	const charLimit = 50
+
+	if (displayedTitle.length > charLimit) {
+		return displayedTitle.substring(0, charLimit) + '...'
+	}
+
+	return displayedTitle
 }
 
 const getAriaRegionLabel = (modelState, displayedTitle) => {

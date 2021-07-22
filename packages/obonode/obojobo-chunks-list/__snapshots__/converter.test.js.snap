@@ -226,7 +226,7 @@ Object {
       "indents": Object {},
       "type": "unordered",
     },
-    "spacing": "compact",
+    "spacing": "moderate",
     "textGroup": Array [
       Object {
         "text": Object {

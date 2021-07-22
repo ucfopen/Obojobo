@@ -21,7 +21,7 @@
 			> button {
 				padding: 0.5em 1em;
 				position: absolute;
-				left: -9999px; //stylelint-disable-line unit-blacklist
+				left: -9999px; //stylelint-disable-line unit-disallowed-list
 				width: 100%;
 
 				&:focus {
@@ -221,7 +221,7 @@
 				content: ' ';
 				display: block;
 				background-image: url('./bg.svg');
-				background-size: 38.16px 38.16px; /* stylelint-disable-line unit-blacklist */
+				background-size: 38.16px 38.16px; /* stylelint-disable-line unit-disallowed-list */
 				position: absolute;
 				left: 0;
 				top: 0;

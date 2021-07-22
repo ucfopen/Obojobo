@@ -1,0 +1,395 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 1`] = `
+<div
+  style={
+    Object {
+      "overflow": "hidden",
+      "textOverflow": "ellipsis",
+      "whiteSpace": "nowrap",
+    }
+  }
+>
+  <a
+    href="mock-url"
+    rel="noreferrer"
+    target="_blank"
+  >
+    mock-url
+  </a>
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 2`] = `
+<div>
+  mock-imported-attempt-id
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 3`] = `
+<div>
+  mock-attempt-score
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 4`] = `
+<div>
+  mock-assessment-status
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 5`] = `
+<div>
+  undefined
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 6`] = `
+<div>
+  mock-reward
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 7`] = `
+<div>
+  undefined
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 8`] = `
+<div>
+  false
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts columns with cell components render as expected 9`] = `
+<div>
+  false
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
+<div
+  className="repository--data-grid-attempts"
+>
+  <div
+    className="repository--data-grid-scores"
+  >
+    <div
+      className="data-grid"
+    >
+      <div
+        className="react-data-table-component"
+        columns={
+          Array [
+            Object {
+              "advanced": false,
+              "name": "Course Title",
+              "selector": "courseTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Resource Link Title",
+              "selector": "resourceLinkTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "URL",
+              "selector": "launchPresentationReturnUrl",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "First Name",
+              "selector": "userFirstName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Last Name",
+              "selector": "userLastName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Attempt ID",
+              "selector": "attemptId",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Imported Attempt ID",
+              "selector": "importedAttemptId",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Attempt #",
+              "selector": "attemptNumber",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Attempt Score",
+              "selector": "attemptScore",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Assessment Status",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Un-modded Assessment Score",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Mod Reward Total",
+              "selector": "modRewardTotal",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Assessment Score",
+              "selector": "assessmentScore",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Started Time",
+              "selector": "createdAt",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Submitted Time",
+              "selector": "completedAt",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Preview Mode",
+              "selector": "isPreview",
+              "sortable": true,
+            },
+          ]
+        }
+        data={
+          Array [
+            Object {
+              "assessmentStatus": "mock-assessment-status",
+              "attemptScore": "mock-attempt-score",
+              "draftId": "mock-draft-id",
+              "exampleId": "mock-example-id",
+              "importedAttemptId": "mock-imported-attempt-id",
+              "isInvalid": true,
+              "isPreview": true,
+              "launchPresentationReturnUrl": "mock-url",
+              "modRewardTotal": "mock-reward",
+            },
+            Object {
+              "assessmentStatus": "mock-assessment-status",
+              "attemptScore": "mock-attempt-score",
+              "draftId": "mock-draft-id2",
+              "exampleId": "mock-example-id2",
+              "importedAttemptId": "mock-imported-attempt-id",
+              "isInvalid": false,
+              "isPreview": false,
+              "launchPresentationReturnUrl": "mock-url",
+              "modRewardTotal": "mock-reward",
+            },
+          ]
+        }
+        dense={true}
+        pagination={true}
+        paginationComponentOptions={
+          Object {
+            "noRowsPerPage": true,
+          }
+        }
+        paginationPerPage={250}
+        paginationRowsPerPageOptions={
+          Array [
+            250,
+          ]
+        }
+        striped={true}
+        title="Attempt Scores"
+      >
+        react-data-table-component
+      </div>
+    </div>
+    <a
+      className="repository--button "
+      download="attempt-scores__mock-draft-id_mock-draft-id2"
+      href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20%23%22%2C%22Attempt%20Score%22%2C%22Assessment%20Status%22%2C%22Un-modded%20Assessment%20Score%22%2C%22Mod%20Reward%20Total%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22true%22%0A%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22false%22"
+    >
+      ⬇️   Download 
+      
+       Table as CSV File (
+      2
+       row
+      s
+      )
+    </a>
+  </div>
+</div>
+`;
+
+exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
+<div
+  className="repository--data-grid-attempts"
+>
+  <div
+    className="repository--data-grid-scores"
+  >
+    <div
+      className="data-grid"
+    >
+      <div
+        className="react-data-table-component"
+        columns={
+          Array [
+            Object {
+              "advanced": false,
+              "name": "Course Title",
+              "selector": "courseTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Resource Link Title",
+              "selector": "resourceLinkTitle",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "URL",
+              "selector": "launchPresentationReturnUrl",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "First Name",
+              "selector": "userFirstName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Last Name",
+              "selector": "userLastName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Attempt ID",
+              "selector": "attemptId",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Imported Attempt ID",
+              "selector": "importedAttemptId",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Attempt #",
+              "selector": "attemptNumber",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Attempt Score",
+              "selector": "attemptScore",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Assessment Status",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Un-modded Assessment Score",
+              "selector": "assessmentStatus",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Mod Reward Total",
+              "selector": "modRewardTotal",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Assessment Score",
+              "selector": "assessmentScore",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Started Time",
+              "selector": "createdAt",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Submitted Time",
+              "selector": "completedAt",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "cell": [Function],
+              "name": "Preview Mode",
+              "selector": "isPreview",
+              "sortable": true,
+            },
+          ]
+        }
+        data={Array []}
+        dense={true}
+        pagination={true}
+        paginationComponentOptions={
+          Object {
+            "noRowsPerPage": true,
+          }
+        }
+        paginationPerPage={250}
+        paginationRowsPerPageOptions={
+          Array [
+            250,
+          ]
+        }
+        striped={true}
+        title="Attempt Scores"
+      >
+        react-data-table-component
+      </div>
+    </div>
+  </div>
+</div>
+`;

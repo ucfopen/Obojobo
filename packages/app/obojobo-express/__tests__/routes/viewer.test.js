@@ -85,7 +85,7 @@ describe('viewer route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockCurrentVisit = { is_preview: false }
-		mockCurrentUser = { id: 4, canViewAsStudent: true }
+		mockCurrentUser = { id: 4, hasPermission: perm => perm === 'canViewAsStudent' }
 		insertEvent.mockReset()
 		VisitModel.createVisit.mockReset()
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
@@ -159,7 +159,7 @@ describe('viewer route', () => {
 
 	test('launch visit redirects to preview for non-students', () => {
 		expect.assertions(3)
-		mockCurrentUser.canViewAsStudent = false
+		mockCurrentUser.hasPermission = () => false
 		const uuid = validUUID()
 
 		VisitModel.createVisit.mockResolvedValueOnce({
@@ -290,7 +290,7 @@ describe('viewer route', () => {
 		mockCurrentDocument = {
 			draftId: validUUID(),
 			getTitle: () => 'mock title',
-			yell: jest.fn().mockResolvedValueOnce(),
+			yell: jest.fn().mockResolvedValueOnce()
 		}
 
 		return request(app)

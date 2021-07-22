@@ -72,7 +72,7 @@
 			display: block;
 			top: 1rem;
 			width: 100%;
-			height: 1px; /* stylelint-disable-line unit-blacklist */
+			height: 1px; /* stylelint-disable-line unit-disallowed-list */
 			background: lighten($color-text, 95%);
 		}
 
@@ -97,7 +97,7 @@
 				content: '';
 				position: absolute;
 				bottom: 0;
-				left: -2px; /* stylelint-disable-line unit-blacklist */
+				left: -2px; /* stylelint-disable-line unit-disallowed-list */
 				width: 1.2em;
 				height: 2em;
 				background: $color-nav-bg;
@@ -105,9 +105,9 @@
 		}
 
 		&::after {
-			left: -3px; /* stylelint-disable-line unit-blacklist */
-			width: 5px; /* stylelint-disable-line unit-blacklist */
-			height: 5px; /* stylelint-disable-line unit-blacklist */
+			left: -3px; /* stylelint-disable-line unit-disallowed-list */
+			width: 5px; /* stylelint-disable-line unit-disallowed-list */
+			height: 5px; /* stylelint-disable-line unit-disallowed-list */
 			top: 0.5em;
 			background: $color-nav-highlight;
 			border: none;
@@ -170,7 +170,7 @@
 				content: '';
 				position: absolute;
 				top: 0;
-				left: -2px; /* stylelint-disable-line unit-blacklist */
+				left: -2px; /* stylelint-disable-line unit-disallowed-list */
 				width: 1.2em;
 				height: 1em;
 				background: $color-nav-bg;

@@ -54,25 +54,27 @@ const List = props => {
 			/>
 		)
 	}
-	const contentDescription = [{
-					name: 'spacing',
-					description: 'List',
-					type: 'select',
-					values: [
-						{
-							value: 'compact',
-							description: 'Compact'
-						},
-						{
-							value: 'moderate',
-							description: 'Moderate'
-						},
-						{
-							value: 'generous',
-							description: 'Generous'
-						}
-					]
-				}]
+	const contentDescription = [
+		{
+			name: 'spacing',
+			description: 'List Spacing',
+			type: 'select',
+			values: [
+				{
+					value: 'compact',
+					description: 'Compact'
+				},
+				{
+					value: 'moderate',
+					description: 'Moderate'
+				},
+				{
+					value: 'generous',
+					description: 'Generous'
+				}
+			]
+		}
+	]
 
 	return (
 		<Node {...props} contentDescription={contentDescription}>

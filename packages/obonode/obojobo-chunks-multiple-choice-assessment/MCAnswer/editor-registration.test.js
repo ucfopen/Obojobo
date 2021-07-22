@@ -4,8 +4,9 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 
 import MCAnswer from './editor-registration'
 
-const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
+import { MC_ANSWER_NODE } from '../constants'
+
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
@@ -21,7 +22,7 @@ describe('MCAnswer editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
-				type: MCANSWER_NODE,
+				type: MC_ANSWER_NODE,
 				data: {
 					get: () => {
 						return {}
@@ -46,12 +47,12 @@ describe('MCAnswer editor', () => {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCANSWER_NODE,
+							type: MC_ANSWER_NODE,
 							content: {},
 							children: [
 								{
@@ -79,12 +80,12 @@ describe('MCAnswer editor', () => {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCANSWER_NODE,
+							type: MC_ANSWER_NODE,
 							content: {},
 							children: [
 								{
@@ -112,12 +113,12 @@ describe('MCAnswer editor', () => {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCANSWER_NODE,
+							type: MC_ANSWER_NODE,
 							content: {},
 							children: [{ text: 'mockCode', b: true }]
 						}
@@ -137,7 +138,7 @@ describe('MCAnswer editor', () => {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCANSWER_NODE,
+					type: MC_ANSWER_NODE,
 					content: {},
 					children: [
 						{

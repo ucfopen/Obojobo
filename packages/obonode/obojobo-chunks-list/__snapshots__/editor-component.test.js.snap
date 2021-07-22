@@ -28,6 +28,7 @@ exports[`List Editor Node List component when selected 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Switch to ordered
           </button>

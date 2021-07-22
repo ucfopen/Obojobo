@@ -6,7 +6,7 @@ Object {
   "editing": false,
   "listStyles": "mockStyle",
   "needsUpdate": false,
-  "spacing": "compact",
+  "spacing": "moderate",
   "textGroup": TextGroup {
     "dataTemplate": Object {
       "align": "left",

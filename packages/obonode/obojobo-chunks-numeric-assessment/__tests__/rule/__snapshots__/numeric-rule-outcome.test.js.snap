@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericRuleOutcome constructor sets properties as expected 1`] = `
+NumericRuleOutcome {
+  "isExpectedFractionReduced": true,
+  "isExpectedInteger": true,
+  "isExpectedNumSigFigs": true,
+  "isExpectedScientific": true,
+  "isExpectedType": true,
+  "isMatched": true,
+  "rule": NumericRule {
+    "allowedTypes": Array [
+      "scientific",
+      "decimal",
+      "fractional",
+      "hex",
+      "octal",
+      "binary",
+    ],
+    "decimals": Object {
+      "isEmpty": false,
+      "isMaxInclusive": null,
+      "isMinInclusive": null,
+      "max": null,
+      "min": null,
+    },
+    "errorType": "noError",
+    "errorValue": "0",
+    "feedback": null,
+    "isFractionReduced": null,
+    "isInteger": null,
+    "isValidScientific": null,
+    "round": "none",
+    "scientificTypes": Array [
+      "apos",
+      "asterisk",
+      "e",
+      "ee",
+      "x",
+    ],
+    "score": 0,
+    "sigFigs": Object {
+      "isEmpty": false,
+      "isMaxInclusive": null,
+      "isMinInclusive": null,
+      "max": null,
+      "min": null,
+    },
+    "value": Object {
+      "isEmpty": false,
+      "isMaxInclusive": true,
+      "isMinInclusive": true,
+      "max": "42",
+      "min": "42",
+    },
+  },
+  "scoreOutcome": Object {
+    "errorType": "noError",
+    "isExactlyCorrect": true,
+    "isWithinError": true,
+  },
+}
+`;

@@ -1,4 +1,6 @@
 import { Text } from 'slate'
+import StyleableText from 'obojobo-document-engine/src/scripts/common/text/styleable-text'
+import StyleType from 'obojobo-document-engine/src/scripts/common/text/style-type'
 
 const TextUtil = {
 	// Collapse multiple links into one  inline element
@@ -90,12 +92,16 @@ const TextUtil = {
 
 				// Otherwise, add the type and the data to the mark
 				leaf[style.type] = true
-				if (style.type === 'a') {
-					leaf.href = style.data.href
-				}
-				if (style.type === 'sup') {
-					if (!leaf.num) leaf.num = 0
-					leaf.num += style.data
+				switch (style.type) {
+					case 'a':
+						leaf.href = style.data.href
+						break
+					case 'sup':
+						if (!leaf.num) leaf.num = 0
+						leaf.num += style.data
+						break
+					case 'color':
+						leaf.color = style.data.text
 				}
 			})
 
@@ -109,58 +115,77 @@ const TextUtil = {
 	},
 
 	slateToOboText: (text, line) => {
-		let currIndex = 0
+		const texts = [...text.children]
 
-		text.children.forEach(textRange => {
-			if (Text.isText(textRange)) {
-				Object.entries(textRange).forEach(([type, value]) => {
-					// Only the object keys that have a value of true are marks
-					if (value === true) {
-						const style = {
-							start: currIndex,
-							end: currIndex + textRange.text.length,
-							type: type,
-							data: type === 'sup' ? textRange.num : {}
-						}
+		/*
+		Texts is an array of Text objects or links, like this:
+		[
+			{ text: 'ABC', b: true, color: '#FF0000' },
+			{ type: 'a', href: 'example.com', children: [{ text: 'DEF' }, { text: 'GHI', i: true }] },
+			{ text: 'JKL' }
+		]
 
-						line.text.styleList.push(style)
-					}
-				})
+		We want to convert this to a StyleableText friendly format, which means
+		turning the above example to the following
+		[
+			{ text: 'ABC', b: true, color: '#FF0000' },
+			{ text: 'DEF', a: { href: 'example.com' } },
+			{ text: 'GHI', i: true, a: { href: 'example.com' } },
+			{ text: 'JKL' }
+		]
 
-				line.text.value += textRange.text
-				currIndex += textRange.text.length
-			} else {
-				const inlineStyle = {
-					start: currIndex,
-					type: textRange.type,
-					data: {
-						href: textRange.href
-					}
-				}
+		Then we iterate over these chunks of text and add them to a StyleableText object,
+		which has built-in functions to simplify the styles
+		*/
 
-				textRange.children.forEach(child => {
-					Object.entries(child).forEach(([type, value]) => {
-						// Only the object keys that have a value of true are marks
-						if (value === true) {
-							const style = {
-								start: currIndex,
-								end: currIndex + child.text.length,
-								type: type,
-								data: type === 'sup' ? child.num : {}
-							}
+		const s = new StyleableText()
 
-							line.text.styleList.push(style)
-						}
-					})
-
-					line.text.value += child.text
-					currIndex += child.text.length
-				})
-
-				inlineStyle.end = currIndex
-				line.text.styleList.push(inlineStyle)
+		texts.forEach((textRange, index) => {
+			if (!Text.isText(textRange)) {
+				// This is a link object - we expand it in place
+				const linkChildren = textRange.children.map(child => ({
+					...child,
+					a: { href: textRange.href }
+				}))
+				texts.splice(index, 1, ...linkChildren)
+				textRange = linkChildren[0]
 			}
+
+			// We manually append the text to the StyleableText object instead of using
+			// the appendText method, as the appendText method will automatically continue
+			// the style of the last character to the newly imported text
+			s.value = s.value + textRange.text
+
+			Object.keys(textRange).forEach(styleType => {
+				const styleData = textRange[styleType]
+				const from = s.length - textRange.text.length
+				const to = s.length
+
+				switch (styleType) {
+					case StyleType.COLOR:
+						s.styleText(styleType, from, to, { text: styleData })
+						return
+
+					case StyleType.SUPERSCRIPT:
+						s.styleText(styleType, from, to, textRange.num)
+						return
+
+					case StyleType.LINK:
+						s.styleText(styleType, from, to, styleData)
+						return
+
+					case StyleType.LATEX:
+					case StyleType.QUOTE:
+					case StyleType.BOLD:
+					case StyleType.STRIKETHROUGH:
+					case StyleType.MONOSPACE:
+					case StyleType.ITALIC:
+						s.styleText(styleType, from, to)
+				}
+			})
 		})
+
+		line.text = s.getExportedObject()
 	}
 }
 
