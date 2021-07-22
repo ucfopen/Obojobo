@@ -9,7 +9,13 @@ const {
 	downloadDocument
 } = require('obojobo-document-engine/src/scripts/common/util/download-document')
 
-const deleteModule = (title, draftId, deleteFn, startLoadingAnimationFn, stopLoadingAnimationFn) => {
+const deleteModule = (
+	title,
+	draftId,
+	deleteFn,
+	startLoadingAnimationFn,
+	stopLoadingAnimationFn
+) => {
 	const response = confirm(`Delete "${title}" id: ${draftId} ?`) //eslint-disable-line no-alert, no-undef
 	if (!response) return
 	startLoadingAnimationFn()
