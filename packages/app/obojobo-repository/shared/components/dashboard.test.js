@@ -407,7 +407,7 @@ describe('Dashboard', () => {
 	})
 
 	test('"Delete All" button calls functions appropriately', async () => {
-		dashboardProps.bulkDeleteModules = jest.fn()
+		dashboardProps.bulkDeleteModules = jest.fn(() => Promise.resolve())
 		dashboardProps.selectedModules = ['mockId', 'mockId2']
 		dashboardProps.multiSelectMode = true
 		const reusableComponent = <Dashboard {...dashboardProps} />

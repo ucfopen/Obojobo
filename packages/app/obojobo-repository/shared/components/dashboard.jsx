@@ -181,12 +181,13 @@ function Dashboard(props) {
 	}
 
 	const deleteModules = draftIds => {
+		setIsLoading(true)
 		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
 			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
 		)
 		if (response !== 'DELETE') return
-		props.bulkDeleteModules(draftIds)
+		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
 	}
 
 	// Set a cookie when sortOrder changes on the client
