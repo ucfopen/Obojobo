@@ -25,6 +25,8 @@ const renderOptionsDialog = props => (
 		onClose={props.closeModal}
 		showVersionHistory={props.showVersionHistory}
 		showAssessmentScoreData={props.showAssessmentScoreData}
+		startLoadingAnimation={props.startLoadingAnimation}
+		stopLoadingAnimation={props.stopLoadingAnimation}
 	/>
 )
 
@@ -151,6 +153,10 @@ function Dashboard(props) {
 			props.deselectModules(props.selectedModules)
 		}
 	}
+
+	const modalProps = Object.assign({}, props)
+	modalProps.startLoadingAnimation = () => setIsLoading(true)
+	modalProps.stopLoadingAnimation = () => setIsLoading(false)
 
 	const handleCreateNewModule = useTutorial => {
 		setIsLoading(true)
@@ -293,7 +299,7 @@ function Dashboard(props) {
 					</div>
 				</section>
 			</div>
-			{props.dialog ? renderModalDialog(props) : null}
+			{props.dialog ? renderModalDialog(modalProps) : null}
 		</span>
 	)
 }
