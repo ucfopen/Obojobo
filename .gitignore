@@ -6,3 +6,4 @@ yarn-error.log
 lerna-debug.log
 docker/node-packages/*.tgz
 *.bak
+deps-*

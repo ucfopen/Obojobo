@@ -24,9 +24,13 @@
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"test:ci:each": "lerna run test:ci",
+		"test:deps": "yarn depcruise --config .dependency-cruiser.js .",
+		"deps:high": "depcruise --config .dependency-cruiser.js --collapse \"^packages/(app|obonode)/[^/]+/\" --exclude \"node_modules|prettier|test|mock|manifest\" --output-type dot packages | dot -T svg | tee deps-high.svg | depcruise-wrap-stream-in-html depcruise-wrap-stream-in-html > deps-high.html",
+		"deps:detail": "depcruise --config .dependency-cruiser.js  --exclude \"node_modules|prettier|test|mock|manifest\" --output-type dot packages | dot -T svg | tee deps-detail.svg | depcruise-wrap-stream-in-html depcruise-wrap-stream-in-html > deps-detail.html",
 		"postinstall": "husky install"
 	},
 	"devDependencies": {
+		"dependency-cruiser": "^10.0.6",
 		"husky": "^6.0.0",
 		"jest-runner-eslint": "^0.10.0",
 		"lerna": "^4.0.0",
