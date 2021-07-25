@@ -39,7 +39,7 @@
 		"projects": [
 			"<rootDir>/packages/*/*",
 			{
-				"runner": "jest-runner-eslint/watch-fix",
+				"runner": "jest-runner-eslint",
 				"displayName": "lint",
 				"testMatch": [
 					"<rootDir>/packages/*/*/**/*.js"
@@ -53,6 +53,7 @@
 				]
 			}
 		],
+		"watchPlugins": ["jest-runner-eslint/watch-fix"],
 		"transformIgnorePatterns": [
 			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
 		],
@@ -63,6 +64,11 @@
 				"lines": 100,
 				"statements": 100
 			}
+		}
+	},
+	"jest-runner-eslint": {
+		"cliOptions": {
+			"fix": true
 		}
 	},
 	"workspaces": [
