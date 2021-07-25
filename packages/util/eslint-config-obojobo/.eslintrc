@@ -1,5 +1,5 @@
 {
-	"extends": ["eslint:recommended", "plugin:react/recommended"],
+	"extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
 	"settings": {
 		"react": {
 			"version": "16.13.1"
@@ -52,10 +52,14 @@
 		"no-var": "error",
 		"no-with": "error",
 		"prefer-const": "error",
+		"prettier/prettier": "error",
 		"radix": "error",
 		"react/prop-types": 0,
 		"yoda": "error"
 	},
+	"plugins": [
+        "prettier"
+    ],
 	"overrides": [
 		{
 		  "files": ["*.test.js"],

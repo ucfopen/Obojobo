@@ -12,6 +12,8 @@
 		"precommit": "echo 'not implemented'"
 	},
 	"dependencies": {
-		"eslint-plugin-react": "^7.23.1"
+		"eslint-plugin-react": "^7.23.1",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.0"
 	}
 }

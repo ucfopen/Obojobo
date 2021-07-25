@@ -39,7 +39,7 @@
 		"projects": [
 			"<rootDir>/packages/*/*",
 			{
-				"runner": "jest-runner-eslint",
+				"runner": "jest-runner-eslint/watch-fix",
 				"displayName": "lint",
 				"testMatch": [
 					"<rootDir>/packages/*/*/**/*.js"

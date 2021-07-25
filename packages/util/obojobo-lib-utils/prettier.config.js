@@ -1,6 +1,5 @@
+// keep in mind that prettier is relying on editorconfig for some settings
 module.exports = {
-	printWidth: 100,
 	semi: false,
-	useTabs: true,
 	singleQuote: true
 }
