@@ -333,8 +333,9 @@ class MoreInfoBox extends React.Component {
 									{objectives && objectives.length > 0 ? (
 										<span>
 											{objectives
-												.map(objective => objective.objectiveLetter)
-												.reduce((accum, objective) => accum + ',' + objective)}
+												.map(objective => (objective.selected ? objective.objectiveLetter : null))
+												.filter(objective => objective !== null)
+												.join(',')}
 										</span>
 									) : null}
 								</span>

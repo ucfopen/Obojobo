@@ -5,19 +5,25 @@ import React from 'react'
 
 const { SimpleDialog } = Common.components.modal
 
-class ObjectiveInput extends React.Component {
+class ObjectiveEdit extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			description: '1.0 Add your objective here'
+			id: null,
+			description: null
 		}
 	}
+
+	componentDidMount() {
+		this.setState({ id: this.props.data.id, description: this.props.data.description })
+	}
+
 	render() {
 		return (
 			<SimpleDialog
 				title="Objective"
 				onCancel={this.props.onCancel}
-				onConfirm={() => this.props.onConfirm(this.state.description)}
+				onConfirm={() => this.props.onConfirm(this.state.id, this.state.description)}
 			>
 				<div className="objective-container">
 					<label htmlFor="objective-input">Objective:</label>
@@ -43,4 +49,4 @@ class ObjectiveInput extends React.Component {
 	}
 }
 
-export default ObjectiveInput
+export default ObjectiveEdit

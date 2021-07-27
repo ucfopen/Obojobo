@@ -7,7 +7,7 @@
 
 	label {
 		font-weight: 600;
-		margin-right: 16px;
+		margin-right: 0.5em;
 	}
 
 	.objective-input {
@@ -15,13 +15,12 @@
 		font-size: 0.85em;
 		border: solid;
 		background: $color-bg;
-		border-color: grey;
+		border-color: $color-unchosen-correct;
 		border-width: 1px;
 		padding: 1em;
 		width: 24em;
 		max-height: 60vh;
 		overflow: auto;
-		margin: 0px 8px;
 		border-radius: $dimension-rounded-radius;
 	}
 }
@@ -29,6 +28,6 @@
 .objective-tips {
 	font-size: medium;
 	text-align: left;
-	color: gray;
-	margin-top: 8px;
+	color: $color-unchosen-correct;
+	margin-top: 0.5em;
 }

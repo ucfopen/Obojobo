@@ -1,8 +1,5 @@
 import './objective-item.scss'
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-const { Button } = Common.components
 
 class ObjectiveItem extends React.Component {
 	constructor(props) {
@@ -11,18 +8,21 @@ class ObjectiveItem extends React.Component {
 			editMode: false,
 			objectiveId: null,
 			objectiveDescription: '',
-			objectiveLetter: ''
+			objectiveLetter: '',
+			selected: false
 		}
 
 		this.sendData = this.sendData.bind(this)
 		this.deleteObjective = this.deleteObjective.bind(this)
+		this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
 	}
 
 	componentDidMount() {
 		this.setState({
 			objectiveDescription: this.props.description,
 			objectiveId: this.props.id,
-			objectiveLetter: this.props.letter
+			objectiveLetter: this.props.letter,
+			selected: this.props.selected
 		})
 	}
 
@@ -35,34 +35,51 @@ class ObjectiveItem extends React.Component {
 		this.props.delete(this.state.objectiveId)
 	}
 
+	handleCheckboxChange() {
+		const status = !this.state.selected
+		this.setState({ selected: status })
+		this.props.onCheck(this.state.objectiveId, status)
+	}
+
 	render() {
-		const { editMode } = this.state
 		const closeButton = (
 			<button className="close-btn" onClick={this.deleteObjective}>
 				✕
 			</button>
 		)
+		const editButton = (
+			<button
+				className="edit-btn"
+				onClick={() =>
+					this.props.onEdit({
+						id: this.state.objectiveId,
+						letter: this.state.objectiveLetter,
+						description: this.state.objectiveDescription,
+						selected: false
+					})
+				}
+			>
+				✎
+			</button>
+		)
 
 		return (
 			<div className="objective-block">
-				<label className="label" htmlFor="objective">
-					Objective {this.props.letter}
-				</label>
-				{closeButton}
 				<div className="objective-content" name="objective-content">
 					<input
-						type="text"
-						className="input-item"
-						defaultValue={this.state.objectiveDescription}
-						onChange={e => this.setState({ objectiveDescription: e.target.value })}
-						onFocus={() => this.setState({ editMode: true })}
+						type="checkbox"
+						id={this.state.objectiveId}
+						name="objectives[]"
+						checked={this.state.selected}
+						onClick={this.handleCheckboxChange}
 					/>
-					{editMode && (
-						<div className="objective--edit-options">
-							<span>Edit Objective Id</span>
-							<Button onClick={this.sendData}>Done</Button>
-						</div>
-					)}
+					<p className="objective-label" onClick={this.handleCheckboxChange}>
+						{this.state.objectiveDescription}
+					</p>
+				</div>
+				<div className="objective-options">
+					<span>{editButton}</span>
+					<span>{closeButton}</span>
 				</div>
 			</div>
 		)
