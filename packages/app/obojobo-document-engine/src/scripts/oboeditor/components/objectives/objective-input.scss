@@ -1,0 +1,34 @@
+@import '~styles/includes';
+
+.objective-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	label {
+		font-weight: 600;
+		margin-right: 16px;
+	}
+
+	.objective-input {
+		position: relative;
+		font-size: 0.85em;
+		border: solid;
+		background: $color-bg;
+		border-color: grey;
+		border-width: 1px;
+		padding: 1em;
+		width: 24em;
+		max-height: 60vh;
+		overflow: auto;
+		margin: 0px 8px;
+		border-radius: $dimension-rounded-radius;
+	}
+}
+
+.objective-tips {
+	font-size: medium;
+	text-align: left;
+	color: gray;
+	margin-top: 8px;
+}

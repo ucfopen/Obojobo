@@ -6,6 +6,7 @@ import React from 'react'
 
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
+import ObjectiveListModal from '../objectives/objective-list-modal'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
@@ -45,8 +46,10 @@ class MoreInfoBox extends React.Component {
 		this.handleIdChange = this.handleIdChange.bind(this)
 		this.onSave = this.onSave.bind(this)
 
+		this.showObjectiveModal = this.showObjectiveModal.bind(this)
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
+		this.closeObjectiveModal = this.closeObjectiveModal.bind(this)
 
 		this.domRef = React.createRef()
 		this.idInput = React.createRef()
@@ -173,6 +176,25 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 
+	showObjectiveModal() {
+		ModalUtil.show(
+			<ObjectiveListModal content={this.state.content} onClose={this.closeObjectiveModal} />
+		)
+		this.setState({ modalOpen: true })
+	}
+
+	closeObjectiveModal(modalState) {
+		ModalUtil.hide()
+
+		if (!modalState) return // do not save changes
+
+		this.setState(prevState => ({
+			content: { ...prevState.content, objectives: modalState.objectives },
+			needsUpdate: true,
+			modalOpen: false
+		}))
+	}
+
 	showTriggersModal() {
 		// Prevent info box from closing when modal is opened
 		ModalUtil.show(<TriggerListModal content={this.state.content} onClose={this.closeModal} />)
@@ -262,6 +284,7 @@ class MoreInfoBox extends React.Component {
 
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
+		const objectives = this.state.content.objectives
 
 		return (
 			<div className="more-info-box">
@@ -303,6 +326,21 @@ class MoreInfoBox extends React.Component {
 									)}
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
+							</div>
+							<div>
+								<span className="objectives">
+									Objectives:
+									{objectives && objectives.length > 0 ? (
+										<span>
+											{objectives
+												.map(objective => objective.objectiveLetter)
+												.reduce((accum, objective) => accum + ',' + objective)}
+										</span>
+									) : null}
+								</span>
+								<Button altAction className="objective-button" onClick={this.showObjectiveModal}>
+									✎ Edit
+								</Button>
 							</div>
 							<div>
 								<span className="triggers">

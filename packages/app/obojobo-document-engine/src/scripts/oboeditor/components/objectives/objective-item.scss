@@ -1,0 +1,62 @@
+@import '~styles/includes';
+
+/* Display the objective css */
+.objective-block {
+	text-align: left;
+	width: 35rem;
+	background-color: white;
+	border: 1px solid grey;
+	padding: 1em;
+	border-radius: $dimension-rounded-radius;
+	margin: 8px;
+	position: relative;
+
+	.label {
+		font-weight: 600;
+		margin-bottom: 8px;
+		padding-left: 0.75em;
+	}
+
+	.close-btn {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		background: transparent;
+		cursor: pointer;
+		border: 0;
+	}
+
+	.objective-content {
+		font-size: 16px;
+
+		.input-item {
+			padding: 0.75em;
+			width: calc(100% - 1.5em);
+			border: 1px solid white;
+			border-radius: $dimension-rounded-radius;
+
+			&:hover {
+				border-color: gray;
+			}
+
+			&:focus {
+				outline: none;
+				border-color: #7e18e7;
+			}
+		}
+
+		.objective--edit-options {
+			font-size: 12px;
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+
+			span {
+				color: #7e18e7;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		}
+	}
+}

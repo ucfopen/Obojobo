@@ -54,6 +54,19 @@ class SimpleDialog extends React.Component {
 					default: true
 				}
 			]
+		} else if (this.props.saveOrDelete) {
+			buttons = [
+				{
+					value: 'Save',
+					altAction: true,
+					onClick: () => {}
+				},
+				{
+					value: 'Delete',
+					onClick: () => {},
+					default: true
+				}
+			]
 		} else {
 			buttons = [
 				{

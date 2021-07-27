@@ -150,6 +150,23 @@
 					right: 0;
 				}
 
+				.objective-button {
+					position: absolute;
+					top: 50%;
+					transform: translate(0, -50%);
+					right: 0;
+				}
+
+				.objectives {
+					padding-right: 3.5em;
+					display: inline-block;
+
+					span {
+						padding-left: 0.5em;
+						font-weight: normal;
+					}
+				}
+
 				.triggers {
 					padding-right: 3.5em;
 					display: inline-block;
