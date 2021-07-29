@@ -33,7 +33,7 @@ oboEvents.on(DraftModel.EVENT_DRAFT_DELETED, draft => {
 			AND
 			drafts.deleted = TRUE`
 		)
-		.then(logger.log(`User ${draft.userId} deleted module ${draft.id}`))
+		.then(logger.info(`User ${draft.userId} deleted module ${draft.id}`))
 		.catch(logger.error)
 })
 
