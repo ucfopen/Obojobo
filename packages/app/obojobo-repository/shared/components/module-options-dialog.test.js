@@ -111,7 +111,9 @@ describe('ModuleOptionsDialog', () => {
 	})
 
 	test('"Delete" button brings up confirmation dialog, confirmed', () => {
-		defaultProps.deleteModule = jest.fn()
+		defaultProps.deleteModule = jest.fn(() => Promise.resolve())
+		defaultProps.startLoadingAnimation = jest.fn()
+		defaultProps.stopLoadingAnimation = jest.fn()
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		window.confirm = jest.fn()
