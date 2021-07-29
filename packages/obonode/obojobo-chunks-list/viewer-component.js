@@ -27,6 +27,20 @@ const addItemToList = (ul, li, lis) => {
 	return lis.push(li)
 }
 
+// Used to determine a list's bullet point or index color
+const getColorOfFirstCharacter = (styles) => {
+	for (let i = 0; i < styles.length; i++) {
+		const style = styles[i]
+		if (style && style.type === 'color' && style.start === 0) {
+			console.log('INSIDE AGAIN')
+			return style.data.text
+		}else {
+			console.log('NOT INSIDE')
+		}
+	}
+	return '#000'
+}
+
 const renderEl = (props, node, index, indent) => {
 	const key = `${props.model.cid}-${indent}-${index}`
 
@@ -42,9 +56,31 @@ const renderEl = (props, node, index, indent) => {
 			)
 		case 'element': {
 			const ElType = node.type
+			let color = '#000'
+			if (
+				node.firstChild &&
+				node.firstChild.text &&
+				node.firstChild.text.styleList &&
+				node.firstChild.text.styleList.styles
+			) {
+				console.log('INSIDE')
+				const styles = node.firstChild.text.styleList.styles
+				console.log(node)
+				color = getColorOfFirstCharacter(styles)
+			}
+
 			return (
-				<ElType key={key} start={node.start} style={{ listStyleType: node.listStyleType }}>
-					{renderChildren(props, node.children, indent + 1)}
+				<ElType
+					key={key}
+					start={node.start}
+					style={{
+						listStyleType: node.listStyleType,
+						color: color
+					}}
+				>
+					<span style={{ color: 'black' }}>
+						{renderChildren(props, node.children, indent + 1)}
+					</span>
 				</ElType>
 			)
 		}

@@ -51,4 +51,40 @@ describe('Line Editor Node', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('renders with different colored bullet points or indices', () => {
+		let attrs = {
+			node: {
+				children: [
+					{ color: '#cf3280' }
+				]
+			}
+		}
+
+		let component = renderer.create(
+			<Line element={{ content: {} }}>
+				<span {...attrs} />
+			</Line>
+		)
+
+		let tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		attrs = {
+			node: {
+				children: [
+					{ style: 'mock-style' }
+				]
+			}
+		}
+
+		component = renderer.create(
+			<Line element={{ content: {} }}>
+				<span {...attrs} />
+			</Line>
+		)
+
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
 })
