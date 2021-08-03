@@ -53,9 +53,7 @@ const renderEl = (props, node, index, indent) => {
 						color: color
 					}}
 				>
-					<span style={{ color: 'black' }}>
-						{renderChildren(props, node.children, indent + 1)}
-					</span>
+					<span style={{ color: 'black' }}>{renderChildren(props, node.children, indent + 1)}</span>
 				</ElType>
 			)
 		}

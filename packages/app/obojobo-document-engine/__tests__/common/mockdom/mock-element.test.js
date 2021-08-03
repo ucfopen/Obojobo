@@ -122,7 +122,7 @@ describe('MockElement', () => {
 					styles: [
 						{ type: 'mock', start: 12 },
 						{ type: 'underline', start: 1 },
-						{ type: 'color', start: 0, data: { text: '#ccc' } },
+						{ type: 'color', start: 0, data: { text: '#ccc' } }
 					]
 				}
 			}

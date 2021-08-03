@@ -55,9 +55,7 @@ describe('Line Editor Node', () => {
 	test('renders with different colored bullet points or indices', () => {
 		let attrs = {
 			node: {
-				children: [
-					{ color: '#cf3280' }
-				]
+				children: [{ color: '#cf3280' }]
 			}
 		}
 
@@ -72,9 +70,7 @@ describe('Line Editor Node', () => {
 
 		attrs = {
 			node: {
-				children: [
-					{ style: 'mock-style' }
-				]
+				children: [{ style: 'mock-style' }]
 			}
 		}
 
