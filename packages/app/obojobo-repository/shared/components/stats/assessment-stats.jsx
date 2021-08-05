@@ -3,8 +3,7 @@ require('./assessment-stats.scss')
 const React = require('react')
 const DataGridAttempts = require('./data-grid-attempts')
 const DataGridAssessments = require('./data-grid-assessments')
-const AssessmentStatsFilterControls = require('./assessment-stats-filter-controls')
-const AssessmentStatsSearchControls = require('./assessment-stats-search-controls')
+const AssessmentStatsControls = require('./assessment-stats-controls')
 
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
 const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
@@ -54,11 +53,26 @@ const filterAttempts = (attempts, { showIncompleteAttempts, showPreviewAttempts 
 
 const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 	const [viewMode, setViewMode] = React.useState(VIEW_MODE_FINAL_ASSESSMENT_SCORE)
-	const [searchSettings, setSearchSettings] = React.useState('')
-	const [searchContent, setSearchContent] = React.useState('')
-	const [filterSettings, setFilterSettings] = React.useState(
+	// const [searchSettings, setSearchSettings] = React.useState('')
+	// const [searchContent, setSearchContent] = React.useState('')
+	// const [filterSettings, setFilterSettings] = React.useState(
+	// 	Object.assign(
+	// 		{ showIncompleteAttempts: false, showPreviewAttempts: false, showAdvancedFields: false },
+	// 		defaultFilterSettings
+	// 	)
+	// )
+	const [controls, setControls] = React.useState(
 		Object.assign(
-			{ showIncompleteAttempts: false, showPreviewAttempts: false, showAdvancedFields: false },
+			{
+				showIncompleteAttempts: false,
+				showPreviewAttempts: false,
+				showAdvancedFields: false,
+				searchBy: '',
+				searchContent: {
+					searchString: '',
+					date: { start: '', end: '' }
+				}
+			},
 			defaultFilterSettings
 		)
 	)
@@ -82,14 +96,14 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 				</label>
 				<hr />
 				<div className="filters">
-					<AssessmentStatsSearchControls
-						onChangeSearchSettings={setSearchSettings}
-						onChangeSearchContent={setSearchContent}
-					/>
-					<hr />
-					<AssessmentStatsFilterControls
+					<AssessmentStatsControls
 						filterSettings={filterSettings}
 						onChangeFilterSettings={setFilterSettings}
+						onChangeSearchSettings={setSearchSettings}
+						onChangeSearchContent={setSearchContent}
+						
+						controls={controls}
+						onChangeControls={setControls}
 					/>
 				</div>
 			</div>
