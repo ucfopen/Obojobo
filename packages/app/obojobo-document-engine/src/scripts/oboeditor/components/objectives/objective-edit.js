@@ -10,12 +10,17 @@ class ObjectiveEdit extends React.Component {
 		super(props)
 		this.state = {
 			id: null,
+			label: null,
 			description: null
 		}
 	}
 
 	componentDidMount() {
-		this.setState({ id: this.props.data.id, description: this.props.data.description })
+		this.setState({
+			id: this.props.data.id,
+			label: this.props.data.label,
+			description: this.props.data.description
+		})
 	}
 
 	render() {
@@ -23,26 +28,33 @@ class ObjectiveEdit extends React.Component {
 			<SimpleDialog
 				title="Objective"
 				onCancel={this.props.onCancel}
-				onConfirm={() => this.props.onConfirm(this.state.id, this.state.description)}
+				onConfirm={() => this.props.onConfirm(this.state)}
 			>
 				<div className="objective-container">
-					<label htmlFor="objective-input">Objective:</label>
-					<input
-						type="text"
-						placeholder="1.0 Add your objective here"
-						value={this.state.description}
-						id="objective-input"
-						className="objective-input"
-						onChange={event => this.setState({ description: event.target.value })}
-					/>
-				</div>
-				<div className="objective-tips">
-					<p>* Tips for writing an objective in Obojobo</p>
-					<ul>
-						<li>Add numeric value to the objective</li>
-						<li>Start your objective with a verb</li>
-						<li>Limit your objective text</li>
-					</ul>
+					<div>
+						<label htmlFor="objective-label">Label:</label>
+						<input
+							type="text"
+							placeholder="Label such as 1.0, 1.2, A, B, etc"
+							value={this.state.label}
+							id="objective-label"
+							className="objective-input"
+							onChange={event => {
+								this.setState({ label: event.target.value })
+							}}
+						/>
+					</div>
+					<div>
+						<label htmlFor="objective-input">Objective:</label>
+						<input
+							type="text"
+							placeholder="Add your objective here"
+							value={this.state.description}
+							id="objective-input"
+							className="objective-input"
+							onChange={event => this.setState({ description: event.target.value })}
+						/>
+					</div>
 				</div>
 			</SimpleDialog>
 		)

@@ -21,7 +21,7 @@ class ObjectiveListModal extends React.Component {
 			this.state.objectives = this.state.objectives.map(objective => {
 				return {
 					objectiveId: objective.objectiveId,
-					objectiveLetter: objective.objectiveLetter,
+					objectiveLabel: objective.objectiveLabel,
 					description: objective.description,
 					selected: objective.selected
 				}
@@ -69,14 +69,12 @@ class ObjectiveListModal extends React.Component {
 		// }))
 	}
 
-	createNewObjective(description) {
+	createNewObjective({ label, description }) {
 		const id = uuid()
-		const length = this.state.objectives.length
-		const letter = length < 26 ? String.fromCharCode(65 + length) : String.fromCharCode(97 + length)
 
 		const newObjectiveObject = {
 			objectiveId: id,
-			objectiveLetter: letter,
+			objectiveLabel: label,
 			description
 		}
 
@@ -94,13 +92,14 @@ class ObjectiveListModal extends React.Component {
 		this.setState({ editMode: true, editData: data })
 	}
 
-	onUpdate(id, des) {
-		const description = des
+	onUpdate({ id, label, description }) {
 		// The nested loop insures that React's immutable state is updated properly
 		return this.setState(prevState => {
 			return {
 				objectives: prevState.objectives.map(objective =>
-					objective.objectiveId === id ? Object.assign(objective, { description }) : objective
+					objective.objectiveId === id
+						? Object.assign(objective, { objectiveLabel: label, description })
+						: objective
 				)
 			}
 		})
@@ -123,15 +122,25 @@ class ObjectiveListModal extends React.Component {
 				<ObjectiveEdit
 					data={this.state.editData}
 					onCancel={() => this.setState({ editMode: false })}
-					onConfirm={(id, des) => {
-						this.onUpdate(id, des)
+					onConfirm={state => {
+						this.onUpdate(state)
 						this.setState({ editMode: false })
 					}}
 				/>
 			)
 		}
 
-		return !this.state.newObjective ? (
+		if (this.state.newObjective) {
+			// New Objective Dialog Popup
+			return (
+				<ObjectiveInput
+					onCancel={() => this.setState({ newObjective: false })}
+					onConfirm={state => this.createNewObjective(state)}
+				/>
+			)
+		}
+
+		return (
 			<SimpleDialog ok title="Objectives" onConfirm={() => this.props.onClose(this.state)}>
 				<div className="objective-list-modal">
 					{this.state.objectives.map(objective => {
@@ -139,7 +148,7 @@ class ObjectiveListModal extends React.Component {
 							<div key={objective.objectiveId}>
 								<ObjectiveItem
 									id={objective.objectiveId}
-									letter={objective.objectiveLetter}
+									label={objective.objectiveLabel}
 									description={objective.description}
 									selected={objective.selected}
 									onEdit={this.initializeEdit.bind(this)}
@@ -149,14 +158,9 @@ class ObjectiveListModal extends React.Component {
 							</div>
 						)
 					})}
-					<Button onClick={() => this.setState({ newObjective: true })}>+ Add Objective</Button>
+					<Button onClick={() => this.setState({ newObjective: true })}>+ Create Objective</Button>
 				</div>
 			</SimpleDialog>
-		) : (
-			<ObjectiveInput
-				onCancel={() => this.setState({ newObjective: false })}
-				onConfirm={des => this.createNewObjective(des)}
-			/>
 		)
 	}
 }

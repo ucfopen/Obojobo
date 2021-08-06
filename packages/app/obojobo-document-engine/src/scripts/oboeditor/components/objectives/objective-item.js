@@ -8,7 +8,7 @@ class ObjectiveItem extends React.Component {
 			editMode: false,
 			objectiveId: null,
 			objectiveDescription: '',
-			objectiveLetter: '',
+			objectiveLabel: '',
 			selected: false
 		}
 
@@ -21,7 +21,7 @@ class ObjectiveItem extends React.Component {
 		this.setState({
 			objectiveDescription: this.props.description,
 			objectiveId: this.props.id,
-			objectiveLetter: this.props.letter,
+			objectiveLabel: this.props.label,
 			selected: this.props.selected
 		})
 	}
@@ -53,7 +53,7 @@ class ObjectiveItem extends React.Component {
 				onClick={() =>
 					this.props.onEdit({
 						id: this.state.objectiveId,
-						letter: this.state.objectiveLetter,
+						label: this.state.objectiveLabel,
 						description: this.state.objectiveDescription,
 						selected: false
 					})
@@ -74,7 +74,7 @@ class ObjectiveItem extends React.Component {
 						onClick={this.handleCheckboxChange}
 					/>
 					<p className="objective-label" onClick={this.handleCheckboxChange}>
-						{this.state.objectiveDescription}
+						{this.state.objectiveLabel} {this.state.objectiveDescription}
 					</p>
 				</div>
 				<div className="objective-options">

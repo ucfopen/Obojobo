@@ -1,9 +1,12 @@
 @import '~styles/includes';
 
 .objective-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	div {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 1em;
+	}
 
 	label {
 		font-weight: 600;
@@ -22,6 +25,15 @@
 		max-height: 60vh;
 		overflow: auto;
 		border-radius: $dimension-rounded-radius;
+	}
+
+	.objective-input--error {
+		border-color: $color-error;
+	}
+
+	.objective-error {
+		color: $color-error;
+		font-size: small;
 	}
 }
 

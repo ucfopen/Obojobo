@@ -7,6 +7,7 @@ import React from 'react'
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 import ObjectiveListModal from '../objectives/objective-list-modal'
+import ObjectiveListView from '../objectives/objective-list-view'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
@@ -330,14 +331,7 @@ class MoreInfoBox extends React.Component {
 							<div>
 								<span className="objectives">
 									Objectives:
-									{objectives && objectives.length > 0 ? (
-										<span>
-											{objectives
-												.map(objective => (objective.selected ? objective.objectiveLetter : null))
-												.filter(objective => objective !== null)
-												.join(',')}
-										</span>
-									) : null}
+									<ObjectiveListView objectives={objectives} />
 								</span>
 								<Button altAction className="objective-button" onClick={this.showObjectiveModal}>
 									✎ Edit

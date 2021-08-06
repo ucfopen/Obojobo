@@ -9,34 +9,83 @@ class ObjectiveInput extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			description: '1.0 Add your objective here'
+			label: '',
+			description: '',
+			error: ''
 		}
 	}
+
+	handleConfirm() {
+		const { label, description } = this.state
+
+		if (label === '' && description === '') {
+			this.setState({
+				error: 'Please enter a label and a description'
+			})
+			return
+		}
+
+		if (label === '' && description !== '') {
+			this.setState({
+				error: 'Please enter a label'
+			})
+			return
+		}
+
+		if (label !== '' && description === '') {
+			this.setState({
+				error: 'Please enter a description'
+			})
+			return
+		}
+
+		// all good
+		this.props.onConfirm(this.state)
+	}
+
 	render() {
 		return (
 			<SimpleDialog
 				title="Objective"
 				onCancel={this.props.onCancel}
-				onConfirm={() => this.props.onConfirm(this.state.description)}
+				onConfirm={this.handleConfirm.bind(this)}
 			>
 				<div className="objective-container">
-					<label htmlFor="objective-input">Objective:</label>
-					<input
-						type="text"
-						placeholder="1.0 Add your objective here"
-						value={this.state.description}
-						id="objective-input"
-						className="objective-input"
-						onChange={event => this.setState({ description: event.target.value })}
-					/>
-				</div>
-				<div className="objective-tips">
-					<p>* Tips for writing an objective in Obojobo</p>
-					<ul>
-						<li>Add numeric value to the objective</li>
-						<li>Start your objective with a verb</li>
-						<li>Limit your objective text</li>
-					</ul>
+					<div>
+						<label htmlFor="objective-label">Label:</label>
+						<input
+							type="text"
+							placeholder="Label such as 1.0, 1.2, A, B, etc"
+							value={this.state.label}
+							id="objective-label"
+							className={
+								'objective-input' +
+								(this.state.label === '' && this.state.error !== ''
+									? ' objective-input--error'
+									: '')
+							}
+							onChange={event => {
+								this.setState({ label: event.target.value })
+							}}
+						/>
+					</div>
+					<div>
+						<label htmlFor="objective-input">Objective:</label>
+						<input
+							type="text"
+							placeholder="Add your objective here"
+							value={this.state.description}
+							id="objective-input"
+							className={
+								'objective-input' +
+								(this.state.description === '' && this.state.error !== ''
+									? ' objective-input--error'
+									: '')
+							}
+							onChange={event => this.setState({ description: event.target.value })}
+						/>
+					</div>
+					<span className="objective-error">{this.state.error}</span>
 				</div>
 			</SimpleDialog>
 		)
