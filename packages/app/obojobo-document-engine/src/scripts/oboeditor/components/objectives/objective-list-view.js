@@ -6,8 +6,10 @@ class ObjectiveListView extends React.Component {
 		super(props)
 	}
 	render() {
-		const objectives = this.props.objectives.filter(o => o.selected === true)
-		if (objectives && objectives.length === 0) {
+		let objectives = this.props.objectives
+		objectives = objectives && this.props.objectives.filter(o => o.selected === true)
+
+		if (!objectives) {
 			return null
 		}
 

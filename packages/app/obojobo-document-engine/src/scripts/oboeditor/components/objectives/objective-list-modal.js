@@ -35,6 +35,30 @@ class ObjectiveListModal extends React.Component {
 
 		this.createNewObjective = this.createNewObjective.bind(this)
 		this.handleObjectiveInput = this.handleObjectiveInput.bind(this)
+
+		this.objectiveListHeader = (
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					padding: '0.5em 1.25em',
+					margin: '0em 0.5em 0.1em 0em',
+					fontWeight: 'bold'
+				}}
+			>
+				<div>
+					<p style={{ margin: 0, fontSize: '0.6em' }}>
+						<span>Select&nbsp;&nbsp;</span>
+						Objective
+					</p>
+				</div>
+				<div style={{ fontSize: '0.6em' }}>
+					<span>Edit&nbsp;</span>
+					<span>&nbsp;&nbsp;Delete</span>
+				</div>
+			</div>
+		)
 	}
 
 	componentWillUnmount() {
@@ -142,6 +166,7 @@ class ObjectiveListModal extends React.Component {
 
 		return (
 			<SimpleDialog ok title="Objectives" onConfirm={() => this.props.onClose(this.state)}>
+				{this.state.objectives.length > 0 && this.objectiveListHeader}
 				<div className="objective-list-modal">
 					{this.state.objectives.map(objective => {
 						return (
