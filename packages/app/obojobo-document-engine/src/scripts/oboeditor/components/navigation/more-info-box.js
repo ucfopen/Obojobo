@@ -6,6 +6,8 @@ import React from 'react'
 
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
+import ObjectiveListModal from '../objectives/objective-list-modal'
+import ObjectiveListView from '../objectives/objective-list-view'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
@@ -16,7 +18,7 @@ const stopPropagation = event => event.stopPropagation()
 
 // Expected Props:
 // id: String - the id of the item to edit
-// content: Object - the item data for the node.  Each key-value pair would be edited independantly
+// content: Object - the item data for the node.  Each key-value pair would be edited independently
 // saveId: Function(oldId, newId) - updates the id.  Returns a string error if the id couldn't save
 // saveContent: Function(oldContent, newContent) - updates the content. Returns a string error if the content is invalid
 // contentDescription: [Object] - a list of descriptions that tells which content attributes to display and how
@@ -32,7 +34,8 @@ class MoreInfoBox extends React.Component {
 			error: null,
 			isOpen: false,
 			modalOpen: false,
-			content: this.props.content
+			content: this.props.content,
+			isIdDisabled: true
 		}
 
 		this.onWindowMouseDown = this.onWindowMouseDown.bind(this)
@@ -44,8 +47,10 @@ class MoreInfoBox extends React.Component {
 		this.handleIdChange = this.handleIdChange.bind(this)
 		this.onSave = this.onSave.bind(this)
 
+		this.showObjectiveModal = this.showObjectiveModal.bind(this)
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
+		this.closeObjectiveModal = this.closeObjectiveModal.bind(this)
 
 		this.domRef = React.createRef()
 		this.idInput = React.createRef()
@@ -168,8 +173,27 @@ class MoreInfoBox extends React.Component {
 	close() {
 		if (this.state.isOpen === true) {
 			if (this.props.onBlur) this.props.onBlur('info')
-			this.setState({ isOpen: false })
+			this.setState({ isOpen: false, isIdDisabled: true })
 		}
+	}
+
+	showObjectiveModal() {
+		ModalUtil.show(
+			<ObjectiveListModal content={this.state.content} onClose={this.closeObjectiveModal} />
+		)
+		this.setState({ modalOpen: true })
+	}
+
+	closeObjectiveModal(modalState) {
+		ModalUtil.hide()
+		
+		if (!modalState) return // do not save changes
+
+		this.setState(prevState => ({
+			content: { ...prevState.content, objectives: modalState.objectives },
+			needsUpdate: true,
+			modalOpen: false
+		}))
 	}
 
 	showTriggersModal() {
@@ -261,7 +285,6 @@ class MoreInfoBox extends React.Component {
 
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
-
 		return (
 			<div className="more-info-box">
 				<div className="container">
@@ -273,6 +296,7 @@ class MoreInfoBox extends React.Component {
 									<label htmlFor="oboeditor--components--more-info-box--id-input">Id</label>
 									<input
 										autoFocus
+										readOnly={this.state.isIdDisabled}
 										type="text"
 										id="oboeditor--components--more-info-box--id-input"
 										value={this.state.currentId}
@@ -281,11 +305,35 @@ class MoreInfoBox extends React.Component {
 										onClick={stopPropagation}
 										ref={this.idInput}
 									/>
-									<Button onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}>
-										Copy Id
-									</Button>
+									{this.state.isIdDisabled ? (
+										<div>
+											<Button onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}>
+												Copy Id
+											</Button>
+											<Button
+												altAction
+												onClick={() => {
+													this.setState({ isIdDisabled: false })
+													this.idInput.current.focus()
+												}}
+											>
+												✎ Edit
+											</Button>
+										</div>
+									) : (
+										<Button onClick={() => this.setState({ isIdDisabled: true })}>OK</Button>
+									)}
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
+							</div>
+							<div>
+								<span className="objectives">
+									Objectives:
+										<ObjectiveListView objectives = {this.state.content.objectives}/>
+								</span>
+								<Button altAction className="objective-button" onClick={this.showObjectiveModal}>
+									✎ Edit
+								</Button>
 							</div>
 							<div>
 								<span className="triggers">
