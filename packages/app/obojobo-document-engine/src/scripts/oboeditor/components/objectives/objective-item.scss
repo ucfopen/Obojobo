@@ -18,6 +18,10 @@
 		font-size: 1em;
 	}
 
+	.objective-options > span {
+		margin-left: 0.64em;
+	}
+
 	.edit-btn {
 		background: transparent;
 		cursor: pointer;
@@ -38,9 +42,5 @@
 			margin: 0em 0.5em;
 			cursor: default;
 		}
-	}
-
-	.objective-options > span {
-		margin-left: 0.64em;
 	}
 }

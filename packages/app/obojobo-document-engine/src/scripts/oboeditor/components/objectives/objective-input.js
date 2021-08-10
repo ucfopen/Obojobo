@@ -55,7 +55,7 @@ class ObjectiveInput extends React.Component {
 						<label htmlFor="objective-label">Label:</label>
 						<input
 							type="text"
-							placeholder="Label such as 1.0, 1.2, A, B, etc"
+							placeholder="Add label as 1.0, 1.2, A, B, etc"
 							value={this.state.label}
 							id="objective-label"
 							className={
@@ -73,7 +73,7 @@ class ObjectiveInput extends React.Component {
 						<label htmlFor="objective-input">Objective:</label>
 						<input
 							type="text"
-							placeholder="Add your objective here"
+							placeholder="Add objective here"
 							value={this.state.description}
 							id="objective-input"
 							className={

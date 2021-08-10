@@ -6,8 +6,8 @@ class ObjectiveListView extends React.Component {
 		super(props)
 	}
 	render() {
-		let objectives = this.props.objectives
-		objectives = objectives && this.props.objectives.filter(o => o.selected === true)
+		const objectives = this.props.objectives
+		const globalObjectives = this.props.globalObjectives
 
 		if (!objectives) {
 			return null
@@ -15,14 +15,17 @@ class ObjectiveListView extends React.Component {
 
 		return (
 			<div className="objective-list-view">
-				{objectives.map(
-					objective =>
-						objective.selected && (
+				{globalObjectives.map(objective => {
+					if (objectives.includes(objective.objectiveId)) {
+						return (
 							<div key={objective.objectiveId}>
 								{objective.objectiveLabel} {objective.description}
 							</div>
 						)
-				)}
+					}
+
+					return null
+				})}
 			</div>
 		)
 	}

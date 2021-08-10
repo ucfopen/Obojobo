@@ -14,24 +14,19 @@ class ObjectiveListModal extends React.Component {
 	constructor(props) {
 		super(props)
 		this.inputRef = React.createRef()
-		this.state = { ...JSON.parse(JSON.stringify(props.content)) }
-		if (!this.state.objectives) {
-			this.state.objectives = []
-		} else {
-			this.state.objectives = this.state.objectives.map(objective => {
-				return {
-					objectiveId: objective.objectiveId,
-					objectiveLabel: objective.objectiveLabel,
-					description: objective.description,
-					selected: objective.selected
-				}
-			})
+		this.state = {
+			objectives: this.props.content.objectives ?? [],
+			globalObjectives: this.props.objectiveContext.objectives ?? []
 		}
 
 		this.state.newObjective = false
 
 		this.state.editMode = false
 		this.state.editData = null
+
+		this.addObjective = this.props.objectiveContext.addObjective
+		this.removeObjective = this.props.objectiveContext.removeObjective
+		this.updateObjective = this.props.objectiveContext.updateObjective
 
 		this.createNewObjective = this.createNewObjective.bind(this)
 		this.handleObjectiveInput = this.handleObjectiveInput.bind(this)
@@ -66,24 +61,25 @@ class ObjectiveListModal extends React.Component {
 	}
 
 	deleteObjective(objectiveID) {
-		const letters = []
-		this.state.objectives.forEach(objective => {
-			letters.push(objective.objectiveLetter)
+		this.setState(prevState => {
+			const objectives = prevState.objectives.filter(objective => objective !== objectiveID)
+			return {
+				...prevState,
+				objectives
+			}
 		})
 
-		let objectives = [...this.state.objectives]
-		objectives = objectives.map(objective =>
-			objectiveID === objective.objectiveId ? null : objective
-		)
-
-		let newObj = objectives.filter(Boolean)
-
-		newObj = newObj.map((objective, index) => {
-			const obj = { objectiveLetter: letters[index] }
-			return Object.assign(objective, obj)
+		this.setState(prevState => {
+			const globalObjectives = prevState.globalObjectives.filter(
+				objective => objective.objectiveId !== objectiveID
+			)
+			return {
+				...prevState,
+				globalObjectives
+			}
 		})
 
-		this.setState({ objectives: newObj })
+		this.removeObjective(objectiveID)
 
 		// // The nested loop insures that React's immutable state is updated properly
 		// return this.setState(prevState => ({
@@ -102,8 +98,11 @@ class ObjectiveListModal extends React.Component {
 			description
 		}
 
+		this.addObjective(newObjectiveObject)
+
 		this.setState(prevState => ({
-			objectives: prevState.objectives.concat(newObjectiveObject),
+			objectives: prevState.objectives.concat(id),
+			globalObjectives: prevState.globalObjectives.concat(newObjectiveObject),
 			newObjective: false
 		}))
 	}
@@ -118,25 +117,29 @@ class ObjectiveListModal extends React.Component {
 
 	onUpdate({ id, label, description }) {
 		// The nested loop insures that React's immutable state is updated properly
-		return this.setState(prevState => {
+		this.setState(prevState => {
 			return {
-				objectives: prevState.objectives.map(objective =>
+				globalObjectives: prevState.globalObjectives.map(objective =>
 					objective.objectiveId === id
 						? Object.assign(objective, { objectiveLabel: label, description })
 						: objective
 				)
 			}
 		})
+
+		this.updateObjective(id, label, description)
 	}
 
-	onCheck(id, status) {
-		this.setState(prevState => {
-			return {
-				objectives: prevState.objectives.map(objective =>
-					objective.objectiveId === id ? Object.assign(objective, { selected: status }) : objective
-				)
-			}
-		})
+	onCheck(id) {
+		if (this.state.objectives.includes(id)) {
+			this.setState(prevState => ({
+				objectives: prevState.objectives.filter(objective => objective !== id)
+			}))
+		} else {
+			this.setState(prevState => ({
+				objectives: prevState.objectives.concat(id)
+			}))
+		}
 	}
 
 	render() {
@@ -165,17 +168,17 @@ class ObjectiveListModal extends React.Component {
 		}
 
 		return (
-			<SimpleDialog ok title="Objectives" onConfirm={() => this.props.onClose(this.state)}>
-				{this.state.objectives.length > 0 && this.objectiveListHeader}
+			<SimpleDialog addOrCancel title="Objectives" onConfirm={() => this.props.onClose(this.state)}>
+				{this.state.globalObjectives.length > 0 && this.objectiveListHeader}
 				<div className="objective-list-modal">
-					{this.state.objectives.map(objective => {
+					{this.state.globalObjectives.map(objective => {
 						return (
 							<div key={objective.objectiveId}>
 								<ObjectiveItem
 									id={objective.objectiveId}
 									label={objective.objectiveLabel}
 									description={objective.description}
-									selected={objective.selected}
+									selected={this.state.objectives.includes(objective.objectiveId)}
 									onEdit={this.initializeEdit.bind(this)}
 									delete={this.deleteObjective.bind(this, objective.objectiveId)}
 									onCheck={this.onCheck.bind(this)}

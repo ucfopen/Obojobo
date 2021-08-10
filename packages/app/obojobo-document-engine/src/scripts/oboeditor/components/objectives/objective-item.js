@@ -1,6 +1,10 @@
 import './objective-item.scss'
 import React from 'react'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
+
+const { SimpleDialog } = Common.components.modal
+
 class ObjectiveItem extends React.Component {
 	constructor(props) {
 		super(props)
@@ -33,17 +37,17 @@ class ObjectiveItem extends React.Component {
 
 	deleteObjective() {
 		this.props.delete(this.state.objectiveId)
+		this.setState({ handleDelete: false })
 	}
 
 	handleCheckboxChange() {
-		const status = !this.state.selected
-		this.setState({ selected: status })
-		this.props.onCheck(this.state.objectiveId, status)
+		this.props.onCheck(this.state.objectiveId)
+		this.setState({ selected: !this.state.selected })
 	}
 
 	render() {
 		const closeButton = (
-			<button className="close-btn" onClick={this.deleteObjective}>
+			<button className="close-btn" onClick={() => this.setState({ handleDelete: true })}>
 				✕
 			</button>
 		)
@@ -63,6 +67,26 @@ class ObjectiveItem extends React.Component {
 			</button>
 		)
 
+		if (this.state.handleDelete) {
+			return (
+				<SimpleDialog
+					delete
+					title="Delete Confirmation"
+					onCancel={() => {
+						this.setState({ handleDelete: false })
+					}}
+					onDelete={this.deleteObjective}
+				>
+					<div>
+						{' '}
+						Are you sure you want to delete the objective &quot;{this.state.objectiveLabel}{' '}
+						{this.state.objectiveDescription}&quot;? You cannot undo this action.
+					</div>
+					<div> </div>
+				</SimpleDialog>
+			)
+		}
+
 		return (
 			<div className="objective-block">
 				<div className="objective-content" name="objective-content">
@@ -71,7 +95,7 @@ class ObjectiveItem extends React.Component {
 						id={this.state.objectiveId}
 						name="objectives[]"
 						checked={this.state.selected}
-						onClick={this.handleCheckboxChange}
+						onChange={this.handleCheckboxChange}
 					/>
 					<p className="objective-label" onClick={this.handleCheckboxChange}>
 						{this.state.objectiveLabel} {this.state.objectiveDescription}
