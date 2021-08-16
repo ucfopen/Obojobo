@@ -13,7 +13,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"
@@ -155,7 +156,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"
@@ -297,7 +299,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"
@@ -439,7 +442,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"
@@ -581,7 +585,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"
@@ -723,7 +728,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"
@@ -865,7 +871,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"
@@ -1007,7 +1014,8 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
       <label
         htmlFor="repository--assessment-stats-search-controls--search-by"
       >
-        Search by: 
+        Search by:
+         
       </label>
       <div
         className="controls"

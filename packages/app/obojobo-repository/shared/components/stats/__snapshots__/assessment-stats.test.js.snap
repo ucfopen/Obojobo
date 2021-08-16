@@ -45,7 +45,8 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
             <label
               htmlFor="repository--assessment-stats-search-controls--search-by"
             >
-              Search by: 
+              Search by:
+               
             </label>
             <div
               className="controls"
@@ -334,7 +335,8 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
             <label
               htmlFor="repository--assessment-stats-search-controls--search-by"
             >
-              Search by: 
+              Search by:
+               
             </label>
             <div
               className="controls"
@@ -688,7 +690,8 @@ exports[`AssessmentStats AssessmentStats renders correctly 3`] = `
             <label
               htmlFor="repository--assessment-stats-search-controls--search-by"
             >
-              Search by: 
+              Search by:
+               
             </label>
             <div
               className="controls"

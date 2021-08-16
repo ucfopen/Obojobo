@@ -76,7 +76,8 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 <label
                   htmlFor="repository--assessment-stats-search-controls--search-by"
                 >
-                  Search by: 
+                  Search by:
+                   
                 </label>
                 <div
                   className="controls"
@@ -362,7 +363,8 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 <label
                   htmlFor="repository--assessment-stats-search-controls--search-by"
                 >
-                  Search by: 
+                  Search by:
+                   
                 </label>
                 <div
                   className="controls"
@@ -648,7 +650,8 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 <label
                   htmlFor="repository--assessment-stats-search-controls--search-by"
                 >
-                  Search by: 
+                  Search by:
+                   
                 </label>
                 <div
                   className="controls"
