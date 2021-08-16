@@ -85,7 +85,7 @@ describe('AssessmentStats', () => {
 		// AssessmentStats renders with no attempts
 		component = create(<AssessmentStats />)
 		tree = component.toJSON()
-		
+
 		expect(tree).toMatchSnapshot()
 		expect(tree).not.toEqual(tree2)
 	})

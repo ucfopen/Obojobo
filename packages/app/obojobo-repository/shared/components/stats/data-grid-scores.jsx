@@ -79,13 +79,14 @@ const searchDataBasedOnParams = (rows, controls) => {
 
 			if (param === 'studentName') {
 				rows = rows.filter(row => {
-					return row[param].toLowerCase().trim() && (
-						row.userFirstName.toLowerCase().match(processedText) ||
-						row.userLastName.toLowerCase().match(processedText) ||
-						row.studentName.toLowerCase().match(processedText)
+					return (
+						row[param].toLowerCase().trim() &&
+						(row.userFirstName.toLowerCase().match(processedText) ||
+							row.userLastName.toLowerCase().match(processedText) ||
+							row.studentName.toLowerCase().match(processedText))
 					)
 				})
-			}else {
+			} else {
 				rows = rows.filter(row => {
 					return row[param] && row[param].toLowerCase().match(processedText)
 				})
@@ -95,13 +96,7 @@ const searchDataBasedOnParams = (rows, controls) => {
 	return rows
 }
 
-function DataGridScores({
-	columns,
-	rows = [],
-	tableName,
-	csvFileName,
-	controls
-}) {
+function DataGridScores({ columns, rows = [], tableName, csvFileName, controls }) {
 	const filteredColumns = getColumns(columns, controls.showAdvancedFields)
 	rows = searchDataBasedOnParams(rows, controls)
 
@@ -125,8 +120,8 @@ function DataGridScores({
 					url={`data:text/csv;charset=utf-8,${escape(toCSV(filteredColumns, rows))}`}
 					download={getFileName(csvFileName, rows, controls)}
 				>
-					⬇️&nbsp;&nbsp;&nbsp;Download {controls.showAdvancedFields ? 'Advanced' : ''} Table
-					as CSV File ({rows.length} row
+					⬇️&nbsp;&nbsp;&nbsp;Download {controls.showAdvancedFields ? 'Advanced' : ''} Table as CSV
+					File ({rows.length} row
 					{rows.length === 1 ? '' : 's'})
 				</ButtonLink>
 			) : null}

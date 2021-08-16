@@ -15,12 +15,14 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds }) => 
 	const debouncedOnChangeSearchContent = useDebouncedCallback(searchTerm => {
 		const oldControls = Object.assign({}, controls)
 
-		onChangeControls(Object.assign(oldControls, {
-			searchContent: {
-				searchString: searchTerm,
-				date: { start: startDate, end: endDate }
-			}
-		}))
+		onChangeControls(
+			Object.assign(oldControls, {
+				searchContent: {
+					searchString: searchTerm,
+					date: { start: startDate, end: endDate }
+				}
+			})
+		)
 	}, SEARCH_INPUT_DEBOUNCE_MS)
 
 	const onChangeSearchSettings = event => {
@@ -50,12 +52,14 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds }) => 
 
 		setStartDate(newDate)
 
-		onChangeControls(Object.assign(oldControls, {
-			searchContent: {
-				searchString: textInput,
-				date: { start: newDate, end: endDate }
-			}
-		}))
+		onChangeControls(
+			Object.assign(oldControls, {
+				searchContent: {
+					searchString: textInput,
+					date: { start: newDate, end: endDate }
+				}
+			})
+		)
 	}
 
 	const onChangeEndDate = newDate => {
@@ -63,42 +67,50 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds }) => 
 
 		setEndDate(newDate)
 
-		onChangeControls(Object.assign(oldControls, {
-			searchContent: {
-				searchString: textInput,
-				date: { start: startDate, end: newDate }
-			}
-		}))
+		onChangeControls(
+			Object.assign(oldControls, {
+				searchContent: {
+					searchString: textInput,
+					date: { start: startDate, end: newDate }
+				}
+			})
+		)
 	}
 
 	const onChangeShowIncompleteAttempts = event => {
 		const oldControls = Object.assign({}, controls)
 
-		onChangeControls(Object.assign(oldControls, {
-			showPreviewAttempts: controls.showPreviewAttempts,
-			showAdvancedFields: controls.showAdvancedFields,
-			showIncompleteAttempts: event.target.checked,
-		}))
+		onChangeControls(
+			Object.assign(oldControls, {
+				showPreviewAttempts: controls.showPreviewAttempts,
+				showAdvancedFields: controls.showAdvancedFields,
+				showIncompleteAttempts: event.target.checked
+			})
+		)
 	}
 
 	const onChangeShowPreviewAttempts = event => {
 		const oldControls = Object.assign({}, controls)
 
-		onChangeControls(Object.assign(oldControls, {
-			showIncompleteAttempts: controls.showIncompleteAttempts,
-			showAdvancedFields: controls.showAdvancedFields,
-			showPreviewAttempts: event.target.checked,
-		}))
+		onChangeControls(
+			Object.assign(oldControls, {
+				showIncompleteAttempts: controls.showIncompleteAttempts,
+				showAdvancedFields: controls.showAdvancedFields,
+				showPreviewAttempts: event.target.checked
+			})
+		)
 	}
 
 	const onChangeShowAdvancedFields = event => {
 		const oldControls = Object.assign({}, controls)
 
-		onChangeControls(Object.assign(oldControls, {
-			showIncompleteAttempts: controls.showIncompleteAttempts,
-			showPreviewAttempts: controls.showPreviewAttempts,
-			showAdvancedFields: event.target.checked,
-		}))
+		onChangeControls(
+			Object.assign(oldControls, {
+				showIncompleteAttempts: controls.showIncompleteAttempts,
+				showPreviewAttempts: controls.showPreviewAttempts,
+				showAdvancedFields: event.target.checked
+			})
+		)
 	}
 
 	const showTextInput = param !== ''
@@ -112,7 +124,9 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds }) => 
 		<div className="repository--assessment-stats-controls">
 			<div className="search-controls">
 				<div className="search-by-text">
-					<label htmlFor="repository--assessment-stats-search-controls--search-by">Search by: </label>
+					<label htmlFor="repository--assessment-stats-search-controls--search-by">
+						Search by:{' '}
+					</label>
 					<div className="controls">
 						<select
 							id="repository--assessment-stats-search-controls--search-by"

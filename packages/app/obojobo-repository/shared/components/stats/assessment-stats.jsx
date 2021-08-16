@@ -8,28 +8,14 @@ const AssessmentStatsControls = require('./assessment-stats-controls')
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
 const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
-const renderDataGrid = (
-	viewMode,
-	filteredAttempts,
-	controls
-) => {
+const renderDataGrid = (viewMode, filteredAttempts, controls) => {
 	switch (viewMode) {
 		case VIEW_MODE_ALL_ATTEMPTS:
-			return (
-				<DataGridAttempts
-					attempts={filteredAttempts}
-					controls={controls}
-				/>
-			)
+			return <DataGridAttempts attempts={filteredAttempts} controls={controls} />
 
 		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
 		default:
-			return (
-				<DataGridAssessments
-					attempts={filteredAttempts}
-					controls={controls}
-				/>
-			)
+			return <DataGridAssessments attempts={filteredAttempts} controls={controls} />
 	}
 }
 
@@ -52,7 +38,7 @@ const filterAttempts = (attempts, controls) => {
 	)
 }
 
-const convertDateForDateInput = (date) => {
+const convertDateForDateInput = date => {
 	// Converting to YYYY-MM-DD format (an acceptable format by <input type="date" />)
 	let day = date.getDate()
 	day = day < 10 ? '0' + day : day
@@ -65,7 +51,7 @@ const convertDateForDateInput = (date) => {
 	return `${year}-${month}-${day}`
 }
 
-const getLowerAndUpperDateBounds = (attempts) => {
+const getLowerAndUpperDateBounds = attempts => {
 	if (attempts.length <= 0) return { start: null, end: null }
 
 	const dates = attempts.map(attempt => new Date(attempt.completedAt))

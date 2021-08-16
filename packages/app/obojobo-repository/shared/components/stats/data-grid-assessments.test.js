@@ -83,9 +83,7 @@ describe('DataGridAssessments', () => {
 		}
 
 		const component = renderer.create(<DataGridAssessments {...props} />)
-		const columns = component.root
-			.findByProps({ className: 'react-data-table-component' })
-			.props
+		const columns = component.root.findByProps({ className: 'react-data-table-component' }).props
 			.columns
 
 		columns.forEach(col => {
