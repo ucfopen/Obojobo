@@ -27,6 +27,14 @@ const PageHomepage = props => (
 			<h1>The Future of Course Content</h1>
 		</section>
 
+		<div id="dedication">
+			<span className="people">👩🏻‍🏫👩🏻‍💻</span>
+			<span className="text">
+				Obojobo Next is dedicated to <b>Barbra Truman</b> and <b>Francisca Yonekura</b>. Obojobo
+				wouldn&apos;t be possible without their hard work and support.
+			</span>
+		</div>
+
 		<div id="content" className="content">
 			<section id="step-1" className="step step-1">
 				<div className="step-items-container">
