@@ -77,14 +77,8 @@ const columns = [
 		advanced: true
 	},
 	{
-		name: 'First Name',
-		selector: 'userFirstName',
-		sortable: true,
-		advanced: false
-	},
-	{
-		name: 'Last Name',
-		selector: 'userLastName',
+		name: 'Student Name',
+		selector: 'studentName',
 		sortable: true,
 		advanced: false
 	},
@@ -194,7 +188,7 @@ const columns = [
 	}
 ]
 
-function DataGridAttempts({ attempts = [], filterSettings, searchSettings, searchContent }) {
+function DataGridAttempts({ attempts = [], controls }) {
 	return (
 		<div className="repository--data-grid-attempts">
 			<DataGridScores
@@ -202,9 +196,7 @@ function DataGridAttempts({ attempts = [], filterSettings, searchSettings, searc
 				csvFileName="attempt-scores"
 				columns={columns}
 				rows={attempts}
-				filterSettings={filterSettings}
-				searchSettings={searchSettings}
-				searchContent={searchContent}
+				controls={controls}
 			/>
 		</div>
 	)

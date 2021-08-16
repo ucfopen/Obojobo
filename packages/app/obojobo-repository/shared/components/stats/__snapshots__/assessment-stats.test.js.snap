@@ -31,113 +31,110 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
     </label>
     <hr />
     <div
-      className="filters"
+      className="controls"
     >
       <div
-        className="repository--assessment-stats-search-controls"
+        className="repository--assessment-stats-controls"
       >
         <div
-          className="search-by-text"
+          className="search-controls"
         >
-          <label
-            htmlFor="repository--assessment-stats-search-controls--search-by"
-          >
-            Search by: 
-          </label>
           <div
-            className="controls"
+            className="search-by-text"
           >
-            <select
-              id="repository--assessment-stats-search-controls--search-by"
-              onChange={[Function]}
+            <label
+              htmlFor="repository--assessment-stats-search-controls--search-by"
             >
-              <option
-                value=""
+              Search by: 
+            </label>
+            <div
+              className="controls"
+            >
+              <select
+                id="repository--assessment-stats-search-controls--search-by"
+                onChange={[Function]}
               >
-                Select one...
-              </option>
-              <option
-                value="course-title"
+                <option
+                  value=""
+                >
+                  Select one...
+                </option>
+                <option
+                  value="course-title"
+                >
+                  Course title
+                </option>
+                <option
+                  value="resource-link-title"
+                >
+                  Resource link title
+                </option>
+                <option
+                  value="student-name"
+                >
+                  Student name
+                </option>
+              </select>
+            </div>
+          </div>
+          <hr />
+          <div
+            className="search-by-date"
+          >
+            <span
+              className="label"
+            >
+              Filter attempts by date range:
+            </span>
+            <label>
+              <span>
+                From:
+              </span>
+              <div
+                className="date-range"
               >
-                Course title
-              </option>
-              <option
-                value="resource-link-title"
+                <input
+                  min="2021-08-09"
+                  onChange={[Function]}
+                  type="date"
+                  value=""
+                />
+                <button
+                  className="repository--button secondary-button"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  × Clear
+                </button>
+              </div>
+            </label>
+            <label>
+              <span>
+                To:
+              </span>
+              <div
+                className="date-range"
               >
-                Resource link title
-              </option>
-              <option
-                value="user-first-name"
-              >
-                First name
-              </option>
-              <option
-                value="user-last-name"
-              >
-                Last name
-              </option>
-            </select>
+                <input
+                  max="2021-08-20"
+                  onChange={[Function]}
+                  type="date"
+                  value=""
+                />
+                <button
+                  className="repository--button secondary-button"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  × Clear
+                </button>
+              </div>
+            </label>
           </div>
         </div>
         <hr />
         <div
-          className="search-by-date"
-        >
-          <span
-            className="label"
-          >
-            Filter attempts by date range:
-          </span>
-          <label>
-            <span>
-              From:
-            </span>
-            <div
-              className="date-range"
-            >
-              <input
-                onChange={[Function]}
-                type="date"
-                value=""
-              />
-              <button
-                className="repository--button secondary-button"
-                disabled={true}
-                onClick={[Function]}
-              >
-                × Clear
-              </button>
-            </div>
-          </label>
-          <label>
-            <span>
-              To:
-            </span>
-            <div
-              className="date-range"
-            >
-              <input
-                onChange={[Function]}
-                type="date"
-                value=""
-              />
-              <button
-                className="repository--button secondary-button"
-                disabled={true}
-                onClick={[Function]}
-              >
-                × Clear
-              </button>
-            </div>
-          </label>
-        </div>
-      </div>
-      <hr />
-      <div
-        className="repository--assessment-stats-filter-controls"
-      >
-        <div
-          className="container"
+          className="filter-controls"
         >
           <label>
             <input
@@ -211,14 +208,8 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
               },
               Object {
                 "advanced": false,
-                "name": "First Name",
-                "selector": "userFirstName",
-                "sortable": true,
-              },
-              Object {
-                "advanced": false,
-                "name": "Last Name",
-                "selector": "userLastName",
+                "name": "Student Name",
+                "selector": "studentName",
                 "sortable": true,
               },
               Object {
@@ -241,7 +232,7 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
             Array [
               Object {
                 "assessmentId": "Assessment-1",
-                "completedAt": "mock-date",
+                "completedAt": "2021-08-20T13:42:37.462Z",
                 "contextId": undefined,
                 "courseTitle": undefined,
                 "draftContentId": "Version-1",
@@ -252,9 +243,10 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
                 "moduleTitle": undefined,
                 "resourceLinkId": "Resource-X",
                 "resourceLinkTitle": undefined,
-                "userFirstName": undefined,
+                "studentName": "mock-first-name mock-last-name",
+                "userFirstName": "mock-first-name",
                 "userId": "User-Alpha",
-                "userLastName": undefined,
+                "userLastName": "mock-last-name",
                 "userRoles": undefined,
                 "username": undefined,
               },
@@ -282,7 +274,7 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
       <a
         className="repository--button "
         download="final-assessment-scores__Draft-A"
-        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22false%22"
+        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Student%20Name%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22mock-first-name%20mock-last-name%22%2C%220%22%2C%22false%22"
       >
         ⬇️   Download 
         
@@ -328,113 +320,110 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
     </label>
     <hr />
     <div
-      className="filters"
+      className="controls"
     >
       <div
-        className="repository--assessment-stats-search-controls"
+        className="repository--assessment-stats-controls"
       >
         <div
-          className="search-by-text"
+          className="search-controls"
         >
-          <label
-            htmlFor="repository--assessment-stats-search-controls--search-by"
-          >
-            Search by: 
-          </label>
           <div
-            className="controls"
+            className="search-by-text"
           >
-            <select
-              id="repository--assessment-stats-search-controls--search-by"
-              onChange={[Function]}
+            <label
+              htmlFor="repository--assessment-stats-search-controls--search-by"
             >
-              <option
-                value=""
+              Search by: 
+            </label>
+            <div
+              className="controls"
+            >
+              <select
+                id="repository--assessment-stats-search-controls--search-by"
+                onChange={[Function]}
               >
-                Select one...
-              </option>
-              <option
-                value="course-title"
+                <option
+                  value=""
+                >
+                  Select one...
+                </option>
+                <option
+                  value="course-title"
+                >
+                  Course title
+                </option>
+                <option
+                  value="resource-link-title"
+                >
+                  Resource link title
+                </option>
+                <option
+                  value="student-name"
+                >
+                  Student name
+                </option>
+              </select>
+            </div>
+          </div>
+          <hr />
+          <div
+            className="search-by-date"
+          >
+            <span
+              className="label"
+            >
+              Filter attempts by date range:
+            </span>
+            <label>
+              <span>
+                From:
+              </span>
+              <div
+                className="date-range"
               >
-                Course title
-              </option>
-              <option
-                value="resource-link-title"
+                <input
+                  min="2021-08-09"
+                  onChange={[Function]}
+                  type="date"
+                  value=""
+                />
+                <button
+                  className="repository--button secondary-button"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  × Clear
+                </button>
+              </div>
+            </label>
+            <label>
+              <span>
+                To:
+              </span>
+              <div
+                className="date-range"
               >
-                Resource link title
-              </option>
-              <option
-                value="user-first-name"
-              >
-                First name
-              </option>
-              <option
-                value="user-last-name"
-              >
-                Last name
-              </option>
-            </select>
+                <input
+                  max="2021-08-20"
+                  onChange={[Function]}
+                  type="date"
+                  value=""
+                />
+                <button
+                  className="repository--button secondary-button"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  × Clear
+                </button>
+              </div>
+            </label>
           </div>
         </div>
         <hr />
         <div
-          className="search-by-date"
-        >
-          <span
-            className="label"
-          >
-            Filter attempts by date range:
-          </span>
-          <label>
-            <span>
-              From:
-            </span>
-            <div
-              className="date-range"
-            >
-              <input
-                onChange={[Function]}
-                type="date"
-                value=""
-              />
-              <button
-                className="repository--button secondary-button"
-                disabled={true}
-                onClick={[Function]}
-              >
-                × Clear
-              </button>
-            </div>
-          </label>
-          <label>
-            <span>
-              To:
-            </span>
-            <div
-              className="date-range"
-            >
-              <input
-                onChange={[Function]}
-                type="date"
-                value=""
-              />
-              <button
-                className="repository--button secondary-button"
-                disabled={true}
-                onClick={[Function]}
-              >
-                × Clear
-              </button>
-            </div>
-          </label>
-        </div>
-      </div>
-      <hr />
-      <div
-        className="repository--assessment-stats-filter-controls"
-      >
-        <div
-          className="container"
+          className="filter-controls"
         >
           <label>
             <input
@@ -508,14 +497,8 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
               },
               Object {
                 "advanced": false,
-                "name": "First Name",
-                "selector": "userFirstName",
-                "sortable": true,
-              },
-              Object {
-                "advanced": false,
-                "name": "Last Name",
-                "selector": "userLastName",
+                "name": "Student Name",
+                "selector": "studentName",
                 "sortable": true,
               },
               Object {
@@ -598,22 +581,28 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
               Object {
                 "assessmentId": "Assessment-1",
                 "assessmentScore": null,
-                "completedAt": "mock-date",
+                "completedAt": "2021-08-20T13:42:37.462Z",
                 "draftContentId": "Version-1",
                 "draftId": "Draft-A",
                 "isPreview": false,
                 "resourceLinkId": "Resource-X",
+                "studentName": "mock-first-name mock-last-name",
+                "userFirstName": "mock-first-name",
                 "userId": "User-Alpha",
+                "userLastName": "mock-last-name",
               },
               Object {
                 "assessmentId": "Assessment-1",
                 "assessmentScore": 0,
-                "completedAt": "mock-date",
+                "completedAt": "2021-08-09T13:42:37.462Z",
                 "draftContentId": "Version-1",
                 "draftId": "Draft-A",
                 "isPreview": false,
                 "resourceLinkId": "Resource-X",
+                "studentName": "mock-first-name mock-last-name",
+                "userFirstName": "mock-first-name",
                 "userId": "User-Alpha",
+                "userLastName": "mock-last-name",
               },
             ]
           }
@@ -639,7 +628,7 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
       <a
         className="repository--button "
         download="attempt-scores__Draft-A"
-        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22First%20Name%22%2C%22Last%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20%23%22%2C%22Attempt%20Score%22%2C%22Assessment%20Status%22%2C%22Un-modded%20Assessment%20Score%22%2C%22Mod%20Reward%20Total%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22null%22%2C%22%22%2C%22mock-date%22%2C%22false%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22%22%2C%22mock-date%22%2C%22false%22"
+        href="data:text/csv;charset=utf-8,%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Student%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20%23%22%2C%22Attempt%20Score%22%2C%22Assessment%20Status%22%2C%22Un-modded%20Assessment%20Score%22%2C%22Mod%20Reward%20Total%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22mock-first-name%20mock-last-name%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22null%22%2C%22%22%2C%222021-08-20T13%3A42%3A37.462Z%22%2C%22false%22%0A%22%22%2C%22%22%2C%22%22%2C%22mock-first-name%20mock-last-name%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%220%22%2C%22%22%2C%222021-08-09T13%3A42%3A37.462Z%22%2C%22false%22"
       >
         ⬇️   Download 
         
@@ -649,6 +638,259 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
         s
         )
       </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStats AssessmentStats renders correctly 3`] = `
+<div
+  className="repository--assessment-stats"
+>
+  <div
+    className="settings"
+  >
+    <label
+      className="view-mode"
+    >
+      <span>
+        Showing:
+      </span>
+      <select
+        onChange={[Function]}
+        value="final-assessment-scores"
+      >
+        <option
+          value="final-assessment-scores"
+        >
+          Final Assessment Scores
+        </option>
+        <option
+          value="all-attempts"
+        >
+          All Attempt Scores
+        </option>
+      </select>
+    </label>
+    <hr />
+    <div
+      className="controls"
+    >
+      <div
+        className="repository--assessment-stats-controls"
+      >
+        <div
+          className="search-controls"
+        >
+          <div
+            className="search-by-text"
+          >
+            <label
+              htmlFor="repository--assessment-stats-search-controls--search-by"
+            >
+              Search by: 
+            </label>
+            <div
+              className="controls"
+            >
+              <select
+                id="repository--assessment-stats-search-controls--search-by"
+                onChange={[Function]}
+              >
+                <option
+                  value=""
+                >
+                  Select one...
+                </option>
+                <option
+                  value="course-title"
+                >
+                  Course title
+                </option>
+                <option
+                  value="resource-link-title"
+                >
+                  Resource link title
+                </option>
+                <option
+                  value="student-name"
+                >
+                  Student name
+                </option>
+              </select>
+            </div>
+          </div>
+          <hr />
+          <div
+            className="search-by-date"
+          >
+            <span
+              className="label"
+            >
+              Filter attempts by date range:
+            </span>
+            <label>
+              <span>
+                From:
+              </span>
+              <div
+                className="date-range"
+              >
+                <input
+                  min={null}
+                  onChange={[Function]}
+                  type="date"
+                  value=""
+                />
+                <button
+                  className="repository--button secondary-button"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  × Clear
+                </button>
+              </div>
+            </label>
+            <label>
+              <span>
+                To:
+              </span>
+              <div
+                className="date-range"
+              >
+                <input
+                  max={null}
+                  onChange={[Function]}
+                  type="date"
+                  value=""
+                />
+                <button
+                  className="repository--button secondary-button"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  × Clear
+                </button>
+              </div>
+            </label>
+          </div>
+        </div>
+        <hr />
+        <div
+          className="filter-controls"
+        >
+          <label>
+            <input
+              checked={false}
+              className="show-incomplete-attempts"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Include incomplete attempt data
+            </span>
+          </label>
+          <label>
+            <input
+              checked={false}
+              className="show-preview-attempts"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Include preview attempt data
+            </span>
+          </label>
+          <hr />
+          <label>
+            <input
+              checked={false}
+              className="show-advanced-fields"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span>
+              Include advanced fields
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="repository--data-grid-assessments"
+  >
+    <div
+      className="repository--data-grid-scores"
+    >
+      <div
+        className="data-grid"
+      >
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "advanced": false,
+                "name": "Course Title",
+                "selector": "courseTitle",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Resource Link Title",
+                "selector": "resourceLinkTitle",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "URL",
+                "selector": "launchPresentationReturnUrl",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "name": "Student Name",
+                "selector": "studentName",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Final Assessment Score",
+                "selector": "highestAssessmentScore",
+                "sortable": true,
+              },
+              Object {
+                "advanced": false,
+                "cell": [Function],
+                "name": "Preview Mode",
+                "selector": "isPreview",
+                "sortable": true,
+              },
+            ]
+          }
+          data={Array []}
+          dense={true}
+          pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={250}
+          paginationRowsPerPageOptions={
+            Array [
+              250,
+            ]
+          }
+          striped={true}
+          title="Final Assessment Scores"
+        >
+          react-data-table-component
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -32,8 +32,9 @@ describe('AssessmentStatsControls', () => {
 		({ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }) => {
 			const component = renderer.create(
 				<AssessmentStatsControls
-					onChangeFilterSettings={jest.fn()}
-					filterSettings={{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }}
+					onChangeControls={jest.fn()}
+					controls={{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }}
+					dateBounds={{ start: null, end: null }}
 				/>
 			)
 			const tree = component.toJSON()
@@ -42,16 +43,17 @@ describe('AssessmentStatsControls', () => {
 	)
 
 	test('Inputs work as expected', () => {
-		const onChangeFilterSettings = jest.fn()
+		const onChangeControls = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
-				onChangeFilterSettings={onChangeFilterSettings}
-				filterSettings={{
+				onChangeControls={onChangeControls}
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
 					showAdvancedFields: false
 				}}
+				dateBounds={{ start: null, end: null }}
 			/>
 		)
 
@@ -61,12 +63,12 @@ describe('AssessmentStatsControls', () => {
 		const checkboxShowPreview = component.root.findByProps({ className: 'show-preview-attempts' })
 		const checkboxAdvanced = component.root.findByProps({ className: 'show-advanced-fields' })
 
-		expect(onChangeFilterSettings).not.toHaveBeenCalled()
+		expect(onChangeControls).not.toHaveBeenCalled()
 
 		// Click on checkboxShowIncomplete
 		checkboxShowIncomplete.props.onChange({ target: { checked: true } })
-		expect(onChangeFilterSettings).toHaveBeenCalledTimes(1)
-		expect(onChangeFilterSettings).toHaveBeenCalledWith({
+		expect(onChangeControls).toHaveBeenCalledTimes(1)
+		expect(onChangeControls).toHaveBeenCalledWith({
 			showIncompleteAttempts: true,
 			showPreviewAttempts: false,
 			showAdvancedFields: false
@@ -74,8 +76,8 @@ describe('AssessmentStatsControls', () => {
 
 		// Click on checkboxShowPreview
 		checkboxShowPreview.props.onChange({ target: { checked: true } })
-		expect(onChangeFilterSettings).toHaveBeenCalledTimes(2)
-		expect(onChangeFilterSettings).toHaveBeenCalledWith({
+		expect(onChangeControls).toHaveBeenCalledTimes(2)
+		expect(onChangeControls).toHaveBeenCalledWith({
 			showIncompleteAttempts: false,
 			showPreviewAttempts: true,
 			showAdvancedFields: false
@@ -83,8 +85,8 @@ describe('AssessmentStatsControls', () => {
 
 		// Click on showAdvancedFields
 		checkboxAdvanced.props.onChange({ target: { checked: true } })
-		expect(onChangeFilterSettings).toHaveBeenCalledTimes(3)
-		expect(onChangeFilterSettings).toHaveBeenCalledWith({
+		expect(onChangeControls).toHaveBeenCalledTimes(3)
+		expect(onChangeControls).toHaveBeenCalledWith({
 			showIncompleteAttempts: false,
 			showPreviewAttempts: false,
 			showAdvancedFields: true
@@ -92,18 +94,17 @@ describe('AssessmentStatsControls', () => {
 	})
 
 	test('Inputs and select tags work as expected', () => {
-		const onChangeSearchSettings = jest.fn()
-		const onChangeSearchContent = jest.fn()
+		const onChangeControls = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
 					showAdvancedFields: false
 				}}
-				onChangeSearchSettings={onChangeSearchSettings}
-				onChangeSearchContent={onChangeSearchContent}
+				dateBounds={{ start: null, end: null }}
+				onChangeControls={onChangeControls}
 			/>
 		)
 
@@ -111,34 +112,31 @@ describe('AssessmentStatsControls', () => {
 			id: 'repository--assessment-stats-search-controls--search-by'
 		})
 
-		expect(onChangeSearchSettings).not.toHaveBeenCalled()
-		expect(onChangeSearchContent).not.toHaveBeenCalled()
+		expect(onChangeControls).not.toHaveBeenCalled()
 
 		// Change select option
 		act(() => {
 			select.props.onChange({ target: { value: 'user-first-name' } })
 		})
-		expect(onChangeSearchSettings).toHaveBeenCalledTimes(1)
-		expect(onChangeSearchContent).not.toHaveBeenCalled()
+		expect(onChangeControls).toHaveBeenCalledTimes(1)
 	})
 
 	test('Change input based on select option', () => {
-		const onChangeSearchSettings = jest.fn()
-		const onChangeSearchContent = jest.fn()
+		const onChangeControls = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
 					showAdvancedFields: false
 				}}
-				onChangeSearchSettings={onChangeSearchSettings}
-				onChangeSearchContent={onChangeSearchContent}
+				dateBounds={{ start: null, end: null }}
+				onChangeControls={onChangeControls}
 			/>
 		)
 
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(0)
+		expect(onChangeControls).toHaveBeenCalledTimes(0)
 		const select = component.root.findByProps({
 			id: 'repository--assessment-stats-search-controls--search-by'
 		})
@@ -146,33 +144,32 @@ describe('AssessmentStatsControls', () => {
 		act(() => {
 			select.props.onChange({ target: { value: 'user-first-name' } })
 		})
+		expect(onChangeControls).toHaveBeenCalledTimes(1)
 
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(0)
 		const textInput = component.root.findByProps({ type: 'text' })
 		act(() => {
 			textInput.props.onChange({ target: { value: 'test' } })
 		})
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(1)
+		expect(onChangeControls).toHaveBeenCalledTimes(2)
 
 		act(() => {
 			textInput.props.onChange({ target: { value: '' } })
 		})
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(2)
+		expect(onChangeControls).toHaveBeenCalledTimes(3)
 	})
 
 	test('Set and clear date start input', () => {
-		const onChangeSearchSettings = jest.fn()
-		const onChangeSearchContent = jest.fn()
+		const onChangeControls = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
 					showAdvancedFields: false
 				}}
-				onChangeSearchSettings={onChangeSearchSettings}
-				onChangeSearchContent={onChangeSearchContent}
+				dateBounds={{ start: null, end: null }}
+				onChangeControls={onChangeControls}
 			/>
 		)
 
@@ -181,28 +178,27 @@ describe('AssessmentStatsControls', () => {
 				.findAllByProps({ type: 'date' })[0]
 				.props.onChange({ target: { value: new Date() } })
 		})
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(1)
+		expect(onChangeControls).toHaveBeenCalledTimes(1)
 		expect(component.root.findAllByProps({ type: 'date' })[0].props.value).not.toBe('')
 		act(() => {
 			component.root.findAllByType(Button)[0].props.onClick()
 		})
 		expect(component.root.findAllByProps({ type: 'date' })[0].props.value).toBe('')
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(2)
+		expect(onChangeControls).toHaveBeenCalledTimes(2)
 	})
 
 	test('Set and clear date end input', () => {
-		const onChangeSearchSettings = jest.fn()
-		const onChangeSearchContent = jest.fn()
+		const onChangeControls = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
 					showAdvancedFields: false
 				}}
-				onChangeSearchSettings={onChangeSearchSettings}
-				onChangeSearchContent={onChangeSearchContent}
+				dateBounds={{ start: null, end: null }}
+				onChangeControls={onChangeControls}
 			/>
 		)
 
@@ -211,12 +207,12 @@ describe('AssessmentStatsControls', () => {
 				.findAllByProps({ type: 'date' })[1]
 				.props.onChange({ target: { value: new Date() } })
 		})
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(1)
+		expect(onChangeControls).toHaveBeenCalledTimes(1)
 		expect(component.root.findAllByProps({ type: 'date' })[1].props.value).not.toBe('')
 		act(() => {
 			component.root.findAllByType(Button)[1].props.onClick()
 		})
 		expect(component.root.findAllByProps({ type: 'date' })[1].props.value).toBe('')
-		expect(onChangeSearchContent).toHaveBeenCalledTimes(2)
+		expect(onChangeControls).toHaveBeenCalledTimes(2)
 	})
 })

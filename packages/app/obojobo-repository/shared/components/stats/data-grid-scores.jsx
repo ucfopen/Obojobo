@@ -15,19 +15,15 @@ const toCSV = (columns, attempts) => {
 	return `${cols}\n${rows.join('\n')}`
 }
 
-const getFileName = (
-	csvFileName,
-	attempts,
-	{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }
-) => {
+const getFileName = (csvFileName, attempts, controls) => {
 	const drafts = [...new Set(attempts.map(row => row.draftId))]
 
 	return (
 		[
 			csvFileName,
-			showIncompleteAttempts ? 'with-incomplete-attempts' : '',
-			showPreviewAttempts ? 'with-preview-attempts' : '',
-			showAdvancedFields ? 'with-advanced-fields' : ''
+			controls.showIncompleteAttempts ? 'with-incomplete-attempts' : '',
+			controls.showPreviewAttempts ? 'with-preview-attempts' : '',
+			controls.showAdvancedFields ? 'with-advanced-fields' : ''
 		]
 			.filter(s => s)
 			.join('-') +
@@ -36,20 +32,22 @@ const getFileName = (
 	)
 }
 
-const getTableName = (tableName, { showIncompleteAttempts, showPreviewAttempts }) => {
-	if (showIncompleteAttempts && showPreviewAttempts) {
+const getTableName = (tableName, controls) => {
+	if (controls.showIncompleteAttempts && controls.showPreviewAttempts) {
 		return tableName + ' (including incomplete and preview attempts)'
-	} else if (showIncompleteAttempts) {
+	} else if (controls.showIncompleteAttempts) {
 		return tableName + ' (including incomplete attempts)'
-	} else if (showPreviewAttempts) {
+	} else if (controls.showPreviewAttempts) {
 		return tableName + ' (including preview attempts)'
 	}
 
 	return tableName
 }
 
-const searchDataBasedOnParams = (rows, searchSettings, searchContent) => {
-	const text = searchContent.text
+const searchDataBasedOnParams = (rows, controls) => {
+	const searchContent = controls.searchContent
+
+	const text = searchContent.searchString
 	const dates = searchContent.date
 
 	if (rows && rows.length > 0) {
@@ -70,16 +68,28 @@ const searchDataBasedOnParams = (rows, searchSettings, searchContent) => {
 		}
 
 		if (text) {
-			let param = searchSettings
+			let param = controls.searchBy
 				.split('-')
 				.map(word => word.charAt(0).toUpperCase() + word.substring(1))
 				.join('')
 			param = param.charAt(0).toLowerCase() + param.substring(1)
 
-			// Filtering according to search params (course title, user's first name, etc)
-			rows = rows.filter(row => {
-				return row[param] && row[param].toLowerCase().match(text.toLowerCase())
-			})
+			// Filtering according to search params (course title, student name, etc)
+			const processedText = text.toLowerCase().trim()
+
+			if (param === 'studentName') {
+				rows = rows.filter(row => {
+					return row[param].toLowerCase().trim() && (
+						row.userFirstName.toLowerCase().match(processedText) ||
+						row.userLastName.toLowerCase().match(processedText) ||
+						row.studentName.toLowerCase().match(processedText)
+					)
+				})
+			}else {
+				rows = rows.filter(row => {
+					return row[param] && row[param].toLowerCase().match(processedText)
+				})
+			}
 		}
 	}
 	return rows
@@ -90,17 +100,16 @@ function DataGridScores({
 	rows = [],
 	tableName,
 	csvFileName,
-	filterSettings,
-	searchSettings,
-	searchContent
+	controls
 }) {
-	const filteredColumns = getColumns(columns, filterSettings.showAdvancedFields)
-	rows = searchDataBasedOnParams(rows, searchSettings, searchContent)
+	const filteredColumns = getColumns(columns, controls.showAdvancedFields)
+	rows = searchDataBasedOnParams(rows, controls)
+
 	return (
 		<div className="repository--data-grid-scores">
 			<div className="data-grid">
 				<DataTable
-					title={getTableName(tableName, filterSettings)}
+					title={getTableName(tableName, controls)}
 					columns={filteredColumns}
 					data={rows}
 					striped={true}
@@ -114,9 +123,9 @@ function DataGridScores({
 			{rows.length > 0 ? (
 				<ButtonLink
 					url={`data:text/csv;charset=utf-8,${escape(toCSV(filteredColumns, rows))}`}
-					download={getFileName(csvFileName, rows, filterSettings)}
+					download={getFileName(csvFileName, rows, controls)}
 				>
-					⬇️&nbsp;&nbsp;&nbsp;Download {filterSettings.showAdvancedFields ? 'Advanced' : ''} Table
+					⬇️&nbsp;&nbsp;&nbsp;Download {controls.showAdvancedFields ? 'Advanced' : ''} Table
 					as CSV File ({rows.length} row
 					{rows.length === 1 ? '' : 's'})
 				</ButtonLink>

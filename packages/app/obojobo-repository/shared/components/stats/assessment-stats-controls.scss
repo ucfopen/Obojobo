@@ -1,6 +1,10 @@
 @import '../../../client/css/defaults';
 
 .repository--assessment-stats-controls {
+	hr {
+		margin-bottom: 1em;
+	}
+
 	.search-controls {
 		select {
 			@include select-input();
@@ -45,10 +49,6 @@
 			display: flex;
 			flex-direction: column;
 			gap: 0.5em;
-
-			.label {
-				margin-bottom: 0.5em;
-			}
 
 			label {
 				display: flex;
@@ -105,7 +105,6 @@
 
 		hr {
 			margin-top: 1em;
-			margin-bottom: 1em;
 		}
 
 		input {

@@ -11,18 +11,14 @@ const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 const renderDataGrid = (
 	viewMode,
 	filteredAttempts,
-	filterSettings,
-	searchSettings,
-	searchContent
+	controls
 ) => {
 	switch (viewMode) {
 		case VIEW_MODE_ALL_ATTEMPTS:
 			return (
 				<DataGridAttempts
 					attempts={filteredAttempts}
-					filterSettings={filterSettings}
-					searchSettings={searchSettings}
-					searchContent={searchContent}
+					controls={controls}
 				/>
 			)
 
@@ -31,36 +27,56 @@ const renderDataGrid = (
 			return (
 				<DataGridAssessments
 					attempts={filteredAttempts}
-					filterSettings={filterSettings}
-					searchSettings={searchSettings}
-					searchContent={searchContent}
+					controls={controls}
 				/>
 			)
 	}
 }
 
-const filterAttempts = (attempts, { showIncompleteAttempts, showPreviewAttempts }) => {
-	if (showIncompleteAttempts && showPreviewAttempts) {
+const filterAttempts = (attempts, controls) => {
+	if (!attempts || attempts.length <= 0) return []
+
+	attempts = attempts.map(attempt => {
+		attempt.studentName = attempt.userFirstName + ' ' + attempt.userLastName
+		return attempt
+	})
+
+	if (controls.showIncompleteAttempts && controls.showPreviewAttempts) {
 		return attempts
 	}
 
 	return attempts.filter(
 		attempt =>
-			(showIncompleteAttempts || attempt.completedAt !== null) &&
-			(showPreviewAttempts || !attempt.isPreview)
+			(controls.showIncompleteAttempts || attempt.completedAt !== null) &&
+			(controls.showPreviewAttempts || !attempt.isPreview)
 	)
+}
+
+const convertDateForDateInput = (date) => {
+	// Converting to YYYY-MM-DD format (an acceptable format by <input type="date" />)
+	let day = date.getDate()
+	day = day < 10 ? '0' + day : day
+
+	let month = date.getMonth() + 1
+	month = month < 10 ? '0' + month : month
+
+	const year = date.getFullYear()
+
+	return `${year}-${month}-${day}`
+}
+
+const getLowerAndUpperDateBounds = (attempts) => {
+	if (attempts.length <= 0) return { start: null, end: null }
+
+	const dates = attempts.map(attempt => new Date(attempt.completedAt))
+	let end = convertDateForDateInput(new Date(Math.max.apply(Math, dates)))
+	let start = convertDateForDateInput(new Date(Math.min.apply(Math, dates)))
+
+	return { start, end }
 }
 
 const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 	const [viewMode, setViewMode] = React.useState(VIEW_MODE_FINAL_ASSESSMENT_SCORE)
-	// const [searchSettings, setSearchSettings] = React.useState('')
-	// const [searchContent, setSearchContent] = React.useState('')
-	// const [filterSettings, setFilterSettings] = React.useState(
-	// 	Object.assign(
-	// 		{ showIncompleteAttempts: false, showPreviewAttempts: false, showAdvancedFields: false },
-	// 		defaultFilterSettings
-	// 	)
-	// )
 	const [controls, setControls] = React.useState(
 		Object.assign(
 			{
@@ -81,7 +97,8 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 		setViewMode(event.target.value)
 	}
 
-	const filteredAttempts = filterAttempts(attempts, filterSettings)
+	const filteredAttempts = filterAttempts(attempts, controls)
+	const dateBounds = getLowerAndUpperDateBounds(filteredAttempts)
 
 	return (
 		<div className="repository--assessment-stats">
@@ -95,20 +112,16 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 					</select>
 				</label>
 				<hr />
-				<div className="filters">
+				<div className="controls">
 					<AssessmentStatsControls
-						filterSettings={filterSettings}
-						onChangeFilterSettings={setFilterSettings}
-						onChangeSearchSettings={setSearchSettings}
-						onChangeSearchContent={setSearchContent}
-						
 						controls={controls}
+						dateBounds={dateBounds}
 						onChangeControls={setControls}
 					/>
 				</div>
 			</div>
 
-			{renderDataGrid(viewMode, filteredAttempts, filterSettings, searchSettings, searchContent)}
+			{renderDataGrid(viewMode, filteredAttempts, controls)}
 		</div>
 	)
 }

@@ -29,11 +29,17 @@ exports[`DataGridScores DataGridScores renders correctly 1`] = `
             "completedAt": "2021-02-04T13:55:30.255Z",
             "draftId": "mock-draft-id",
             "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
           Object {
             "completedAt": "2021-06-21T15:32:30.255Z",
             "draftId": "mock-draft-id2",
             "exampleId": "mock-example-id2",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
         ]
       }
@@ -97,6 +103,9 @@ exports[`DataGridScores DataGridScores renders one row 1`] = `
             "completedAt": "2021-02-04T13:55:30.255Z",
             "draftId": "mock-draft-id",
             "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
         ]
       }
@@ -318,11 +327,17 @@ exports[`DataGridScores DataGridScores uses search filters as expected 4`] = `
             "completedAt": "2021-02-04T13:55:30.255Z",
             "draftId": "mock-draft-id",
             "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
           Object {
             "completedAt": "2021-06-21T15:32:30.255Z",
             "draftId": "mock-draft-id2",
             "exampleId": "mock-example-id2",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
         ]
       }
@@ -386,11 +401,17 @@ exports[`DataGridScores DataGridScores uses search filters as expected 5`] = `
             "completedAt": "2021-02-04T13:55:30.255Z",
             "draftId": "mock-draft-id",
             "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
           Object {
             "completedAt": "2021-06-21T15:32:30.255Z",
             "draftId": "mock-draft-id2",
             "exampleId": "mock-example-id2",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
         ]
       }
@@ -454,11 +475,17 @@ exports[`DataGridScores DataGridScores uses search filters as expected 6`] = `
             "completedAt": "2021-02-04T13:55:30.255Z",
             "draftId": "mock-draft-id",
             "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
           Object {
             "completedAt": "2021-06-21T15:32:30.255Z",
             "draftId": "mock-draft-id2",
             "exampleId": "mock-example-id2",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
           },
         ]
       }
@@ -578,5 +605,227 @@ exports[`DataGridScores DataGridScores uses search filters as expected 8`] = `
       react-data-table-component
     </div>
   </div>
+</div>
+`;
+
+exports[`DataGridScores DataGridScores uses search filters as expected 9`] = `
+<div
+  className="repository--data-grid-scores"
+>
+  <div
+    className="data-grid"
+  >
+    <div
+      className="react-data-table-component"
+      columns={
+        Array [
+          Object {
+            "advanced": false,
+            "name": "Draft ID",
+            "selector": "draftId",
+            "sortable": true,
+          },
+        ]
+      }
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
+          },
+          Object {
+            "completedAt": "2021-06-21T15:32:30.255Z",
+            "draftId": "mock-draft-id2",
+            "exampleId": "mock-example-id2",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
+          },
+        ]
+      }
+      dense={true}
+      pagination={true}
+      paginationComponentOptions={
+        Object {
+          "noRowsPerPage": true,
+        }
+      }
+      paginationPerPage={250}
+      paginationRowsPerPageOptions={
+        Array [
+          250,
+        ]
+      }
+      striped={true}
+      title="Mock Table Name"
+    >
+      react-data-table-component
+    </div>
+  </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    2
+     row
+    s
+    )
+  </a>
+</div>
+`;
+
+exports[`DataGridScores DataGridScores uses search filters as expected 10`] = `
+<div
+  className="repository--data-grid-scores"
+>
+  <div
+    className="data-grid"
+  >
+    <div
+      className="react-data-table-component"
+      columns={
+        Array [
+          Object {
+            "advanced": false,
+            "name": "Draft ID",
+            "selector": "draftId",
+            "sortable": true,
+          },
+        ]
+      }
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
+          },
+          Object {
+            "completedAt": "2021-06-21T15:32:30.255Z",
+            "draftId": "mock-draft-id2",
+            "exampleId": "mock-example-id2",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
+          },
+        ]
+      }
+      dense={true}
+      pagination={true}
+      paginationComponentOptions={
+        Object {
+          "noRowsPerPage": true,
+        }
+      }
+      paginationPerPage={250}
+      paginationRowsPerPageOptions={
+        Array [
+          250,
+        ]
+      }
+      striped={true}
+      title="Mock Table Name"
+    >
+      react-data-table-component
+    </div>
+  </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    2
+     row
+    s
+    )
+  </a>
+</div>
+`;
+
+exports[`DataGridScores DataGridScores uses search filters as expected 11`] = `
+<div
+  className="repository--data-grid-scores"
+>
+  <div
+    className="data-grid"
+  >
+    <div
+      className="react-data-table-component"
+      columns={
+        Array [
+          Object {
+            "advanced": false,
+            "name": "Draft ID",
+            "selector": "draftId",
+            "sortable": true,
+          },
+        ]
+      }
+      data={
+        Array [
+          Object {
+            "completedAt": "2021-02-04T13:55:30.255Z",
+            "draftId": "mock-draft-id",
+            "exampleId": "mock-example-id",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
+          },
+          Object {
+            "completedAt": "2021-06-21T15:32:30.255Z",
+            "draftId": "mock-draft-id2",
+            "exampleId": "mock-example-id2",
+            "studentName": "mock-first-name mock-last-name",
+            "userFirstName": "mock-first-name",
+            "userLastName": "mock-last-name",
+          },
+        ]
+      }
+      dense={true}
+      pagination={true}
+      paginationComponentOptions={
+        Object {
+          "noRowsPerPage": true,
+        }
+      }
+      paginationPerPage={250}
+      paginationRowsPerPageOptions={
+        Array [
+          250,
+        ]
+      }
+      striped={true}
+      title="Mock Table Name"
+    >
+      react-data-table-component
+    </div>
+  </div>
+  <a
+    className="repository--button "
+    download="mock-csv-file-name__mock-draft-id_mock-draft-id2"
+    href="data:text/csv;charset=utf-8,%22Draft%20ID%22%0A%22mock-draft-id%22%0A%22mock-draft-id2%22"
+  >
+    ⬇️   Download 
+    
+     Table as CSV File (
+    2
+     row
+    s
+    )
+  </a>
 </div>
 `;

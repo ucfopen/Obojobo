@@ -20,8 +20,10 @@ describe('AssessmentStats', () => {
 				assessmentId: 'Assessment-1',
 				userId: 'User-Alpha',
 				assessmentScore: null,
-				completedAt: 'mock-date',
-				isPreview: false
+				completedAt: '2021-08-20T13:42:37.462Z',
+				isPreview: false,
+				userFirstName: 'mock-first-name',
+				userLastName: 'mock-last-name'
 			},
 			{
 				draftId: 'Draft-A',
@@ -31,7 +33,9 @@ describe('AssessmentStats', () => {
 				userId: 'User-Alpha',
 				assessmentScore: 10,
 				completedAt: 'mock-date',
-				isPreview: true
+				isPreview: true,
+				userFirstName: 'mock-first-name',
+				userLastName: 'mock-last-name'
 			},
 			{
 				draftId: 'Draft-A',
@@ -40,8 +44,10 @@ describe('AssessmentStats', () => {
 				assessmentId: 'Assessment-1',
 				userId: 'User-Alpha',
 				assessmentScore: 0,
-				completedAt: 'mock-date',
-				isPreview: false
+				completedAt: '2021-08-09T13:42:37.462Z',
+				isPreview: false,
+				userFirstName: 'mock-first-name',
+				userLastName: 'mock-last-name'
 			},
 			{
 				draftId: 'Draft-A',
@@ -51,15 +57,17 @@ describe('AssessmentStats', () => {
 				userId: 'User-Alpha',
 				assessmentScore: 100,
 				completedAt: null,
-				isPreview: false
+				isPreview: false,
+				userFirstName: 'mock-first-name',
+				userLastName: 'mock-last-name'
 			}
 		]
 	})
 
 	test('AssessmentStats renders correctly', () => {
-		const component = create(<AssessmentStats {...getTestProps()} />)
+		let component = create(<AssessmentStats {...getTestProps()} />)
 
-		const tree = component.toJSON()
+		let tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 
 		// Change the select to view attempts instead of final assessment score:
@@ -72,6 +80,13 @@ describe('AssessmentStats', () => {
 		const tree2 = component.toJSON()
 		expect(tree2).toMatchSnapshot()
 
+		expect(tree).not.toEqual(tree2)
+
+		// AssessmentStats renders with no attempts
+		component = create(<AssessmentStats />)
+		tree = component.toJSON()
+		
+		expect(tree).toMatchSnapshot()
 		expect(tree).not.toEqual(tree2)
 	})
 
@@ -154,16 +169,11 @@ describe('AssessmentStats', () => {
 				.findByProps({ className: 'show-incomplete-attempts' })
 				.props.onChange({ target: { checked: true } })
 		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: false } })
-		})
 		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
-		expect(DataGrid.props.data.length).toEqual(3)
+
+		expect(DataGrid.props.data.length).toEqual(2)
 		expect(DataGrid.props.data[0].assessmentScore).toEqual(null)
 		expect(DataGrid.props.data[1].assessmentScore).toEqual(0)
-		expect(DataGrid.props.data[2].assessmentScore).toEqual(100)
 
 		// Remove incomplete attempts but enable preview attempts
 		act(() => {
@@ -194,10 +204,9 @@ describe('AssessmentStats', () => {
 				.props.onChange({ target: { checked: true } })
 		})
 		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
-		expect(DataGrid.props.data.length).toEqual(4)
+		expect(DataGrid.props.data.length).toEqual(3)
 		expect(DataGrid.props.data[0].assessmentScore).toEqual(null)
 		expect(DataGrid.props.data[1].assessmentScore).toEqual(10)
 		expect(DataGrid.props.data[2].assessmentScore).toEqual(0)
-		expect(DataGrid.props.data[3].assessmentScore).toEqual(100)
 	})
 })
