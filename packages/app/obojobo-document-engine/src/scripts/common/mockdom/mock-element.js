@@ -33,6 +33,27 @@ class MockElement {
 		newChild.parent = this
 		return (childToReplace.parent = null)
 	}
+
+	// Used to determine a list's bullet point or index color (if any)
+	getColorOfFirstCharacter() {
+		const firstChild = this.children[0]
+
+		if (
+			this.type === 'li' &&
+			firstChild &&
+			firstChild.text &&
+			firstChild.text.styleList &&
+			firstChild.text.styleList.styles
+		) {
+			const styles = firstChild.text.styleList.styles
+			for (let i = 0; i < styles.length; i++) {
+				const style = styles[i]
+				if (style && style.type === 'color' && style.start === 0) return style.data.text
+			}
+		}
+
+		return '#000'
+	}
 }
 
 Object.defineProperties(MockElement.prototype, {
