@@ -8,6 +8,8 @@ import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 import ObjectiveListModal from '../objectives/objective-list-modal'
 import ObjectiveListView from '../objectives/objective-list-view'
+import objectivesContext from '../objectives/objective-context'
+// import { obj } from 'through2'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
@@ -177,16 +179,20 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 
-	showObjectiveModal() {
+	showObjectiveModal(value) {
 		ModalUtil.show(
-			<ObjectiveListModal content={this.state.content} onClose={this.closeObjectiveModal} />
+			<ObjectiveListModal
+				objectiveContext={value}
+				content={this.state.content}
+				onClose={this.closeObjectiveModal}
+			/>
 		)
 		this.setState({ modalOpen: true })
 	}
 
 	closeObjectiveModal(modalState) {
 		ModalUtil.hide()
-		
+
 		if (!modalState) return // do not save changes
 
 		this.setState(prevState => ({
@@ -285,6 +291,8 @@ class MoreInfoBox extends React.Component {
 
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
+		const objectives = this.state.content.objectives
+
 		return (
 			<div className="more-info-box">
 				<div className="container">
@@ -326,15 +334,25 @@ class MoreInfoBox extends React.Component {
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
 							</div>
-							<div>
-								<span className="objectives">
-									Objectives:
-										<ObjectiveListView objectives = {this.state.content.objectives}/>
-								</span>
-								<Button altAction className="objective-button" onClick={this.showObjectiveModal}>
-									✎ Edit
-								</Button>
-							</div>
+							<objectivesContext.Consumer>
+							{value => {
+								return (
+									<div>
+									<span className="objectives">
+										Objectives:
+										<ObjectiveListView objectives={objectives} globalObjectives={value.objectives} />
+									</span>
+									<Button
+										altAction
+										className="objective-button"
+										onClick={() => this.showObjectiveModal(value)}
+									>
+										✎ Edit
+									</Button>
+									</div>
+									)
+								}}
+							</objectivesContext.Consumer>
 							<div>
 								<span className="triggers">
 									Triggers:
@@ -395,21 +413,27 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div
-				ref={this.domRef}
-				className={'visual-editor--more-info ' + (this.props.className || '')}
-				onKeyDown={this.onKeyDown}
-			>
-				<button
-					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
-					onClick={this.toggleOpen}
-					tabIndex={this.props.tabIndex || 0}
-					aria-label="Toggle More Info Box"
-				>
-					<MoreInfoIcon />
-				</button>
-				{this.state.isOpen ? this.renderInfoBox() : null}
-			</div>
+			// <objectivesContext.Consumer>
+			// 	{value => {
+			// 		return (
+						<div
+							ref={this.domRef}
+							className={'visual-editor--more-info ' + (this.props.className || '')}
+							onKeyDown={this.onKeyDown}
+						>
+							<button
+								className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
+								onClick={this.toggleOpen}
+								tabIndex={this.props.tabIndex || 0}
+								aria-label="Toggle More Info Box"
+							>
+								<MoreInfoIcon />
+							</button>
+							{this.state.isOpen ? this.renderInfoBox() : null}
+						</div>
+			// 		)
+			// 	}}
+			// </objectivesContext.Consumer>
 		)
 	}
 }

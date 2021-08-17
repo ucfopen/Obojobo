@@ -67,19 +67,13 @@ class SimpleDialog extends React.Component {
 					onClick: this.props.onCancel
 				}
 			]
-		}else if (this.props.addOrCancel) {
+		}else if (this.props.done) {
 			buttons = [
 				{
-					value: 'Add',
+					value: 'Done',
 					onClick: this.props.onConfirm,
 					default: true
-				},
-				{
-					value: 'Cancel',
-					altAction: true,
-					onClick: this.props.onCancel
-				}
-			]
+				}]
 		}else {
 			buttons = [
 				{
@@ -118,7 +112,7 @@ SimpleDialog.defaultProps = {
 	yesOrNo: false,
 	cancelOk: false,
 	delete: false,
-	addOrCancel: false,
+	done: false,
 	title: null,
 	width: null,
 	preventEsc: false,

@@ -14,18 +14,9 @@ class ObjectiveListModal extends React.Component {
 	constructor(props) {
 		super(props)
 		this.inputRef = React.createRef()
-		this.state = { ...JSON.parse(JSON.stringify(props.content)) }
-		if (!this.state.objectives) {
-			this.state.objectives = []
-		} else {
-			this.state.objectives = this.state.objectives.map(objective => {
-				return {
-					objectiveId: objective.objectiveId,
-					objectiveLabel: objective.objectiveLabel,
-					description: objective.description,
-					selected: objective.selected
-				}
-			})
+		this.state = {
+			objectives: this.props.content.objectives ?? [],
+			globalObjectives: this.props.objectiveContext.objectives ?? []
 		}
 
 		this.state.newObjective = false
@@ -33,30 +24,29 @@ class ObjectiveListModal extends React.Component {
 		this.state.editMode = false
 		this.state.editData = null
 
+		this.addObjective = this.props.objectiveContext.addObjective
+		this.removeObjective = this.props.objectiveContext.removeObjective
+		this.updateObjective = this.props.objectiveContext.updateObjective
+
 		this.createNewObjective = this.createNewObjective.bind(this)
 		this.handleObjectiveInput = this.handleObjectiveInput.bind(this)
 
 		this.objectiveListHeader = (
 			<div
 				style={{
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					padding: '0.5em 1.25em',
-					margin: '0em 0.5em 0.1em 0em',
-					fontWeight: 'bold'
+					margin: '-0.7em 0em 1em 0em',
 				}}
 			>
-				<div>
-					<p style={{ margin: 0, fontSize: '0.6em' }}>
-						<span>Select&nbsp;&nbsp;</span>
-						Objective
+				<div className = "objective-list-subheader">
+					<p>
+						{/* <span>Select&nbsp;&nbsp;</span> */}
+						Select one or more objectives that apply to this item
 					</p>
 				</div>
-				<div style={{ fontSize: '0.6em' }}>
-					<span>Edit&nbsp;</span>
-					<span>&nbsp;&nbsp;Delete</span>
-				</div>
+				{/* <div style={{ fontSize: '0.6em' }}>
+				// 	<span>Edit&nbsp;</span>
+				// 	<span>&nbsp;&nbsp;Delete</span>
+				// </div> */}
 			</div>
 		)
 	}
@@ -66,24 +56,25 @@ class ObjectiveListModal extends React.Component {
 	}
 
 	deleteObjective(objectiveID) {
-		const letters = []
-		this.state.objectives.forEach(objective => {
-			letters.push(objective.objectiveLetter)
+		this.setState(prevState => {
+			const objectives = prevState.objectives.filter(objective => objective !== objectiveID)
+			return {
+				...prevState,
+				objectives
+			}
 		})
 
-		let objectives = [...this.state.objectives]
-		objectives = objectives.map(objective =>
-			objectiveID === objective.objectiveId ? null : objective
-		)
-
-		let newObj = objectives.filter(Boolean)
-
-		newObj = newObj.map((objective, index) => {
-			const obj = { objectiveLetter: letters[index] }
-			return Object.assign(objective, obj)
+		this.setState(prevState => {
+			const globalObjectives = prevState.globalObjectives.filter(
+				objective => objective.objectiveId !== objectiveID
+			)
+			return {
+				...prevState,
+				globalObjectives
+			}
 		})
 
-		this.setState({ objectives: newObj })
+		this.removeObjective(objectiveID)
 
 		// // The nested loop insures that React's immutable state is updated properly
 		// return this.setState(prevState => ({
@@ -91,14 +82,6 @@ class ObjectiveListModal extends React.Component {
 		// 		.map((objective, listIndex) => (index === listIndex ? null : objective))
 		// 		.filter(Boolean)
 		// }))
-	}
-	deleteBulkObjective(obj){
-		console.log(obj)
-		let objectives = obj && obj.filter(objective => objective.selected === true)
-		console.log(objectives)
-		objectives.map(objective => {console.log(objective.objectiveId)
-			this.deleteObjective(objective.objectiveID)})
-		// this.props.onClose(this.state)
 	}
 
 	createNewObjective({ label, description }) {
@@ -111,9 +94,11 @@ class ObjectiveListModal extends React.Component {
 			objectiveLabel: label,
 			description
 		}
+		this.addObjective(newObjectiveObject)
 
 		this.setState(prevState => ({
-			objectives: prevState.objectives.concat(newObjectiveObject),
+			objectives: prevState.objectives.concat(id),
+			globalObjectives: prevState.globalObjectives.concat(newObjectiveObject),
 			newObjective: false
 		}))
 	}
@@ -128,25 +113,28 @@ class ObjectiveListModal extends React.Component {
 
 	onUpdate({ id, label, description }) {
 		// The nested loop insures that React's immutable state is updated properly
-		return this.setState(prevState => {
+		this.setState(prevState => {
 			return {
-				objectives: prevState.objectives.map(objective =>
+				globalObjectives: prevState.globalObjectives.map(objective =>
 					objective.objectiveId === id
 						? Object.assign(objective, { objectiveLabel: label, description })
 						: objective
 				)
 			}
 		})
+		this.updateObjective(id, label, description)
 	}
 
-	onCheck(id, status) {
-		this.setState(prevState => {
-			return {
-				objectives: prevState.objectives.map(objective =>
-					objective.objectiveId === id ? Object.assign(objective, { selected: status }) : objective
-				)
-			}
-		})
+	onCheck(id) {
+		if (this.state.objectives.includes(id)) {
+			this.setState(prevState => ({
+				objectives: prevState.objectives.filter(objective => objective !== id)
+			}))
+		} else {
+			this.setState(prevState => ({
+				objectives: prevState.objectives.concat(id)
+			}))
+		}
 	}
 
 	render() {
@@ -176,20 +164,19 @@ class ObjectiveListModal extends React.Component {
 
 		return (
 			
-			<SimpleDialog addOrCancel title="Objective Library" 
+			<SimpleDialog done title="Objective Library" 
 				onConfirm={() => {this.props.onClose(this.state)}}
-				onDelete ={() => {this.deleteBulkObjective(this.state.objectives)}}
 				>
-				{this.state.objectives.length > 0 && this.objectiveListHeader}
+				{this.state.globalObjectives.length > 0 && this.objectiveListHeader}
 				<div className="objective-list-modal">
-					{this.state.objectives.map(objective => {
+					{this.state.globalObjectives.map(objective => {
 						return (
 							<div key={objective.objectiveId}>
 								<ObjectiveItem
 									id={objective.objectiveId}
 									label={objective.objectiveLabel}
 									description={objective.description}
-									selected={objective.selected}
+									selected={this.state.objectives.includes(objective.objectiveId)}
 									onEdit={this.initializeEdit.bind(this)}
 									delete={this.deleteObjective.bind(this, objective.objectiveId)}
 									onCheck={this.onCheck.bind(this)}
@@ -197,7 +184,9 @@ class ObjectiveListModal extends React.Component {
 							</div>
 						)
 					})}
-					<Button onClick={() => this.setState({ newObjective: true })}>+ Create Objective</Button>
+					<div className = 'objective-list-modal-button'>
+						<Button onClick={() => this.setState({ newObjective: true })}>+ Create Objective</Button>
+					</div>
 				</div>
 			</SimpleDialog>
 		)

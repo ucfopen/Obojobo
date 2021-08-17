@@ -2,7 +2,18 @@
 
 .objective-list-modal {
 	position: relative;
+	min-height: 56vh;
 	background: $color-bg2;
 	padding: 0.5em;
 	border-radius: $dimension-rounded-radius;
+
+	.button{
+		position: initial;
+    	bottom: 15vh;
+    	right: 36vh;
+	}
+
+	.objective-list-subheader {
+		font: $font-monospace ;
+	}
 }
