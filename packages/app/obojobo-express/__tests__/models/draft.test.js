@@ -307,7 +307,10 @@ describe('Draft Model', () => {
 
 		return DraftModel.deleteByIdAndUser('draft_id', 'user_id').then(voidResult => {
 			expect(voidResult).toBe(undefined) //eslint-disable-line no-undefined
-			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_DELETED', { id: 'draft_id' })
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_DELETED', {
+				id: 'draft_id',
+				userId: 'user_id'
+			})
 		})
 	})
 

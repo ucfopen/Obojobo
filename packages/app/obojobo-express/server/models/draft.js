@@ -95,7 +95,7 @@ class Draft {
 				}
 			)
 			.then(() => {
-				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id })
+				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id, userId })
 			})
 			.catch(error => {
 				logger.logError('Draft fetchById Error', error)
