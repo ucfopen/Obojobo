@@ -289,7 +289,7 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 
-	renderInfoBox(value) {
+	renderInfoBox() {
 		const triggers = this.state.content.triggers
 		const objectives = this.state.content.objectives
 
@@ -334,19 +334,29 @@ class MoreInfoBox extends React.Component {
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
 							</div>
-							<div>
-								<span className="objectives">
-									Objectives:
-									<ObjectiveListView objectives={objectives} globalObjectives={value.objectives} />
-								</span>
-								<Button
-									altAction
-									className="objective-button"
-									onClick={() => this.showObjectiveModal(value)}
-								>
-									✎ Edit
-								</Button>
-							</div>
+							<objectivesContext.Consumer>
+								{value => {
+									return (
+										<div>
+											<span className="objectives">
+												Objectives:
+												<ObjectiveListView
+													objectives={objectives}
+													globalObjectives={value.objectives}
+													type={this.props.type}
+												/>
+											</span>
+											<Button
+												altAction
+												className="objective-button"
+												onClick={() => this.showObjectiveModal(value)}
+											>
+												✎ Edit
+											</Button>
+										</div>
+									)
+								}}
+							</objectivesContext.Consumer>
 							<div>
 								<span className="triggers">
 									Triggers:
@@ -407,27 +417,21 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<objectivesContext.Consumer>
-				{value => {
-					return (
-						<div
-							ref={this.domRef}
-							className={'visual-editor--more-info ' + (this.props.className || '')}
-							onKeyDown={this.onKeyDown}
-						>
-							<button
-								className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
-								onClick={this.toggleOpen}
-								tabIndex={this.props.tabIndex || 0}
-								aria-label="Toggle More Info Box"
-							>
-								<MoreInfoIcon />
-							</button>
-							{this.state.isOpen ? this.renderInfoBox(value) : null}
-						</div>
-					)
-				}}
-			</objectivesContext.Consumer>
+			<div
+				ref={this.domRef}
+				className={'visual-editor--more-info ' + (this.props.className || '')}
+				onKeyDown={this.onKeyDown}
+			>
+				<button
+					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
+					onClick={this.toggleOpen}
+					tabIndex={this.props.tabIndex || 0}
+					aria-label="Toggle More Info Box"
+				>
+					<MoreInfoIcon />
+				</button>
+				{this.state.isOpen ? this.renderInfoBox() : null}
+			</div>
 		)
 	}
 }

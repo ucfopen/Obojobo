@@ -46,16 +46,18 @@ class ObjectiveInput extends React.Component {
 	render() {
 		return (
 			<SimpleDialog
-				title="Objective"
+				title="Create New Objective"
 				onCancel={this.props.onCancel}
 				onConfirm={this.handleConfirm.bind(this)}
 			>
 				<div className="objective-container">
 					<div>
-						<label htmlFor="objective-label">Label:</label>
+						<label htmlFor="objective-label" style={{ marginRight: '1.5em' }}>
+							Label:
+						</label>
 						<input
 							type="text"
-							placeholder="Add label as 1.0, 1.2, A, B, etc"
+							placeholder="This objective's label (1.2, A, B, etc...) "
 							value={this.state.label}
 							id="objective-label"
 							className={
@@ -70,14 +72,16 @@ class ObjectiveInput extends React.Component {
 						/>
 					</div>
 					<div>
-						<label htmlFor="objective-input">Objective:</label>
+						<label htmlFor="objective-input" style={{ marginRight: '1.5em' }}>
+							Objective:
+						</label>
 						<input
 							type="text"
-							placeholder="Add objective here"
+							placeholder="Type your objective here..."
 							value={this.state.description}
 							id="objective-input"
 							className={
-								'objective-input' +
+								'objective-input--objective' +
 								(this.state.description === '' && this.state.error !== ''
 									? ' objective-input--error'
 									: '')

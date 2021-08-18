@@ -1,19 +1,48 @@
 @import '~styles/includes';
 
 .objective-list-view {
-	font-size: 0.85em;
-	// background: $color-bg2;
-	width: 23em;
-	padding-right: 1.5em;
+	width: 21em;
 	display: inline-block;
-	padding-left: 0.5em;
-	max-height: 80px;
-	div {
-		padding-left: 0.5em;
+	max-height: 6.5em;
+	table {
+		table-layout: fixed;
+	}
+
+	tr {
 		font-weight: normal;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
+		border: none;
+		list-style-type: disc;
+		font-size: 0.85em;
+		font-family: $font-monospace;
+		padding: 0 0 0 0;
+		line-height: 1.2em;
+
+		ul {
+			margin: 0;
+			padding: 0;
+
+			li {
+				position: static;
+				background: $color-bg;
+				border: none;
+				padding: 0em;
+				list-style-type: disc;
+				list-style-position: inside;
+			}
+		}
+
+		td {
+			padding-left: 0.5em;
+		}
+
+		td:nth-child(2) {
+			width: 17em;
+			// font-size: 0.85em;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
 	}
 	overflow: auto;
 }

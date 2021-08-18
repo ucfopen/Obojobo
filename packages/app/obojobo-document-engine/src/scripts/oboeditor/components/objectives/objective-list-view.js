@@ -8,6 +8,8 @@ class ObjectiveListView extends React.Component {
 	render() {
 		const objectives = this.props.objectives
 		const globalObjectives = this.props.globalObjectives
+		const type = this.props.type
+		const moduleType = 'ObojoboDraft.Modules.Module'
 
 		if (!objectives) {
 			return null
@@ -15,17 +17,26 @@ class ObjectiveListView extends React.Component {
 
 		return (
 			<div className="objective-list-view">
-				{globalObjectives.map(objective => {
-					if (objectives.includes(objective.objectiveId)) {
-						return (
-							<div key={objective.objectiveId}>
-								{objective.objectiveLabel} {objective.description}
-							</div>
-						)
-					}
+				<table>
+					<tbody>
+						{globalObjectives.map(objective => {
+							if (type === moduleType || objectives.includes(objective.objectiveId)) {
+								return (
+									<tr key={objective.objectiveId}>
+										<td>
+											<ul>
+												<li>{objective.objectiveLabel}</li>
+											</ul>
+										</td>
+										<td>{objective.description}</td>
+									</tr>
+								)
+							}
 
-					return null
-				})}
+							return null
+						})}
+					</tbody>
+				</table>
 			</div>
 		)
 	}

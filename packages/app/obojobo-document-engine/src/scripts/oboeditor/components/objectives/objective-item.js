@@ -1,9 +1,6 @@
 import './objective-item.scss'
 import React from 'react'
-
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-const { SimpleDialog } = Common.components.modal
+import DeleteButton from '../../../common/components/delete-button-base'
 
 class ObjectiveItem extends React.Component {
 	constructor(props) {
@@ -36,8 +33,9 @@ class ObjectiveItem extends React.Component {
 	}
 
 	deleteObjective() {
-		this.props.delete(this.state.objectiveId)
-		this.setState({ handleDelete: false })
+		if (confirm("Are you sure you want to delete this objective? This action can't be undone!")) {
+			this.props.delete(this.state.objectiveId)
+		}
 	}
 
 	handleCheckboxChange() {
@@ -47,13 +45,13 @@ class ObjectiveItem extends React.Component {
 
 	render() {
 		const closeButton = (
-			<button className="close-btn" onClick={() => this.setState({ handleDelete: true })}>
-				✕
-			</button>
+			<div className="close-btn" onClick={this.deleteObjective}>
+				<DeleteButton />
+			</div>
 		)
 		const editButton = (
-			<button
-				className="edit-btn"
+			<a
+				className="edit-link"
 				onClick={() =>
 					this.props.onEdit({
 						id: this.state.objectiveId,
@@ -63,32 +61,15 @@ class ObjectiveItem extends React.Component {
 					})
 				}
 			>
-				✎
-			</button>
+				Edit
+			</a>
 		)
 
-		if (this.state.handleDelete) {
-			return (
-				<SimpleDialog
-					delete
-					title="Delete Confirmation"
-					onCancel={() => {
-						this.setState({ handleDelete: false })
-					}}
-					onDelete={this.deleteObjective}
-				>
-					<div>
-						{' '}
-						Are you sure you want to delete the objective &quot;{this.state.objectiveLabel}{' '}
-						{this.state.objectiveDescription}&quot;? You cannot undo this action.
-					</div>
-					<div> </div>
-				</SimpleDialog>
-			)
-		}
-
 		return (
-			<div className="objective-block">
+			<div
+				className={'objective-block' + (this.state.selected ? ' objective-label-select' : '')}
+				style={{ backgroundColor: this.state.selected ? '#edf0fd' : '#ffffff' }}
+			>
 				<div className="objective-content" name="objective-content">
 					<input
 						type="checkbox"
@@ -97,9 +78,12 @@ class ObjectiveItem extends React.Component {
 						checked={this.state.selected}
 						onChange={this.handleCheckboxChange}
 					/>
-					<p className="objective-label" onClick={this.handleCheckboxChange}>
-						{this.state.objectiveLabel} {this.state.objectiveDescription}
-					</p>
+					<div className="objective-label" onClick={this.handleCheckboxChange}>
+						{this.state.objectiveLabel}
+					</div>
+					<div className="objective-description" onClick={this.handleCheckboxChange}>
+						{this.state.objectiveDescription}
+					</div>
 				</div>
 				<div className="objective-options">
 					<span>{editButton}</span>

@@ -34,24 +34,19 @@ class ObjectiveListModal extends React.Component {
 		this.objectiveListHeader = (
 			<div
 				style={{
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					padding: '0.5em 1.25em',
-					margin: '0em 0.5em 0.1em 0em',
-					fontWeight: 'bold'
+					margin: '-0.7em 0em 1em 0em'
 				}}
 			>
-				<div>
-					<p style={{ margin: 0, fontSize: '0.6em' }}>
-						<span>Select&nbsp;&nbsp;</span>
-						Objective
+				<div className="objective-list-subheader">
+					<p>
+						{/* <span>Select&nbsp;&nbsp;</span> */}
+						Select one or more objectives that apply to this item
 					</p>
 				</div>
-				<div style={{ fontSize: '0.6em' }}>
-					<span>Edit&nbsp;</span>
-					<span>&nbsp;&nbsp;Delete</span>
-				</div>
+				{/* <div style={{ fontSize: '0.6em' }}>
+				// 	<span>Edit&nbsp;</span>
+				// 	<span>&nbsp;&nbsp;Delete</span>
+				// </div> */}
 			</div>
 		)
 	}
@@ -97,7 +92,6 @@ class ObjectiveListModal extends React.Component {
 			objectiveLabel: label,
 			description
 		}
-
 		this.addObjective(newObjectiveObject)
 
 		this.setState(prevState => ({
@@ -126,7 +120,6 @@ class ObjectiveListModal extends React.Component {
 				)
 			}
 		})
-
 		this.updateObjective(id, label, description)
 	}
 
@@ -162,15 +155,24 @@ class ObjectiveListModal extends React.Component {
 			return (
 				<ObjectiveInput
 					onCancel={() => this.setState({ newObjective: false })}
-					onConfirm={state => this.createNewObjective(state)}
+					onConfirm={des => this.createNewObjective(des)}
 				/>
 			)
 		}
 
 		return (
-			<SimpleDialog addOrCancel title="Objectives" onConfirm={() => this.props.onClose(this.state)}>
+			<SimpleDialog
+				done
+				title="Objective Library"
+				onConfirm={() => {
+					this.props.onClose(this.state)
+				}}
+			>
 				{this.state.globalObjectives.length > 0 && this.objectiveListHeader}
-				<div className="objective-list-modal">
+				<div
+					className="objective-list-modal"
+					style={this.state.globalObjectives.length === 0 ? { minHeight: '2.2em' } : null}
+				>
 					{this.state.globalObjectives.map(objective => {
 						return (
 							<div key={objective.objectiveId}>
@@ -186,7 +188,11 @@ class ObjectiveListModal extends React.Component {
 							</div>
 						)
 					})}
-					<Button onClick={() => this.setState({ newObjective: true })}>+ Create Objective</Button>
+					<div className="button">
+						<Button onClick={() => this.setState({ newObjective: true })}>
+							+ Create Objective
+						</Button>
+					</div>
 				</div>
 			</SimpleDialog>
 		)

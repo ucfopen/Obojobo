@@ -114,6 +114,7 @@ class SubMenu extends React.Component {
 
 		model.set({ content: newContent })
 		model.triggers = newContent.triggers ? newContent.triggers : []
+		model.objectives = newContent.objectives ? newContent.objectives : []
 		model.title =
 			newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
 	}
