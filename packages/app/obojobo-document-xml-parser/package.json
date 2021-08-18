@@ -1,54 +1,54 @@
 {
-  "dependencies": {
-    "minimist": "^1.2.5",
-    "xml-js": "^1.0.2"
-  },
-  "peerDependencies": {
-    "obojobo-lib-utils": "^11.2.0-alpha.0"
-  },
-  "name": "obojobo-document-xml-parser",
-  "version": "11.2.0",
-  "license": "AGPL-3.0-only",
-  "main": "xml2draft.js",
-  "scripts": {
-    "test": "TZ='America/New_York' jest --verbose",
-    "test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
-    "convertTestObjectToJson": "node ./bin/xml2draft.js examples/test-object.xml --spaces=4 --generate-ids > test-object.json",
-    "prettier:run": "prettier --write '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
-    "lint": "echo 'not implemented'",
-    "lint:css": "echo 'not implemented'",
-    "lint:js": "echo 'not implemented'",
-    "precommit": "lint-staged"
-  },
-  "lint-staged": {
-    "**/*.{js,scss}": [
-      "prettier --write"
-    ]
-  },
-  "jest": {
-    "verbose": false,
-    "coverageReporters": [
-      "text",
-      "lcov"
-    ],
-    "coveragePathIgnorePatterns": [
-      "src/draft-json-transform.js",
-      "src/extension-transform.js",
-      "src/generate-id.js",
-      "src/html-transform.js",
-      "src/list-styles-parser.js",
-      "src/triggers-parser.js",
-      "src/assessment-rubric-parser.js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    }
-  },
-  "author": "",
-  "description": ""
+	"dependencies": {
+		"minimist": "^1.2.5",
+		"xml-js": "^1.0.2"
+	},
+	"peerDependencies": {
+		"obojobo-lib-utils": "^13.1.0"
+	},
+	"name": "obojobo-document-xml-parser",
+	"version": "13.1.0",
+	"license": "AGPL-3.0-only",
+	"main": "xml2draft.js",
+	"scripts": {
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"convertTestObjectToJson": "node ./bin/xml2draft.js examples/test-object.xml --spaces=4 --generate-ids > test-object.json",
+		"prettier:run": "prettier --write '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
+		"lint": "echo 'not implemented'",
+		"lint:css": "echo 'not implemented'",
+		"lint:js": "echo 'not implemented'",
+		"precommit": "lint-staged"
+	},
+	"lint-staged": {
+		"**/*.{js,scss}": [
+			"prettier --write"
+		]
+	},
+	"jest": {
+		"verbose": false,
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"coveragePathIgnorePatterns": [
+			"src/draft-json-transform.js",
+			"src/extension-transform.js",
+			"src/generate-id.js",
+			"src/html-transform.js",
+			"src/list-styles-parser.js",
+			"src/triggers-parser.js",
+			"src/assessment-rubric-parser.js"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	},
+	"author": "",
+	"description": ""
 }

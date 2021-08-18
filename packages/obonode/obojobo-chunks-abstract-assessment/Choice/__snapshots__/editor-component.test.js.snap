@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Choice Editor Node Choice component 1`] = `
+<div
+  className="component obojobo-draft--chunks--abstract-assessment--choice is-not-correct editor-choice"
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center correct-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ✖ Incorrect
+    </button>
+  </div>
+  <div
+    className="children"
+  >
+    <div />
+  </div>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Add Feedback
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Choice Editor Node Choice component correct choice 1`] = `
+<div
+  className="component obojobo-draft--chunks--abstract-assessment--choice is-correct editor-choice"
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center correct-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ✔ Correct
+    </button>
+  </div>
+  <div
+    className="children"
+  >
+    <div />
+  </div>
+</div>
+`;

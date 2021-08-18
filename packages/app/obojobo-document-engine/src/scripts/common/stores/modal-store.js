@@ -32,7 +32,6 @@ class ModalStore extends Store {
 		if (this.lastActiveElement && document.body.contains(this.lastActiveElement)) {
 			focus(this.lastActiveElement)
 		}
-
 		delete this.lastActiveElement
 	}
 

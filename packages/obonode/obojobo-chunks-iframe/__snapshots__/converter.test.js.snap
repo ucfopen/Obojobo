@@ -13,6 +13,22 @@ Object {
 }
 `;
 
+exports[`IFrame Converter oboToSlate converts an OboNode to a Slate node with content size set to text width 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "text": "",
+    },
+  ],
+  "content": Object {
+    "sizing": "text-width",
+    "width": 640,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
 exports[`IFrame Converter oboToSlate converts an OboNode to a Slate node with media defaults 1`] = `
 Object {
   "children": Array [
@@ -61,7 +77,31 @@ Object {
 exports[`IFrame Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],
-  "content": Object {},
+  "content": Object {
+    "width": undefined,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`IFrame Converter slateToObo converts a Slate node to an OboNode with content sizing set to max width 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "sizing": "max-width",
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`IFrame Converter slateToObo converts a Slate node to an OboNode with content sizing set to text width 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "sizing": "text-width",
+  },
   "id": "mockKey",
   "type": "mockType",
 }

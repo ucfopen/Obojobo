@@ -4,926 +4,261 @@ import renderer from 'react-test-renderer'
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 
 import MCChoice from './viewer-component'
-import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
 
-const TYPE_PICK_ONE = 'pick-one'
-const TYPE_MULTI_CORRECT = 'pick-one-multiple-correct'
-const TYPE_PICK_ALL = 'pick-all'
-const MODE_REVIEW = 'review'
+const getDefaultProps = ({ choiceScore, questionSubmitted, mode, responseType, questionType }) => ({
+	model: {
+		getDomId: () => 'mock-dom-id',
+		processTrigger: jest.fn(),
+		get: () => 'mock-id',
+		modelState: { score: choiceScore },
+		parent: {
+			get: () => 'mock-parent-id'
+		},
+		children: [
+			{
+				get: key => {
+					switch (key) {
+						case 'id':
+							return 'mock-id-mc-answer'
 
-require('./viewer') // used to register this oboModel
-require('../viewer') // // dependency on Obojobo.Chunks.MCAssessment
-require('../MCAnswer/viewer') // // dependency on Obojobo.Chunks.MCAssessment.MCAnswer
-require('../MCFeedback/viewer') // // dependency on Obojobo.Chunks.MCAssessment.MCFeedback
-require('obojobo-chunks-question/viewer') // dependency on Obojobo.Chunks.Question
-require('obojobo-pages-page/viewer') // dependency on Obojobo.Pages.Page
-require('obojobo-chunks-text/viewer') // // dependency on Obojobo.Chunks.Text
-
-const getQuestionJSON = () => ({
-	id: 'parent',
-	type: 'ObojoboDraft.Chunks.Question',
-	content: {
-		title: 'Title',
-		solution: {
-			id: 'page-id',
-			type: 'ObojoboDraft.Pages.Page',
-			children: [
-				{
-					id: 'text-id',
-					type: 'ObojoboDraft.Chunks.Text',
-					content: {
-						textGroup: [
-							{
-								text: {
-									value: 'Example text'
-								}
-							}
-						]
+						case 'type':
+							return 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 					}
-				}
-			]
-		}
-	},
-	children: [
-		{
-			id: 'id',
-			type: 'ObojoboDraft.Chunks.MCAssessment',
-			children: [
-				{
-					id: 'choice1',
-					type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-					content: {
-						score: 100
-					},
-					children: [
-						{
-							id: 'choice1-answer',
-							type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-							children: [
-								{
-									id: 'choice1-answer-text',
-									type: 'ObojoboDraft.Chunks.Text',
-									content: {
-										textGroup: [
-											{
-												text: {
-													value: 'Example Text'
-												}
-											}
-										]
-									}
-								}
-							]
-						},
-						{
-							id: 'choice1-feedback',
-							type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-							children: [
-								{
-									id: 'choice1-feedback-text',
-									type: 'ObojoboDraft.Chunks.Text',
-									content: {
-										textGroup: [
-											{
-												text: {
-													value: 'Example Text 2'
-												}
-											}
-										]
-									}
-								}
-							]
-						},
-						{
-							id: 'invalid-item',
-							type: 'ObojoboDraft.Chunks.MCAssessment'
-						}
-					]
 				},
-				{
-					id: 'choice2',
-					type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-					content: {
-						score: 0
-					},
-					children: [
-						{
-							id: 'choice2-answer',
-							type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-							children: [
-								{
-									id: 'choice1-answer-text',
-									type: 'ObojoboDraft.Chunks.Text',
-									content: {
-										textGroup: [
-											{
-												text: {
-													value: 'Example Text 3'
-												}
-											}
-										]
-									}
-								}
-							]
-						},
-						{
-							id: 'choice2-feedback',
-							type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-							children: [
-								{
-									id: 'choice1-feedback-text',
-									type: 'ObojoboDraft.Chunks.Text',
-									content: {
-										textGroup: [
-											{
-												text: {
-													value: 'Example Text 4'
-												}
-											}
-										]
-									}
-								}
-							]
-						},
-						{
-							id: 'invalid-item',
-							type: 'ObojoboDraft.Chunks.MCAssessment'
-						}
-					]
-				}
-			]
-		}
-	]
+				getComponentClass: () =>
+					function C() {
+						return <div>MCAnswer</div>
+					}
+			},
+			{
+				get: key => {
+					switch (key) {
+						case 'id':
+							return 'mock-id-mc-feedback'
+
+						case 'type':
+							return 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+					}
+				},
+				getComponentClass: () =>
+					function C() {
+						return <div>MCFeedback</div>
+					}
+			},
+			{
+				get: key => {
+					switch (key) {
+						case 'id':
+							return 'mock-some-other-id'
+
+						case 'type':
+							return 'SomeOtherType'
+					}
+				},
+				getComponentClass: () =>
+					function C() {
+						return <div>Some other type</div>
+					}
+			}
+		]
+	},
+	questionSubmitted,
+	mode,
+	responseType,
+	questionModel: { get: () => 'mock-question-model-id', modelState: { type: questionType } },
+	moduleData: {
+		navState: { context: 'mockContext' },
+		questionState: { contexts: { mockContext: { data: {} } } },
+		focusState: {}
+	}
 })
 
 describe('MCChoice viewer-component', () => {
-	test('MCChoice component', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
+	// questionTypes can be 'default' or 'survey'
+	// mode can be 'practice', 'assessment' or 'review'
+	test.each`
+		responseType  | questionType | mode            | response                 | questionSubmitted | choiceScore | className
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-review'}
+		${'pick-one'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-one'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-practice'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-assessment'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-not-correct-choice is-type-should-not-have-chosen is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-not-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-correctly is-mode-review'}
+		${'pick-all'} | ${'default'} | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-could-have-chosen is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'practice'}   | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-practice'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'assessment'} | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-assessment'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${null}                  | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${null}                  | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${0}        | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${0}        | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${null}                  | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${false}          | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${false}          | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${null}                  | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['mock-id'] }}  | ${true}           | ${100}      | ${'is-selected is-correct-choice is-type-chosen-survey is-mode-review'}
+		${'pick-all'} | ${'survey'}  | ${'review'}     | ${{ ids: ['other-id'] }} | ${true}           | ${100}      | ${'is-not-selected is-correct-choice is-type-unchosen-correctly is-mode-review'}
+	`(
+		'construct(responseType="$responseType",questionType="$questionType",mode="$mode",questionSubmitted="$questionSubmitted",score="$score",response="$response") = "$className"',
+		({ choiceScore, questionSubmitted, mode, responseType, questionType, response, className }) => {
+			const props = getDefaultProps({
+				choiceScore,
+				questionSubmitted,
+				mode,
+				responseType,
+				questionType
+			})
+
+			QuestionUtil.getResponse.mockReturnValue(response)
+			QuestionUtil.getScoreForModel.mockReturnValue(choiceScore)
+			const component = renderer.create(<MCChoice {...props} />)
+
+			const tree = component.toJSON()
+
+			expect(tree).toMatchSnapshot()
+			expect(tree.props.className).toBe(
+				`component obojobo-draft--chunks--mc-assessment--mc-choice ${className}`
+			)
 		}
+	)
 
-		const props = {
-			model,
-			moduleData,
-			mode: 'mockMode',
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			isShowingExplanation: false,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode with no score data', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: {
-				// review mode has no score data for the current context
-				scores: {}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component type pick-one-multiple-correct', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_MULTI_CORRECT,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component type pick-all', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice that is selected and submitted (Not Pick All, Correct)', () => {
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			ids: ['choice1']
+	test('Component where question score throws an error still works', () => {
+		QuestionUtil.getScoreForModel.mockImplementation(() => {
+			throw 'Some error'
 		})
 
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: true,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice that is selected and submitted (Not Pick All, Incorrect)', () => {
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			ids: ['choice2']
-		})
-
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: true,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice that is selected and submitted (Pick All, Correct)', () => {
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			ids: ['choice1']
-		})
-
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: true,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice that is selected and submitted (Pick All, Incorrect)', () => {
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			ids: ['choice2']
-		})
-
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: true,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice that is selected and submitted', () => {
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			ids: ['choice1']
-		})
-
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: true,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice that is selected and submitted - survey question', () => {
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			ids: ['choice1']
-		})
-
-		const surveyQuestionJSON = getQuestionJSON()
-		surveyQuestionJSON.content.type = 'survey'
-		const question = OboModel.create(surveyQuestionJSON)
-		const mcassessment = question.children.models[0]
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: true,
-			label: 'mocklabel'
-		}
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode - could have chosen', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// A correct choice
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question correct
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		// The user did not select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce(null)
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode - should have chosen', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// A correct choice
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question correct
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		// The user did not select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce(null)
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode - chosen correctly', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// A correct choice
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question correct
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		// The user did select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce({ ids: ['choice1'] })
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode - unchosen correctly', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// An incorrect choice
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question correct
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		// The user did not select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce(null)
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode - should not have chosen', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// An incorrect choice
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question incorrect
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
-		// The user did select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce({ ids: ['choice1'] })
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode - survey question - this item selected', () => {
-		const surveyQuestionJSON = getQuestionJSON()
-		surveyQuestionJSON.content.type = 'survey'
-		const question = OboModel.create(surveyQuestionJSON)
-		const mcassessment = question.children.models[0]
-		// This choice
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		QuestionUtil.getScoreForModel.mockReturnValueOnce('no-score')
-		// The user did select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce({ ids: ['choice1'] })
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component in review mode - survey question - this item NOT selected', () => {
-		const surveyQuestionJSON = getQuestionJSON()
-		surveyQuestionJSON.content.type = 'survey'
-		const question = OboModel.create(surveyQuestionJSON)
-		const mcassessment = question.children.models[0]
-		// Not this choice
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ONE,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		QuestionUtil.getScoreForModel.mockReturnValueOnce('no-score')
-		// The user did not select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce({ ids: ['choice1'] })
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component pick-all in review mode - chosen correctly', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// A correct choice
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question correct
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		// The user did select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce({ ids: ['choice1'] })
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component pick-all in review mode - should have chosen', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// A correct choice
-		const model = mcassessment.children.models[0]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question incorrect
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
-		// The user did not select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce(null)
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component pick-all in review mode - unchosen correctly', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// An incorrect choice
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question incorrect
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		// The user did not select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce(null)
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice component pick-all in review mode - should not have chosen', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// An incorrect choice
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question incorrect
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		// The user did select this choice
-		QuestionUtil.getResponse.mockReturnValueOnce({ ids: ['choice2'] })
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
-	})
-
-	test('MCChoice renders empty div if error is thrown', () => {
-		const questionJSON = getQuestionJSON()
-		const question = OboModel.create(questionJSON)
-		const mcassessment = question.children.models[0]
-		// An incorrect choice
-		const model = mcassessment.children.models[1]
-		const moduleData = {
-			questionState: {
-				scores: {
-					// review mode needs score data for the current context
-					mockContext: 'mockScore'
-				}
-			},
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-
-		const props = {
-			model,
-			moduleData,
-			mode: MODE_REVIEW,
-			key: 'mockKey',
-			responseType: TYPE_PICK_ALL,
-			questionSubmitted: false,
-			label: 'mocklabel'
-		}
-
-		// The user got the question incorrect
-		QuestionUtil.getScoreForModel.mockImplementationOnce(() => {
-			throw new Error()
-		})
-
-		const component = renderer.create(<MCChoice {...props} />)
-
-		expect(component).toMatchSnapshot()
+		const component = renderer.create(
+			<MCChoice
+				questionModel={{ modelState: { type: 'default ' } }}
+				model={jest.fn()}
+				moduleData={{ navState: {} }}
+			/>
+		)
+		expect(component.toJSON()).toEqual(renderer.create(<div />).toJSON())
 	})
 })

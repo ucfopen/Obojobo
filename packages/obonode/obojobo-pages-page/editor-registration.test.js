@@ -98,6 +98,7 @@ describe('Page editor', () => {
 			],
 			isInline: () => false
 		}
+		Page.plugins.normalizeNode([editor.children[0], [0]], editor, next)
 
 		Page.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 

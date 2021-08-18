@@ -2,6 +2,7 @@ const db = oboRequire('server/db')
 
 module.exports = async insertObject => {
 	insertObject.visitId = insertObject.visitId || null
+
 	return db.taskIf(async t => {
 		const insertEventResult = await t.one(
 			`INSERT INTO events

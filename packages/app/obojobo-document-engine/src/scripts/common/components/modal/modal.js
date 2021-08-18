@@ -7,6 +7,7 @@ import ModalUtil from '../../util/modal-util'
 class Modal extends React.Component {
 	constructor() {
 		super()
+		this.selfRef = React.createRef()
 		this.boundKeyUp = this.onKeyUp.bind(this)
 		this.deleteButtonRef = React.createRef()
 		this.onTabTrapFocus = this.onTabTrapFocus.bind(this)
@@ -14,6 +15,10 @@ class Modal extends React.Component {
 
 	componentDidMount() {
 		document.addEventListener('keyup', this.boundKeyUp)
+
+		if (this.selfRef.current) {
+			this.selfRef.current.focus()
+		}
 	}
 
 	componentWillUnmount() {
@@ -50,15 +55,27 @@ class Modal extends React.Component {
 				}
 				role="dialog"
 				aria-labelledby="obojobo-draft--components--modal--modal--content"
+				tabIndex="-1"
+				ref={this.selfRef}
 			>
-				<input className="first-tab" type="text" onFocus={this.onTabTrapFocus} />
+				<input
+					aria-label="Start of dialog"
+					className="first-tab"
+					type="text"
+					onFocus={this.onTabTrapFocus}
+				/>
 				{this.props.onClose ? (
 					<DeleteButton ref={this.deleteButtonRef} onClick={this.props.onClose} />
 				) : null}
 				<div className="content" id="obojobo-draft--components--modal--modal--content">
 					{this.props.children}
 				</div>
-				<input className="last-tab" type="text" onFocus={this.onTabTrapFocus} />
+				<input
+					aria-label="End of dialog"
+					className="last-tab"
+					type="text"
+					onFocus={this.onTabTrapFocus}
+				/>
 			</div>
 		)
 	}

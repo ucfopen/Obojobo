@@ -7,7 +7,7 @@ const { OboComponent } = Viewer.components
 const { FocusUtil } = Viewer.util
 
 export default class Page extends React.Component {
-	static focusOnContent(model, opts) {
+	static focusOnContent(model, opts = {}) {
 		const firstModel = model.children.at(0)
 		if (!firstModel) return
 
@@ -21,10 +21,12 @@ export default class Page extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--pages--page"
 			>
-				{this.props.model.children.models.map((child, index) => {
+				{this.props.model.children.models.map(child => {
 					const Component = child.getComponentClass()
 
-					return <Component key={index} model={child} moduleData={this.props.moduleData} />
+					return (
+						<Component key={child.get('id')} model={child} moduleData={this.props.moduleData} />
+					)
 				})}
 			</OboComponent>
 		)

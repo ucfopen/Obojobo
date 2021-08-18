@@ -4,26 +4,116 @@ exports[`Line Editor Node renders as expected 1`] = `
 <div>
   <li
     data-hanging-indent={true}
-  />
+  >
+    <span
+      style={
+        Object {
+          "color": "black",
+        }
+      }
+    />
+  </li>
 </div>
 `;
 
 exports[`Line Editor Node renders with children 1`] = `
 <div>
   <li>
-    children!
+    <span
+      style={
+        Object {
+          "color": "black",
+        }
+      }
+    >
+      children!
+    </span>
+  </li>
+</div>
+`;
+
+exports[`Line Editor Node renders with different colored bullet points or indices 1`] = `
+<div>
+  <li
+    style={
+      Object {
+        "color": "#cf3280",
+      }
+    }
+  >
+    <span
+      style={
+        Object {
+          "color": "black",
+        }
+      }
+    >
+      <span
+        node={
+          Object {
+            "children": Array [
+              Object {
+                "color": "#cf3280",
+              },
+            ],
+          }
+        }
+      />
+    </span>
+  </li>
+</div>
+`;
+
+exports[`Line Editor Node renders with different colored bullet points or indices 2`] = `
+<div>
+  <li>
+    <span
+      style={
+        Object {
+          "color": "black",
+        }
+      }
+    >
+      <span
+        node={
+          Object {
+            "children": Array [
+              Object {
+                "style": "mock-style",
+              },
+            ],
+          }
+        }
+      />
+    </span>
   </li>
 </div>
 `;
 
 exports[`Line Editor Node renders without content 1`] = `
 <div>
-  <li />
+  <li>
+    <span
+      style={
+        Object {
+          "color": "black",
+        }
+      }
+    />
+  </li>
 </div>
 `;
 
 exports[`Line Editor Node renders without hanging indent 1`] = `
 <div>
-  <li />
+  <li>
+    <span
+      style={
+        Object {
+          "color": "black",
+        }
+      }
+    />
+  </li>
 </div>
 `;

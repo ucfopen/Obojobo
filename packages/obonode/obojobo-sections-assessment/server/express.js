@@ -1,3 +1,4 @@
+const uuid = require('uuid').v4
 const router = require('express').Router() //eslint-disable-line new-cap
 const AssessmentModel = require('./models/assessment')
 const lti = require('obojobo-express/server/lti')
@@ -22,8 +23,10 @@ const {
 	ERROR_INVALID_ATTEMPT_END,
 	ERROR_UNEXPECTED_ATTEMPT_END,
 	ERROR_INVALID_ATTEMPT_RESUME,
-	ERROR_UNEXPECTED_ATTEMPT_RESUME
+	ERROR_UNEXPECTED_ATTEMPT_RESUME,
+	ERROR_NO_PERMISSIONS_TO_DATA
 } = require('./error-constants')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 
 // load the server event listeners
 require('./events')
@@ -202,6 +205,66 @@ router
 			.then(res.success)
 			.catch(error => {
 				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
+			})
+	})
+
+router
+	.route('/api/assessments/:draftId/details')
+	.get([requireCurrentUser])
+	.get((req, res) => {
+		let currentUserHasPermissionToDraft
+
+		return DraftPermissions.userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
+			.then(result => {
+				currentUserHasPermissionToDraft = result
+
+				// Users must either have some level of permissions to this draft, or have
+				// the canViewSystemStats permission
+				if (
+					!currentUserHasPermissionToDraft &&
+					!req.currentUser.hasPermission('canViewSystemStats')
+				) {
+					throw Error(ERROR_NO_PERMISSIONS_TO_DATA)
+				}
+
+				return AssessmentModel.fetchAttemptHistoryDetails(req.params.draftId)
+			})
+			.then(attemptsDetails => {
+				// If the user doesn't own the draft (aka they only have canViewSystemStats),
+				// anonymize the user data:
+				if (!currentUserHasPermissionToDraft) {
+					const anonUUIDsByUserId = {}
+					attemptsDetails = attemptsDetails.map(attemptDetails => {
+						if (!anonUUIDsByUserId[attemptDetails.user_id]) {
+							anonUUIDsByUserId[attemptDetails.user_id] = uuid()
+						}
+
+						const userAnonUUID = anonUUIDsByUserId[attemptDetails.user_id]
+
+						attemptDetails.user_username = `(anonymized-${userAnonUUID})`
+						attemptDetails.user_first_name = `(anonymized-${userAnonUUID})`
+						attemptDetails.user_last_name = `(anonymized-${userAnonUUID})`
+						attemptDetails.user_id = `(anonymized-${userAnonUUID})`
+
+						return attemptDetails
+					})
+				}
+
+				return res.success(attemptsDetails)
+			})
+			.catch(error => {
+				switch (error.message) {
+					case ERROR_NO_PERMISSIONS_TO_DATA:
+						return res.notAuthorized()
+
+					default:
+						logAndRespondToUnexpected(
+							'Unexpected error fetching assessment details',
+							res,
+							req,
+							error
+						)
+				}
 			})
 	})
 

@@ -1,0 +1,17 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--abstract-assessment--feedback {
+	font-size: 0.8em;
+	padding-left: $dimension-padding * 0.2333333333;
+	padding-right: $dimension-padding * 0.2333333333;
+
+	.label {
+		position: absolute;
+		top: -0.1em;
+		left: 0.6em;
+		color: $color-text-minor;
+		transform: scale(0.7);
+		transform-origin: top left;
+		font-family: $font-default;
+	}
+}

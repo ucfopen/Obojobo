@@ -11,11 +11,15 @@ const {
 	CLEAR_PEOPLE_SEARCH_RESULTS,
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
+	BULK_DELETE_MODULES,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
+	SELECT_MODULES,
+	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
-	RESTORE_VERSION
+	RESTORE_VERSION,
+	SHOW_ASSESSMENT_SCORE_DATA
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -69,6 +73,21 @@ function DashboardReducer(state, action) {
 				}
 			})
 
+		case BULK_DELETE_MODULES:
+			return handle(state, action, {
+				// update myModules, re-apply the filter, and exit multi-select mode
+				success: prevState => {
+					const filteredModules = filterModules(action.payload.value, state.moduleSearchString)
+					return {
+						...prevState,
+						myModules: action.payload.value,
+						filteredModules,
+						selectedModules: [],
+						multiSelectMode: false
+					}
+				}
+			})
+
 		case SHOW_MODULE_MORE:
 			return {
 				...state,
@@ -95,6 +114,20 @@ function DashboardReducer(state, action) {
 				...state,
 				filteredModules: filterModules(state.myModules, action.searchString),
 				moduleSearchString: action.searchString
+			}
+
+		case SELECT_MODULES:
+			return {
+				...state,
+				selectedModules: [...state.selectedModules, ...action.draftIds],
+				multiSelectMode: true
+			}
+
+		case DESELECT_MODULES:
+			return {
+				...state,
+				selectedModules: state.selectedModules.filter(m => !action.draftIds.includes(m)),
+				multiSelectMode: state.selectedModules.length !== action.draftIds.length
 			}
 
 		case CLEAR_PEOPLE_SEARCH_RESULTS:
@@ -145,6 +178,28 @@ function DashboardReducer(state, action) {
 				success: prevState => ({
 					...prevState,
 					versionHistory: {
+						isFetching: false,
+						hasFetched: true,
+						items: action.payload
+					}
+				})
+			})
+
+		case SHOW_ASSESSMENT_SCORE_DATA:
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					dialog: 'module-assessment-score-data',
+					selectedModule: action.meta.module,
+					attempts: {
+						isFetching: true,
+						hasFetched: false,
+						items: []
+					}
+				}),
+				success: prevState => ({
+					...prevState,
+					attempts: {
 						isFetching: false,
 						hasFetched: true,
 						items: action.payload

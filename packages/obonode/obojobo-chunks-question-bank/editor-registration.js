@@ -14,6 +14,7 @@ const QuestionBank = {
 	menuLabel: 'Question Bank',
 	icon: Icon,
 	isInsertable: true,
+	acceptsInserts: false,
 	supportsChildren: true,
 	helpers: Converter,
 	json: {

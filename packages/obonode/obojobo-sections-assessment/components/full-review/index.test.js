@@ -8,7 +8,11 @@ import renderer from 'react-test-renderer'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
-jest.mock('obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-reporter')
+jest.mock('../assessment-score-reporter')
+jest.mock('../assessment-score-report-view', () => {
+	return () => <div>Mock assessment score report view</div>
+})
+jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => () => 'mock-uuid')
 
 // register the modules required for this test
 require('../../viewer')
@@ -184,7 +188,7 @@ const assessmentJSON = {
 
 describe('FullReview', () => {
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
 	})
 
 	test('FullReview component', () => {
@@ -200,7 +204,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttempt' })
 		// mock attempts taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
+		// AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
 		const component = renderer.create(
@@ -226,7 +230,9 @@ describe('FullReview', () => {
 			id: 'mockAttemptId'
 		})
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([{ id: 'mockId' }])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			{ id: 'mockId' }
+		])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -267,8 +273,9 @@ describe('FullReview', () => {
 			questionState: {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
-						scores: [],
-						responses: []
+						scores: {},
+						responses: {},
+						revealedQuestions: {}
 					}
 				}
 			},
@@ -279,7 +286,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -322,8 +329,9 @@ describe('FullReview', () => {
 			questionState: {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
-						scores: [],
-						responses: []
+						scores: {},
+						responses: {},
+						revealedQuestions: {}
 					}
 				}
 			},
@@ -334,7 +342,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -384,7 +392,7 @@ describe('FullReview', () => {
 			id: 'lastAttemptMockAttemptId'
 		})
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{ id: 'highestMockAttemptId' }
 		])
 		// mock attempt taken
@@ -433,7 +441,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -478,7 +486,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([mockAttempt])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([mockAttempt])
 		// mock attempt taken
 		const attempts = [mockAttempt]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
@@ -506,7 +514,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -556,6 +564,139 @@ describe('FullReview', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('FullReview component with five attempts', () => {
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			navState: {
+				context: 'mockContext'
+			},
+			questionState: { scores: {} },
+			focusState: {}
+		}
+		const model = OboModel.create(assessmentJSON)
+
+		const firstAttempt = {
+			id: 'mockFirstAttemptId',
+			attemptNumber: 1,
+			assessmentScore: 100,
+			completedAt: '2018-06-05 20:28:11.228294+00',
+			result: {
+				attemptScore: 100,
+				questionScores: [
+					{
+						id: 'questionId'
+					}
+				]
+			},
+			state: {
+				questionModels: {
+					questionId: questionJSON
+				}
+			}
+		}
+
+		const secondAttempt = {
+			id: 'mockSecondAttemptId',
+			attemptNumber: 1,
+			assessmentScore: 0,
+			completedAt: '2018-06-05 20:28:11.228294+00',
+			result: {
+				attemptScore: 0,
+				questionScores: [
+					{
+						id: 'questionId'
+					}
+				]
+			},
+			state: {
+				questionModels: {
+					questionId: questionJSON
+				}
+			}
+		}
+
+		const thirdAttempt = {
+			id: 'mockThirdAttemptId',
+			attemptNumber: 1,
+			assessmentScore: 80,
+			completedAt: '2018-06-05 20:28:11.228294+00',
+			result: {
+				attemptScore: 80,
+				questionScores: [
+					{
+						id: 'questionId'
+					}
+				]
+			},
+			state: {
+				questionModels: {
+					questionId: questionJSON
+				}
+			}
+		}
+		const fourthAttempt = {
+			id: 'mockFourthAttemptId',
+			attemptNumber: 1,
+			assessmentScore: 0,
+			completedAt: '2018-06-05 20:28:11.228294+00',
+			result: {
+				attemptScore: 0,
+				questionScores: [
+					{
+						id: 'questionId'
+					}
+				]
+			},
+			state: {
+				questionModels: {
+					questionId: questionJSON
+				}
+			}
+		}
+
+		const fifthAttempt = {
+			id: 'mockFifthAttemptId',
+			attemptNumber: 1,
+			assessmentScore: 100,
+			completedAt: '2018-06-05 20:28:11.228294+00',
+			result: {
+				attemptScore: 95,
+				questionScores: [
+					{
+						id: 'questionId'
+					}
+				]
+			},
+			state: {
+				questionModels: {
+					questionId: questionJSON
+				}
+			}
+		}
+
+		// All mock attempts taken
+		const attempts = [firstAttempt, secondAttempt, thirdAttempt, fourthAttempt, fifthAttempt]
+
+		// Mocking the last attempt taken
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockFifthAttemptId' })
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			firstAttempt,
+			secondAttempt,
+			thirdAttempt,
+			fourthAttempt,
+			fifthAttempt
+		])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
+
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
+
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('FullReview component with two attempts swaps view when clicked', () => {
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -566,7 +707,8 @@ describe('FullReview', () => {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
 						scores: {},
-						responses: {}
+						responses: {},
+						revealedQuestions: {}
 					}
 				}
 			},
@@ -577,7 +719,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{

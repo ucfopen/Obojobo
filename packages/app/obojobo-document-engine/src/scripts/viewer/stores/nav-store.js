@@ -16,6 +16,23 @@ class NavStore extends Store {
 		let oldNavTargetId
 		super('navstore')
 
+		this.pendingPath = null
+
+		this.state = {
+			isInitialized: false,
+			items: {},
+			itemsById: {},
+			itemsByPath: {},
+			itemsByFullPath: {},
+			navTargetHistory: [],
+			navTargetId: null,
+			locked: false,
+			open: false,
+			context: DEFAULT_CONTEXT,
+			visitId: null,
+			draftId: null
+		}
+
 		// create a debounced state change function
 		// to handle multiple simultaneous events
 		// that occur like when someone clicks outside
@@ -48,6 +65,15 @@ class NavStore extends Store {
 					this.triggerChange()
 				},
 				'nav:gotoPath': payload => {
+					if (!this.state.isInitialized) {
+						this.pendingTarget = {
+							type: 'path',
+							target: payload.value.path
+						}
+
+						return
+					}
+
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
 						ViewerAPI.postEvent({
@@ -100,6 +126,15 @@ class NavStore extends Store {
 					}
 				},
 				'nav:goto': payload => {
+					if (!this.state.isInitialized) {
+						this.pendingTarget = {
+							type: 'goto',
+							target: payload.value.id
+						}
+
+						return
+					}
+
 					oldNavTargetId = this.state.navTargetId
 					const navItem = this.state.itemsById[payload.value.id]
 
@@ -172,6 +207,7 @@ class NavStore extends Store {
 
 	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
 		this.state = {
+			isInitialized: true,
 			items: {},
 			itemsById: {},
 			itemsByPath: {},
@@ -193,6 +229,30 @@ class NavStore extends Store {
 
 		startHeartBeat(this.state.draftId)
 		this.buildMenu(model)
+		this.gotoStartingTarget(startingId, startingPath)
+	}
+
+	gotoStartingTarget(startingId, startingPath) {
+		// Special case - If something in the system has navigated before we're done
+		// being initialized we go there instead of honoring the 'start' nav target
+		if (this.pendingTarget) {
+			const { type, target } = this.pendingTarget
+
+			this.pendingTarget = null
+
+			switch (type) {
+				case 'path':
+					NavUtil.gotoPath(target)
+					break
+
+				case 'goto':
+					NavUtil.goto(target)
+					break
+			}
+
+			return
+		}
+
 		NavUtil.gotoPath(startingPath)
 
 		if (startingId !== null && typeof startingId !== 'undefined') {
@@ -221,7 +281,7 @@ class NavStore extends Store {
 
 		if (this.state.navTargetId !== null && typeof this.state.navTargetId !== 'undefined') {
 			if (this.state.navTargetId === navItem.id) {
-				return
+				return false
 			}
 
 			const navTargetModel = NavUtil.getNavTargetModel(this.state)
@@ -243,7 +303,7 @@ class NavStore extends Store {
 		this.state.navTargetId = navItem.id
 		NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter')
 
-		Dispatcher.trigger('nav:afterNavChange', {
+		Dispatcher.trigger('nav:targetChanged', {
 			value: {
 				from: prevNavItemId,
 				to: this.state.navTargetId
@@ -320,5 +380,4 @@ class NavStore extends Store {
 }
 
 const navStore = new NavStore()
-window.__ns = navStore
 export default navStore

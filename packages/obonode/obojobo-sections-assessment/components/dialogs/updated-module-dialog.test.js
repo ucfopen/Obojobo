@@ -4,50 +4,48 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import UpdatedModuleDialog from './updated-module-dialog'
 import { mount } from 'enzyme'
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
-jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util', () => {
-	return {
-		hide: jest.fn()
-	}
-})
-
-describe('UnfinishedAttemptDialog', () => {
+describe('UpdatedModuleDialog', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
 
-	test('UnfinishedAttemptDialog component', () => {
-		const onConfirm = jest.fn()
-		const component = renderer.create(<UpdatedModuleDialog onConfirm={onConfirm} />)
-    const tree = component.toJSON()
+	test('UpdatedModuleDialog component', () => {
+		const onRestart = jest.fn()
+		const onClose = jest.fn()
+		const component = renderer.create(
+			<UpdatedModuleDialog onClose={onClose} onRestart={onRestart} />
+		)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-  })
+	})
 
-  test('UnfinishedAttemptDialog component cancels', () => {
-    const onConfirm = jest.fn()
-    const component = mount(<UpdatedModuleDialog onConfirm={onConfirm} />)
+	test('UpdatedModuleDialog component cancels', () => {
+		const onRestart = jest.fn()
+		const onClose = jest.fn()
+		const component = mount(<UpdatedModuleDialog onClose={onClose} onRestart={onRestart} />)
 
-    component
-      .find('button')
-      .at(0)
-      .simulate('click')
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 
-    expect(ModalUtil.hide).toHaveBeenCalled()
-    expect(onConfirm).not.toHaveBeenCalled()
-  })
+		expect(onClose).toHaveBeenCalled()
+		expect(onRestart).not.toHaveBeenCalled()
+	})
 
-  test('UnfinishedAttemptDialog component confirms', () => {
-    const onConfirm = jest.fn()
-    const component = mount(<UpdatedModuleDialog onConfirm={onConfirm} />)
+	test('UpdatedModuleDialog component confirms', () => {
+		const onRestart = jest.fn()
+		const onClose = jest.fn()
+		const component = mount(<UpdatedModuleDialog onClose={onClose} onRestart={onRestart} />)
 
-    component
-      .find('button')
-      .at(1)
-      .simulate('click')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
-    expect(ModalUtil.hide).not.toHaveBeenCalled()
-    expect(onConfirm).toHaveBeenCalled()
-  })
+		expect(onClose).not.toHaveBeenCalled()
+		expect(onRestart).toHaveBeenCalled()
+	})
 })
