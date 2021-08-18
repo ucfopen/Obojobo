@@ -1,0 +1,39 @@
+body {
+	#dedication {
+		width: 400px;
+		height: auto;
+		padding: 2em;
+		border: 1px solid rgba(0, 0, 0, 0.05);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		text-align: center;
+		font-size: 9pt;
+		border-radius: 5px;
+		display: none;
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 99999;
+		background: white;
+		cursor: pointer;
+		gap: 2em;
+
+		img {
+			width: 132px;
+		}
+	}
+
+	&.is-showing-dedication {
+		.layout--wrapper {
+			opacity: 0.2;
+		}
+
+		#dedication {
+			display: flex;
+		}
+	}
+}

@@ -216,6 +216,33 @@ exports[`PageLogin renders when given props 1`] = `
         </footer>
       </div>
     </div>
+    <div
+      id="dedication"
+    >
+      <img
+        src="/images/dedication.jpg"
+      />
+      <span
+        className="text"
+      >
+        Obojobo Next is dedicated to 
+        <b>
+          Barbra Truman
+        </b>
+         and 
+        <b>
+          Francisca Yonekura
+        </b>
+        . Obojobo wouldn't be possible without their hard work and support.
+      </span>
+    </div>
+    <script
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "(()=>{const e=[38,38,40,40,37,39,37,39,66,65,13];let d=0;document.addEventListener(\\"keyup\\",t=>{d+1>e.length||(t.keyCode===e[d]?d++:d=0,d+1>e.length&&(document.body.classList.add(\\"is-showing-dedication\\"),document.getElementById(\\"dedication\\").onclick=(()=>{document.body.classList.remove(\\"is-showing-dedication\\"),d=0})))})})()",
+        }
+      }
+    />
   </body>
 </html>
 `;

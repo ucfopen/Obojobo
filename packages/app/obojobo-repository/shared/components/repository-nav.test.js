@@ -11,7 +11,8 @@ describe('RepositoryNav', () => {
 
 		navProps = {
 			userId: 99,
-			displayName: 'Display Name'
+			displayName: 'Display Name',
+			userPerms: []
 		}
 	})
 
@@ -53,6 +54,21 @@ describe('RepositoryNav', () => {
 			component.root.findByProps({ className: 'repository--nav--current-user--name' }).children[0]
 		).toBe(navProps.displayName)
 		expect(component.root.findAllByProps({ href: '/login' }).length).toBe(0)
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders stats section with canViewSystemStats', () => {
+		const component = create(<RepositoryNav {...navProps} userPerms={['canViewSystemStats']} />)
+
+		expect(
+			component.root.findAllByProps({ className: 'repository--nav--current-user' }).length
+		).toBe(1)
+		expect(
+			component.root.findByProps({ className: 'repository--nav--current-user--name' }).children[0]
+		).toBe(navProps.displayName)
+		expect(component.root.findAllByProps({ href: '/login' }).length).toBe(0)
+		expect(component.root.findAllByProps({ href: '/stats' }).length).toBe(1)
 
 		expect(component.toJSON()).toMatchSnapshot()
 	})
