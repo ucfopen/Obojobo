@@ -294,7 +294,7 @@ describe('IFrame Properties Modal', () => {
 
 		// execute that switch's onChange
 		autoloadSwitch.props.onChange({ target: { checked: true } })
-		expect(testInstance.instance.state.controls).toBe(',reload')
+		expect(testInstance.instance.state.controls).toBe('reload')
 
 		// capture the changes
 		const endState = testRenderer.toJSON()

@@ -109,4 +109,8 @@ body {
 	padding: 0;
 	font-family: $font-default;
 	font-size: 1.1em;
+
+	&.ReactModal__Body--open {
+		overflow: hidden;
+	}
 }

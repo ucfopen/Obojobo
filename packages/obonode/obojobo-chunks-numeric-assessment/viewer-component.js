@@ -448,6 +448,18 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		}
 	}
 
+	renderScoreInfo(score, isReview, isSurvey) {
+		if (isReview) {
+			return (
+				<div className="review-flag">
+					<Flag type={Flag.getType(score === 100, score === 100, true, isSurvey)} />
+				</div>
+			)
+		} else {
+			return <div className="result-symbol" />
+		}
+	}
+
 	render() {
 		const score = this.props.score
 		const scoreClass = this.props.scoreClass
@@ -508,7 +520,11 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			>
 				<div className="input-section pad">
 					<div className="input-container">
-						{!isScored ? <NumericInputMoreInfoButton /> : null}
+						{!isScored ? (
+							<NumericInputMoreInfoButton />
+						) : (
+							this.renderScoreInfo(score, isReview, isSurvey)
+						)}
 						<input
 							ref={this.inputRef}
 							autoComplete="off"
@@ -550,7 +566,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 					) : null}
 					{isReview ? (
 						<div className="review">
-							<Flag type={Flag.getType(score === 100, score === 100, true, isSurvey)} />
 							{score !== 'no-score' && score !== 100 ? (
 								<div className="correct-answers">{this.renderCorrectAnswerList(correctRules)}</div>
 							) : null}

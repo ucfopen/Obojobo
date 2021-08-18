@@ -259,7 +259,6 @@ class MoreInfoBox extends React.Component {
 				)
 		}
 	}
-
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
 

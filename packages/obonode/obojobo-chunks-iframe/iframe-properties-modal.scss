@@ -2,6 +2,7 @@
 
 .iframe-properties {
 	text-align: left;
+	min-width: 25em;
 
 	input {
 		@include text-input();
