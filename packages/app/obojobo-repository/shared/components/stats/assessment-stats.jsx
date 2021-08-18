@@ -8,14 +8,28 @@ const AssessmentStatsControls = require('./assessment-stats-controls')
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
 const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
-const renderDataGrid = (viewMode, filteredAttempts, controls) => {
+const renderDataGrid = (viewMode, filteredAttempts, controls, filteredRows, setFilteredRows) => {
 	switch (viewMode) {
 		case VIEW_MODE_ALL_ATTEMPTS:
-			return <DataGridAttempts attempts={filteredAttempts} controls={controls} />
+			return (
+				<DataGridAttempts
+					attempts={filteredAttempts}
+					controls={controls}
+					filteredRows={filteredRows}
+					setFilteredRows={setFilteredRows}
+				/>
+			)
 
 		case VIEW_MODE_FINAL_ASSESSMENT_SCORE:
 		default:
-			return <DataGridAssessments attempts={filteredAttempts} controls={controls} />
+			return (
+				<DataGridAssessments
+					attempts={filteredAttempts}
+					controls={controls}
+					filteredRows={filteredRows}
+					setFilteredRows={setFilteredRows}
+				/>
+			)
 	}
 }
 
@@ -79,6 +93,10 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 		)
 	)
 
+	// Used in order to display all possible values based on parameter search in
+	// obo's hybrid text-input/select component.
+	const [filteredRows, setFilteredRows] = React.useState([])
+
 	const onChangeViewMode = event => {
 		setViewMode(event.target.value)
 	}
@@ -103,11 +121,12 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 						controls={controls}
 						dateBounds={dateBounds}
 						onChangeControls={setControls}
+						allPossibleValues={filteredRows}
 					/>
 				</div>
 			</div>
 
-			{renderDataGrid(viewMode, filteredAttempts, controls)}
+			{renderDataGrid(viewMode, filteredAttempts, controls, filteredRows, setFilteredRows)}
 		</div>
 	)
 }

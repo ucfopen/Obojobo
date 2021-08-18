@@ -1,6 +1,7 @@
 const React = require('react')
 const DataTable = require('react-data-table-component').default
 const ButtonLink = require('../button-link')
+const { convertHyphenBasedStringToCamelCase, equals } = require('../../util/misc-stats-util')
 
 const getColumns = (columns, showAdvancedFields) =>
 	showAdvancedFields ? columns : columns.filter(col => !col.advanced)
@@ -68,11 +69,7 @@ const searchDataBasedOnParams = (rows, controls) => {
 		}
 
 		if (text) {
-			let param = controls.searchBy
-				.split('-')
-				.map(word => word.charAt(0).toUpperCase() + word.substring(1))
-				.join('')
-			param = param.charAt(0).toLowerCase() + param.substring(1)
+			let param = convertHyphenBasedStringToCamelCase(controls.searchBy)
 
 			// Filtering according to search params (course title, student name, etc)
 			const processedText = text.toLowerCase().trim()
@@ -96,9 +93,18 @@ const searchDataBasedOnParams = (rows, controls) => {
 	return rows
 }
 
-function DataGridScores({ columns, rows = [], tableName, csvFileName, controls }) {
+function DataGridScores({
+	columns,
+	rows = [],
+	tableName,
+	csvFileName,
+	controls,
+	filteredRows,
+	setFilteredRows
+}) {
 	const filteredColumns = getColumns(columns, controls.showAdvancedFields)
 	rows = searchDataBasedOnParams(rows, controls)
+	if (rows && rows.length > 0 && !equals(rows, filteredRows)) setFilteredRows(rows)
 
 	return (
 		<div className="repository--data-grid-scores">

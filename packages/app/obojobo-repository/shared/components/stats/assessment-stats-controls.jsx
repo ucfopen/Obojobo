@@ -3,10 +3,12 @@ require('./assessment-stats-controls.scss')
 const { useDebouncedCallback } = require('use-debounce')
 const React = require('react')
 const Button = require('../button')
+const HybridInputSelect = require('../hybrid-input-select')
+const { convertHyphenBasedStringToCamelCase } = require('../../util/misc-stats-util')
 
 const SEARCH_INPUT_DEBOUNCE_MS = 500
 
-const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds }) => {
+const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds, allPossibleValues }) => {
 	const [param, setParam] = React.useState('')
 	const [endDate, setEndDate] = React.useState('')
 	const [textInput, setTextInput] = React.useState('')
@@ -113,7 +115,10 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds }) => 
 		)
 	}
 
-	const showTextInput = param !== ''
+	const valuesForHybridInput = allPossibleValues.map(row =>
+		row[convertHyphenBasedStringToCamelCase(param)])
+
+	const showHybridInput = param !== ''
 
 	const textPlaceholder = param
 		.split('-')
@@ -137,13 +142,11 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds }) => 
 							<option value="resource-link-title">Resource link title</option>
 							<option value="student-name">Student name</option>
 						</select>
-						{showTextInput && (
-							<input
-								className="text-input"
-								type="text"
-								value={textInput}
-								onChange={onChangeSearchContent}
+						{showHybridInput && (
+							<HybridInputSelect
 								placeholder={textPlaceholder}
+								list={valuesForHybridInput}
+								onChange={onChangeSearchContent}
 							/>
 						)}
 					</div>
