@@ -53,11 +53,11 @@ describe('Server Events', () => {
 		// verify we have the right callback
 		const [eventName, deleteDraftListener] = oboEvents.on.mock.calls[1]
 		expect(eventName).toBe(DraftModel.EVENT_DRAFT_DELETED)
-		expect(deleteDraftListener.length).toBe(0) // callback function arguments
+		expect(deleteDraftListener.length).toBe(1) // callback function arguments
 		expect(db.none).toHaveBeenCalledTimes(0)
 
 		// call the callback
-		deleteDraftListener()
+		deleteDraftListener({ id: 2, userId: 3 })
 		expect(db.none).toHaveBeenCalledTimes(1)
 		expect(db.none.mock.calls[0][0]).toContain('DELETE FROM repository_map_user_to_draft')
 	})
