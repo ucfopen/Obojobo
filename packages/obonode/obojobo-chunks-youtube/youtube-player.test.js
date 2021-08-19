@@ -20,6 +20,8 @@ describe('YouTubePlayer', () => {
 		const tree = component.html()
 
 		expect(tree).toMatchSnapshot()
+
+		component.unmount()
 	})
 
 	test('YouTubePlayer updates video on content change', () => {
@@ -27,7 +29,6 @@ describe('YouTubePlayer', () => {
 		window.YT = {
 			Player: jest.fn(() => ({
 				cueVideoById: jest.fn(),
-				getVideoUrl: jest.fn(),
 				pauseVideo: jest.fn()
 			}))
 		}
@@ -70,7 +71,6 @@ describe('YouTubePlayer', () => {
 			Player: jest.fn(() => ({
 				destroy: jest.fn(),
 				cueVideoById: jest.fn(),
-				getVideoUrl: jest.fn(),
 				pauseVideo: jest.fn()
 			}))
 		}
@@ -99,13 +99,13 @@ describe('YouTubePlayer', () => {
 		const player1 = {
 			destroy: jest.fn(),
 			cueVideoById: jest.fn(),
-			getVideoUrl: () => 'url-1',
+			id: 1,
 			pauseVideo: jest.fn()
 		}
 		const player2 = {
 			destroy: jest.fn(),
 			cueVideoById: jest.fn(),
-			getVideoUrl: () => 'url-2',
+			id: 2,
 			pauseVideo: jest.fn()
 		}
 

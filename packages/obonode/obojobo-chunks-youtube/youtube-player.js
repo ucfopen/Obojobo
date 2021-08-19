@@ -10,7 +10,7 @@ const { uuid } = Common.util
 // They'll all get called once it loads
 const instanceCallbacksForYouTubeReady = []
 
-const loadedVideos = []
+const loadedVideos = {}
 
 // single global hangler that notifies all registered YouTubePlayer Components
 const onYouTubeIframeAPIReadyHandler = () => {
@@ -25,6 +25,10 @@ class YouTubePlayer extends React.Component {
 		this.player = null
 		this.loadVideo = this.loadVideo.bind(this)
 		this.onStateChange = this.onStateChange.bind(this)
+
+		this.state = {
+			youTubePlayerId: null
+		}
 	}
 
 	componentDidMount() {
@@ -34,6 +38,10 @@ class YouTubePlayer extends React.Component {
 		} else {
 			this.loadVideo()
 		}
+	}
+
+	componentWillUnmount() {
+		delete loadedVideos[this.state.youTubePlayerId]
 	}
 
 	componentDidUpdate(prevProps) {
@@ -87,8 +95,9 @@ class YouTubePlayer extends React.Component {
 				onStateChange: this.onStateChange
 			}
 		})
+		this.setState({ youTubePlayerId: this.player.id })
 
-		loadedVideos.push(this.player)
+		loadedVideos[this.player.id] = this.player
 	}
 
 	shouldVideoUpdate(prevProps) {
@@ -109,11 +118,11 @@ class YouTubePlayer extends React.Component {
 	onStateChange(playerState) {
 		switch (playerState.data) {
 			case 1: // video playing
-				for (let i = 0; i < loadedVideos.length; i++) {
-					if (loadedVideos[i].getVideoUrl() !== playerState.target.getVideoUrl()) {
-						loadedVideos[i].pauseVideo()
+				Object.values(loadedVideos).forEach(video => {
+					if (video.id !== playerState.target.id) {
+						video.pauseVideo()
 					}
-				}
+				})
 				break
 		}
 	}
