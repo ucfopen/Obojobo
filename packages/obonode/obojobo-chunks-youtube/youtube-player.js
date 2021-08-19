@@ -26,10 +26,8 @@ class YouTubePlayer extends React.Component {
 		this.url = null
 		this.loadVideo = this.loadVideo.bind(this)
 		this.onStateChange = this.onStateChange.bind(this)
-		this.currentTime = null
-		this.previousTime = null
-		this.currentState = {
-			actor: 'youtube',
+
+		this.state = {
 			action: 'unstarted',
 			playheadPosition: 0,
 			isPossibleSeekTo: false,
@@ -56,10 +54,10 @@ class YouTubePlayer extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.currentState.action !== 'ended') {
+		if (this.state.action !== 'ended' && this.state.action !== 'unstarted') {
 			const currentPlayheadPosition = Math.floor(this.player.getCurrentTime())
 
-			MediaUtil.mediaUnloaded('user', currentPlayheadPosition, this.url, this.nodeId)
+			MediaUtil.mediaUnloaded(currentPlayheadPosition, this.url, this.nodeId)
 		}
 	}
 
@@ -124,124 +122,50 @@ class YouTubePlayer extends React.Component {
 
 		switch (playerState.data) {
 			case -1: // video unstarted
-				this.currentState = {
-					actor: 'youtube',
+				this.setState({
 					action: 'unstarted',
 					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
 					playheadPositionBeforeSeekTo: 0
-				}
+				})
 				break
 			case 0: // video ended
-				this.currentState = {
-					actor: 'youtube',
+				this.setState({
 					action: 'ended',
 					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
 					playheadPositionBeforeSeekTo: 0
-				}
-				MediaUtil.mediaEnded(
-					this.currentState.actor,
-					this.currentState.playheadPosition,
-					this.url,
-					this.props.nodeId
-				)
+				})
+				MediaUtil.mediaEnded(this.state.playheadPosition, this.url, this.props.nodeId)
 				break
 			case 1: // video playing
-				this.currentState = this.playOrSeekToEvent(this.currentState, currentPlayheadPosition)
-
-				if (this.currentState.isPossibleSeekTo) {
-					this.currentState.isPossibleSeekTo = false
-					MediaUtil.mediaSeekTo(
-						this.currentState.actor,
-						this.currentState.playheadPosition,
-						this.currentState.playheadPositionBeforeSeekTo,
-						this.url,
-						this.props.nodeId
-					)
-				} else {
-					MediaUtil.mediaPlayed(
-						this.currentState.actor,
-						this.currentState.playheadPosition,
-						this.url,
-						this.props.nodeId
-					)
-				}
+				this.setState({ action: 'playing', playheadPosition: currentPlayheadPosition })
+				MediaUtil.mediaPlayed(this.state.playheadPosition, this.url, this.props.nodeId)
 				break
 			case 2: // video paused
-				this.currentState = {
-					actor: 'user',
+				this.setState({
 					action: 'paused',
 					playheadPosition: currentPlayheadPosition,
-					isPossibleSeekTo: this.currentState.playheadPosition !== currentPlayheadPosition,
-					playheadPositionBeforeSeekTo: this.currentState.playheadPosition
-				}
+					isPossibleSeekTo: this.state.playheadPosition !== currentPlayheadPosition,
+					playheadPositionBeforeSeekTo: this.state.playheadPosition
+				})
 
-				MediaUtil.mediaPaused(
-					this.currentState.actor,
-					this.currentState.playheadPosition,
-					this.url,
-					this.props.nodeId
-				)
+				MediaUtil.mediaPaused(this.state.playheadPosition, this.url, this.props.nodeId)
 				break
 			case 3: // video buffering
-				if (this.currentState.action === 'unstarted') {
-					this.currentState.actor = 'user'
-				} else if (this.currentState.action === 'paused' && this.currentState.actor === 'user') {
-					this.currentState.actor = 'user'
-				} else {
-					this.currentState.actor = 'youtube'
-				}
+				this.setState({ action: 'buffering', playheadPosition: currentPlayheadPosition })
 
-				this.currentState.action = 'buffering'
-				this.currentState.playheadPosition = currentPlayheadPosition
-
-				MediaUtil.mediaBuffering(
-					this.currentState.actor,
-					this.currentState.playheadPosition,
-					this.url,
-					this.props.nodeId
-				)
+				MediaUtil.mediaBuffering(this.state.playheadPosition, this.url, this.props.nodeId)
 				break
 			case 5: // video cued
-				this.currentState = {
-					actor: 'youtube',
+				this.setState({
 					action: 'cued',
 					playheadPosition: currentPlayheadPosition,
 					isPossibleSeekTo: false,
 					playheadPositionBeforeSeekTo: 0
-				}
+				})
 				break
 		}
-	}
-
-	playOrSeekToEvent(currentState, currentPlayheadPosition) {
-		switch (currentState.action) {
-			case 'buffering':
-				if (
-					currentState.playheadPosition === currentPlayheadPosition &&
-					currentState.actor === 'user'
-				) {
-					currentState.actor = 'user'
-				}
-				if (currentState.playheadPosition !== currentPlayheadPosition) {
-					currentState.isPossibleSeekTo = true
-				}
-				break
-			case 'unstarted':
-				currentState.actor = 'user'
-				break
-			case 'paused':
-				currentState.actor = 'user'
-				currentState.isPossibleSeekTo = !(currentState.playheadPosition === currentPlayheadPosition)
-				break
-			default:
-				currentState.actor = 'youtube'
-		}
-		currentState.action = 'playing'
-		currentState.playheadPosition = currentPlayheadPosition
-
-		return currentState
 	}
 
 	render() {

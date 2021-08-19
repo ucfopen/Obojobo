@@ -4,11 +4,9 @@ import { DEFAULT_ZOOM } from '../stores/media-store/media-constants'
 const { Dispatcher } = Common.flux
 
 const MediaUtil = {
-	mediaPlayed(actor, playheadPosition, url, nodeId) {
-		// console.log(nodeId)
+	mediaPlayed(playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:play', {
 			value: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -16,10 +14,9 @@ const MediaUtil = {
 		})
 	},
 
-	mediaPaused(actor, playheadPosition, url, nodeId) {
+	mediaPaused(playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:pause', {
 			value: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -27,10 +24,9 @@ const MediaUtil = {
 		})
 	},
 
-	mediaEnded(actor, playheadPosition, url, nodeId) {
+	mediaEnded(playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:end', {
 			value: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -38,22 +34,9 @@ const MediaUtil = {
 		})
 	},
 
-	mediaSeekTo(actor, playheadPosition, previousPlayheadPosition, url, nodeId) {
-		return Dispatcher.trigger('media:seekTo', {
-			value: {
-				actor,
-				playheadPosition,
-				previousPlayheadPosition,
-				url,
-				nodeId
-			}
-		})
-	},
-
-	mediaBuffering(actor, playheadPosition, url, nodeId) {
+	mediaBuffering(playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:buffer', {
 			value: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -61,10 +44,9 @@ const MediaUtil = {
 		})
 	},
 
-	mediaUnloaded(actor, playheadPosition, url, nodeId) {
+	mediaUnloaded(playheadPosition, url, nodeId) {
 		return Dispatcher.trigger('media:unload', {
 			value: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -80,11 +62,10 @@ const MediaUtil = {
 		})
 	},
 
-	hide(id, actor = null) {
+	hide(id) {
 		return Dispatcher.trigger('media:hide', {
 			value: {
-				id,
-				actor
+				id
 			}
 		})
 	},

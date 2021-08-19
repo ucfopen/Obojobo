@@ -23,7 +23,6 @@ class MediaStore extends Store {
 			'media:play': this.play.bind(this),
 			'media:end': this.end.bind(this),
 			'media:pause': this.pause.bind(this),
-			'media:seekTo': this.seekTo.bind(this),
 			'media:buffer': this.buffer.bind(this),
 			'media:unload': this.unload.bind(this)
 			//@TODO: Add these for video
@@ -32,7 +31,7 @@ class MediaStore extends Store {
 	}
 
 	play(payload) {
-		const { actor, playheadPosition, url, nodeId } = payload.value
+		const { playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -40,7 +39,6 @@ class MediaStore extends Store {
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
 			payload: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -49,7 +47,7 @@ class MediaStore extends Store {
 	}
 
 	pause(payload) {
-		const { actor, playheadPosition, url, nodeId } = payload.value
+		const { playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -57,7 +55,6 @@ class MediaStore extends Store {
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
 			payload: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -66,7 +63,7 @@ class MediaStore extends Store {
 	}
 
 	end(payload) {
-		const { actor, playheadPosition, url, nodeId } = payload.value
+		const { playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -74,26 +71,7 @@ class MediaStore extends Store {
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
 			payload: {
-				actor,
 				playheadPosition,
-				url,
-				nodeId
-			}
-		})
-	}
-
-	seekTo(payload) {
-		const { actor, playheadPosition, previousPlayheadPosition, url, nodeId } = payload.value
-
-		ViewerAPI.postEvent({
-			draftId: OboModel.getRoot().get('draftId'),
-			action: 'media:seekTo',
-			eventVersion: '1.0.0',
-			visitId: NavStore.getState().visitId,
-			payload: {
-				actor,
-				playheadPosition,
-				previousPlayheadPosition,
 				url,
 				nodeId
 			}
@@ -101,7 +79,7 @@ class MediaStore extends Store {
 	}
 
 	buffer(payload) {
-		const { actor, playheadPosition, url, nodeId } = payload.value
+		const { playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -109,7 +87,6 @@ class MediaStore extends Store {
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
 			payload: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -118,7 +95,7 @@ class MediaStore extends Store {
 	}
 
 	unload(payload) {
-		const { actor, playheadPosition, url, nodeId } = payload.value
+		const { playheadPosition, url, nodeId } = payload.value
 
 		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
@@ -126,7 +103,6 @@ class MediaStore extends Store {
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
 			payload: {
-				actor,
 				playheadPosition,
 				url,
 				nodeId
@@ -155,7 +131,6 @@ class MediaStore extends Store {
 
 	hide(payload) {
 		const id = payload.value.id
-		const actor = payload.value.actor || 'user'
 
 		delete this.state.shown[id]
 		delete this.state.zoomById[id]
@@ -168,12 +143,11 @@ class MediaStore extends Store {
 			eventVersion: '1.0.0',
 			visitId: NavStore.getState().visitId,
 			payload: {
-				id,
-				actor
+				id
 			}
 		})
 
-		Dispatcher.trigger('media:hidden', { id, actor })
+		Dispatcher.trigger('media:hidden', { id })
 	}
 
 	setDefaultZoom(payload) {

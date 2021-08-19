@@ -68,7 +68,6 @@ describe('Media Store', () => {
 			'media:play': expect.any(Function),
 			'media:end': expect.any(Function),
 			'media:pause': expect.any(Function),
-			'media:seekTo': expect.any(Function),
 			'media:buffer': expect.any(Function),
 			'media:unload': expect.any(Function)
 		})
@@ -105,7 +104,7 @@ describe('Media Store', () => {
 			defaultZoomById: { 'mocked-id': 1, 'other-id': 2 }
 		}
 		MediaStore.hide({
-			value: { id: 'mocked-id', actor: 'mocked-actor' }
+			value: { id: 'mocked-id' }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -119,34 +118,11 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				id: 'mocked-id',
-				actor: 'mocked-actor'
+				id: 'mocked-id'
 			}
 		})
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:hidden', {
-			id: 'mocked-id',
-			actor: 'mocked-actor'
-		})
-	})
-
-	test('hide (no actor)', () => {
-		MediaStore.hide({
-			value: { id: 'mocked-id' }
-		})
-
-		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
-			draftId: 'root-id',
-			action: 'media:hide',
-			eventVersion: '1.0.0',
-			visitId: 'mock-visit-id',
-			payload: {
-				id: 'mocked-id',
-				actor: 'user'
-			}
-		})
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:hidden', {
-			id: 'mocked-id',
-			actor: 'user'
+			id: 'mocked-id'
 		})
 	})
 
@@ -351,7 +327,6 @@ describe('Media Store', () => {
 	test('media played', () => {
 		MediaStore.play({
 			value: {
-				actor: 'user',
 				playheadPosition: 2,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -364,7 +339,6 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				actor: 'user',
 				playheadPosition: 2,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -375,7 +349,6 @@ describe('Media Store', () => {
 	test('media paused', () => {
 		MediaStore.pause({
 			value: {
-				actor: 'user',
 				playheadPosition: 0,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -388,7 +361,6 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				actor: 'user',
 				playheadPosition: 0,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -399,7 +371,6 @@ describe('Media Store', () => {
 	test('media ended', () => {
 		MediaStore.end({
 			value: {
-				actor: 'youtube',
 				playheadPosition: 100,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -412,34 +383,7 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				actor: 'youtube',
 				playheadPosition: 100,
-				url: 'mocked-url',
-				nodeId: 'mocked-id'
-			}
-		})
-	})
-
-	test('media seekTo', () => {
-		MediaStore.seekTo({
-			value: {
-				actor: 'user',
-				playheadPosition: 100,
-				previousPlayheadPosition: 0,
-				url: 'mocked-url',
-				nodeId: 'mocked-id'
-			}
-		})
-
-		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
-			draftId: 'root-id',
-			action: 'media:seekTo',
-			eventVersion: '1.0.0',
-			visitId: 'mock-visit-id',
-			payload: {
-				actor: 'user',
-				playheadPosition: 100,
-				previousPlayheadPosition: 0,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
 			}
@@ -449,7 +393,6 @@ describe('Media Store', () => {
 	test('media buffering', () => {
 		MediaStore.buffer({
 			value: {
-				actor: 'youtube',
 				playheadPosition: 50,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -462,7 +405,6 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				actor: 'youtube',
 				playheadPosition: 50,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -473,7 +415,6 @@ describe('Media Store', () => {
 	test('media unloaded', () => {
 		MediaStore.unload({
 			value: {
-				actor: 'user',
 				playheadPosition: 0,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
@@ -486,7 +427,6 @@ describe('Media Store', () => {
 			eventVersion: '1.0.0',
 			visitId: 'mock-visit-id',
 			payload: {
-				actor: 'user',
 				playheadPosition: 0,
 				url: 'mocked-url',
 				nodeId: 'mocked-id'
