@@ -77,7 +77,14 @@ class IFrame extends React.Component {
 			return title
 		}
 
-		return src.replace(/^https?:\/\//, '')
+		const displayedTitle = src.replace(/^https?:\/\//, '')
+		const charLimit = 50
+
+		if (displayedTitle.length > charLimit) {
+			return displayedTitle.substring(0, charLimit) + '...'
+		}
+
+		return displayedTitle
 	}
 
 	deleteNode() {
@@ -120,7 +127,7 @@ class IFrame extends React.Component {
 
 		return (
 			<Node {...this.props}>
-				<div className={className}>
+				<div className={className} contentEditable={false}>
 					<div
 						className={`editor-container  ${isSelected}`}
 						style={previewStyle}

@@ -5,34 +5,32 @@ jest.mock('./list-styles')
 import ListStyles from './list-styles'
 
 import Common from 'obojobo-document-engine/src/scripts/common/index'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
 const TextGroupAdapter = Common.chunk.textChunk.TextGroupAdapter
 
 describe('ActionButton adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
-
-		TextGroupAdapter.construct = jest.fn()
-
+		const model = new OboModel({})
 		ListAdapter.construct(model)
 
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
-				listStyles: 'mockStyle'
+				listStyles: 'mockStyle',
+				spacing: 'Moderate'
 			}
 		}
+		const model = new OboModel(attrs)
 
-		TextGroupAdapter.construct = jest.fn()
 		ListStyles.fromDescriptor = jest.fn().mockReturnValueOnce('mockStyle')
 
 		ListAdapter.construct(model, attrs)
 
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {

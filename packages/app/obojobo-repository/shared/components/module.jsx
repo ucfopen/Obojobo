@@ -10,9 +10,18 @@ const Module = props => {
 	let timeOutId
 	const [isMenuOpen, setMenuOpen] = useState(false)
 	const onCloseMenu = () => setMenuOpen(false)
-	const onToggleMenu = e => {
-		setMenuOpen(!isMenuOpen)
+	const handleClick = e => {
+		if (props.isMultiSelectMode || e.shiftKey || e.metaKey) {
+			onSelectModule(e)
+		} else {
+			setMenuOpen(!isMenuOpen)
+		}
+
 		e.preventDefault() // block the event from bubbling out to the parent href
+	}
+	const onSelectModule = e => {
+		onCloseMenu()
+		props.onSelect(e)
 	}
 	// Handle keyboard focus
 	const onBlurHandler = () => {
@@ -30,15 +39,24 @@ const Module = props => {
 			className={
 				'repository--module-icon ' +
 				(isMenuOpen ? 'is-open ' : 'is-not-open ') +
+				(props.isSelected ? 'is-selected ' : 'is-not-selected ') +
 				(props.isNew ? 'is-new' : 'is-not-new')
 			}
 			onBlur={onBlurHandler}
 			onFocus={onFocusHandler}
 		>
+			<input
+				className={props.isMultiSelectMode ? 'is-multi-select-mode' : 'is-not-multi-select-mode'}
+				type="checkbox"
+				checked={props.isSelected}
+				onClick={onSelectModule}
+			/>
 			{props.hasMenu ? (
-				<button onClick={onToggleMenu}>
+				<button onClick={handleClick}>
 					<ModuleImage id={props.draftId} />
-					<MenuControlButton className="repository--module-icon--menu-control-button" />
+					{props.isMultiSelectMode ? null : (
+						<MenuControlButton className="repository--module-icon--menu-control-button" />
+					)}
 					<div className="repository--module-icon--title">{props.title}</div>
 				</button>
 			) : (

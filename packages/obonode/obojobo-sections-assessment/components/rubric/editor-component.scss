@@ -5,135 +5,62 @@
 
 	font-family: $font-default;
 	background: $color-rubric;
-	//border: 1px solid $color-preview;
-	padding-left: 3em;
-	padding-right: 3em;
-	padding-bottom: 2em;
-	padding-top: 0.1em;
+	padding: 1.5em;
 	border-radius: $dimension-rounded-radius;
-	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.8em;
 
-	.title {
-		font-size: 1.5em;
-		font-weight: bold;
+	.obojobo-draft--components--more-info-button {
+		button {
+			border: 2px solid $color-action-minor;
+		}
 	}
 
-	.assessment-score {
-		text-align: left;
-		border: none;
-		margin-top: 0.5em;
+	.container {
+		font-family: $font-default;
+		font-size: 0.9rem;
+		width: 25rem;
 
-		legend {
-			font-weight: bold;
-		}
+		> .wrapper {
+			padding: 1rem;
+			margin: 1rem;
+			background: $color-bg;
+			border-radius: $dimension-rounded-radius;
 
-		label {
-			display: block;
-
-			input {
-				margin-right: 1em;
+			> .about {
+				font-weight: bold;
+				font-size: 1rem;
 			}
-		}
-	}
 
-	.pass-fail {
-		border-radius: $dimension-rounded-radius;
-		border: 1px solid $color-shadow;
-		text-align: left;
-		margin: 0;
+			> ul {
+				padding-left: 0;
+				margin-bottom: 0;
 
-		legend {
-			float: left;
-			width: 100%;
-			font-weight: bold;
-			text-align: center;
-		}
+				> li,
+				> div li {
+					display: inline-block;
+					margin-top: 0.5em;
+					list-style-type: none;
+					line-height: 1.5em;
 
-		div {
-			padding-bottom: 0.5em;
-			display: block;
-		}
-	}
+					> b,
+					> div b {
+						margin-right: 0.5em;
+					}
 
-	.mods {
-		border: 1px solid $color-shadow;
-		border-radius: $dimension-rounded-radius;
-		margin-top: 1em;
-		position: relative;
-		min-height: 2.8em;
-
-		.title {
-			font-weight: bold;
-			padding-top: 0.5em;
-			display: block;
-			font-size: 1.2rem;
-		}
-
-		.obojobo-draft--components--button {
-			position: absolute;
-			top: 0.3em;
-			right: 0.3em;
-
-			.button {
-				color: $color-action;
-				background-color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
-				border-color: $color-action;
-				border-width: 2px;
-
-				&:hover {
-					color: $color-bg;
-					background-color: $color-action;
+					> span,
+					> div span {
+						font-family: $font-monospace;
+						background: lighten($color-highlight, 18%);
+						padding: 0.2em 0.4em;
+						margin-left: 0.2em;
+						margin-right: 0.2em;
+						border-radius: $dimension-rounded-radius / 2;
+					}
 				}
 			}
 		}
-
-		ul {
-			text-align: left;
-
-			.reward {
-				color: $color-correct;
-			}
-
-			.deduct {
-				color: $color-incorrect;
-			}
-		}
-	}
-
-	.invisibleText {
-		height: 0;
-		width: 0;
-	}
-
-	&.is-type-highest {
-		.pass-fail,
-		.mods {
-			display: none;
-		}
-	}
-
-	&.is-type-pass-fail {
-		.pass-fail,
-		.mods {
-			display: block;
-		}
-	}
-
-	.is-not-enabled {
-		display: none;
-	}
-
-	input[type='number'] {
-		@include text-input();
-
-		max-width: 3em;
-		margin-left: 0.5em;
-		margin-right: 0.2em;
-	}
-
-	select {
-		@include select-input();
-
-		margin-left: 0.5em;
 	}
 }

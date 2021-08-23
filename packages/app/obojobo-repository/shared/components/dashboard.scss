@@ -12,6 +12,26 @@
 		.repository--main-content--new-module-button {
 			width: 11em;
 		}
+		&.is-multi-select-mode {
+			border: 1px solid $color-banner-bg;
+			background-color: $color-banner-bg;
+			border-radius: 0.15em;
+
+			.module-count {
+				font-size: 0.8em;
+				margin-left: 1em;
+				width: 40em;
+			}
+
+			button.secondary-button {
+				margin: 0.3em 0.2em;
+				font-size: 0.65em;
+			}
+
+			button.close-button {
+				background: none;
+			}
+		}
 	}
 
 	.repository--item-list--collection--empty-placeholder {

@@ -6,6 +6,21 @@ import ContentToolbar from '../../../../src/scripts/oboeditor/components/toolbar
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
+// In order to test the case where no shortcut exists we remove the shortcut from one of the marks
+// in order to hit that line of code
+jest.mock('../../../../src/scripts/oboeditor/components/marks/color-marks', () => {
+	return {
+		marks: [
+			{
+				name: 'Color',
+				type: 'type',
+				icon: 'icon',
+				action: jest.fn()
+			}
+		]
+	}
+})
+
 describe('Content Toolbar', () => {
 	test('Toolbar node', () => {
 		const editor = {
@@ -63,7 +78,7 @@ describe('Content Toolbar', () => {
 
 		component
 			.find('button')
-			.at(0)
+			.at(1)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()

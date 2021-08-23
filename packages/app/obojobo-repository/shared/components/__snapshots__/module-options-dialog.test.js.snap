@@ -10,29 +10,11 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
     <div
       className="repository--module-icon--image"
     >
-      <svg
-        version="1.1"
-        viewBox="0 0 130 150"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <pattern
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "<image xlink:href=\\"/library/module-icon/mockDraftId\\" width=\\"150\\" height=\\"150\\" />",
-              }
-            }
-            height="150"
-            id="module-img-id-mockDraftId"
-            patternUnits="userSpaceOnUse"
-            width="150"
-          />
-        </defs>
-        <path
-          d="M56.29165124598851 4.999999999999999Q64.9519052838329 0 73.61215932167728 4.999999999999999L121.24355652982142 32.5Q129.9038105676658 37.5 129.9038105676658 47.5L129.9038105676658 102.5Q129.9038105676658 112.5 121.24355652982142 117.5L73.61215932167728 145Q64.9519052838329 150 56.29165124598851 145L8.660254037844387 117.5Q0 112.5 0 102.5L0 47.5Q0 37.5 8.660254037844387 32.5Z"
-          fill="url(#module-img-id-mockDraftId)"
-        />
-      </svg>
+      <img
+        height="100%"
+        src="/library/module-icon/mockDraftId"
+        width="100%"
+      />
     </div>
     <div
       className="module-title"
@@ -60,6 +42,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
     >
       <a
         className="repository--button "
+        download={null}
         href="/preview/mockDraftId"
         target="_blank"
       >
@@ -72,6 +55,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       </div>
       <a
         className="repository--button "
+        download={null}
         href="/url/for/editor"
         target="_blank"
       >
@@ -92,6 +76,17 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
         className="label"
       >
         Add or remove collaborators.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Assessment Stats
+      </button>
+      <div
+        className="label"
+      >
+        View scores by student.
       </div>
       <button
         className="repository--button "
@@ -139,6 +134,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       </div>
       <a
         className="repository--button "
+        download={null}
         href="/library/mockDraftId"
         target="_blank"
       >

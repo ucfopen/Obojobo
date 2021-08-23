@@ -157,7 +157,10 @@ export default class ViewerApp extends React.Component {
 						isPreviewing,
 						viewSessionId
 					},
-					() => Dispatcher.trigger('viewer:loaded', true)
+					() => {
+						Dispatcher.trigger('viewer:loaded', true)
+						if (!document.hidden) this.sendInitialViewEvent()
+					}
 				)
 			})
 			.catch(err => {
@@ -244,7 +247,7 @@ export default class ViewerApp extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		// remove loading element
 		if (prevState.loading && !this.state.loading) {
-			const loadingEl = document.getElementById('viewer-app-loading')
+			const loadingEl = document.getElementById('app-loading')
 			if (loadingEl && loadingEl.parentElement) {
 				document.getElementById('viewer-app').classList.add('is-loaded')
 				loadingEl.parentElement.removeChild(loadingEl)
@@ -330,8 +333,9 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onVisibilityChange() {
+		// From Viewing to Hiding
 		if (document.hidden) {
-			this.leftEpoch = new Date()
+			this.viewerHideDate = new Date()
 
 			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
@@ -341,22 +345,49 @@ export default class ViewerApp extends React.Component {
 			}).then(res => {
 				this.leaveEvent = res.value
 			})
-		} else {
+
+			return
+		}
+
+		// From Hiding to Viewing
+		if (this.viewerHideDate) {
+			// leaveEvent may not exist if postEvent for 'viewer:leave' didn't complete
+			const relatedEventId = this.leaveEvent?.extensions?.internalEventId ?? 'not available'
+
 			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
-				eventVersion: '2.0.0',
+				eventVersion: '3.0.0',
 				visitId: this.state.navState.visitId,
 				payload: {
-					relatedEventId: this.leaveEvent.extensions.internalEventId,
-					leftTime: this.leftEpoch,
-					duration: Date.now() - this.leftEpoch
+					relatedEventId,
+					leftTime: this.viewerHideDate,
+					duration: Date.now() - this.viewerHideDate
 				}
 			})
 
 			delete this.leaveEvent
-			delete this.leftEpoch
+			delete this.viewerHideDate
+
+			return
 		}
+
+		// Opened in Background and Viewed for the first time
+		// When this happens, document.hidden is true when the page loads, so onVisibilityChange
+		// isn't called. When the user views the tab document.hidden will become false, but
+		// this.viewerHideDate will not be set so we get to this point - in which case we fire
+		// the initialView event:
+		this.sendInitialViewEvent()
+	}
+
+	// first view Event
+	sendInitialViewEvent() {
+		ViewerAPI.postEvent({
+			draftId: this.state.model.get('draftId'),
+			action: 'viewer:initialView',
+			eventVersion: '1.0.0',
+			visitId: this.state.navState.visitId
+		})
 	}
 
 	getTextForVariable(event, variable, textModel) {
@@ -469,7 +500,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle(event) {
-		ViewerAPI.postEvent({
+		return ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:inactive',
 			eventVersion: '3.0.0',
@@ -478,13 +509,17 @@ export default class ViewerApp extends React.Component {
 				lastActiveTime: event.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 			}
-		}).then(res => {
-			this.inactiveEvent = res.value
+		}).then(result => {
+			this.inactiveEvent = result.response.value
 		})
 	}
 
 	onReturnFromIdle(event) {
-		ViewerAPI.postEvent({
+		const inactiveEvent = this.inactiveEvent
+
+		delete this.inactiveEvent
+
+		return ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
 			eventVersion: '2.1.0',
@@ -492,11 +527,9 @@ export default class ViewerApp extends React.Component {
 			payload: {
 				lastActiveTime: event.lastActiveEpoch,
 				inactiveDuration: event.inactiveDuration,
-				relatedEventId: this.inactiveEvent.extensions.internalEventId
+				relatedEventId: inactiveEvent.extensions.internalEventId
 			}
 		})
-
-		delete this.inactiveEvent
 	}
 
 	sendCloseEvent() {
@@ -529,7 +562,7 @@ export default class ViewerApp extends React.Component {
 			AssessmentStore.triggerChange()
 			QuestionStore.triggerChange()
 
-			return ModalUtil.show(
+			ModalUtil.show(
 				<SimpleDialog ok width="19em">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
@@ -624,6 +657,7 @@ export default class ViewerApp extends React.Component {
 	getViewerClassNames() {
 		const s = this.state
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(s.focusState)
+
 		return (
 			isOrNot(s.isPreviewing, 'previewing') +
 			isOrNot(s.navState.open, 'open-nav') +
@@ -668,10 +702,7 @@ export default class ViewerApp extends React.Component {
 				) : null}
 
 				<FocusBlocker moduleData={this.state} />
-
-				{modalItem && modalItem.component ? (
-					<ModalContainer>{modalItem.component}</ModalContainer>
-				) : null}
+				<ModalContainer modalItem={modalItem} />
 			</div>
 		)
 	}

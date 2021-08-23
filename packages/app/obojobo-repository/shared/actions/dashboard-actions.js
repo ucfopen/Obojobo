@@ -2,6 +2,8 @@ const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-consta
 const debouncePromise = require('debounce-promise')
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
+const { apiGetAssessmentDetailsForDraft } = require('./shared-api-methods')
+
 dayjs.extend(advancedFormat)
 // =================== API =======================
 
@@ -92,7 +94,7 @@ const apiGetVersionHistory = async draftId => {
 	// convert the result to what we need
 	return history.map((draft, index) => ({
 		createdAt: new Date(draft.createdAt),
-		createdAtDisplay: dayjs(draft.createdAt).format('MMMM Do - h:mm A'),
+		createdAtDisplay: dayjs(draft.createdAt).format('MMM Do YYYY - h:mm A'),
 		id: draft.revisionId,
 		username: draft.userFullName,
 		selected: index === 0,
@@ -201,6 +203,13 @@ const showVersionHistory = module => ({
 	type: SHOW_VERSION_HISTORY,
 	meta: { module },
 	promise: apiGetVersionHistory(module.draftId)
+})
+
+const SHOW_ASSESSMENT_SCORE_DATA = 'SHOW_ASSESSMENT_SCORE_DATA'
+const showAssessmentScoreData = module => ({
+	type: SHOW_ASSESSMENT_SCORE_DATA,
+	meta: { module },
+	promise: apiGetAssessmentDetailsForDraft(module.draftId)
 })
 
 const RESTORE_VERSION = 'RESTORE_VERSION'
@@ -313,6 +322,12 @@ const createNewCollection = () => ({
 	promise: apiCreateNewCollection().then(apiGetMyCollections)
 })
 
+const BULK_DELETE_MODULES = 'BULK_DELETE_MODULES'
+const bulkDeleteModules = draftIds => ({
+	type: BULK_DELETE_MODULES,
+	promise: Promise.all(draftIds.map(id => apiDeleteModule(id))).then(apiGetMyModules)
+})
+
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false, options = { ...defaultModuleModeOptions }) => {
 	let apiModuleGetCall
@@ -349,6 +364,18 @@ const FILTER_COLLECTIONS = 'FILTER_COLLECTIONS'
 const filterCollections = searchString => ({
 	type: FILTER_COLLECTIONS,
 	searchString
+})
+
+const SELECT_MODULES = 'SELECT_MODULES'
+const selectModules = draftIds => ({
+	type: SELECT_MODULES,
+	draftIds
+})
+
+const DESELECT_MODULES = 'DESELECT_MODULES'
+const deselectModules = draftIds => ({
+	type: DESELECT_MODULES,
+	draftIds
 })
 
 const SHOW_MODULE_MORE = 'SHOW_MODULE_MORE'
@@ -518,8 +545,11 @@ module.exports = {
 	CLEAR_PEOPLE_SEARCH_RESULTS,
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
+	BULK_DELETE_MODULES,
 	FILTER_MODULES,
 	FILTER_COLLECTIONS,
+	SELECT_MODULES,
+	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
@@ -539,9 +569,13 @@ module.exports = {
 	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
+	SHOW_ASSESSMENT_SCORE_DATA,
 	filterModules,
 	filterCollections,
+	selectModules,
+	deselectModules,
 	deleteModule,
+	bulkDeleteModules,
 	closeModal,
 	deleteModulePermissions,
 	searchForUser,
@@ -568,5 +602,6 @@ module.exports = {
 	showVersionHistory,
 	restoreVersion,
 	importModuleFile,
-	checkModuleLock
+	checkModuleLock,
+	showAssessmentScoreData
 }

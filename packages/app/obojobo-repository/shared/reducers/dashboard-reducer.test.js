@@ -16,9 +16,12 @@ const {
 	CLEAR_PEOPLE_SEARCH_RESULTS,
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
+	BULK_DELETE_MODULES,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	FILTER_COLLECTIONS,
+	SELECT_MODULES,
+	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
@@ -35,6 +38,7 @@ const {
 	RENAME_COLLECTION,
 	DELETE_COLLECTION,
 	SHOW_VERSION_HISTORY,
+	SHOW_ASSESSMENT_SCORE_DATA,
 	RESTORE_VERSION
 } = require('../actions/dashboard-actions')
 
@@ -434,6 +438,53 @@ describe('Dashboard Reducer', () => {
 		runCreateOrDeleteModuleActionTest(DELETE_MODULE)
 	})
 
+	test('BULK_DELETE_MODULES action modifies state correctly', () => {
+		const mockModuleList = [
+			{
+				draftId: 'mockDraftId',
+				title: 'A Mock Module'
+			},
+			{
+				draftId: 'mockDraftId2',
+				title: 'B Mock Module'
+			}
+		]
+
+		const initialState = {
+			multiSelectMode: true,
+			moduleSearchString: '',
+			selectedModules: ['mockDraftId', 'mockDraftId3'],
+			myModules: [
+				{
+					draftId: 'oldMockDraftId',
+					title: 'Old Mock Module'
+				}
+			],
+			filteredModules: [
+				{
+					draftId: 'oldMockDraftId',
+					title: 'Old Mock Module'
+				}
+			]
+		}
+
+		const action = {
+			type: BULK_DELETE_MODULES,
+			payload: {
+				value: mockModuleList
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+		expect(newState.myModules).not.toEqual(initialState.myModules)
+		expect(newState.myModules).toEqual(mockModuleList)
+		expect(newState.filteredModules).toEqual(mockModuleList)
+		expect(newState.selectedModules).toEqual([])
+		expect(newState.multiSelectMode).toBe(false)
+	})
+
 	test('SHOW_MODULE_MORE action modifies state correctly', () => {
 		const initialState = {
 			dialog: null,
@@ -561,6 +612,68 @@ describe('Dashboard Reducer', () => {
 		expect(newState.myCollections).toEqual(initialState.myCollections)
 		expect(newState.filteredCollections).toEqual([{ ...initialState.myCollections[1] }])
 		expect(newState.collectionSearchString).toBe('B')
+	})
+
+	test('SELECT_MODULES action modifies state correctly', () => {
+		const initialState = {
+			multiSelectMode: false,
+			myModules: [
+				{
+					draftId: 'mockDraftId',
+					title: 'A Mock Module'
+				},
+				{
+					draftId: 'mockDraftId2',
+					title: 'B Mock Module'
+				},
+				{
+					draftId: 'mockDraftId3',
+					title: 'C Mock Module'
+				}
+			],
+			selectedModules: []
+		}
+		const action = {
+			type: SELECT_MODULES,
+			draftIds: ['mockDraftId', 'mockDraftId3']
+		}
+
+		// SELECT_MODULES is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.myModules).toEqual(initialState.myModules)
+		expect(newState.selectedModules).toEqual(['mockDraftId', 'mockDraftId3'])
+		expect(newState.multiSelectMode).toBe(true)
+	})
+
+	test('DESELECT_MODULES action modifies state correctly', () => {
+		const initialState = {
+			multiSelectMode: true,
+			myModules: [
+				{
+					draftId: 'mockDraftId',
+					title: 'A Mock Module'
+				},
+				{
+					draftId: 'mockDraftId2',
+					title: 'B Mock Module'
+				},
+				{
+					draftId: 'mockDraftId3',
+					title: 'C Mock Module'
+				}
+			],
+			selectedModules: ['mockDraftId', 'mockDraftId3']
+		}
+		const action = {
+			type: DESELECT_MODULES,
+			draftIds: ['mockDraftId']
+		}
+
+		// DESELECT_MODULES is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.myModules).toEqual(initialState.myModules)
+		expect(newState.selectedModules).toEqual(['mockDraftId3'])
+		expect(newState.multiSelectMode).toBe(true)
 	})
 
 	test('CLEAR_PEOPLE_SEARCH_RESULTS action modifies state correctly', () => {
@@ -928,6 +1041,54 @@ describe('Dashboard Reducer', () => {
 			isFetching: false,
 			hasFetched: true,
 			items: mockHistoryItems
+		})
+	})
+
+	test('SHOW_ASSESSMENT_SCORE_DATA action modifies state correctly', () => {
+		const initialState = {
+			assessmentStats: {
+				isFetching: false,
+				hasFetched: false,
+				items: []
+			}
+		}
+
+		const mockAttemptItems = [
+			{
+				id: 'mockAttemptId1'
+			},
+			{
+				id: 'mockAttemptId2'
+			},
+			{
+				id: 'mockAttemptId3'
+			}
+		]
+		const action = {
+			type: SHOW_ASSESSMENT_SCORE_DATA,
+			payload: mockAttemptItems,
+			meta: {
+				module: jest.fn()
+			}
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+		let newState
+
+		newState = handleStart(handler)
+		expect(newState.attempts).toEqual({
+			isFetching: true,
+			hasFetched: false,
+			items: []
+		})
+
+		newState = handleSuccess(handler)
+		expect(newState.attempts).not.toEqual(initialState.attempts)
+		expect(newState.attempts).toEqual({
+			isFetching: false,
+			hasFetched: true,
+			items: mockAttemptItems
 		})
 	})
 

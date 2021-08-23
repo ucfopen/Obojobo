@@ -9,6 +9,7 @@ exports[`MoreInfoButton Renders default props 1`] = `
     onClick={[Function]}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
+    type="button"
   >
     ?
   </button>
@@ -24,6 +25,7 @@ exports[`MoreInfoButton Renders label 1`] = `
     onClick={[Function]}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
+    type="button"
   >
     Testing 123
   </button>

@@ -1,5 +1,10 @@
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
+
+jest.mock('./shared-api-methods', () => ({
+	apiGetAssessmentDetailsForDraft: () => Promise.resolve()
+}))
+
 dayjs.extend(advancedFormat)
 
 describe('Dashboard Actions', () => {
@@ -370,6 +375,47 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
+	const assertBulkDeleteModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+		const actionReply = DashboardActions.bulkDeleteModules(
+			['mockDraftId1', 'mockDraftId2'],
+			options
+		)
+
+		expect(global.fetch).toHaveBeenCalledTimes(2)
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId1', {
+			...defaultFetchOptions,
+			method: 'DELETE',
+			body: fetchBody
+		})
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId2', {
+			...defaultFetchOptions,
+			method: 'DELETE',
+			body: fetchBody
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryResponse' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_DELETE_MODULES,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
+
+			expect(finalResponse).toEqual({
+				value: 'mockSecondaryResponse'
+			})
+		})
+	}
+	test('bulkDeleteModules returns expected output and calls other functions', () => {
+		return assertBulkDeleteModulesRunsWithOptions('/api/drafts')
+	})
+
 	// three (plus one default) ways of calling createNewModule plus tutorial/normal module
 	const assertCreateNewModuleRunsWithOptions = (
 		createUrl,
@@ -477,6 +523,26 @@ describe('Dashboard Actions', () => {
 		expect(actionReply).toEqual({
 			type: DashboardActions.FILTER_COLLECTIONS,
 			searchString: 'mockSearchString'
+		})
+	})
+
+	test('selectModules returns the expected output', () => {
+		const actionReply = DashboardActions.selectModules(['mockDraftId1', 'mockDraftId2'])
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.SELECT_MODULES,
+			draftIds: ['mockDraftId1', 'mockDraftId2']
+		})
+	})
+
+	test('deselectModules returns the expected output', () => {
+		const actionReply = DashboardActions.deselectModules(['mockDraftId', 'mockDraftId2'])
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.DESELECT_MODULES,
+			draftIds: ['mockDraftId', 'mockDraftId2']
 		})
 	})
 
@@ -1151,17 +1217,17 @@ describe('Dashboard Actions', () => {
 			expect(mockHeadersGet).toHaveBeenCalledWith('link')
 			expect(mockFetchJSON).toHaveBeenCalledTimes(1)
 			expect(finalHistory.length).toBe(3)
-			for (let i = 0; i < 3; i++)  {
-				expect(finalHistory[i]).toEqual(
-					{
-						createdAt: new Date(mockRevisionHistoryList[i].createdAt),
-						createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format('MMMM Do - h:mm A'),
-						id: mockRevisionHistoryList[i].revisionId,
-						username: mockRevisionHistoryList[i].userFullName,
-						selected: i === 0,
-						versionNumber: finalHistory.length - i
-					}
-				)
+			for (let i = 0; i < 3; i++) {
+				expect(finalHistory[i]).toEqual({
+					createdAt: new Date(mockRevisionHistoryList[i].createdAt),
+					createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
+					id: mockRevisionHistoryList[i].revisionId,
+					username: mockRevisionHistoryList[i].userFullName,
+					selected: i === 0,
+					versionNumber: finalHistory.length - i
+				})
 			}
 		})
 	})
@@ -1249,30 +1315,30 @@ describe('Dashboard Actions', () => {
 			expect(mockFetchJSON).toHaveBeenCalledTimes(2)
 			expect(finalHistory.length).toBe(6)
 			let j = 0
-			for (let i = 0; i < 3; i++)  {
-				expect(finalHistory[j]).toEqual(
-					{
-						createdAt: new Date(mockRevisionHistoryList1[i].createdAt),
-						createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format('MMMM Do - h:mm A'),
-						id: mockRevisionHistoryList1[i].revisionId,
-						username: mockRevisionHistoryList1[i].userFullName,
-						selected: j === 0,
-						versionNumber: finalHistory.length - j
-					}
-				)
+			for (let i = 0; i < 3; i++) {
+				expect(finalHistory[j]).toEqual({
+					createdAt: new Date(mockRevisionHistoryList1[i].createdAt),
+					createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
+					id: mockRevisionHistoryList1[i].revisionId,
+					username: mockRevisionHistoryList1[i].userFullName,
+					selected: j === 0,
+					versionNumber: finalHistory.length - j
+				})
 				j++
 			}
-			for (let i = 0; i < 3; i++)  {
-				expect(finalHistory[j]).toEqual(
-					{
-						createdAt: new Date(mockRevisionHistoryList2[i].createdAt),
-						createdAtDisplay: dayjs(mockRevisionHistoryList2[i].createdAt).format('MMMM Do - h:mm A'),
-						id: mockRevisionHistoryList2[i].revisionId,
-						username: mockRevisionHistoryList2[i].userFullName,
-						selected: j === 0,
-						versionNumber: finalHistory.length - j
-					}
-				)
+			for (let i = 0; i < 3; i++) {
+				expect(finalHistory[j]).toEqual({
+					createdAt: new Date(mockRevisionHistoryList2[i].createdAt),
+					createdAtDisplay: dayjs(mockRevisionHistoryList2[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
+					id: mockRevisionHistoryList2[i].revisionId,
+					username: mockRevisionHistoryList2[i].userFullName,
+					selected: j === 0,
+					versionNumber: finalHistory.length - j
+				})
 				j++
 			}
 		})
@@ -1353,17 +1419,17 @@ describe('Dashboard Actions', () => {
 			expect(mockHeadersGet).toHaveBeenCalledTimes(1)
 			expect(mockFetchJSON).toHaveBeenCalledTimes(1)
 			expect(finalHistory.length).toBe(3)
-			for (let i = 0; i < 3; i++)  {
-				expect(finalHistory[i]).toEqual(
-					{
-						createdAt: new Date(mockRevisionHistoryList1[i].createdAt),
-						createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format('MMMM Do - h:mm A'),
-						id: mockRevisionHistoryList1[i].revisionId,
-						username: mockRevisionHistoryList1[i].userFullName,
-						selected: i === 0,
-						versionNumber: finalHistory.length - i
-					}
-				)
+			for (let i = 0; i < 3; i++) {
+				expect(finalHistory[i]).toEqual({
+					createdAt: new Date(mockRevisionHistoryList1[i].createdAt),
+					createdAtDisplay: dayjs(mockRevisionHistoryList1[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
+					id: mockRevisionHistoryList1[i].revisionId,
+					username: mockRevisionHistoryList1[i].userFullName,
+					selected: i === 0,
+					versionNumber: finalHistory.length - i
+				})
 			}
 		})
 	})
@@ -1485,20 +1551,32 @@ describe('Dashboard Actions', () => {
 			}])
 			expect(mockHeadersGet).toHaveBeenCalledTimes(1)
 
-			for (let i = 0; i < 3; i++)  {
-				expect(finalHistory[i]).toEqual(
-					{
-						createdAt: new Date(mockRevisionHistoryList[i].createdAt),
-						createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format('MMMM Do - h:mm A'),
-						id: mockRevisionHistoryList[i].revisionId,
-						username: mockRevisionHistoryList[i].userFullName,
-						selected: i === 0,
-						versionNumber: finalHistory.length - i,
-						//only the last revision should have 'isRestored' after a restoration
-						isRestored: i === finalHistory.length - 1 ? true : undefined // eslint-disable-line no-undefined
-					}
-				)
+			for (let i = 0; i < 3; i++) {
+				expect(finalHistory[i]).toEqual({
+					createdAt: new Date(mockRevisionHistoryList[i].createdAt),
+					createdAtDisplay: dayjs(mockRevisionHistoryList[i].createdAt).format(
+						'MMM Do YYYY - h:mm A'
+					),
+					id: mockRevisionHistoryList[i].revisionId,
+					username: mockRevisionHistoryList[i].userFullName,
+					selected: i === 0,
+					versionNumber: finalHistory.length - i,
+					//only the last revision should have 'isRestored' after a restoration
+					isRestored: i === finalHistory.length - 1 ? true : undefined // eslint-disable-line no-undefined
+				})
 			}
+		})
+	})
+
+	test('loadModuleAssessmentDetails returns expected object', async () => {
+		const result = await DashboardActions.showAssessmentScoreData(['draft-id-1', 'draft-id-2'])
+
+		expect(result).toEqual({
+			type: 'SHOW_ASSESSMENT_SCORE_DATA',
+			meta: {
+				module: ['draft-id-1', 'draft-id-2']
+			},
+			promise: expect.any(Promise)
 		})
 	})
 

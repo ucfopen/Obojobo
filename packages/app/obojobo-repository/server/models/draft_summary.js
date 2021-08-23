@@ -56,6 +56,15 @@ class DraftSummary {
 		if (revision_count) this.revisionCount = Number(revision_count)
 	}
 
+	static fetchAll() {
+		return db
+			.manyOrNone(buildQueryWhere('TRUE'))
+			.then(DraftSummary.resultsToObjects)
+			.catch(error => {
+				throw logger.logError('DraftSummary fetchAll Error', error)
+			})
+	}
+
 	static fetchById(id) {
 		return db
 			.one(buildQuery('drafts.id = $[id]'), { id })

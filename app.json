@@ -61,6 +61,16 @@
 		"OBO_EDITLOCK_DB_LOCK_DURATION":{
 			"description": "Editor lock: period of time a lock lasts unless it is renewed.",
 			"value": "5"
+		},
+		"OBO_OPTIONAL_NODES":{
+			"required": false,
+			"description": "Comma separated list of optional nodes to enable",
+			"value": ""
+		},
+		"OBO_LTI_GUID":{
+			"required": false,
+			"description": "A GUID unique to this install of Obojobo. Google LTI launch param tool_consumer_instance_guid for more details.",
+			"value": "my.unique.heroku-obojobo-guid"
 		}
 	},
 	"formation": {

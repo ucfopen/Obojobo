@@ -22,8 +22,12 @@ class OboComponent extends React.Component {
 			className += ` ${this.props.className}`
 		}
 
-		const isFocussed =
-			FocusUtil.getVisuallyFocussedModel(this.props.moduleData.focusState) === this.props.model
+		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(
+			this.props.moduleData.focusState
+		)
+		const isFocussed = visuallyFocussedModel
+			? visuallyFocussedModel.get('id') === this.props.model.get('id')
+			: false
 
 		const otherProps = {}
 		for (const propKey in this.props) {

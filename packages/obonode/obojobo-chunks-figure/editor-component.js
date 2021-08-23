@@ -16,6 +16,7 @@ import {
 	freezeEditor,
 	unfreezeEditor
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
+import ImageCaptionWidthTypes from './image-caption-width-types'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
@@ -101,19 +102,22 @@ class Figure extends React.Component {
 		const hasAltText = content.alt && content.alt.length !== 0
 		const selected = this.props.selected
 		const isSelected = isOrNot(selected, 'selected')
+		const captionWidth = content.captionWidth || ImageCaptionWidthTypes.IMAGE_WIDTH
 
 		const customStyle = {}
+		const captionStyle = {}
 		if (content.size === 'custom') {
 			if (content.width) {
 				customStyle.width = content.width + 'px'
-			}
 
-			if (content.height) {
-				customStyle.height = content.height + 'px'
+				if (captionWidth === ImageCaptionWidthTypes.IMAGE_WIDTH) {
+					captionStyle.width = content.width + 'px'
+				}
 			}
 
 			customStyle['maxWidth'] = '100%'
 		}
+
 		return (
 			<Node {...this.props}>
 				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
@@ -126,9 +130,10 @@ class Figure extends React.Component {
 							Accessibility Warning: No Alt Text!
 						</div>
 					)}
-					<figure className="container" style={customStyle}>
+					<figure className="container">
 						<div
 							className={`figure-box  ${isSelected}`}
+							style={customStyle}
 							contentEditable={false}
 							onClick={this.focusFigure}
 						>
@@ -151,12 +156,18 @@ class Figure extends React.Component {
 								</Button>
 							</div>
 							<Image
+								style={customStyle}
 								key={content.url + content.width + content.height + content.size}
 								chunk={{ modelState: content }}
 								lazyLoad={false}
 							/>
 						</div>
-						<figcaption className="align-center">{this.props.children}</figcaption>
+						<figcaption
+							className={`align-center is-caption-width-${captionWidth}`}
+							style={captionStyle}
+						>
+							{this.props.children}
+						</figcaption>
 					</figure>
 				</div>
 			</Node>

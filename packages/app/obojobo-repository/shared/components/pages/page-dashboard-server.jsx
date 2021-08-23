@@ -23,6 +23,8 @@ PageDashboardServer.defaultProps = {
 	draftPermissions: {},
 	myCollections: [],
 	myModules: [],
+	selectedModules: [],
+	multiSelectMode: false,
 	moduleSearchString: '',
 	collectionSearchString: '',
 	shareSearchString: '',

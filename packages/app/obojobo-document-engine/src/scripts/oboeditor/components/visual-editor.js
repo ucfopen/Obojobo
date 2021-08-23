@@ -3,6 +3,7 @@ import './visual-editor.scss'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
+import ColorMarks from './marks/color-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
@@ -45,7 +46,7 @@ class VisualEditor extends React.Component {
 
 		this.state = {
 			value: json,
-			saved: true,
+			saveState: 'saveSuccessful',
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
 			contentRect: null
@@ -81,7 +82,7 @@ class VisualEditor extends React.Component {
 	}
 
 	markUnsaved() {
-		return this.setState({ saved: false })
+		return this.setState({ saveState: '' })
 	}
 
 	// All plugins are passed the following parameters:
@@ -125,6 +126,7 @@ class VisualEditor extends React.Component {
 			.filter(item => item)
 
 		const markPlugins = [
+			ColorMarks.plugins,
 			BasicMarks.plugins,
 			LinkMark.plugins,
 			ScriptMarks.plugins,
@@ -193,7 +195,7 @@ class VisualEditor extends React.Component {
 			//eslint-disable-next-line
 			return undefined // Returning undefined will allow browser to close normally
 		}
-		if (!this.state.saved) {
+		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
@@ -298,9 +300,8 @@ class VisualEditor extends React.Component {
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
-		this.setState({ value, saved: false })
-
-		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
+		this.setState({ value })
+		this.markUnsaved()
 	}
 
 	onResized(event) {
@@ -391,9 +392,16 @@ class VisualEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
+		this.setState({ saveState: 'saving' })
 
 		return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
-			this.setState({ saved: isSaved })
+			if (isSaved) {
+				if (this.state.saveState === 'saving') {
+					this.setState({ saveState: 'saveSuccessful' })
+				}
+			} else {
+				this.setState({ saveState: 'saveFailed' })
+			}
 		})
 	}
 
@@ -555,7 +563,7 @@ class VisualEditor extends React.Component {
 								onSave={this.saveModule}
 								reload={this.reload}
 								switchMode={this.props.switchMode}
-								saved={this.state.saved}
+								saveState={this.state.saveState}
 								mode={'visual'}
 								insertableItems={this.props.insertableItems}
 								togglePlaceholders={this.togglePlaceholders}

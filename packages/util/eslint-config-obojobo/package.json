@@ -1,6 +1,6 @@
 {
 	"name": "eslint-config-obojobo",
-	"version": "11.3.0",
+	"version": "13.2.1",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"lint": "echo 'not implemented'",
@@ -12,6 +12,6 @@
 		"precommit": "echo 'not implemented'"
 	},
 	"dependencies": {
-		"eslint-plugin-react": "^7.20.0"
+		"eslint-plugin-react": "^7.23.1"
 	}
 }

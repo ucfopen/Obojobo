@@ -57,7 +57,7 @@ Object {
 }
 `;
 
-exports[`Question editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+exports[`Question editor slateToObo converts a Slate node to an OboNode with content, MCAssessment 1`] = `
 Object {
   "children": Array [
     Object {
@@ -74,6 +74,45 @@ Object {
     Object {
       "args": Object {
         "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+      "mock": "slateToObo",
+    },
+  ],
+  "content": Object {
+    "solution": Object {
+      "args": Object {
+        "children": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
+      "mock": "slateToObo",
+    },
+  },
+  "id": undefined,
+  "type": "mockType",
+}
+`;
+
+exports[`Question editor slateToObo converts a Slate node to an OboNode with content, Numeric Assessment 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "args": Object {
+        "children": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
+      "mock": "slateToObo",
+    },
+    Object {
+      "args": Object {
+        "type": "ObojoboDraft.Chunks.NumericAssessment",
       },
       "mock": "slateToObo",
     },
