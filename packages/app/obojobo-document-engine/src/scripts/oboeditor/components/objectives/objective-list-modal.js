@@ -95,7 +95,7 @@ class ObjectiveListModal extends React.Component {
 		this.addObjective(newObjectiveObject)
 
 		this.setState(prevState => ({
-			objectives: prevState.objectives.concat(id),
+			objectives: prevState.objectives.concat({ objectiveId: id }),
 			globalObjectives: prevState.globalObjectives.concat(newObjectiveObject),
 			newObjective: false
 		}))
@@ -124,13 +124,15 @@ class ObjectiveListModal extends React.Component {
 	}
 
 	onCheck(id) {
-		if (this.state.objectives.includes(id)) {
+		if (this.state.objectives.filter(o => o.objectiveId === id).length) {
+			// local objectives contain objective with objectiveId = 'id' so remove it, since deselecting it
 			this.setState(prevState => ({
-				objectives: prevState.objectives.filter(objective => objective !== id)
+				objectives: prevState.objectives.filter(o => o.objectiveId !== id)
 			}))
 		} else {
+			// local doesn't contain objective with objectiveId = 'id' so add it
 			this.setState(prevState => ({
-				objectives: prevState.objectives.concat(id)
+				objectives: prevState.objectives.concat({ objectiveId: id })
 			}))
 		}
 	}
@@ -180,7 +182,10 @@ class ObjectiveListModal extends React.Component {
 									id={objective.objectiveId}
 									label={objective.objectiveLabel}
 									description={objective.description}
-									selected={this.state.objectives.includes(objective.objectiveId)}
+									selected={
+										this.state.objectives.filter(o => o.objectiveId === objective.objectiveId)
+											.length > 0
+									}
 									onEdit={this.initializeEdit.bind(this)}
 									delete={this.deleteObjective.bind(this, objective.objectiveId)}
 									onCheck={this.onCheck.bind(this)}

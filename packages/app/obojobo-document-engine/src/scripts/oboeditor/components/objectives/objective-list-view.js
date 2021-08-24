@@ -20,7 +20,10 @@ class ObjectiveListView extends React.Component {
 				<table>
 					<tbody>
 						{globalObjectives.map(objective => {
-							if (type === moduleType || objectives.includes(objective.objectiveId)) {
+							if (
+								type === moduleType ||
+								objectives.filter(o => o.objectiveId === objective.objectiveId).length > 0
+							) {
 								return (
 									<tr key={objective.objectiveId}>
 										<td>
