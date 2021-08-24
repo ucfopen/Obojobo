@@ -55,6 +55,10 @@
             &:not(:first-child) {
                 border-top: 0.0001em solid $color-banner-bg;
             }
+
+            &.no-matches {
+                cursor: default;
+            }
         }
     }
 }

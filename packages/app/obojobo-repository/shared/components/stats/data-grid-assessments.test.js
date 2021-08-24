@@ -37,7 +37,8 @@ describe('DataGridAssessments', () => {
 				searchString: 'mock',
 				date: null
 			}
-		}
+		},
+		setFilteredRows: () => {}
 	})
 
 	test('DataGridAssessments renders correctly', () => {

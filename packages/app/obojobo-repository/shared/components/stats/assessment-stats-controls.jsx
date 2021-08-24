@@ -8,7 +8,7 @@ const { convertHyphenBasedStringToCamelCase } = require('../../util/misc-stats-u
 
 const SEARCH_INPUT_DEBOUNCE_MS = 500
 
-const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds, allPossibleValues }) => {
+const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds, dropdownValues = [] }) => {
 	const [param, setParam] = React.useState('')
 	const [endDate, setEndDate] = React.useState('')
 	const [textInput, setTextInput] = React.useState('')
@@ -115,7 +115,7 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds, allPo
 		)
 	}
 
-	const valuesForHybridInput = allPossibleValues.map(row =>
+	const valuesForHybridInput = dropdownValues.map(row =>
 		row[convertHyphenBasedStringToCamelCase(param)])
 
 	const showHybridInput = param !== ''

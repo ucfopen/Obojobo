@@ -104,7 +104,10 @@ function DataGridScores({
 }) {
 	const filteredColumns = getColumns(columns, controls.showAdvancedFields)
 	rows = searchDataBasedOnParams(rows, controls)
-	if (rows && rows.length > 0 && !equals(rows, filteredRows)) setFilteredRows(rows)
+
+	React.useEffect(() => {
+		if (rows && rows.length > 0 && !equals(rows, filteredRows)) setFilteredRows(rows)
+	}, [rows])
 
 	return (
 		<div className="repository--data-grid-scores">

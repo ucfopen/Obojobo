@@ -61,7 +61,8 @@ describe('AssessmentStats', () => {
 				userFirstName: 'mock-first-name',
 				userLastName: 'mock-last-name'
 			}
-		]
+		],
+		filteredRows: []
 	})
 
 	test('AssessmentStats renders correctly', () => {

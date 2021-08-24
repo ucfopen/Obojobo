@@ -45,7 +45,8 @@ describe('DataGridAttempts', () => {
 				searchString: 'mock',
 				date: null
 			}
-		}
+		},
+		setFilteredRows: () => {}
 	})
 
 	test('DataGridAttempts renders correctly', () => {

@@ -16,7 +16,7 @@ const HybridInputSelect = ({ placeholder = 'Enter text', list = [], onChange }) 
         if (onChange) onChange({ target: { value } })
 
         // Filters a given list based on the input text
-        const newList = list.filter(el => el.toLowerCase().match(value.toLowerCase()))
+        const newList = list.filter(el => el && el.toLowerCase().match(value.toLowerCase()))
         setFilteredList(newList)
     }
 
@@ -26,20 +26,22 @@ const HybridInputSelect = ({ placeholder = 'Enter text', list = [], onChange }) 
     }
 
     const formatElement = (el) => {
-        if (el && el.length > 18) {
-            el += '...'
-        }
+        if (el && el.length > 18) el += '...'
         return el
     }
 
     let elementsClassName = 'elements '
     elementsClassName += (text && dropdownOpen) ? 'open' : 'closed'
 
-    const elements = filteredList.map((el, ix) =>
+    let elements = filteredList.map((el, ix) =>
         <div className='element' key={ix} onClick={() => handleElementClick(el)}>
             {formatElement(el)}
         </div>
     )
+
+    if (elements.length === 0) elements = [
+        <div className='element no-matches' key={0}>No matches found</div>
+    ]
 
     return (
         <div className='hybrid-input-select'>

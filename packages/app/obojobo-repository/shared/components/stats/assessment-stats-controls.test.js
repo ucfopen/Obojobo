@@ -35,6 +35,7 @@ describe('AssessmentStatsControls', () => {
 					onChangeControls={jest.fn()}
 					controls={{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }}
 					dateBounds={{ start: null, end: null }}
+					dropdownValues={['mock-student-one', 'mock-student-two']}
 				/>
 			)
 			const tree = component.toJSON()
@@ -54,6 +55,7 @@ describe('AssessmentStatsControls', () => {
 					showAdvancedFields: false
 				}}
 				dateBounds={{ start: null, end: null }}
+				dropdownValues={['mock-student-one', 'mock-student-two']}
 			/>
 		)
 
@@ -133,6 +135,7 @@ describe('AssessmentStatsControls', () => {
 				}}
 				dateBounds={{ start: null, end: null }}
 				onChangeControls={onChangeControls}
+				dropdownValues={['mock-student-one', 'mock-student-two']}
 			/>
 		)
 
@@ -170,6 +173,7 @@ describe('AssessmentStatsControls', () => {
 				}}
 				dateBounds={{ start: null, end: null }}
 				onChangeControls={onChangeControls}
+				dropdownValues={['mock-student-one', 'mock-student-two']}
 			/>
 		)
 
@@ -199,6 +203,7 @@ describe('AssessmentStatsControls', () => {
 				}}
 				dateBounds={{ start: null, end: null }}
 				onChangeControls={onChangeControls}
+				dropdownValues={['mock-student-one', 'mock-student-two']}
 			/>
 		)
 

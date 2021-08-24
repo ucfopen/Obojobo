@@ -55,7 +55,8 @@ describe('DataGridScores', () => {
 				searchString: 'mock',
 				date: null
 			}
-		}
+		},
+		setFilteredRows: () => {}
 	})
 
 	test('DataGridScores renders correctly', () => {

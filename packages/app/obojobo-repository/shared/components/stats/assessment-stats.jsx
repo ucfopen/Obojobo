@@ -121,7 +121,7 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 						controls={controls}
 						dateBounds={dateBounds}
 						onChangeControls={setControls}
-						allPossibleValues={filteredRows}
+						dropdownValues={filteredRows}
 					/>
 				</div>
 			</div>
