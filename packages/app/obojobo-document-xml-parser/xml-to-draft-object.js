@@ -7,6 +7,7 @@ const attrElementToAttrItem = require('./src/attr-element-to-attr-item')
 const parseTg = require('./src/text-group-parser')
 const scoreParser = require('./src/score-action-parser')
 const parseTriggers = require('./src/triggers-parser')
+const parseObjectives = require('./src/objectives-parser')
 const parseListStyles = require('./src/list-styles-parser')
 const parseAssessmentRubric = require('./src/assessment-rubric-parser')
 const parseScoreAction = scoreParser.parseScoreAction
@@ -18,6 +19,7 @@ const parsers = {
 	scoreActions: parseScoreActions,
 	rubric: parseAssessmentRubric,
 	triggers: parseTriggers,
+	objectives: parseObjectives,
 	listStyles: parseListStyles,
 	solution: solAttr => {
 		return solAttr.elements[0]

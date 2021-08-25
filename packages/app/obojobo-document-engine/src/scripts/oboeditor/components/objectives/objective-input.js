@@ -14,12 +14,13 @@ class ObjectiveInput extends React.Component {
 			error: ''
 		}
 	}
+
 	handleConfirm() {
 		const { label, description } = this.state
 
 		if (label === '' && description === '') {
 			this.setState({
-				error: 'Please enter a label and a objective'
+				error: 'Please enter a label and a description'
 			})
 			return
 		}
@@ -33,7 +34,7 @@ class ObjectiveInput extends React.Component {
 
 		if (label !== '' && description === '') {
 			this.setState({
-				error: 'Please enter a objective'
+				error: 'Please enter a description'
 			})
 			return
 		}
@@ -41,6 +42,7 @@ class ObjectiveInput extends React.Component {
 		// all good
 		this.props.onConfirm(this.state)
 	}
+
 	render() {
 		return (
 			<SimpleDialog
@@ -50,7 +52,9 @@ class ObjectiveInput extends React.Component {
 			>
 				<div className="objective-container">
 					<div>
-						<label htmlFor="objective-label" style={{marginRight:'1.5em'}}>Label:</label>
+						<label htmlFor="objective-label" style={{ marginRight: '1.5em' }}>
+							Label:
+						</label>
 						<input
 							type="text"
 							placeholder="This objective's label (1.2, A, B, etc...) "
@@ -68,7 +72,9 @@ class ObjectiveInput extends React.Component {
 						/>
 					</div>
 					<div>
-						<label htmlFor="objective-input" style={{marginRight:'1.5em'}}>Objective:</label>
+						<label htmlFor="objective-input" style={{ marginRight: '1.5em' }}>
+							Objective:
+						</label>
 						<input
 							type="text"
 							placeholder="Type your objective here..."

@@ -96,7 +96,7 @@ const KeyDownUtil = {
 		const newTexts = Node.fragment(editor, textRange)
 		const newNode = {
 			type: TEXT_NODE,
-			content: { triggers: [] },
+			content: { triggers: [], objectives: [] },
 			children: [
 				{
 					type: TEXT_NODE,

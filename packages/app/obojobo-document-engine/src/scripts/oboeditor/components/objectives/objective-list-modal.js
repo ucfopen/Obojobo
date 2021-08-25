@@ -34,10 +34,10 @@ class ObjectiveListModal extends React.Component {
 		this.objectiveListHeader = (
 			<div
 				style={{
-					margin: '-0.7em 0em 1em 0em',
+					margin: '-0.7em 0em 1em 0em'
 				}}
 			>
-				<div className = "objective-list-subheader">
+				<div className="objective-list-subheader">
 					<p>
 						{/* <span>Select&nbsp;&nbsp;</span> */}
 						Select one or more objectives that apply to this item
@@ -86,8 +86,6 @@ class ObjectiveListModal extends React.Component {
 
 	createNewObjective({ label, description }) {
 		const id = uuid()
-		const length = this.state.objectives.length
-		const letter = length < 26 ? String.fromCharCode(65 + length) : String.fromCharCode(97 + length)
 
 		const newObjectiveObject = {
 			objectiveId: id,
@@ -97,7 +95,7 @@ class ObjectiveListModal extends React.Component {
 		this.addObjective(newObjectiveObject)
 
 		this.setState(prevState => ({
-			objectives: prevState.objectives.concat(id),
+			objectives: prevState.objectives.concat({ objectiveId: id }),
 			globalObjectives: prevState.globalObjectives.concat(newObjectiveObject),
 			newObjective: false
 		}))
@@ -126,13 +124,15 @@ class ObjectiveListModal extends React.Component {
 	}
 
 	onCheck(id) {
-		if (this.state.objectives.includes(id)) {
+		if (this.state.objectives.filter(o => o.objectiveId === id).length) {
+			// local objectives contain objective with objectiveId = 'id' so remove it, since deselecting it
 			this.setState(prevState => ({
-				objectives: prevState.objectives.filter(objective => objective !== id)
+				objectives: prevState.objectives.filter(o => o.objectiveId !== id)
 			}))
 		} else {
+			// local doesn't contain objective with objectiveId = 'id' so add it
 			this.setState(prevState => ({
-				objectives: prevState.objectives.concat(id)
+				objectives: prevState.objectives.concat({ objectiveId: id })
 			}))
 		}
 	}
@@ -163,12 +163,18 @@ class ObjectiveListModal extends React.Component {
 		}
 
 		return (
-			
-			<SimpleDialog done title="Objective Library" 
-				onConfirm={() => {this.props.onClose(this.state)}}
-				>
+			<SimpleDialog
+				done
+				title="Objective Library"
+				onConfirm={() => {
+					this.props.onClose(this.state)
+				}}
+			>
 				{this.state.globalObjectives.length > 0 && this.objectiveListHeader}
-				<div className="objective-list-modal">
+				<div
+					className="objective-list-modal"
+					style={this.state.globalObjectives.length === 0 ? { minHeight: '2.2em' } : null}
+				>
 					{this.state.globalObjectives.map(objective => {
 						return (
 							<div key={objective.objectiveId}>
@@ -176,7 +182,10 @@ class ObjectiveListModal extends React.Component {
 									id={objective.objectiveId}
 									label={objective.objectiveLabel}
 									description={objective.description}
-									selected={this.state.objectives.includes(objective.objectiveId)}
+									selected={
+										this.state.objectives.filter(o => o.objectiveId === objective.objectiveId)
+											.length > 0
+									}
 									onEdit={this.initializeEdit.bind(this)}
 									delete={this.deleteObjective.bind(this, objective.objectiveId)}
 									onCheck={this.onCheck.bind(this)}
@@ -184,8 +193,10 @@ class ObjectiveListModal extends React.Component {
 							</div>
 						)
 					})}
-					<div className = 'objective-list-modal-button'>
-						<Button onClick={() => this.setState({ newObjective: true })}>+ Create Objective</Button>
+					<div className="button">
+						<Button onClick={() => this.setState({ newObjective: true })}>
+							+ Create Objective
+						</Button>
 					</div>
 				</div>
 			</SimpleDialog>

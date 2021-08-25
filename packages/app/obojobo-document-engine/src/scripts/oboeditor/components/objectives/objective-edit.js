@@ -23,6 +23,7 @@ class ObjectiveEdit extends React.Component {
 			description: this.props.data.description
 		})
 	}
+
 	handleConfirm() {
 		const { label, description } = this.state
 
@@ -60,20 +61,22 @@ class ObjectiveEdit extends React.Component {
 			>
 				<div className="objective-container">
 					<div>
-						<label htmlFor="objective-label" style={{marginRight:'1.5em'}}>Label:</label>
+						<label htmlFor="objective-label" style={{ marginRight: '1.5em' }}>
+							Label:
+						</label>
 						<input
 							type="text"
 							placeholder="This objective's label (1.2, A, B, etc...) "
 							value={this.state.label}
 							id="objective-label"
 							className="objective-input"
-							onChange={event => {
-								this.setState({ label: event.target.value })
-							}}
+							onChange={e => this.setState({ label: e.target.value })}
 						/>
 					</div>
 					<div>
-						<label htmlFor="objective-input" style={{marginRight:'1.5em'}}>Objective:</label>
+						<label htmlFor="objective-input" style={{ marginRight: '1.5em' }}>
+							Objective:
+						</label>
 						<input
 							type="text"
 							placeholder="Type your objective here..."

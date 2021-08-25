@@ -35,11 +35,12 @@ describe('MoreInfoBox', () => {
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
-				content={{}}
+				content={{objectives: []}}
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
 				contentDescription={[]}
+				
 				isAssessment
 			/>
 		)

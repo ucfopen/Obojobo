@@ -1,8 +1,8 @@
 @import '~styles/includes';
 
 .objective-list-view {
-	width:21em;
-	display:inline-block;
+	width: 21em;
+	display: inline-block;
 	max-height: 6.5em;
 	table {
 		table-layout: fixed;
@@ -16,18 +16,23 @@
 		font-family: $font-monospace;
 		padding: 0 0 0 0;
 		line-height: 1.2em;
-		
-		li {
-			position: static;
-			background: $color-bg;
-			border: none;
-			padding: 0em;
-			list-style-type: disc;
-			list-style-position: inside;
+
+		ul {
+			margin: 0;
+			padding: 0;
+
+			li {
+				position: static;
+				background: $color-bg;
+				border: none;
+				padding: 0em;
+				list-style-type: disc;
+				list-style-position: inside;
+			}
 		}
+
 		td {
 			padding-left: 0.5em;
-			
 		}
 
 		td:nth-child(2) {
@@ -39,5 +44,5 @@
 			text-overflow: ellipsis;
 		}
 	}
-	overflow : auto;
+	overflow: auto;
 }

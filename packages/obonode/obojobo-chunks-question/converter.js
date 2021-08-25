@@ -19,6 +19,7 @@ const slateToObo = node => {
 	const children = []
 	const content = {
 		triggers: node.content.triggers,
+		objectives: node.content.objectives,
 		type: node.content.type
 	}
 

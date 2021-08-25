@@ -14,6 +14,7 @@ const slateToObo = node => ({
 	children: [],
 	content: withoutUndefined({
 		triggers: node.content.triggers,
+		objectives: node.content.objectives,
 		html: Node.string(node)
 	})
 })

@@ -75,12 +75,11 @@ class VisualEditor extends React.Component {
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
 			contentRect: null,
-			objectives: this.props.model.get('content').objectives ?? [],
+			objectives: this.props.model.objectives ?? [],
 			addObjective: this.addObjective,
 			removeObjective: this.removeObjective,
 			updateObjective: this.updateObjective
 		}
-
 		this.pageEditorContainerRef = React.createRef()
 		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
