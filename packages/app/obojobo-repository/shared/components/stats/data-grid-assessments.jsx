@@ -105,7 +105,7 @@ const columns = [
 	}
 ]
 
-function DataGridAssessments({ attempts = [], controls, filteredRows, setFilteredRows }) {
+function DataGridAssessments({ attempts = [], controls, filteredRows, setFilteredRows, isDebouncing }) {
 	const assessmentScores = getAssessmentStatsFromAttemptStats(attempts)
 
 	return (
@@ -118,6 +118,7 @@ function DataGridAssessments({ attempts = [], controls, filteredRows, setFiltere
 				controls={controls}
 				filteredRows={filteredRows}
 				setFilteredRows={setFilteredRows}
+				isDebouncing={isDebouncing}
 			/>
 		</div>
 	)

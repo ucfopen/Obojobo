@@ -275,7 +275,15 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 ]
               }
               striped={true}
-              title="Final Assessment Scores"
+              title={
+                <div
+                  className="data-table-header"
+                >
+                  <p>
+                    Final Assessment Scores
+                  </p>
+                </div>
+              }
             >
               react-data-table-component
             </div>
@@ -562,7 +570,15 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 ]
               }
               striped={true}
-              title="Final Assessment Scores"
+              title={
+                <div
+                  className="data-table-header"
+                >
+                  <p>
+                    Final Assessment Scores
+                  </p>
+                </div>
+              }
             >
               react-data-table-component
             </div>
@@ -849,7 +865,15 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                 ]
               }
               striped={true}
-              title="Final Assessment Scores"
+              title={
+                <div
+                  className="data-table-header"
+                >
+                  <p>
+                    Final Assessment Scores
+                  </p>
+                </div>
+              }
             >
               react-data-table-component
             </div>

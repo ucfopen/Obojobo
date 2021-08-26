@@ -1,6 +1,7 @@
 const React = require('react')
-const DataTable = require('react-data-table-component').default
+const Spinner = require('../spinner')
 const ButtonLink = require('../button-link')
+const DataTable = require('react-data-table-component').default
 const { convertHyphenBasedStringToCamelCase, equals } = require('../../util/misc-stats-util')
 
 const getColumns = (columns, showAdvancedFields) =>
@@ -100,7 +101,8 @@ function DataGridScores({
 	csvFileName,
 	controls,
 	filteredRows,
-	setFilteredRows
+	setFilteredRows,
+	isDebouncing
 }) {
 	const filteredColumns = getColumns(columns, controls.showAdvancedFields)
 	rows = searchDataBasedOnParams(rows, controls)
@@ -109,11 +111,21 @@ function DataGridScores({
 		if (rows && rows.length > 0 && !equals(rows, filteredRows)) setFilteredRows(rows)
 	}, [rows])
 
+	const tn = getTableName(tableName, controls)
+
+	const tableHeader = (
+		<div className='data-table-header'>
+			<p>{getTableName(tableName, controls)}</p>
+			{/* $color-action */}
+			{isDebouncing && <Spinner color='#6714bd' />}
+		</div>
+	)
+
 	return (
 		<div className="repository--data-grid-scores">
 			<div className="data-grid">
 				<DataTable
-					title={getTableName(tableName, controls)}
+					title={tableHeader}
 					columns={filteredColumns}
 					data={rows}
 					striped={true}

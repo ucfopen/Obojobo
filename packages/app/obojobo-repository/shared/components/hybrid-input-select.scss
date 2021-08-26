@@ -19,7 +19,7 @@
         overflow-x: hidden;
         top: 2.5em;
         border-radius: $dimension-rounded-radius;
-        box-shadow: 0 1em 0.5em $color-shadow;
+        box-shadow: 0 0.3em 0.2em $color-shadow;
         border: 0.0001em solid $color-banner-bg;
 
         &.open {

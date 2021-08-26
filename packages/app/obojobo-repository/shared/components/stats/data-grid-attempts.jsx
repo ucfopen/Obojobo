@@ -188,7 +188,7 @@ const columns = [
 	}
 ]
 
-function DataGridAttempts({ attempts = [], controls, filteredRows, setFilteredRows }) {
+function DataGridAttempts({ attempts = [], controls, filteredRows, setFilteredRows, isDebouncing }) {
 	return (
 		<div className="repository--data-grid-attempts">
 			<DataGridScores
@@ -199,6 +199,7 @@ function DataGridAttempts({ attempts = [], controls, filteredRows, setFilteredRo
 				controls={controls}
 				filteredRows={filteredRows}
 				setFilteredRows={setFilteredRows}
+				isDebouncing={isDebouncing}
 			/>
 		</div>
 	)

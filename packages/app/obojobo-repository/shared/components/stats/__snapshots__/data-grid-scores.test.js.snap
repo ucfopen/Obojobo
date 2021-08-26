@@ -57,7 +57,15 @@ exports[`DataGridScores DataGridScores renders correctly 1`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -123,7 +131,15 @@ exports[`DataGridScores DataGridScores renders one row 1`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -169,6 +185,13 @@ exports[`DataGridScores DataGridScores renders when no rows given 1`] = `
         ]
       }
       striped={true}
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p />
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -210,7 +233,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 1`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -252,7 +283,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 2`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -294,7 +333,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 3`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -355,7 +402,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 4`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -429,7 +484,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 5`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -503,7 +566,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 6`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -558,7 +629,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 7`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -600,7 +679,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 8`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -661,7 +748,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 9`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -735,7 +830,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 10`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>
@@ -809,7 +912,15 @@ exports[`DataGridScores DataGridScores uses search filters as expected 11`] = `
         ]
       }
       striped={true}
-      title="Mock Table Name"
+      title={
+        <div
+          className="data-table-header"
+        >
+          <p>
+            Mock Table Name
+          </p>
+        </div>
+      }
     >
       react-data-table-component
     </div>

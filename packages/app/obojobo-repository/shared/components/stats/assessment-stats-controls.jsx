@@ -8,13 +8,20 @@ const { convertHyphenBasedStringToCamelCase } = require('../../util/misc-stats-u
 
 const SEARCH_INPUT_DEBOUNCE_MS = 500
 
-const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds, dropdownValues = [] }) => {
+const AssessmentStatsControls = ({
+	controls,
+	onChangeControls,
+	dateBounds,
+	dropdownValues = [],
+	setIsDebouncing
+}) => {
 	const [param, setParam] = React.useState('')
 	const [endDate, setEndDate] = React.useState('')
 	const [textInput, setTextInput] = React.useState('')
 	const [startDate, setStartDate] = React.useState('')
 
 	const debouncedOnChangeSearchContent = useDebouncedCallback(searchTerm => {
+		setIsDebouncing(false)
 		const oldControls = Object.assign({}, controls)
 
 		onChangeControls(
@@ -42,6 +49,7 @@ const AssessmentStatsControls = ({ controls, onChangeControls, dateBounds, dropd
 
 		setTextInput(value)
 		debouncedOnChangeSearchContent(value)
+		setIsDebouncing(true)
 
 		// If the user clears out the input go ahead and update the search without a delay
 		if (value.length === 0) {

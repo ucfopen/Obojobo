@@ -65,6 +65,12 @@ exports[`HybridInputSelect renders with default props 1`] = `
   />
   <div
     className="elements closed"
-  />
+  >
+    <div
+      className="element no-matches"
+    >
+      No matches found
+    </div>
+  </div>
 </div>
 `;

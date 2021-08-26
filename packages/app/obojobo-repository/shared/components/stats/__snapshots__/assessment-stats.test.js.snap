@@ -267,7 +267,15 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
             ]
           }
           striped={true}
-          title="Final Assessment Scores"
+          title={
+            <div
+              className="data-table-header"
+            >
+              <p>
+                Final Assessment Scores
+              </p>
+            </div>
+          }
         >
           react-data-table-component
         </div>
@@ -622,7 +630,15 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
             ]
           }
           striped={true}
-          title="Attempt Scores"
+          title={
+            <div
+              className="data-table-header"
+            >
+              <p>
+                Attempt Scores
+              </p>
+            </div>
+          }
         >
           react-data-table-component
         </div>
@@ -889,7 +905,15 @@ exports[`AssessmentStats AssessmentStats renders correctly 3`] = `
             ]
           }
           striped={true}
-          title="Final Assessment Scores"
+          title={
+            <div
+              className="data-table-header"
+            >
+              <p>
+                Final Assessment Scores
+              </p>
+            </div>
+          }
         >
           react-data-table-component
         </div>

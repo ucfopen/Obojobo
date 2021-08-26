@@ -45,6 +45,7 @@ describe('AssessmentStatsControls', () => {
 
 	test('Inputs work as expected', () => {
 		const onChangeControls = jest.fn()
+		const setIsDebouncing = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
@@ -56,6 +57,7 @@ describe('AssessmentStatsControls', () => {
 				}}
 				dateBounds={{ start: null, end: null }}
 				dropdownValues={['mock-student-one', 'mock-student-two']}
+				setIsDebouncing={setIsDebouncing}
 			/>
 		)
 
@@ -97,6 +99,7 @@ describe('AssessmentStatsControls', () => {
 
 	test('Inputs and select tags work as expected', () => {
 		const onChangeControls = jest.fn()
+		const setIsDebouncing = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
@@ -107,6 +110,7 @@ describe('AssessmentStatsControls', () => {
 				}}
 				dateBounds={{ start: null, end: null }}
 				onChangeControls={onChangeControls}
+				setIsDebouncing={setIsDebouncing}
 			/>
 		)
 
@@ -125,6 +129,7 @@ describe('AssessmentStatsControls', () => {
 
 	test('Change input based on select option', () => {
 		const onChangeControls = jest.fn()
+		const setIsDebouncing = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
@@ -136,6 +141,7 @@ describe('AssessmentStatsControls', () => {
 				dateBounds={{ start: null, end: null }}
 				onChangeControls={onChangeControls}
 				dropdownValues={['mock-student-one', 'mock-student-two']}
+				setIsDebouncing={setIsDebouncing}
 			/>
 		)
 
@@ -163,6 +169,7 @@ describe('AssessmentStatsControls', () => {
 
 	test('Set and clear date start input', () => {
 		const onChangeControls = jest.fn()
+		const setIsDebouncing = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
@@ -174,6 +181,7 @@ describe('AssessmentStatsControls', () => {
 				dateBounds={{ start: null, end: null }}
 				onChangeControls={onChangeControls}
 				dropdownValues={['mock-student-one', 'mock-student-two']}
+				setIsDebouncing={setIsDebouncing}
 			/>
 		)
 
@@ -193,6 +201,7 @@ describe('AssessmentStatsControls', () => {
 
 	test('Set and clear date end input', () => {
 		const onChangeControls = jest.fn()
+		const setIsDebouncing = jest.fn()
 
 		const component = renderer.create(
 			<AssessmentStatsControls
@@ -204,6 +213,7 @@ describe('AssessmentStatsControls', () => {
 				dateBounds={{ start: null, end: null }}
 				onChangeControls={onChangeControls}
 				dropdownValues={['mock-student-one', 'mock-student-two']}
+				setIsDebouncing={setIsDebouncing}
 			/>
 		)
 

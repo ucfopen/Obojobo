@@ -492,7 +492,15 @@ exports[`Stats Renders loaded state correctly 1`] = `
                     ]
                   }
                   striped={true}
-                  title="Final Assessment Scores"
+                  title={
+                    <div
+                      className="data-table-header"
+                    >
+                      <p>
+                        Final Assessment Scores
+                      </p>
+                    </div>
+                  }
                 >
                   react-data-table-component
                 </div>

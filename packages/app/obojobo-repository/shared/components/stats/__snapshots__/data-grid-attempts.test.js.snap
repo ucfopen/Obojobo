@@ -222,7 +222,15 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
           ]
         }
         striped={true}
-        title="Attempt Scores"
+        title={
+          <div
+            className="data-table-header"
+          >
+            <p>
+              Attempt Scores
+            </p>
+          </div>
+        }
       >
         react-data-table-component
       </div>
@@ -373,7 +381,15 @@ exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
           ]
         }
         striped={true}
-        title="Attempt Scores"
+        title={
+          <div
+            className="data-table-header"
+          >
+            <p>
+              Attempt Scores
+            </p>
+          </div>
+        }
       >
         react-data-table-component
       </div>
