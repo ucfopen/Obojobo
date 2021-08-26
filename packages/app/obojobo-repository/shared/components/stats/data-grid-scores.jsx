@@ -114,10 +114,10 @@ function DataGridScores({
 	const tn = getTableName(tableName, controls)
 
 	const tableHeader = (
-		<div className='data-table-header'>
+		<div className="data-table-header">
 			<p>{getTableName(tableName, controls)}</p>
 			{/* $color-action */}
-			{isDebouncing && <Spinner color='#6714bd' />}
+			{isDebouncing && <Spinner color="#6714bd" />}
 		</div>
 	)
 

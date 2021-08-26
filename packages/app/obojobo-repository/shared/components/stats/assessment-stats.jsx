@@ -137,7 +137,14 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 				</div>
 			</div>
 
-			{renderDataGrid(viewMode, filteredAttempts, controls, filteredRows, setFilteredRows, isDebouncing)}
+			{renderDataGrid(
+				viewMode,
+				filteredAttempts,
+				controls,
+				filteredRows,
+				setFilteredRows,
+				isDebouncing
+			)}
 		</div>
 	)
 }

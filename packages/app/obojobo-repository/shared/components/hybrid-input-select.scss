@@ -1,64 +1,64 @@
 @import '../../client/css/defaults';
 
 .hybrid-input-select {
-    position: relative;
+	position: relative;
 
-    input {
-        @include text-input();
+	input {
+		@include text-input();
 
-        width: 100%;
-        font-size: 0.8em;
-        padding: 0.6em 0.5em;
-        border: 0.1em solid $color-shadow;
-        border-radius: $dimension-rounded-radius;
-    }
+		width: 100%;
+		font-size: 0.8em;
+		padding: 0.6em 0.5em;
+		border: 0.1em solid $color-shadow;
+		border-radius: $dimension-rounded-radius;
+	}
 
-    .elements {
-        position: absolute;
-        transition: 0.1s;
-        overflow-x: hidden;
-        top: 2.5em;
-        border-radius: $dimension-rounded-radius;
-        box-shadow: 0 0.3em 0.2em $color-shadow;
-        border: 0.0001em solid $color-banner-bg;
+	.elements {
+		position: absolute;
+		transition: 0.1s;
+		overflow-x: hidden;
+		top: 2.5em;
+		border-radius: $dimension-rounded-radius;
+		box-shadow: 0 0.3em 0.2em $color-shadow;
+		border: 0.0001em solid $color-banner-bg;
 
-        &.open {
-            max-height: 5em;
-            overflow-y: auto;
-            width: 100%;
-            opacity: 1;
-            transition: 0.2s;
-        }
+		&.open {
+			max-height: 5em;
+			overflow-y: auto;
+			width: 100%;
+			opacity: 1;
+			transition: 0.2s;
+		}
 
-        &.closed {
-            height: 0;
-            line-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: 0.2s;
-        }
+		&.closed {
+			height: 0;
+			line-height: 0;
+			overflow: hidden;
+			opacity: 0;
+			transition: 0.2s;
+		}
 
-        .element {
-            width: 100%;
-            font-size: 0.8em;
-            transition: 0.1s;
-            background-color: $color-bg;
-            padding-left: 0.65em;
-            overflow-x: hidden;
+		.element {
+			width: 100%;
+			font-size: 0.8em;
+			transition: 0.1s;
+			background-color: $color-bg;
+			padding-left: 0.65em;
+			overflow-x: hidden;
 
-            &:hover {
-                cursor: pointer;
-                transition: 0.1s;
-                background-color: desaturate(lighten($color-action, 45%), 40%)
-            }
+			&:hover {
+				cursor: pointer;
+				transition: 0.1s;
+				background-color: desaturate(lighten($color-action, 45%), 40%);
+			}
 
-            &:not(:first-child) {
-                border-top: 0.0001em solid $color-banner-bg;
-            }
+			&:not(:first-child) {
+				border-top: 0.0001em solid $color-banner-bg;
+			}
 
-            &.no-matches {
-                cursor: default;
-            }
-        }
-    }
+			&.no-matches {
+				cursor: default;
+			}
+		}
+	}
 }

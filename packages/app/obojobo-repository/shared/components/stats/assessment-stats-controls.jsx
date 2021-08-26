@@ -123,8 +123,9 @@ const AssessmentStatsControls = ({
 		)
 	}
 
-	const valuesForHybridInput = dropdownValues.map(row =>
-		row[convertHyphenBasedStringToCamelCase(param)])
+	const valuesForHybridInput = dropdownValues.map(
+		row => row[convertHyphenBasedStringToCamelCase(param)]
+	)
 
 	const showHybridInput = param !== ''
 
