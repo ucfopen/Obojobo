@@ -246,7 +246,7 @@ exports[`Stats Renders loaded state correctly 1`] = `
                       htmlFor="repository--assessment-stats-search-controls--search-by"
                     >
                       Search by:
-
+                       
                     </label>
                     <div
                       className="controls"

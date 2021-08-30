@@ -77,7 +77,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   htmlFor="repository--assessment-stats-search-controls--search-by"
                 >
                   Search by:
-
+                   
                 </label>
                 <div
                   className="controls"
@@ -235,6 +235,19 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                     "advanced": false,
                     "name": "Course Title",
                     "selector": "courseTitle",
+                    "sortable": true,
+                  },
+                  Object {
+                    "advanced": false,
+                    "name": "Resource Link Title",
+                    "selector": "resourceLinkTitle",
+                    "sortable": true,
+                  },
+                  Object {
+                    "advanced": false,
+                    "cell": [Function],
+                    "name": "URL",
+                    "selector": "launchPresentationReturnUrl",
                     "sortable": true,
                   },
                   Object {
@@ -371,7 +384,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   htmlFor="repository--assessment-stats-search-controls--search-by"
                 >
                   Search by:
-
+                   
                 </label>
                 <div
                   className="controls"
@@ -533,10 +546,6 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   },
                   Object {
                     "advanced": false,
-<<<<<<< HEAD
-                    "name": "Student Name",
-                    "selector": "studentName",
-=======
                     "name": "Resource Link Title",
                     "selector": "resourceLinkTitle",
                     "sortable": true,
@@ -546,7 +555,12 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                     "cell": [Function],
                     "name": "URL",
                     "selector": "launchPresentationReturnUrl",
->>>>>>> c19263db705d5b097e5746cd482e2e36dc38ca97
+                    "sortable": true,
+                  },
+                  Object {
+                    "advanced": false,
+                    "name": "Student Name",
+                    "selector": "studentName",
                     "sortable": true,
                   },
                   Object {
@@ -677,7 +691,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   htmlFor="repository--assessment-stats-search-controls--search-by"
                 >
                   Search by:
-
+                   
                 </label>
                 <div
                   className="controls"
@@ -839,10 +853,6 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                   },
                   Object {
                     "advanced": false,
-<<<<<<< HEAD
-                    "name": "Student Name",
-                    "selector": "studentName",
-=======
                     "name": "Resource Link Title",
                     "selector": "resourceLinkTitle",
                     "sortable": true,
@@ -852,7 +862,12 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                     "cell": [Function],
                     "name": "URL",
                     "selector": "launchPresentationReturnUrl",
->>>>>>> c19263db705d5b097e5746cd482e2e36dc38ca97
+                    "sortable": true,
+                  },
+                  Object {
+                    "advanced": false,
+                    "name": "Student Name",
+                    "selector": "studentName",
                     "sortable": true,
                   },
                   Object {
@@ -899,22 +914,6 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               react-data-table-component
             </div>
           </div>
-<<<<<<< HEAD
-=======
-          <a
-            className="repository--button "
-            download="final-assessment-scores__"
-            href="data:text/csv;charset=utf-8,%22First%20Name%22%2C%22Last%20Name%22%2C%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22"
-          >
-            ⬇️   Download
-
-             Table as CSV File (
-            1
-             row
-
-            )
-          </a>
->>>>>>> c19263db705d5b097e5746cd482e2e36dc38ca97
         </div>
       </div>
     </div>
