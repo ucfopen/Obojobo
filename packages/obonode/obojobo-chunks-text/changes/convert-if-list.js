@@ -72,6 +72,9 @@ const convertIfList = function(entry, editor, event) {
 		if (node.children.length === 1) {
 			Transforms.removeNodes(editor, { at: nodePath })
 		}
+
+		// Move cursor to the start of the line
+		Transforms.select(editor, { ...editor.selection.anchor, offset: 0 })
 	}
 }
 

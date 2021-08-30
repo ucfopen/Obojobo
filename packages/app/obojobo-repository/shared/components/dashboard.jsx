@@ -14,6 +14,7 @@ const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
 const AssessmentScoreDataDialog = require('./assessment-score-data-dialog')
+const Spinner = require('./spinner')
 
 const renderOptionsDialog = props => (
 	<ModuleOptionsDialog
@@ -24,6 +25,8 @@ const renderOptionsDialog = props => (
 		onClose={props.closeModal}
 		showVersionHistory={props.showVersionHistory}
 		showAssessmentScoreData={props.showAssessmentScoreData}
+		startLoadingAnimation={props.startLoadingAnimation}
+		stopLoadingAnimation={props.stopLoadingAnimation}
 	/>
 )
 
@@ -141,6 +144,7 @@ function Dashboard(props) {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 	const [newModuleId, setNewModuleId] = useState(null)
 	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
+	const [isLoading, setIsLoading] = useState(false)
 
 	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
 
@@ -150,8 +154,15 @@ function Dashboard(props) {
 		}
 	}
 
+	const modalProps = Object.assign({}, props)
+	modalProps.startLoadingAnimation = () => setIsLoading(true)
+	modalProps.stopLoadingAnimation = () => setIsLoading(false)
+
 	const handleCreateNewModule = useTutorial => {
+		setIsLoading(true)
+
 		props.createNewModule(useTutorial).then(data => {
+			setIsLoading(false)
 			data.payload.value.sort(getSortMethod('newest'))
 			setNewModuleId(data.payload.value[0].draftId)
 		})
@@ -176,12 +187,13 @@ function Dashboard(props) {
 	}
 
 	const deleteModules = draftIds => {
+		setIsLoading(true)
 		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
 			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
 		)
 		if (response !== 'DELETE') return
-		props.bulkDeleteModules(draftIds)
+		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
 	}
 
 	// Set a cookie when sortOrder changes on the client
@@ -207,6 +219,10 @@ function Dashboard(props) {
 			document.removeEventListener('keyup', onKeyUp)
 		}
 	}, [onKeyUp])
+
+	let itemCollectionMultiWrapperClassName =
+		'repository--item-list--collection--item--multi-wrapper '
+	itemCollectionMultiWrapperClassName += isLoading ? 'fade' : ''
 
 	return (
 		<span id="dashboard-root">
@@ -264,7 +280,8 @@ function Dashboard(props) {
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
-								<div className="repository--item-list--collection--item--multi-wrapper">
+								{isLoading && <Spinner color="#6714bd" />}
+								<div className={itemCollectionMultiWrapperClassName}>
 									{moduleList.sort(getSortMethod(sortOrder)).map((draft, index) => (
 										<Module
 											isNew={draft.draftId === newModuleId}
@@ -282,7 +299,7 @@ function Dashboard(props) {
 					</div>
 				</section>
 			</div>
-			{props.dialog ? renderModalDialog(props) : null}
+			{props.dialog ? renderModalDialog(modalProps) : null}
 		</span>
 	)
 }
