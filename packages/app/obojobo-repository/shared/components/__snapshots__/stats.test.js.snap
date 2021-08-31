@@ -512,7 +512,7 @@ exports[`Stats Renders loaded state correctly 1`] = `
                   striped={true}
                   title={
                     <div
-                      className="data-table-header"
+                      className="data-table-header Final Assessment Scores"
                     >
                       <p>
                         Final Assessment Scores

@@ -236,7 +236,7 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
         striped={true}
         title={
           <div
-            className="data-table-header"
+            className="data-table-header Attempt Scores"
           >
             <p>
               Attempt Scores
@@ -407,7 +407,7 @@ exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
         striped={true}
         title={
           <div
-            className="data-table-header"
+            className="data-table-header Attempt Scores"
           >
             <p>
               Attempt Scores

@@ -281,7 +281,7 @@ exports[`AssessmentStats AssessmentStats renders correctly 1`] = `
           striped={true}
           title={
             <div
-              className="data-table-header"
+              className="data-table-header Final Assessment Scores"
             >
               <p>
                 Final Assessment Scores
@@ -656,7 +656,7 @@ exports[`AssessmentStats AssessmentStats renders correctly 2`] = `
           striped={true}
           title={
             <div
-              className="data-table-header"
+              className="data-table-header Attempt Scores"
             >
               <p>
                 Attempt Scores
@@ -943,7 +943,7 @@ exports[`AssessmentStats AssessmentStats renders correctly 3`] = `
           striped={true}
           title={
             <div
-              className="data-table-header"
+              className="data-table-header Final Assessment Scores"
             >
               <p>
                 Final Assessment Scores

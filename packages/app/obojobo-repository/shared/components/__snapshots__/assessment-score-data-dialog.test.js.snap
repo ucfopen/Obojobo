@@ -289,7 +289,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               striped={true}
               title={
                 <div
-                  className="data-table-header"
+                  className="data-table-header Final Assessment Scores"
                 >
                   <p>
                     Final Assessment Scores
@@ -596,7 +596,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               striped={true}
               title={
                 <div
-                  className="data-table-header"
+                  className="data-table-header Final Assessment Scores"
                 >
                   <p>
                     Final Assessment Scores
@@ -903,7 +903,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
               striped={true}
               title={
                 <div
-                  className="data-table-header"
+                  className="data-table-header Final Assessment Scores"
                 >
                   <p>
                     Final Assessment Scores
