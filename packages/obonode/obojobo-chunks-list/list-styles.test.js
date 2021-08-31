@@ -38,13 +38,12 @@ describe('List Styles', () => {
 		})
 	})
 
-	test('get retrives default values', () => {
+	test('get retrieves default values', () => {
 		const ls = new ListStyles()
 		ls.init()
 
 		expect(ls.get(0).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 	})
@@ -119,43 +118,36 @@ describe('List Styles', () => {
 
 		expect(ls.get(0).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 
 		expect(ls.get(1).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'circle'
 		})
 
 		expect(ls.get(2).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'square'
 		})
 
 		expect(ls.get(3).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 
 		expect(ls.get(4).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'circle'
 		})
 
 		expect(ls.get(5).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'square'
 		})
 
 		expect(ls.get(6).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 	})
@@ -164,6 +156,7 @@ describe('List Styles', () => {
 		const ls = new ListStyles('ordered')
 
 		expect(ls.get(0).toDescriptor()).toEqual({
+			//
 			type: 'ordered',
 			start: 1,
 			bulletStyle: 'decimal'
