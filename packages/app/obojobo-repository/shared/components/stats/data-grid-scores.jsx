@@ -112,7 +112,7 @@ function DataGridScores({
 	}, [rows])
 
 	const tn = getTableName(tableName, controls)
-	const tableHeaderClassName = "data-table-header " + tn
+	const tableHeaderClassName = 'data-table-header ' + tn
 
 	const tableHeader = (
 		<div className={tableHeaderClassName}>

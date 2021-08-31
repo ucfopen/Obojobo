@@ -125,10 +125,10 @@ describe('DataGridScores', () => {
 			)
 
 			expect(
-				component
-				.root
-				.findByProps({ className: 'react-data-table-component' })
-				.props.title.props.className.split("data-table-header")[1].trim()
+				component.root
+					.findByProps({ className: 'react-data-table-component' })
+					.props.title.props.className.split('data-table-header')[1]
+					.trim()
 			).toBe(expectedTableName)
 		}
 	)
