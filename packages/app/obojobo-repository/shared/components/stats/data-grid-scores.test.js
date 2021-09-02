@@ -56,7 +56,8 @@ describe('DataGridScores', () => {
 				date: null
 			}
 		},
-		setFilteredRows: () => {}
+		setFilteredRows: () => {},
+		isDebouncing: false
 	})
 
 	test('DataGridScores renders correctly', () => {
@@ -237,6 +238,7 @@ describe('DataGridScores', () => {
 		const component = renderer.create(
 			<DataGridScores
 				columns={[]}
+				isDebouncing={true}
 				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,

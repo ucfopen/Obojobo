@@ -190,6 +190,9 @@ exports[`DataGridScores DataGridScores renders when no rows given 1`] = `
           className="data-table-header undefined"
         >
           <p />
+          <Spinner
+            color="#6714bd"
+          />
         </div>
       }
     >
