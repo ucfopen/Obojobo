@@ -490,66 +490,6 @@ describe('Dashboard Actions', () => {
 			expect(lastCall[1]).toEqual(defaultFetchOptions)
 		})
 	})
-	/*
-test('moduleAddToCollection returns the expected output and calls other functions correctly', () => {
-	global.fetch.mockResolvedValueOnce(standardFetchResponse)
-
-	const actionReply = DashboardActions.moduleAddToCollection('mockDraftId', 'mockCollectionId')
-
-	expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/add', {
-		...defaultFetchOptions,
-		method: 'POST',
-		body: '{"draftId":"mockDraftId"}'
-	})
-	global.fetch.mockReset()
-	global.fetch.mockResolvedValueOnce({
-		json: () => ({ value: 'mockSecondaryPermissionsVal' })
-	})
-
-	expect(actionReply).toEqual({
-		type: DashboardActions.MODULE_ADD_TO_COLLECTION,
-		promise: expect.any(Object)
-	})
-
-	// should get draft permissions after changing them
-	return actionReply.promise.then(finalResponse => {
-		expect(standardFetchResponse.json).toHaveBeenCalled()
-		expectGetCollectionsForModuleCalled()
-		expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
-	})
-})
-
-test('moduleRemoveFromCollection returns the expected output and calls other functions correctly', () => {
-	global.fetch.mockResolvedValueOnce(standardFetchResponse)
-
-	const actionReply = DashboardActions.moduleRemoveFromCollection(
-		'mockDraftId',
-		'mockCollectionId'
-	)
-
-	expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/remove', {
-		...defaultFetchOptions,
-		method: 'DELETE',
-		body: '{"draftId":"mockDraftId"}'
-	})
-	global.fetch.mockReset()
-	global.fetch.mockResolvedValueOnce({
-		json: () => ({ value: 'mockSecondaryPermissionsVal' })
-	})
-
-	expect(actionReply).toEqual({
-		type: DashboardActions.MODULE_REMOVE_FROM_COLLECTION,
-		promise: expect.any(Object)
-	})
-
-	// should get draft permissions after changing them
-	return actionReply.promise.then(finalResponse => {
-		expect(standardFetchResponse.json).toHaveBeenCalled()
-		expectGetCollectionsForModuleCalled()
-		expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
-	})
-})
-*/
 
 	// three (plus one default) ways of calling createNewModule plus tutorial/normal module
 	const assertCreateNewModuleRunsWithOptions = (

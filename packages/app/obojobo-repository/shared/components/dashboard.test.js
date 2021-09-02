@@ -755,6 +755,8 @@ describe('Dashboard', () => {
 		expect(moduleComponents.length).toBe(2)
 		expect(moduleComponents[0].props.draftId).toBe('mockDraftId4')
 		expect(moduleComponents[1].props.draftId).toBe('mockDraftId3')
+
+		component.unmount()
 	})
 
 	// MODE_COLLECTION and MODE_ALL handle module rendering/sorting the same way
@@ -1509,6 +1511,8 @@ describe('Dashboard', () => {
 		])
 		dialogComponent.props.onClose()
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
+
+		component.unmount()
 	})
 
 	test('renders "Version History" dialog and runs callbacks properly', () => {

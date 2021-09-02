@@ -462,10 +462,6 @@ function Dashboard(props) {
 		}
 	}, [onKeyUp])
 
-	let itemCollectionMultiWrapperClassName =
-		'repository--item-list--collection--item--multi-wrapper '
-	itemCollectionMultiWrapperClassName += isLoading ? 'fade' : ''
-
 	const newCollectionButtonRender = (
 		<Button onClick={props.createNewCollection}>New Collection</Button>
 	)
@@ -680,6 +676,22 @@ function Dashboard(props) {
 			</div>
 		)
 	}
+
+	useEffect(() => {
+		// Reset last selected index when leaving multi-select mode
+		if (!props.multiSelectMode) setLastSelectedIndex(0)
+	}, [props.multiSelectMode])
+
+	useEffect(() => {
+		document.addEventListener('keyup', onKeyUp)
+		return () => {
+			document.removeEventListener('keyup', onKeyUp)
+		}
+	}, [onKeyUp])
+
+	let itemCollectionMultiWrapperClassName =
+		'repository--item-list--collection--item--multi-wrapper '
+	itemCollectionMultiWrapperClassName += isLoading ? 'fade' : ''
 
 	return (
 		<span id="dashboard-root">
