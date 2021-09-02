@@ -32,7 +32,28 @@ describe('ModuleSearchDialog', () => {
 
 		expect(defaultProps.clearModuleSearchResults).toHaveBeenCalledTimes(1)
 
+		const collectionModuleListItems = component.root.findAllByType(CollectionModuleListItem)
+		expect(collectionModuleListItems.length).toBe(0)
+
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders when searchModules and collectionModules are not provided', () => {
+		const defaultPropsWithoutSearchModules = {
+			...defaultProps
+		}
+		delete defaultPropsWithoutSearchModules.searchModules
+		delete defaultPropsWithoutSearchModules.collectionModules
+
+		let component
+		act(() => {
+			component = create(<ModuleSearchDialog {...defaultPropsWithoutSearchModules} />)
+		})
+
+		expect(defaultProps.clearModuleSearchResults).toHaveBeenCalledTimes(1)
+
+		const collectionModuleListItems = component.root.findAllByType(CollectionModuleListItem)
+		expect(collectionModuleListItems.length).toBe(0)
 	})
 
 	test('changing search field should call onSearchChange', () => {

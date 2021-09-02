@@ -2,7 +2,7 @@
 
 exports[`MenuControlButton renders with additional classes 1`] = `
 <div
-  className="other-class menu-control-button"
+  className="other-class"
 >
   <svg
     height="32px"
@@ -17,9 +17,9 @@ exports[`MenuControlButton renders with additional classes 1`] = `
 </div>
 `;
 
-exports[`MenuControlButton renders with no additional classes 1`] = `
+exports[`MenuControlButton renders with no classes 1`] = `
 <div
-  className=" menu-control-button"
+  className=""
 >
   <svg
     height="32px"

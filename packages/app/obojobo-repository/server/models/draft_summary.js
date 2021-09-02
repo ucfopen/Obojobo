@@ -58,7 +58,7 @@ class DraftSummary {
 
 	static fetchAll() {
 		return db
-			.manyOrNone(buildQueryWhere('TRUE'))
+			.manyOrNone(buildQuery('TRUE'))
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				throw logger.logError('DraftSummary fetchAll Error', error)

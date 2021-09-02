@@ -642,7 +642,7 @@ describe('api draft route', () => {
 
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
 
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.send({ collectionId: 'mockCollectionId' })
@@ -671,7 +671,7 @@ describe('api draft route', () => {
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(false)
 
 		expect.assertions(7)
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.send({ collectionId: 'mockCollectionId' })
@@ -710,7 +710,7 @@ describe('api draft route', () => {
 		expect.hasAssertions()
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
 		CollectionModel.addModule.mockResolvedValueOnce(true)
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/tutorial')
 			.type('application/json')
@@ -729,7 +729,7 @@ describe('api draft route', () => {
 		expect.hasAssertions()
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(false)
 		CollectionModel.addModule.mockResolvedValueOnce(true)
-		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/tutorial')
 			.type('application/json')
@@ -986,7 +986,7 @@ describe('api draft route', () => {
 		expect.assertions(5)
 
 		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
-		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')

@@ -376,6 +376,7 @@ describe('Dashboard Actions', () => {
 	})
 
 	const assertBulkDeleteModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+		if (typeof fetchBody === 'undefined') fetchBody = '{}'
 		global.fetch.mockResolvedValue(standardFetchResponse)
 		const actionReply = DashboardActions.bulkDeleteModules(
 			['mockDraftId1', 'mockDraftId2'],
@@ -415,6 +416,140 @@ describe('Dashboard Actions', () => {
 	test('bulkDeleteModules returns expected output and calls other functions', () => {
 		return assertBulkDeleteModulesRunsWithOptions('/api/drafts')
 	})
+
+	test('bulkAddModulesToCollection calls other functions', () => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+
+		const mockDraftIds = ['draft-id-1', 'draft-id-2', 'draft-id-3']
+		const mockCollectionIds = ['collection-id-1', 'collection-id-2']
+
+		const actionReply = DashboardActions.bulkAddModulesToCollection(mockDraftIds, mockCollectionIds)
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_ADD_MODULES_TO_COLLECTIONS,
+			promise: expect.any(Object)
+		})
+
+		actionReply.promise.then(() => {
+			const expectedNumberOfCalls = mockDraftIds.length * mockCollectionIds.length
+			expect(global.fetch).toHaveBeenCalledTimes(expectedNumberOfCalls)
+
+			let callIndex = 0
+			mockDraftIds.forEach(draftId => {
+				mockCollectionIds.forEach(collectionId => {
+					const expectedCall = global.fetch.mock.calls[callIndex++]
+					const expectedApiUrl = `/api/collections/${collectionId}/module/add`
+					expect(expectedCall[0]).toBe(expectedApiUrl)
+					expect(expectedCall[1]).toEqual({
+						...defaultFetchOptions,
+						method: 'POST',
+						body: `{"draftId":"${draftId}"}`
+					})
+				})
+			})
+
+			expect(callIndex).toEqual(expectedNumberOfCalls)
+		})
+	})
+
+	test('bulkRemoveModulesFromCollection returns expected output and calls other functions', () => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+
+		const mockCollectionId = 'mockCollectionId'
+
+		const mockDraftIds = ['draft-id-1', 'draft-id-2', 'draft-id-3']
+
+		const actionReply = DashboardActions.bulkRemoveModulesFromCollection(
+			mockDraftIds,
+			mockCollectionId
+		)
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_REMOVE_MODULES_FROM_COLLECTION,
+			meta: {
+				changedCollectionId: mockCollectionId,
+				currentCollectionId: mockCollectionId
+			},
+			promise: expect.any(Object)
+		})
+
+		actionReply.promise.then(() => {
+			expect(global.fetch).toHaveBeenCalledTimes(mockDraftIds.length + 1)
+			mockDraftIds.forEach((draftId, index) => {
+				const expectedCall = global.fetch.mock.calls[index]
+				expect(expectedCall[0]).toBe(`/api/collections/${mockCollectionId}/module/remove`)
+				expect(expectedCall[1]).toEqual({
+					...defaultFetchOptions,
+					method: 'DELETE',
+					body: `{"draftId":"${draftId}"}`
+				})
+			})
+
+			const lastCall = global.fetch.mock.calls[mockDraftIds.length]
+			expect(lastCall[0]).toBe(`/api/collections/${mockCollectionId}/modules`)
+			expect(lastCall[1]).toEqual(defaultFetchOptions)
+		})
+	})
+	/*
+test('moduleAddToCollection returns the expected output and calls other functions correctly', () => {
+	global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+	const actionReply = DashboardActions.moduleAddToCollection('mockDraftId', 'mockCollectionId')
+
+	expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/add', {
+		...defaultFetchOptions,
+		method: 'POST',
+		body: '{"draftId":"mockDraftId"}'
+	})
+	global.fetch.mockReset()
+	global.fetch.mockResolvedValueOnce({
+		json: () => ({ value: 'mockSecondaryPermissionsVal' })
+	})
+
+	expect(actionReply).toEqual({
+		type: DashboardActions.MODULE_ADD_TO_COLLECTION,
+		promise: expect.any(Object)
+	})
+
+	// should get draft permissions after changing them
+	return actionReply.promise.then(finalResponse => {
+		expect(standardFetchResponse.json).toHaveBeenCalled()
+		expectGetCollectionsForModuleCalled()
+		expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+	})
+})
+
+test('moduleRemoveFromCollection returns the expected output and calls other functions correctly', () => {
+	global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+	const actionReply = DashboardActions.moduleRemoveFromCollection(
+		'mockDraftId',
+		'mockCollectionId'
+	)
+
+	expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/remove', {
+		...defaultFetchOptions,
+		method: 'DELETE',
+		body: '{"draftId":"mockDraftId"}'
+	})
+	global.fetch.mockReset()
+	global.fetch.mockResolvedValueOnce({
+		json: () => ({ value: 'mockSecondaryPermissionsVal' })
+	})
+
+	expect(actionReply).toEqual({
+		type: DashboardActions.MODULE_REMOVE_FROM_COLLECTION,
+		promise: expect.any(Object)
+	})
+
+	// should get draft permissions after changing them
+	return actionReply.promise.then(finalResponse => {
+		expect(standardFetchResponse.json).toHaveBeenCalled()
+		expectGetCollectionsForModuleCalled()
+		expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+	})
+})
+*/
 
 	// three (plus one default) ways of calling createNewModule plus tutorial/normal module
 	const assertCreateNewModuleRunsWithOptions = (
@@ -647,6 +782,17 @@ describe('Dashboard Actions', () => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
 			expectGetCollectionsForModuleCalled()
 			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+
+	test('showCollectionBulkAddModulesDialog returns the expected output', () => {
+		const mockSelectedModules = []
+		const actionReply = DashboardActions.showCollectionBulkAddModulesDialog(mockSelectedModules)
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
+			selectedModules: mockSelectedModules
 		})
 	})
 
@@ -1185,7 +1331,8 @@ describe('Dashboard Actions', () => {
 			value: mockRevisionHistoryList
 		}))
 
-		const mockFetchResponse = { ...standardFetchResponse,
+		const mockFetchResponse = {
+			...standardFetchResponse,
 			headers: {
 				get: mockHeadersGet
 			},
@@ -1197,10 +1344,7 @@ describe('Dashboard Actions', () => {
 		const actionReply = DashboardActions.showVersionHistory(mockModule)
 		jest.runAllTimers()
 
-		expect(global.fetch).toHaveBeenCalledWith(
-			mockFetchUrl,
-			defaultFetchOptions
-		)
+		expect(global.fetch).toHaveBeenCalledWith(mockFetchUrl, defaultFetchOptions)
 
 		expect(actionReply).toEqual({
 			type: DashboardActions.SHOW_VERSION_HISTORY,
@@ -1236,9 +1380,12 @@ describe('Dashboard Actions', () => {
 		const mockModule = { draftId: 'mockDraftId' }
 		const mockFetchUrl = `/api/drafts/${mockModule.draftId}/revisions`
 
-		const mockHeadersGet = jest.fn()
-			.mockReturnValueOnce(`<${mockFetchUrl}?after=mockDraftId3>;
-			rel="next"`)
+		const mockHeadersGet = jest
+			.fn()
+			.mockReturnValueOnce(
+				`<${mockFetchUrl}?after=mockDraftId3>;
+			rel="next"`
+			)
 			.mockReturnValueOnce(null)
 
 		const mockRevisionHistoryList1 = [
@@ -1276,11 +1423,13 @@ describe('Dashboard Actions', () => {
 			}
 		]
 
-		const mockFetchJSON = jest.fn()
-			.mockResolvedValueOnce({value: mockRevisionHistoryList1})
-			.mockResolvedValueOnce({value: mockRevisionHistoryList2})
+		const mockFetchJSON = jest
+			.fn()
+			.mockResolvedValueOnce({ value: mockRevisionHistoryList1 })
+			.mockResolvedValueOnce({ value: mockRevisionHistoryList2 })
 
-		const mockFetchResponse = { ...standardFetchResponse,
+		const mockFetchResponse = {
+			...standardFetchResponse,
 			headers: {
 				get: mockHeadersGet
 			},
@@ -1292,10 +1441,7 @@ describe('Dashboard Actions', () => {
 		const actionReply = DashboardActions.showVersionHistory(mockModule)
 		jest.runAllTimers()
 
-		expect(global.fetch).toHaveBeenCalledWith(
-			mockFetchUrl,
-			defaultFetchOptions
-		)
+		expect(global.fetch).toHaveBeenCalledWith(mockFetchUrl, defaultFetchOptions)
 
 		expect(actionReply).toEqual({
 			type: DashboardActions.SHOW_VERSION_HISTORY,
@@ -1305,12 +1451,18 @@ describe('Dashboard Actions', () => {
 
 		return actionReply.promise.then(finalHistory => {
 			expect(global.fetch).toHaveBeenCalledTimes(2)
-			expect(global.fetch.mock.calls[0]).toEqual([mockFetchUrl, {
-				...defaultFetchOptions
-			}])
-			expect(global.fetch.mock.calls[1]).toEqual([mockFetchUrl+'?after=mockDraftId3', {
-				...defaultFetchOptions
-			}])
+			expect(global.fetch.mock.calls[0]).toEqual([
+				mockFetchUrl,
+				{
+					...defaultFetchOptions
+				}
+			])
+			expect(global.fetch.mock.calls[1]).toEqual([
+				mockFetchUrl + '?after=mockDraftId3',
+				{
+					...defaultFetchOptions
+				}
+			])
 			expect(mockHeadersGet).toHaveBeenCalledTimes(2)
 			expect(mockFetchJSON).toHaveBeenCalledTimes(2)
 			expect(finalHistory.length).toBe(6)
@@ -1348,9 +1500,12 @@ describe('Dashboard Actions', () => {
 		const mockModule = { draftId: 'mockDraftId' }
 		const mockFetchUrl = `/api/drafts/${mockModule.draftId}/revisions`
 
-		const mockHeadersGet = jest.fn()
-			.mockReturnValueOnce(`<${mockFetchUrl}?after=mockDraftId3>;
-			rel="unrecognized"`)
+		const mockHeadersGet = jest
+			.fn()
+			.mockReturnValueOnce(
+				`<${mockFetchUrl}?after=mockDraftId3>;
+			rel="unrecognized"`
+			)
 			.mockReturnValueOnce(null)
 
 		const mockRevisionHistoryList1 = [
@@ -1388,11 +1543,13 @@ describe('Dashboard Actions', () => {
 			}
 		]
 
-		const mockFetchJSON = jest.fn()
-			.mockResolvedValueOnce({value: mockRevisionHistoryList1})
-			.mockResolvedValueOnce({value: mockRevisionHistoryList2})
+		const mockFetchJSON = jest
+			.fn()
+			.mockResolvedValueOnce({ value: mockRevisionHistoryList1 })
+			.mockResolvedValueOnce({ value: mockRevisionHistoryList2 })
 
-		const mockFetchResponse = { ...standardFetchResponse,
+		const mockFetchResponse = {
+			...standardFetchResponse,
 			headers: {
 				get: mockHeadersGet
 			},
@@ -1404,10 +1561,7 @@ describe('Dashboard Actions', () => {
 		const actionReply = DashboardActions.showVersionHistory(mockModule)
 		jest.runAllTimers()
 
-		expect(global.fetch).toHaveBeenCalledWith(
-			mockFetchUrl,
-			defaultFetchOptions
-		)
+		expect(global.fetch).toHaveBeenCalledWith(mockFetchUrl, defaultFetchOptions)
 
 		expect(actionReply).toEqual({
 			type: DashboardActions.SHOW_VERSION_HISTORY,
@@ -1438,15 +1592,15 @@ describe('Dashboard Actions', () => {
 		const mockModule = { draftId: 'mockDraftId' }
 		const mockFetchUrl = `/api/drafts/${mockModule.draftId}/revisions`
 
-		const mockHeadersGet = jest.fn()
-			.mockReturnValue(`<${mockFetchUrl}?after=mockDraftId>;
+		const mockHeadersGet = jest.fn().mockReturnValue(`<${mockFetchUrl}?after=mockDraftId>;
 			rel="next"`)
 
 		const mockFetchJSON = jest.fn(() => ({
 			value: []
 		}))
 
-		const mockFetchResponse = { ...standardFetchResponse,
+		const mockFetchResponse = {
+			...standardFetchResponse,
 			headers: {
 				get: mockHeadersGet
 			},
@@ -1458,10 +1612,7 @@ describe('Dashboard Actions', () => {
 		const actionReply = DashboardActions.showVersionHistory(mockModule)
 		jest.runAllTimers()
 
-		expect(global.fetch).toHaveBeenCalledWith(
-			mockFetchUrl,
-			defaultFetchOptions
-		)
+		expect(global.fetch).toHaveBeenCalledWith(mockFetchUrl, defaultFetchOptions)
 
 		expect(actionReply).toEqual({
 			type: DashboardActions.SHOW_VERSION_HISTORY,
@@ -1494,7 +1645,8 @@ describe('Dashboard Actions', () => {
 		]
 
 		// numerous API calls are made in sequence
-		const mockFetchJSON = jest.fn()
+		const mockFetchJSON = jest
+			.fn()
 			// first call: get full json of target revision
 			.mockResolvedValueOnce({
 				value: {
@@ -1514,7 +1666,8 @@ describe('Dashboard Actions', () => {
 			})
 		const mockHeadersGet = jest.fn()
 
-		global.fetch.mockResolvedValue({ ...standardFetchResponse,
+		global.fetch.mockResolvedValue({
+			...standardFetchResponse,
 			headers: {
 				get: mockHeadersGet
 			},
@@ -1536,19 +1689,28 @@ describe('Dashboard Actions', () => {
 			expect(mockFetchJSON).toHaveBeenCalledTimes(3)
 			expect(global.fetch).toHaveBeenCalledTimes(3)
 			// first call: get full json of target revision
-			expect(global.fetch.mock.calls[0]).toEqual(['/api/drafts/mockDraftId/revisions/mockDraftId2', {
-				...defaultFetchOptions
-			}])
+			expect(global.fetch.mock.calls[0]).toEqual([
+				'/api/drafts/mockDraftId/revisions/mockDraftId2',
+				{
+					...defaultFetchOptions
+				}
+			])
 			//second call: save the full json as a new draft
-			expect(global.fetch.mock.calls[1]).toEqual(['/api/drafts/mockDraftId', {
-				...defaultFetchOptions,
-				method: 'POST',
-				body: 'mockDraftJSONString'
-			}])
+			expect(global.fetch.mock.calls[1]).toEqual([
+				'/api/drafts/mockDraftId',
+				{
+					...defaultFetchOptions,
+					method: 'POST',
+					body: 'mockDraftJSONString'
+				}
+			])
 			//third call: get the revision history of the given draft
-			expect(global.fetch.mock.calls[2]).toEqual(['/api/drafts/mockDraftId/revisions', {
-				...defaultFetchOptions
-			}])
+			expect(global.fetch.mock.calls[2]).toEqual([
+				'/api/drafts/mockDraftId/revisions',
+				{
+					...defaultFetchOptions
+				}
+			])
 			expect(mockHeadersGet).toHaveBeenCalledTimes(1)
 
 			for (let i = 0; i < 3; i++) {
@@ -1582,11 +1744,12 @@ describe('Dashboard Actions', () => {
 
 	test('restoreVersion makes all other sub-calls - draft json as object, restoration errors', () => {
 		// numerous API calls are made in sequence
-		const mockFetchJSON = jest.fn()
+		const mockFetchJSON = jest
+			.fn()
 			// first call: get full json of target revision
 			.mockResolvedValueOnce({
 				value: {
-					json: {id: 'mockDraftJSONString'}
+					json: { id: 'mockDraftJSONString' }
 				}
 			})
 			//second call: save the full json as a new draft
@@ -1599,7 +1762,8 @@ describe('Dashboard Actions', () => {
 
 		const mockHeadersGet = jest.fn()
 
-		global.fetch.mockResolvedValue({ ...standardFetchResponse,
+		global.fetch.mockResolvedValue({
+			...standardFetchResponse,
 			headers: {
 				get: mockHeadersGet
 			},
@@ -1621,15 +1785,21 @@ describe('Dashboard Actions', () => {
 			expect(mockFetchJSON).toHaveBeenCalledTimes(2)
 			expect(global.fetch).toHaveBeenCalledTimes(2)
 			// first call: get full json of target revision
-			expect(global.fetch.mock.calls[0]).toEqual(['/api/drafts/mockDraftId/revisions/mockDraftId2', {
-				...defaultFetchOptions
-			}])
+			expect(global.fetch.mock.calls[0]).toEqual([
+				'/api/drafts/mockDraftId/revisions/mockDraftId2',
+				{
+					...defaultFetchOptions
+				}
+			])
 			//second call: save the full json as a new draft
-			expect(global.fetch.mock.calls[1]).toEqual(['/api/drafts/mockDraftId', {
-				...defaultFetchOptions,
-				method: 'POST',
-				body: '{"id":"mockDraftJSONString"}'
-			}])
+			expect(global.fetch.mock.calls[1]).toEqual([
+				'/api/drafts/mockDraftId',
+				{
+					...defaultFetchOptions,
+					method: 'POST',
+					body: '{"id":"mockDraftJSONString"}'
+				}
+			])
 			expect(error).toBeInstanceOf(Error)
 			expect(error.message).toBe('Failed restoring draft.')
 		})

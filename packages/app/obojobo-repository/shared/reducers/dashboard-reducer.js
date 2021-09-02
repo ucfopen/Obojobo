@@ -12,6 +12,8 @@ const {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	BULK_DELETE_MODULES,
+	BULK_ADD_MODULES_TO_COLLECTIONS,
+	BULK_REMOVE_MODULES_FROM_COLLECTION,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	FILTER_COLLECTIONS,
@@ -23,6 +25,7 @@ const {
 	LOAD_MODULE_COLLECTIONS,
 	MODULE_ADD_TO_COLLECTION,
 	MODULE_REMOVE_FROM_COLLECTION,
+	SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
 	SHOW_COLLECTION_MANAGE_MODULES,
 	LOAD_COLLECTION_MODULES,
 	COLLECTION_ADD_MODULE,
@@ -135,7 +138,10 @@ function DashboardReducer(state, action) {
 				start: () => ({ ...state, ...closedDialogState() }),
 				// update myModules and re-apply the filter if one exists
 				success: prevState => {
-					const filteredModules = filterModules(action.payload.value.modules, state.moduleSearchString)
+					const filteredModules = filterModules(
+						action.payload.value.modules,
+						state.moduleSearchString
+					)
 					return {
 						...prevState,
 						moduleCount: action.payload.value.allCount,
@@ -149,11 +155,36 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				// update myModules, re-apply the filter, and exit multi-select mode
 				success: prevState => {
-					const filteredModules = filterModules(action.payload.value, state.moduleSearchString)
+					const filteredModules = filterModules(
+						action.payload.value.modules,
+						state.moduleSearchString
+					)
 					return {
 						...prevState,
-						myModules: action.payload.value,
+						myModules: action.payload.value.modules,
+						moduleCount: action.payload.value.allCount,
 						filteredModules,
+						selectedModules: [],
+						multiSelectMode: false
+					}
+				}
+			})
+
+		case BULK_ADD_MODULES_TO_COLLECTIONS:
+			return {
+				...state,
+				selectedModules: [],
+				multiSelectMode: false
+			}
+
+		case BULK_REMOVE_MODULES_FROM_COLLECTION:
+			return handle(state, action, {
+				success: prevState => {
+					return {
+						...prevState,
+						myModules: action.payload.value.modules,
+						collectionModules: action.payload.value.modules,
+						moduleCount: action.payload.value.allCount,
 						selectedModules: [],
 						multiSelectMode: false
 					}
@@ -260,6 +291,13 @@ function DashboardReducer(state, action) {
 				...state,
 				dialog: 'module-manage-collections',
 				selectedModule: action.module
+			}
+
+		case SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG:
+			return {
+				...state,
+				dialog: 'collection-bulk-add-modules',
+				selectedModules: action.selectedModules
 			}
 
 		case SHOW_COLLECTION_MANAGE_MODULES:

@@ -71,16 +71,24 @@ class Collection {
 
 	static addModule(collectionId, draftId, userId) {
 		return db
-			.none(
+			.oneOrNone(
 				`INSERT INTO repository_map_drafts_to_collections
 					(draft_id, collection_id, user_id)
 				VALUES
 					($[draftId], $[collectionId], $[userId])
-				`,
+				ON CONFLICT DO NOTHING
+				RETURNING id`,
 				{ collectionId, draftId, userId }
 			)
-			.then(() => {
-				logger.info('user added module to collection', { userId, collectionId, draftId })
+			.then(newMapId => {
+				if (newMapId) {
+					logger.info('user added module to collection', {
+						userId,
+						collectionId,
+						draftId,
+						newMapId
+					})
+				}
 			})
 	}
 

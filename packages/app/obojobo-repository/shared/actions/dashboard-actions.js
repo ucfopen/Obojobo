@@ -328,6 +328,33 @@ const bulkDeleteModules = draftIds => ({
 	promise: Promise.all(draftIds.map(id => apiDeleteModule(id))).then(apiGetMyModules)
 })
 
+const BULK_ADD_MODULES_TO_COLLECTIONS = 'BULK_ADD_MODULES_TO_COLLECTIONS'
+const bulkAddModulesToCollection = (draftIds, collectionIds) => {
+	const allPromises = []
+	draftIds.forEach(draftId => {
+		collectionIds.forEach(collectionId => {
+			allPromises.push(apiAddModuleToCollection(draftId, collectionId))
+		})
+	})
+
+	return {
+		type: BULK_ADD_MODULES_TO_COLLECTIONS,
+		promise: Promise.all(allPromises)
+	}
+}
+
+const BULK_REMOVE_MODULES_FROM_COLLECTION = 'BULK_REMOVE_MODULES_FROM_COLLECTION'
+const bulkRemoveModulesFromCollection = (draftIds, collectionId) => ({
+	type: BULK_REMOVE_MODULES_FROM_COLLECTION,
+	meta: {
+		changedCollectionId: collectionId,
+		currentCollectionId: collectionId
+	},
+	promise: Promise.all(
+		draftIds.map(draftId => apiRemoveModuleFromCollection(draftId, collectionId))
+	).then(() => apiGetModulesForCollection(collectionId))
+})
+
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false, options = { ...defaultModuleModeOptions }) => {
 	let apiModuleGetCall
@@ -410,6 +437,12 @@ const moduleRemoveFromCollection = (draftId, collectionId) => ({
 	promise: apiRemoveModuleFromCollection(draftId, collectionId).then(() => {
 		return apiGetCollectionsForModule(draftId)
 	})
+})
+
+const SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG = 'SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG'
+const showCollectionBulkAddModulesDialog = selectedModules => ({
+	type: SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
+	selectedModules
 })
 
 const SHOW_COLLECTION_MANAGE_MODULES = 'SHOW_COLLECTION_MANAGE_MODULES'
@@ -546,6 +579,8 @@ module.exports = {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	BULK_DELETE_MODULES,
+	BULK_ADD_MODULES_TO_COLLECTIONS,
+	BULK_REMOVE_MODULES_FROM_COLLECTION,
 	FILTER_MODULES,
 	FILTER_COLLECTIONS,
 	SELECT_MODULES,
@@ -556,6 +591,7 @@ module.exports = {
 	LOAD_MODULE_COLLECTIONS,
 	MODULE_ADD_TO_COLLECTION,
 	MODULE_REMOVE_FROM_COLLECTION,
+	SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
 	SHOW_COLLECTION_MANAGE_MODULES,
 	LOAD_COLLECTION_MODULES,
 	COLLECTION_ADD_MODULE,
@@ -576,6 +612,8 @@ module.exports = {
 	deselectModules,
 	deleteModule,
 	bulkDeleteModules,
+	bulkAddModulesToCollection,
+	bulkRemoveModulesFromCollection,
 	closeModal,
 	deleteModulePermissions,
 	searchForUser,
@@ -593,6 +631,7 @@ module.exports = {
 	searchForModuleNotInCollection,
 	clearModuleSearchResults,
 	showCollectionRename,
+	showCollectionBulkAddModulesDialog,
 	showModuleManageCollections,
 	loadModuleCollections,
 	moduleAddToCollection,

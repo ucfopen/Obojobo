@@ -59,7 +59,7 @@ const ModuleSearchDialog = ({
 				</Button>
 				<h1 className="title">Find Modules to Add</h1>
 				<Search
-					onChange={() => {
+					onChange={searchString => {
 						onSearchChange(searchString, collectionId)
 					}}
 					focusOnMount={true}

@@ -156,11 +156,30 @@ describe('Collection Model', () => {
 		const userId = 0
 
 		const mockPayload = { collectionId, draftId, userId }
+		const mockResponse = 1
 
-		db.none.mockResolvedValueOnce(mockPayload)
+		db.oneOrNone.mockResolvedValueOnce(mockResponse)
 
 		return CollectionModel.addModule(collectionId, draftId, userId).then(() => {
-			expect(logger.info).toHaveBeenCalledWith('user added module to collection', mockPayload)
+			expect(logger.info).toHaveBeenCalledWith('user added module to collection', {
+				...mockPayload,
+				newMapId: mockResponse
+			})
+		})
+	})
+	test('addModule logs nothing when trying to add a module to a collection that already contains that module', () => {
+		logger.info = jest.fn()
+
+		expect.hasAssertions()
+
+		const collectionId = 'mockCollectionId'
+		const draftId = 'mockDraftId'
+		const userId = 0
+
+		db.oneOrNone.mockResolvedValueOnce(null)
+
+		return CollectionModel.addModule(collectionId, draftId, userId).then(() => {
+			expect(logger.info).not.toHaveBeenCalled()
 		})
 	})
 

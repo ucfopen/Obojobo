@@ -17,6 +17,8 @@ const {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	BULK_DELETE_MODULES,
+	BULK_ADD_MODULES_TO_COLLECTIONS,
+	BULK_REMOVE_MODULES_FROM_COLLECTION,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	FILTER_COLLECTIONS,
@@ -28,6 +30,7 @@ const {
 	LOAD_MODULE_COLLECTIONS,
 	MODULE_ADD_TO_COLLECTION,
 	MODULE_REMOVE_FROM_COLLECTION,
+	SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
 	SHOW_COLLECTION_MANAGE_MODULES,
 	LOAD_COLLECTION_MODULES,
 	COLLECTION_ADD_MODULE,
@@ -38,8 +41,8 @@ const {
 	RENAME_COLLECTION,
 	DELETE_COLLECTION,
 	SHOW_VERSION_HISTORY,
-	SHOW_ASSESSMENT_SCORE_DATA,
-	RESTORE_VERSION
+	RESTORE_VERSION,
+	SHOW_ASSESSMENT_SCORE_DATA
 } = require('../actions/dashboard-actions')
 
 const Pack = require('redux-pack')
@@ -471,7 +474,10 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: BULK_DELETE_MODULES,
 			payload: {
-				value: mockModuleList
+				value: {
+					modules: mockModuleList,
+					allCount: mockModuleList.length
+				}
 			}
 		}
 
@@ -481,6 +487,74 @@ describe('Dashboard Reducer', () => {
 		expect(newState.myModules).not.toEqual(initialState.myModules)
 		expect(newState.myModules).toEqual(mockModuleList)
 		expect(newState.filteredModules).toEqual(mockModuleList)
+		expect(newState.selectedModules).toEqual([])
+		expect(newState.multiSelectMode).toBe(false)
+	})
+
+	test('BULK_ADD_MODULES_TO_COLLECTIONS action modifies state correctly', () => {
+		const initialState = {
+			multiSelectMode: true,
+			selectedModules: ['mockDraftId1', 'mockDraftId2']
+		}
+
+		const action = {
+			type: BULK_ADD_MODULES_TO_COLLECTIONS
+		}
+
+		// BULK_ADD_MODULES_TO_COLLECTIONS is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.selectedModules).toEqual([])
+		expect(newState.multiSelectMode).toBe(false)
+	})
+
+	test('BULK_REMOVE_MODULES_FROM_COLLECTION action modifies state correctly', () => {
+		const mockModuleList = [
+			{
+				draftId: 'mockDraftId2',
+				title: 'Mock Module 2'
+			}
+		]
+
+		const oldModules = [
+			{
+				draftId: 'mockDraftId1',
+				title: 'Mock Module 1'
+			},
+			{
+				draftId: 'mockDraftId2',
+				title: 'Mock Module 2'
+			},
+			{
+				draftId: 'mockDraftId3',
+				title: 'Mock Module 3'
+			}
+		]
+
+		const initialState = {
+			multiSelectMode: true,
+			selectedModules: ['mockDraftId1', 'mockDraftId3'],
+			myModules: [...oldModules],
+			moduleCount: oldModules.length,
+			collectionModules: [...oldModules]
+		}
+
+		const action = {
+			type: BULK_REMOVE_MODULES_FROM_COLLECTION,
+			payload: {
+				value: {
+					modules: mockModuleList,
+					allCount: mockModuleList.length
+				}
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+		expect(newState.myModules).not.toEqual(initialState.myModules)
+		expect(newState.myModules).toEqual(mockModuleList)
+		expect(newState.moduleCount).toEqual(mockModuleList.length)
+		expect(newState.collectionModules).toEqual(mockModuleList)
 		expect(newState.selectedModules).toEqual([])
 		expect(newState.multiSelectMode).toBe(false)
 	})
@@ -775,6 +849,25 @@ describe('Dashboard Reducer', () => {
 		expect(newState.dialog).toBe('module-manage-collections')
 		expect(newState.selectedModule).not.toEqual(initialState.selectedModule)
 		expect(newState.selectedModule).toEqual(mockSelectedModule)
+	})
+
+	test('SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			selectedModules: []
+		}
+
+		const mockSelectedModules = ['mockDraftId1', 'mockDraftId2']
+
+		const action = {
+			type: SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
+			selectedModules: mockSelectedModules
+		}
+
+		// SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.dialog).toBe('collection-bulk-add-modules')
+		expect(newState.selectedModules).toEqual(mockSelectedModules)
 	})
 
 	test('SHOW_COLLECTION_MANAGE_MODULES action modifies state correctly', () => {

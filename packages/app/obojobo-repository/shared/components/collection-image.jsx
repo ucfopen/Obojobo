@@ -18,8 +18,12 @@ const CollectionImage = props => (
 					patternUnits="userSpaceOnUse"
 					width="150"
 					height="150"
+					// The pattern is rendered in the middle of the entire SVG rather than the middle of a single hexagon
+					// Offsetting the pattern to the left a little bit fills in the patterned hexagon
+					// This is a little hacky - maybe replace with math later, or constrain the pattern to the single hexagon
+					x="-10%"
 					dangerouslySetInnerHTML={{
-						__html: `<image xlink:href="/library/module-icon/${props.id}" width="150" height="150" />`
+						__html: `<image xlink:href="/library/module-icon/${props.id}" width="100%" height="100%" />`
 					}}
 				/>
 			</defs>
