@@ -2,6 +2,7 @@ require('./default.scss')
 
 const React = require('react')
 const Footer = require('./footer')
+const Dedication = require('./dedication')
 const reactVersion = '16.13.1'
 
 const LayoutDefault = props => (
@@ -57,6 +58,8 @@ const LayoutDefault = props => (
 					<Footer />
 				</div>
 			</div>
+
+			<Dedication />
 		</body>
 	</html>
 )

@@ -81,6 +81,7 @@ const parseText = (node, textItem) => {
 
 	textItem.styleList.push(styleRange)
 
+	if (!node.value) node.value = ''
 	for (const value of node.value) {
 		parseText(value, textItem)
 	}

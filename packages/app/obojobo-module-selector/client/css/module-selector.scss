@@ -330,7 +330,8 @@ header {
 	background: white url('./spinner.gif') center center no-repeat;
 }
 
-.section.my-modules {
+.section.my-modules,
+.section.community-library {
 	overflow-x: hidden;
 	overflow-y: scroll;
 }

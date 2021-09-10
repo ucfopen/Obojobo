@@ -1,12 +1,9 @@
-import getTextItems from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-text-items.js'
+import getTextItems from './get-text-items'
 import {
 	TYPE_ATTEMPT_WITHOUT_MODS_REWARDED,
 	TYPE_ATTEMPT_WITH_MODS_REWARDED,
-	TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED,
-	TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED,
-	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100,
-	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED,
-	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED,
+	TYPE_PASSFAIL_PASSED_GIVEN_SCORE,
+	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100,
 	TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_SCORE,
@@ -14,12 +11,11 @@ import {
 	TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE,
 	TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE,
 	ERROR_UNKNOWN_DISPLAY_TYPE
-} from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/display-types'
+} from './display-types'
 
-const getDisplayType = require('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
-	.default
+const getDisplayType = require('./get-display-type').default
 
-jest.mock('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
+jest.mock('./get-display-type')
 
 describe('getTextItems', () => {
 	const mods = [
@@ -135,112 +131,8 @@ describe('getTextItems', () => {
 		])
 	})
 
-	test('TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED', () => {
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED
-		)
-		expect(
-			getTextItems(
-				{
-					isAssessScoreOver100: true,
-					mods: []
-				},
-				displayValues
-			)
-		).toEqual([
-			{
-				type: 'total',
-				text: 'Score',
-				value: 'AssessmentScore'
-			}
-		])
-
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED
-		)
-		expect(
-			getTextItems(
-				{
-					isAssessScoreOver100: false,
-					mods: []
-				},
-				displayValues
-			)
-		).toEqual([
-			{
-				type: 'total',
-				text: 'Score',
-				value: 'AssessmentScore'
-			}
-		])
-	})
-
-	test('TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED', () => {
-		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED)
-		expect(
-			getTextItems(
-				{
-					isAssessScoreOver100: true,
-					mods
-				},
-				displayValues
-			)
-		).toEqual([
-			{
-				type: 'value',
-				text: 'Attempt Score',
-				value: 'AttemptScore'
-			},
-			{
-				type: 'extra-credit',
-				text: 'Passed on first attempt',
-				value: '5'
-			},
-			{
-				type: 'divider'
-			},
-			{
-				type: 'total',
-				text: 'Total Score (Max 100%)',
-				value: 'AssessmentScore'
-			}
-		])
-
-		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED)
-		expect(
-			getTextItems(
-				{
-					isAssessScoreOver100: false,
-					mods
-				},
-				displayValues
-			)
-		).toEqual([
-			{
-				type: 'value',
-				text: 'Attempt Score',
-				value: 'AttemptScore'
-			},
-			{
-				type: 'extra-credit',
-				text: 'Passed on first attempt',
-				value: '5'
-			},
-			{
-				type: 'divider'
-			},
-			{
-				type: 'total',
-				text: 'Total Score',
-				value: 'AssessmentScore'
-			}
-		])
-	})
-
-	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 (Without mods)', () => {
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100
-		)
+	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE (Without mods)', () => {
+		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(
 			getTextItems(
 				{
@@ -274,9 +166,7 @@ describe('getTextItems', () => {
 			}
 		])
 
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100
-		)
+		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(
 			getTextItems(
 				{
@@ -311,10 +201,8 @@ describe('getTextItems', () => {
 		])
 	})
 
-	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 (With mods)', () => {
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100
-		)
+	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE (With mods)', () => {
+		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(
 			getTextItems(
 				{
@@ -353,9 +241,7 @@ describe('getTextItems', () => {
 			}
 		])
 
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100
-		)
+		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_PASSED_GIVEN_SCORE)
 		expect(
 			getTextItems(
 				{
@@ -395,56 +281,16 @@ describe('getTextItems', () => {
 		])
 	})
 
-	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED', () => {
+	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100 (Without mods)', () => {
 		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED
+			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100
 		)
 		expect(
 			getTextItems(
 				{
 					isAssessScoreOver100: true,
-					mods: []
-				},
-				displayValues
-			)
-		).toEqual([
-			{
-				type: 'total',
-				text: 'Score',
-				value: 'AssessmentScore'
-			}
-		])
-
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED
-		)
-		expect(
-			getTextItems(
-				{
-					isAssessScoreOver100: false,
-					mods: []
-				},
-				displayValues
-			)
-		).toEqual([
-			{
-				type: 'total',
-				text: 'Score',
-				value: 'AssessmentScore'
-			}
-		])
-	})
-
-	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED (With mods)', () => {
-		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED
-		)
-		expect(
-			getTextItems(
-				{
-					isAssessScoreOver100: true,
-					mods,
-					statusResult: 100
+					mods: [],
+					statusResult: 90
 				},
 				displayValues
 			)
@@ -453,6 +299,88 @@ describe('getTextItems', () => {
 				type: 'value',
 				text: 'Attempt Score (Passed)',
 				value: 'AttemptScore'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'value',
+				text: 'Score adjusted for passing',
+				value: '90'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'total',
+				text: 'Total Score (Max 100%)',
+				value: 'AssessmentScore'
+			}
+		])
+
+		getDisplayType.mockReturnValueOnce(
+			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100
+		)
+		expect(
+			getTextItems(
+				{
+					isAssessScoreOver100: false,
+					mods: [],
+					statusResult: 90
+				},
+				displayValues
+			)
+		).toEqual([
+			{
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: 'AttemptScore'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'value',
+				text: 'Score adjusted for passing',
+				value: '90'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'total',
+				text: 'Total Score',
+				value: 'AssessmentScore'
+			}
+		])
+	})
+
+	test('TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100 (With mods)', () => {
+		getDisplayType.mockReturnValueOnce(
+			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100
+		)
+		expect(
+			getTextItems(
+				{
+					isAssessScoreOver100: true,
+					mods,
+					statusResult: 90
+				},
+				displayValues
+			)
+		).toEqual([
+			{
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: 'AttemptScore'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'value',
+				text: 'Score adjusted for passing',
+				value: '90'
 			},
 			{
 				type: 'extra-credit',
@@ -470,14 +398,14 @@ describe('getTextItems', () => {
 		])
 
 		getDisplayType.mockReturnValueOnce(
-			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED
+			TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_RESULT_IS_LESS_THAN_100
 		)
 		expect(
 			getTextItems(
 				{
 					isAssessScoreOver100: false,
 					mods,
-					statusResult: 100
+					statusResult: 90
 				},
 				displayValues
 			)
@@ -486,6 +414,14 @@ describe('getTextItems', () => {
 				type: 'value',
 				text: 'Attempt Score (Passed)',
 				value: 'AttemptScore'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'value',
+				text: 'Score adjusted for passing',
+				value: '90'
 			},
 			{
 				type: 'extra-credit',
