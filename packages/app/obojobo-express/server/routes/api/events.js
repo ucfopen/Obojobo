@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const oboEvents = oboRequire('server/obo_events')
 const insertEvent = oboRequire('server/insert_event')
-const createCaliperEvent = require('./events/create_caliper_event')
 const {
 	checkValidationRules,
 	requireCurrentDocument,
@@ -24,7 +23,6 @@ router
 	])
 	.post((req, res) => {
 		const event = req.body.event
-		const caliperEvent = createCaliperEvent(req)
 		const insertObject = {
 			actorTime: event.actor_time,
 			action: event.action,
@@ -36,15 +34,14 @@ router
 			payload: event.payload,
 			draftId: req.currentDocument.draftId,
 			contentId: req.currentDocument.contentId,
-			visitId: req.currentVisit.id,
-			caliperPayload: caliperEvent
+			visitId: req.currentVisit.id
 		}
 
 		return insertEvent(insertObject)
 			.then(result => {
 				insertObject.createdAt = result.created_at
 				oboEvents.emit(`client:${event.action}`, insertObject, req)
-				res.success(caliperEvent)
+				res.success()
 			})
 			.catch(res.unexpected)
 	})
