@@ -2,6 +2,7 @@ import IFrame from 'obojobo-chunks-iframe/viewer-component'
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-el'
+import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
 
 import './viewer-component.scss'
 import IFrameControlTypes from 'obojobo-chunks-iframe/iframe-control-types'
@@ -27,6 +28,8 @@ export default class Materia extends React.Component {
 		// state setup
 		this.state = {
 			model,
+			visitId: props.moduleData.navState.visitId,
+			nodeId: props.model.id,
 			score: null,
 			verifiedScore: false,
 			open: false
@@ -40,7 +43,8 @@ export default class Materia extends React.Component {
 	onPostMessageFromMateria(event) {
 		// iframe isn't present OR
 		// postmessage didn't come from the iframe we're listening to
-		if (!this.iframeRef.current || event.source !== this.iframeRef.current.contentWindow) {
+		// if (!this.iframeRef.current || event.source !== this.iframeRef.current.contentWindow) {
+		if (!this.iframeRef.current.refs.iframe || event.source !== this.iframeRef.current.refs.iframe.contentWindow) {
 			return
 		}
 
@@ -58,7 +62,15 @@ export default class Materia extends React.Component {
 
 			switch (data.type) {
 				case 'materiaScoreRecorded':
-					this.setState({ score: data.score })
+					// this should probably be abstracted in a util function somewhere
+					API.get(`${window.location.origin}/materia-lti-score-verify?visitId=${this.state.visitId}&nodeId=${this.state.nodeId}`, 'json')
+						.then(API.processJsonResults)
+						.then(result => {
+							this.setState({
+								score: result.score,
+								verifiedScore: true
+							})
+						})
 					break
 			}
 		} catch (e) {
@@ -83,15 +95,24 @@ export default class Materia extends React.Component {
 	}
 
 	renderTextCaption() {
-		return this.state.model.modelState.textGroup.first.text ? (
-			<div className="label">
-				<TextGroupEl
-					parentModel={this.state.model}
-					textItem={this.state.model.modelState.textGroup.first}
-					groupIndex="0"
-				/>
-			</div>
-		) : null
+		let textCaptionRender = null
+
+		if (this.state.model.modelState.textGroup.first.text) {
+			textCaptionRender = (
+				<div className="label">
+					<TextGroupEl
+						parentModel={this.state.model}
+						textItem={this.state.model.modelState.textGroup.first}
+						groupIndex="0"
+					/>
+					<span className={`materia-score ${isOrNot(this.state.verifiedScore, 'verified')}`}>
+						Your highest score: {this.state.score}%
+					</span>
+				</div>
+			)
+		}
+
+		return textCaptionRender
 	}
 
 	renderCaptionOrScore() {
