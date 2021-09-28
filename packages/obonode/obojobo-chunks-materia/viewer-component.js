@@ -3,6 +3,10 @@ import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-el'
 import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
+import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
+
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+const { NavUtil } = Viewer.util
 
 import './viewer-component.scss'
 import IFrameControlTypes from 'obojobo-chunks-iframe/iframe-control-types'
@@ -11,16 +15,23 @@ import IFrameSizingTypes from 'obojobo-chunks-iframe/iframe-sizing-types'
 export default class Materia extends React.Component {
 	constructor(props) {
 		super(props)
+
 		this.iframeRef = React.createRef()
+
+		let iframeSrc = this.srcToLTILaunchUrl(props.moduleData.navState.visitId, props.model.id)
+		if (props.mode === 'review') {
+			iframeSrc = props.response.scoreUrl
+		}
 
 		// manipulate iframe settings
 		const model = props.model.clone()
 		model.modelState = {
 			...model.modelState,
-			src: this.srcToLTILaunchUrl(props.moduleData.navState.visitId, props.model.id),
+			src: iframeSrc,
 			border: true,
 			fit: 'scale',
 			initialZoom: 1,
+			// autoload: props.mode === 'review', // could be annoying either way, maybe better overall if not automatic
 			controls: [IFrameControlTypes.RELOAD],
 			sizing: IFrameSizingTypes.FIXED
 		}
@@ -40,11 +51,17 @@ export default class Materia extends React.Component {
 		this.onShow = this.onShow.bind(this)
 	}
 
+	static isResponseEmpty(response) {
+		return !response.verifiedScore
+	}
+
 	onPostMessageFromMateria(event) {
-		// iframe isn't present OR
-		// postmessage didn't come from the iframe we're listening to
-		// if (!this.iframeRef.current || event.source !== this.iframeRef.current.contentWindow) {
-		if (!this.iframeRef.current.refs.iframe || event.source !== this.iframeRef.current.refs.iframe.contentWindow) {
+		// iframe isn't present
+		if (!this.iframeRef || !this.iframeRef.current || !this.iframeRef.current.refs.iframe) {
+			return
+		}
+		// OR postmessage didn't come from the iframe we're listening to
+		if (event.source !== this.iframeRef.current.refs.iframe.contentWindow) {
 			return
 		}
 
@@ -63,13 +80,36 @@ export default class Materia extends React.Component {
 			switch (data.type) {
 				case 'materiaScoreRecorded':
 					// this should probably be abstracted in a util function somewhere
-					API.get(`${window.location.origin}/materia-lti-score-verify?visitId=${this.state.visitId}&nodeId=${this.state.nodeId}`, 'json')
+					API.get(
+						`/materia-lti-score-verify?visitId=${this.state.visitId}&nodeId=${this.state.nodeId}`,
+						'json'
+					)
 						.then(API.processJsonResults)
 						.then(result => {
-							this.setState({
+							const newState = {
 								score: result.score,
 								verifiedScore: true
+							}
+							this.setState({
+								...this.state,
+								...newState
 							})
+
+							const modelId = this.props.questionModel.get('id')
+							const moduleContext = NavUtil.getContext(this.props.moduleData.navState)
+
+							QuestionUtil.setResponse(
+								modelId,
+								{
+									...newState,
+									scoreUrl: data.score_url
+								},
+								null,
+								moduleContext,
+								moduleContext.split(':')[1],
+								moduleContext.split(':')[2],
+								false
+							)
 						})
 					break
 			}
@@ -97,6 +137,13 @@ export default class Materia extends React.Component {
 	renderTextCaption() {
 		let textCaptionRender = null
 
+		let scoreRender = null
+		if (this.state.score && this.state.verifiedScore) {
+			scoreRender = (
+				<span className={'materia-score verified'}>Your highest score: {this.state.score}%</span>
+			)
+		}
+
 		if (this.state.model.modelState.textGroup.first.text) {
 			textCaptionRender = (
 				<div className="label">
@@ -105,9 +152,7 @@ export default class Materia extends React.Component {
 						textItem={this.state.model.modelState.textGroup.first}
 						groupIndex="0"
 					/>
-					<span className={`materia-score ${isOrNot(this.state.verifiedScore, 'verified')}`}>
-						Your highest score: {this.state.score}%
-					</span>
+					{scoreRender}
 				</div>
 			)
 		}
@@ -121,6 +166,26 @@ export default class Materia extends React.Component {
 		} catch (e) {
 			console.error('Error building Materia Caption') // eslint-disable-line no-console
 			return null
+		}
+	}
+
+	getInstructions() {
+		return (
+			<React.Fragment>
+				<span className="for-screen-reader-only">Embedded Materia widget.</span>
+				Play the embedded Materia widget to receive a score. Your highest score will be saved.
+			</React.Fragment>
+		)
+	}
+
+	calculateScore() {
+		if (!this.props.score) {
+			return null
+		}
+
+		return {
+			score: this.props.score,
+			details: null
 		}
 	}
 

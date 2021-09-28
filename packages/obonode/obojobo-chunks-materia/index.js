@@ -7,6 +7,7 @@ module.exports = {
 		clientScripts: {
 			viewer: 'viewer.js',
 			editor: 'editor.js'
-		}
+		},
+		serverScripts: ['server/materiaassessment']
 	}
 }
