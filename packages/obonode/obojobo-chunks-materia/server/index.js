@@ -215,23 +215,26 @@ router
 	.route('/materia-lti-score-verify')
 	.get([requireCurrentUser, requireCurrentVisit])
 	.get(async (req, res) => {
-		await db.one(
-		`SELECT payload
+		await db
+			.one(
+				`SELECT payload
 		FROM events
 		WHERE action = 'materia:ltiScorePassback'
 		AND visit_id = $[visitId]
 		AND payload->>'lisResultSourcedId' = $[resourceId]
 		ORDER BY created_at DESC
 		LIMIT 1`,
-		{
-			visitId: req.currentVisit.id,
-			resourceId: `${req.currentVisit.id}__${req.query.nodeId}`
-		}).then(result => {
-			res.send({
-				score: result.payload.score,
-				success: result.payload.success
+				{
+					visitId: req.currentVisit.id,
+					resourceId: `${req.currentVisit.id}__${req.query.nodeId}`
+				}
+			)
+			.then(result => {
+				res.send({
+					score: result.payload.score,
+					success: result.payload.success
+				})
 			})
-		})
 	})
 
 module.exports = router
