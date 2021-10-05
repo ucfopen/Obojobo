@@ -1,7 +1,7 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
-const buildQueryWhere = (whereSQL, joinSQL = '') => {
+const buildQueryWhere = (whereSQL, joinSQL = '', deleted='FALSE') => {
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -16,7 +16,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
 		${joinSQL}
-		WHERE drafts.deleted = FALSE
+		WHERE drafts.deleted = ${deleted}
 		AND ${whereSQL}
 		WINDOW wnd AS (
 			PARTITION BY drafts_content.draft_id ORDER BY drafts_content.created_at
@@ -82,9 +82,20 @@ class DraftSummary {
 		)
 	}
 
+	static fetchDeletedByUserId(userId) {
+		return DraftSummary.fetchAndJoinWhere(
+			`JOIN repository_map_user_to_draft
+				ON repository_map_user_to_draft.draft_id = drafts.id`,
+			`repository_map_user_to_draft.user_id = $[userId]`,
+			{ userId, deleted: 'TRUE' }
+		)
+	}
+
 	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {
+		const query = buildQueryWhere(whereSQL, joinSQL, queryValues.deleted)
+
 		return db
-			.any(buildQueryWhere(whereSQL, joinSQL), queryValues)
+			.any(query, queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				throw logger.logError('Error loading DraftSummary by query', error)

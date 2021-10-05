@@ -112,8 +112,17 @@ const apiDeleteModule = draftId => {
 	return fetch(`/api/drafts/${draftId}`, options).then(res => res.json())
 }
 
+const apiRestoreModule = draftId => {
+	const options = { ...defaultOptions(), method: 'PUT' }
+	return fetch(`/api/drafts/restore/${draftId}`, options).then(res => res.json())
+}
+
 const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
+}
+
+const apiGetMyDeletedModules = () => {
+	return fetch('/api/drafts-deleted', defaultOptions()).then(res => res.json())
 }
 
 const apiCreateNewModule = (useTutorial, body = {}) => {
@@ -225,6 +234,12 @@ const bulkDeleteModules = draftIds => ({
 	promise: Promise.all(draftIds.map(id => apiDeleteModule(id))).then(apiGetMyModules)
 })
 
+const BULK_RESTORE_MODULES = 'BULK_RESTORE_MODULES'
+const bulkRestoreModules = draftIds => ({
+	type: BULK_RESTORE_MODULES,
+	promise: Promise.all(draftIds.map(id => apiRestoreModule(id))).then(apiGetMyModules)
+})
+
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false) => ({
 	type: CREATE_NEW_MODULE,
@@ -259,6 +274,18 @@ const IMPORT_MODULE_FILE = 'IMPORT_MODULE_FILE'
 const importModuleFile = searchString => ({
 	type: IMPORT_MODULE_FILE,
 	promise: promptUserForModuleFileUpload(searchString)
+})
+
+const GET_DELETED_MODULES = 'GET_DELETED_MODULES'
+const getDeletedModules = () => ({
+	type: GET_DELETED_MODULES,
+	promise: apiGetMyDeletedModules()
+})
+
+const GET_MODULES = 'GET_MODULES'
+const getModules = () => ({
+	type: GET_MODULES,
+	promise: apiGetMyModules()
 })
 
 const promptUserForModuleFileUpload = async () => {
@@ -315,6 +342,9 @@ module.exports = {
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
 	SHOW_ASSESSMENT_SCORE_DATA,
+	GET_DELETED_MODULES,
+	GET_MODULES,
+	BULK_RESTORE_MODULES,
 	filterModules,
 	selectModules,
 	deselectModules,
@@ -333,5 +363,8 @@ module.exports = {
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock,
-	showAssessmentScoreData
+	showAssessmentScoreData,
+	getDeletedModules,
+	getModules,
+	bulkRestoreModules
 }

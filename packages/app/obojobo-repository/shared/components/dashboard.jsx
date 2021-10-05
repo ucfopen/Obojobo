@@ -196,6 +196,22 @@ function Dashboard(props) {
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
 	}
 
+	const restoreModules = draftIds => {
+		setIsLoading(true)
+		props.bulkRestoreModules(draftIds).then(() => {
+			alert('The selected modules were successfully restored.')
+			setIsLoading(false)
+		})
+	}
+
+	const switchTabs = () => {
+		if (props.showDeletedModules) {
+			props.getModules()
+		}else {
+			props.getDeletedModules()
+		}
+	}
+
 	// Set a cookie when sortOrder changes on the client
 	// can't undefine document to test this 'else' case without breaking everything - maybe later
 	/* istanbul ignore else */
@@ -224,6 +240,23 @@ function Dashboard(props) {
 		'repository--item-list--collection--item--multi-wrapper '
 	itemCollectionMultiWrapperClassName += isLoading ? 'fade' : ''
 
+	const dashboardTitle = props.showDeletedModules ? 'My Deleted Modules' : 'My Modules'
+	const actionButtonMultiOperation = props.showDeletedModules ? (
+		<Button
+			className="multi-select secondary-button dangerous-button"
+			onClick={() => restoreModules(props.selectedModules)}
+		>
+			Restore All
+		</Button>
+	) : (
+		<Button
+			className="multi-select secondary-button dangerous-button"
+			onClick={() => deleteModules(props.selectedModules)}
+		>
+			Delete All
+		</Button>
+	)
+
 	return (
 		<span id="dashboard-root">
 			<RepositoryNav
@@ -239,12 +272,7 @@ function Dashboard(props) {
 					{props.multiSelectMode ? (
 						<div className="repository--main-content--control-bar is-multi-select-mode">
 							<span className="module-count">{getModuleCount(props.selectedModules)}</span>
-							<Button
-								className="multi-select secondary-button dangerous-button"
-								onClick={() => deleteModules(props.selectedModules)}
-							>
-								Delete All
-							</Button>
+							{actionButtonMultiOperation}
 							<Button
 								className="close-button"
 								onClick={() => props.deselectModules(props.selectedModules)}
@@ -254,11 +282,28 @@ function Dashboard(props) {
 						</div>
 					) : (
 						<div className="repository--main-content--control-bar is-not-multi-select-mode">
-							<MultiButton title="New Module">
-								<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
-								<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
-								<Button onClick={props.importModuleFile}>Upload...</Button>
-							</MultiButton>
+							{props.showDeletedModules ? (
+								<Button className="dashboard-menu-button go-back-container" onClick={switchTabs}>
+									<div className="go-back-icon">
+										<svg viewBox="0 0 134 150" version="1.1" xmlns="http://www.w3.org/2000/svg">
+											<path d="M 25,50 97.5,5 97.5,95 Z"/>
+										</svg>
+									</div>
+									<span>Go back to my modules</span>
+								</Button>
+							) : (
+								<div className="repository-tab-buttons">
+									<MultiButton title="New Module">
+										<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
+										<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
+										<Button onClick={props.importModuleFile}>Upload...</Button>
+									</MultiButton>
+									<Button className="dashboard-menu-button" onClick={switchTabs}>
+										<div className="trash-can-icon"></div>
+										<span>Deleted modules</span>
+									</Button>
+								</div>
+							)}
 							<Search
 								value={props.moduleSearchString}
 								placeholder="Filter..."
@@ -267,7 +312,7 @@ function Dashboard(props) {
 						</div>
 					)}
 					<div className="repository--main-content--title">
-						<span>My Modules</span>
+						<span>{dashboardTitle}</span>
 						<div className="repository--main-content--sort">
 							<span>Sort</span>
 							<select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>

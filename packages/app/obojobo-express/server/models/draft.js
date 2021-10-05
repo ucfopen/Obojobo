@@ -103,6 +103,29 @@ class Draft {
 			})
 	}
 
+	static restoreByIdAndUser(id, userId) {
+		return db
+			.none(
+				`
+			UPDATE drafts
+			SET deleted = FALSE
+			WHERE id = $[id]
+			AND user_id = $[userId]
+			`,
+				{
+					id,
+					userId
+				}
+			)
+			.then(() => {
+				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id, userId })
+			})
+			.catch(error => {
+				logger.logError('Draft fetchById Error', error)
+				throw error
+			})
+	}
+
 	static fetchById(id) {
 		return db
 			.one(

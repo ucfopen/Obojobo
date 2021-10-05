@@ -79,7 +79,7 @@ describe('DraftSummary Model', () => {
 	//NOTE:
 	// This is just the DraftSummary non-public 'buildQuery' method.
 	// Not sure if there's a good way of exposing that, so will just use this.
-	const queryBuilder = (whereSQL, joinSQL = '') =>
+	const queryBuilder = (whereSQL, joinSQL = '', deleted='FALSE') =>
 		`
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -94,7 +94,7 @@ describe('DraftSummary Model', () => {
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
 		${joinSQL}
-		WHERE drafts.deleted = FALSE
+		WHERE drafts.deleted = ${deleted}
 		AND ${whereSQL}
 		WINDOW wnd AS (
 			PARTITION BY drafts_content.draft_id ORDER BY drafts_content.created_at
@@ -504,5 +504,22 @@ describe('DraftSummary Model', () => {
 		expect(summaries[0].draftId).toBe('mockDraftId')
 		expect(summaries[1].draftId).toBe('mockDraftId2')
 		expect(summaries[2].draftId).toBe('mockDraftId3')
+	})
+
+	test('fetchDeletedByUserId generates correct query and retrieves deleted drafts', () => {
+		expect.hasAssertions()
+
+		db.any = jest.fn()
+		db.any.mockResolvedValueOnce(mockRawDraftSummary)
+
+		const whereSQL = 'repository_map_user_to_draft.user_id = $[userId]'
+		const joinSQL = `JOIN repository_map_user_to_draft
+				ON repository_map_user_to_draft.draft_id = drafts.id`
+		const query = queryBuilder(whereSQL, joinSQL, 'TRUE')
+
+		return DraftSummary.fetchDeletedByUserId(0).then(summary => {
+			expect(db.any).toHaveBeenCalledWith(query, { userId: 0, deleted: 'TRUE' })
+			expectIsMockSummary(summary)
+		})
 	})
 })
