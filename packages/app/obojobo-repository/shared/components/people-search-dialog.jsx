@@ -35,13 +35,27 @@ const PeopleSearchDialog = props => {
 			</div>
 			<div className="access-list-wrapper">
 				<ul className="access-list">
-					{props.people.map(p => (
-						<PeopleListItem key={p.id} isMe={p.id === props.currentUserId} {...p}>
-							<Button className="select-button" onClick={() => onSelectPerson(p)}>
-								Select
-							</Button>
-						</PeopleListItem>
-					))}
+					{props.people.map(function(p) {
+						if (props.draftPermissions) {
+							if (props.draftPermissions.every(d => d.id !== p.id)) {
+								return (
+									<PeopleListItem key={p.id} isMe={p.id === props.currentUserId} {...p}>
+										<Button className="select-button" onClick={() => onSelectPerson(p)}>
+											Select
+										</Button>
+									</PeopleListItem>
+								)
+							}
+						} else {
+							return (
+								<PeopleListItem key={p.id} isMe={p.id === props.currentUserId} {...p}>
+									<Button className="select-button" onClick={() => onSelectPerson(p)}>
+										Select
+									</Button>
+								</PeopleListItem>
+							)
+						}
+					})}
 				</ul>
 			</div>
 		</div>

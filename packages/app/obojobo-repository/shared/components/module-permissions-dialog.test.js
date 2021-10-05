@@ -26,11 +26,12 @@ describe('ModulePermissionsDialog', () => {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
 			currentUserId: 99,
-			draftPermissions: {},
+			draftPermissions: { items: [{ id: 99 }] },
 			loadUsersForModule: jest.fn(),
 			addUserToModule: jest.fn(),
 			deleteModulePermissions: jest.fn(),
-			onClose: jest.fn()
+			onClose: jest.fn(),
+			openPeoplePicker: jest.fn()
 		}
 	})
 
@@ -75,13 +76,17 @@ describe('ModulePermissionsDialog', () => {
 		defaultProps.draftPermissions['mockDraftId'] = {
 			items: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
 		}
+
 		let component
+
 		act(() => {
 			component = create(<ModulePermissionsDialog {...defaultProps} />)
 		})
+		act(() => {
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
+		})
 
 		expectLoadUsersForModuleToBeCalledOnceWithId()
-
 		const peopleListItems = component.root.findAllByType(PeopleListItem)
 		expect(peopleListItems.length).toBe(4)
 		expect(peopleListItems[0].props.isMe).toBe(false)
