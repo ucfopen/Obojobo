@@ -17,15 +17,20 @@
 		font-family: $font-default;
 		font-weight: bold;
 
+		> label {
+			vertical-align: middle;
+		}
+
 		.question-type {
 			position: absolute;
-			top: 2em;
-			right: 2em;
+			top: 2.85em;
+			right: 4.3em;
 			border: 1px solid $color-shadow;
 			border-radius: $dimension-rounded-radius;
-			padding: 0.18em;
-			padding-right: 0.5em;
+			padding: 0.25em;
+			padding-right: 1em;
 			font-weight: normal;
+			font-size: 0.7em;
 			cursor: pointer;
 
 			&:hover {
@@ -35,7 +40,7 @@
 
 			input {
 				position: relative;
-				top: -0.1em;
+				top: 0.1em;
 				left: 0.2em;
 				margin-right: 1em;
 			}
@@ -46,15 +51,35 @@
 		}
 	}
 
-	.add-solution {
-		left: 50%;
-		transform: translate(-50%, 0);
-		position: relative;
-		margin: $dimension-padding / 3;
-		user-select: none;
+	.show-reveal-answer-container {
+		$color-border: #dfdfdf;
+
+		@include pad();
+
+		font-family: $font-default;
+		border-top: 1px solid $color-border;
+		padding-top: 0.7em;
+		padding-bottom: 1em;
+		text-align: center;
+
+		> label {
+			font-weight: bold;
+			margin-right: 1em;
+			margin-bottom: 0.25em;
+			font-size: 0.8em;
+			display: inline-block;
+		}
 	}
 
-	.delete-button {
+	> .flipper > .content-back > .add-solution-container {
+		padding: 1rem;
+
+		> .obojobo-draft--components--button {
+			display: block;
+		}
+	}
+
+	> .delete-button {
 		position: absolute;
 		right: 3.7em;
 		left: auto;
@@ -81,15 +106,14 @@
 
 	&.is-type-survey {
 		.add-solution,
+		> .flipper > .content-back > .add-solution-container,
 		.solution-editor {
 			display: none;
 		}
 
-		.component.obojobo-draft--chunks--mc-assessment.editor--mc-assessment {
-			.obojobo-draft--chunks--mc-assessment--mc-choice {
-				.obojobo-draft--chunks--mc-assessment--mc-answer {
-					padding-top: 0;
-				}
+		.obojobo-draft--chunks--abstract-assessment--choice {
+			.correct-button {
+				display: none;
 			}
 		}
 	}

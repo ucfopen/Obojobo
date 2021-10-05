@@ -24,7 +24,7 @@ class CodeEditor extends React.Component {
 		this.state = {
 			code: props.initialCode,
 			title,
-			saved: true,
+			saveState: 'saveSuccessful',
 			editor: null,
 			options: {
 				lineNumbers: true,
@@ -60,7 +60,7 @@ class CodeEditor extends React.Component {
 	}
 
 	checkIfSaved(event) {
-		if (!this.state.saved) {
+		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
@@ -69,7 +69,7 @@ class CodeEditor extends React.Component {
 	}
 
 	onBeforeChange(editor, data, code) {
-		this.setState({ code, saved: false })
+		this.setState({ code, saveState: '' })
 	}
 
 	setTitleInCode(code, mode, title) {
@@ -108,8 +108,9 @@ class CodeEditor extends React.Component {
 	}
 
 	sendSave(draftId, code, mode) {
+		this.setState({ saveState: 'saving' })
 		return this.props.saveDraft(draftId, code, mode).then(isSaved => {
-			this.setState({ saved: isSaved })
+			this.setState({ saveState: isSaved ? 'saveSuccessful' : 'saveFailed' })
 		})
 	}
 
@@ -166,7 +167,7 @@ class CodeEditor extends React.Component {
 							draftId={this.props.draftId}
 							switchMode={this.props.switchMode}
 							onSave={this.saveAndGetTitleFromCode}
-							saved={this.state.saved}
+							saveState={this.state.saveState}
 							mode={this.props.mode}
 						/>
 					) : null}

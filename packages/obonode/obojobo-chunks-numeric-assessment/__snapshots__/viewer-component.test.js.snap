@@ -1,0 +1,829 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericAssessment NumericAssessment renders 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-mock-mode is-type-default is-not-long-response is-not-responded-to mock-score-class is-not-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+      >
+        <div
+          className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+        >
+          <button
+            aria-label="Click for some examples of how to input your answer"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="button"
+          >
+            ?
+          </button>
+        </div>
+      </div>
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Your answer..."
+        value=""
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Input your answer in mock-units-text.
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment renders a correct response 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-mock-mode is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="result-symbol"
+      />
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Your answer..."
+        value="6928"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your correct answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div>
+      OboNode
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment renders a correct response in review 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-review is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-chosen-correctly"
+        >
+          <p>
+            Your Answer (Correct)
+          </p>
+        </div>
+      </div>
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="(No answer given)"
+        value="6928"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your correct answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div>
+      OboNode
+    </div>
+    <div
+      className="review"
+    />
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment renders a response correct within the allowed error 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-mock-mode is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="result-symbol"
+      />
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Your answer..."
+        value="6929"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your correct answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+      <span
+        className="matching-correct-answer"
+      >
+        (Exact answer:
+         
+        <span
+          className="value"
+        >
+          <span
+            className="value"
+          >
+            6928
+          </span>
+        </span>
+        )
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment renders an incorrect response 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-mock-mode is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="result-symbol"
+      />
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Your answer..."
+        value="22/7"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your incorrect answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment renders an incorrect response in review (with multiple correct answers) 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-review is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+        >
+          <p>
+            Your Answer (Incorrect)
+          </p>
+        </div>
+      </div>
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="(No answer given)"
+        value="22/7"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your incorrect answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div
+      className="review"
+    >
+      <div
+        className="correct-answers"
+      >
+        <h2>
+          Correct answers:
+        </h2>
+        <ul>
+          <li>
+            <span>
+              <span
+                className="value"
+              >
+                6928
+              </span>
+            </span>
+            <span>
+              
+            </span>
+          </li>
+          <li>
+            <span>
+              <span
+                className="value"
+              >
+                123
+              </span>
+            </span>
+            <span>
+              
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment renders an incorrect response in review (with no correct answers) 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-review is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+        >
+          <p>
+            Your Answer (Incorrect)
+          </p>
+        </div>
+      </div>
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="(No answer given)"
+        value="22/7"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your incorrect answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div
+      className="review"
+    >
+      <div
+        className="correct-answers"
+      >
+        <span
+          className="no-correct-answers"
+        >
+          (There are no correct answers for this question)
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment renders an incorrect response in review 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-review is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="review-flag"
+      >
+        <div
+          className="obojobo-draft--components--flag is-type-should-not-have-chosen"
+        >
+          <p>
+            Your Answer (Incorrect)
+          </p>
+        </div>
+      </div>
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="(No answer given)"
+        value="22/7"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your incorrect answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div
+      className="review"
+    >
+      <div
+        className="correct-answers"
+      >
+        <h2>
+          Correct answer: 
+        </h2>
+        <div>
+          <span>
+            <span
+              className="value"
+            >
+              6928
+            </span>
+          </span>
+          <span>
+            
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment NumericAssessment still renders when NumericAnswerEvaluator cannot evaluate the response due to a fatal error 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment is-mode-mock-mode is-type-default is-not-long-response is-responded-to mock-score-class is-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    className="input-section pad"
+  >
+    <div
+      className="input-container"
+    >
+      <div
+        className="result-symbol"
+      />
+      <input
+        aria-labelledby="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+        autoComplete="off"
+        className="numeric-assessment--input"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Your answer..."
+        value="6929"
+      />
+      <div
+        className="for-screen-reader-only"
+        id="obojobo-draft--chunks--numeric-assessment--answer-input--mock-id"
+      >
+        Your correct answer
+      </div>
+      <div
+        className="units"
+      >
+        <span
+          className="obo-text"
+          data-group-index="0"
+        >
+          <span>
+            <span>
+              <span>
+                mock-units-text
+              </span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment getRangeSummary("") = "{"text": "Nothing", "type": "text"}", getRangeSummaryString(...) = "Nothing", matches snapshot 1`] = `
+<span>
+  Nothing
+</span>
+`;
+
+exports[`NumericAssessment getRangeSummary("(*,*)") = "{"text": "Any value", "type": "text"}", getRangeSummaryString(...) = "Any value", matches snapshot 1`] = `
+<span>
+  Any value
+</span>
+`;
+
+exports[`NumericAssessment getRangeSummary("(*,1)") = "{"text": "Less than", "type": "text-and-value", "value": "1"}", getRangeSummaryString(...) = "Less than 1", matches snapshot 1`] = `
+<React.Fragment>
+  <span>
+    Less than
+  </span>
+   
+  <span
+    className="value"
+  >
+    1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("(*,1]") = "{"text": "Less than or equal to", "type": "text-and-value", "value": "1"}", getRangeSummaryString(...) = "Less than or equal to 1", matches snapshot 1`] = `
+<React.Fragment>
+  <span>
+    Less than or equal to
+  </span>
+   
+  <span
+    className="value"
+  >
+    1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("(-1,*)") = "{"text": "Greater than", "type": "text-and-value", "value": "-1"}", getRangeSummaryString(...) = "Greater than -1", matches snapshot 1`] = `
+<React.Fragment>
+  <span>
+    Greater than
+  </span>
+   
+  <span
+    className="value"
+  >
+    -1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("(-1,1)") = "{"conjunction": "and", "max": "1", "maxPrefix": "less than", "min": "-1", "minPrefix": "Greater than", "type": "range"}", getRangeSummaryString(...) = "Greater than -1 and less than 1", matches snapshot 1`] = `
+<React.Fragment>
+  <span>
+    Greater than
+     
+  </span>
+  <span
+    className="value"
+  >
+    -1
+  </span>
+  <span>
+     
+    and
+     
+  </span>
+  <span>
+    less than
+     
+  </span>
+  <span
+    className="value"
+  >
+    1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("(-1,1]") = "{"conjunction": "and", "max": "1", "maxPrefix": "less than or equal to", "min": "-1", "minPrefix": "Greater than", "type": "range"}", getRangeSummaryString(...) = "Greater than -1 and less than or equal to 1", matches snapshot 1`] = `
+<React.Fragment>
+  <span>
+    Greater than
+     
+  </span>
+  <span
+    className="value"
+  >
+    -1
+  </span>
+  <span>
+     
+    and
+     
+  </span>
+  <span>
+    less than or equal to
+     
+  </span>
+  <span
+    className="value"
+  >
+    1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("[-1,*)") = "{"text": "Greater than or equal to", "type": "text-and-value", "value": "-1"}", getRangeSummaryString(...) = "Greater than or equal to -1", matches snapshot 1`] = `
+<React.Fragment>
+  <span>
+    Greater than or equal to
+  </span>
+   
+  <span
+    className="value"
+  >
+    -1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("[-1,1)") = "{"conjunction": "and", "max": "1", "maxPrefix": "less than", "min": "-1", "minPrefix": "Greater than or equal to", "type": "range"}", getRangeSummaryString(...) = "Greater than or equal to -1 and less than 1", matches snapshot 1`] = `
+<React.Fragment>
+  <span>
+    Greater than or equal to
+     
+  </span>
+  <span
+    className="value"
+  >
+    -1
+  </span>
+  <span>
+     
+    and
+     
+  </span>
+  <span>
+    less than
+     
+  </span>
+  <span
+    className="value"
+  >
+    1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("[-1,1]") = "{"conjunction": "to", "max": "1", "min": "-1", "type": "range"}", getRangeSummaryString(...) = "-1 to 1", matches snapshot 1`] = `
+<React.Fragment>
+  <span
+    className="value"
+  >
+    -1
+  </span>
+  <span>
+     
+    to
+     
+  </span>
+  <span
+    className="value"
+  >
+    1
+  </span>
+</React.Fragment>
+`;
+
+exports[`NumericAssessment getRangeSummary("1") = "{"type": "value", "value": "1"}", getRangeSummaryString(...) = "1", matches snapshot 1`] = `
+<span
+  className="value"
+>
+  1
+</span>
+`;

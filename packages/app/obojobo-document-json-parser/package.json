@@ -1,57 +1,57 @@
 {
-  "dependencies": {
-    "xml-formatter": "^2.0.1"
-  },
-  "peerDependencies": {
-    "obojobo-document-engine": "^11.2.0-alpha.0",
-    "obojobo-lib-utils": "^11.2.0-alpha.0"
-  },
-  "name": "obojobo-document-json-parser",
-  "version": "11.2.0",
-  "license": "AGPL-3.0-only",
-  "main": "",
-  "scripts": {
-    "test": "TZ='America/New_York' jest --verbose",
-    "test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
-    "convertJsonToXml": "obojobo-json2xml examples/test-object.json > test-object.xml",
-    "lint": "yarn lint:js && yarn lint:css",
-    "lint:js": "eslint .",
-    "lint:css": "echo 'not implemented'",
-    "prettier:run": "prettier --write '**/*.{js,scss}'",
-    "precommit": "lint-staged"
-  },
-  "lint-staged": {
-    "**/*.{js,scss}": [
-      "prettier --write"
-    ]
-  },
-  "prettier": {
-    "printWidth": 100,
-    "semi": false,
-    "useTabs": true,
-    "singleQuote": true
-  },
-  "bin": {
-    "obojobo-json2xml": "./bin/obojobo-json2xml.js"
-  },
-  "jest": {
-    "verbose": false,
-    "coverageReporters": [
-      "text",
-      "lcov"
-    ],
-    "coveragePathIgnorePatterns": [
-      "src/"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    }
-  },
-  "author": "",
-  "description": ""
+	"dependencies": {
+		"xml-formatter": "^2.4.0"
+	},
+	"peerDependencies": {
+		"obojobo-document-engine": "^13.2.1",
+		"obojobo-lib-utils": "^13.2.1"
+	},
+	"name": "obojobo-document-json-parser",
+	"version": "13.2.1",
+	"license": "AGPL-3.0-only",
+	"main": "",
+	"scripts": {
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"convertJsonToXml": "obojobo-json2xml examples/test-object.json > test-object.xml",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint .",
+		"lint:css": "echo 'not implemented'",
+		"prettier:run": "prettier --write '**/*.{js,scss}'",
+		"precommit": "lint-staged"
+	},
+	"lint-staged": {
+		"**/*.{js,scss}": [
+			"prettier --write"
+		]
+	},
+	"prettier": {
+		"printWidth": 100,
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true
+	},
+	"bin": {
+		"obojobo-json2xml": "./bin/obojobo-json2xml.js"
+	},
+	"jest": {
+		"verbose": false,
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"coveragePathIgnorePatterns": [
+			"src/"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	},
+	"author": "",
+	"description": ""
 }

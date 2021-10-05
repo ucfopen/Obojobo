@@ -1,20 +1,45 @@
+jest.mock('../server/logger')
+jest.mock('obojobo-lib-utils')
+const path = require('path')
 const env_node = process.env.NODE_ENV
 const ogConsoleWarn = console.warn // eslint-disable-line no-console
-const path = require('path')
+const configPath = path.resolve(__dirname + '/../server/config')
 let logger
 
-const configPath = path.resolve(__dirname + '/../server/config')
 describe('config', () => {
 	beforeEach(() => {
 		delete process.env.NODE_ENV
 		jest.resetModules()
-		jest.mock('../server/logger')
+		// speed up tests by mocking the path resolution of configs
+		const { getAllOboNodeRegistryDirsByType } = require('obojobo-lib-utils')
+		getAllOboNodeRegistryDirsByType.mockReturnValue([configPath])
+
 		logger = oboRequire('server/logger')
 		global.oboJestMockConfig()
 	})
 	afterEach(() => {
 		process.env.NODE_ENV = env_node
 		console.warn = ogConsoleWarn // eslint-disable-line no-console
+	})
+
+	test('config warns about duplicate file names', () => {
+		const mockFS = require('fs')
+
+		// we need to alter what config attempts to load by mocking some files
+		// that don't exist.  The contents don't matter - the names are of concern
+		// they'll both be converted into camel case (which will be the same name)
+		// and that should cause a naming conflict error
+		mockFS.mockReaddirSync(configPath, ['file_name.json', 'fileName.json'])
+		mockFS.__setMockFileContents(configPath + '/file_name.json', '{"default":{"name":"file_name"}}')
+		mockFS.__setMockFileContents(configPath + '/fileName.json', '{"default":{"name":"fileName"}}')
+
+		const config = oboRequire('server/config')
+		// make sure the logger tells us about the issue
+		expect(logger.error).toHaveBeenCalledWith(
+			`Config name fileName already registered, not loading: ${configPath}/fileName.json`
+		)
+		// make sure the second config doesn't overwrite the first
+		expect(config).toHaveProperty('fileName.name', 'file_name')
 	})
 
 	test('db to have expected props and vals', () => {
@@ -31,7 +56,7 @@ describe('config', () => {
 		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db')
 		expect(config).toHaveProperty('lti')
-		expect(config).toHaveProperty('permissions')
+		expect(config).toHaveProperty('permissionGroups')
 		expect(config).toHaveProperty('general')
 		expect(config).toHaveProperty('media')
 	})
@@ -119,6 +144,7 @@ describe('config', () => {
 				driver: 'postgres'
 			}
 		}
+		console.warn = jest.fn() // eslint-disable-line no-console
 
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
@@ -127,6 +153,7 @@ describe('config', () => {
 		expect(logger.error).toHaveBeenCalledWith(
 			expect.stringContaining('Error: Missing config environment for "default" and "test"')
 		)
+		expect(console.warn).toHaveBeenCalled() // eslint-disable-line no-console
 		expect(config.db).toEqual({})
 	})
 

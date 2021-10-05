@@ -328,7 +328,7 @@ describe('MoreInfoBox', () => {
 		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue1')
 		expect(component.html()).toMatchSnapshot()
 
-		// Change mockToggle
+		// Change mockToggle (a Switch)
 		expect(component.state()).toHaveProperty('content.mockToggle', false)
 		const mockToggle = component.find({ title: 'Mock Toggle' })
 		mockToggle.find('input').simulate('change', {
@@ -506,11 +506,11 @@ describe('MoreInfoBox', () => {
 
 		component
 			.find('button')
-			.at(5)
+			.at(6)
 			.simulate('click')
 		component
 			.find('button')
-			.at(6)
+			.at(7)
 			.simulate('click')
 
 		expect(moveNode).toHaveBeenCalledTimes(2)
@@ -562,6 +562,54 @@ describe('MoreInfoBox', () => {
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
 
+	test('More Info Box enables and disables the id input box', () => {
+		const saveId = jest.fn().mockReturnValue('A simple Error')
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+			/>
+		)
+
+		component.find('.more-info-button').simulate('click')
+		expect(
+			component
+				.find('input')
+				.at(1)
+				.props().readOnly
+		).toBe(true)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(
+			component
+				.find('input')
+				.at(1)
+				.props().readOnly
+		).toBe(false)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(
+			component
+				.find('input')
+				.at(1)
+				.props().readOnly
+		).toBe(true)
+	})
+
 	test('More Info Box opens the showTriggersModal', () => {
 		const component = mount(
 			<MoreInfoBox
@@ -578,7 +626,7 @@ describe('MoreInfoBox', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(3)
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()

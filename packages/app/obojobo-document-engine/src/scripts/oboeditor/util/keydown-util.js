@@ -3,6 +3,14 @@ import { Text, Editor, Transforms, Range, Path, Element, Point, Node } from 'sla
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
+const getOnlyTextNodes = node => {
+	if (Text.isText(node)) {
+		return node
+	}
+
+	return node.children.flatMap(getOnlyTextNodes)
+}
+
 const KeyDownUtil = {
 	deleteNodeContents: (event, editor, entry, deleteForward) => {
 		const [, nodePath] = entry
@@ -94,6 +102,7 @@ const KeyDownUtil = {
 			focus: endPoint
 		}
 		const newTexts = Node.fragment(editor, textRange)
+
 		const newNode = {
 			type: TEXT_NODE,
 			content: { triggers: [] },
@@ -102,7 +111,7 @@ const KeyDownUtil = {
 					type: TEXT_NODE,
 					subtype: TEXT_LINE_NODE,
 					content: { indent: 0, align: 'left' },
-					children: [...newTexts[0].children]
+					children: getOnlyTextNodes(newTexts[0])
 				}
 			]
 		}

@@ -97,7 +97,8 @@ describe('List Converter', () => {
 						text: { value: 'mockLine3' },
 						data: { indent: 5, hangingIndent: false }
 					}
-				]
+				],
+				spacing: 'moderate'
 			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)

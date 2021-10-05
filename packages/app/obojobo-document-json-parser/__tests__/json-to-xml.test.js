@@ -11,15 +11,14 @@ global.window.katex = {
 }
 
 describe('JSON to XML Parser', () => {
-	expect.hasAssertions()
-
 	const basePath = `${__dirname}/sample-node-json/`
-	const sampleJson = fs.readdirSync(basePath).filter(s => s.includes('.json'))
+	const sampleJsonFiles = fs.readdirSync(basePath).filter(s => s.includes('.json'))
+	// creates array of arrays for test.each
+	// [[file1], [file2]]
+	const cases = sampleJsonFiles.map(file => [file])
 
-	for (const file of sampleJson) {
-		it(`Converts ${file} to xml`, () => {
-			const json = require(`${basePath}${file}`)
-			expect(jsonToXmlParser(json)).toMatchSnapshot()
-		})
-	}
+	test.each(cases)('Converts %s to xml', file => {
+		const json = require(`${basePath}${file}`)
+		expect(jsonToXmlParser(json)).toMatchSnapshot()
+	})
 })

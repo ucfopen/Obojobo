@@ -1,0 +1,75 @@
+@import '../../client/css/defaults';
+
+$border-color: rgba(0, 0, 0, 0.1);
+$border: 1px solid $border-color;
+$menu-transition-time: 0.25s;
+$color-nav-highlight: $color-obojobo-blue;
+$color-nav-hover: darken($color-highlight, 25%);
+
+.assessment-score-data-dialog {
+	font-family: $font-default;
+	width: calc(100vw - 3em);
+
+	.loading--container {
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		width: 100%;
+		text-align: center;
+	}
+}
+
+.assessment-score-data-dialog--header {
+	height: 3em;
+	box-sizing: border-box;
+	position: relative;
+	border-bottom: $border;
+
+	.repository--module-icon--image {
+		width: 1.5em;
+		height: 1.75em;
+		display: inline-block;
+		vertical-align: middle;
+		position: absolute;
+		left: 0.75em;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.title {
+		position: absolute;
+		left: 4em;
+		font-size: 0.725em;
+		font-weight: bold;
+		color: black;
+		margin: 0;
+		max-width: 50%;
+		vertical-align: middle;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.close-button {
+		position: absolute;
+		right: 0.5em;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+}
+
+.assessment-score-data-dialog--body {
+	background-color: #f2f2f2;
+	display: flex;
+	height: calc(95vh - 3em);
+	padding: 1em;
+	box-sizing: border-box;
+	flex-direction: column;
+
+	.data-grid-attempts,
+	.data-grid-assessments {
+		width: 100%;
+		background: white;
+		border-radius: 0.25em;
+		display: block;
+	}
+}

@@ -13,8 +13,6 @@ import ReactDOM from 'react-dom'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import { getRenderSettings } from './render-settings'
 
-const DEFAULT_WIDTH = 710
-const DEFAULT_HEIGHT = 500
 const MIN_SCALE = 0.1
 const MAX_SCALE = 10
 const DECREASE_ZOOM_STEP = -0.1
@@ -147,8 +145,6 @@ export default class IFrame extends React.Component {
 			model,
 			this.state.actualWidth,
 			this.state.padding,
-			DEFAULT_WIDTH,
-			DEFAULT_HEIGHT,
 			MIN_SCALE,
 			MAX_SCALE,
 			this.props.moduleData.mediaState
@@ -172,7 +168,8 @@ export default class IFrame extends React.Component {
 						isOrNot(isShowing, 'showing') +
 						isOrNot(controlsOpts.isControlsEnabled, 'controls-enabled') +
 						isOrNot(ms.src === null, 'missing-src') +
-						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
+						isOrNot(scaleDimensions.scale > 1, 'scaled-up') +
+						isOrNot(ms.sizing, `sizing-${ms.sizing}`)
 					}
 					ref="main"
 				>
@@ -210,7 +207,7 @@ export default class IFrame extends React.Component {
 						{isShowing ? null : (
 							<div className="click-to-load">
 								<span className="title" aria-hidden>
-									{displayedTitle}
+									{this.props.title || displayedTitle}
 								</span>
 								{ms.src === null ? null : (
 									<Button ariaLabel="Click to load external content">View Content</Button>

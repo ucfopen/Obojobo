@@ -37,6 +37,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -161,15 +162,15 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
               <span
                 className="for-screen-reader-only"
               >
-                June 156th 2018 at 4:28p.m.
+                June 5th 2018 at 4:28p.m.
               </span>
             </div>
             <div>
               6
                out of 
-              7
+              1
                question
-              s
+              
                correct
             </div>
             <div>
@@ -185,6 +186,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
                   onClick={[Function]}
                   onMouseOut={[Function]}
                   onMouseOver={[Function]}
+                  type="button"
                 >
                   ?
                 </button>
@@ -260,6 +262,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -384,7 +387,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
               <span
                 className="for-screen-reader-only"
               >
-                June 156th 2018 at 4:28p.m.
+                June 5th 2018 at 4:28p.m.
               </span>
             </div>
             <div>
@@ -408,6 +411,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
                   onClick={[Function]}
                   onMouseOut={[Function]}
                   onMouseOver={[Function]}
+                  type="button"
                 >
                   ?
                 </button>
@@ -483,8 +487,119 @@ exports[`FullReview FullReview component with attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FullReview FullReview component with five attempts 1`] = `
+<div
+  className="attempt-review-container"
+>
+  <div
+    className="attempt-button-container null"
+  >
+    <div
+      className="obojobo-draft--components--button-bar"
+    >
+      <div
+        className=""
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
+        >
+          <button
+            aria-label="Attempt 1"
+            aria-selected={false}
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            1
+          </button>
+        </div>
+      </div>
+      <div
+        className=""
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
+        >
+          <button
+            aria-label="Attempt 1"
+            aria-selected={false}
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            1
+          </button>
+        </div>
+      </div>
+      <div
+        className=""
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
+        >
+          <button
+            aria-label="Attempt 1"
+            aria-selected={false}
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            1
+          </button>
+        </div>
+      </div>
+      <div
+        className=""
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
+        >
+          <button
+            aria-label="Attempt 1"
+            aria-selected={false}
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            1
+          </button>
+        </div>
+      </div>
+      <div
+        className="is-selected"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
+        >
+          <button
+            aria-label="Attempt 1"
+            aria-selected={true}
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            1
           </button>
         </div>
       </div>
@@ -516,6 +631,7 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -549,6 +665,7 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -582,6 +699,7 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -615,6 +733,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -633,6 +752,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           />
         </div>
       </div>

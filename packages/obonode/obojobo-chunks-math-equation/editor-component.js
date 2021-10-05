@@ -198,7 +198,7 @@ class MathEquation extends React.Component {
 			<div className="attributes-list">
 				<div className="attribute">
 					<label htmlFor="math-equation-latex">Latex:</label>
-					<input
+					<textarea
 						id="math-equation-latex"
 						value={this.state.latex}
 						ref={this.equationInput}
