@@ -1,8 +1,8 @@
 const DraftNode = require('obojobo-express/server/models/draft_node')
 
-class NumericAssessment extends DraftNode {
+class MateriaAssessmentNodeAssessment extends DraftNode {
 	static get nodeName() {
-		return 'ObojoboDraft.Chunks.Materia'
+		return 'ObojoboDraft.Chunks.MateriaAssessment'
 	}
 
 	constructor(draftTree, node, initFn) {
@@ -19,4 +19,4 @@ class NumericAssessment extends DraftNode {
 	}
 }
 
-module.exports = NumericAssessment
+module.exports = MateriaAssessmentNodeAssessment

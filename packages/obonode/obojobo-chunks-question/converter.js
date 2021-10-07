@@ -6,7 +6,7 @@ const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
-const MATERIA_NODE = 'ObojoboDraft.Chunks.Materia'
+const MATERIA_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.MateriaAssessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 /**
@@ -34,7 +34,7 @@ const slateToObo = node => {
 
 			case MCASSESSMENT_NODE:
 			case NUMERIC_ASSESSMENT_NODE:
-			case MATERIA_NODE:
+			case MATERIA_ASSESSMENT_NODE:
 				children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
 				break
 
@@ -66,7 +66,7 @@ const oboToSlate = node => {
 		if (
 			child.type === MCASSESSMENT_NODE ||
 			child.type === NUMERIC_ASSESSMENT_NODE ||
-			child.type === MATERIA_NODE
+			child.type === MATERIA_ASSESSMENT_NODE
 		) {
 			return Common.Registry.getItemForType(child.type).oboToSlate(child)
 		} else {

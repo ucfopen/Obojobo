@@ -2,11 +2,6 @@ import IFrame from 'obojobo-chunks-iframe/viewer-component'
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-el'
-import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
-import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
-
-import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-const { NavUtil } = Viewer.util
 
 import './viewer-component.scss'
 import IFrameControlTypes from 'obojobo-chunks-iframe/iframe-control-types'
@@ -31,7 +26,6 @@ export default class Materia extends React.Component {
 			border: true,
 			fit: 'scale',
 			initialZoom: 1,
-			// autoload: props.mode === 'review', // could be annoying either way, maybe better overall if not automatic
 			controls: [IFrameControlTypes.RELOAD],
 			sizing: IFrameSizingTypes.FIXED
 		}
@@ -41,8 +35,6 @@ export default class Materia extends React.Component {
 			model,
 			visitId: props.moduleData.navState.visitId,
 			nodeId: props.model.id,
-			score: null,
-			verifiedScore: false,
 			open: false
 		}
 
@@ -51,11 +43,12 @@ export default class Materia extends React.Component {
 		this.onShow = this.onShow.bind(this)
 	}
 
-	static isResponseEmpty(response) {
-		return !response.verifiedScore
-	}
-
 	onPostMessageFromMateria(event) {
+		// no callback registered to do anything with a score event
+		if (!this.props.handleScorePassback) {
+			return
+		}
+
 		// iframe isn't present
 		if (!this.iframeRef || !this.iframeRef.current || !this.iframeRef.current.refs.iframe) {
 			return
@@ -79,38 +72,7 @@ export default class Materia extends React.Component {
 
 			switch (data.type) {
 				case 'materiaScoreRecorded':
-					// this should probably be abstracted in a util function somewhere
-					API.get(
-						`/materia-lti-score-verify?visitId=${this.state.visitId}&nodeId=${this.state.nodeId}`,
-						'json'
-					)
-						.then(API.processJsonResults)
-						.then(result => {
-							const newState = {
-								score: result.score,
-								verifiedScore: true
-							}
-							this.setState({
-								...this.state,
-								...newState
-							})
-
-							const modelId = this.props.questionModel.get('id')
-							const moduleContext = NavUtil.getContext(this.props.moduleData.navState)
-
-							QuestionUtil.setResponse(
-								modelId,
-								{
-									...newState,
-									scoreUrl: data.score_url
-								},
-								null,
-								moduleContext,
-								moduleContext.split(':')[1],
-								moduleContext.split(':')[2],
-								false
-							)
-						})
+					this.props.handleScorePassback(event, data)
 					break
 			}
 		} catch (e) {
@@ -134,13 +96,13 @@ export default class Materia extends React.Component {
 		this.setState({ open: true })
 	}
 
-	renderTextCaption() {
+	renderCaptionAndScore() {
 		let textCaptionRender = null
 
 		let scoreRender = null
-		if (this.state.score && this.state.verifiedScore) {
+		if (this.props.score && this.props.verifiedScore) {
 			scoreRender = (
-				<span className={'materia-score verified'}>Your highest score: {this.state.score}%</span>
+				<span className={'materia-score verified'}>Your highest score: {this.props.score}%</span>
 			)
 		}
 
@@ -160,32 +122,12 @@ export default class Materia extends React.Component {
 		return textCaptionRender
 	}
 
-	renderCaptionOrScore() {
+	renderTextCaption() {
 		try {
-			return this.renderTextCaption()
+			return this.renderCaptionAndScore()
 		} catch (e) {
 			console.error('Error building Materia Caption') // eslint-disable-line no-console
 			return null
-		}
-	}
-
-	getInstructions() {
-		return (
-			<React.Fragment>
-				<span className="for-screen-reader-only">Embedded Materia widget.</span>
-				Play the embedded Materia widget to receive a score. Your highest score will be saved.
-			</React.Fragment>
-		)
-	}
-
-	calculateScore() {
-		if (!this.props.score) {
-			return null
-		}
-
-		return {
-			score: this.props.score,
-			details: null
 		}
 	}
 
@@ -199,7 +141,7 @@ export default class Materia extends React.Component {
 					title={`${this.state.model.modelState.widgetEngine || 'Materia'} Widget`}
 					onShow={this.onShow}
 				/>
-				{this.renderCaptionOrScore()}
+				{this.renderTextCaption()}
 			</div>
 		)
 	}

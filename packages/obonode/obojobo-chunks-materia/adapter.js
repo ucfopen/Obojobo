@@ -6,7 +6,7 @@ const MIN_DIMENSION = 100
 const DEFAULT_WIDTH = 800
 const DEFAULT_HEIGHT = 600
 
-const propsList = ['height', 'icon', 'src', 'widgetEngine', 'width']
+const propsList = ['height', 'icon', 'noFooter', 'src', 'widgetEngine', 'width']
 
 export default {
 	construct(model, attrs) {
@@ -26,6 +26,7 @@ export default {
 		)
 		model.setStateProp('widgetEngine', null)
 		model.setStateProp('icon', null)
+		model.setStateProp('noFooter', true)
 	},
 
 	clone(model, clone) {

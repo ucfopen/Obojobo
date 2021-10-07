@@ -13,7 +13,7 @@ const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
-const MATERIA_NODE = 'ObojoboDraft.Chunks.Materia'
+const MATERIA_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.MateriaAssessment'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -72,6 +72,7 @@ class Question extends React.Component {
 		const type = event.target.value
 
 		const item = Common.Registry.getItemForType(type)
+
 		const newBlock = item.cloneBlankNode()
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
@@ -196,7 +197,7 @@ class Question extends React.Component {
 								>
 									<option value={MCASSESSMENT_NODE}>Multiple choice</option>
 									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
-									<option value={MATERIA_NODE}>Materia widget</option>
+									<option value={MATERIA_ASSESSMENT_NODE}>Materia widget</option>
 								</select>
 								<label className="question-type" contentEditable={false}>
 									<input type="checkbox" checked={isTypeSurvey} onChange={this.onSetType} />

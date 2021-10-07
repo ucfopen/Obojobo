@@ -2,7 +2,6 @@ const router = require('express').Router() //eslint-disable-line new-cap
 const logger = require('obojobo-express/server/logger')
 const uuid = require('uuid').v4
 const bodyParser = require('body-parser')
-const db = require('obojobo-express/server/db')
 const oboEvents = require('obojobo-express/server/obo_events')
 const Visit = require('obojobo-express/server/models/visit')
 const Draft = require('obojobo-express/server/models/draft')
@@ -209,32 +208,6 @@ router
 		})
 
 		renderLtiLaunch(launchParams, method, endpoint, res)
-	})
-
-router
-	.route('/materia-lti-score-verify')
-	.get([requireCurrentUser, requireCurrentVisit])
-	.get(async (req, res) => {
-		await db
-			.one(
-				`SELECT payload
-		FROM events
-		WHERE action = 'materia:ltiScorePassback'
-		AND visit_id = $[visitId]
-		AND payload->>'lisResultSourcedId' = $[resourceId]
-		ORDER BY created_at DESC
-		LIMIT 1`,
-				{
-					visitId: req.currentVisit.id,
-					resourceId: `${req.currentVisit.id}__${req.query.nodeId}`
-				}
-			)
-			.then(result => {
-				res.send({
-					score: result.payload.score,
-					success: result.payload.success
-				})
-			})
 	})
 
 module.exports = router

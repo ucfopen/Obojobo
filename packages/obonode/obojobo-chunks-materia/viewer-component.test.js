@@ -1,20 +1,3 @@
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api', () => ({
-	get: jest.fn(),
-	processJsonResults: jest.fn()
-}))
-
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util', () => ({
-	setResponse: jest.fn()
-}))
-
-jest.mock('obojobo-document-engine/src/scripts/viewer', () => ({
-	util: {
-		NavUtil: {
-			getContext: jest.fn().mockReturnValue('mock:module:context')
-		}
-	}
-}))
-
 jest.mock('react-dom')
 jest.mock(
 	'obojobo-chunks-iframe/viewer-component',
@@ -35,19 +18,18 @@ require('./viewer') // used to register this oboModel
 describe('Materia viewer component', () => {
 	let model
 	let moduleData
-	let questionModel
+	let handleScorePassback
 
-	const flushPromises = global.flushPromises
-	const API = require('obojobo-document-engine/src/scripts/viewer/util/api')
-	const Questionutil = require('obojobo-document-engine/src/scripts/viewer/util/question-util')
-
-	const Viewer = require('obojobo-document-engine/src/scripts/viewer')
-	const { NavUtil } = Viewer.util
+	let standardProps
 
 	const mockModuleTitle = 'mocked-module-title'
 	const mockVisitId = 'mock-visit-id'
 	const mockNodeId = 'mock-obo-id'
-	const mockQuestionId = 'mock-question-id'
+
+	const standardPostMessageContent = {
+		score: 100,
+		score_url: 'url:to/score.screen'
+	}
 
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -72,8 +54,12 @@ describe('Materia viewer component', () => {
 			}
 		}
 
-		questionModel = {
-			get: jest.fn().mockReturnValue(mockQuestionId)
+		handleScorePassback = jest.fn()
+
+		standardProps = {
+			model,
+			moduleData,
+			handleScorePassback
 		}
 	})
 
@@ -81,10 +67,7 @@ describe('Materia viewer component', () => {
 
 	test('renders', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 		const component = renderer.create(<Materia {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
@@ -96,10 +79,7 @@ describe('Materia viewer component', () => {
 
 	test('adds and removes listener for postmessage when mounting and unmounting', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -125,60 +105,64 @@ describe('Materia viewer component', () => {
 		)
 	})
 
-	test('onPostMessageFromMateria with an empty iframe ref doesnt update state', () => {
+	test('onPostMessageFromMateria does nothing if post message handler callback is not defined', () => {
 		expect.hasAssertions()
 		const props = {
-			model,
-			moduleData
+			...standardProps
 		}
+		delete props.handleScorePassback
 
 		const component = renderer.create(<Materia {...props} />)
 
 		const inst = component.getInstance()
 		inst.iframeRef = {}
-		const event = { source: '', data: JSON.stringify({ score: 100 }) }
+		const event = { source: '', data: JSON.stringify(standardPostMessageContent) }
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 	})
 
-	test('onPostMessageFromMateria without an iframe ref object doesnt update state', () => {
+	test('onPostMessageFromMateria with an empty iframe ref does not call post message handler callback', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {}
+		const event = { source: '', data: JSON.stringify(standardPostMessageContent) }
+		inst.onPostMessageFromMateria(event)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
+	})
+
+	test('onPostMessageFromMateria without an iframe ref object does not call post message handler callback', () => {
+		expect.hasAssertions()
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
 		const inst = component.getInstance()
 		inst.iframeRef = null
-		const event = { source: '', data: JSON.stringify({ score: 100 }) }
+		const event = { source: '', data: JSON.stringify(standardPostMessageContent) }
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 	})
 
-	test('onPostMessageFromMateria without a matching iframe and event source doesnt update state', () => {
+	test('onPostMessageFromMateria without a matching iframe and event source does not call post message handler callback', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
 		const inst = component.getInstance()
 		inst.iframeRef = { current: { refs: { iframe: { contentWindow: 'different-mock-window' } } } }
-		const event = { source: 'mock-window', data: JSON.stringify({ score: 100 }) }
+		const event = { source: 'mock-window', data: JSON.stringify(standardPostMessageContent) }
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 	})
 
 	test('onPostMessageFromMateria blocks events not coming fom the src domain', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -186,17 +170,17 @@ describe('Materia viewer component', () => {
 		inst.iframeRef = {
 			current: { refs: { iframe: { contentWindow: 'http://not-localhost/whatever' } } }
 		}
-		const event = { source: 'http://localhost/whatever', data: JSON.stringify({ score: 100 }) }
+		const event = {
+			source: 'http://localhost/whatever',
+			data: JSON.stringify(standardPostMessageContent)
+		}
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 	})
 
 	test('onPostMessageFromMateria blocks events with an origin that doesnt match modelState srcn', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -207,18 +191,15 @@ describe('Materia viewer component', () => {
 		const event = {
 			origin: 'http://not-localhost',
 			source: 'http://localhost/whatever',
-			data: JSON.stringify({ score: 100 })
+			data: JSON.stringify(standardPostMessageContent)
 		}
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 	})
 
 	test('onPostMessageFromMateria ignores messages where data is not a string', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -229,18 +210,15 @@ describe('Materia viewer component', () => {
 		const event = {
 			origin: 'http://localhost',
 			source: 'http://localhost/whatever',
-			data: { score: 100 }
+			data: standardPostMessageContent
 		}
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 	})
 
 	test('onPostMessageFromMateria ignores messages with a data type that isnt materiaScoreRecorded', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -254,22 +232,12 @@ describe('Materia viewer component', () => {
 			data: JSON.stringify({ type: 'notmateriaScoreRecorded', score: 100 })
 		}
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 	})
 
-	test('onPostMessageFromMateria makes an API call to verify the score', () => {
-		API.get = jest.fn().mockResolvedValue(true)
-		API.processJsonResults = jest.fn().mockResolvedValue({ score: 100, success: true })
-
-		NavUtil.getContext = jest.fn().mockReturnValue('mock:module:context')
-
+	test('onPostMessageFromMateria calls post message handler when all checks pass', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData,
-			questionModel
-		}
-
+		const props = standardProps
 		const component = renderer.create(<Materia {...props} />)
 
 		// While we're here, make sure the score dialog appears correctly.
@@ -290,42 +258,12 @@ describe('Materia viewer component', () => {
 			})
 		}
 		inst.onPostMessageFromMateria(event)
-
-		return flushPromises().then(() => {
-			expect(API.get).toHaveBeenCalledTimes(1)
-			expect(API.get).toHaveBeenCalledWith(
-				`/materia-lti-score-verify?visitId=${mockVisitId}&nodeId=${mockNodeId}`,
-				'json'
-			)
-
-			expect(inst.state).toHaveProperty('score', 100)
-
-			expect(Questionutil.setResponse).toHaveBeenCalledTimes(1)
-			expect(Questionutil.setResponse).toHaveBeenCalledWith(
-				mockQuestionId,
-				{
-					score: 100,
-					scoreUrl: 'http://localhost/score',
-					verifiedScore: true
-				},
-				null,
-				'mock:module:context',
-				'module',
-				'context',
-				false
-			)
-
-			const scoreRender = component.root.findByProps({ className: 'materia-score verified' })
-			expect(scoreRender.children.join('')).toBe('Your highest score: 100%')
-		})
+		expect(handleScorePassback).toHaveBeenCalledTimes(1)
 	})
 
 	test('onPostMessageFromMateria handles json parsing errors', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -341,16 +279,13 @@ describe('Materia viewer component', () => {
 		jest.spyOn(console, 'error')
 		console.error.mockReturnValueOnce() // eslint-disable-line no-console
 		inst.onPostMessageFromMateria(event)
-		expect(inst.state).toHaveProperty('score', null)
+		expect(handleScorePassback).toHaveBeenCalledTimes(0)
 		expect(console.error).toHaveBeenCalled() // eslint-disable-line no-console
 	})
 
 	test('srcToLTILaunchUrl formats strings as expected', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 		const inst = component.getInstance()
@@ -364,10 +299,7 @@ describe('Materia viewer component', () => {
 
 	test('onShow changes state to open', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 		const inst = component.getInstance()
@@ -376,11 +308,24 @@ describe('Materia viewer component', () => {
 		expect(inst.state).toHaveProperty('open', true)
 	})
 
-	test('renderCaptionOrScore renders text', () => {
+	test('renderCaptionOrScore renders text but no score when score is not set', () => {
+		expect.hasAssertions()
+		const props = standardProps
+
+		const component = renderer.create(<Materia {...props} />)
+
+		// find the textGroupEL by a unique prop
+		// if it's found, it was rendered
+		expect(component.root.findAllByProps({ groupIndex: '0' })).toHaveLength(1)
+		expect(component.root.findAllByProps({ className: 'materia-score verified' }).length).toBe(0)
+	})
+
+	test('renderCaptionOrScore renders text and score when score is set', () => {
 		expect.hasAssertions()
 		const props = {
-			model,
-			moduleData
+			...standardProps,
+			score: 100,
+			verifiedScore: true
 		}
 
 		const component = renderer.create(<Materia {...props} />)
@@ -388,14 +333,13 @@ describe('Materia viewer component', () => {
 		// find the textGroupEL by a unique prop
 		// if it's found, it was rendered
 		expect(component.root.findAllByProps({ groupIndex: '0' })).toHaveLength(1)
+		const scoreRender = component.root.findByProps({ className: 'materia-score verified' })
+		expect(scoreRender.children.join('')).toBe('Your highest score: 100%')
 	})
 
 	test('renderCaptionOrScore captures errors', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -412,10 +356,7 @@ describe('Materia viewer component', () => {
 
 	test('renderTextCaption renders null when there is no textgroup text', () => {
 		expect.hasAssertions()
-		const props = {
-			model,
-			moduleData
-		}
+		const props = standardProps
 
 		const component = renderer.create(<Materia {...props} />)
 
@@ -445,60 +386,5 @@ describe('Materia viewer component', () => {
 		const inst = component.getInstance()
 
 		expect(inst.state.model.modelState.src).toBe(mockScoreUrl)
-	})
-
-	test('isResponseEmpty returns true if the response score is not verified - does not exist', () => {
-		expect(Materia.isResponseEmpty({})).toBe(true)
-		expect(Materia.isResponseEmpty({ score: 100, verifiedScore: false })).toBe(true)
-	})
-	test('isResponseEmpty returns true if the response score is not verified - false value', () => {
-		expect(Materia.isResponseEmpty({ score: 100, verifiedScore: false })).toBe(true)
-	})
-	test('isResponseEmpty returns false if the response score is verified', () => {
-		expect(Materia.isResponseEmpty({ score: 100, verifiedScore: true })).toBe(false)
-	})
-
-	test('calculateScore returns null when no score is recorded', () => {
-		const props = {
-			model,
-			moduleData
-		}
-		const component = renderer.create(<Materia {...props} />)
-
-		const inst = component.getInstance()
-		expect(inst.calculateScore()).toBe(null)
-	})
-
-	test('calculateScore returns properly when a score is recorded', () => {
-		const mockScore = 90
-
-		const props = {
-			model,
-			moduleData,
-			score: mockScore
-		}
-		const component = renderer.create(<Materia {...props} />)
-
-		const inst = component.getInstance()
-		expect(inst.calculateScore()).toEqual({ score: mockScore, details: null })
-	})
-
-	test('getInstructions returns properly', () => {
-		const props = {
-			model,
-			moduleData
-		}
-		const component = renderer.create(<Materia {...props} />)
-
-		const inst = component.getInstance()
-		const instructionsFragment = renderer.create(inst.getInstructions())
-
-		const fragmentRender = instructionsFragment.root.findByProps({
-			className: 'for-screen-reader-only'
-		})
-		expect(fragmentRender.children[0]).toBe('Embedded Materia widget.')
-		expect(fragmentRender.parent.children[1]).toBe(
-			'Play the embedded Materia widget to receive a score. Your highest score will be saved.'
-		)
 	})
 })

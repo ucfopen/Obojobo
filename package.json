@@ -82,6 +82,7 @@
 		"packages/obonode/obojobo-chunks-iframe",
 		"packages/obonode/obojobo-chunks-list",
 		"packages/obonode/obojobo-chunks-materia",
+		"packages/obonode/obojobo-chunks-materia-assessment",
 		"packages/obonode/obojobo-chunks-math-equation",
 		"packages/obonode/obojobo-chunks-multiple-choice-assessment",
 		"packages/obonode/obojobo-chunks-numeric-assessment",
