@@ -113,7 +113,8 @@ const getDefaultProps = ({
 		onClickReveal: jest.fn(),
 		onClickShowExplanation: jest.fn(),
 		onClickHideExplanation: jest.fn(),
-		onClickBlocker: jest.fn()
+		onClickBlocker: jest.fn(),
+		onSaveAnswer: jest.fn()
 	}
 }
 

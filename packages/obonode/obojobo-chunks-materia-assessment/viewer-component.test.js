@@ -39,7 +39,7 @@ describe('MateriaAssessment viewer component', () => {
 	let model
 	let moduleData
 	let questionModel
-	let onFormChange
+	let onSaveAnswer
 
 	const API = require('obojobo-document-engine/src/scripts/viewer/util/api')
 
@@ -78,7 +78,7 @@ describe('MateriaAssessment viewer component', () => {
 			get: jest.fn().mockReturnValue(mockQuestionId)
 		}
 
-		onFormChange = jest.fn()
+		onSaveAnswer = jest.fn()
 	})
 
 	afterEach(() => {})
@@ -107,7 +107,7 @@ describe('MateriaAssessment viewer component', () => {
 			model,
 			moduleData,
 			questionModel,
-			onFormChange
+			onSaveAnswer
 		}
 
 		const component = renderer.create(<MateriaAssessment {...props} />)
@@ -132,7 +132,7 @@ describe('MateriaAssessment viewer component', () => {
 			)
 
 			expect(inst.state).toHaveProperty('score', 100)
-			expect(onFormChange).toHaveBeenCalledTimes(1)
+			expect(onSaveAnswer).toHaveBeenCalledTimes(1)
 		})
 	})
 

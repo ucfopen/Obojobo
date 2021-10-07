@@ -46,7 +46,8 @@ const QuestionComponent = ({
 	onClickReveal,
 	onClickShowExplanation,
 	onClickHideExplanation,
-	onClickBlocker
+	onClickBlocker,
+	onSaveAnswer
 }) => {
 	const isAnswerScored = score !== null
 	const hasResponse = response !== null
@@ -113,7 +114,7 @@ const QuestionComponent = ({
 								questionModel={questionModel}
 								response={response}
 								disabled={isFormDisabled}
-								onFormChange={onFormChange}
+								onSaveAnswer={onSaveAnswer}
 							/>
 						</div>
 					</fieldset>
