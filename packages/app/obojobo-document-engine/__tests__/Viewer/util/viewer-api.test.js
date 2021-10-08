@@ -179,8 +179,6 @@ describe('apiutil', () => {
 			payload: 'mockPayload'
 		}).then(() => {
 			expect(post).toHaveBeenCalled()
-
-			expect(window.parent.postMessage).toHaveBeenCalledWith('mockValue', '*')
 		})
 	})
 

@@ -17,18 +17,7 @@ const ViewerApi = {
 	processJsonResults: API.processJsonResults,
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
 		const data = buildEventData(draftId, action, eventVersion, visitId, payload)
-		return (
-			API.post('/api/events', data)
-				.then(API.processJsonResults)
-				// TODO: Send Caliper event to client host.
-				.then(res => {
-					if (res && res.status === 'ok' && res.value) {
-						parent.postMessage(res.value, '*')
-					}
-
-					return res
-				})
-		)
+		return API.post('/api/events', data).then(API.processJsonResults)
 	},
 
 	postEventBeacon({ draftId, action, eventVersion, visitId, payload = {} }) {

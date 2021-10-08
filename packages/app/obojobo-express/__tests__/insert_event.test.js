@@ -50,8 +50,7 @@ describe('insert_event', () => {
 			userId: 9,
 			ip: '1.2.3.4',
 			metadata: { value: 'test2' },
-			draftId: '999999',
-			caliperPayload: { id: 'mockCaliperPayload' }
+			draftId: '999999'
 		}
 		// mock insert
 		db.one.mockResolvedValueOnce({ created_at: expectedCreatedAt })
@@ -65,7 +64,6 @@ describe('insert_event', () => {
 					expect.stringContaining('INSERT INTO events'),
 					insertObject
 				)
-				expect(db.none).toHaveBeenCalledTimes(1)
 			})
 			.catch(err => {
 				throw err
@@ -82,8 +80,7 @@ describe('insert_event', () => {
 			userId: 9,
 			ip: '1.2.3.4',
 			metadata: { value: 'test2' },
-			draftId: '999999',
-			caliperPayload: { id: 'mockCaliperPayload', extensions: {} }
+			draftId: '999999'
 		}
 		// mock insert
 		db.one.mockResolvedValueOnce({ created_at: expectedCreatedAt })
@@ -97,7 +94,6 @@ describe('insert_event', () => {
 					expect.stringContaining('INSERT INTO events'),
 					insertObject
 				)
-				expect(db.none).toHaveBeenCalledTimes(1)
 			})
 			.catch(err => {
 				throw err

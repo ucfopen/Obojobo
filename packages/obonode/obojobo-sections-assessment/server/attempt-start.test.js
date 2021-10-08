@@ -8,7 +8,6 @@ jest.mock('obojobo-express/server/logger')
 jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/models/draft')
-jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
 jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle')
 jest.mock('./models/assessment')
 
@@ -37,7 +36,6 @@ const {
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
 	getSendToClientPromises,
-	insertAttemptStartCaliperEvent,
 	getState,
 	loadChildren
 } = require('./attempt-start.js')
@@ -45,7 +43,6 @@ const {
 const testJson = require('obojobo-document-engine/test-object.json')
 const insertEvent = require('obojobo-express/server/insert_event')
 const Draft = require('obojobo-express/server/models/draft')
-const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const AssessmentModel = require('./models/assessment')
 const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
 
@@ -155,9 +152,6 @@ describe('start attempt route', () => {
 		AssessmentModel.createNewAttempt.mockResolvedValueOnce(mockAttempt)
 
 		insertEvent.mockReturnValueOnce('mockInsertResult')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptStartedEvent: jest.fn().mockReturnValue('mockCaliperPayload')
-		})
 
 		expect.hasAssertions()
 		return startAttempt(mockReq, mockRes).then(() => {
@@ -435,67 +429,6 @@ describe('start attempt route', () => {
 
 		// returns from yell come back?
 		expect(result).toEqual([0, 1])
-	})
-
-	test('insertAttemptStartCaliperEvent inserts a new attempt, creates events and replies with an expected object', () => {
-		const createAssessmentAttemptStartedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
-		insertEvent.mockReturnValueOnce('mockInsertResult')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptStartedEvent
-		})
-		Date.prototype.toISOString = () => 'date' //eslint-disable-line
-
-		const mockDraft = {
-			draftId: 'mockDraftId',
-			contentId: 'mockContentId'
-		}
-
-		const r = insertAttemptStartCaliperEvent(
-			'mockAttemptId',
-			1,
-			'mockUserId',
-			mockDraft,
-			'mockAssessmentId',
-			true,
-			'mockHostname',
-			'mockRemoteAddress'
-		)
-
-		expect(r).toBe('mockInsertResult')
-
-		// Make sure insertEvent was called
-		expect(insertEvent).toHaveBeenCalledTimes(1)
-
-		expect(createAssessmentAttemptStartedEvent).toHaveBeenCalledWith({
-			actor: {
-				id: 'mockUserId',
-				type: 'user'
-			},
-			assessmentId: 'mockAssessmentId',
-			attemptId: 'mockAttemptId',
-			draftId: 'mockDraftId',
-			contentId: 'mockContentId',
-			extensions: {
-				count: 1
-			}
-		})
-
-		expect(insertEvent).toHaveBeenCalledWith({
-			action: 'assessment:attemptStart',
-			actorTime: 'date',
-			caliperPayload: 'mockCaliperPayload',
-			draftId: 'mockDraftId',
-			contentId: 'mockContentId',
-			eventVersion: '1.1.0',
-			ip: 'mockRemoteAddress',
-			metadata: {},
-			isPreview: true,
-			payload: {
-				attemptCount: 1,
-				attemptId: 'mockAttemptId'
-			},
-			userId: 'mockUserId'
-		})
 	})
 
 	test('loadChildren builds a full map of used questions', () => {
