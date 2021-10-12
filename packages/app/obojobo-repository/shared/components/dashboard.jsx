@@ -200,7 +200,7 @@ function Dashboard(props) {
 		setIsLoading(true)
 		props.bulkRestoreModules(draftIds).then(() => {
 			setIsLoading(false)
-			// alert('The selected modules were successfully restored.')
+			alert('The selected modules were successfully restored.')
 		})
 	}
 

@@ -64,6 +64,7 @@ describe('Dashboard', () => {
 
 	let dashboardProps
 
+	const originalAlert = global.alert
 	const originalConfirm = window.confirm
 	const originalLocationAssign = window.location.assign
 
@@ -84,10 +85,12 @@ describe('Dashboard', () => {
 		})
 
 		ReactModal.setAppElement = jest.fn()
+		delete global.alert
 	})
 
 	beforeEach(() => {
 		jest.resetAllMocks()
+		global.alert = jest.fn()
 
 		dashboardProps = {
 			currentUser: {
@@ -143,6 +146,7 @@ describe('Dashboard', () => {
 	})
 
 	afterAll(() => {
+		global.alert = originalAlert
 		window.confirm = originalConfirm
 		window.location.assign = originalLocationAssign
 	})
@@ -699,6 +703,11 @@ describe('Dashboard', () => {
 		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalled()
 
 		component.unmount()
+
+		return dashboardProps.bulkRestoreModules().then(() => {
+			expect(global.alert).toHaveBeenCalledTimes(1)
+			expect(global.alert).toHaveBeenCalledWith('The selected modules were successfully restored.')
+		})
 	})
 
 	test('dashboard switch tabs as expected', () => {
