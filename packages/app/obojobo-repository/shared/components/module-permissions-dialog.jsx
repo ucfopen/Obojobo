@@ -44,40 +44,30 @@ class ModulePermissionsDialog extends React.Component {
 
 	renderModal() {
 		if (this.state.peoplePickerOpen) {
-			if (this.props.draftPermissions[this.props.draftId] != null) {
-				return (
-					<ReactModal
-						isOpen={true}
-						contentLabel="Module Access"
-						className="repository--modal"
-						overlayClassName="repository--modal-overlay"
-						onRequestClose={this.closePeoplePicker}
-					>
-						<PeopleSearchDialog
-							onClose={this.closePeoplePicker}
-							onSelectPerson={this.addPerson}
-							currentUserId={this.props.currentUserId}
-							draftPermissions={this.props.draftPermissions[this.props.draftId].items}
-						/>
-					</ReactModal>
-				)
-			} else {
-				return (
-					<ReactModal
-						isOpen={true}
-						contentLabel="Module Access"
-						className="repository--modal"
-						overlayClassName="repository--modal-overlay"
-						onRequestClose={this.closePeoplePicker}
-					>
-						<PeopleSearchDialog
-							onClose={this.closePeoplePicker}
-							onSelectPerson={this.addPerson}
-							currentUserId={this.props.currentUserId}
-						/>
-					</ReactModal>
-				)
+			let draftPermissions = null
+
+			if (
+				this.props.draftPermissions[this.props.draftId] !== null &&
+				this.props.draftPermissions[this.props.draftId] !== undefined
+			) {
+				draftPermissions = this.props.draftPermissions[this.props.draftId].items
 			}
+			return (
+				<ReactModal
+					isOpen={true}
+					contentLabel="Module Access"
+					className="repository--modal"
+					overlayClassName="repository--modal-overlay"
+					onRequestClose={this.closePeoplePicker}
+				>
+					<PeopleSearchDialog
+						onClose={this.closePeoplePicker}
+						onSelectPerson={this.addPerson}
+						currentUserId={this.props.currentUserId}
+						draftPermissions={draftPermissions}
+					/>
+				</ReactModal>
+			)
 		}
 		return null
 	}

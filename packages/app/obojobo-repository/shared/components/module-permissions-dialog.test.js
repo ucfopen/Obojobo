@@ -26,7 +26,7 @@ describe('ModulePermissionsDialog', () => {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
 			currentUserId: 99,
-			draftPermissions: { items: [{ id: 99 }] },
+			draftPermissions: {},
 			loadUsersForModule: jest.fn(),
 			addUserToModule: jest.fn(),
 			deleteModulePermissions: jest.fn(),
@@ -47,6 +47,10 @@ describe('ModulePermissionsDialog', () => {
 	const expectPeopleSearchModalToBeRendered = (component, isRendered) => {
 		expect(component.root.findAllByType(ReactModal).length).toBe(isRendered ? 1 : 0)
 		expect(component.root.findAllByType(PeopleSearchDialog).length).toBe(isRendered ? 1 : 0)
+	}
+
+	const expectModulePermissionsModalToBeRendered = (component, isRendered) => {
+		expect(component.root.findAllByType(ReactModal).length).toBe(isRendered ? 1 : 0)
 	}
 
 	test('renders with "null" draftPermissions', () => {
@@ -110,6 +114,26 @@ describe('ModulePermissionsDialog', () => {
 		})
 
 		expectPeopleSearchModalToBeRendered(component, true)
+	})
+
+	test('clicking the "Add People" button opens the search dialog and passes it draftPermissions', () => {
+		defaultProps.draftPermissions['mockDraftId'] = {
+			items: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
+		}
+		const reusableComponent = <ModulePermissionsDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		expectModulePermissionsModalToBeRendered(component, false)
+
+		act(() => {
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expectModulePermissionsModalToBeRendered(component, true)
 	})
 
 	test('modal closes the people search modal when callback is called', () => {
