@@ -673,7 +673,7 @@ describe('Dashboard', () => {
 		component.unmount()
 	})
 
-	test.only('restoreModules function gets called as expected', async () => {
+	test('restoreModules function gets called as expected', async () => {
 		// Let's first show the deleted modules page so that the Restore All
 		// button shows up
 		const props = {
