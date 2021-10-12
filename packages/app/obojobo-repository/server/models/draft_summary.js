@@ -1,7 +1,7 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
-const buildQueryWhere = (whereSQL, joinSQL = '', deleted='FALSE') => {
+const buildQueryWhere = (whereSQL, joinSQL = '', deleted = 'FALSE') => {
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,

@@ -693,7 +693,7 @@ describe('Dashboard Reducer', () => {
 			{
 				draftId: 'mockDraftId5',
 				title: 'E Mock Module'
-			},
+			}
 		]
 
 		const action = {
@@ -739,7 +739,7 @@ describe('Dashboard Reducer', () => {
 			{
 				draftId: 'mockDraftId5',
 				title: 'E Mock Module'
-			},
+			}
 		]
 
 		const action = {

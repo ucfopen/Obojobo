@@ -79,7 +79,7 @@ describe('DraftSummary Model', () => {
 	//NOTE:
 	// This is just the DraftSummary non-public 'buildQuery' method.
 	// Not sure if there's a good way of exposing that, so will just use this.
-	const queryBuilder = (whereSQL, joinSQL = '', deleted='FALSE') =>
+	const queryBuilder = (whereSQL, joinSQL = '', deleted = 'FALSE') =>
 		`
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,

@@ -36,7 +36,7 @@ describe('Server Events', () => {
 		expect(oboEvents.on).toHaveBeenCalledWith(DraftModel.EVENT_DRAFT_DELETED, expect.any(Function))
 	})
 
-	test('maps a user to a module when it\'s created', () => {
+	test("maps a user to a module when it's created", () => {
 		// verify we have the right callback
 		const [eventName, newDraftListener] = oboEvents.on.mock.calls[0]
 		expect(eventName).toBe(DraftModel.EVENT_NEW_DRAFT_CREATED)

@@ -199,15 +199,15 @@ function Dashboard(props) {
 	const restoreModules = draftIds => {
 		setIsLoading(true)
 		props.bulkRestoreModules(draftIds).then(() => {
-			alert('The selected modules were successfully restored.')
 			setIsLoading(false)
+			alert('The selected modules were successfully restored.')
 		})
 	}
 
 	const switchTabs = () => {
 		if (props.showDeletedModules) {
 			props.getModules()
-		}else {
+		} else {
 			props.getDeletedModules()
 		}
 	}
@@ -286,7 +286,7 @@ function Dashboard(props) {
 								<Button className="dashboard-menu-button go-back-container" onClick={switchTabs}>
 									<div className="go-back-icon">
 										<svg viewBox="0 0 134 150" version="1.1" xmlns="http://www.w3.org/2000/svg">
-											<path d="M 25,50 97.5,5 97.5,95 Z"/>
+											<path d="M 25,50 97.5,5 97.5,95 Z" />
 										</svg>
 									</div>
 									<span>Go back to my modules</span>

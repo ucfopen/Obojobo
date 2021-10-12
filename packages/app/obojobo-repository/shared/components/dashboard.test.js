@@ -131,7 +131,10 @@ describe('Dashboard', () => {
 				hasFetched: false,
 				items: []
 			},
-			closeModal: jest.fn()
+			closeModal: jest.fn(),
+			getModules: jest.fn(),
+			getDeletedModules: jest.fn(),
+			bulkRestoreModules: jest.fn(() => Promise.resolve())
 		}
 	})
 
@@ -668,5 +671,70 @@ describe('Dashboard', () => {
 		expect(component.root.findAllByType(ReactModal).length).toBe(0)
 
 		component.unmount()
+	})
+
+	test.only('restoreModules function gets called as expected', async () => {
+		// Let's first show the deleted modules page so that the Restore All
+		// button shows up
+		const props = {
+			...dashboardProps,
+			showDeletedModules: true,
+			multiSelectMode: true
+		}
+		const reusableComponent = <Dashboard {...props} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		// Actual testing starts here
+		const mockClickEvent = { preventDefault: jest.fn() }
+
+		const restoreAllButton = component.root.findAllByType(Button)[0]
+		expect(restoreAllButton.children[0].children[0]).toBe('Restore All')
+
+		await act(async () => {
+			restoreAllButton.props.onClick(mockClickEvent)
+		})
+		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalled()
+
+		component.unmount()
+	})
+
+	test('dashboard switch tabs as expected', () => {
+		// Dashboard opens up at 'My Modules' tab
+		let props = {
+			...dashboardProps,
+			showDeletedModules: false,
+			multiSelectMode: false
+		}
+		let reusableComponent = <Dashboard {...props} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		// Going to 'My Deleted Modules' page...
+		let switchTabsButton = component.root.findAllByType(Button)[3]
+		act(() => {
+			switchTabsButton.props.onClick()
+		})
+		expect(dashboardProps.getDeletedModules).toHaveBeenCalled()
+
+		// Going to 'My Modules' page...
+		props = {
+			...dashboardProps,
+			showDeletedModules: true,
+			multiSelectMode: false
+		}
+		reusableComponent = <Dashboard {...props} />
+		act(() => {
+			component = create(reusableComponent)
+		})
+		switchTabsButton = component.root.findAllByType(Button)[0]
+		act(() => {
+			switchTabsButton.props.onClick()
+		})
+		expect(dashboardProps.getModules).toHaveBeenCalled()
 	})
 })

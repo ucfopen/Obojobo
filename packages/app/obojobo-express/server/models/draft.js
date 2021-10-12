@@ -118,7 +118,7 @@ class Draft {
 				}
 			)
 			.then(() => {
-				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id, userId })
+				oboEvents.emit(Draft.EVENT_DRAFT_RESTORED, { id, userId })
 			})
 			.catch(error => {
 				logger.logError('Draft fetchById Error', error)
@@ -316,5 +316,6 @@ class Draft {
 Draft.EVENT_NEW_DRAFT_CREATED = 'EVENT_NEW_DRAFT_CREATED'
 Draft.EVENT_DRAFT_DELETED = 'EVENT_DRAFT_DELETED'
 Draft.EVENT_DRAFT_UPDATED = 'EVENT_DRAFT_UPDATED'
+Draft.EVENT_DRAFT_RESTORED = 'EVENT_DRAFT_RESTORED'
 
 module.exports = Draft
