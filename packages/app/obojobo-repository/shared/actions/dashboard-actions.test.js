@@ -1148,9 +1148,7 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
-	test('', () => {
-
-	})
+	test('', () => {})
 
 	const assertBulkRestoreModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
 		global.fetch.mockResolvedValue(standardFetchResponse)
