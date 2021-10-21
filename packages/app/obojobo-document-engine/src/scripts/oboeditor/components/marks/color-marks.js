@@ -5,6 +5,8 @@ import Dispatcher from '../../../common/flux/dispatcher'
 
 const COLOR_MARK = 'color'
 
+const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
+
 const ColorMark = {
 	plugins: {
 		onKeyDown(event) {
@@ -16,6 +18,11 @@ const ColorMark = {
 		renderLeaf(props) {
 			let { children } = props
 			const { leaf } = props
+			const { parent } = children.props
+
+			if (parent && parent.type === HTML_NODE) {
+				return props
+			}
 
 			if (leaf[COLOR_MARK]) children = <span style={{ color: leaf.color }}>{children}</span>
 

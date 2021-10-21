@@ -8,11 +8,13 @@ describe('ColorMark', () => {
 		Dispatcher.trigger.mockRestore()
 	})
 
-	test('renderLeaf diplays expected style', () => {
+	test('renderLeaf displays expected style', () => {
 		expect(
 			ColorMark.plugins.renderLeaf({
 				leaf: { color: '#000000' },
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
 		).toMatchInlineSnapshot(`
 		Object {
@@ -23,7 +25,9 @@ describe('ColorMark', () => {
 		      }
 		    }
 		  >
-		    mockChild
+		    Object {
+		      "props": "mockChildProps",
+		    }
 		  </span>,
 		  "leaf": Object {
 		    "color": "#000000",
@@ -36,14 +40,46 @@ describe('ColorMark', () => {
 		expect(
 			ColorMark.plugins.renderLeaf({
 				leaf: {},
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
 		).toMatchInlineSnapshot(`
 		Object {
-		  "children": "mockChild",
+		  "children": Object {
+		    "props": "mockChildProps",
+		  },
 		  "leaf": Object {},
 		}
 	`)
+	})
+
+	test('renderLeaf does not style HTML nodes', () => {
+		expect(
+			ColorMark.plugins.renderLeaf({
+				leaf: { color: '#000000' },
+				children: {
+					props: {
+						parent: {
+							type: 'ObojoboDraft.Chunks.HTML'
+						}
+					}
+				}
+			})
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": Object {
+		    "props": Object {
+		      "parent": Object {
+		        "type": "ObojoboDraft.Chunks.HTML",
+		      },
+		    },
+		  },
+		  "leaf": Object {
+		    "color": "#000000",
+		  },
+		}
+		`)
 	})
 
 	test('color action', () => {
