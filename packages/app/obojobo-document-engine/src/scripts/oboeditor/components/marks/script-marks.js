@@ -7,6 +7,8 @@ import SubIcon from '../../assets/sub-icon'
 
 const SCRIPT_MARK = 'sup'
 
+const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
+
 const ScriptMark = {
 	plugins: {
 		onKeyDown(event, editor, next) {
@@ -25,6 +27,11 @@ const ScriptMark = {
 		renderLeaf(props) {
 			let { children } = props
 			const { leaf } = props
+			const { parent } = children.props
+
+			if (parent && parent.type === HTML_NODE) {
+				return props
+			}
 
 			if (leaf[SCRIPT_MARK] && leaf.num > 0) children = <sup>{props.children}</sup>
 			if (leaf[SCRIPT_MARK] && leaf.num < 0) children = <sub>{props.children}</sub>

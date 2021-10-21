@@ -75,57 +75,175 @@ describe('BasicMarks', () => {
 		expect(editor.toggleMark).toHaveBeenCalledWith(LATEX_MARK)
 	})
 
-	test('renderLeaf diplays expected style', () => {
+	test('renderLeaf displays expected style', () => {
 		expect(
 			BasicMarks.plugins.renderLeaf({
 				leaf: { b: true },
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
-		).toMatchSnapshot()
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": <strong>
+		    Object {
+		      "props": "mockChildProps",
+		    }
+		  </strong>,
+		  "leaf": Object {
+		    "b": true,
+		  },
+		}
+		`)
 
 		expect(
 			BasicMarks.plugins.renderLeaf({
 				leaf: { i: true },
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
-		).toMatchSnapshot()
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": <em>
+		    Object {
+		      "props": "mockChildProps",
+		    }
+		  </em>,
+		  "leaf": Object {
+		    "i": true,
+		  },
+		}
+		`)
 
 		expect(
 			BasicMarks.plugins.renderLeaf({
 				leaf: { del: true },
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
-		).toMatchSnapshot()
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": <del>
+		    Object {
+		      "props": "mockChildProps",
+		    }
+		  </del>,
+		  "leaf": Object {
+		    "del": true,
+		  },
+		}
+		`)
 
 		expect(
 			BasicMarks.plugins.renderLeaf({
 				leaf: { q: true },
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
-		).toMatchSnapshot()
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": <q>
+		    Object {
+		      "props": "mockChildProps",
+		    }
+		  </q>,
+		  "leaf": Object {
+		    "q": true,
+		  },
+		}
+		`)
 
 		expect(
 			BasicMarks.plugins.renderLeaf({
 				leaf: { monospace: true },
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
-		).toMatchSnapshot()
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": <code>
+		    Object {
+		      "props": "mockChildProps",
+		    }
+		  </code>,
+		  "leaf": Object {
+		    "monospace": true,
+		  },
+		}
+		`)
 
 		expect(
 			BasicMarks.plugins.renderLeaf({
 				leaf: { _latex: true },
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
-		).toMatchSnapshot()
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": <div
+		    className="latex-editor "
+		    spellCheck={false}
+		  >
+		    Object {
+		      "props": "mockChildProps",
+		    }
+		  </div>,
+		  "leaf": Object {
+		    "_latex": true,
+		  },
+		}
+		`)
 	})
 
 	test('renderLeaf does nothing', () => {
 		expect(
 			BasicMarks.plugins.renderLeaf({
 				leaf: {},
-				children: 'mockChild'
+				children: {
+					props: 'mockChildProps'
+				}
 			})
-		).toMatchSnapshot()
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": Object {
+		    "props": "mockChildProps",
+		  },
+		  "leaf": Object {},
+		}
+	`)
+	})
+
+	test('renderLeaf does not style HTML nodes', () => {
+		expect(
+			BasicMarks.plugins.renderLeaf({
+				leaf: { b: true },
+				children: {
+					props: {
+						parent: {
+							type: 'ObojoboDraft.Chunks.HTML'
+						}
+					}
+				}
+			})
+		).toMatchInlineSnapshot(`
+		Object {
+		  "children": Object {
+		    "props": Object {
+		      "parent": Object {
+		        "type": "ObojoboDraft.Chunks.HTML",
+		      },
+		    },
+		  },
+		  "leaf": Object {
+		    "b": true,
+		  },
+		}
+		`)
 	})
 
 	test('toggleMarks removes links', () => {
