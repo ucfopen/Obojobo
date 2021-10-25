@@ -18,46 +18,51 @@ exports[`Figure Figure component 1`] = `
     <div
       className="container"
     >
-      <figure
-        unselectable="on"
+      <div
+        className="figure-parent"
       >
-        <img
-          alt="Alt Text"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading="lazy"
-          onError={[Function]}
-          onLoad={[Function]}
-          src="www.example.com/img.jpg"
-          style={
-            Object {
-              "height": "400px",
-              "width": "500px",
-            }
-          }
+        <figure
+          className=" is-not-wrapped-text left-float"
           unselectable="on"
-        />
-        <figcaption
-          className="is-caption-width-image-width"
-          style={
-            Object {
-              "width": "500px",
-            }
-          }
         >
-          <span
-            className="obo-text"
-            data-group-index="0"
+          <img
+            alt="Alt Text"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading="lazy"
+            onError={[Function]}
+            onLoad={[Function]}
+            src="www.example.com/img.jpg"
+            style={
+              Object {
+                "height": "400px",
+                "width": "500px",
+              }
+            }
+            unselectable="on"
+          />
+          <figcaption
+            className="is-caption-width-image-width"
+            style={
+              Object {
+                "width": "500px",
+              }
+            }
           >
-            <span>
+            <span
+              className="obo-text"
+              data-group-index="0"
+            >
               <span>
                 <span>
-                  Example Text
+                  <span>
+                    Example Text
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-        </figcaption>
-      </figure>
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </div>
@@ -81,41 +86,46 @@ exports[`Figure Figure component custom size with no height 1`] = `
     <div
       className="container"
     >
-      <figure
-        unselectable="on"
+      <div
+        className="figure-parent"
       >
-        <img
-          alt="Alt Text"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading="lazy"
-          onError={[Function]}
-          onLoad={[Function]}
-          src="www.example.com/img.jpg"
-          style={
-            Object {
-              "width": "500px",
-            }
-          }
+        <figure
+          className=" is-not-wrapped-text left-float"
           unselectable="on"
-        />
-        <figcaption
-          className="is-caption-width-text-width"
-          style={Object {}}
         >
-          <span
-            className="obo-text"
-            data-group-index="0"
+          <img
+            alt="Alt Text"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading="lazy"
+            onError={[Function]}
+            onLoad={[Function]}
+            src="www.example.com/img.jpg"
+            style={
+              Object {
+                "width": "500px",
+              }
+            }
+            unselectable="on"
+          />
+          <figcaption
+            className="is-caption-width-text-width"
+            style={Object {}}
           >
-            <span>
+            <span
+              className="obo-text"
+              data-group-index="0"
+            >
               <span>
                 <span>
-                  Example Text
+                  <span>
+                    Example Text
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-        </figcaption>
-      </figure>
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </div>
@@ -139,41 +149,46 @@ exports[`Figure Figure component custom size with no width 1`] = `
     <div
       className="container"
     >
-      <figure
-        unselectable="on"
+      <div
+        className="figure-parent"
       >
-        <img
-          alt="Alt Text"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading="lazy"
-          onError={[Function]}
-          onLoad={[Function]}
-          src="www.example.com/img.jpg"
-          style={
-            Object {
-              "height": "400px",
-            }
-          }
+        <figure
+          className=" is-not-wrapped-text left-float"
           unselectable="on"
-        />
-        <figcaption
-          className="is-caption-width-image-width"
-          style={Object {}}
         >
-          <span
-            className="obo-text"
-            data-group-index="0"
+          <img
+            alt="Alt Text"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading="lazy"
+            onError={[Function]}
+            onLoad={[Function]}
+            src="www.example.com/img.jpg"
+            style={
+              Object {
+                "height": "400px",
+              }
+            }
+            unselectable="on"
+          />
+          <figcaption
+            className="is-caption-width-image-width"
+            style={Object {}}
           >
-            <span>
+            <span
+              className="obo-text"
+              data-group-index="0"
+            >
               <span>
                 <span>
-                  Example Text
+                  <span>
+                    Example Text
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-        </figcaption>
-      </figure>
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </div>
@@ -197,37 +212,42 @@ exports[`Figure Figure component size small 1`] = `
     <div
       className="container"
     >
-      <figure
-        unselectable="on"
+      <div
+        className="figure-parent"
       >
-        <img
-          alt="Alt Text"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading="lazy"
-          onError={[Function]}
-          onLoad={[Function]}
-          src="www.example.com/img.jpg"
-          style={Object {}}
+        <figure
+          className=" is-not-wrapped-text left-float"
           unselectable="on"
-        />
-        <figcaption
-          className="is-caption-width-image-width"
-          style={Object {}}
         >
-          <span
-            className="obo-text"
-            data-group-index="0"
+          <img
+            alt="Alt Text"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading="lazy"
+            onError={[Function]}
+            onLoad={[Function]}
+            src="www.example.com/img.jpg"
+            style={Object {}}
+            unselectable="on"
+          />
+          <figcaption
+            className="is-caption-width-image-width"
+            style={Object {}}
           >
-            <span>
+            <span
+              className="obo-text"
+              data-group-index="0"
+            >
               <span>
                 <span>
-                  Example Text
+                  <span>
+                    Example Text
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-        </figcaption>
-      </figure>
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </div>
@@ -251,25 +271,30 @@ exports[`Figure Figure component with no textGroup 1`] = `
     <div
       className="container"
     >
-      <figure
-        unselectable="on"
+      <div
+        className="figure-parent"
       >
-        <img
-          alt="Alt Text"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading="lazy"
-          onError={[Function]}
-          onLoad={[Function]}
-          src="www.example.com/img.jpg"
-          style={
-            Object {
-              "height": "400px",
-              "width": "500px",
-            }
-          }
+        <figure
+          className=" is-not-wrapped-text left-float"
           unselectable="on"
-        />
-      </figure>
+        >
+          <img
+            alt="Alt Text"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading="lazy"
+            onError={[Function]}
+            onLoad={[Function]}
+            src="www.example.com/img.jpg"
+            style={
+              Object {
+                "height": "400px",
+                "width": "500px",
+              }
+            }
+            unselectable="on"
+          />
+        </figure>
+      </div>
     </div>
   </div>
 </div>

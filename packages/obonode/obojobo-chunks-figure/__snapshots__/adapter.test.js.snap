@@ -3,7 +3,9 @@
 exports[`Figure adapter construct builds with attributes 1`] = `
 Object {
   "alt": "An image",
+  "captionText": "",
   "captionWidth": "text-width",
+  "float": "left",
   "height": 100,
   "size": "custom",
   "textGroup": TextGroup {
@@ -24,13 +26,16 @@ Object {
   },
   "url": "http://website.com/image.jpg",
   "width": 100,
+  "wrapText": false,
 }
 `;
 
 exports[`Figure adapter construct builds without attributes 1`] = `
 Object {
   "alt": null,
+  "captionText": "",
   "captionWidth": "image-width",
+  "float": "left",
   "height": null,
   "size": "small",
   "textGroup": TextGroup {
@@ -51,5 +56,6 @@ Object {
   },
   "url": null,
   "width": null,
+  "wrapText": false,
 }
 `;

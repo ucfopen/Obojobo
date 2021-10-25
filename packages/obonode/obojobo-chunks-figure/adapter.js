@@ -31,6 +31,10 @@ const Adapter = {
 		if (model.modelState.size === 'large' || model.modelState.size === 'medium') {
 			model.modelState.captionWidth = ImageCaptionWidthTypes.IMAGE_WIDTH
 		}
+
+		model.setStateProp('wrapText', false)
+		model.setStateProp('captionText', '')
+		model.setStateProp('float', 'left')
 	},
 
 	clone(model, clone) {
@@ -41,6 +45,9 @@ const Adapter = {
 		clone.modelState.height = model.modelState.height
 		clone.modelState.alt = model.modelState.alt
 		clone.modelState.captionWidth = model.modelState.captionWidth
+		clone.modelState.wrapText = model.modelState.wrapText
+		clone.modelState.captionText = model.modelState.captionText
+		clone.modelState.float = model.modelState.float
 	},
 
 	toJSON(model, json) {
@@ -51,11 +58,23 @@ const Adapter = {
 		json.content.height = model.modelState.height
 		json.content.alt = model.modelState.alt
 		json.content.captionWidth = model.modelState.captionWidth
+		json.content.wrapText = model.modelState.wrapText
+		json.content.captionText = model.modelState.captionText
+		json.content.float = model.modelState.float
 	},
 
 	toText(model) {
-		return `Image: ${model.modelState.url}\n Caption: ${TextGroupAdapter.toText(model) ||
-			model.modelState.alt}`
+		const wrapped = model.modelState.wrapText
+		const captionText = wrapped
+			? model.modelState.captionText || model.modelState.alt
+			: TextGroupAdapter.toText(model) || model.modelState.alt
+		let textString = `Image: ${model.modelState.url}\n Caption: ${captionText}`
+
+		if (wrapped) {
+			textString = `${textString}\n Text: ${TextGroupAdapter.toText(model) || ''}`
+		}
+
+		return textString
 	}
 }
 

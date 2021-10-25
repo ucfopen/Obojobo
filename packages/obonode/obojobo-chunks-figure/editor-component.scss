@@ -1,6 +1,27 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--figure {
+	&::after {
+		content: ' ';
+		display: block;
+		height: 0;
+		clear: both;
+	}
+
+	.figure-parent {
+		@include pad();
+	}
+
+	.figure-parent.is-wrapped-text {
+		&.left-float {
+			float: left;
+		}
+
+		&.right-float {
+			float: right;
+		}
+	}
+
 	.accessibility-warning {
 		font-family: $font-default;
 	}
@@ -61,5 +82,9 @@
 				border-radius: 50%;
 			}
 		}
+	}
+
+	.text-chunk {
+		text-align: justify;
 	}
 }

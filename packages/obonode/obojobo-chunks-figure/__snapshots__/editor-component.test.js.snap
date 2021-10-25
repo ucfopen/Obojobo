@@ -3,37 +3,22 @@
 exports[`Figure Editor Node Figure component 1`] = `
 <div>
   <div
-    className="obojobo-draft--chunks--figure viewer small  is-not-selected"
+    className="obojobo-draft--chunks--figure"
   >
-    <figure
-      className="container"
+    <div
+      className="figure-parent viewer  is-not-wrapped-text left-float small  is-not-selected"
     >
-      <div
-        className="figure-box   is-not-selected"
-        contentEditable={false}
-        onClick={[Function]}
-        style={Object {}}
+      <figure
+        className="container"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          className="figure-box   is-not-selected"
           contentEditable={false}
-        >
-          <button
-            className="button"
-            contentEditable={false}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            tabIndex="-1"
-            type="button"
-          >
-            ×
-          </button>
-        </div>
-        <div
-          className="image-toolbar"
+          onClick={[Function]}
+          style={Object {}}
         >
           <div
-            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
             contentEditable={false}
           >
             <button
@@ -44,71 +29,77 @@ exports[`Figure Editor Node Figure component 1`] = `
               tabIndex="-1"
               type="button"
             >
-              Image Properties
+              ×
             </button>
           </div>
+          <div
+            className="image-toolbar"
+          >
+            <div
+              className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+              contentEditable={false}
+            >
+              <button
+                className="button"
+                contentEditable={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                Image Properties
+              </button>
+            </div>
+          </div>
+          <img
+            alt="mockAlt"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading={null}
+            onError={[Function]}
+            onLoad={[Function]}
+            src="mockUrl"
+            style={Object {}}
+            unselectable="on"
+          />
         </div>
-        <img
-          alt="mockAlt"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading={null}
-          onError={[Function]}
-          onLoad={[Function]}
-          src="mockUrl"
+        <figcaption
+          className="align-center is-caption-width-image-width"
+          contentEditable={true}
           style={Object {}}
-          unselectable="on"
+          suppressContentEditableWarning={true}
         />
-      </div>
-      <figcaption
-        className="align-center is-caption-width-image-width"
-        style={Object {}}
-      />
-    </figure>
+      </figure>
+    </div>
   </div>
 </div>
 `;
 
-exports[`Figure Editor Node Figure component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\" style=\\"user-select: none;\\">Accessibility Warning: No Alt Text!</div><figure class=\\"container\\"><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption class=\\"align-center is-caption-width-image-width\\"></figcaption></figure></div></div>"`;
+exports[`Figure Editor Node Figure component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--figure\\"><div class=\\"figure-parent viewer  is-not-wrapped-text left-float   is-not-selected\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\" style=\\"user-select: none;\\">Accessibility Warning: No Alt Text!</div><figure class=\\"container\\"><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption class=\\"align-center is-caption-width-image-width\\" contenteditable=\\"true\\"></figcaption></figure></div></div></div>"`;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
 <div>
   <div
-    className="obojobo-draft--chunks--figure viewer custom  is-not-selected"
+    className="obojobo-draft--chunks--figure"
   >
-    <figure
-      className="container"
+    <div
+      className="figure-parent viewer  is-not-wrapped-text left-float custom  is-not-selected"
     >
-      <div
-        className="figure-box   is-not-selected"
-        contentEditable={false}
-        onClick={[Function]}
-        style={
-          Object {
-            "maxWidth": "100%",
-            "width": "customWidthpx",
-          }
-        }
+      <figure
+        className="container"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          className="figure-box   is-not-selected"
           contentEditable={false}
-        >
-          <button
-            className="button"
-            contentEditable={false}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            tabIndex="-1"
-            type="button"
-          >
-            ×
-          </button>
-        </div>
-        <div
-          className="image-toolbar"
+          onClick={[Function]}
+          style={
+            Object {
+              "maxWidth": "100%",
+              "width": "customWidthpx",
+            }
+          }
         >
           <div
-            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
             contentEditable={false}
           >
             <button
@@ -119,31 +110,52 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
               tabIndex="-1"
               type="button"
             >
-              Image Properties
+              ×
             </button>
           </div>
-        </div>
-        <img
-          alt="mockAlt"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading={null}
-          onError={[Function]}
-          onLoad={[Function]}
-          src="mockUrl"
-          style={
-            Object {
-              "height": "customHeightpx",
-              "width": "customWidthpx",
+          <div
+            className="image-toolbar"
+          >
+            <div
+              className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+              contentEditable={false}
+            >
+              <button
+                className="button"
+                contentEditable={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                Image Properties
+              </button>
+            </div>
+          </div>
+          <img
+            alt="mockAlt"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading={null}
+            onError={[Function]}
+            onLoad={[Function]}
+            src="mockUrl"
+            style={
+              Object {
+                "height": "customHeightpx",
+                "width": "customWidthpx",
+              }
             }
-          }
-          unselectable="on"
+            unselectable="on"
+          />
+        </div>
+        <figcaption
+          className="align-center is-caption-width-text-width"
+          contentEditable={true}
+          style={Object {}}
+          suppressContentEditableWarning={true}
         />
-      </div>
-      <figcaption
-        className="align-center is-caption-width-text-width"
-        style={Object {}}
-      />
-    </figure>
+      </figure>
+    </div>
   </div>
 </div>
 `;
@@ -151,41 +163,26 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
 exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
 <div>
   <div
-    className="obojobo-draft--chunks--figure viewer custom  is-not-selected"
+    className="obojobo-draft--chunks--figure"
   >
-    <figure
-      className="container"
+    <div
+      className="figure-parent viewer  is-not-wrapped-text left-float custom  is-not-selected"
     >
-      <div
-        className="figure-box   is-not-selected"
-        contentEditable={false}
-        onClick={[Function]}
-        style={
-          Object {
-            "maxWidth": "100%",
-          }
-        }
+      <figure
+        className="container"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          className="figure-box   is-not-selected"
           contentEditable={false}
-        >
-          <button
-            className="button"
-            contentEditable={false}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            tabIndex="-1"
-            type="button"
-          >
-            ×
-          </button>
-        </div>
-        <div
-          className="image-toolbar"
+          onClick={[Function]}
+          style={
+            Object {
+              "maxWidth": "100%",
+            }
+          }
         >
           <div
-            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
             contentEditable={false}
           >
             <button
@@ -196,30 +193,51 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
               tabIndex="-1"
               type="button"
             >
-              Image Properties
+              ×
             </button>
           </div>
-        </div>
-        <img
-          alt="mockAlt"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading={null}
-          onError={[Function]}
-          onLoad={[Function]}
-          src="mockUrl"
-          style={
-            Object {
-              "height": "customHeightpx",
+          <div
+            className="image-toolbar"
+          >
+            <div
+              className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+              contentEditable={false}
+            >
+              <button
+                className="button"
+                contentEditable={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                Image Properties
+              </button>
+            </div>
+          </div>
+          <img
+            alt="mockAlt"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading={null}
+            onError={[Function]}
+            onLoad={[Function]}
+            src="mockUrl"
+            style={
+              Object {
+                "height": "customHeightpx",
+              }
             }
-          }
-          unselectable="on"
+            unselectable="on"
+          />
+        </div>
+        <figcaption
+          className="align-center is-caption-width-image-width"
+          contentEditable={true}
+          style={Object {}}
+          suppressContentEditableWarning={true}
         />
-      </div>
-      <figcaption
-        className="align-center is-caption-width-image-width"
-        style={Object {}}
-      />
-    </figure>
+      </figure>
+    </div>
   </div>
 </div>
 `;
@@ -227,42 +245,27 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
 exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
 <div>
   <div
-    className="obojobo-draft--chunks--figure viewer custom  is-not-selected"
+    className="obojobo-draft--chunks--figure"
   >
-    <figure
-      className="container"
+    <div
+      className="figure-parent viewer  is-not-wrapped-text left-float custom  is-not-selected"
     >
-      <div
-        className="figure-box   is-not-selected"
-        contentEditable={false}
-        onClick={[Function]}
-        style={
-          Object {
-            "maxWidth": "100%",
-            "width": "customWidthpx",
-          }
-        }
+      <figure
+        className="container"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          className="figure-box   is-not-selected"
           contentEditable={false}
-        >
-          <button
-            className="button"
-            contentEditable={false}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            tabIndex="-1"
-            type="button"
-          >
-            ×
-          </button>
-        </div>
-        <div
-          className="image-toolbar"
+          onClick={[Function]}
+          style={
+            Object {
+              "maxWidth": "100%",
+              "width": "customWidthpx",
+            }
+          }
         >
           <div
-            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
             contentEditable={false}
           >
             <button
@@ -273,34 +276,55 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
               tabIndex="-1"
               type="button"
             >
-              Image Properties
+              ×
             </button>
           </div>
+          <div
+            className="image-toolbar"
+          >
+            <div
+              className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+              contentEditable={false}
+            >
+              <button
+                className="button"
+                contentEditable={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                Image Properties
+              </button>
+            </div>
+          </div>
+          <img
+            alt="mockAlt"
+            className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+            loading={null}
+            onError={[Function]}
+            onLoad={[Function]}
+            src="mockUrl"
+            style={
+              Object {
+                "width": "customWidthpx",
+              }
+            }
+            unselectable="on"
+          />
         </div>
-        <img
-          alt="mockAlt"
-          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-          loading={null}
-          onError={[Function]}
-          onLoad={[Function]}
-          src="mockUrl"
+        <figcaption
+          className="align-center is-caption-width-image-width"
+          contentEditable={true}
           style={
             Object {
               "width": "customWidthpx",
             }
           }
-          unselectable="on"
+          suppressContentEditableWarning={true}
         />
-      </div>
-      <figcaption
-        className="align-center is-caption-width-image-width"
-        style={
-          Object {
-            "width": "customWidthpx",
-          }
-        }
-      />
-    </figure>
+      </figure>
+    </div>
   </div>
 </div>
 `;

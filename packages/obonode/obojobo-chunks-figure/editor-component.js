@@ -31,6 +31,9 @@ const { Button } = Common.components
 class Figure extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.figureRef = React.createRef()
+
 		this.focusFigure = this.focusFigure.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showImagePropertiesModal = this.showImagePropertiesModal.bind(this)
@@ -58,10 +61,14 @@ class Figure extends React.Component {
 
 	showImagePropertiesModal() {
 		freezeEditor(this.props.editor)
+
+		const originalCaptionText = this.props.children.props.node.children[0].text
+
 		ModalUtil.show(
 			<ImageProperties
 				allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
 				content={this.props.element.content}
+				originalCaptionText={originalCaptionText}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseImagePropertiesModal}
 			/>
@@ -118,57 +125,84 @@ class Figure extends React.Component {
 			customStyle['maxWidth'] = '100%'
 		}
 
+		const textWrapped = content.wrapText ?? false
+		const captionText = textWrapped ? content.captionText : this.props.children
+
+		const wrapTextRender = textWrapped ? (
+			<div className={'text-chunk pad'}>{this.props.children}</div>
+		) : null
+
+		// prevent user selection in addition to 'contentEditable=false' below to quiet Slate errors
+		if (textWrapped) {
+			captionStyle.userSelect = 'none'
+		}
+
+		// store all of the classes to be applied to the figure's parent element, to be collapsed to a string below
+		const figureContainerClasses = [
+			'figure-parent',
+			'viewer',
+			isOrNot(textWrapped, 'wrapped-text'),
+			`${content.float ?? 'left'}-float`,
+			content.size,
+			isSelected
+		]
+
 		return (
 			<Node {...this.props}>
-				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
-					{hasAltText ? null : (
-						<div
-							contentEditable={false}
-							className="accessibility-warning"
-							style={{ userSelect: 'none' }}
-						>
-							Accessibility Warning: No Alt Text!
-						</div>
-					)}
-					<figure className="container">
-						<div
-							className={`figure-box  ${isSelected}`}
-							style={customStyle}
-							contentEditable={false}
-							onClick={this.focusFigure}
-						>
-							<Button
-								className="delete-button"
-								onClick={this.deleteNode}
-								onKeyDown={this.returnFocusOnShiftTab}
-								tabIndex={selected ? '0' : '-1'}
+				<div className={`obojobo-draft--chunks--figure`}>
+					<div ref={this.figureRef} className={figureContainerClasses.join(' ')}>
+						{hasAltText ? null : (
+							<div
+								contentEditable={false}
+								className="accessibility-warning"
+								style={{ userSelect: 'none' }}
 							>
-								×
-							</Button>
-							<div className="image-toolbar">
+								Accessibility Warning: No Alt Text!
+							</div>
+						)}
+						<figure className={'container'}>
+							<div
+								className={`figure-box  ${isSelected}`}
+								style={customStyle}
+								contentEditable={false}
+								onClick={this.focusFigure}
+							>
 								<Button
-									className="properties-button"
-									onClick={this.showImagePropertiesModal}
-									onKeyDown={this.returnFocusOnTab}
+									className="delete-button"
+									onClick={this.deleteNode}
+									onKeyDown={this.returnFocusOnShiftTab}
 									tabIndex={selected ? '0' : '-1'}
 								>
-									Image Properties
+									×
 								</Button>
+								<div className="image-toolbar">
+									<Button
+										className="properties-button"
+										onClick={this.showImagePropertiesModal}
+										onKeyDown={this.returnFocusOnTab}
+										tabIndex={selected ? '0' : '-1'}
+									>
+										Image Properties
+									</Button>
+								</div>
+								<Image
+									style={customStyle}
+									key={content.url + content.width + content.height + content.size}
+									chunk={{ modelState: content }}
+									lazyLoad={false}
+								/>
 							</div>
-							<Image
-								style={customStyle}
-								key={content.url + content.width + content.height + content.size}
-								chunk={{ modelState: content }}
-								lazyLoad={false}
-							/>
-						</div>
-						<figcaption
-							className={`align-center is-caption-width-${captionWidth}`}
-							style={captionStyle}
-						>
-							{this.props.children}
-						</figcaption>
-					</figure>
+							<figcaption
+								className={`align-center is-caption-width-${captionWidth}`}
+								style={captionStyle}
+								contentEditable={!textWrapped}
+								suppressContentEditableWarning={true}
+							>
+								{captionText}
+							</figcaption>
+						</figure>
+					</div>
+					{wrapTextRender}
 				</div>
 			</Node>
 		)

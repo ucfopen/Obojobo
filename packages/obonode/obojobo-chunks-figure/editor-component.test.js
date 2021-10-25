@@ -23,6 +23,15 @@ jest.mock(
 )
 
 describe('Figure Editor Node', () => {
+	const standardComponentParent = {
+		getPath: () => ({
+			get: () => 0
+		}),
+		nodes: {
+			size: 2
+		}
+	}
+
 	beforeEach(() => {
 		jest.restoreAllMocks()
 		jest.resetAllMocks()
@@ -39,14 +48,7 @@ describe('Figure Editor Node', () => {
 						alt: 'mockAlt'
 					}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 			/>
 		)
 		const tree = component.toJSON()
@@ -68,14 +70,7 @@ describe('Figure Editor Node', () => {
 						captionWidth: ImageCaptionWidthTypes.TEXT_WIDTH
 					}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
@@ -91,14 +86,7 @@ describe('Figure Editor Node', () => {
 						captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH
 					}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 			/>
 		)
 		expect(componentNoWidth.toJSON()).toMatchSnapshot()
@@ -114,14 +102,7 @@ describe('Figure Editor Node', () => {
 						captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH
 					}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 			/>
 		)
 		expect(componentNoHeight.toJSON()).toMatchSnapshot()
@@ -134,16 +115,11 @@ describe('Figure Editor Node', () => {
 					id: 'mockKey',
 					content: {}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 				editor={{}}
-			/>
+			>
+				<div node={{ children: [{ text: 'mockText' }] }} />
+			</Figure>
 		)
 
 		component
@@ -195,14 +171,7 @@ describe('Figure Editor Node', () => {
 					id: 'mockKey',
 					content: {}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 				selected={true}
 			/>
 		)
@@ -224,14 +193,7 @@ describe('Figure Editor Node', () => {
 					id: 'mockKey',
 					content: {}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 				selected={false}
 			/>
 		)
@@ -255,14 +217,7 @@ describe('Figure Editor Node', () => {
 					key: 'mockKey',
 					content: mockContent
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 				editor={{}}
 				selected={true}
 			/>
@@ -280,14 +235,7 @@ describe('Figure Editor Node', () => {
 						get: () => ({})
 					}
 				}}
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
+				parent={standardComponentParent}
 				editor={{}}
 				element={{ content: {} }}
 				selected={true}
@@ -299,5 +247,127 @@ describe('Figure Editor Node', () => {
 
 		deleteButton.simulate('click')
 		expect(Transforms.removeNodes).toHaveBeenCalled()
+	})
+
+	test('Caption is equal to captionText when the Figure is text-wrapped', () => {
+		const mockCaptionText = 'mockCaptionText'
+
+		const component = renderer.create(
+			<Figure
+				element={{
+					content: {
+						size: 'small',
+						url: 'mockUrl',
+						alt: 'mockAlt',
+						captionText: mockCaptionText,
+						wrapText: true
+					}
+				}}
+				parent={standardComponentParent}
+			/>
+		)
+		const captionElement = component.root.findByType('figcaption')
+		expect(captionElement.children).toEqual([mockCaptionText])
+	})
+
+	test('Classes are applied correctly when the Figure is text-wrapped', () => {
+		const component = renderer.create(
+			<Figure
+				element={{
+					content: {
+						size: 'small',
+						url: 'mockUrl',
+						alt: 'mockAlt',
+						captionText: 'mockCaptionText',
+						wrapText: true
+					}
+				}}
+				parent={standardComponentParent}
+			/>
+		)
+
+		const mainContainerElement = component.root.findByProps({
+			className: 'obojobo-draft--chunks--figure'
+		})
+		const figureParentElement = mainContainerElement.children[0]
+
+		// Filter out empty strings because sometimes classes have two spaces between them
+		const figureParentClasses = figureParentElement.props.className.split(' ').filter(c => c !== '')
+		expect(figureParentClasses).toContain('is-wrapped-text')
+
+		// Bonus - make sure 'left-float' is applied by default
+		expect(figureParentClasses).toContain('left-float')
+	})
+
+	test('Classes are applied correctly when the Figure is not text-wrapped', () => {
+		const component = renderer.create(
+			<Figure
+				element={{
+					content: {
+						size: 'small',
+						url: 'mockUrl',
+						alt: 'mockAlt'
+					}
+				}}
+				parent={standardComponentParent}
+			/>
+		)
+
+		const mainContainerElement = component.root.findByProps({
+			className: 'obojobo-draft--chunks--figure'
+		})
+		const figureParentElement = mainContainerElement.children[0]
+
+		// Filter out empty strings because sometimes classes have two spaces between them
+		const figureParentClasses = figureParentElement.props.className.split(' ').filter(c => c !== '')
+		expect(figureParentClasses).toContain('is-not-wrapped-text')
+
+		// Bonus - make sure 'left-float' is applied by default
+		expect(figureParentClasses).toContain('left-float')
+	})
+
+	test('Wrapped text appears when the Figure is text-wrapped', () => {
+		const mockWrappedText = 'mockWrappedText'
+		const component = renderer.create(
+			<Figure
+				element={{
+					content: {
+						size: 'small',
+						url: 'mockUrl',
+						alt: 'mockAlt',
+						captionText: 'mockCaptionText',
+						wrapText: true
+					}
+				}}
+				parent={standardComponentParent}
+			>
+				<div>{mockWrappedText}</div>
+			</Figure>
+		)
+
+		// Explicitly making sure this exists, since if it doesn't we'd get an error with 'findByProps'
+		const mainContainerElement = component.root.findAllByProps({ className: 'text-chunk pad' })
+		expect(mainContainerElement.length).toBe(1)
+
+		expect(mainContainerElement[0].children[0].children[0]).toBe(mockWrappedText)
+	})
+
+	test('Wrapped text does not appear when the Figure is not text-wrapped', () => {
+		const component = renderer.create(
+			<Figure
+				element={{
+					content: {
+						size: 'small',
+						url: 'mockUrl',
+						alt: 'mockAlt'
+					}
+				}}
+				parent={standardComponentParent}
+			/>
+		)
+
+		// Explicitly making sure this does not exist, since if it doesn't we'd get an error with 'findByProps'
+		const mainContainerElement = component.root.findAllByProps({ className: 'text-chunk pad' })
+		expect(mainContainerElement.length).toBe(0)
 	})
 })

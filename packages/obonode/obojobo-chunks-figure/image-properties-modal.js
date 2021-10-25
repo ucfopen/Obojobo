@@ -14,6 +14,7 @@ const { Button } = Common.components
 class ImageProperties extends React.Component {
 	constructor(props) {
 		super(props)
+
 		this.inputRef = React.createRef()
 		this.state = {
 			url: '',
@@ -24,17 +25,23 @@ class ImageProperties extends React.Component {
 			captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 			isChoosingImage: !this.props.content.url && this.props.content.url !== '',
 			urlInputText: isUUID(props.content.url) ? null : props.content.url,
+			float: 'left',
+			wrapText: false,
+			captionText: props.originalCaptionText ?? '',
 			...props.content
 		}
 
 		// optimize bound functions by
 		this.onCheckSize = this.onCheckSize.bind(this)
+		this.onCheckFloatDirection = this.onCheckFloatDirection.bind(this)
 		this.handleHeightTextChange = this.handleHeightTextChange.bind(this)
 		this.handleWidthTextChange = this.handleWidthTextChange.bind(this)
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.handleAltTextChange = this.handleAltTextChange.bind(this)
 		this.handleCaptionWidthChange = this.handleCaptionWidthChange.bind(this)
 		this.onOpenChoosingImageModal = this.onOpenChoosingImageModal.bind(this)
+		this.onWrapTextChange = this.onWrapTextChange.bind(this)
+		this.handleCaptionTextChange = this.handleCaptionTextChange.bind(this)
 	}
 
 	handleAltTextChange(event) {
@@ -72,6 +79,12 @@ class ImageProperties extends React.Component {
 		})
 	}
 
+	onCheckFloatDirection(event) {
+		const float = event.target.value
+
+		this.setState({ float })
+	}
+
 	focusOnFirstElement() {
 		if (this.inputRef && this.inputRef.current) {
 			return this.inputRef.current.focus()
@@ -95,6 +108,18 @@ class ImageProperties extends React.Component {
 
 	onOpenChoosingImageModal() {
 		this.setState({ isChoosingImage: true })
+	}
+
+	onWrapTextChange() {
+		this.setState({
+			...this.state,
+			wrapText: !this.state.wrapText
+		})
+	}
+
+	handleCaptionTextChange(event) {
+		const captionText = event.target.value
+		this.setState({ captionText })
 	}
 
 	render() {
@@ -259,6 +284,66 @@ class ImageProperties extends React.Component {
 								) : null}
 							</div>
 						</div>
+						<div>
+							<label className="inline" htmlFor="obojobo-draft--chunks--figure--wrap-text">
+								Wrap Text:
+							</label>
+							<input
+								type="checkbox"
+								name="wrap-text"
+								id="obojobo-draft--chunks--figure--wrap-text"
+								checked={this.state.wrapText}
+								onChange={this.onWrapTextChange}
+							/>
+						</div>
+						{this.state.wrapText ? (
+							<div className="custom-caption-inputs">
+								<label htmlFor="obojobo-draft--chunks--figure--caption-text">Caption:</label>
+								<input
+									type="text"
+									id="obojobo-draft--chunks--figure--caption-text"
+									value={this.state.captionText || ''}
+									onChange={this.handleCaptionTextChange}
+									size="50"
+									placeholder="Type an image caption here"
+								/>
+							</div>
+						) : null}
+						{this.state.wrapText ? (
+							<div className="float-direction-inputs">
+								<label htmlFor="obojobo-draft--chunks--figure-float-direction">
+									Wrap Direction:
+								</label>
+								<div
+									id="obojobo-draft--chunks--figure--float"
+									role="radiogroup"
+									aria-label="Select size for image"
+								>
+									<label className="float-direction-input-parent">
+										<input
+											type="radio"
+											name="float-direction"
+											value="left"
+											id="obojobo-draft--chunks--figure--float-direction-left"
+											checked={this.state.float === 'left'}
+											onChange={this.onCheckFloatDirection}
+										/>
+										<span>Left</span>
+									</label>
+									<label className="float-direction-input-parent">
+										<input
+											type="radio"
+											name="float-direction"
+											value="right"
+											id="obojobo-draft--chunks--figure--float-direction-right"
+											checked={this.state.float === 'right'}
+											onChange={this.onCheckFloatDirection}
+										/>
+										<span>Right</span>
+									</label>
+								</div>
+							</div>
+						) : null}
 					</div>
 				</div>
 			</SimpleDialog>

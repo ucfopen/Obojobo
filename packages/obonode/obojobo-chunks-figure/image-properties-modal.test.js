@@ -293,4 +293,93 @@ describe('Image Properties Modal', () => {
 
 		expect(input.html().includes(`value=""`)).toBe(true)
 	})
+
+	test('ImageProperties toggles text wrap mode', () => {
+		const component = mount(
+			<ImageProperties
+				content={{ size: 'custom', url: 'mock_url' }}
+				height={null}
+				width={null}
+				onConfirm={jest.fn}
+			/>
+		)
+
+		expect(component.state().wrapText).toBe(false)
+		expect(component.exists('#obojobo-draft--chunks--figure--caption-text')).toBe(false)
+		expect(component.exists('#obojobo-draft--chunks--figure--float')).toBe(false)
+
+		const wrapTextToggleElement = component.find('#obojobo-draft--chunks--figure--wrap-text')
+		wrapTextToggleElement.simulate('change')
+
+		expect(component.state().wrapText).toBe(true)
+		expect(component.exists('#obojobo-draft--chunks--figure--caption-text')).toBe(true)
+		expect(component.exists('#obojobo-draft--chunks--figure--float')).toBe(true)
+	})
+
+	test('ImageProperties sets default caption text value', () => {
+		const mockOriginalCaptionText = 'mockOriginalCaptionText'
+		const component = mount(
+			<ImageProperties
+				content={{ size: 'custom', url: 'mock_url' }}
+				height={null}
+				width={null}
+				onConfirm={jest.fn}
+				originalCaptionText={mockOriginalCaptionText}
+			/>
+		)
+
+		expect(component.state().captionText).toBe(mockOriginalCaptionText)
+	})
+
+	test('ImageProperties changes caption text value', () => {
+		const component = mount(
+			<ImageProperties
+				content={{ size: 'custom', url: 'mock_url' }}
+				height={null}
+				width={null}
+				onConfirm={jest.fn}
+			/>
+		)
+
+		expect(component.state().captionText).toBe('')
+
+		const mockNewCaptionText = 'changed caption text'
+
+		// Have to be in 'wrapped text' mode to change caption text
+		const wrapTextToggleElement = component.find('#obojobo-draft--chunks--figure--wrap-text')
+		wrapTextToggleElement.simulate('change')
+
+		// Simulate changing "Caption Text"
+		component
+			.find('#obojobo-draft--chunks--figure--caption-text')
+			.simulate('change', { target: { value: mockNewCaptionText } })
+
+		expect(component.state().captionText).toBe(mockNewCaptionText)
+	})
+
+	test('ImageProperties changes float direction value', () => {
+		const component = mount(
+			<ImageProperties
+				content={{ size: 'custom', url: 'mock_url' }}
+				height={null}
+				width={null}
+				onConfirm={jest.fn}
+			/>
+		)
+
+		// Default value
+		expect(component.state().float).toBe('left')
+
+		// Have to be in 'wrapped text' mode to change float direction
+		const wrapTextToggleElement = component.find('#obojobo-draft--chunks--figure--wrap-text')
+		wrapTextToggleElement.simulate('change')
+
+		component.find('#obojobo-draft--chunks--figure--float-direction-right').simulate('change')
+
+		expect(component.state().float).toBe('right')
+
+		component.find('#obojobo-draft--chunks--figure--float-direction-left').simulate('change')
+
+		expect(component.state().float).toBe('left')
+	})
 })

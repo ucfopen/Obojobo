@@ -10,11 +10,11 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  * @returns {Object} An Obojobo Figure node
  */
 const slateToObo = node => {
-	const captionLine = {
+	const figureText = {
 		text: { value: '', styleList: [] },
 		data: null
 	}
-	TextUtil.slateToOboText(node, captionLine)
+	TextUtil.slateToOboText(node, figureText)
 
 	return {
 		id: node.id,
@@ -22,13 +22,16 @@ const slateToObo = node => {
 		children: [],
 		content: withoutUndefined({
 			triggers: node.content.triggers,
-			textGroup: [captionLine],
+			textGroup: [figureText],
 			alt: node.content.alt,
 			url: node.content.url,
 			size: node.content.size,
 			width: node.content.width,
 			height: node.content.height,
-			captionWidth: node.content.captionWidth
+			captionWidth: node.content.captionWidth,
+			wrapText: node.content.wrapText,
+			captionText: node.content.captionText,
+			float: node.content.float
 		})
 	}
 }

@@ -21,7 +21,10 @@ describe('Figure adapter', () => {
 				width: 100,
 				height: 100,
 				alt: 'An image',
-				captionWidth: 'text-width'
+				captionWidth: 'text-width',
+				wrapText: false,
+				captionText: '',
+				float: 'left'
 			}
 		}
 		const model = new OboModel(attrs)
@@ -44,7 +47,10 @@ describe('Figure adapter', () => {
 				width: 100,
 				height: 100,
 				alt: 'An image',
-				captionWidth: 'text-width'
+				captionWidth: 'text-width',
+				wrapText: false,
+				captionText: '',
+				float: 'left'
 			}
 		}
 		const model = new OboModel(attrs)
@@ -76,7 +82,9 @@ describe('Figure adapter', () => {
 		const expected = {
 			content: {
 				alt: 'An image',
+				captionText: '',
 				captionWidth: 'image-width',
+				float: 'left',
 				height: null,
 				size: 'small',
 				textGroup: [
@@ -89,7 +97,8 @@ describe('Figure adapter', () => {
 					}
 				],
 				url: 'http://website.com/image.jpg',
-				width: null
+				width: null,
+				wrapText: false
 			}
 		}
 
@@ -99,7 +108,7 @@ describe('Figure adapter', () => {
 		expect(attrs).toEqual(expected)
 	})
 
-	test('toText creates a text representation (With caption)', () => {
+	test('toText creates a text representation (With caption, not wrapped)', () => {
 		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'mock-tg' } }],
@@ -115,7 +124,7 @@ describe('Figure adapter', () => {
 		)
 	})
 
-	test('toText creates a text representation (Without caption)', () => {
+	test('toText creates a text representation (Without caption, not wrapped)', () => {
 		const attrs = {
 			content: {
 				url: 'http://website.com/image.jpg',
@@ -127,6 +136,40 @@ describe('Figure adapter', () => {
 		FigureAdapter.construct(model, attrs)
 		expect(FigureAdapter.toText(model, attrs)).toMatch(
 			'Image: http://website.com/image.jpg\n Caption: An image'
+		)
+	})
+
+	test('toText creates a text representation (With caption, wrapped, text)', () => {
+		const attrs = {
+			content: {
+				textGroup: [{ text: { value: 'mock-tg' } }],
+				url: 'http://website.com/image.jpg',
+				alt: 'An image',
+				wrapText: true,
+				captionText: 'Caption'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		FigureAdapter.construct(model, attrs)
+		expect(FigureAdapter.toText(model, attrs)).toMatch(
+			'Image: http://website.com/image.jpg\n Caption: Caption\n Text: mock-tg'
+		)
+	})
+
+	test('toText creates a text representation (Without caption, wrapped, no text)', () => {
+		const attrs = {
+			content: {
+				url: 'http://website.com/image.jpg',
+				alt: 'An image',
+				wrapText: true
+			}
+		}
+		const model = new OboModel(attrs)
+
+		FigureAdapter.construct(model, attrs)
+		expect(FigureAdapter.toText(model, attrs)).toMatch(
+			'Image: http://website.com/image.jpg\n Caption: An image\n Text: '
 		)
 	})
 })

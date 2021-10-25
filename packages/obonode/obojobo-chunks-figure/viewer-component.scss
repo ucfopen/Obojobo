@@ -1,11 +1,24 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--figure {
-	text-align: center;
+	&::after {
+		content: ' ';
+		display: block;
+		height: 0;
+		clear: both;
+	}
 
 	figure {
 		margin: 0;
 		padding: 0;
+
+		&.left-float {
+			float: left;
+		}
+
+		&.right-float {
+			float: right;
+		}
 	}
 
 	.container {
@@ -14,11 +27,16 @@
 		width: 100%;
 		position: relative;
 
+		figure:not(.is-wrapped-text) {
+			width: 100%;
+		}
+
 		img {
 			background: $color-bg;
 			display: block;
 			border: 5px solid $color-bg;
 			border-radius: $dimension-rounded-radius;
+			margin: 0 auto;
 
 			&.is-not-loaded {
 				background: $color-bg2;
@@ -27,6 +45,10 @@
 
 		.img-placeholder {
 			border: 1px solid $color-shadow;
+		}
+
+		> .obo-text {
+			text-align: justify;
 		}
 	}
 
@@ -41,96 +63,100 @@
 		}
 	}
 
-	&.custom {
-		.container {
-			.figure-box {
-				margin: auto;
-				height: auto;
-			}
+	.figure-parent {
+		text-align: center;
 
-			img {
-				margin: 0 auto;
-				height: auto;
-				width: auto;
-				max-height: 100%;
-				max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
-			}
-
-			figure {
-				margin: 0 auto;
-			}
-
-			figcaption {
-				@include pad(1 / 0.8);
-
-				@include mq($until: desktop) {
-					@include pad(0.75 / 0.8);
+		&.custom {
+			.container {
+				.figure-box {
+					margin: auto;
+					height: auto;
 				}
 
-				@include mq($until: tablet) {
-					@include pad(0.3 / 0.8);
+				img {
+					margin: 0 auto;
+					height: auto;
+					width: auto;
+					max-height: 100%;
+					max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
 				}
 
-				margin: auto;
+				figure {
+					margin: 0 auto;
+				}
+
+				figcaption {
+					@include pad(1 / 0.8);
+
+					@include mq($until: desktop) {
+						@include pad(0.75 / 0.8);
+					}
+
+					@include mq($until: tablet) {
+						@include pad(0.3 / 0.8);
+					}
+
+					margin: auto;
+				}
 			}
 		}
-	}
 
-	&.small {
-		@include pad();
+		&.small {
+			@include pad();
 
-		@include mq($until: desktop) {
-			@include pad(0.75);
-		}
-
-		@include mq($until: tablet) {
-			@include pad(0.3);
-		}
-
-		.container {
-			.figure-box,
-			img {
-				max-width: 18em;
-				margin: auto;
-				width: 100%;
-				box-sizing: border-box;
+			@include mq($until: desktop) {
+				@include pad(0.75);
 			}
 
-			figcaption {
-				max-width: 22em;
-				margin: auto;
+			@include mq($until: tablet) {
+				@include pad(0.3);
+			}
+
+			.container {
+				.figure-box,
+				img {
+					max-width: 18em;
+					margin: auto;
+					width: 100%;
+					box-sizing: border-box;
+				}
+
+				figcaption {
+					max-width: 22em;
+					margin: auto;
+				}
 			}
 		}
-	}
 
-	&.medium {
-		@include pad();
+		&.medium {
+			@include pad();
 
-		@include mq($until: desktop) {
-			@include pad(0.75);
-		}
+			@include mq($until: desktop) {
+				@include pad(0.75);
+			}
 
-		@include mq($until: tablet) {
-			@include pad(0.3);
-		}
+			@include mq($until: tablet) {
+				@include pad(0.3);
+			}
 
-		.container {
-			.figure-box,
-			img {
-				width: 100%;
-				box-sizing: border-box;
+			.container {
+				.figure-box,
+				img {
+					width: 100%;
+					box-sizing: border-box;
+				}
 			}
 		}
-	}
 
-	&.large {
-		.container {
-			.figure-box,
-			img {
-				width: 100%;
-				border: none;
-				border-radius: 0;
-				box-sizing: border-box;
+		&.large {
+			.container {
+				.figure-box,
+				img {
+					width: 100%;
+					border: none;
+					border-radius: 0;
+					box-sizing: border-box;
+				}
 			}
 		}
 	}

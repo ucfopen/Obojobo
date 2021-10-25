@@ -15,6 +15,10 @@
 	label {
 		margin-top: 0.7rem;
 		margin-bottom: 0.3em;
+
+		&.inline {
+			display: inline-block;
+		}
 	}
 
 	input[type='text'] {
@@ -101,6 +105,53 @@
 			box-sizing: border-box;
 			background: darken($color-bg2, 10%);
 			color: $color-text-minor;
+		}
+	}
+
+	.float-direction-input-parent {
+		display: inline-block;
+		position: relative;
+
+		input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
+		}
+
+		span {
+			display: block;
+			// background-color: $color-button-bg;
+			background-color: $color-bg;
+			color: $color-action;
+			height: 50px; /* stylelint-disable-line unit-disallowed-list */
+			width: 100px; /* stylelint-disable-line unit-disallowed-list */
+			border: 1px solid $color-action;
+			cursor: pointer;
+			text-align: center;
+			line-height: 50px; /* stylelint-disable-line unit-disallowed-list */
+
+			&:hover {
+				background-color: $color-action;
+				color: $color-bg;
+			}
+		}
+
+		&:first-child span {
+			border-top-left-radius: 0.2em;
+			border-bottom-left-radius: 0.2em;
+		}
+
+		&:last-child span {
+			border-top-right-radius: 0.2em;
+			border-bottom-right-radius: 0.2em;
+		}
+
+		input:checked ~ span {
+			background-color: $color-button-bg;
+			color: $color-bg;
+			border: 1px solid $color-transparent;
 		}
 	}
 }
