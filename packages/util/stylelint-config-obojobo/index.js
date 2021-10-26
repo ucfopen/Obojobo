@@ -9,7 +9,7 @@ module.exports = {
 				"ignoreAtRules": ["include", "mixin"]
 			}
 		],
-		"unit-disallowed-list": [
+		"unit-blacklist": [
 			"px",
 			{
 				"ignoreProperties": {

@@ -62,7 +62,6 @@ class Header extends React.Component {
 		if (newContent.title === '') return 'Module title must not be empty!'
 		model.triggers = newContent.triggers || []
 		model.objectives = newContent.objectives || []
-
 		model.set({ content: newContent }) // may cause store update?
 		EditorUtil.setStartPage(newContent.start)
 	}

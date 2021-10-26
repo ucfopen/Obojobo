@@ -2,7 +2,7 @@
 
 exports[`Component Editor Node Node builds the expected component when not selected 1`] = `
 <div
-  className="oboeditor-component component  is-not-selected mock-extra-classname"
+  className="oboeditor-component component mock-extra-classname"
   data-obo-component="true"
 >
   mock-children
@@ -11,7 +11,7 @@ exports[`Component Editor Node Node builds the expected component when not selec
 
 exports[`Component Editor Node Node builds the expected component when not selected null contentDescription 1`] = `
 <div
-  className="oboeditor-component component  is-selected mock-extra-classname"
+  className="oboeditor-component component mock-extra-classname"
   data-obo-component="true"
 >
   <div
@@ -27,7 +27,7 @@ exports[`Component Editor Node Node builds the expected component when not selec
 
 exports[`Component Editor Node Node builds the expected component when selected 1`] = `
 <div
-  className="oboeditor-component component  is-selected mock-extra-classname"
+  className="oboeditor-component component mock-extra-classname"
   data-obo-component="true"
 >
   <div
@@ -43,7 +43,7 @@ exports[`Component Editor Node Node builds the expected component when selected 
 
 exports[`Component Editor Node Node builds the expected component with no classname 1`] = `
 <div
-  className="oboeditor-component component  is-not-selected "
+  className="oboeditor-component component "
   data-obo-component="true"
 >
   mock-children

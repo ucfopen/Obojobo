@@ -35,7 +35,14 @@ const insertLtiLaunchWidgetEvent = ({
 	})
 }
 
-const insertLtiPickerLaunchEvent = ({ userId, draftId, contentId, nodeId, endpoint, ip }) => {
+const insertLtiPickerLaunchEvent = ({
+	userId,
+	draftId,
+	contentId,
+	nodeId,
+	endpoint,
+	ip
+}) => {
 	const action = 'materia:ltiPickerLaunch'
 	return insertEvent({
 		action,
@@ -70,7 +77,7 @@ const insertLtiScorePassbackEvent = ({
 	score,
 	materiaHost,
 	isPreview,
-	visitId
+	visitId,
 }) => {
 	const action = 'materia:ltiScorePassback'
 	return insertEvent({
@@ -84,7 +91,7 @@ const insertLtiScorePassbackEvent = ({
 			messageId,
 			materiaHost,
 			score,
-			success
+			success,
 		},
 		visitId,
 		userId,

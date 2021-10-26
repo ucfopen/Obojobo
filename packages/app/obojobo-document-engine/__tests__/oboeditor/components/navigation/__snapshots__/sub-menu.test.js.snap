@@ -105,6 +105,7 @@ Object {
   "getIndex": [Function],
   "isFirst": [Function],
   "isLast": [Function],
+  "objectives": Array [],
   "set": [MockFunction] {
     "calls": Array [
       Array [
@@ -133,6 +134,7 @@ Object {
   "getIndex": [Function],
   "isFirst": [Function],
   "isLast": [Function],
+  "objectives": Array [],
   "set": [MockFunction] {
     "calls": Array [
       Array [

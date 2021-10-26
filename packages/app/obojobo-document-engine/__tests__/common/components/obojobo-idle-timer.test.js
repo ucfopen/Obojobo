@@ -65,7 +65,7 @@ test('Dispatches return from warning event', () => {
 	Dispatcher.trigger.mockClear()
 
 	// call idle timer class method to simulate idle state change
-	warningTimer._toggleIdleState({})
+	warningTimer.toggleIdleState({})
 
 	// verify events are fired
 	expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -82,7 +82,7 @@ test('Dispatches return from idle event', () => {
 	jest.advanceTimersByTime(3)
 	Dispatcher.trigger.mockClear()
 	// call idle timer class method to simulate idle state change
-	idleTimer._toggleIdleState({})
+	idleTimer.toggleIdleState({})
 
 	// verify events are fired
 	expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)

@@ -1,96 +1,99 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dialog basic render 1`] = `
+exports[`Dialog Dialog component 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog "
   style={null}
 >
   <div
-    focusOnFirstElement={[Function]}
+    aria-labelledby="obojobo-draft--components--modal--modal--content"
+    className="obojobo-draft--components--modal--modal"
+    role="dialog"
   >
+    <input
+      className="first-tab"
+      onFocus={[Function]}
+      type="text"
+    />
     <div
-      className="dialog-content"
-      style={
-        Object {
-          "textAlign": "center",
-        }
-      }
+      className="content"
+      id="obojobo-draft--components--modal--modal--content"
     >
-      Content
+      <div
+        className="dialog-content"
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        Content
+      </div>
+      <div
+        className="controls"
+      />
     </div>
-    <div
-      className="controls"
+    <input
+      className="last-tab"
+      onFocus={[Function]}
+      type="text"
     />
   </div>
 </div>
 `;
 
-exports[`Dialog render with no buttons 1`] = `
-<div
-  className="obojobo-draft--components--modal--dialog "
-  style={null}
->
-  <div
-    focusOnFirstElement={[Function]}
-  >
-    <div
-      className="dialog-content"
-      style={
-        Object {
-          "textAlign": "center",
-        }
-      }
-    >
-      Content
-    </div>
-    <div
-      className="controls"
-    />
-  </div>
-</div>
-`;
-
-exports[`Dialog render with props 1`] = `
+exports[`Dialog Dialog component with props 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog "
   style={
     Object {
-      "width": "200 px",
+      "width": 5,
     }
   }
 >
   <div
-    focusOnFirstElement={[Function]}
+    aria-labelledby="obojobo-draft--components--modal--modal--content"
+    className="obojobo-draft--components--modal--modal"
+    role="dialog"
   >
-    <h1
-      className="heading"
-      style={
-        Object {
-          "textAlign": null,
-        }
-      }
-    >
-      Title
-    </h1>
+    <input
+      className="first-tab"
+      onFocus={[Function]}
+      type="text"
+    />
     <div
-      className="dialog-content"
-      style={
-        Object {
-          "textAlign": null,
+      className="content"
+      id="obojobo-draft--components--modal--modal--content"
+    >
+      <h1
+        className="heading"
+        style={
+          Object {
+            "textAlign": null,
+          }
         }
-      }
-    >
-      Content
-    </div>
-    <div
-      className="controls"
-    >
-      <span
-        className="text"
       >
-        test
-      </span>
+        Title
+      </h1>
+      <div
+        className="dialog-content"
+        style={
+          Object {
+            "textAlign": null,
+          }
+        }
+      >
+        Content
+      </div>
+      <div
+        className="controls"
+      />
     </div>
+    <input
+      className="last-tab"
+      onFocus={[Function]}
+      type="text"
+    />
   </div>
 </div>
 `;

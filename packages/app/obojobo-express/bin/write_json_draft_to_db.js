@@ -1,18 +1,4 @@
 #!/usr/bin/env node
-/* =============================================================
-WHAT
-Reads an obojobo draft document from a json file and saves it
-to the database. Optionally create a new document or update an
-existing one.
-
-
-HOW
-create a new document
-yarn run write_json_draft_to_db.js update file.json draft_id
-
-update an existing document
-yarn run write_json_draft_to_db.js insert file.json [user_id] [draft_id]
-============================================================= */
 
 /* eslint-disable no-console */
 const path = require('path')

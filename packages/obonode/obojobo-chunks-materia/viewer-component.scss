@@ -8,21 +8,22 @@
 
 	.materia-score {
 		display: block;
-		text-align: center;
+		text-align: cent;
 		margin: 0 auto;
+		text-align: center;
 		margin-bottom: 2em;
-		font-size: 0.7em;
-		opacity: 0.5;
+		font-size: .7em;
+		opacity: .5;
 		margin-top: -3.5em;
 		z-index: 2;
 	}
 
-	.label {
+	.label{
 		margin: 0 auto;
 		font-family: $font-default;
 		font-size: 0.8em;
 		color: $color-text-minor;
-		max-width: calc(100% - 14em); //stylelint-disable-line unit-disallowed-list
+		max-width: calc(100% - 14em); //stylelint-disable-line unit-blacklist
 		margin-top: -1em;
 	}
 
@@ -34,16 +35,16 @@
 		z-index: 5;
 
 		.obojobo-draft--chunks--iframe {
-			.blocker::after {
+			.blocker::after{
 				content: ' ';
 				background: url('./materia-logo.svg') no-repeat bottom right;
 				width: 4.5em;
 				position: absolute;
-				bottom: 1em;
-				right: 1em;
+				bottom: 9px;
+				right: 9px;
 				background-size: contain;
-				opacity: 0.5;
-				transition: opacity 0.4s;
+				opacity: .5;
+				transition: opacity .4s;
 			}
 
 			&:hover .blocker::after {

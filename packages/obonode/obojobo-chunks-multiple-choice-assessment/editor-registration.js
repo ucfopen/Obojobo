@@ -2,15 +2,13 @@ import React from 'react'
 import { Node, Element, Transforms, Text, Editor } from 'slate'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 
-import emptyNode from './empty-node.json'
 import EditorComponent from './editor-component'
 import Converter from './converter'
-
-import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
 
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 const MCAssessment = {
 	name: 'ObojoboDraft.Chunks.MCAssessment',
@@ -18,9 +16,6 @@ const MCAssessment = {
 	isInsertable: false,
 	supportsChildren: true,
 	helpers: Converter,
-	json: {
-		emptyNode
-	},
 	plugins: {
 		// Editor Plugins - These get attached to the editor object and override it's default functions
 		// They may affect multiple nodes simultaneously
@@ -32,11 +27,11 @@ const MCAssessment = {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					// The first node should be a MCChoice
 					// If it is not, wrapping it will result in normalizations to fix it
-					if (Element.isElement(child) && child.type !== CHOICE_NODE) {
+					if (Element.isElement(child) && child.type !== MCCHOICE_NODE) {
 						Transforms.wrapNodes(
 							editor,
 							{
-								type: CHOICE_NODE,
+								type: MCCHOICE_NODE,
 								content: { score: 0 }
 							},
 							{ at: childPath }
@@ -50,7 +45,7 @@ const MCAssessment = {
 						Transforms.wrapNodes(
 							editor,
 							{
-								type: CHOICE_NODE,
+								type: MCCHOICE_NODE,
 								content: { score: 0 }
 							},
 							{ at: childPath }

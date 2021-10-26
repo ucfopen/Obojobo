@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const WebpackManifestPlugin = require('webpack-manifest-plugin').WebpackManifestPlugin
+const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
 const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
@@ -48,23 +48,37 @@ module.exports =
 					// Create React SVG Components when imported from js/jsx files
 					{
 						test: /\.svg$/,
-						issuer: /\.jsx?$/,
-						use: [
-							{
-								loader: '@svgr/webpack',
-								options: {
-									svgoConfig: {
-										plugins: [
-											{
-												prefixIds: {
-													prefixClassNames: false // don't prefix class names in svgs
-												}
+						issuer: {
+							test: /\.js$/
+						},
+						use: [{
+							loader:'@svgr/webpack',
+							options: {
+								svgoConfig:{
+									plugins: [
+										{
+											prefixIds: {
+												prefixClassNames: false // don't prefix class names in svgs
 											}
-										]
-									}
+										}
+									]
 								}
 							}
-						]
+						}],
+					},
+					// Load SVGs into strings when imported elsewhere
+					{
+						test: /\.svg$/,
+						issuer: {
+							test: /\.scss$/
+						},
+						use: {
+							loader: 'svg-url-loader',
+							options: {
+								stripdeclarations: true,
+								iesafe: true
+							}
+						}
 					},
 					{
 						test: /\.(js|jsx)$/,
@@ -84,24 +98,30 @@ module.exports =
 							{
 								loader: 'postcss-loader',
 								options: {
-									postcssOptions: {
-										plugins: [require('autoprefixer')]
-									}
+									ident: 'postcss',
+									plugins: [require('autoprefixer')]
 								}
 							},
 							{
 								loader: 'sass-loader',
 								options: {
 									// expose SASS variable for build environment
-									additionalData: `$is_production: '${is_production}';`
+									prependData: `$is_production: '${is_production}';`
 								}
 							}
 						]
 					},
 					{
-						test: /\.(svg|png|jpe?g|gif)$/i,
-						issuer: /\.s?css$/,
-						type: 'asset/resource'
+						test: /\.(jpe?g|png)$/i,
+						use: [
+							{
+								// @TODO: remove this if it's not used
+								loader: 'responsive-loader',
+								options: {
+									adapter: require('responsive-loader/sharp')
+								}
+							}
+						]
 					}
 				]
 			},
@@ -117,16 +137,13 @@ module.exports =
 				'slate-react': 'SlateReact'
 			},
 			plugins: [
-				new WatchIgnorePlugin({
-					paths: [path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')]
-				}),
+				new WatchIgnorePlugin([
+					path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')
+				]),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
-				new WebpackManifestPlugin({ publicPath: '/static/' }),
+				new ManifestPlugin({ publicPath: '/static/' }),
 				// Ignore all locale files of moment.js
-				new webpack.IgnorePlugin({
-					resourceRegExp: /^\.\/locale$/,
-					contextRegExp: /moment$/
-				})
+				new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],

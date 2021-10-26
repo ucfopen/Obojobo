@@ -228,7 +228,7 @@ $color-nav-hover: darken($color-highlight, 25%);
 	}
 
 	&.is-selected {
-		background-image: url('./hex_transparent.svg');
+		background-image: url('/images/hex_transparent.svg');
 		background-repeat: no-repeat;
 		background-origin: content-box;
 		background-position-x: 9em;

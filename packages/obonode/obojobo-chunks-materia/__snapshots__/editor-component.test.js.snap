@@ -24,7 +24,6 @@ exports[`Materia Editor Node component renders 1`] = `
           onClick={[Function]}
           onKeyDown={[Function]}
           tabIndex={-1}
-          type="button"
         >
           ×
         </button>
@@ -52,7 +51,6 @@ exports[`Materia Editor Node component renders 1`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               tabIndex={-1}
-              type="button"
             >
               Widget Settings...
             </button>
@@ -91,7 +89,6 @@ exports[`Materia Editor Node renders correctly when selected 1`] = `
           onClick={[Function]}
           onKeyDown={[Function]}
           tabIndex={0}
-          type="button"
         >
           ×
         </button>
@@ -111,7 +108,6 @@ exports[`Materia Editor Node renders correctly when selected 1`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               tabIndex={0}
-              type="button"
             >
               Widget Settings...
             </button>
@@ -150,7 +146,6 @@ exports[`Materia Editor Node renders with no icon correctly 1`] = `
           onClick={[Function]}
           onKeyDown={[Function]}
           tabIndex={-1}
-          type="button"
         >
           ×
         </button>
@@ -170,7 +165,6 @@ exports[`Materia Editor Node renders with no icon correctly 1`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               tabIndex={-1}
-              type="button"
             >
               Widget Settings...
             </button>

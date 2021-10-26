@@ -267,8 +267,6 @@ describe('PostTest', () => {
 			}
 		])
 
-		AssessmentUtil.isAttemptHistoryLoadedForModel.mockReturnValue(true)
-
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
 				scoreDetails: {
@@ -277,7 +275,6 @@ describe('PostTest', () => {
 			}
 		])
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValue(null)
-		AssessmentUtil.isFullReviewAvailableForModel.mockReturnValue(false)
 		AssessmentAPI.reviewAttempt.mockResolvedValue({})
 
 		moduleData = {
@@ -305,37 +302,34 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const render = component.toJSON()
-		expect(render).toMatchSnapshot()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		component.unmount()
-	})
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			// component.update()
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
 
-	test('PostTest shows throbber if history is not yet loaded', () => {
-		AssessmentUtil.isAttemptHistoryLoadedForModel.mockReturnValue(false)
-		scoreAction = {
-			page: null,
-			message: 'mockMessage'
-		}
-
-		const component = renderer.create(
-			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
-		)
-
-		const render = component.toJSON()
-		expect(render).toMatchSnapshot()
-
-		component.unmount()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with scoreAction', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const render = component.toJSON()
-		expect(render).toMatchSnapshot()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		component.unmount()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with recorded score', () => {
@@ -354,15 +348,18 @@ describe('PostTest', () => {
 		const initialRender = component.toJSON()
 		expect(initialRender).toMatchSnapshot()
 
-		const afterFetchRender = component.toJSON()
-		expect(afterFetchRender).toMatchSnapshot()
-		component.unmount()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with review', () => {
 		model.modelState.review = FULL_REVIEW_ALWAYS
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
-		AssessmentUtil.isFullReviewAvailableForModel.mockReturnValue(true)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
 				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
@@ -372,10 +369,16 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const render = component.toJSON()
-		expect(render).toMatchSnapshot()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		component.unmount()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with review after all attempts - attempts remaining', () => {
@@ -392,10 +395,16 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const render = component.toJSON()
-		expect(render).toMatchSnapshot()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		component.unmount()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with review with imported score', () => {
@@ -413,10 +422,16 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const render = component.toJSON()
-		expect(render).toMatchSnapshot()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		component.unmount()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with review after all attempts - no attempts remaining', () => {
@@ -432,10 +447,16 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const render = component.toJSON()
-		expect(render).toMatchSnapshot()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		component.unmount()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	// This button is actually part of the LTIStatus module
@@ -457,15 +478,19 @@ describe('PostTest', () => {
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
 
-		component
-			.childAt(0)
-			.childAt(0)
-			.childAt(2)
-			.find('button')
-			.simulate('click')
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			component
+				.childAt(0)
+				.childAt(0)
+				.childAt(2)
+				.find('button')
+				.simulate('click')
 
-		expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
-		component.unmount()
+			expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
+			component.unmount()
+		})
 	})
 
 	test('Component listens to FOCUS_ON_ASSESSMENT_CONTENT events when mounted (and stops listening when unmounted)', () => {
@@ -483,16 +508,20 @@ describe('PostTest', () => {
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
 
-		const boundFocusOnContent = component.instance().boundFocusOnContent
-		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.on).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
-		expect(Dispatcher.off).not.toHaveBeenCalled()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const boundFocusOnContent = component.instance().boundFocusOnContent
+			expect(Dispatcher.on).toHaveBeenCalledTimes(1)
+			expect(Dispatcher.on).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+			expect(Dispatcher.off).not.toHaveBeenCalled()
 
-		component.unmount()
+			component.unmount()
 
-		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.off).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.off).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+			expect(Dispatcher.on).toHaveBeenCalledTimes(1)
+			expect(Dispatcher.off).toHaveBeenCalledTimes(1)
+			expect(Dispatcher.off).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+		})
 	})
 
 	test('focusOnContent calls focus on the h1', () => {
@@ -502,33 +531,5 @@ describe('PostTest', () => {
 		postTest.focusOnContent()
 
 		expect(focus).toHaveBeenCalledWith('mockH1Ref')
-	})
-
-	test('focusOnContent calls focus on the h1', () => {
-		const postTest = new PostTest()
-		postTest.h1Ref = 'mockH1Ref'
-
-		expect(postTest.focusOnContent()).toBe(true)
-		expect(focus).toHaveBeenCalledWith('mockH1Ref')
-	})
-
-	test('focusOnContent returns false if activeElement cannot be found', () => {
-		const postTest = new PostTest()
-		postTest.h1Ref = 'mockH1Ref'
-
-		const origActiveElement = document.activeElement
-		const mockEl = jest.fn()
-		Object.defineProperty(document, 'activeElement', {
-			value: mockEl,
-			enumerable: true,
-			configurable: true
-		})
-
-		expect(postTest.focusOnContent()).toBe(false)
-		expect(focus).not.toHaveBeenCalled()
-
-		Object.defineProperty(document, 'activeElement', {
-			value: origActiveElement
-		})
 	})
 })

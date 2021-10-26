@@ -12,10 +12,6 @@ const TYPE_TOTAL = 'total'
 const VAL_DID_NOT_PASS = 'Did Not Pass'
 
 describe('AssessmentScoreReportView', () => {
-	beforeEach(() => {
-		jest.spyOn(Math, 'random').mockReturnValue(0)
-	})
-
 	test('AssessmentScoreReportView component', () => {
 		const report = {
 			textItems: [],

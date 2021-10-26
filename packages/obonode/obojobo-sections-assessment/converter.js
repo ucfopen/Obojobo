@@ -26,9 +26,6 @@ const slateToObo = node => {
 	const model = OboModel.models[node.id]
 	const content = model ? { ...node.content, ...model.get('content') } : { ...node.content }
 
-	// // add objectives to content
-	// content.objectives = node.content.objectives
-
 	delete content.rubric
 	delete content.scoreActions
 

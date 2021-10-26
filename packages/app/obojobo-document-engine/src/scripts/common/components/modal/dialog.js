@@ -16,12 +16,10 @@ export default class Dialog extends React.Component {
 	}
 
 	componentDidMount() {
-		const buttons = this.props.buttons || []
-
 		return (() => {
 			const result = []
-			for (let index = 0; index < buttons.length; index++) {
-				const button = buttons[index]
+			for (let index = 0; index < this.props.buttons.length; index++) {
+				const button = this.props.buttons[index]
 				let item
 				if (button.default) {
 					item = this.buttonRefs[index].focus()
@@ -43,8 +41,6 @@ export default class Dialog extends React.Component {
 	render() {
 		// clear ref array
 		this.buttonRefs.slice(0)
-
-		const buttons = this.props.buttons || []
 
 		let styles = null
 		if (this.props.width) {
@@ -73,7 +69,7 @@ export default class Dialog extends React.Component {
 						{this.props.children}
 					</div>
 					<div className="controls">
-						{buttons.map((buttonPropsOrText, index) => {
+						{this.props.buttons.map((buttonPropsOrText, index) => {
 							if (typeof buttonPropsOrText === 'string') {
 								return (
 									<span key={index} className="text">

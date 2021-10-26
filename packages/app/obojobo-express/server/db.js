@@ -8,13 +8,6 @@ if (config.db.useBluebird === true) {
 	pgOptions.promiseLib = bluebird
 }
 
-// disable unwanted warnings from pg-promise in test
-// ex: WARNING: Creating a duplicate database object for the same connection.
-/* istanbul ignore else */
-if (process.env['NODE_ENV'] === 'test') {
-	pgOptions.noWarnings = true
-}
-
 const pgp = require('pg-promise')(pgOptions)
 const db = pgp(config.db)
 

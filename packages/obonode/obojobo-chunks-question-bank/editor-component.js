@@ -35,13 +35,16 @@ class QuestionBank extends React.Component {
 		const content = this.props.element.content
 		this.state = this.contentToStateObj(content)
 
+		this.freezeEditor = this.freezeEditor.bind(this)
+		this.unfreezeEditor = this.unfreezeEditor.bind(this)
+
 		this.remove = this.remove.bind(this)
 		this.addQuestion = this.addQuestion.bind(this)
 		this.addQuestionBank = this.addQuestionBank.bind(this)
 		this.changeChooseType = this.changeChooseType.bind(this)
 		this.getQuestionList = this.getQuestionList.bind(this)
 		this.importQuestionList = this.importQuestionList.bind(this)
-		this.displayImportQuestionModal = this.displayImportQuestionModal.bind(this)
+		this.diplayImportQuestionModal = this.diplayImportQuestionModal.bind(this)
 	}
 
 	updateNodeFromState() {
@@ -89,7 +92,6 @@ class QuestionBank extends React.Component {
 		event.stopPropagation()
 		const chooseAll = event.target.value === 'all'
 		this.setState({ chooseAll }) // update the display now
-		this.updateNodeFromState()
 	}
 
 	onChangeContent(key, event) {
@@ -97,7 +99,18 @@ class QuestionBank extends React.Component {
 		if (key === 'choose') val = Math.max(parseInt(val, 10), 1)
 		const newContent = { [key]: val }
 		this.setState(newContent) // update the display now
-		this.updateNodeFromState()
+	}
+
+	freezeEditor() {
+		clearTimeout(window.restoreEditorFocusId)
+		this.props.editor.toggleEditable(false)
+	}
+
+	unfreezeEditor() {
+		window.restoreEditorFocusId = setTimeout(() => {
+			this.updateNodeFromState()
+			this.props.editor.toggleEditable(true)
+		})
 	}
 
 	displaySettings(editor, element) {
@@ -113,6 +126,8 @@ class QuestionBank extends React.Component {
 							value="all"
 							checked={this.state.chooseAll}
 							onChange={this.changeChooseType}
+							onFocus={this.freezeEditor}
+							onBlur={this.unfreezeEditor}
 						/>
 						All questions
 					</label>
@@ -124,6 +139,8 @@ class QuestionBank extends React.Component {
 							value="pick"
 							checked={!this.state.chooseAll}
 							onChange={this.changeChooseType}
+							onFocus={this.freezeEditor}
+							onBlur={this.unfreezeEditor}
 						/>
 						Pick
 					</label>
@@ -134,6 +151,8 @@ class QuestionBank extends React.Component {
 						disabled={this.state.chooseAll}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'choose')}
+						onFocus={this.freezeEditor}
+						onBlur={this.unfreezeEditor}
 					/>
 				</fieldset>
 				<label className="select">
@@ -142,6 +161,8 @@ class QuestionBank extends React.Component {
 						value={this.state.select}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'select')}
+						onFocus={this.freezeEditor}
+						onBlur={this.unfreezeEditor}
 					>
 						<option value="sequential">In order</option>
 						<option value="random">Randomly</option>
@@ -174,7 +195,7 @@ class QuestionBank extends React.Component {
 		})
 	}
 
-	displayImportQuestionModal() {
+	diplayImportQuestionModal() {
 		const Question = Common.Registry.getItemForType(QUESTION_NODE)
 		const questionList = this.getQuestionList(OboModel.getRoot()).map(question =>
 			Question.oboToSlate(question.attributes)
@@ -196,14 +217,19 @@ class QuestionBank extends React.Component {
 				name: 'Import Questions',
 				description: 'Import',
 				type: 'button',
-				action: this.displayImportQuestionModal
+				action: this.diplayImportQuestionModal
 			}
 		]
 
 		return (
 			<Node {...this.props} contentDescription={contentDescription}>
 				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-					<Button className="delete-button" onClick={this.remove}>
+					<Button
+						className="delete-button"
+						onClick={this.remove}
+						onFocus={this.freezeEditor}
+						onBlur={this.unfreezeEditor}
+					>
 						&times;
 					</Button>
 					{this.displaySettings(editor, element, element.content)}

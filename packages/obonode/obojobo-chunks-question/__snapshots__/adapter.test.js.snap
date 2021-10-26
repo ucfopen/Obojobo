@@ -2,76 +2,17 @@
 
 exports[`Question adapter construct builds with attributes 1`] = `
 Object {
-  "correctLabels": Array [
-    "a",
-    "b",
-    "c",
-  ],
-  "dirty": false,
-  "editing": false,
-  "incorrectLabels": Array [
-    "x",
-    "y",
-    "z",
-  ],
-  "needsUpdate": false,
-  "revealAnswer": "when-incorrect",
-  "solution": Object {
-    "children": Array [
-      Object {
-        "children": null,
-        "content": Object {
-          "textGroup": Array [
-            Object {
-              "data": Object {
-                "align": "left",
-                "hangingIndent": false,
-                "indent": 0,
-              },
-              "text": Object {
-                "styleList": null,
-                "value": "this is some example solution text",
-              },
-            },
-          ],
-        },
-        "id": "7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e",
-        "index": 0,
-        "metadata": Object {},
-        "type": "ObojoboDraft.Chunks.Text",
-      },
-    ],
+  "solution": OboModel {
+    "_isMocked": true,
     "content": Object {},
-    "id": "solution",
-    "index": 0,
-    "metadata": Object {},
-    "type": "ObojoboDraft.Pages.Page",
+    "modelState": Object {},
   },
-  "type": "default",
-}
-`;
-
-exports[`Question adapter construct builds with bad solution property 1`] = `
-Object {
-  "correctLabels": null,
-  "dirty": false,
-  "editing": false,
-  "incorrectLabels": null,
-  "needsUpdate": false,
-  "revealAnswer": "default",
-  "solution": null,
   "type": "default",
 }
 `;
 
 exports[`Question adapter construct builds without attributes 1`] = `
 Object {
-  "correctLabels": null,
-  "dirty": false,
-  "editing": false,
-  "incorrectLabels": null,
-  "needsUpdate": false,
-  "revealAnswer": "default",
   "solution": null,
   "type": "default",
 }
@@ -80,52 +21,18 @@ Object {
 exports[`Question adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
-    "correctLabels": "a|b|c",
-    "incorrectLabels": "d|e|f",
-    "revealAnswer": "default",
-    "solution": Object {
-      "children": Array [
-        Object {
-          "children": null,
-          "content": Object {
-            "textGroup": Array [
-              Object {
-                "data": Object {
-                  "align": "left",
-                  "hangingIndent": false,
-                  "indent": 0,
-                },
-                "text": Object {
-                  "styleList": null,
-                  "value": "this is some example solution text",
-                },
-              },
-            ],
-          },
-          "id": "7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e",
-          "index": 0,
-          "metadata": Object {},
-          "type": "ObojoboDraft.Chunks.Text",
-        },
-      ],
-      "content": Object {},
-      "id": "solution",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Pages.Page",
-    },
+    "solution": null,
     "type": "default",
   },
 }
 `;
 
-exports[`Question adapter toJSON builds a JSON representation with correct/incorrect labels or a solution 1`] = `
+exports[`Question adapter toJSON builds a JSON representation with solution 1`] = `
 Object {
   "content": Object {
-    "correctLabels": null,
-    "incorrectLabels": null,
-    "revealAnswer": "default",
-    "solution": null,
+    "solution": Object {
+      "mockedToJSON": true,
+    },
     "type": "default",
   },
 }

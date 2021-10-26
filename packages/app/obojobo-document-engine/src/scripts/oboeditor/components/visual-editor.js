@@ -3,7 +3,6 @@ import './visual-editor.scss'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
-import ColorMarks from './marks/color-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
@@ -45,7 +44,6 @@ class VisualEditor extends React.Component {
 
 		const json = this.importFromJSON()
 
-		// Provider for the objectives
 		this.addObjective = objective => {
 			this.setState({ objectives: this.state.objectives.concat(objective) })
 		}
@@ -70,7 +68,6 @@ class VisualEditor extends React.Component {
 				})
 			})
 		}
-		// Provider ends
 
 		this.state = {
 			value: json,
@@ -78,12 +75,11 @@ class VisualEditor extends React.Component {
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
 			contentRect: null,
-			objectives: this.props.model.get('content').objectives ?? [],
+			objectives: this.props.model?.objectives ?? [],
 			addObjective: this.addObjective,
 			removeObjective: this.removeObjective,
 			updateObjective: this.updateObjective
 		}
-
 		this.pageEditorContainerRef = React.createRef()
 		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
@@ -158,7 +154,6 @@ class VisualEditor extends React.Component {
 			.filter(item => item)
 
 		const markPlugins = [
-			ColorMarks.plugins,
 			BasicMarks.plugins,
 			LinkMark.plugins,
 			ScriptMarks.plugins,
@@ -334,6 +329,8 @@ class VisualEditor extends React.Component {
 
 		this.setState({ value })
 		this.markUnsaved()
+
+		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
 	}
 
 	onResized(event) {
@@ -394,9 +391,8 @@ class VisualEditor extends React.Component {
 
 		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
-		json.content.objectives = this.state.objectives
 		json.content.start = EditorStore.state.startingId
-
+		json.content.objectives = this.state.objectives
 		// deal with content
 		this.props.model.children.forEach(child => {
 			let contentJSON = {}
@@ -605,7 +601,6 @@ class VisualEditor extends React.Component {
 							<ContentToolbar editor={this.editor} value={this.state.value} />
 						</div>
 					)}
-
 					<ObjectiveProvider state={this.state}>
 						<EditorNav
 							navState={this.props.navState}

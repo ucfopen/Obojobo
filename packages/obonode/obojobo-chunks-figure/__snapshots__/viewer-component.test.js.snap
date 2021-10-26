@@ -19,6 +19,13 @@ exports[`Figure Figure component 1`] = `
       className="container"
     >
       <figure
+        style={
+          Object {
+            "height": "400px",
+            "maxWidth": "100%",
+            "width": "500px",
+          }
+        }
         unselectable="on"
       >
         <img
@@ -36,14 +43,7 @@ exports[`Figure Figure component 1`] = `
           }
           unselectable="on"
         />
-        <figcaption
-          className="is-caption-width-image-width"
-          style={
-            Object {
-              "width": "500px",
-            }
-          }
-        >
+        <figcaption>
           <span
             className="obo-text"
             data-group-index="0"
@@ -63,7 +63,7 @@ exports[`Figure Figure component 1`] = `
 </div>
 `;
 
-exports[`Figure Figure component custom size with no height 1`] = `
+exports[`Figure Figure component costom size with no height 1`] = `
 <div
   className="component"
   data-focussed={false}
@@ -82,6 +82,12 @@ exports[`Figure Figure component custom size with no height 1`] = `
       className="container"
     >
       <figure
+        style={
+          Object {
+            "maxWidth": "100%",
+            "width": "500px",
+          }
+        }
         unselectable="on"
       >
         <img
@@ -98,10 +104,7 @@ exports[`Figure Figure component custom size with no height 1`] = `
           }
           unselectable="on"
         />
-        <figcaption
-          className="is-caption-width-text-width"
-          style={Object {}}
-        >
+        <figcaption>
           <span
             className="obo-text"
             data-group-index="0"
@@ -121,7 +124,7 @@ exports[`Figure Figure component custom size with no height 1`] = `
 </div>
 `;
 
-exports[`Figure Figure component custom size with no width 1`] = `
+exports[`Figure Figure component costom size with no width 1`] = `
 <div
   className="component"
   data-focussed={false}
@@ -140,6 +143,12 @@ exports[`Figure Figure component custom size with no width 1`] = `
       className="container"
     >
       <figure
+        style={
+          Object {
+            "height": "400px",
+            "maxWidth": "100%",
+          }
+        }
         unselectable="on"
       >
         <img
@@ -156,10 +165,7 @@ exports[`Figure Figure component custom size with no width 1`] = `
           }
           unselectable="on"
         />
-        <figcaption
-          className="is-caption-width-image-width"
-          style={Object {}}
-        >
+        <figcaption>
           <span
             className="obo-text"
             data-group-index="0"
@@ -198,6 +204,7 @@ exports[`Figure Figure component size small 1`] = `
       className="container"
     >
       <figure
+        style={Object {}}
         unselectable="on"
       >
         <img
@@ -210,10 +217,7 @@ exports[`Figure Figure component size small 1`] = `
           style={Object {}}
           unselectable="on"
         />
-        <figcaption
-          className="is-caption-width-image-width"
-          style={Object {}}
-        >
+        <figcaption>
           <span
             className="obo-text"
             data-group-index="0"
@@ -252,6 +256,13 @@ exports[`Figure Figure component with no textGroup 1`] = `
       className="container"
     >
       <figure
+        style={
+          Object {
+            "height": "400px",
+            "maxWidth": "100%",
+            "width": "500px",
+          }
+        }
         unselectable="on"
       >
         <img

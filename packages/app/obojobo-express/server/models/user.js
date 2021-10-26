@@ -13,8 +13,7 @@ class User {
 		email = null,
 		username = null,
 		createdAt = Date.now(),
-		roles = [],
-		perms = null
+		roles = []
 	} = {}) {
 		if (firstName === null) throw Error('Missing first name for new user')
 		if (lastName === null) throw Error('Missing last name for new user')
@@ -28,15 +27,13 @@ class User {
 		this.username = username
 		this.createdAt = createdAt
 		this.roles = roles
-		this.perms = [
-			...new Set(
-				(perms || []).concat(
-					Object.keys(config.permissionGroups).filter(permName =>
-						this.hasOneOfRole(config.permissionGroups[permName])
-					)
-				)
-			)
-		]
+
+		// creates 'canEditDrafts' getter if 'canEditDrafts' is set in config/role_groups.json
+		for (const permName in config.permissionGroups) {
+			Object.defineProperty(this, permName, {
+				get: this.hasPermission.bind(this, permName)
+			})
+		}
 	}
 
 	static dbResultToModel(result) {
@@ -47,8 +44,7 @@ class User {
 			email: result.email,
 			username: result.username,
 			createdAt: result.created_at,
-			roles: result.roles,
-			perms: result.perms
+			roles: result.roles
 		})
 	}
 
@@ -57,9 +53,7 @@ class User {
 			.one(
 				`
 				SELECT *
-				FROM users U
-				LEFT JOIN user_perms P
-				ON U.id = P.user_id
+				FROM users
 				WHERE id =  $[userId]
 				`,
 				{ userId }
@@ -160,7 +154,8 @@ class User {
 	}
 
 	hasPermission(permName) {
-		return this.perms.indexOf(permName) > -1
+		if (!config.permissionGroups[permName]) return false
+		return this.hasOneOfRole(config.permissionGroups[permName])
 	}
 
 	get avatarUrl() {
@@ -173,7 +168,7 @@ class User {
 	}
 
 	toJSON() {
-		const allowedKeys = ['id', 'firstName', 'lastName', 'username', 'roles', 'perms', 'avatarUrl']
+		const allowedKeys = ['id', 'firstName', 'lastName', 'username', 'roles', 'avatarUrl']
 		const safeUser = {}
 		copyAttributesFn(safeUser, this, allowedKeys)
 		return safeUser

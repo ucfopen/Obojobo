@@ -61,14 +61,6 @@ describe('TextUtil', () => {
 					start: 8,
 					end: 14,
 					data: 13
-				},
-				{
-					type: 'color',
-					start: 8,
-					end: 14,
-					data: {
-						text: '#000000'
-					}
 				}
 			]
 		}
@@ -160,11 +152,6 @@ describe('TextUtil', () => {
 					num: 13
 				},
 				{
-					text: 'text',
-					color: '#000000',
-					children: [{ text: 'atted' }]
-				},
-				{
 					type: 'a',
 					href: 'mockURL',
 					children: [
@@ -180,11 +167,6 @@ describe('TextUtil', () => {
 					type: 'a',
 					href: 'mockotherURL',
 					children: [{ text: 'atted' }]
-				},
-				{
-					text: 'abc',
-					_latex: true,
-					monospace: true
 				}
 			]
 		}
@@ -193,7 +175,7 @@ describe('TextUtil', () => {
 			text: { value: '', styleList: [] },
 			data: { indent: 0 }
 		}
-		TextUtil.slateToOboText(text, line)
-		expect(line).toMatchSnapshot()
+
+		expect(TextUtil.slateToOboText(text, line)).toMatchSnapshot()
 	})
 })

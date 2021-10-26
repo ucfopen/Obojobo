@@ -1,7 +1,7 @@
 @import '../../client/css/defaults';
 
 .module-permissions-dialog {
-	max-width: 26em;
+	max-width: 25em;
 	text-align: center;
 	width: 80vw;
 	padding-bottom: 1em;
@@ -105,7 +105,7 @@
 		text-align: left;
 		margin: 2em 0;
 		display: grid;
-		grid-template-columns: 8em auto;
+		grid-template-columns: 7em auto;
 		grid-gap: 0.6em;
 		align-items: center;
 
@@ -114,7 +114,7 @@
 		}
 
 		.repository--button {
-			min-width: 10.5em;
+			min-width: 9.5em;
 			display: inline-block;
 			text-align: center;
 			margin-right: 1em;

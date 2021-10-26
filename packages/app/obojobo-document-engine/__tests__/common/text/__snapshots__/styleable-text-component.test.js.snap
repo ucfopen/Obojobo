@@ -94,15 +94,3 @@ exports[`StyleableText Component StyleableText with role 1`] = `
   />
 </span>
 `;
-
-exports[`StyleableText Component StyleableText with style 1`] = `
-<span>
-  <span
-    style={
-      Object {
-        "color": "red",
-      }
-    }
-  />
-</span>
-`;

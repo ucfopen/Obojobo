@@ -9,9 +9,7 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
     contentEditable={false}
   >
     <label>
-      <span>
-        Response Type
-      </span>
+      Response Type
       <select
         onChange={[Function]}
       >
@@ -50,24 +48,20 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
       </label>
     </div>
   </div>
-  <div
-    className="choices-container"
-  >
+  <div>
     <div
-      className="obojobo-draft--chunks--mc-assessment--choice-button-container"
       contentEditable={false}
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center choice-button"
+        className="obojobo-draft--components--button is-not-dangerous align-center choice-button pad"
         contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
-          + Add possible answer
+          + Add Choice
         </button>
       </div>
     </div>

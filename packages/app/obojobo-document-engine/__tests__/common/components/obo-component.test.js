@@ -2,12 +2,12 @@ import OboComponent from '../../../src/scripts/viewer/components/obo-component'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 
-jest.mock('../../../src/scripts/viewer/util/focus-util')
+jest.mock('../../../src/scripts/viewer/util/focus-util', () => {
+	return { getVisuallyFocussedModel: () => null }
+})
 
 test('OboComponent', () => {
-	FocusUtil.getVisuallyFocussedModel.mockReturnValue(null)
 	OboModel.create({ id: 'testId', type: 'ObojoboDraft.Chunks.Text' })
 
 	const component = renderer.create(
@@ -25,10 +25,6 @@ test('OboComponent', () => {
 })
 
 test('OboComponent tag', () => {
-	FocusUtil.getVisuallyFocussedModel.mockReturnValue({
-		get: () => 'mockId'
-	})
-
 	OboModel.create({ id: 'testId', type: 'ObojoboDraft.Chunks.Text' })
 
 	const component = renderer.create(

@@ -41,6 +41,12 @@ describe('guest user model', () => {
 		const GuestUser = oboRequire('server/models/guest_user')
 		const g = new GuestUser()
 
+		expect(g.canViewEditor).toBe(false)
+		expect(g.canEditDrafts).toBe(false)
+		expect(g.canDeleteDrafts).toBe(false)
+		expect(g.canCreateDrafts).toBe(false)
+		expect(g.canPreviewDrafts).toBe(false)
+
 		expect(g.hasPermission('canViewEditor')).toBe(false)
 		expect(g.hasPermission('canEditDrafts')).toBe(false)
 		expect(g.hasPermission('canDeleteDrafts')).toBe(false)

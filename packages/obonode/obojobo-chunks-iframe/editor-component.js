@@ -77,14 +77,7 @@ class IFrame extends React.Component {
 			return title
 		}
 
-		const displayedTitle = src.replace(/^https?:\/\//, '')
-		const charLimit = 50
-
-		if (displayedTitle.length > charLimit) {
-			return displayedTitle.substring(0, charLimit) + '...'
-		}
-
-		return displayedTitle
+		return src.replace(/^https?:\/\//, '')
 	}
 
 	deleteNode() {

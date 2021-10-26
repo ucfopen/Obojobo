@@ -9,13 +9,6 @@ import renderer from 'react-test-renderer'
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-reporter')
-jest.mock(
-	'obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-report-view',
-	() => {
-		return () => <div>Mock assessment score report view</div>
-	}
-)
-jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => () => 'mock-uuid')
 
 // register the modules required for this test
 require('../../viewer')
@@ -191,7 +184,7 @@ const assessmentJSON = {
 
 describe('FullReview', () => {
 	beforeEach(() => {
-		jest.clearAllMocks()
+		jest.resetAllMocks()
 	})
 
 	test('FullReview component', () => {
@@ -207,7 +200,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttempt' })
 		// mock attempts taken
-		// AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
+		AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
 		const component = renderer.create(
@@ -276,9 +269,8 @@ describe('FullReview', () => {
 			questionState: {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
-						scores: {},
-						responses: {},
-						revealedQuestions: {}
+						scores: [],
+						responses: []
 					}
 				}
 			},
@@ -332,9 +324,8 @@ describe('FullReview', () => {
 			questionState: {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
-						scores: {},
-						responses: {},
-						revealedQuestions: {}
+						scores: [],
+						responses: []
 					}
 				}
 			},
@@ -710,8 +701,7 @@ describe('FullReview', () => {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
 						scores: {},
-						responses: {},
-						revealedQuestions: {}
+						responses: {}
 					}
 				}
 			},

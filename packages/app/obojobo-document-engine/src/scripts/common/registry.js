@@ -1,4 +1,3 @@
-import insertMenu from 'obojobo-document-engine/config/insert_menu.json'
 import withoutUndefined from './util/without-undefined'
 
 let items
@@ -14,8 +13,6 @@ class _Registry {
 		items = new Map()
 		defaults = new Map()
 		variableHandlers = new Map()
-		memoInsertable = null
-		memoContent = null
 	}
 
 	loadDependency(url, onLoadCallback = () => {}) {
@@ -49,13 +46,13 @@ class _Registry {
 		// undefined values (Object.assign won't overwrite object
 		// values that are undefined, only ones that don't exist
 		// in the object)
+
 		this.registerModel(
 			EditorNode.name,
 			withoutUndefined({
 				name: EditorNode.menuLabel,
 				icon: EditorNode.icon,
 				isInsertable: EditorNode.isInsertable,
-				acceptsInserts: EditorNode.acceptsInserts,
 				isContent: EditorNode.isContent,
 				insertJSON: EditorNode.json && EditorNode.json.emptyNode,
 				slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
@@ -90,13 +87,11 @@ class _Registry {
 				componentClass: null,
 				commandHandler: null,
 				variables: {},
-				variableHandler: noop,
 				templateObject: '',
 				init: noop,
 				name: '',
 				icon: null,
 				isInsertable: false,
-				acceptsInserts: true,
 				slateToObo: null,
 				oboToSlate: null,
 				switchType: {},
@@ -158,22 +153,8 @@ class _Registry {
 
 	get insertableItems() {
 		if (!memoInsertable) {
-			memoInsertable = []
-
-			insertMenu.forEach(className => {
-				if (className === '|') {
-					memoInsertable.push({ separator: true })
-					return
-				}
-
-				const item = items.get(className)
-
-				if (item) {
-					memoInsertable.push(items.get(className))
-				}
-			})
+			memoInsertable = Array.from(items.values()).filter(item => item.isInsertable)
 		}
-
 		return memoInsertable
 	}
 

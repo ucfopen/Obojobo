@@ -342,8 +342,7 @@ class MoreInfoBox extends React.Component {
 												Objectives:
 												<ObjectiveListView
 													objectives={objectives}
-													globalObjectives={value.objectives}
-													type={this.props.type}
+													globalObjectives={typeof value === 'undefined' ? [] : value.objectives}
 												/>
 											</span>
 											<Button
@@ -417,6 +416,9 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
+			// <objectivesContext.Consumer>
+			// 	{value => {
+			// 		return (
 			<div
 				ref={this.domRef}
 				className={'visual-editor--more-info ' + (this.props.className || '')}
@@ -432,6 +434,9 @@ class MoreInfoBox extends React.Component {
 				</button>
 				{this.state.isOpen ? this.renderInfoBox() : null}
 			</div>
+			// 		)
+			// 	}}
+			// </objectivesContext.Consumer>
 		)
 	}
 }

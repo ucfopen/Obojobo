@@ -20,37 +20,13 @@ describe('Figure adapter', () => {
 				size: 'custom',
 				width: 100,
 				height: 100,
-				alt: 'An image',
-				captionWidth: 'text-width'
+				alt: 'An image'
 			}
 		}
 		const model = new OboModel(attrs)
 		FigureAdapter.construct(model, attrs)
 
 		expect(model.modelState).toMatchSnapshot()
-	})
-
-	test.each`
-		size        | captionWidth
-		${'large'}  | ${'image-width'}
-		${'medium'} | ${'image-width'}
-		${'small'}  | ${'text-width'}
-		${'custom'} | ${'text-width'}
-	`('size="$size", captionWidth="$captionWidth"', ({ size, captionWidth }) => {
-		const attrs = {
-			content: {
-				url: 'http://website.com/image.jpg',
-				size,
-				width: 100,
-				height: 100,
-				alt: 'An image',
-				captionWidth: 'text-width'
-			}
-		}
-		const model = new OboModel(attrs)
-		FigureAdapter.construct(model, attrs)
-
-		expect(model.modelState.captionWidth).toBe(captionWidth)
 	})
 
 	test('clone creates a copy', () => {
@@ -76,7 +52,6 @@ describe('Figure adapter', () => {
 		const expected = {
 			content: {
 				alt: 'An image',
-				captionWidth: 'image-width',
 				height: null,
 				size: 'small',
 				textGroup: [

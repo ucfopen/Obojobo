@@ -7,7 +7,6 @@ const PageError = props => (
 	<LayoutDefault title={props.title} className="repository--library" appCSSUrl={props.appCSSUrl}>
 		<RepositoryNav
 			userId={props.currentUser.id}
-			userPerms={props.currentUser.perms}
 			avatarUrl={props.currentUser.avatarUrl}
 			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
 			noticeCount={0}

@@ -11,15 +11,13 @@ View the [Obojobo Next Documentation](https://ucfopen.github.io/Obojobo-Docs/).
 
 [Join UCF Open Slack Discussions](https://ucf-open-slackin.herokuapp.com/) [![Join UCF Open Slack Discussions](https://ucf-open-slackin.herokuapp.com/badge.svg)](https://ucf-open-slackin.herokuapp.com/)
 
-The previous version of Obojobo, renamed to Obojobo Classic, is located here: https://github.com/ucfopen/Obojobo-Classic
-
 ## The Obojobo Mission
 
 To keep our collective efforts aimed in the same direction, we've outlined what we want Obojobo to be:
 
 1. UI/UX focused design that ensures a satisfying & enjoyable student experience.
 2. Low barrier of entry for content creators. Creating content is as easy as writing a document in Word.
-3. Research centric design. Obojobo aims to be the premiere [research-enabling learning platform](https://github.com/ucfopen/Obojobo/wiki/Published-Research-Using-Obojobo-Next) by providing high resolution data, partnering with researchers, and including proven research outcomes back into the platform.
+3. Research centric design. Obojobo aims to be the premiere research-enabling learning platform by providing high resolution data, partnering with researchers, and including proven research outcomes back into the platform.
 4. Extraordinary practice and assessment tools that enable emerging teaching and learning models.
 5. Provide innovative new capabilities in online, blended, and mixed mode courses.
 6. Architecturally extensible and modular. Obojobo Next is easy to customize and extend.

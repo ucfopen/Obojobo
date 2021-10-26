@@ -94,24 +94,6 @@ describe('API', () => {
 		})
 	})
 
-	test('post fetches with a non-object body', () => {
-		post.mockRestore() // disable our mock
-		API.post('mockEndpoint', 'mock-body')
-		expect(fetch).toHaveBeenCalled()
-		const calledEndpoint = fetch.mock.calls[0][0]
-		const calledOptions = fetch.mock.calls[0][1]
-		expect(calledEndpoint).toBe('mockEndpoint')
-		expect(calledOptions).toEqual({
-			body: '"mock-body"',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		})
-	})
-
 	test('post fetches with blank body', () => {
 		post.mockRestore() // disable our mock
 		API.post('mockEndpoint')

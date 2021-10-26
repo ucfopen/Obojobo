@@ -80,7 +80,7 @@
 			text-overflow: ellipsis;
 
 			&:hover {
-				background: $color-action-bg;
+				background: transparentize($color: $color-action, $amount: 0.9);
 			}
 		}
 	}

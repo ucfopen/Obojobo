@@ -15,7 +15,6 @@ const PageModule = props => (
 	<div>
 		<RepositoryNav
 			userId={props.currentUser.id}
-			userPerms={props.currentUser.perms}
 			avatarUrl={props.currentUser.avatarUrl}
 			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
 			noticeCount={0}

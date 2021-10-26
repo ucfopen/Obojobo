@@ -20,7 +20,7 @@
 		cursor: pointer;
 
 		svg {
-			opacity: 0.4;
+			opacity: 0.6;
 		}
 
 		&:hover {
@@ -88,15 +88,6 @@
 					display: flex;
 					height: 2em;
 					margin: 0.3em 0;
-
-					button {
-						margin-left: 0.1em;
-						margin-right: 0.1em;
-					}
-
-					.id-buttons {
-						display: flex;
-					}
 				}
 
 				label {
@@ -109,7 +100,7 @@
 					@include text-input();
 
 					&.id-input {
-						margin-right: 0.2em;
+						margin-right: 0.3em;
 					}
 				}
 
@@ -118,13 +109,6 @@
 					flex: auto;
 					font-size: 0.7em;
 					box-sizing: border-box;
-				}
-
-				input:read-only {
-					background: $color-bg2;
-					border: 1px solid $color-bg2;
-					color: $color-text-minor;
-					cursor: default;
 				}
 
 				&.assessment-settings {
@@ -150,13 +134,7 @@
 					right: 0;
 				}
 
-				.objective-button {
-					position: absolute;
-					top: 0.5vh;
-					right: 0vh;
-				}
-
-				.objectives {
+				.triggers {
 					padding-right: 3.5em;
 					display: inline-block;
 
@@ -165,12 +143,16 @@
 						font-weight: normal;
 					}
 				}
-
-				.triggers {
+				.objective-button {
+					position: absolute;
+					top: 0.5vh;
+    				right: 0vh;
+					
+				}
+				.objectives {
 					padding-right: 3.5em;
 					display: inline-block;
-
-					span {
+					span{
 						padding-left: 0.5em;
 						font-weight: normal;
 					}

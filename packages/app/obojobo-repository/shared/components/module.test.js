@@ -19,9 +19,7 @@ describe('Module', () => {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
 			hasMenu: true,
-			isNew: false,
-			isSelected: false,
-			isMultiSelectMode: false
+			isNew: false
 		}
 	})
 
@@ -31,15 +29,10 @@ describe('Module', () => {
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
 
 		expect(component.root.children[0].props.className).toBe(
-			'repository--module-icon is-not-open is-not-selected is-not-new'
+			'repository--module-icon is-not-open is-not-new'
 		)
 
-		const checkboxComponent = component.root.children[0].children[0]
-		expect(checkboxComponent.type).toBe('input')
-		expect(checkboxComponent.props.checked).toBe(false)
-		expect(checkboxComponent.props.className).toBe('is-not-multi-select-mode')
-
-		const mainChildComponent = component.root.children[0].children[1]
+		const mainChildComponent = component.root.children[0].children[0]
 		expect(mainChildComponent.type).toBe('button')
 
 		expect(component.toJSON()).toMatchSnapshot()
@@ -52,15 +45,10 @@ describe('Module', () => {
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
 
 		expect(component.root.children[0].props.className).toBe(
-			'repository--module-icon is-not-open is-not-selected is-not-new'
+			'repository--module-icon is-not-open is-not-new'
 		)
 
-		const checkboxComponent = component.root.children[0].children[0]
-		expect(checkboxComponent.type).toBe('input')
-		expect(checkboxComponent.props.checked).toBe(false)
-		expect(checkboxComponent.props.className).toBe('is-not-multi-select-mode')
-
-		const mainChildComponent = component.root.children[0].children[1]
+		const mainChildComponent = component.root.children[0].children[0]
 		expect(mainChildComponent.type).toBe('a')
 		expect(mainChildComponent.props.href).toBe('/library/mockDraftId')
 
@@ -74,57 +62,10 @@ describe('Module', () => {
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
 
 		expect(component.root.children[0].props.className).toBe(
-			'repository--module-icon is-not-open is-not-selected is-new'
+			'repository--module-icon is-not-open is-new'
 		)
 
-		const checkboxComponent = component.root.children[0].children[0]
-		expect(checkboxComponent.type).toBe('input')
-		expect(checkboxComponent.props.checked).toBe(false)
-		expect(checkboxComponent.props.className).toBe('is-not-multi-select-mode')
-
-		const mainChildComponent = component.root.children[0].children[1]
-		expect(mainChildComponent.type).toBe('button')
-
-		expect(component.toJSON()).toMatchSnapshot()
-	})
-
-	test('renders with expected standard props but isSelected=true', () => {
-		defaultProps.isSelected = true
-		const component = create(<Module {...defaultProps} />)
-
-		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
-
-		expect(component.root.children[0].props.className).toBe(
-			'repository--module-icon is-not-open is-selected is-not-new'
-		)
-
-		const checkboxComponent = component.root.children[0].children[0]
-		expect(checkboxComponent.type).toBe('input')
-		expect(checkboxComponent.props.checked).toBe(true)
-		expect(checkboxComponent.props.className).toBe('is-not-multi-select-mode')
-
-		const mainChildComponent = component.root.children[0].children[1]
-		expect(mainChildComponent.type).toBe('button')
-
-		expect(component.toJSON()).toMatchSnapshot()
-	})
-
-	test('renders with expected standard props but isMultiSelectMode=true', () => {
-		defaultProps.isMultiSelectMode = true
-		const component = create(<Module {...defaultProps} />)
-
-		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
-
-		expect(component.root.children[0].props.className).toBe(
-			'repository--module-icon is-not-open is-not-selected is-not-new'
-		)
-
-		const checkboxComponent = component.root.children[0].children[0]
-		expect(checkboxComponent.type).toBe('input')
-		expect(checkboxComponent.props.checked).toBe(false)
-		expect(checkboxComponent.props.className).toBe('is-multi-select-mode')
-
-		const mainChildComponent = component.root.children[0].children[1]
+		const mainChildComponent = component.root.children[0].children[0]
 		expect(mainChildComponent.type).toBe('button')
 
 		expect(component.toJSON()).toMatchSnapshot()
@@ -143,46 +84,11 @@ describe('Module', () => {
 			preventDefault: jest.fn()
 		}
 		act(() => {
-			component.root.children[0].children[1].props.onClick(mockClickEvent)
+			component.root.children[0].children[0].props.onClick(mockClickEvent)
 			component.update(reusableComponent)
 		})
 		expect(mockClickEvent.preventDefault).toHaveBeenCalledTimes(1)
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(1)
-	})
-
-	test('clicking the main child component when isMultiSelectMode=true selects the module', () => {
-		defaultProps.isMultiSelectMode = true
-		defaultProps.onSelect = jest.fn()
-		const reusableComponent = <Module {...defaultProps} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
-		})
-
-		const mockClickEvent = {
-			preventDefault: jest.fn()
-		}
-		act(() => {
-			component.root.children[0].children[1].props.onClick(mockClickEvent)
-			component.update(reusableComponent)
-		})
-		expect(mockClickEvent.preventDefault).toHaveBeenCalledTimes(1)
-		expect(defaultProps.onSelect).toHaveBeenCalledTimes(1)
-	})
-
-	test('clicking the input component selects the module', () => {
-		defaultProps.onSelect = jest.fn()
-		const reusableComponent = <Module {...defaultProps} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
-		})
-
-		act(() => {
-			component.root.children[0].children[0].props.onClick()
-			component.update(reusableComponent)
-		})
-		expect(defaultProps.onSelect).toHaveBeenCalledTimes(1)
 	})
 
 	test('the module menu is not rendered after onMouseLeave is called', () => {
@@ -198,7 +104,7 @@ describe('Module', () => {
 			const mockClickEvent = {
 				preventDefault: jest.fn()
 			}
-			component.root.children[0].children[1].props.onClick(mockClickEvent)
+			component.root.children[0].children[0].props.onClick(mockClickEvent)
 			component.update(reusableComponent)
 		})
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(1)
@@ -231,7 +137,7 @@ describe('Module', () => {
 			const mockClickEvent = {
 				preventDefault: jest.fn()
 			}
-			component.root.children[0].children[1].props.onClick(mockClickEvent)
+			component.root.children[0].children[0].props.onClick(mockClickEvent)
 			component.update(reusableComponent)
 		})
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(1)

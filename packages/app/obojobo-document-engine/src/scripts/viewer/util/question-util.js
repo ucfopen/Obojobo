@@ -1,19 +1,9 @@
 import Common from 'Common'
 
-import QuestionResponseSendStates from '../stores/question-store/question-response-send-states'
-
 const { Dispatcher } = Common.flux
 
 const QuestionUtil = {
-	setResponse(
-		id,
-		response,
-		targetId,
-		context,
-		assessmentId,
-		attemptId,
-		sendResponseImmediately = true
-	) {
+	setResponse(id, response, targetId, context, assessmentId, attemptId) {
 		return Dispatcher.trigger('question:setResponse', {
 			value: {
 				id,
@@ -21,25 +11,7 @@ const QuestionUtil = {
 				targetId,
 				context,
 				assessmentId,
-				attemptId,
-				sendResponseImmediately
-			}
-		})
-	},
-
-	sendResponse(id, context) {
-		return Dispatcher.trigger('question:sendResponse', {
-			value: {
-				id,
-				context
-			}
-		})
-	},
-
-	forceSendAllResponsesForContext(context) {
-		return Dispatcher.trigger('question:forceSendAllResponses', {
-			value: {
-				context
+				attemptId
 			}
 		})
 	},
@@ -129,23 +101,11 @@ const QuestionUtil = {
 		})
 	},
 
-	revealAnswer(id, context) {
-		return Dispatcher.trigger('question:revealAnswer', {
-			value: {
-				id,
-				context
-			}
-		})
-	},
-
-	setScore(itemId, score, details, feedbackText, detailedText, context) {
+	setScore(itemId, score, context) {
 		return Dispatcher.trigger('question:scoreSet', {
 			value: {
 				itemId,
 				score,
-				details,
-				feedbackText,
-				detailedText,
 				context
 			}
 		})
@@ -186,60 +146,8 @@ const QuestionUtil = {
 		return contextState.responses[model.get('id')] || null
 	},
 
-	hasResponse(state, model, context) {
+	isAnswered(state, model, context) {
 		return QuestionUtil.getResponse(state, model, context) !== null
-	},
-
-	isResponseEmpty(state, model, context) {
-		const response = QuestionUtil.getResponse(state, model, context)
-		if (!response) return false
-
-		// Get the assessment model
-		const assessmentModel = model.children.at(model.children.length - 1)
-
-		const componentClass = assessmentModel.getComponentClass()
-		if (!componentClass) return false
-
-		return componentClass.isResponseEmpty(response)
-	},
-
-	isAnswerRevealed(state, model, context) {
-		const contextState = QuestionUtil.getStateForContext(state, context)
-		if (!contextState) return false
-
-		return contextState.revealedQuestions[model.get('id')] || false
-	},
-
-	isScored(state, model, context) {
-		return QuestionUtil.getScoreForModel(state, model, context) !== null
-	},
-
-	hasUnscoredResponse(state, model, context) {
-		return (
-			QuestionUtil.hasResponse(state, model, context) &&
-			!QuestionUtil.isScored(state, model, context)
-		)
-	},
-
-	getResponseMetadata(state, model, context) {
-		const contextState = QuestionUtil.getStateForContext(state, context)
-		if (!contextState) return null
-
-		return contextState.responseMetadata[model.get('id')] || null
-	},
-
-	getResponseSendState(state, model, context) {
-		const responseMetadata = QuestionUtil.getResponseMetadata(state, model, context)
-		if (!responseMetadata) return null
-
-		return responseMetadata.sendState || null
-	},
-
-	isResponseRecorded(state, model, context) {
-		return (
-			QuestionUtil.getResponseSendState(state, model, context) ===
-			QuestionResponseSendStates.RECORDED
-		)
 	},
 
 	getData(state, model, context, key) {
@@ -256,28 +164,29 @@ const QuestionUtil = {
 		return contextState.data[model.get('id') + ':showingExplanation'] || false
 	},
 
-	getScoreDataForModel(state, model, context) {
+	getScoreForModel(state, model, context) {
 		const contextState = QuestionUtil.getStateForContext(state, context)
 		if (!contextState) return null
 
 		const scoreItem = contextState.scores[model.get('id')] || null
 
-		return scoreItem || null
+		return scoreItem ? scoreItem.score : null
 	},
 
-	getScoreForModel(state, model, context) {
-		const scoreData = QuestionUtil.getScoreDataForModel(state, model, context)
-		return scoreData ? scoreData.score : null
-	},
+	getScoreClass(score) {
+		switch (score) {
+			case null:
+				return 'is-not-scored'
 
-	getFeedbackTextForModel(state, model, context) {
-		const scoreData = QuestionUtil.getScoreDataForModel(state, model, context)
-		return scoreData ? scoreData.feedbackText : null
-	},
+			case 'no-score':
+				return 'is-no-score'
 
-	getDetailedTextForModel(state, model, context) {
-		const scoreData = QuestionUtil.getScoreDataForModel(state, model, context)
-		return scoreData ? scoreData.detailedText : null
+			case 100:
+				return 'is-correct'
+
+			default:
+				return 'is-not-correct'
+		}
 	}
 }
 

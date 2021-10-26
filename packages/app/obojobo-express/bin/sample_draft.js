@@ -1,18 +1,4 @@
 #!/usr/bin/env node
-/* =============================================================
-WHAT
-Creates a sample draft document based on test-object.json
-
-WHY
-To populate a sample object in the public library
-
-HOW
-install the sample once
-yarn run sampleDraft:seed
-
-watch and update the sample automatically
-yarn run sampleDraft:watch
-============================================================= */
 
 /* eslint-disable no-console */
 

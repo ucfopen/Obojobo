@@ -1,12 +1,12 @@
 const NonceStore = require('ims-lti').Stores.NonceStore
 const logger = oboRequire('server/logger')
-const EXPIRE_IN_SEC = 15 * 60 // 15 minutes
-const MAX_NONCE_COUNT = 500000
+
+const EXPIRE_IN_SEC = 5 * 60
 
 class DevNonceStore extends NonceStore {
 	constructor() {
 		super()
-		this.used = new Map()
+		this.used = Object.create(null)
 	}
 
 	isNew(nonce, timestamp, next = () => {}) {
@@ -22,7 +22,8 @@ class DevNonceStore extends NonceStore {
 
 		this._clearExpiredNonces()
 
-		const firstTimeSeen = !this.used.has(nonce)
+		// eslint-disable-next-line no-undefined
+		const firstTimeSeen = this.used[nonce] === undefined
 
 		if (!firstTimeSeen) {
 			logger.warn(`Nonce already seen ${nonce}`)
@@ -54,34 +55,16 @@ class DevNonceStore extends NonceStore {
 	}
 
 	setUsed(nonce, timestamp, next = () => {}) {
-		timestamp = parseInt(timestamp, 10)
-		this.used.set(nonce, timestamp + EXPIRE_IN_SEC)
+		this.used[nonce] = timestamp + EXPIRE_IN_SEC
 		next(null)
 	}
 
 	_clearExpiredNonces() {
 		const now = Math.round(Date.now() / 1000)
-
-		// store number of items to cull
-		let reduceCount = this.used.size - MAX_NONCE_COUNT
-		let cleared = 0
-
-		// iterate over noncemap
-		const iterator1 = this.used[Symbol.iterator]()
-		for (const [nonce, timestamp] of iterator1) {
-			if (reduceCount > 0) {
-				// above max count, remove (FIFO)
-				this.used.delete(nonce)
-				reduceCount--
-				cleared++
-			} else if (timestamp <= now) {
-				// expired
-				this.used.delete(nonce)
-				cleared++
-			}
-		}
-
-		if (cleared) logger.info(`${this.used.size} lti nonce keys stored after cleaning ${cleared}.`)
+		Object.keys(this.used).forEach(key => {
+			logger.info(`Clearing nonce memory for ${key}`)
+			if (this.used[key] <= now) delete this.used[key]
+		})
 	}
 }
 

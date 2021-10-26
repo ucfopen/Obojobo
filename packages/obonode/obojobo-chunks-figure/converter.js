@@ -28,8 +28,7 @@ const slateToObo = node => {
 			url: node.content.url,
 			size: node.content.size,
 			width: node.content.width,
-			height: node.content.height,
-			captionWidth: node.content.captionWidth
+			height: node.content.height
 		})
 	}
 }

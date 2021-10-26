@@ -1,64 +1,63 @@
 import Dialog from '../../../../src/scripts/common/components/modal/dialog'
-import Modal from '../../../../src/scripts/common/components/modal/modal'
 import React from 'react'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-jest.mock('../../../../src/scripts/common/components/modal/modal', () => props => (
-	<div {...props} />
-))
-
 describe('Dialog', () => {
-	test('basic render', () => {
-		const component = renderer.create(<Dialog>Content</Dialog>)
+	test('Dialog component', () => {
+		const component = renderer.create(<Dialog buttons={[]}>Content</Dialog>)
 		const tree = component.toJSON()
+
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('render with no buttons', () => {
-		const component = renderer.create(<Dialog buttons={false}>Content</Dialog>)
-		const tree = component.toJSON()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('render with props', () => {
+	test('Dialog component with props', () => {
 		const component = renderer.create(
-			<Dialog title="Title" buttons={['test']} width={'200 px'} centered={false}>
+			<Dialog title="Title" buttons={[]} centered={false} width={5}>
 				Content
 			</Dialog>
 		)
 		const tree = component.toJSON()
+
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('child modal focusOnFirstElement focuses on the first button', () => {
+	test('Dialog component focuses', () => {
 		const button = {
 			default: true
 		}
-		const component = renderer.create(
-			<Dialog title="Title" buttons={[button]}>
+		const component = mount(
+			<Dialog title="Title" buttons={[button]} centered={true}>
 				Content
 			</Dialog>
 		)
 
-		const spy = jest.spyOn(component.getInstance().buttonRefs[0], 'focus')
-		const modalChild = component.root.findByType(Modal)
-		modalChild.props.focusOnFirstElement()
+		const spy = jest.spyOn(component.instance().buttonRefs[0], 'focus')
+
+		component
+			.find('input')
+			.first()
+			.simulate('focus')
+
 		expect(spy).toHaveBeenCalled()
 	})
 
-	test('Dialog componentfocuses with prop', () => {
+	test('Dialog component focuses with prop', () => {
 		const button = {
 			default: true
 		}
 		const focusFirst = jest.fn()
-		const component = renderer.create(
-			<Dialog title="Title" buttons={[button]} focusOnFirstElement={focusFirst}>
+		const component = mount(
+			<Dialog title="Title" buttons={[button]} centered={true} focusOnFirstElement={focusFirst}>
 				Content
 			</Dialog>
 		)
 
-		const modalChild = component.root.findByType(Modal)
-		modalChild.props.focusOnFirstElement()
+		component
+			.find('input')
+			.first()
+			.simulate('focus')
+
 		expect(focusFirst).toHaveBeenCalled()
 	})
 })

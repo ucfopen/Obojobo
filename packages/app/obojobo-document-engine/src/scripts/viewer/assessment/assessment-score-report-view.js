@@ -2,11 +2,7 @@ require('./assessment-score-report-view.scss')
 
 import React from 'react'
 
-const GREAT_JOB_YOU_ROCK_EMOJIS = ['😎', '💪', '🔥', '✨', '⭐']
-
-const getRandomGreatJobEmoji = () => {
-	return GREAT_JOB_YOU_ROCK_EMOJIS[Math.floor(Math.random() * GREAT_JOB_YOU_ROCK_EMOJIS.length)]
-}
+const GREAT_JOB_YOU_ROCK_EMOJI = '😎'
 
 const scoreReportView = props => (
 	<div className="obojobo-draft--sections--assessment--components--score-report">
@@ -17,15 +13,15 @@ const scoreReportView = props => (
 	</div>
 )
 
-const getAmountEl = (value, isTotal100 = false) => {
+const getAmountEl = (value, isTotalOf100 = false) => {
 	if (value === 'Did Not Pass') {
 		return <span className="amount is-null">Did Not Pass</span>
 	}
 
-	if (isTotal100) {
+	if (isTotalOf100) {
 		return (
 			<div className="amount is-number">
-				{value}%<span className="great-job-you-rock">{getRandomGreatJobEmoji()}</span>
+				{value}%<span className="great-job-you-rock">{GREAT_JOB_YOU_ROCK_EMOJI}</span>
 			</div>
 		)
 	}

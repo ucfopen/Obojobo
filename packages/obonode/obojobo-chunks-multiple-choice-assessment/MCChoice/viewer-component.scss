@@ -4,6 +4,7 @@
 	list-style-type: none;
 	min-height: 3.5em;
 	position: relative;
+	transition: background 0.1s ease;
 	font-family: $font-default;
 	cursor: pointer;
 	padding-bottom: 1em;
@@ -38,6 +39,7 @@
 
 			&.feedback-enter {
 				max-height: 0;
+				overflow: hidden;
 				opacity: 0;
 				margin-bottom: 0;
 			}
@@ -94,7 +96,16 @@
 		}
 	}
 
-	&.is-not-selected:hover {
+	&:hover {
 		background: transparentize($color-highlight, 0.85);
+	}
+}
+
+// when in a review, push the input down to make room for review flags
+.component.obojobo-draft--chunks--mc-assessment {
+	&.is-mode-review {
+		.obojobo-draft--chunks--mc-assessment--mc-choice > input {
+			top: 1.7em + $dimension-review-answer-flag-padding;
+		}
 	}
 }

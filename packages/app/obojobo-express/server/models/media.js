@@ -1,5 +1,5 @@
 const fileType = require('file-type')
-const fs = require('fs').promises
+const fs = require('fs')
 const isSvg = require('is-svg')
 const sharp = require('sharp')
 
@@ -361,11 +361,11 @@ class Media {
 		}
 	}
 
-	static async isValidFileType(file) {
+	static isValidFileType(file) {
 		const allowedFileTypes = new RegExp(mediaConfig.allowedMimeTypesRegex)
 
 		// fileType looks into the file to find the true file type using magic numbers
-		const fileTypeInfo = await fileType.fromBuffer(file)
+		const fileTypeInfo = fileType(file)
 
 		// fileType does not support SVGs because the whole buffer must be read to determine if the
 		// buffer is an SVG.
@@ -376,18 +376,16 @@ class Media {
 		let file
 
 		try {
-			file = await fs.readFile(fileInfo.path)
+			file = fs.readFileSync(fileInfo.path)
 		} catch (error) {
 			// calling methods expect a thenable object to be returned
 			logger.logError('Error Reading media file', error)
 			throw error
 		}
 
-		const isValid = await Media.isValidFileType(file, fileInfo.originalname, fileInfo.mimetype)
-
-		if (!isValid) {
+		if (!Media.isValidFileType(file, fileInfo.originalname, fileInfo.mimetype)) {
 			// Delete the temporary media stored by Multer
-			await fs.unlink(fileInfo.path)
+			fs.unlinkSync(fileInfo.path)
 			throw new Error(
 				`File upload only supports the following filetypes: ${mediaConfig.allowedMimeTypesRegex
 					.split('|')
@@ -395,34 +393,34 @@ class Media {
 			)
 		}
 
-		try {
-			const mediaRecord = await Media.storeImageInDb({
-				filename: fileInfo.originalname,
-				binary: file,
-				size: fileInfo.size,
-				mimetype: fileInfo.mimetype,
-				dimensions: mediaConfig.originalMediaTag,
-				mode: MODE_INSERT_ORIGINAL_IMAGE,
-				mediaId: null,
-				userId
+		return Media.storeImageInDb({
+			filename: fileInfo.originalname,
+			binary: file,
+			size: fileInfo.size,
+			mimetype: fileInfo.mimetype,
+			dimensions: mediaConfig.originalMediaTag,
+			mode: MODE_INSERT_ORIGINAL_IMAGE,
+			mediaId: null,
+			userId
+		})
+			.then(mediaRecord => {
+				// Delete the temporary media stored by Multer
+				fs.unlinkSync(fileInfo.path)
+
+				oboEvents.emit(Media.EVENT_IMAGE_CREATED, {
+					userId,
+					fileSize: fileInfo.size,
+					mimeType: fileInfo.mimetype,
+					originalName: fileInfo.originalname
+				})
+
+				// ID of the user media, not the binary data
+				return mediaRecord
 			})
-
-			// Delete the temporary media stored by Multer
-			await fs.unlink(fileInfo.path)
-
-			oboEvents.emit(Media.EVENT_IMAGE_CREATED, {
-				userId,
-				fileSize: fileInfo.size,
-				mimeType: fileInfo.mimetype,
-				originalName: fileInfo.originalname
+			.catch(error => {
+				logger.logError('Error saving media file', error)
+				throw error
 			})
-
-			// ID of the user media, not the binary data
-			return mediaRecord
-		} catch (error) {
-			logger.logError('Error saving media file', error)
-			throw error
-		}
 	}
 }
 

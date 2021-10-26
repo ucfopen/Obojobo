@@ -1,8 +1,7 @@
 {
 	"type": "ObojoboDraft.Chunks.Question",
 	"content": {
-		"type": "default",
-		"revealAnswer": "default"
+		"type": "default"
 	},
 	"children": [
 		{
@@ -18,14 +17,15 @@
 			]
 		},
 		{
-			"type": "ObojoboDraft.Chunks.MCAssessment",
+			"type":"ObojoboDraft.Chunks.MCAssessment",
 			"content": {
 				"responseType": "pick-one",
 				"shuffle": true
 			},
+			"questionType": "default",
 			"children": [
 				{
-					"type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
+					"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
 					"content": { "score": 0 },
 					"children": [
 						{

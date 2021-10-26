@@ -6,7 +6,6 @@ import { Transforms } from 'slate'
 import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
 
 import Figure from './editor-component'
-import ImageCaptionWidthTypes from './image-caption-width-types'
 
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/stores/editor-store')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
@@ -64,8 +63,7 @@ describe('Figure Editor Node', () => {
 						url: 'mockUrl',
 						alt: 'mockAlt',
 						width: 'customWidth',
-						height: 'customHeight',
-						captionWidth: ImageCaptionWidthTypes.TEXT_WIDTH
+						height: 'customHeight'
 					}
 				}}
 				parent={{
@@ -87,8 +85,7 @@ describe('Figure Editor Node', () => {
 						size: 'custom',
 						url: 'mockUrl',
 						alt: 'mockAlt',
-						height: 'customHeight',
-						captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH
+						height: 'customHeight'
 					}
 				}}
 				parent={{
@@ -110,8 +107,7 @@ describe('Figure Editor Node', () => {
 						size: 'custom',
 						url: 'mockUrl',
 						alt: 'mockAlt',
-						width: 'customWidth',
-						captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH
+						width: 'customWidth'
 					}
 				}}
 				parent={{

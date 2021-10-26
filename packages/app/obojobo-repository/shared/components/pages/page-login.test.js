@@ -12,8 +12,7 @@ describe('PageLogin', () => {
 			id: 99,
 			avatarUrl: '/path/to/avatar/img',
 			firstName: 'firstName',
-			lastName: 'lastName',
-			perms: []
+			lastName: 'lastName'
 		}
 
 		const component = renderer.create(<PageLogin currentUser={mockCurrentUser} />)

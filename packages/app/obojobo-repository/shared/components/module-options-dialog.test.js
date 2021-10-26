@@ -64,16 +64,6 @@ describe('ModuleOptionsDialog', () => {
 		expect(defaultProps.showVersionHistory).toHaveBeenCalledWith(defaultProps)
 	})
 
-	test('"Assessment Stats" button calls showAssessmentScoreData', () => {
-		defaultProps.showAssessmentScoreData = jest.fn()
-		const component = create(<ModuleOptionsDialog {...defaultProps} />)
-
-		component.root.findByProps({ id: 'moduleOptionsDialog-assessmentScoreData' }).props.onClick()
-
-		expect(defaultProps.showAssessmentScoreData).toHaveBeenCalledTimes(1)
-		expect(defaultProps.showAssessmentScoreData).toHaveBeenCalledWith(defaultProps)
-	})
-
 	test('"Download JSON" button calls downloadDocument with the correct arguments', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 

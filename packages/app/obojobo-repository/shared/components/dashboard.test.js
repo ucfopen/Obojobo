@@ -18,7 +18,6 @@ import { create, act } from 'react-test-renderer'
 
 import Dashboard from './dashboard'
 import MultiButton from './multi-button'
-import Button from './button'
 import Module from './module'
 import Search from './search'
 
@@ -26,7 +25,6 @@ import ReactModal from 'react-modal'
 import ModulePermissionsDialog from './module-permissions-dialog'
 import ModuleOptionsDialog from './module-options-dialog'
 import VersionHistoryDialog from './version-history-dialog'
-import AssessmentScoreDataDialog from './assessment-score-data-dialog'
 
 describe('Dashboard', () => {
 	const standardMyModules = [
@@ -94,14 +92,7 @@ describe('Dashboard', () => {
 				id: 99,
 				avatarUrl: '/path/to/avatar',
 				firstName: 'firstName',
-				lastName: 'lastName',
-				perms: [
-					'canViewEditor',
-					'canEditDrafts',
-					'canDeleteDrafts',
-					'canCreateDrafts',
-					'canPreviewDrafts'
-				]
+				lastName: 'lastName'
 			},
 
 			dialog: null,
@@ -109,8 +100,6 @@ describe('Dashboard', () => {
 			draftPermissions: {},
 			myCollections: [],
 			myModules: [],
-			selectedModules: [],
-			multiSelectMode: false,
 			sortOrder: 'alphabetical',
 			moduleCount: 0,
 			moduleSearchString: '',
@@ -122,11 +111,6 @@ describe('Dashboard', () => {
 				items: []
 			},
 			versionHistory: {
-				isFetching: false,
-				hasFetched: false,
-				items: []
-			},
-			attempts: {
 				isFetching: false,
 				hasFetched: false,
 				items: []
@@ -160,8 +144,7 @@ describe('Dashboard', () => {
 		//numerous changes to check for within the main content area
 		const mainContent = component.root.findByProps({ className: 'repository--main-content' })
 		//some in the control bar
-		const expectedControlBarClasses =
-			'repository--main-content--control-bar is-not-multi-select-mode'
+		const expectedControlBarClasses = 'repository--main-content--control-bar'
 		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
 
 		expect(controlBar.children.length).toBe(2)
@@ -220,32 +203,6 @@ describe('Dashboard', () => {
 
 		// Shouldn't be any modal dialogs open, either
 		expect(component.root.findAllByType(ReactModal).length).toBe(0)
-
-		component.unmount()
-	}
-
-	const expectMultiSelectDashboardRender = () => {
-		dashboardProps.myModules = [...standardMyModules]
-		dashboardProps.multiSelectMode = true
-		const reusableComponent = <Dashboard {...dashboardProps} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
-		})
-
-		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
-		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
-
-		expect(controlBar.children.length).toBe(3)
-		expect(component.root.findAllByType(Search).length).toBe(0)
-
-		expectMultiSelectOptions(controlBar)
-
-		const moduleComponents = component.root.findAllByType(Module)
-		expect(moduleComponents.length).toBe(5)
-		expect(moduleComponents[0].props.isMultiSelectMode).toBe(true)
-
-		component.unmount()
 	}
 
 	const expectNormalModulesAreaClassesWithTitle = (mainContent, title) => {
@@ -261,12 +218,6 @@ describe('Dashboard', () => {
 		expect(multiButton.children[0].children[0].children[0]).toBe('New Module')
 		expect(multiButton.children[1].children[0].children[0]).toBe('New Tutorial')
 		expect(multiButton.children[2].children[0].children[0]).toBe('Upload...')
-	}
-
-	const expectMultiSelectOptions = controlBar => {
-		expect(controlBar.children[0].props.className).toBe('module-count')
-		expect(controlBar.children[1].children[0].children[0]).toBe('Delete All')
-		expect(controlBar.children[2].children[0].children[0]).toBe('×')
 	}
 
 	const expectCookiePropForPath = (prop, value, path) => {
@@ -288,10 +239,6 @@ describe('Dashboard', () => {
 
 	test('renders with default props', () => {
 		expectDashboardRender()
-	})
-
-	test('renders with multiSelectMode=true', () => {
-		expectMultiSelectDashboardRender()
 	})
 
 	test('renders filtered modules properly', () => {
@@ -342,8 +289,6 @@ describe('Dashboard', () => {
 		expect(moduleComponents.length).toBe(2)
 		expect(moduleComponents[0].props.draftId).toBe('mockDraftId4')
 		expect(moduleComponents[1].props.draftId).toBe('mockDraftId3')
-
-		component.unmount()
 	})
 
 	test('"New Module" and "Upload..." buttons call functions appropriately', async () => {
@@ -400,164 +345,6 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.importModuleFile).toHaveBeenCalledTimes(1)
 		dashboardProps.importModuleFile.mockReset()
-
-		handleClick.mockRestore()
-
-		component.unmount()
-	})
-
-	test('"Delete All" button calls functions appropriately', async () => {
-		dashboardProps.bulkDeleteModules = jest.fn()
-		dashboardProps.selectedModules = ['mockId', 'mockId2']
-		dashboardProps.multiSelectMode = true
-		const reusableComponent = <Dashboard {...dashboardProps} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
-		})
-
-		const mockClickEvent = {
-			preventDefault: jest.fn()
-		}
-
-		const deleteAllButton = component.root.findAllByType(Button)[0]
-		expect(deleteAllButton.children[0].children[0]).toBe('Delete All')
-
-		window.prompt = jest.fn()
-		window.prompt.mockReturnValueOnce('NOT DELETE')
-		await act(async () => {
-			deleteAllButton.props.onClick(mockClickEvent)
-		})
-		expect(dashboardProps.bulkDeleteModules).not.toHaveBeenCalled()
-
-		window.prompt.mockReturnValueOnce('DELETE')
-		await act(async () => {
-			deleteAllButton.props.onClick(mockClickEvent)
-		})
-		expect(dashboardProps.bulkDeleteModules).toHaveBeenCalledTimes(1)
-
-		component.unmount()
-	})
-
-	test('"Deselect All" button calls functions appropriately', () => {
-		dashboardProps.deselectModules = jest.fn()
-		dashboardProps.selectedModules = ['mockId', 'mockId2']
-		dashboardProps.multiSelectMode = true
-		const reusableComponent = <Dashboard {...dashboardProps} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
-		})
-
-		const deselectAllButton = component.root.findAllByType(Button)[1]
-		expect(deselectAllButton.children[0].children[0]).toBe('×')
-
-		act(() => {
-			deselectAllButton.props.onClick()
-		})
-		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockId', 'mockId2'])
-
-		component.unmount()
-	})
-
-	test('pressing Esc when multiSelectMode=true calls functions appropriately', () => {
-		dashboardProps.deselectModules = jest.fn()
-		let component
-		act(() => {
-			component = create(<Dashboard {...dashboardProps} />)
-		})
-
-		// eslint-disable-next-line no-undef
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }))
-		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(0)
-
-		dashboardProps.multiSelectMode = true
-		act(() => {
-			component.update(<Dashboard {...dashboardProps} />)
-		})
-
-		// eslint-disable-next-line no-undef
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }))
-		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
-
-		component.unmount()
-	})
-
-	test('selecting module calls functions appropriately', () => {
-		dashboardProps.myModules = [...standardMyModules]
-		dashboardProps.selectModules = jest.fn()
-		dashboardProps.deselectModules = jest.fn()
-		let component
-		act(() => {
-			component = create(<Dashboard {...dashboardProps} />)
-		})
-
-		const moduleComponents = component.root.findAllByType(Module)
-		expect(moduleComponents[0].props.isSelected).toBe(false)
-
-		act(() => {
-			const mockClickEvent = {
-				shiftKey: false
-			}
-			moduleComponents[0].props.onSelect(mockClickEvent)
-		})
-		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId2'])
-
-		dashboardProps.selectedModules = ['mockDraftId2']
-		dashboardProps.multiSelectMode = true
-
-		act(() => {
-			component.update(<Dashboard {...dashboardProps} />)
-		})
-		expect(moduleComponents[0].props.isSelected).toBe(true)
-
-		act(() => {
-			const mockClickEvent = {
-				shiftKey: false
-			}
-			moduleComponents[0].props.onSelect(mockClickEvent)
-		})
-		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockDraftId2'])
-
-		component.unmount()
-	})
-
-	test('selecting modules with shift calls functions appropriately', () => {
-		dashboardProps.myModules = [...standardMyModules]
-		dashboardProps.selectModules = jest.fn()
-		let component
-		act(() => {
-			component = create(<Dashboard {...dashboardProps} />)
-		})
-
-		const moduleComponents = component.root.findAllByType(Module)
-
-		act(() => {
-			const mockClickEvent = {
-				shiftKey: true
-			}
-			moduleComponents[2].props.onSelect(mockClickEvent)
-		})
-		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith([
-			'mockDraftId2',
-			'mockDraftId4',
-			'mockDraftId3'
-		])
-		dashboardProps.selectModules.mockReset()
-
-		act(() => {
-			const mockClickEvent = {
-				shiftKey: true
-			}
-			moduleComponents[1].props.onSelect(mockClickEvent)
-		})
-		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId4', 'mockDraftId3'])
-
-		component.unmount()
 	})
 
 	test('renders "Module Options" dialog', () => {
@@ -580,8 +367,6 @@ describe('Dashboard', () => {
 
 		dialogComponent.props.onClose()
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
-
-		component.unmount()
 	})
 
 	test('renders "Module Access" dialog', () => {
@@ -604,8 +389,6 @@ describe('Dashboard', () => {
 
 		dialogComponent.props.onClose()
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
-
-		component.unmount()
 	})
 
 	test('renders "Version History" dialog and runs callbacks properly', () => {
@@ -627,27 +410,6 @@ describe('Dashboard', () => {
 
 		dialogComponent.props.onClose()
 		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)
-
-		component.unmount()
-	})
-
-	test('renders "Assessment Scores" dialog and runs callbacks properly', () => {
-		dashboardProps.dialog = 'module-assessment-score-data'
-		dashboardProps.selectedModule.title = 'Mock Module Title'
-
-		let component
-		act(() => {
-			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
-		})
-
-		expectDialogToBeRendered(component, AssessmentScoreDataDialog, 'Module Assessment Score Data')
-		const dialogComponent = component.root.findByType(AssessmentScoreDataDialog)
-		expect(dialogComponent.props.title).toBe('Mock Module Title - Assessment Scores')
-
-		dialogComponent.props.onClose()
-		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)
-
-		component.unmount()
 	})
 
 	test('renders no dialogs if props.dialog value is unsupported', () => {
@@ -658,7 +420,5 @@ describe('Dashboard', () => {
 		})
 
 		expect(component.root.findAllByType(ReactModal).length).toBe(0)
-
-		component.unmount()
 	})
 })

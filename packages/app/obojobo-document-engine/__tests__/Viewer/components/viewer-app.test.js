@@ -39,7 +39,6 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/stores/assessment-store')
 jest.mock('obojobo-document-engine/src/scripts/viewer/components/nav')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
 jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag')
-jest.mock('obojobo-document-engine/src/scripts/common/components/modal-container')
 
 describe('ViewerApp', () => {
 	let restoreConsole
@@ -404,7 +403,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls ViewerAPI when switching from viewing to hiding', done => {
+	test('onVisibilityChange calls ViewerAPI when leaving', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -431,135 +430,31 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls ViewerAPI when switching from hiding to viewing', done => {
+	test('onVisibilityChange calls ViewerAPI when returning', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
-		const originalHidden = document.hidden
-		document.hidden = true
-
 		setTimeout(() => {
-			jest.useFakeTimers('modern')
-			jest.setSystemTime(new Date(2020, 0, 1))
-
+			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
 			component.instance().leaveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			component.instance().viewerHideDate = 999
+			component.instance().leftEpoch = 999
 			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
 
-			document.hidden = false
-			component.instance().onVisibilityChange()
-
-			expect(ViewerAPI.postEvent).toHaveBeenLastCalledWith({
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:return',
 				draftId: undefined,
-				eventVersion: '3.0.0',
+				eventVersion: '2.0.0',
 				payload: {
 					relatedEventId: 'mock-id',
-					leftTime: new Date(2020, 0, 1),
-					duration: 0
+					leftTime: 999,
+					duration: 1
 				},
-				visitId: undefined
-			})
-
-			jest.useRealTimers()
-			component.unmount()
-			document.hidden = originalHidden
-			done()
-		})
-	})
-
-	test('onVisibilityChange calls ViewerAPI when switching from hiding to viewing with a slow leave event', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		const originalHidden = document.hidden
-		document.hidden = true
-
-		setTimeout(() => {
-			jest.useFakeTimers('modern')
-			jest.setSystemTime(new Date(2020, 0, 1))
-
-			component.instance().viewerHideDate = 999
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
-			component.update()
-
-			component.instance().onVisibilityChange()
-
-			document.hidden = false
-			component.instance().onVisibilityChange()
-
-			expect(ViewerAPI.postEvent).toHaveBeenLastCalledWith({
-				action: 'viewer:return',
-				draftId: undefined,
-				eventVersion: '3.0.0',
-				payload: {
-					relatedEventId: 'not available',
-					leftTime: new Date(2020, 0, 1),
-					duration: 0
-				},
-				visitId: undefined
-			})
-
-			jest.useRealTimers()
-			component.unmount()
-			document.hidden = originalHidden
-			done()
-		})
-	})
-
-	test('onVisibilityChange calls ViewerAPI when viewed for the first time', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
-			component.instance().leaveEvent = {
-				extensions: { internalEventId: 'mock-id' }
-			}
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
-			component.update()
-
-			component.instance().onVisibilityChange()
-
-			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
-				action: 'viewer:initialView',
-				draftId: undefined,
-				eventVersion: '1.0.0',
-				visitId: undefined
-			})
-
-			dateSpy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('onVisibilityChange calls ViewerAPI when viewed for the first time', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
-			component.instance().leaveEvent = {
-				extensions: { internalEventId: 'mock-id' }
-			}
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
-			component.update()
-
-			component.instance().onVisibilityChange()
-
-			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
-				action: 'viewer:initialView',
-				eventVersion: '1.0.0',
 				visitId: undefined
 			})
 
@@ -827,13 +722,11 @@ describe('ViewerApp', () => {
 			}
 		}
 
-		const spy = jest.spyOn(FocusUtil, 'getVisuallyFocussedModel').mockReturnValueOnce(null)
+		FocusUtil.getVisuallyFocussedModel = jest.fn()
 
 		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
 
 		expect(thisValue.observer).not.toBeDefined()
-
-		spy.mockRestore()
 
 		// Restore the actual IntersectionObserver
 		window.IntersectionObserver = oldIntersectionObserver
@@ -851,7 +744,7 @@ describe('ViewerApp', () => {
 			}
 		}
 
-		const spy = jest.spyOn(FocusUtil, 'getVisuallyFocussedModel').mockReturnValueOnce({
+		FocusUtil.getVisuallyFocussedModel = () => ({
 			getDomEl: jest.fn()
 		})
 
@@ -861,8 +754,6 @@ describe('ViewerApp', () => {
 
 		// Restore the actual IntersectionObserver
 		window.IntersectionObserver = oldIntersectionObserver
-
-		spy.mockRestore()
 	})
 
 	test('startObservingForIntersectionChanges creates new IntersectionObserver and calls observe if focused element exists', () => {
@@ -882,9 +773,8 @@ describe('ViewerApp', () => {
 			}
 		}
 
-		const mockGetDomEl = jest.fn()
-		const spy = jest.spyOn(FocusUtil, 'getVisuallyFocussedModel').mockReturnValue({
-			getDomEl: () => mockGetDomEl
+		FocusUtil.getVisuallyFocussedModel = () => ({
+			getDomEl: () => true
 		})
 
 		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
@@ -895,11 +785,11 @@ describe('ViewerApp', () => {
 			rootMargin: '0px',
 			threshold: 0
 		})
-		expect(thisValue.observer.observe).toHaveBeenCalledWith(mockGetDomEl)
+		expect(thisValue.observer.observe).toHaveBeenCalledWith(
+			FocusUtil.getVisuallyFocussedModel().getDomEl()
+		)
 
 		window.IntersectionObserver = oldIntersectionObserver
-
-		spy.mockRestore()
 	})
 
 	test('onIntersectionChange does nothing if intersectionRatio is higher than 0', () => {
@@ -946,34 +836,14 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
-		component.setState({
-			model: { get: () => 'mock-draft-id' },
-			navState: {
-				visitId: 'mock-visit-id'
-			},
-			isPreviewing: false
-		})
-
 		setTimeout(() => {
-			ViewerAPI.postEvent.mockResolvedValueOnce({ response: { value: 'mock-value' } })
-			component
-				.instance()
-				.onIdle({ lastActiveEpoch: 'now' })
-				.then(() => {
-					expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
-						action: 'viewer:inactive',
-						draftId: undefined,
-						eventVersion: '3.0.0',
-						payload: {
-							lastActiveTime: 'now',
-							inactiveDuration: 60000 * 30
-						},
-						visitId: undefined
-					})
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: {} })
+			component.instance().onIdle({ lastActiveEpoch: 'now' })
 
-					component.unmount()
-					done()
-				})
+			expect(ViewerAPI.postEvent).toHaveBeenCalled()
+
+			component.unmount()
+			done()
 		})
 	})
 
@@ -981,14 +851,6 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
-
-		component.setState({
-			model: { get: () => 'mock-draft-id' },
-			navState: {
-				visitId: 'mock-visit-id'
-			},
-			isPreviewing: false
-		})
 
 		setTimeout(() => {
 			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
@@ -999,29 +861,26 @@ describe('ViewerApp', () => {
 			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
-			component
-				.instance()
-				.onReturnFromIdle({
-					lastActiveEpoch: 999,
-					inactiveDuration: 1
-				})
-				.then(() => {
-					expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
-						action: 'viewer:returnFromInactive',
-						draftId: undefined,
-						eventVersion: '2.1.0',
-						payload: {
-							relatedEventId: 'mock-id',
-							lastActiveTime: 999,
-							inactiveDuration: 1
-						},
-						visitId: undefined
-					})
+			component.instance().onReturnFromIdle({
+				lastActiveEpoch: 999,
+				inactiveDuration: 1
+			})
 
-					dateSpy.mockRestore()
-					component.unmount()
-					done()
-				})
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:returnFromInactive',
+				draftId: undefined,
+				eventVersion: '2.1.0',
+				payload: {
+					relatedEventId: 'mock-id',
+					lastActiveTime: 999,
+					inactiveDuration: 1
+				},
+				visitId: undefined
+			})
+
+			dateSpy.mockRestore()
+			component.unmount()
+			done()
 		})
 	})
 
@@ -1800,7 +1659,6 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-
 			const headerComponent = component.find(Header)
 			expect(headerComponent.props().location).toBe('nav-target-label')
 
@@ -1809,36 +1667,39 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('getViewerClassNames returns expected values', () => {
-		const spy1 = jest.spyOn(FocusUtil, 'getVisuallyFocussedModel').mockReturnValueOnce(true)
+	test('ViewerApp class is-focus-state-active if there is a visually focussed component', done => {
+		expect.assertions(2)
+		mocksForMount()
 
-		expect(
-			ViewerApp.prototype.getViewerClassNames.bind({
-				state: {
-					isPreviewing: true,
-					navState: {
-						open: true,
-						disabled: true
-					}
-				}
-			})()
-		).toEqual(' is-previewing is-open-nav is-disabled-nav is-focus-state-active')
+		FocusUtil.getVisuallyFocussedModel = jest.fn(() => jest.fn())
+		const component = mount(<ViewerApp />)
 
-		const spy2 = jest.spyOn(FocusUtil, 'getVisuallyFocussedModel').mockReturnValueOnce(false)
+		setTimeout(() => {
+			component.update()
 
-		expect(
-			ViewerApp.prototype.getViewerClassNames.bind({
-				state: {
-					isPreviewing: false,
-					navState: {
-						open: false,
-						disabled: false
-					}
-				}
-			})()
-		).toEqual(' is-not-previewing is-not-open-nav is-not-disabled-nav is-not-focus-state-active')
+			expect(component.find('.is-focus-state-inactive').length).toBe(0)
+			expect(component.find('.is-focus-state-active').length).toBe(1)
 
-		spy1.mockRestore()
-		spy2.mockRestore()
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp class is-focus-state-inactive if there is a visually focussed component', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		FocusUtil.getVisuallyFocussedModel = jest.fn(() => null)
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			expect(component.find('.is-not-focus-state-active').length).toBe(1)
+			expect(component.find('.is-focus-state-active').length).toBe(0)
+
+			component.unmount()
+			done()
+		})
 	})
 })

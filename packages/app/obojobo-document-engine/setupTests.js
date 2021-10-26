@@ -2,7 +2,7 @@ require('obojobo-lib-utils/test-setup-chunks') // setup enzyme
 
 // Hack to get LaTeX to not warn about quirks mode:
 document.write(
-	'<!DOCTYPE html><body><div id="viewer-app"></div><div id="app-loading"></div></body>'
+	'<!DOCTYPE html><body><div id="viewer-app"></div><div id="viewer-app-loading"></div></body>'
 )
 
 // Externals:

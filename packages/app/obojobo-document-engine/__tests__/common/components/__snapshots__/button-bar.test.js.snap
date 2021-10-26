@@ -23,7 +23,6 @@ exports[`ButtonBar ButtonBar component with attributes 1`] = `
         contentEditable={false}
         disabled={true}
         onClick={[Function]}
-        type="button"
       />
     </div>
   </div>

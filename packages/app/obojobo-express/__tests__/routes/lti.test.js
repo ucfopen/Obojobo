@@ -95,7 +95,7 @@ describe('lti route', () => {
 
 	test('course_navigation redirects users with canViewEditor', () => {
 		expect.assertions(3)
-		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' }
+		mockCurrentUser = { id: 99, canViewEditor: true }
 
 		return request(app)
 			.post('/canvas/course_navigation')

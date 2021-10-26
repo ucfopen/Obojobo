@@ -54,27 +54,6 @@ class SimpleDialog extends React.Component {
 					default: true
 				}
 			]
-		} else if (this.props.saveOrDelete) {
-			buttons = [
-				{
-					value: 'Save',
-					altAction: true,
-					onClick: () => {}
-				},
-				{
-					value: 'Delete',
-					onClick: () => {},
-					default: true
-				}
-			]
-		} else if (this.props.done) {
-			buttons = [
-				{
-					value: 'Done',
-					onClick: this.props.onConfirm,
-					default: true
-				}
-			]
 		} else if (this.props.delete) {
 			buttons = [
 				{
@@ -88,7 +67,14 @@ class SimpleDialog extends React.Component {
 					onClick: this.props.onCancel
 				}
 			]
-		} else {
+		}else if (this.props.done) {
+			buttons = [
+				{
+					value: 'Done',
+					onClick: this.props.onConfirm,
+					default: true
+				}]
+		}else {
 			buttons = [
 				{
 					value: 'Cancel',
@@ -125,11 +111,11 @@ SimpleDialog.defaultProps = {
 	noOrYes: false,
 	yesOrNo: false,
 	cancelOk: false,
+	delete: false,
+	done: false,
 	title: null,
 	width: null,
 	preventEsc: false,
-	delete: false,
-	done: false,
 	onCancel() {
 		return ModalUtil.hide()
 	},

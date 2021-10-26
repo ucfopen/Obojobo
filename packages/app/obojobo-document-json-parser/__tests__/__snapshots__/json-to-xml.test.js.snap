@@ -151,7 +151,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			</Text>
 			<Text id=\\"367a23f3-a67f-425a-87f2-a9eae6a7b6f0\\">
 				<textGroup>
-					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l<code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
+					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l</b><b><code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"c39ac706-f041-42e0-b0b4-6414fb69aed0\\">
@@ -610,111 +610,6 @@ exports[`JSON to XML Parser Converts questionbank.json to xml 1`] = `
 			</trigger>
 		</triggers>
 	</QuestionBank>
-</ObojoboDraftDoc>"
-`;
-
-exports[`JSON to XML Parser Converts stress-test.json to xml 1`] = `
-"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
-<ObojoboDraftDoc>
-	<Module title=\\"Stress Test\\" id=\\"2d44c440-c084-4308-bc0b-b0f7ff6e99dd\\">
-		<Content id=\\"3ddf86d2-03d5-42ec-8d14-86f89689031f\\">
-			<Page title=\\"Example content page\\" id=\\"9190c10d-83a7-4899-9788-a5bb6d5e1b44\\">
-				<Heading headingLevel=\\"1\\" id=\\"62d755b5-de21-4445-befa-6a4943973b1f\\">
-					<textGroup>
-						<t align=\\"left\\">S<code>t</code>r<code>e</code><sup>s</sup><code><sup><i>s</i></sup></code><sup><i> Test document</i></sup></t>
-					</textGroup>
-				</Heading>
-				<Text id=\\"39051eaf-8cd2-48d8-a3d8-9acf50bd4638\\">
-					<textGroup>
-						<t align=\\"left\\" indent=\\"0\\" hangingIndent=\\"false\\">
-							<sup>
-								<i>Lorem</i>
-							</sup>
-							<del>
-								<sup>
-									<i> Ipsum is simply dummy text o</i>
-								</sup>
-							</del>
-							<sup>
-								<i>f the printing and typesetting industry. Lorem Ips</i>
-							</sup>
-							<b>
-								<code>
-									<i>um has been the industry&#39;s </i>
-								</code>
-							</b>
-							<a href=\\"example.com\\">
-								<b>
-									<code>
-										<i>standard</i>
-									</code>
-								</b>
-							</a>
-							<b>
-								<code>
-									<i> dummy text ever since the 1500s, when an unk</i>
-								</code>
-							</b>
-							<q>
-								<b><code><i>nown printer took a galley of type and scrambled it to make a type</i></code><i> speci</i>men book. It has survived not only five centuries, but also the leap into</b>
-							</q>
-							<latex>
-								<q>
-									<b> electronic typesetting,</b>
-								</q>
-							</latex>
-							<q>
-								<b> remai<i>ning essentially unchanged. It was popularised in the 19</i>60s w</b>
-							</q>
-							<b>ith the release of Letraset sheet<sup>s containin</sup>g Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</b>
-						</t>
-						<t align=\\"left\\" indent=\\"0\\"></t>
-						<t align=\\"left\\" indent=\\"0\\">
-							<b>Why do we use it?</b>
-						</t>
-						<t align=\\"left\\" indent=\\"0\\">
-							<b>It is a long established fact that a reader will be distracted by the readable content of a pa<i>ge when looking at its layout. The point of using Lorem Ipsum is that it has a more-</i><del><i>or-less normal distribution of letters, as opposed to us</i><code><i>ing &#39;C</i><sup><i>ontent her</i></sup></code><sup><i>e, c</i></sup><i>ontent here&#39;, making it look like readable English. Many desktop publishing pac</i></del></b>
-							<del>
-								<i>kages and web page editors now use Lorem Ipsum as their default model text, and a search for &#39;lorem ipsum&#39; will uncover many web sites still in the</i>
-							</del>
-							<i>ir infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</i>
-						</t>
-						<t align=\\"left\\" indent=\\"0\\"></t>
-						<t align=\\"left\\" indent=\\"0\\"></t>
-						<t align=\\"left\\" indent=\\"0\\">
-							<i>Where does it come from?</i>
-						</t>
-						<t align=\\"left\\" indent=\\"0\\"><i>Contrary to popul</i>ar belief, Lorem Ipsum is not simply random text. It has roots in a piece of c<i>la</i><q><i>ssical</i></q><latex><q><i> Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Ha</i></q><i>mpden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and goi</i><del><i>ng through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of &#34;de F</i></del><q><del><i>inib</i></del></q></latex><q><del><i>us Bonorum et Maloru</i></del><i>m&#34; (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the R</i>enaissance. Th<sub>e first line of Lorem Ipsum, &#34;Lorem ipsum dolor sit amet..&#34;, comes from a line in section 1.10.32.</sub></q></t>
-						<t align=\\"left\\" indent=\\"0\\"></t>
-						<t align=\\"left\\" indent=\\"0\\">
-							<q><sub>The standard </sub><code><sub>chunk of Lorem Ips</sub></code><sub>um used since the 1500s is reproduced below</sub> for those interested.<b> Sections 1.10.32 and 1.10.33 from &#34;de Finibus Bonorum et Malorum&#34; by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</b></q>
-						</t>
-						<t align=\\"left\\" indent=\\"0\\"></t>
-						<t align=\\"left\\" indent=\\"0\\">
-							<q>
-								<b>Where can I get some?</b>
-							</q>
-						</t>
-						<t align=\\"left\\" indent=\\"0\\">
-							<q>
-								<b>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some </b>
-							</q>
-							<latex>
-								<q>
-									<b>form, by injected humour, or randomised word</b>
-								</q>
-							</latex>
-							<q>
-								<b>s </b>
-							</q>
-							<b>which don&#39;t look even slightly believable. If you are going to use a passage o<del>f Lorem Ipsum, you need to be sure there isn&#39;t anything embarrassing hidden in</del></b>
-							<del> the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</del>
-						</t>
-					</textGroup>
-				</Text>
-			</Page>
-		</Content>
-	</Module>
 </ObojoboDraftDoc>"
 `;
 

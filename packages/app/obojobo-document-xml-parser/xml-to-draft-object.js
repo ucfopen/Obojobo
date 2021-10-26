@@ -7,8 +7,8 @@ const attrElementToAttrItem = require('./src/attr-element-to-attr-item')
 const parseTg = require('./src/text-group-parser')
 const scoreParser = require('./src/score-action-parser')
 const parseTriggers = require('./src/triggers-parser')
+const parseObjectives = require('./src/objectives-parser')
 const parseListStyles = require('./src/list-styles-parser')
-const parseUnits = require('./src/units-parser')
 const parseAssessmentRubric = require('./src/assessment-rubric-parser')
 const parseScoreAction = scoreParser.parseScoreAction
 const parseScoreActions = scoreParser.parseScoreActions
@@ -19,8 +19,8 @@ const parsers = {
 	scoreActions: parseScoreActions,
 	rubric: parseAssessmentRubric,
 	triggers: parseTriggers,
+	objectives: parseObjectives,
 	listStyles: parseListStyles,
-	units: parseUnits,
 	solution: solAttr => {
 		return solAttr.elements[0]
 	}
@@ -74,6 +74,5 @@ module.exports = (xml, generateIds = false) => {
 	attrElementToAttrItem(root)
 	draftJsonTransform(root, generateIds)
 	__finalPass(root.elements[0])
-
 	return root.elements[0].children[0]
 }

@@ -10,7 +10,7 @@
 	top: 0;
 	left: 0;
 	bottom: 0;
-	z-index: 0;
+	z-index: $z-index-above-content;
 	font-family: $font-default;
 	color: $color-text;
 	background: $color-nav-bg;
@@ -118,7 +118,7 @@
 			display: block;
 			top: 1rem;
 			width: 100%;
-			height: 1px; /* stylelint-disable-line unit-disallowed-list */
+			height: 1px; /* stylelint-disable-line unit-blacklist */
 			background: lighten($color-text, 95%);
 		}
 
@@ -151,7 +151,7 @@
 				content: '';
 				position: absolute;
 				bottom: 0;
-				left: -2px; /* stylelint-disable-line unit-disallowed-list */
+				left: -2px; /* stylelint-disable-line unit-blacklist */
 				width: 1.2em;
 				height: 2em;
 				background: $color-nav-bg;
@@ -159,9 +159,9 @@
 		}
 
 		&::after {
-			left: -4px; /* stylelint-disable-line unit-disallowed-list */
-			width: 7px; /* stylelint-disable-line unit-disallowed-list */
-			height: 7px; /* stylelint-disable-line unit-disallowed-list */
+			left: -4px; /* stylelint-disable-line unit-blacklist */
+			width: 7px; /* stylelint-disable-line unit-blacklist */
+			height: 7px; /* stylelint-disable-line unit-blacklist */
 			top: 0.5em;
 			background: $color-nav-highlight;
 			border: none;
@@ -191,7 +191,7 @@
 				content: '';
 				position: absolute;
 				top: 0;
-				left: -2px; /* stylelint-disable-line unit-disallowed-list */
+				left: -2px; /* stylelint-disable-line unit-blacklist */
 				width: 1.2em;
 				height: 1em;
 				background: $color-nav-bg;
@@ -250,7 +250,7 @@
 				content: '';
 				position: absolute;
 				bottom: 0;
-				left: -1px; /* stylelint-disable-line unit-disallowed-list */
+				left: -1px; /* stylelint-disable-line unit-blacklist */
 				width: 1.2em;
 				height: 1.2em;
 				background: $color-nav-bg;
@@ -373,16 +373,11 @@
 		}
 	}
 
-	&.is-not-open {
-		z-index: $z-index-above-content;
-		left: -$dimension-nav-menu;
+	&.is-not-open .toggle-button {
+		transform: rotate(180deg);
 
-		.toggle-button {
-			transform: rotate(180deg);
-
-			&:not(:hover) {
-				background-image: url('./hamburger.svg');
-			}
+		&:not(:hover) {
+			background-image: url('./hamburger.svg');
 		}
 	}
 
@@ -399,6 +394,10 @@
 				}
 			}
 		}
+	}
+
+	&.is-not-open {
+		left: -$dimension-nav-menu;
 	}
 
 	&.is-not-enabled {

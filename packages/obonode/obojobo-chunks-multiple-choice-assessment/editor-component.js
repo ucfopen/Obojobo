@@ -7,7 +7,7 @@ import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/comp
 import './editor-component.scss'
 
 const { Button, Switch } = Common.components
-const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
+const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
@@ -44,7 +44,7 @@ class MCAssessment extends React.Component {
 		return Transforms.insertNodes(
 			this.props.editor,
 			{
-				type: CHOICE_NODE,
+				type: MCCHOICE_NODE,
 				content: { score: 0 },
 				children: [
 					{
@@ -81,22 +81,23 @@ class MCAssessment extends React.Component {
 			>
 				<div className="mc-settings" contentEditable={false}>
 					<label>
-						<span>Response Type</span>
+						Response Type
 						<select value={content.responseType} onChange={this.changeResponseType}>
 							<option value="pick-one">Pick one correct answer</option>
 							<option value="pick-all">Pick all correct answers</option>
 						</select>
 					</label>
-					<Switch title="Shuffle Choices" checked={content.shuffle} onChange={this.changeShuffle} />
+					<Switch
+						title="Shuffle Choices"
+						checked={content.shuffle}
+						onChange={this.changeShuffle}
+					/>
 				</div>
-				<div className="choices-container">
+				<div>
 					{this.props.children}
-					<div
-						contentEditable={false}
-						className="obojobo-draft--chunks--mc-assessment--choice-button-container"
-					>
-						<Button className={'choice-button'} onClick={this.addChoice}>
-							{'+ Add possible answer'}
+					<div contentEditable={false}>
+						<Button className={'choice-button pad'} onClick={this.addChoice}>
+							{'+ Add Choice'}
 						</Button>
 					</div>
 				</div>

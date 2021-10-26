@@ -79,35 +79,6 @@ describe('IFrame Editor Node', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('IFrame renders with long src and no title correctly', () => {
-		const component = renderer.create(
-			<IFrame
-				element={{
-					content: {
-						width: 200,
-						height: 200,
-						controls: '',
-						border: false,
-						initialZoom: 1,
-						src: 'mockVeryLongSrcThatHasManyCharsAndExceedsTheMaxDisplaySize'
-					}
-				}}
-				selected
-				parent={{
-					getPath: () => ({
-						get: () => 0
-					}),
-					nodes: {
-						size: 2
-					}
-				}}
-			/>
-		)
-
-		const title = component.root.findByType('span')
-		expect(title.children[0]).toBe('mockVeryLongSrcThatHasManyCharsAndExceedsTheMaxDis...')
-	})
-
 	test('IFrame component deletes self', () => {
 		const component = mount(
 			<IFrame

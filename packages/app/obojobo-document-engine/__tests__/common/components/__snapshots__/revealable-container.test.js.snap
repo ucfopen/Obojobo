@@ -20,7 +20,6 @@ exports[`RevealableContainer RevealableContainer renders correctly 1`] = `
       onClick={[MockFunction]}
       onKeyDown={[MockFunction]}
       tabIndex={0}
-      type="button"
     >
       ×
     </button>
@@ -52,7 +51,6 @@ exports[`RevealableContainer RevealableContainer renders correctly without class
       onClick={[MockFunction]}
       onKeyDown={[MockFunction]}
       tabIndex={-1}
-      type="button"
     >
       ×
     </button>

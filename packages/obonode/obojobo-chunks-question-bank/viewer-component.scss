@@ -5,11 +5,17 @@
 	width: auto;
 	margin: 0.3em;
 	min-width: 9em;
+	overflow: auto;
 
 	.reshuffle {
 		margin: 1rem auto;
 		text-align: center;
 		display: block;
 		font-size: 1.2em;
+	}
+
+	.obojobo-draft--chunks--question:first-child:last-child {
+		padding-top: 2em;
+		padding-bottom: 2em;
 	}
 }

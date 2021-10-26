@@ -12,10 +12,8 @@
 	}
 
 	if (typeof fonts !== 'undefined'){
-		-%>
-		<% fonts.forEach(function(font){ -%>
-		<link rel='preload' as='style' href='<%= font %>'>
-		<link rel='stylesheet' href='<%= font %>'>
+		fonts.forEach(function(font){ -%>
+		<link rel="stylesheet" media="screen" href="<%= font %>" />
 		<% })
 	}
 

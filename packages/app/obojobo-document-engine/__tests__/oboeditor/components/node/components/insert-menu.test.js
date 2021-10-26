@@ -15,9 +15,6 @@ const testOptions = [
 		components: {}
 	},
 	{
-		separator: true
-	},
-	{
 		isInsertable: false,
 		name: 'dummyItem2',
 		components: {}

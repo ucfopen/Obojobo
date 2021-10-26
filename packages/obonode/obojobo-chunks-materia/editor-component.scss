@@ -5,7 +5,7 @@
 	user-select: none;
 
 	.widget-icon img {
-		height: 92px; //stylelint-disable-line unit-disallowed-list
+		height: 92px; //stylelint-disable-line unit-blacklist
 		position: relative;
 	}
 
@@ -27,7 +27,7 @@
 		font-family: $font-default;
 		font-size: 0.8em;
 		color: $color-text-minor;
-		max-width: calc(100% - 10em); //stylelint-disable-line unit-disallowed-list
+		max-width: calc(100% - 10em); //stylelint-disable-line unit-blacklist
 
 		span[data-placeholder] {
 			&::before {

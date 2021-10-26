@@ -5,8 +5,8 @@ const mockReadDirFiles = new Map()
 const mockFileContents = new Map()
 
 // mock fs.readdirSync
-const readdirSync = dirPath => {
-	if (!mockReadDirFiles.has(dirPath)) {
+const readdirSync = (dirPath) => {
+	if (!mockReadDirFiles.has(dirPath)){
 		// console.log(`Mocked FS doesn't have mock dir contents for ${dirPath}, falling back to actual fs`)
 		return fsActual.readdirSync(dirPath)
 	}
@@ -18,8 +18,9 @@ function mockReaddirSync(dirPath, arrayOfFileNames = []) {
 	mockReadDirFiles.set(dirPath, arrayOfFileNames)
 }
 
+
 // mock fs.readFileSync
-const readFileSync = filePath => {
+const readFileSync = (filePath) => {
 	if (!mockFileContents.has(filePath)) {
 		// console.log(`Mocked FS doesn't have mock file contents for ${filePath}, falling back to actual fs`)
 		return fsActual.readFileSync(filePath)
@@ -49,6 +50,5 @@ fs.__removeMockFileContents = __removeMockFileContents
 fs.readdirSync = readdirSync
 fs.readFileSync = readFileSync
 fs.existsSync = existsSync
-fs.promises = {}
 
 module.exports = fs

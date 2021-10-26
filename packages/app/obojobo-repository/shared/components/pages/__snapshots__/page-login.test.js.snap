@@ -21,12 +21,8 @@ exports[`PageLogin renders when given props 1`] = `
       name="viewport"
     />
     <link
-      as="style"
-      href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
-      rel="preload"
-    />
-    <link
-      href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
+      href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i"
+      media="screen"
       rel="stylesheet"
     />
   </head>

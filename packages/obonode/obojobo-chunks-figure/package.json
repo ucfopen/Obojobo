@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-figure",
-	"version": "13.0.1",
+	"version": "11.4.0",
 	"license": "AGPL-3.0-only",
 	"description": "Figure content chunk for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^13.0.1"
+		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
@@ -42,8 +42,7 @@
 			"lcov"
 		],
 		"coveragePathIgnorePatterns": [
-			"node_modules",
-			"image-caption-width-types.js"
+			"node_modules"
 		],
 		"moduleNameMapper": {
 			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",

@@ -388,7 +388,7 @@ describe('QuestionBank editor', () => {
 		// Use QuestionBank.type to bypass memo()
 		const component = mount(<QuestionBank.type {...props} />)
 
-		component.instance().displayImportQuestionModal()
+		component.instance().diplayImportQuestionModal()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 })

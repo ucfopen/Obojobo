@@ -26,15 +26,6 @@ jest.mock('slate', () => ({
 	}
 }))
 
-jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
-	() => item => item
-)
-jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
-	() => props => <div>{props.children}</div>
-)
-
 describe('List Editor Node', () => {
 	test('List component when not selected', () => {
 		const props = {

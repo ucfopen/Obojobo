@@ -122,6 +122,11 @@
 		}
 	}
 
+	.obojobo-draft--chunks--question:first-child:last-child {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
 	.button-bar {
 		.obojobo-draft--components--button {
 			margin-right: 1em;

@@ -3,7 +3,6 @@
 exports[`ButtonLink renders when given props 1`] = `
 <a
   className="repository--button extraClass"
-  download={null}
   href="/path/to/url"
   target="_blank"
 >
@@ -14,7 +13,6 @@ exports[`ButtonLink renders when given props 1`] = `
 exports[`ButtonLink renders with no extra classes 1`] = `
 <a
   className="repository--button "
-  download={null}
   href="/path/to/url"
   target="_blank"
 >

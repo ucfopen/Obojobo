@@ -1,9 +1,17 @@
+import Common from 'Common'
+import MCAssessmentResults from './mc-assessment-results'
 import React from 'react'
+
+const { focus } = Common.page
 
 export default class MCAssessmentAnswerChoices extends React.Component {
 	constructor(props) {
 		super(props)
 		this.resultsRef = React.createRef()
+	}
+
+	focusOnResults() {
+		focus(this.resultsRef.current)
 	}
 
 	render() {
@@ -13,17 +21,28 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 
 		return (
 			<div role={isTypePickAll ? null : 'radiogroup'}>
+				<div className="for-screen-reader-only" ref={this.resultsRef} tabIndex="-1">
+					{isAnswerScored ? (
+						<MCAssessmentResults
+							score={this.props.score}
+							type={this.props.type}
+							isTypePickAll={isTypePickAll}
+							correctLabel={this.props.correctLabel}
+							incorrectLabel={this.props.incorrectLabel}
+							pickAllIncorrectMessage={this.props.pickAllIncorrectMessage}
+							isForScreenReader
+						/>
+					) : null}
+				</div>
 				{this.props.models.map((model, index) => {
 					const Component = model.getComponentClass()
 					return (
 						<Component
 							key={model.get('id')}
 							model={model}
-							questionModel={this.props.questionModel}
 							moduleData={this.props.moduleData}
 							responseType={responseType}
 							isShowingExplanation
-							isAnswerRevealed={this.props.isAnswerRevealed}
 							mode={this.props.mode}
 							type={this.props.type}
 							questionSubmitted={isAnswerScored}

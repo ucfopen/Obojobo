@@ -13,6 +13,7 @@ import {
 	getTriggersWithActionsRemoved,
 	hasTriggerTypeWithActionType
 } from '../../../common/util/trigger-util'
+
 const { Prompt, Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 

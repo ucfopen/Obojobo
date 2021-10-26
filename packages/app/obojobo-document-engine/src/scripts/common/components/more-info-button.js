@@ -1,7 +1,6 @@
 import './more-info-button.scss'
 
 import React from 'react'
-import uuid from '../util/uuid'
 
 const DEFAULT_LABEL = '?'
 
@@ -18,18 +17,12 @@ class MoreInfoButton extends React.Component {
 		this.boundOnMouseOver = this.onMouseOver.bind(this)
 		this.boundOnMouseOut = this.onMouseOut.bind(this)
 		this.boundOnClick = this.onClick.bind(this)
-		this.hide = this.hide.bind(this)
 
 		this.state = {
-			mode: 'hidden',
-			id: uuid() // Used to create a unique DOM ID for aria-labelledby
+			mode: 'hidden'
 		}
 
 		this.dialogRef = React.createRef()
-	}
-
-	hide() {
-		this.setState({ mode: 'hidden' })
 	}
 
 	onMouseOver() {
@@ -40,13 +33,13 @@ class MoreInfoButton extends React.Component {
 
 	onMouseOut() {
 		if (this.state.mode === 'hover') {
-			this.hide()
+			this.setState({ mode: 'hidden' })
 		}
 	}
 
 	onClick() {
 		if (this.state.mode === 'clicked') {
-			this.hide()
+			this.setState({ mode: 'hidden' })
 		} else {
 			this.setState({ mode: 'clicked' })
 		}
@@ -68,7 +61,6 @@ class MoreInfoButton extends React.Component {
 				} is-mode-${this.state.mode}`}
 			>
 				<button
-					type="button" // Prevents click event when inside a <form>
 					onMouseOver={this.boundOnMouseOver}
 					onMouseOut={this.boundOnMouseOut}
 					onClick={this.boundOnClick}
@@ -81,14 +73,10 @@ class MoreInfoButton extends React.Component {
 						className="info"
 						role="dialog"
 						tabIndex="-1"
-						onBlur={this.hide}
 						ref={this.dialogRef}
-						aria-labelledby={`obojobo-draft--components--more-info-button--container--${this.state.id}`}
+						aria-labelledby="obojobo-draft--components--more-info-button--container"
 					>
-						<div
-							id={`obojobo-draft--components--more-info-button--container--${this.state.id}`}
-							className="container"
-						>
+						<div id="obojobo-draft--components--more-info-button--container" className="container">
 							{this.props.children}
 						</div>
 					</div>

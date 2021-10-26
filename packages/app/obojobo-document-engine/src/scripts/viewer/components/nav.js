@@ -8,7 +8,7 @@ import AssessmentUtil from '../util/assessment-util'
 import React from 'react'
 
 const { Button } = Common.components
-const { StyleableText } = Common.text
+const { StyleableText, StyleableTextComponent } = Common.text
 const { isOrNot } = Common.util
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
@@ -109,7 +109,7 @@ export default class Nav extends React.Component {
 	}
 
 	renderLabel(label) {
-		return label instanceof StyleableText ? label.value : label
+		return label instanceof StyleableText ? <StyleableTextComponent text={label} /> : label
 	}
 
 	renderLinkButton(label, ariaLabel, isDisabled, refId = null) {
@@ -281,7 +281,6 @@ export default class Nav extends React.Component {
 						return null
 					})}
 				</ul>
-
 				<Logo />
 			</nav>
 		)

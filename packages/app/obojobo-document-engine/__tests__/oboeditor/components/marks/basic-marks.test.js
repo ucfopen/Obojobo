@@ -148,6 +148,7 @@ describe('BasicMarks', () => {
 
 	test('toggleMarks adds links', () => {
 		jest.spyOn(Editor, 'addMark').mockReturnValue(true)
+
 		const editor = {
 			removeMark: jest.fn(),
 			addMark: jest.fn(),

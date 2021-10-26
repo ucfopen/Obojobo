@@ -27,7 +27,6 @@ exports[`IFrame IFrame component renders 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -56,7 +55,6 @@ exports[`IFrame IFrame component renders 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -97,7 +95,6 @@ exports[`IFrame IFrame component renders 2`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -126,7 +123,6 @@ exports[`IFrame IFrame component renders 2`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -167,7 +163,6 @@ exports[`IFrame IFrame component renders 3`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -196,7 +191,6 @@ exports[`IFrame IFrame component renders 3`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -237,7 +231,6 @@ exports[`IFrame IFrame component renders 4`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -266,7 +259,6 @@ exports[`IFrame IFrame component renders 4`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -307,7 +299,6 @@ exports[`IFrame IFrame component renders 5`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -336,7 +327,6 @@ exports[`IFrame IFrame component renders 5`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -377,7 +367,6 @@ exports[`IFrame IFrame component renders 6`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -406,7 +395,6 @@ exports[`IFrame IFrame component renders 6`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -468,7 +456,6 @@ exports[`IFrame IFrame component renders 7`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -527,7 +514,6 @@ exports[`IFrame IFrame component renders 8`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -586,7 +572,6 @@ exports[`IFrame IFrame component renders 9`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -645,7 +630,6 @@ exports[`IFrame IFrame component renders 10`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -704,7 +688,6 @@ exports[`IFrame IFrame component renders 11`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -763,7 +746,6 @@ exports[`IFrame IFrame component renders 12`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -801,7 +783,6 @@ exports[`IFrame IFrame component renders 13`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -830,7 +811,6 @@ exports[`IFrame IFrame component renders 13`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -871,7 +851,6 @@ exports[`IFrame IFrame component renders 14`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -900,7 +879,6 @@ exports[`IFrame IFrame component renders 14`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -941,7 +919,6 @@ exports[`IFrame IFrame component renders 15`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -970,7 +947,6 @@ exports[`IFrame IFrame component renders 15`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -1011,7 +987,6 @@ exports[`IFrame IFrame component renders 16`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -1040,7 +1015,6 @@ exports[`IFrame IFrame component renders 16`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -1081,7 +1055,6 @@ exports[`IFrame IFrame component renders 17`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -1110,7 +1083,6 @@ exports[`IFrame IFrame component renders 17`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -1151,7 +1123,6 @@ exports[`IFrame IFrame component renders 18`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the beginning of this embedded content. Click to skip to the end.
         </button>
@@ -1180,7 +1151,6 @@ exports[`IFrame IFrame component renders 18`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
-          type="button"
         >
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
@@ -1242,7 +1212,6 @@ exports[`IFrame IFrame component renders 19`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -1301,7 +1270,6 @@ exports[`IFrame IFrame component renders 20`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -1360,7 +1328,6 @@ exports[`IFrame IFrame component renders 21`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -1419,7 +1386,6 @@ exports[`IFrame IFrame component renders 22`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -1478,7 +1444,6 @@ exports[`IFrame IFrame component renders 23`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>
@@ -1537,7 +1502,6 @@ exports[`IFrame IFrame component renders 24`] = `
             aria-label="Click to load external content"
             className="button"
             contentEditable={false}
-            type="button"
           >
             View Content
           </button>

@@ -7,8 +7,20 @@ exports[`Figure editor plugins.decorate exits when not relevent 2`] = `Array []`
 exports[`Figure editor plugins.decorate renders a placeholder 1`] = `
 Array [
   Object {
-    "anchor": "mock-point",
-    "focus": "mock-point",
+    "anchor": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
+    "focus": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
     "placeholder": "Type an image caption here",
   },
 ]

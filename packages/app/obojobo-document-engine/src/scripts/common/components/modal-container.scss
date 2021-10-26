@@ -33,23 +33,13 @@
 	animation-duration: $duration-animation-default;
 	animation-name: obojobo-draft--components--modal-container;
 
-	&.is-not-active {
-		animation: none;
-		pointer-events: none;
-		opacity: 0;
-	}
-
-	&.is-not-active > .content {
-		animation: none;
-	}
-
-	&.is-active > .content {
-		animation-duration: $duration-animation-default;
-		animation-name: obojobo-draft--components--modal-container--content;
-		font-family: $font-default;
+	> .content {
 		position: absolute;
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%);
+		animation-duration: $duration-animation-default;
+		animation-name: obojobo-draft--components--modal-container--content;
+		font-family: $font-default;
 	}
 }

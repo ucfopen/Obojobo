@@ -90,7 +90,6 @@ const Table = {
 	menuLabel: 'Table',
 	icon: Icon,
 	isInsertable: true,
-	acceptsInserts: false,
 	isContent: true,
 	helpers: Converter,
 	json: {

@@ -2,9 +2,6 @@
 
 .obojobo-draft--sections--assessment--mod-properties {
 	font-size: 0.85em;
-	// @HACK: Enforce pixel perfect children.
-	// Used to make the "Click to load this content" element non-blurry in CHROME
-	transform-style: preserve-3d;
 
 	.info {
 		text-align: start;
@@ -20,7 +17,7 @@
 		border-radius: $dimension-rounded-radius;
 		border: 1px solid $color-shadow;
 		padding: 0.5em;
-		overflow-y: auto;
+		overflow-y: scroll;
 
 		.mod {
 			background: $color-bg;
@@ -45,7 +42,8 @@
 				right: 0;
 
 				button {
-					padding: 0 0.3em;
+					padding: 0;
+					padding-right: 0.3em;
 					font-weight: bold;
 					font-size: 1.3em;
 					min-width: 0;

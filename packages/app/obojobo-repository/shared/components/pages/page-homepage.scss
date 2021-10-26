@@ -45,7 +45,7 @@ header .header-container .logo {
 	left: 20px;
 	font-size: 33px;
 	color: #0c59b0;
-	background-image: url('../obojobo-logo.svg');
+	background-image: url('/images/obojobo-logo.svg');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -155,14 +155,14 @@ header .header-container nav > ul > li > ul > li a:hover {
 }
 
 .hero {
-	background: url('./homepage/hero-bg.jpg') no-repeat center;
+	background: url('/images/homepage/hero-bg.jpg') no-repeat center;
 	height: 658px;
 	width: 100%;
 	margin-bottom: 300px;
 }
 
 .hero .computers {
-	background: url('./homepage/hero-computer-new.png') no-repeat center 100px;
+	background: url('/images/homepage/hero-computer-new.png') no-repeat center 100px;
 	width: 933px;
 	height: 710px;
 	margin: 0 auto;
@@ -172,7 +172,7 @@ header .header-container nav > ul > li > ul > li a:hover {
 }
 
 .hero .computers .ipad {
-	background: url('./homepage/hero-ipad.png') no-repeat;
+	background: url('/images/homepage/hero-ipad.png') no-repeat;
 	width: 181px;
 	height: 279px;
 	-moz-box-sizing: border-box;
@@ -197,9 +197,9 @@ header .header-container nav > ul > li > ul > li a:hover {
 
 .content {
 	overflow: hidden;
-	background: url('./homepage/dotted-line-coverup.png') no-repeat center top,
-		url('./homepage/dotted-line-coverup.png') no-repeat center bottom,
-		url('./homepage/dotted-line-bg.png') center center repeat-y;
+	background: url('/images/homepage/dotted-line-coverup.png') no-repeat center top,
+		url('/images/homepage/dotted-line-coverup.png') no-repeat center bottom,
+		url('/images/homepage/dotted-line-bg.png') center center repeat-y;
 }
 
 .step {
@@ -251,7 +251,7 @@ header .header-container nav > ul > .help > ul {
 /* steps */
 .step-1 {
 	text-align: right;
-	background: url('./homepage/thinking.png') center center no-repeat;
+	background: url('/images/homepage/thinking.png') center center no-repeat;
 }
 
 .step-1 .step-items-container {
@@ -260,7 +260,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-2 {
 	text-align: left;
-	background: #3b3b3b url('./homepage/build.png') center center no-repeat;
+	background: #3b3b3b url('/images/homepage/build.png') center center no-repeat;
 }
 
 .step-2 .step-items-container {
@@ -275,7 +275,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-3 {
 	text-align: right;
-	background: url('./homepage/xray.png') center center no-repeat;
+	background: url('/images/homepage/xray.png') center center no-repeat;
 }
 
 .step-3 .step-items-container {
@@ -284,7 +284,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-4 {
 	text-align: left;
-	background: #acdfda url('./homepage/laptop.png') center center no-repeat;
+	background: #acdfda url('/images/homepage/laptop.png') center center no-repeat;
 }
 
 .step-4 .step-items-container {
@@ -297,7 +297,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-5 {
 	text-align: right;
-	background: url('./homepage/analytics.png') center center no-repeat;
+	background: url('/images/homepage/analytics.png') center center no-repeat;
 }
 
 .step-5 .step-items-container {
@@ -306,7 +306,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-6 {
 	text-align: left;
-	background: #d9f3d9 url('./homepage/many.png') center center no-repeat;
+	background: #d9f3d9 url('/images/homepage/many.png') center center no-repeat;
 }
 
 .step-6 .step-items-container {

@@ -7,8 +7,7 @@ const StyleType = {
 	MONOSPACE: 'monospace',
 	SUPERSCRIPT: 'sup',
 	COMMENT: '_comment',
-	LATEX: '_latex',
-	COLOR: 'color'
+	LATEX: '_latex'
 }
 
 module.exports = StyleType

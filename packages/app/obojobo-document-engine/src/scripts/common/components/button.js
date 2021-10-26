@@ -23,10 +23,16 @@ export default class Button extends React.Component {
 	}
 
 	render() {
+		let children
 		// if value is empty string
 		// value will still be rendered
 		// eslint-disable-next-line eqeqeq
-		const children = this.props.value != null ? this.props.value : this.props.children
+		if (this.props.value != null) {
+			children = this.props.value
+		} else {
+			// eslint-disable-next-line no-extra-semi
+			;({ children } = this.props)
+		}
 
 		const className =
 			'obojobo-draft--components--button' +
@@ -38,7 +44,6 @@ export default class Button extends React.Component {
 		return (
 			<div className={className} contentEditable={false}>
 				<button
-					type={this.props.isSubmittable ? 'submit' : 'button'}
 					ref={this.buttonRef}
 					className={'button'}
 					onClick={this.props.onClick}

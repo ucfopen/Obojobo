@@ -118,19 +118,6 @@ describe('StyleableText Component', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('StyleableText with style', () => {
-		StyleRenderer.mockReturnValueOnce({
-			type: 'span',
-			children: [],
-			attrs: { style: { color: 'red' } }
-		})
-
-		const component = renderer.create(<StyleableText />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
 	test('StyleableText component with children', () => {
 		StyleRenderer.mockReturnValueOnce({
 			type: 'b',

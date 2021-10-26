@@ -19,26 +19,6 @@
 			font-size: 1em;
 		}
 	}
-
-	.loading-assessment {
-		animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
-		position: absolute;
-		left: 50%;
-		top: 0;
-		transform: translate(-50%, 20vh);
-
-		> .obojobo-draft--components--spinner {
-			margin: 0 auto;
-			width: 2em;
-			height: 2em;
-			opacity: 0.25;
-			display: block;
-		}
-	}
-
-	.test {
-		animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
-	}
 }
 
 .obojobo-draft--sections--assessment--results-modal {

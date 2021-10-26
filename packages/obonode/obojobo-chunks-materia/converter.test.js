@@ -8,19 +8,16 @@ describe('Materia Converter', () => {
 			content: {
 				src: 'https://materia.ucf.edu/mock-widget',
 				widgetEngine: 'Adventure',
-				icon:
-					'https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png',
+				icon: 'https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png',
 				width: 800,
 				height: 600,
-				textGroup: [
-					{
-						text: {
-							value: 'Widget Caption'
-						}
+				textGroup: [{
+					text: {
+						value: 'Widget Caption'
 					}
-				]
+				}]
 			},
-			children: [{ text: 'Widget Caption' }]
+			children: [ { text: 'Widget Caption' } ]
 		}
 
 		const oboNode = Converter.slateToObo(slateNode)
@@ -45,10 +42,9 @@ describe('Materia Converter', () => {
 			id: 'mockKey',
 			type: 'mockType',
 			content: {
-				src: 'https://materia.ucf.edu/mock-widget',
-				widgetEngine: 'Adventure',
-				icon:
-					'https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png',
+				src: "https://materia.ucf.edu/mock-widget",
+				widgetEngine: "Adventure",
+				icon: "https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png",
 				width: 800,
 				height: 600,
 				textGroup: [
@@ -71,10 +67,9 @@ describe('Materia Converter', () => {
 			id: 'mockKey',
 			type: 'mockType',
 			content: {
-				src: 'https://materia.ucf.edu/mock-widget',
-				widgetEngine: 'Adventure',
-				icon:
-					'https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png',
+				src: "https://materia.ucf.edu/mock-widget",
+				widgetEngine: "Adventure",
+				icon: "https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png",
 				width: 800,
 				height: 600,
 				textGroup: [

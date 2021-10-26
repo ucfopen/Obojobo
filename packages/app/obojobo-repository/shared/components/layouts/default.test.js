@@ -5,45 +5,38 @@ import { shallow } from 'enzyme'
 describe('LayoutDefault', () => {
 	test('renders correctly with default props', () => {
 		const component = shallow(<LayoutDefault />)
+
 		const links = component.find('link')
-
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(2)
+		expect(links).toHaveLength(1)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
-
 		// if both 'headerJS' and 'appScriptUrl' are not in props, no script tags should render
 		const scripts = component.find('script')
 		expect(scripts).toHaveLength(0)
 	})
 
 	test('renders correctly with appCSSUrl props provided', () => {
-		const props = {
-			appCSSUrl: './styles.css'
-		}
-		const component = shallow(<LayoutDefault {...props} />)
-		const links = component.find('link')
+		const component = shallow(<LayoutDefault appCSSUrl="./styles.css" />)
 
+		const links = component.find('link')
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(3)
+		expect(links).toHaveLength(2)
 		expect(links.at(0).prop('href')).toBe('./styles.css')
 		expect(links.at(1).prop('href')).toContain('//fonts.googleapis.com')
-
 		// if both 'headerJs' and 'appScriptUrl' are not in props, no script tags should render
 		const scripts = component.find('script')
 		expect(scripts).toHaveLength(0)
 	})
 
 	test('renders correctly with appCSSUrl props provided', () => {
-		const props = {
-			headerJs: ['./script1.js', './script2.js']
-		}
-		const component = shallow(<LayoutDefault {...props} />)
+		const headerJsPropValue = ['./script1.js', './script2.js']
+
+		const component = shallow(<LayoutDefault headerJs={headerJsPropValue} />)
+
 		const links = component.find('link')
-
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(2)
+		expect(links).toHaveLength(1)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
-
 		// script tags should render for each entry in 'headerJs'
 		const scripts = component.find('script')
 		expect(scripts).toHaveLength(2)
@@ -52,49 +45,40 @@ describe('LayoutDefault', () => {
 	})
 
 	test('renders correctly with appScriptUrl prop provided and default isDev', () => {
-		const props = {
-			appScriptUrl: './script.js'
-		}
-		const component = shallow(<LayoutDefault {...props} />)
+		const component = shallow(<LayoutDefault appScriptUrl={'./script.js'} />)
+
 		const links = component.find('link')
-
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(2)
+		expect(links).toHaveLength(1)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
-
 		// if 'appScriptUrl' is not in props, standard script tags should render
 		const scripts = component.find('script')
 		expect(scripts).toHaveLength(3)
-
-		// test that we're using production, minified scripts
 		expect(scripts.at(0).prop('crossOrigin')).toBe('anonymous')
 		expect(scripts.at(1).prop('crossOrigin')).toBe('anonymous')
-		expect(scripts.at(0).prop('src')).toContain('.production.min.js')
-		expect(scripts.at(1).prop('src')).toContain('.production.min.js')
-		expect(scripts.at(2).prop('src')).toBe(props.appScriptUrl)
+		expect(scripts.at(1).prop('src')).toBe(
+			'//unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js'
+		)
+		// only the third tag has a variable location - the first two are hard-coded
+		expect(scripts.at(2).prop('src')).toBe('./script.js')
 	})
 
 	test('renders correctly with appScriptUrl prop provided and isDev is true', () => {
-		const props = {
-			appScriptUrl: './script.js',
-			isDev: true
-		}
-		const component = shallow(<LayoutDefault {...props} />)
+		const component = shallow(<LayoutDefault appScriptUrl={'./script.js'} isDev={true} />)
+
 		const links = component.find('link')
-
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
-		expect(links).toHaveLength(2)
+		expect(links).toHaveLength(1)
 		expect(links.at(0).prop('href')).toContain('//fonts.googleapis.com')
-
 		// if 'appScriptUrl' is not in props, standard script tags should render
 		const scripts = component.find('script')
 		expect(scripts).toHaveLength(3)
-
-		// test that we're using development scripts
 		expect(scripts.at(0).prop('crossOrigin')).toBe('anonymous')
 		expect(scripts.at(1).prop('crossOrigin')).toBe('anonymous')
-		expect(scripts.at(0).prop('src')).toContain('.development.js')
-		expect(scripts.at(1).prop('src')).toContain('.development.js')
-		expect(scripts.at(2).prop('src')).toBe(props.appScriptUrl)
+		expect(scripts.at(1).prop('src')).toBe(
+			'//unpkg.com/react-dom@16.13.1/umd/react-dom.development.js'
+		)
+		// only the third tag has a variable location - the first two are hard-coded
+		expect(scripts.at(2).prop('src')).toBe('./script.js')
 	})
 })

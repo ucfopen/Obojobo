@@ -15,19 +15,6 @@ const parserMap = new Map()
 	.set('ObojoboDraft.Chunks.MCAssessment.MCChoice', require('./parsers/mc-choice-node-parser'))
 	.set('ObojoboDraft.Chunks.MCAssessment.MCFeedback', require('./parsers/mc-feedback-node-parser'))
 	.set('ObojoboDraft.Chunks.MCAssessment', require('./parsers/mcAssessmentNodeParser'))
-	.set(
-		'ObojoboDraft.Chunks.NumericAssessment.NumericAnswer',
-		require('./parsers/numeric-answer-node-parser')
-	)
-	.set(
-		'ObojoboDraft.Chunks.NumericAssessment.NumericChoice',
-		require('./parsers/numeric-choice-node-parser')
-	)
-	.set(
-		'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback',
-		require('./parsers/numeric-feedback-node-parser')
-	)
-	.set('ObojoboDraft.Chunks.NumericAssessment', require('./parsers/numeric-assessment-node-parser'))
 	.set('ObojoboDraft.Chunks.Question', require('./parsers/question-node-parser'))
 	.set('ObojoboDraft.Chunks.QuestionBank', require('./parsers/question-bank-node-parser'))
 	.set('ObojoboDraft.Chunks.Table', require('./parsers/table-node-parser'))

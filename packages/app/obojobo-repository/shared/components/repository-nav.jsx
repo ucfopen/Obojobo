@@ -36,16 +36,9 @@ const RepositoryNav = props => {
 				<div className="repository--nav--links--link">
 					<a href="/library">Module Library</a>
 				</div>
-				{props.userId !== 0 ? (
-					<div className="repository--nav--links--link">
-						<a href="/dashboard">Dashboard</a>
-					</div>
-				) : null}
-				{props.userPerms.indexOf('canViewSystemStats') > -1 ? (
-					<div className="repository--nav--links--link">
-						<a href="/stats">Stats</a>
-					</div>
-				) : null}
+				<div className="repository--nav--links--link">
+					<a href="/dashboard">Dashboard</a>
+				</div>
 				{props.userId !== 0 ? (
 					<div className="repository--nav--current-user">
 						<button onClick={onToggleMenu}>

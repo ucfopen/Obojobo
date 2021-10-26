@@ -76,7 +76,10 @@ describe('repository api route', () => {
 		jest.resetAllMocks()
 		mockCurrentUser = {
 			id: 99,
-			hasPermission: () => true
+			canViewEditor: true,
+			canPreviewDrafts: true,
+			canCreateDrafts: true,
+			canDeleteDrafts: true
 		}
 		mockCurrentDocument = {}
 		Collection = require('../models/collection')
@@ -138,28 +141,6 @@ describe('repository api route', () => {
 			.get('/drafts')
 			.then(response => {
 				expect(DraftSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
-
-				expect(response.statusCode).toBe(200)
-				expect(response.body).toEqual(mockResult)
-			})
-	})
-
-	test('get /drafts-all returns the expected response', () => {
-		const mockResult = [
-			{ draftId: 'mockDraftId1', title: 'whatever1' },
-			{ draftId: 'mockDraftId2', title: 'whatever2' },
-			{ draftId: 'mockDraftId3', title: 'whatever3' }
-		]
-
-		DraftSummary.fetchAll = jest.fn()
-		DraftSummary.fetchAll.mockResolvedValueOnce(mockResult)
-
-		expect.hasAssertions()
-
-		return request(app)
-			.get('/drafts-all')
-			.then(response => {
-				expect(DraftSummary.fetchAll).toHaveBeenCalled()
 
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toEqual(mockResult)
@@ -492,10 +473,7 @@ describe('repository api route', () => {
 	test('get /drafts/:draftId/permission returns the expected response', () => {
 		expect.hasAssertions()
 		const userToJSON = jest.fn().mockReturnValue('filtered-user')
-		DraftPermissions.getDraftOwners.mockResolvedValueOnce([
-			{ toJSON: userToJSON },
-			{ toJSON: userToJSON }
-		])
+		DraftPermissions.getDraftOwners.mockResolvedValueOnce([{ toJSON: userToJSON }, { toJSON: userToJSON }])
 
 		return request(app)
 			.get('/drafts/mockDraftId/permission')

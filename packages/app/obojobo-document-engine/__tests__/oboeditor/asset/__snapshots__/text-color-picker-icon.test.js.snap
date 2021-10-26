@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`TextColorIcon TextColorIcon component 1`] = `"<div><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"-512 -700 3072 3072\\"><path fill=\\"#000000\\" d=\\"M2048,1721.67V2048H0V1721.67Z\\"></path><path d=\\"M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z\\"></path></svg></div>"`;
-
-exports[`TextColorIcon TextColorIcon handles mousedown 1`] = `"<div><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"-512 -700 3072 3072\\"><path fill=\\"#000000\\" d=\\"M2048,1721.67V2048H0V1721.67Z\\"></path><path d=\\"M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z\\"></path></svg></div>"`;
-
-exports[`TextColorIcon TextColorIcon handles mousedown 2`] = `"<div><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"-512 -700 3072 3072\\"><path fill=\\"#000000\\" d=\\"M2048,1721.67V2048H0V1721.67Z\\"></path><path d=\\"M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z\\"></path></svg></div>"`;

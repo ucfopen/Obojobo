@@ -37,8 +37,7 @@
 			"Observer",
 			"urn:lti:instrole:ims/lis/Observer"
 		],
-		"canViewAsStudent": ["Learner", "urn:lti:role:ims/lis/Learner"],
-		"canViewSystemStats": []
+		"canViewAsStudent": ["Learner", "urn:lti:role:ims/lis/Learner"]
 	},
 	"test": {
 		"canDoThing": ["roleName"]

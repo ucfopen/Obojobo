@@ -8,8 +8,7 @@ class Question extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
-			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd,
-			'ObojoboDraft.Sections.Assessment:sendToAssessment': this.onSendToAssessment
+			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd
 		})
 	}
 
@@ -49,10 +48,6 @@ class Question extends DraftNode {
 				currentAttempt.addScore(this.node.id, score)
 			}
 		)
-	}
-
-	onSendToAssessment() {
-		this.node.content.solution = null
 	}
 }
 

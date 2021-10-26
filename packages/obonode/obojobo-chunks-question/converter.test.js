@@ -25,11 +25,10 @@ jest.mock(
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
-const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('Question editor', () => {
-	test('slateToObo converts a Slate node to an OboNode with content, MCAssessment', () => {
+	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
@@ -45,44 +44,6 @@ describe('Question editor', () => {
 				},
 				{
 					type: MCASSESSMENT_NODE
-				},
-				{
-					type: QUESTION_NODE,
-					subtype: SOLUTION_NODE,
-					children: [
-						{
-							type: 'oboeditor.component',
-							children: [
-								{
-									type: 'mockNode'
-								}
-							]
-						}
-					]
-				}
-			]
-		}
-		const oboNode = Converter.slateToObo(slateNode)
-
-		expect(oboNode).toMatchSnapshot()
-	})
-
-	test('slateToObo converts a Slate node to an OboNode with content, Numeric Assessment', () => {
-		const slateNode = {
-			key: 'mockKey',
-			type: 'mockType',
-			content: {},
-			children: [
-				{
-					type: 'oboeditor.component',
-					children: [
-						{
-							type: 'mockNode'
-						}
-					]
-				},
-				{
-					type: NUMERIC_ASSESSMENT_NODE
 				},
 				{
 					type: QUESTION_NODE,

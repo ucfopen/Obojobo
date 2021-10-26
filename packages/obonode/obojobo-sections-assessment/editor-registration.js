@@ -93,7 +93,7 @@ const Assessment = {
 						}
 					}
 
-					// The third child should be an Actions node
+					// The third child should be an Acrtions node
 					if (index === 2 && child.type !== ACTIONS_NODE) {
 						// If the actions are entirely missing, remake them
 						if (child.type === RUBRIC_NODE) {

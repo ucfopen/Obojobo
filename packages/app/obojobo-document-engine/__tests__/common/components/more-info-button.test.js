@@ -3,9 +3,6 @@ import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
 import MoreInfoButton from '../../../src/scripts/common/components/more-info-button'
-jest.mock('../../../src/scripts/common/util/uuid', () => {
-	return () => 'mock-uuid'
-})
 
 describe('MoreInfoButton', () => {
 	test('Renders default props', () => {

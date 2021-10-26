@@ -115,21 +115,10 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
-	test('fetchAttemptHistoryDetails calls db.manyOrNone', () => {
-		AssessmentModel.fetchAttemptHistoryDetails('mock-draft-id')
-
-		expect(db.manyOrNone).toHaveBeenCalledTimes(1)
-		expect(db.manyOrNone.mock.calls[0][1]).toMatchInlineSnapshot(`
-		Object {
-		  "draftId": "mock-draft-id",
-		}
-	`)
-	})
-
-	test('fetchAttemptsForUserDraftAndResourceLinkId returns an array AssessmentModel', async () => {
+	test('fetchAttempts returns an array AssessmentModel', async () => {
 		db.manyOrNone.mockResolvedValueOnce([makeMockAttempt()])
 
-		const result = await AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId()
+		const result = await AssessmentModel.fetchAttempts()
 		expect(result).toMatchInlineSnapshot(`
 		Array [
 		  AssessmentModel {
@@ -156,10 +145,10 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
-	test('fetchAttemptsForUserDraftAndResourceLinkId returns empty object if assessment isnt found', () => {
+	test('fetchAttempts returns empty object if assessment isnt found', () => {
 		db.manyOrNone.mockResolvedValueOnce([])
 
-		return AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId(
+		return AssessmentModel.fetchAttempts(
 			'mockUserId',
 			'mockDraftId',
 			false,
@@ -561,8 +550,8 @@ describe('AssessmentModel', () => {
 	})
 
 	test('fetchAttemptHistory errors', () => {
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockRejectedValueOnce('mock-error')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		AssessmentModel.fetchAttempts.mockRejectedValueOnce('mock-error')
 		return expect(
 			AssessmentModel.fetchAttemptHistory(
 				'mock-user-id',
@@ -583,11 +572,11 @@ describe('AssessmentModel', () => {
 			gradebookStatus: 'gradebookStatus',
 			statusDetails: 'statusDetails'
 		}
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
 		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
 		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockResolvedValueOnce([mockAttempt])
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt])
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
 		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: mockLtiState
@@ -616,14 +605,11 @@ describe('AssessmentModel', () => {
 			gradebookStatus: 'gradebookStatus',
 			statusDetails: 'statusDetails'
 		}
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
 		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
 		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockResolvedValueOnce([
-			mockAttempt,
-			mockAttempt
-		])
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt, mockAttempt])
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
 		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: mockLtiState
@@ -659,14 +645,11 @@ describe('AssessmentModel', () => {
 				response: 'mock-resp'
 			}
 		])
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
 		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
 		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockResolvedValueOnce([
-			mockAttempt,
-			mockAttempt
-		])
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt, mockAttempt])
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(responseMap)
 		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: mockLtiState
@@ -708,14 +691,11 @@ describe('AssessmentModel', () => {
 				response: 'mock-resp'
 			}
 		])
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
 		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
 		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockResolvedValueOnce([
-			mockAttempt1,
-			mockAttempt2
-		])
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt1, mockAttempt2])
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(responseMap)
 		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: mockLtiState
@@ -744,11 +724,11 @@ describe('AssessmentModel', () => {
 			gradebookStatus: 'gradebookStatus',
 			statusDetails: 'statusDetails'
 		}
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
 		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
 		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockResolvedValueOnce([mockAttempt])
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt])
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
 		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: mockLtiState
@@ -772,11 +752,11 @@ describe('AssessmentModel', () => {
 	test('fetchAttemptHistory returns a single value without ltiState', async () => {
 		const mockAttempt = new AssessmentModel(makeMockAttempt())
 
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
 		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
 		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockResolvedValueOnce([mockAttempt])
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt])
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
 		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({})
 
@@ -796,11 +776,11 @@ describe('AssessmentModel', () => {
 	})
 
 	test('fetchAttemptHistory returns with no history', async () => {
-		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
 		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
 		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
-		AssessmentModel.fetchAttemptsForUserDraftAndResourceLinkId.mockResolvedValueOnce([]) // no attempts
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([]) // no attempts
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
 
 		const result = await AssessmentModel.fetchAttemptHistory(

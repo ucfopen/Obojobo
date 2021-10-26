@@ -21,7 +21,6 @@
 		"jest": true,
 		"node": true
 	},
-	"ignorePatterns": ["**/migrations/*.js"],
 	"rules": {
 		"array-callback-return": "error",
 		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],
@@ -61,8 +60,7 @@
 		  "files": ["*.test.js"],
 		  "rules": {
 			"no-undefined": 0,
-			"no-console": 0,
-			"react/display-name": 0
+			"no-console": 0
 		  }
 		}
 	  ]

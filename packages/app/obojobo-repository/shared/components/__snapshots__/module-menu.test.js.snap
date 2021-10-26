@@ -9,7 +9,6 @@ exports[`ModuleMenu ModuleMenu renders correctly with className prop 1`] = `
   >
     <a
       className="repository--button "
-      download={null}
       href="/preview/mockDraftId"
       target="_blank"
     >
@@ -17,7 +16,6 @@ exports[`ModuleMenu ModuleMenu renders correctly with className prop 1`] = `
     </a>
     <a
       className="repository--button "
-      download={null}
       href="/url/for/editor"
       target="_blank"
     >
@@ -49,7 +47,6 @@ exports[`ModuleMenu ModuleMenu renders correctly with standard expected props 1`
   >
     <a
       className="repository--button "
-      download={null}
       href="/preview/mockDraftId"
       target="_blank"
     >
@@ -57,7 +54,6 @@ exports[`ModuleMenu ModuleMenu renders correctly with standard expected props 1`
     </a>
     <a
       className="repository--button "
-      download={null}
       href="/url/for/editor"
       target="_blank"
     >

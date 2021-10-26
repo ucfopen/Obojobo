@@ -62,19 +62,4 @@
 			background-color: $color-dangerous-minor;
 		}
 	}
-
-	&.secondary-button.dangerous-button {
-		border: 0.1em solid $color-dangerous;
-		background-color: white;
-		color: $color-dangerous;
-
-		&:hover {
-			background-color: $color-dangerous;
-			color: white;
-		}
-	}
-
-	&.multi-select {
-		padding: 0.6em 0.8em;
-	}
 }
