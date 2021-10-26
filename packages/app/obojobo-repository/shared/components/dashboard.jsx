@@ -146,7 +146,16 @@ function Dashboard(props) {
 	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 
-	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
+	let moduleList = []
+	if (
+		props.filteredModules &&
+		props.filteredModules.length > 0 &&
+		typeof props.filteredModules !== 'undefined'
+	) {
+		moduleList = props.filteredModules
+	} else {
+		moduleList = props.myModules
+	}
 
 	const onKeyUp = e => {
 		if (e.key === 'Escape' && props.multiSelectMode && props.deselectModules) {
@@ -335,6 +344,7 @@ function Dashboard(props) {
 											onSelect={e => handleSelectModule(e, draft.draftId, index)}
 											key={draft.draftId}
 											hasMenu={true}
+											isDeleted={props.showDeletedModules}
 											{...draft}
 										/>
 									))}

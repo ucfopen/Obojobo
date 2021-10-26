@@ -35,19 +35,18 @@
 		}
 
 		.dashboard-menu-button {
-			height: 3em;
+			min-height: 2.6em;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			gap: 0.5em;
 			position: relative;
-			stroke-width: 0.5em;
-			stroke: $color-action;
+			border: 1px solid $color-action;
+			font-size: 0.65em;
 
 			.trash-can-icon {
 				width: 1.6em;
 				height: 1.6em;
-				margin-left: -0.5em;
 				background: url('./layouts/trash_can.svg') center center no-repeat;
 			}
 
