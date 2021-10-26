@@ -63,7 +63,7 @@ describe('Figure editor', () => {
 		expect(next).not.toHaveBeenCalled()
 	})
 
-	test('plugins.decorate exits when not relevent', () => {
+	test('plugins.decorate exits when not relevant', () => {
 		expect(Figure.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
 		expect(Figure.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
@@ -103,6 +103,32 @@ describe('Figure editor', () => {
 
 		Figure.plugins.onKeyDown([{}, [0]], {}, event)
 		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Delete]', () => {
+		jest.spyOn(Transforms, 'delete')
+		jest.spyOn(Editor, 'next').mockReturnValueOnce(true)
+
+		const editor = {
+			selection: {
+				anchor: {
+					path: [0, 0],
+					offset: 0
+				}
+			},
+			children: []
+		}
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		Figure.plugins.onKeyDown([{ children: [{ text: 'mockText' }] }, [0]], editor, event)
+		expect(Transforms.delete).not.toHaveBeenCalled()
+
+		Figure.plugins.onKeyDown([{ children: [{ text: '' }] }, [0]], editor, event)
+		expect(Transforms.delete).toHaveBeenCalledTimes(1)
 	})
 
 	test('plugins.renderNode renders a figure when passed', () => {
