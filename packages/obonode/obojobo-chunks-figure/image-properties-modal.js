@@ -310,8 +310,8 @@ class ImageProperties extends React.Component {
 							</div>
 						) : null}
 						{this.state.wrapText ? (
-							<div className="float-direction-inputs">
-								<label htmlFor="obojobo-draft--chunks--figure-float-direction">
+							<div className="wrap-direction-inputs">
+								<label htmlFor="obojobo-draft--chunks--figure-wrap-direction">
 									Wrap Direction:
 								</label>
 								<div
@@ -319,24 +319,24 @@ class ImageProperties extends React.Component {
 									role="radiogroup"
 									aria-label="Select size for image"
 								>
-									<label className="float-direction-input-parent">
+									<label className="wrap-direction-input-parent">
 										<input
 											type="radio"
-											name="float-direction"
-											value="left"
-											id="obojobo-draft--chunks--figure--float-direction-left"
-											checked={this.state.float === 'left'}
+											name="wrap-direction"
+											value="right"
+											id="obojobo-draft--chunks--figure--wrap-direction-left"
+											checked={this.state.float === 'right'}
 											onChange={this.onCheckFloatDirection}
 										/>
 										<span>Left</span>
 									</label>
-									<label className="float-direction-input-parent">
+									<label className="wrap-direction-input-parent">
 										<input
 											type="radio"
-											name="float-direction"
-											value="right"
-											id="obojobo-draft--chunks--figure--float-direction-right"
-											checked={this.state.float === 'right'}
+											name="wrap-direction"
+											value="left"
+											id="obojobo-draft--chunks--figure--wrap-direction-right"
+											checked={this.state.float === 'left'}
 											onChange={this.onCheckFloatDirection}
 										/>
 										<span>Right</span>

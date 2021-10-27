@@ -3474,6 +3474,110 @@
 								"captionWidth": "image-width"
 							},
 							"children": []
+						},
+						{
+							"id": "86a6a327-6279-4af3-97af-081e4ff9b978",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Text Wrap",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "0e9542d0-d75c-477c-8b14-98565fac816d",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Figures can be configured to be used alongside text that wraps either to the left or right.",
+											"styleList": null
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "268989bf-116d-4e1f-9729-d7b677156c1f",
+							"type": "ObojoboDraft.Chunks.Figure",
+							"content": {
+								"alt": "A Figure with text wrapped on the right side",
+								"url": "https://www.ucf.edu/files/2017/10/knightro_two_hands_point.png",
+								"size": "small",
+								"float": "left",
+								"width": null,
+								"height": null,
+								"wrapText": true,
+								"textGroup": [
+									{
+										"data": null,
+										"text": {
+											"value": "To wrap text around an image, create a Figure node and open the Image Properties window, then check the Wrap Text checkbox in order to enable wrapped text. Upon enabling text wrapping for a figure, the Caption and Wrap Direction settings will appear. When using text wrapping in a Figure, image captions can not be changed within the editor like usual - they are instead captions must be changed within the Image Properties window along with all other Figure settings. If a caption was changed in a Figure prior to enabling text wrapping on that Figure, it will automatically be carried into the Caption setting in the Image Properties window. By default, text will wrap to the right side of an image.",
+											"styleList": [
+												{
+													"end": 80,
+													"data": {},
+													"type": "b",
+													"start": 64
+												},
+												{
+													"end": 423,
+													"data": {},
+													"type": "b",
+													"start": 407
+												},
+												{
+													"end": 635,
+													"data": {},
+													"type": "b",
+													"start": 619
+												},
+												{
+													"end": 113,
+													"data": {},
+													"type": "i",
+													"start": 104
+												},
+												{
+													"end": 209,
+													"data": {},
+													"type": "i",
+													"start": 202
+												},
+												{
+													"end": 228,
+													"data": {},
+													"type": "i",
+													"start": 214
+												},
+												{
+													"end": 603,
+													"data": {},
+													"type": "i",
+													"start": 596
+												}
+											]
+										}
+									}
+								],
+								"captionText": "Image captions are set in the property window for text-wrapped Figures",
+								"captionWidth": "image-width"
+							},
+							"children": []
 						}
 					]
 				},

@@ -374,11 +374,11 @@ describe('Image Properties Modal', () => {
 		const wrapTextToggleElement = component.find('#obojobo-draft--chunks--figure--wrap-text')
 		wrapTextToggleElement.simulate('change')
 
-		component.find('#obojobo-draft--chunks--figure--float-direction-right').simulate('change')
+		component.find('#obojobo-draft--chunks--figure--wrap-direction-left').simulate('change')
 
 		expect(component.state().float).toBe('right')
 
-		component.find('#obojobo-draft--chunks--figure--float-direction-left').simulate('change')
+		component.find('#obojobo-draft--chunks--figure--wrap-direction-right').simulate('change')
 
 		expect(component.state().float).toBe('left')
 	})
