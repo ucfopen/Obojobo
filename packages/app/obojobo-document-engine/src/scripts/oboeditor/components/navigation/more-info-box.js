@@ -9,7 +9,6 @@ import TriggerListModal from '../triggers/trigger-list-modal'
 import ObjectiveListModal from '../objectives/objective-list-modal'
 import ObjectiveListView from '../objectives/objective-list-view'
 import objectivesContext from '../objectives/objective-context'
-// import { obj } from 'through2'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
@@ -335,26 +334,24 @@ class MoreInfoBox extends React.Component {
 								{this.props.contentDescription.map(description => this.renderItem(description))}
 							</div>
 							<objectivesContext.Consumer>
-								{value => {
-									return (
-										<div>
-											<span className="objectives">
-												Objectives:
-												<ObjectiveListView
-													objectives={objectives}
-													globalObjectives={typeof value === 'undefined' ? [] : value.objectives}
-												/>
-											</span>
-											<Button
-												altAction
-												className="objective-button"
-												onClick={() => this.showObjectiveModal(value)}
-											>
-												✎ Edit
-											</Button>
-										</div>
-									)
-								}}
+								{value => (
+									<div>
+										<span className="objectives">
+											Objectives:
+											<ObjectiveListView
+												objectives={objectives}
+												globalObjectives={typeof value === 'undefined' ? [] : value.objectives}
+											/>
+										</span>
+										<Button
+											altAction
+											className="objective-button"
+											onClick={() => this.showObjectiveModal(value)}
+										>
+											✎ Edit
+										</Button>
+									</div>
+								)}
 							</objectivesContext.Consumer>
 							<div>
 								<span className="triggers">

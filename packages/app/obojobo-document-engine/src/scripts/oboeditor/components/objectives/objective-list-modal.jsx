@@ -32,21 +32,10 @@ class ObjectiveListModal extends React.Component {
 		this.handleObjectiveInput = this.handleObjectiveInput.bind(this)
 
 		this.objectiveListHeader = (
-			<div
-				style={{
-					margin: '-0.7em 0em 1em 0em'
-				}}
-			>
+			<div className="objective-list-header">
 				<div className="objective-list-subheader">
-					<p>
-						{/* <span>Select&nbsp;&nbsp;</span> */}
-						Select one or more objectives that apply to this item
-					</p>
+					<p>Select one or more objectives that apply to this item</p>
 				</div>
-				{/* <div style={{ fontSize: '0.6em' }}>
-				// 	<span>Edit&nbsp;</span>
-				// 	<span>&nbsp;&nbsp;Delete</span>
-				// </div> */}
 			</div>
 		)
 	}
@@ -75,13 +64,6 @@ class ObjectiveListModal extends React.Component {
 		})
 
 		this.removeObjective(objectiveID)
-
-		// // The nested loop insures that React's immutable state is updated properly
-		// return this.setState(prevState => ({
-		// 	objectivess: prevState.objectives
-		// 		.map((objective, listIndex) => (index === listIndex ? null : objective))
-		// 		.filter(Boolean)
-		// }))
 	}
 
 	createNewObjective({ label, description }) {
@@ -172,8 +154,10 @@ class ObjectiveListModal extends React.Component {
 			>
 				{this.state.globalObjectives.length > 0 && this.objectiveListHeader}
 				<div
-					className="objective-list-modal"
-					style={this.state.globalObjectives.length === 0 ? { minHeight: '2.2em' } : null}
+					className={
+						'objective-list-modal' +
+						(this.state.globalObjectives.length === 0 ? ' no-global-objectives' : '')
+					}
 				>
 					{this.state.globalObjectives.map(objective => {
 						return (
@@ -193,6 +177,7 @@ class ObjectiveListModal extends React.Component {
 							</div>
 						)
 					})}
+					{/* TODO: Center the button at the bottom on the modal irrespective of the size or contents of the Objectives modal */}
 					<div className="button">
 						<Button onClick={() => this.setState({ newObjective: true })}>
 							+ Create Objective

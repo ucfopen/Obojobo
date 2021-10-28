@@ -20,73 +20,81 @@ class SimpleDialog extends React.Component {
 
 	render() {
 		let buttons
-		if (this.props.ok) {
-			buttons = [
-				{
-					value: 'OK',
-					onClick: this.props.onConfirm,
-					default: true
-				}
-			]
-		} else if (this.props.noOrYes) {
-			buttons = [
-				{
-					value: 'No',
-					onClick: this.props.onCancel
-				},
-				'or',
-				{
-					value: 'Yes',
-					onClick: this.props.onConfirm,
-					default: true
-				}
-			]
-		} else if (this.props.yesOrNo) {
-			buttons = [
-				{
-					value: 'Yes',
-					onClick: this.props.onConfirm
-				},
-				'or',
-				{
-					value: 'No',
-					onClick: this.props.onCancel,
-					default: true
-				}
-			]
-		} else if (this.props.delete) {
-			buttons = [
-				{
-					value: 'Delete',
-					onClick: this.props.onDelete,
-					default: true
-				},
-				{
-					value: 'Cancel',
-					altAction: true,
-					onClick: this.props.onCancel
-				}
-			]
-		}else if (this.props.done) {
-			buttons = [
-				{
-					value: 'Done',
-					onClick: this.props.onConfirm,
-					default: true
-				}]
-		}else {
-			buttons = [
-				{
-					value: 'Cancel',
-					altAction: true,
-					onClick: this.props.onCancel
-				},
-				{
-					value: 'OK',
-					onClick: this.props.onConfirm,
-					default: true
-				}
-			]
+		switch (true) {
+			case this.props.ok:
+				buttons = [
+					{
+						value: 'OK',
+						onClick: this.props.onConfirm,
+						default: true
+					}
+				]
+				break
+			case this.props.noOrYes:
+				buttons = [
+					{
+						value: 'No',
+						onClick: this.props.onCancel
+					},
+					'or',
+					{
+						value: 'Yes',
+						onClick: this.props.onConfirm,
+						default: true
+					}
+				]
+				break
+			case this.props.yesOrNo:
+				buttons = [
+					{
+						value: 'Yes',
+						onClick: this.props.onConfirm
+					},
+					'or',
+					{
+						value: 'No',
+						onClick: this.props.onCancel,
+						default: true
+					}
+				]
+				break
+			case this.props.delete:
+				buttons = [
+					{
+						value: 'Delete',
+						onClick: this.props.onDelete,
+						default: true
+					},
+					{
+						value: 'Cancel',
+						altAction: true,
+						onClick: this.props.onCancel
+					}
+				]
+				break
+			case this.props.done:
+				buttons = [
+					{
+						value: 'Done',
+						onClick: this.props.onConfirm,
+						default: true
+					}
+				]
+				break
+			default:
+				buttons = [
+					{
+						value: 'Cancel',
+						altAction: true,
+						onClick: this.props.onCancel
+					},
+					{
+						value: 'OK',
+						onClick: this.props.onConfirm,
+						default: true
+					}
+				]
+				break
 		}
 
 		return (

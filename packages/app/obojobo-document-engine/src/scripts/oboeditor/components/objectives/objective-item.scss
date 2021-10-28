@@ -26,6 +26,10 @@
 		width: 5em;
 		display: flex;
 		justify-content: space-between;
+
+		button:hover {
+			background-color: $color-action;
+		}
 	}
 
 	.edit-link {
@@ -65,7 +69,20 @@
 			text-overflow: ellipsis;
 		}
 	}
-	.objective-label-select {
-		background-color: $color-button-bg;
+}
+
+.is-objective-label-selected {
+	background-color: lighten($color-action, 50%);
+
+	.objective-options button {
+		background-color: lighten($color-action, 50%);
+	}
+}
+
+.is-not-objective-label-selected {
+	background-color: $color-bg;
+
+	.objective-options button {
+		background-color: $color-bg;
 	}
 }

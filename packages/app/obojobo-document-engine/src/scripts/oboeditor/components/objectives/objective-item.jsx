@@ -1,6 +1,7 @@
 import './objective-item.scss'
 import React from 'react'
 import DeleteButton from '../../../common/components/delete-button-base'
+import isOrNot from '../../../common/util/isornot'
 
 class ObjectiveItem extends React.Component {
 	constructor(props) {
@@ -35,7 +36,6 @@ class ObjectiveItem extends React.Component {
 	deleteObjective() {
 		// eslint-disable-next-line no-alert
 		if (confirm("Are you sure you want to delete this objective? This action can't be undone!")) {
-			
 			this.props.delete(this.state.objectiveId)
 		}
 	}
@@ -68,10 +68,7 @@ class ObjectiveItem extends React.Component {
 		)
 
 		return (
-			<div
-				className={'objective-block' + (this.state.selected ? ' objective-label-select' : '')}
-				style={{ backgroundColor: this.state.selected ? '#edf0fd' : '#ffffff' }}
-			>
+			<div className={'objective-block' + isOrNot(this.state.selected, 'objective-label-selected')}>
 				<div className="objective-content" name="objective-content">
 					<input
 						type="checkbox"
