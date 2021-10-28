@@ -6,6 +6,7 @@ import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { SimpleDialog } = Common.components.modal
+import { uploadFileViaImageNode } from './utils'
 const IMAGE_BATCH_SIZE = 11 // load 11 images at a time
 
 class ChooseImageModal extends React.Component {
@@ -30,10 +31,10 @@ class ChooseImageModal extends React.Component {
 
 	handleFileChange(event) {
 		const file = event.target.files[0]
-		const formData = new window.FormData()
-		formData.append('userImage', file, file.name)
-		API.postMultiPart('/api/media/upload', formData).then(mediaData => {
-			this.props.onCloseChooseImageModal(mediaData.media_id)
+
+		uploadFileViaImageNode(file)
+		.then((mediaId) => {
+			this.props.onCloseChooseImageModal(mediaId)
 		})
 	}
 
@@ -109,8 +110,8 @@ class ChooseImageModal extends React.Component {
 							id="choose-image--image-controls--url"
 							type="text"
 							placeholder="Enter image URL"
-							value={this.state.url}
-							onChange={e => this.setState({ url: e.target.value })}
+							value={this.props.url}
+							onChange={e => this.handleURLChange(e)}
 							tabIndex="0"
 							aria-label="Enter image URL"
 						/>

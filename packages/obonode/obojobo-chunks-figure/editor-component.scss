@@ -34,6 +34,10 @@
 			}
 		}
 
+		&.drag-over {
+			border: 3px dashed transparentize($color-action, 0.7);
+		}
+
 		.image-toolbar {
 			position: absolute;
 			top: 50%;
