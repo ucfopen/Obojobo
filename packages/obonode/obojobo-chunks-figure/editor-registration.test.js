@@ -163,10 +163,4 @@ describe('Figure editor', () => {
 		expect(Transforms.insertNodes).toHaveBeenCalledWith(editor, 'mock-clone')
 		expect(Transforms.setNodes).not.toHaveBeenCalled()
 	})
-
-	// Unclear how to test this - it does nothing but prevent a default from running
-	// Hard to tell where the default is or how we could test that it prevents the default from running
-	test('plugins.commands.setAlign does nothing', () => {
-		Figure.plugins.commands.setAlign()
-	})
 })

@@ -21,11 +21,6 @@ const Figure = {
 		emptyNode
 	},
 	plugins: {
-		commands: {
-			// This function intentionally does nothing to prevent the default behavior
-			setAlign() {}
-		},
-
 		// Editor Plugins - These get attached to the editor object an override it's default functions
 		// They may affect multiple nodes simultaneously
 		normalizeNode(entry, editor, next) {
