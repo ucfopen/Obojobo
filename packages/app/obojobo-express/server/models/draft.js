@@ -98,7 +98,7 @@ class Draft {
 				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id, userId })
 			})
 			.catch(error => {
-				logger.logError('Draft fetchById Error', error)
+				logger.logError('Draft deleteByIdAndUser Error', error)
 				throw error
 			})
 	}
@@ -121,7 +121,7 @@ class Draft {
 				oboEvents.emit(Draft.EVENT_DRAFT_RESTORED, { id, userId })
 			})
 			.catch(error => {
-				logger.logError('Draft fetchById Error', error)
+				logger.logError('Draft restoreByIdAndUser Error', error)
 				throw error
 			})
 	}
