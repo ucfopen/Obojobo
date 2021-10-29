@@ -48,9 +48,9 @@ const onCloseResultsDialog = assessmentModel => {
 	AssessmentUtil.acknowledgeEndAttemptSuccessful(assessmentModel)
 }
 
-const startAttempt = assessmentModel => {
-	AssessmentUtil.startAttempt(assessmentModel)
-}
+// const startAttempt = assessmentModel => {
+// 	AssessmentUtil.startAttempt(assessmentModel)
+// }
 
 const continueAttempt = assessmentModel => {
 	AssessmentUtil.continueAttempt(assessmentModel)
@@ -234,7 +234,7 @@ const getDialog = (
 					return (
 						<UpdatedModuleDialog
 							onClose={() => acknowledgeEndAttemptFailed(assessmentModel)}
-							onRestart={() => startAttempt(assessmentModel)}
+							onRestart={() => window.location.reload()}
 						/>
 					)
 
