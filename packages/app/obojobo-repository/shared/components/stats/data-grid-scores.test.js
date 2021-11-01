@@ -2,6 +2,8 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import DataGridScores from './data-grid-scores'
 
+const ButtonLink = require('../button-link')
+
 jest.mock('react-data-table-component', () => ({
 	default: props => (
 		<div {...props} className="react-data-table-component">
@@ -335,5 +337,95 @@ describe('DataGridScores', () => {
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('DataGridScores renders "null" in CSV exports where applicable', () => {
+		const props = getTestProps()
+		props.filterSettings.showAdvancedFields = true
+		props.rows.pop()
+		// Null the field we're not 'searching' by in the only row
+		props.rows[0].exampleId = null
+
+		const escapedRowString = escape(`"Draft ID","Example ID"\n"${props.rows[0].draftId}","null"`)
+		const expectedUrlString = `data:text/csv;charset=utf-8,${escapedRowString}`
+
+		const component = renderer.create(<DataGridScores {...props} />)
+		expect(component.root.findByType(ButtonLink).props.url).toEqual(expectedUrlString)
+	})
+
+	test('DataGridScores filters rows correctly based on start/end dates', () => {
+		// Shortcut function to get the filtered rows by checking the 'data' prop of the DataTable child
+		// This is admittedly a bit of a hack, but it's far easier than any alternatives
+		const getFilteredRows = component => {
+			return component.root.findByProps({ className: 'data-grid' }).children[0].props.data
+		}
+
+		const mockStartDate = new Date()
+		mockStartDate.setDate(mockStartDate.getDate() - 2)
+		const mockEndDate = new Date()
+		mockEndDate.setDate(mockEndDate.getDate() + 2)
+
+		const firstDate = new Date()
+		firstDate.setDate(firstDate.getDate() - 1)
+		const secondDate = new Date()
+		secondDate.setDate(secondDate.getDate() + 1)
+
+		const props = getTestProps()
+		props.rows = [
+			{
+				draftId: 'mock-draft-id',
+				exampleId: 'mock-example-id',
+				completedAt: firstDate
+			},
+			{
+				draftId: 'mock-draft-id2',
+				exampleId: 'mock-example-id2',
+				completedAt: secondDate
+			}
+		]
+		let component
+
+		// First case - no dates
+		component = renderer.create(<DataGridScores {...props} />)
+
+		expect(getFilteredRows(component)).toEqual(props.rows)
+
+		// Second case - both rows between start and end dates
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchContent={{
+					date: { start: mockStartDate, end: mockEndDate }
+				}}
+			/>
+		)
+
+		expect(getFilteredRows(component)).toEqual(props.rows)
+
+		// Third case - start date, no end date
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchContent={{
+					date: { start: new Date() }
+				}}
+			/>
+		)
+
+		// Only the second row has a date after the start date
+		expect(getFilteredRows(component)).toEqual([props.rows[1]])
+
+		// Fourth case - end date, no start date
+		component = renderer.create(
+			<DataGridScores
+				{...props}
+				searchContent={{
+					date: { end: new Date() }
+				}}
+			/>
+		)
+
+		// Only the first row has a date before the end date
+		expect(getFilteredRows(component)).toEqual([props.rows[0]])
 	})
 })
