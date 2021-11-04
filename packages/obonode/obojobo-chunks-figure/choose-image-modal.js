@@ -33,7 +33,7 @@ class ChooseImageModal extends React.Component {
 		const formData = new window.FormData()
 		formData.append('userImage', file, file.name)
 		API.postMultiPart('/api/media/upload', formData).then(mediaData => {
-			this.props.onCloseChooseImageModal(mediaData.media_id)
+			this.props.onCloseChooseImageModal(mediaData)
 		})
 	}
 
@@ -101,6 +101,9 @@ class ChooseImageModal extends React.Component {
 									Upload New Image
 								</span>
 							</label>
+							<span className="error-message">
+								{this.props.error ? 'Error: ' + this.props.error : ''}
+							</span>
 						</div>
 
 						<p className="choose-image--image-controls--or">or</p>
@@ -130,9 +133,9 @@ class ChooseImageModal extends React.Component {
 								key={media.id}
 								id={media.id}
 								src={`/api/media/${media.id}/small`}
-								onClick={() => this.props.onCloseChooseImageModal(media.id)}
+								onClick={() => this.props.onCloseChooseImageModal(media)}
 								onKeyPress={event =>
-									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media.id))
+									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media))
 								}
 								role="button"
 								alt={`Select image ${i + 1}: ${media.fileName}`}

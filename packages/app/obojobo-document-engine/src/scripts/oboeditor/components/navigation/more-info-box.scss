@@ -206,8 +206,10 @@
 		border-radius: $dimension-rounded-radius;
 		font-size: 0.7em;
 		background-color: $color-bg;
-		min-width: 27em;
+		min-width: 26.5em;
 		padding: 0.7em 2em 0.7em 0.5em;
+		line-height: 1.1em;
+		height: 2.7em;
 		appearance: none;
 		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
 		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
