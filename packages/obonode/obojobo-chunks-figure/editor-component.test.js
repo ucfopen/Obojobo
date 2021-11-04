@@ -23,10 +23,20 @@ jest.mock(
 )
 
 describe('Figure Editor Node', () => {
+	const flushPromises = global.flushPromises // pevents eslint no-undef errors
+	const API = require('obojobo-document-engine/src/scripts/viewer/util/api')
+
 	beforeEach(() => {
 		jest.restoreAllMocks()
 		jest.resetAllMocks()
 		EditorStore.state = { settings: { allowedUploadTypes: '.mockTypes' } }
+		;(API.postMultiPart = jest.fn().mockResolvedValue({ media_id: 'mockMediaId' })),
+			(API.get = jest.fn().mockResolvedValue({
+				json: jest
+					.fn()
+					.mockResolvedValueOnce({ media: [{ id: '1', fileName: 'file-name-1' }], hasMore: true })
+					.mockResolvedValueOnce({ media: [{ id: '2', fileName: 'file-name-2' }], hasMore: false })
+			}))
 	})
 
 	test('Figure component', () => {
@@ -299,5 +309,74 @@ describe('Figure Editor Node', () => {
 
 		deleteButton.simulate('click')
 		expect(Transforms.removeNodes).toHaveBeenCalled()
+	})
+
+	test('Figure component uses appropriate image url', () => {
+		const component = mount(<Figure editor={{}} element={{ content: {} }} />)
+
+		return flushPromises().then(() => {
+			component.find('.figure-box').simulate('drop', {
+				dataTransfer: {
+					items: [
+						{
+							kind: 'file',
+							getAsFile: () =>
+								new window.Blob([JSON.stringify({ name: 'mockFileName' })], {
+									type: 'application/json'
+								})
+						}
+					]
+				}
+			})
+			expect(component.instance().state.draggingOver).toBe(false)
+		})
+	})
+
+	test('Figure component does nothing if no files are dropped', () => {
+		const component = mount(<Figure editor={{}} element={{ content: {} }} />)
+
+		component.find('.figure-box').simulate('drop', {})
+		expect(component.instance().state.draggingOver).toBe(false)
+	})
+
+	test('Figure component does not upload files of incorrect file types', () => {
+		const component = mount(<Figure editor={{}} element={{ content: {} }} />)
+
+		component.find('.figure-box').simulate('drop', {
+			dataTransfer: {
+				items: [{ kind: 'mock-incorrect-file-type' }]
+			}
+		})
+		expect(component.instance().state.draggingOver).toBe(false)
+	})
+
+	test('Figure component triggers onDragImageOver function', () => {
+		const component = mount(
+			<Figure
+				node={{
+					data: {
+						get: () => ({})
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {}
+				}}
+				editor={{}}
+				element={{ content: {} }}
+			/>
+		)
+
+		component.find('.figure-box').simulate('dragOver', { target: {} })
+		expect(component.instance().state.draggingOver).toBe(true)
+	})
+
+	test('Figure component triggers onDragImageLeave function', () => {
+		const component = mount(<Figure editor={{}} element={{ content: {} }} />)
+
+		component.find('.figure-box').simulate('dragLeave', { target: {} })
+		expect(component.instance().state.draggingOver).toBe(false)
 	})
 })

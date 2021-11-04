@@ -32,8 +32,7 @@ class ChooseImageModal extends React.Component {
 	handleFileChange(event) {
 		const file = event.target.files[0]
 
-		uploadFileViaImageNode(file)
-		.then((mediaId) => {
+		uploadFileViaImageNode(file).then(mediaId => {
 			this.props.onCloseChooseImageModal(mediaId)
 		})
 	}
@@ -111,7 +110,7 @@ class ChooseImageModal extends React.Component {
 							type="text"
 							placeholder="Enter image URL"
 							value={this.props.url}
-							onChange={e => this.handleURLChange(e)}
+							onChange={e => this.setState({ url: e.target.value })}
 							tabIndex="0"
 							aria-label="Enter image URL"
 						/>

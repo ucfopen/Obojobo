@@ -38,8 +38,8 @@ class Figure extends React.Component {
 		this.onImageDrop = this.onImageDrop.bind(this)
 		this.onDragImageOver = this.onDragImageOver.bind(this)
 		this.onDragImageLeave = this.onDragImageLeave.bind(this)
-		this.handleURLChange = this.handleURLChange.bind(this)
 		this.updateImageSlateNode = this.updateImageSlateNode.bind(this)
+		this.getCorrectImageContent = this.getCorrectImageContent.bind(this)
 		this.focusFigure = this.focusFigure.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showImagePropertiesModal = this.showImagePropertiesModal.bind(this)
@@ -67,15 +67,7 @@ class Figure extends React.Component {
 
 	showImagePropertiesModal() {
 		freezeEditor(this.props.editor)
-
-		let content = {}
-		if (this.state.url) {
-			// Image added by dragging and dropping
-			content = { url: this.state.url, width: null, height: null, size: 'small' }
-		}else {
-			// Image added with the modal
-			content = this.props.element.content
-		}
+		const content = this.getCorrectImageContent()
 
 		ModalUtil.show(
 			<ImageProperties
@@ -120,23 +112,29 @@ class Figure extends React.Component {
 		)
 	}
 
+	getCorrectImageContent() {
+		if (this.state.url) {
+			// Image added by dragging and dropping
+			return { url: this.state.url, width: null, height: null, size: 'small' }
+		} else {
+			// Image added with the modal
+			return this.props.element.content
+		}
+	}
+
 	onDragImageOver(e) {
 		e.preventDefault()
+
 		this.setState({ draggingOver: true })
 	}
 
 	onImageDrop(e) {
-		if (
-			e.dataTransfer &&
-			e.dataTransfer.items &&
-			e.dataTransfer.items.length > 0
-		) {
+		if (e.dataTransfer && e.dataTransfer.items && e.dataTransfer.items.length > 0) {
 			const item = e.dataTransfer.items[0]
 			if (item.kind === 'file') {
-				const file = item.getAsFile();
+				const file = item.getAsFile()
 
-				uploadFileViaImageNode(file)
-				.then((mediaId) => {
+				uploadFileViaImageNode(file).then(mediaId => {
 					const content = { url: mediaId }
 					this.setState({ url: content.url })
 					this.updateImageSlateNode(content)
@@ -151,21 +149,8 @@ class Figure extends React.Component {
 		this.setState({ draggingOver: false })
 	}
 
-	handleURLChange(e) {
-		const url = e.target.value
-		this.setState({ url })
-	}
-
 	render() {
-		let content = {}
-		if (this.state.url) {
-			// Image added by dragging and dropping
-			content = { url: this.state.url, width: null, height: null, size: 'small' }
-		}else {
-			// Image added with the modal
-			content = this.props.element.content
-		}
-
+		const content = this.getCorrectImageContent()
 		const hasAltText = content.alt && content.alt.length !== 0
 		const selected = this.props.selected
 		const isSelected = isOrNot(selected, 'selected')
