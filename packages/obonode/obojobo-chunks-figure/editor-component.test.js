@@ -2,7 +2,7 @@ import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-uti
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { Transforms } from 'slate'
+import { Editor, Transforms } from 'slate'
 import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
 
 import Figure from './editor-component'
@@ -369,5 +369,125 @@ describe('Figure Editor Node', () => {
 		// Explicitly making sure this does not exist, since if it doesn't we'd get an error with 'findByProps'
 		const mainContainerElement = component.root.findAllByProps({ className: 'text-chunk pad' })
 		expect(mainContainerElement.length).toBe(0)
+	})
+
+	test('Caption text retains value of captionText when wrapText is changed from true to false', () => {
+		const mockCaptionText = 'mockCaptionText'
+
+		// Just to make sure the slate functions are called with the correct object
+		const mockEditorObj = {}
+
+		const elementObject = {
+			content: {
+				size: 'small',
+				url: 'mockUrl',
+				alt: 'mockAlt',
+				captionText: mockCaptionText,
+				wrapText: true
+			}
+		}
+
+		let component
+		renderer.act(() => {
+			component = renderer.create(
+				<Figure
+					editor={mockEditorObj}
+					element={{ ...elementObject }}
+					parent={standardComponentParent}
+				/>
+			)
+		})
+
+		const captionElement = component.root.findByType('figcaption')
+		expect(captionElement.children).toEqual([mockCaptionText])
+
+		renderer.act(() => {
+			component.update(
+				<Figure
+					editor={mockEditorObj}
+					element={{
+						...elementObject,
+						content: {
+							...elementObject.content,
+							wrapText: false
+						}
+					}}
+					parent={standardComponentParent}
+				/>
+			)
+		})
+
+		// Checking that the figcaption's child has the correct text would be ideal, but
+		//  the Slate functions that would accomplish that are being mocked, so the best
+		//  we can do is make sure the appropriate Slate functions are being called.
+		expect(Editor.deleteForward).toHaveBeenCalled()
+		expect(Editor.insertText).toHaveBeenCalledWith(mockEditorObj, mockCaptionText)
+	})
+
+	test('Caption text replacement only occurs when necessary', () => {
+		const mockCaptionText = 'mockCaptionText'
+
+		// Just to make sure the slate functions are called with the correct object
+		const mockEditorObj = {}
+
+		const elementObject = {
+			content: {
+				size: 'small',
+				url: 'mockUrl',
+				alt: 'mockAlt',
+				captionText: '',
+				wrapText: false
+			}
+		}
+
+		let component
+		renderer.act(() => {
+			component = renderer.create(
+				<Figure
+					editor={mockEditorObj}
+					element={{ ...elementObject }}
+					parent={standardComponentParent}
+				/>
+			)
+		})
+
+		renderer.act(() => {
+			component.update(
+				<Figure
+					editor={mockEditorObj}
+					element={{
+						...elementObject,
+						content: {
+							...elementObject.content,
+							captionText: mockCaptionText,
+							wrapText: true
+						}
+					}}
+					parent={standardComponentParent}
+				/>
+			)
+		})
+
+		expect(Editor.deleteForward).not.toHaveBeenCalled()
+		expect(Editor.insertText).not.toHaveBeenCalled()
+
+		renderer.act(() => {
+			component.update(
+				<Figure
+					editor={mockEditorObj}
+					element={{
+						...elementObject,
+						content: {
+							...elementObject.content,
+							captionText: mockCaptionText
+						}
+					}}
+					parent={standardComponentParent}
+				/>
+			)
+		})
+
+		expect(Editor.deleteForward).toHaveBeenCalled()
+		expect(Editor.insertText).toHaveBeenCalledWith(mockEditorObj, mockCaptionText)
 	})
 })

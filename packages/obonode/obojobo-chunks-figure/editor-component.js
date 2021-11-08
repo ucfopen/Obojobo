@@ -41,16 +41,36 @@ class Figure extends React.Component {
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 		this.onCloseImagePropertiesModal = this.onCloseImagePropertiesModal.bind(this)
+
+		this.selectFigureText = this.selectFigureText.bind(this)
+	}
+
+	selectFigureText() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const start = Editor.start(this.props.editor, path)
+		Transforms.setSelection(this.props.editor, {
+			focus: start,
+			anchor: start
+		})
+	}
+
+	componentDidUpdate(previousProps) {
+		// If we're moving from a floating image to a non-floating image
+		if (!this.props.element.content.wrapText && previousProps.element.content.wrapText) {
+			// Replace the child's text with what we were storying in 'captionText'
+			const captionText = this.props.element.content.captionText
+
+			// Set the selection to the beginning of the text block
+			this.selectFigureText()
+			// // Delete the entire contents of the editor's text component then replace it with the caption
+			Editor.deleteForward(this.props.editor, { unit: 'block' })
+			Editor.insertText(this.props.editor, captionText)
+		}
 	}
 
 	focusFigure() {
 		if (!this.props.selected) {
-			const path = ReactEditor.findPath(this.props.editor, this.props.element)
-			const start = Editor.start(this.props.editor, path)
-			Transforms.setSelection(this.props.editor, {
-				focus: start,
-				anchor: start
-			})
+			this.selectFigureText()
 		}
 	}
 
