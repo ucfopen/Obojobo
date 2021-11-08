@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-action-button",
-	"version": "13.2.1",
+	"version": "14.0.0-alpha.0",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
@@ -20,7 +20,7 @@
 		]
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^13.2.1"
+		"obojobo-lib-utils": "^14.0.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
