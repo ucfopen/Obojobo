@@ -33,7 +33,7 @@ class Figure extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.state = { draggingOver: false, url: '' }
+		this.state = { draggingOver: false, url: '', errorMessage: '' }
 
 		this.onImageDrop = this.onImageDrop.bind(this)
 		this.onDragImageOver = this.onDragImageOver.bind(this)
@@ -129,13 +129,19 @@ class Figure extends React.Component {
 	}
 
 	onImageDrop(e) {
+		this.setState({ errorMessage: '' })
 		if (e.dataTransfer && e.dataTransfer.items && e.dataTransfer.items.length > 0) {
 			const item = e.dataTransfer.items[0]
 			if (item.kind === 'file') {
 				const file = item.getAsFile()
 
-				uploadFileViaImageNode(file).then(mediaId => {
-					const content = { url: mediaId }
+				uploadFileViaImageNode(file).then(mediaData => {
+					if (mediaData && mediaData.status === 'error') {
+						this.setState({ errorMessage: mediaData.value.message })
+						return
+					}
+
+					const content = { url: mediaData.media_id }
 					this.setState({ url: content.url })
 					this.updateImageSlateNode(content)
 				})
@@ -211,6 +217,7 @@ class Figure extends React.Component {
 									Image Properties
 								</Button>
 							</div>
+							<p className="error-message">{this.state.errorMessage}</p>
 							<Image
 								style={customStyle}
 								key={content.url + content.width + content.height + content.size}

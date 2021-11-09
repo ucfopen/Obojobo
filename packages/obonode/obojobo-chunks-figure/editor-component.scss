@@ -51,6 +51,14 @@
 			}
 		}
 
+		.error-message {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: -1em;
+			color: $color-error;
+		}
+
 		.delete-button {
 			position: absolute;
 			right: 0;

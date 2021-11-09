@@ -10,7 +10,7 @@ export const uploadFileViaImageNode = file => {
 		formData.append('userImage', file, file.name)
 
 		API.postMultiPart('/api/media/upload', formData).then(mediaData => {
-			resolve(mediaData.media_id)
+			resolve(mediaData)
 		})
 	})
 }

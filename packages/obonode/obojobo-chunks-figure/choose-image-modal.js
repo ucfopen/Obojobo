@@ -32,8 +32,8 @@ class ChooseImageModal extends React.Component {
 	handleFileChange(event) {
 		const file = event.target.files[0]
 
-		uploadFileViaImageNode(file).then(mediaId => {
-			this.props.onCloseChooseImageModal(mediaId)
+		uploadFileViaImageNode(file).then(mediaData => {
+			this.props.onCloseChooseImageModal(mediaData)
 		})
 	}
 
@@ -101,6 +101,9 @@ class ChooseImageModal extends React.Component {
 									Upload New Image
 								</span>
 							</label>
+							<span className="error-message">
+								{this.props.error ? 'Error: ' + this.props.error : ''}
+							</span>
 						</div>
 
 						<p className="choose-image--image-controls--or">or</p>
@@ -130,9 +133,9 @@ class ChooseImageModal extends React.Component {
 								key={media.id}
 								id={media.id}
 								src={`/api/media/${media.id}/small`}
-								onClick={() => this.props.onCloseChooseImageModal(media.id)}
+								onClick={() => this.props.onCloseChooseImageModal(media)}
 								onKeyPress={event =>
-									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media.id))
+									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media))
 								}
 								role="button"
 								alt={`Select image ${i + 1}: ${media.fileName}`}

@@ -379,4 +379,31 @@ describe('Figure Editor Node', () => {
 		component.find('.figure-box').simulate('dragLeave', { target: {} })
 		expect(component.instance().state.draggingOver).toBe(false)
 	})
+
+	test('Figure component displays error if dropped file is not allowed', () => {
+		API.postMultiPart = jest.fn().mockResolvedValue({
+			media_id: 'mockMediaId',
+			status: 'error',
+			value: { message: 'mockMessage' }
+		})
+
+		const component = mount(<Figure editor={{}} element={{ content: {} }} />)
+
+		return flushPromises().then(() => {
+			component.find('.figure-box').simulate('drop', {
+				dataTransfer: {
+					items: [
+						{
+							kind: 'file',
+							getAsFile: () =>
+								new window.Blob([JSON.stringify({ name: 'mockFileName' })], {
+									type: 'application/json'
+								})
+						}
+					]
+				}
+			})
+			expect(component.instance().state.draggingOver).toBe(false)
+		})
+	})
 })

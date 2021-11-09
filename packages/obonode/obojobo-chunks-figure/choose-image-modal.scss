@@ -10,11 +10,16 @@
 
 	.choose-image--image-controls {
 		display: flex;
-		align-items: center;
+		align-items: baseline;
 		margin-bottom: 1rem;
 
 		.choose-image--image-controls--upload {
 			flex: 1;
+
+			.error-message {
+				color: $color-dangerous;
+				font-size: 0.8em;
+			}
 		}
 
 		.choose-image--image-controls--or {

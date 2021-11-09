@@ -28,6 +28,14 @@ describe('Choose Image Modal', () => {
 		})
 	})
 
+	test('ChooseImageModal component displays error message', () => {
+		const component = mount(<ChooseImageModal error={'File too large'} />)
+
+		return flushPromises().then(() => {
+			expect(component.html()).toMatchSnapshot()
+		})
+	})
+
 	test('ChooseImageModal component focuses on first element', () => {
 		const component = mount(<ChooseImageModal onConfirm={jest.fn} />)
 
@@ -67,7 +75,7 @@ describe('Choose Image Modal', () => {
 			expect(API.postMultiPart).toHaveBeenCalledTimes(1)
 			// eslint-disable-next-line no-undef
 			expect(API.postMultiPart).toHaveBeenCalledWith('/api/media/upload', expect.any(FormData))
-			expect(onCloseChooseImageModal).toHaveBeenCalledWith('mockMediaId')
+			expect(onCloseChooseImageModal).toHaveBeenCalledWith({ media_id: 'mockMediaId' })
 			expect(component.html()).toMatchSnapshot()
 		})
 	})
