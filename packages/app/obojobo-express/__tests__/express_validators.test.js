@@ -475,6 +475,28 @@ describe('current user middleware', () => {
 		})
 	})
 
+	// requireCanViewStatsPage
+
+	test('requireCanViewStatsPage calls next and has no validation errors', () => {
+		mockUser.hasPermission = perm => perm === 'canViewStatsPage'
+		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
+		return Validators.requireCanViewStatsPage(mockReq, mockRes, mockNext).then(() => {
+			expect(mockNext).toHaveBeenCalledTimes(1)
+			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(0)
+			expect(mockReq._validationErrors).toBeUndefined()
+		})
+	})
+
+	test('requireCanViewStatsPage doesnt call next and has errors', () => {
+		mockUser.hasPermission = () => false
+		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
+		return Validators.requireCanViewStatsPage(mockReq, mockRes, mockNext).then(() => {
+			expect(mockNext).toHaveBeenCalledTimes(0)
+			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(1)
+			expect(mockReq._validationErrors).toBeUndefined()
+		})
+	})
+
 	// requireCanViewSystemStats
 
 	test('requireCanViewSystemStats calls next and has no validation errors', () => {
