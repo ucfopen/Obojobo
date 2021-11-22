@@ -11,17 +11,26 @@ const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 const User = require('obojobo-express/server/models/user')
 const DraftSummary = require('obojobo-repository/server/models/draft_summary')
 
+const POSSIBLE_PERMS = [
+	'canViewEditor',
+	'canCreateDrafts',
+	'canDeleteDrafts',
+	'canPreviewDrafts',
+	'canViewSystemStats'
+]
+
 // Normally the query running in User.saveOrCreate would auto-fill the new user's id,
 // but since we're using the user's ID as part of their name and e-mail, we need to know what
 // it is going to be ahead of time
 const getNewUserId = () => {
-	return db.oneOrNone('SELECT MAX(id) AS max_id FROM users')
+	return db
+		.oneOrNone('SELECT MAX(id) AS max_id FROM users')
 		.then(result => parseInt(result.max_id, 10) + 1)
 }
 
 const createNewUser = (id, type) => {
 	// If the database is freshly reset, there won't be any users - assume the first id is 1
-	if( ! id ) id = 1
+	if (!id) id = 1
 	const capType = type.charAt(0).toUpperCase() + type.slice(1)
 
 	const newUser = new User({
@@ -107,31 +116,33 @@ module.exports = app => {
 	app.use(bodyParser.urlencoded(config.general.bodyParser.urlencodedOptions))
 
 	// index page with links to all the launch types
-	app.get('/dev', (req, res) => {
-		const usersPromise = db.manyOrNone("SELECT id, first_name, last_name FROM users ORDER BY id ASC")
+	app.get('/dev/', (req, res) => {
+		const usersPromise = db.manyOrNone(
+			'SELECT id, first_name, last_name FROM users ORDER BY id ASC'
+		)
 		const draftsPromise = DraftSummary.fetchAll()
 
-		Promise.all([
-			usersPromise,
-			draftsPromise
-		]).then(results => {
+		Promise.all([usersPromise, draftsPromise]).then(results => {
 			const users = results[0]
 			const drafts = results[1]
-			const userOptions = users.map(user =>
-				`<option value=${user.id}>${user.first_name} ${user.last_name}</option>`
-			).join('')
-			const draftOptions = drafts.map(draft =>
-				`<option value="${draft.draftId}">${draft.title}</option>`
-			).join('')
+			const userOptions = users
+				.map(user => `<option value=${user.id}>${user.first_name} ${user.last_name}</option>`)
+				.join('')
+			const draftOptions = drafts
+				.map(draft => `<option value="${draft.draftId}">${draft.title}</option>`)
+				.join('')
 
-			let userSelectRender = '<p>No users found. Create a student or instructor with the buttons above.</p>'
-			if( userOptions && userOptions.length ) {
+			let userSelectRender =
+				'<p>No users found. Create a student or instructor with the buttons above.</p>'
+			if (userOptions && userOptions.length) {
 				userSelectRender = `
 				<label for='user_id'>Select user:</label>
 				<select name='user_id'>
 					${userOptions}
 				</select>`
 			}
+
+			const permOptions = POSSIBLE_PERMS.map(perm => `<option value="${perm}">${perm}</option>`)
 
 			res.set('Content-Type', 'text/html')
 			res.send(`<html>
@@ -159,15 +170,59 @@ module.exports = app => {
 				</head>
 				<body>
 					<h1>Obojobo Next Express Dev Utils</h1>
-					<h2>LTI Tools</h2>
+					<h2>User Management Tools</h2>
 					<ul>
 						<li><b>Create new test users:</b>
 							<p>Add some inputs here for optional first/last/email etc. with reasonable defaults?</p>
 							<ul>
-								<li><a href="/lti/dev/new_user?type=instructor">Create a new test instructor</a></li>
-								<li><a href="/lti/dev/new_user?type=learner">Create a new test learner</a></li>
+								<li><a href="/dev/util/new_user?type=instructor">Create a new test instructor</a></li>
+								<li><a href="/dev/util/new_user?type=learner">Create a new test learner</a></li>
 							</ul>
 						</li>
+						<p>
+						Note: The <b>canViewEditor</b>, <b>canCreateDrafts</b>, <b>canDeleteDrafts</b>, and <b>canPreviewDrafts</b> permissions are implicit for instructors.
+						</p>
+						<li><b>Add permission to user:</b>
+							<form id='resource-select-form'
+								method='post'
+								action='/dev/util/permission'>
+								${userSelectRender}
+								${
+									userOptions.length
+										? `<br/>
+										<label for='permission'>Select module:</label>
+										<select name='permission'>
+											${permOptions}
+										</select>
+										<br/>
+										<input type='hidden' name='add_remove' value='add'/>
+										<button type='submit' value='submit'>Go</button>`
+										: ''
+								}
+							</form>
+						</li>
+						<li><b>Add permission to user:</b>
+							<form id='resource-select-form'
+								method='post'
+								action='/dev/util/permission'>
+								${userSelectRender}
+								${
+									userOptions.length
+										? `<br/>
+										<label for='permission'>Select module:</label>
+										<select name='permission'>
+											${permOptions}
+										</select>
+										<br/>
+										<input type='hidden' name='add_remove' value='remove'/>
+										<button type='submit' value='submit'>Go</button>`
+										: ''
+								}
+							</form>
+						</li>
+					</ul>
+					<h2>LTI Tools</h2>
+					<ul>
 						<li><a href="/lti">LTI Instructions</a></li>
 						<li><b>LTI Course Nav:</b> (simulate LTI launch from clicking on LMS nav menu link)
 							<form id='course-nav-form'
@@ -185,7 +240,11 @@ module.exports = app => {
 								action='/lti/dev/launch/resource_selection'
 								target='the-iframe'>
 								${userSelectRender}
-								${userOptions.length ? `<button onClick="scrollToIframe()" type='submit' value='submit'>Go</button>` : ''}
+								${
+									userOptions.length
+										? `<button onClick="scrollToIframe()" type='submit' value='submit'>Go</button>`
+										: ''
+								}
 							</form>
 						</li>
 						<li><b>LTI Assignment:</b> (simulate LTI launch for an assignment)
@@ -195,8 +254,8 @@ module.exports = app => {
 								target='_blank'>
 								${userSelectRender}
 								${
-									userOptions.length ?
-										`<br/>
+									userOptions.length
+										? `<br/>
 										<label for='draft_id'>Select module:</label>
 										<select name='draft_id'>
 											${draftOptions}
@@ -209,7 +268,7 @@ module.exports = app => {
 										<input type='text' name='resource_link_id' placeholder="course_1"/>
 										<br/>
 										<button type='submit' value='submit'>Go</button>`
-									: ''
+										: ''
 								}
 							</form>
 						</li>
@@ -345,11 +404,66 @@ module.exports = app => {
 		</html>`)
 	})
 
-	app.get('/lti/dev/new_user', (req, res) => {
+	app.get('/dev/util/new_user', (req, res) => {
 		getNewUserId().then(newId => {
 			createNewUser(newId, req.query.type).then(() => {
 				res.redirect('/dev')
 			})
 		})
+	})
+
+	app.post('/dev/util/permission', (req, res) => {
+		const userId = req.body.user_id
+		const op = req.body.add_remove
+
+		db.oneOrNone('SELECT perms FROM user_perms WHERE user_id = $[userId]', { userId })
+			.then(existing => {
+				// selected user has no explicitly set permissions
+				if (!existing) {
+					existing = { perms: [] }
+				}
+
+				const perms = [...existing.perms]
+				const existingPermIndex = perms.indexOf(req.body.permission)
+
+				// either trying to add a permissions the user has already, or remove one it doesn't have yet
+				if (
+					(op === 'add' && existingPermIndex >= 0) ||
+					(op === 'remove' && existingPermIndex < 0)
+				) {
+					// do nothing
+					return false
+				}
+
+				switch (req.body.add_remove) {
+					case 'add':
+						perms.push(req.body.permission)
+						break
+					case 'remove':
+					default:
+						perms.splice(existingPermIndex, 1)
+						break
+				}
+
+				return perms
+			})
+			.then(perms => {
+				if (!perms) return
+
+				return db.none(
+					`
+				INSERT INTO user_perms
+				VALUES ($[userId], $[perms])
+				ON CONFLICT (user_id)
+				DO UPDATE
+					SET perms = $[perms]
+					WHERE user_perms.user_id = $[userId]
+				`,
+					{ userId, perms }
+				)
+			})
+			.then(() => {
+				res.redirect('/dev')
+			})
 	})
 }
