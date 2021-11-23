@@ -517,6 +517,8 @@ class VisualEditor extends React.Component {
 	renderElement(props) {
 		if (props.element.type === 'a') return LinkMark.plugins.renderNode(props)
 
+		props.navItems = EditorUtil.getOrderedList(this.props.navState)
+
 		const item = Common.Registry.getItemForType(props.element.type)
 		if (item) {
 			return item.plugins.renderNode(props)
@@ -584,6 +586,7 @@ class VisualEditor extends React.Component {
 						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
+								// navItems={this.props.navState.navItems}
 								renderElement={this.renderElement}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}

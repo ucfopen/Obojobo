@@ -23,7 +23,37 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = shallow(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const elements = [{ id: 3, type: 'mockType' }, { id: 4, type: 'mockType' }]
+		const component = shallow(
+			<TriggerListModal content={content} navItems={navItems} elements={elements} />
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders actions with id select boxes', () => {
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [
+						{ type: 'nav:goto', value: { id: '' } },
+						{ type: 'assessment:startAttempt', value: { id: '' } },
+						{ type: 'assessment:endAttempt', value: { id: '' } },
+						{ type: 'focus:component', value: { id: '' } }
+					]
+				}
+			]
+		}
+		const navItems = [
+			{ id: 1, type: 'mockType', flags: {} },
+			{ id: 2, type: 'mockType', flags: { assessment: true } }
+		]
+		const elements = [{ id: 3, type: 'mockType' }, { id: 4, type: 'mockType' }]
+		const component = shallow(
+			<TriggerListModal content={content} navItems={navItems} elements={elements} />
+		)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -47,7 +77,8 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = shallow(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const component = shallow(<TriggerListModal content={content} navItems={navItems} />)
 
 		component
 			.find('button')
@@ -71,7 +102,8 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = shallow(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const component = shallow(<TriggerListModal content={content} navItems={navItems} />)
 
 		component
 			.find('button')
@@ -87,7 +119,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }]
+					actions: [{ type: 'nav:goto', value: { id: '' } }]
 				},
 				{
 					type: 'onUnmount',
@@ -95,7 +127,8 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'link' }, { id: 2, type: 'link' }]
+		const component = mount(<TriggerListModal content={content} navItems={navItems} />)
 
 		component
 			.find('button')
@@ -119,7 +152,8 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const component = mount(<TriggerListModal content={content} navItems={navItems} />)
 
 		component
 			.find('button')
@@ -143,8 +177,11 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
 		const close = jest.fn()
-		const component = mount(<TriggerListModal content={content} onClose={close} />)
+		const component = mount(
+			<TriggerListModal content={content} onClose={close} navItems={navItems} />
+		)
 
 		component
 			.find('button')
@@ -164,7 +201,7 @@ describe('TriggerListModal', () => {
 		expect(close).toHaveBeenCalledWith()
 	})
 
-	test('unounts when there is no close prop', () => {
+	test('unmounts when there is no close prop', () => {
 		const content = { triggers: [] }
 		const component = mount(<TriggerListModal content={content} />)
 
@@ -186,7 +223,8 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const component = mount(<TriggerListModal content={content} navItems={navItems} />)
 
 		component
 			.find('select')
@@ -212,7 +250,8 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const component = mount(<TriggerListModal content={content} navItems={navItems} />)
 
 		component
 			.find('select')
@@ -238,31 +277,32 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content} />)
+		const navItems = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const component = mount(<TriggerListModal content={content} navItems={navItems} />)
 
 		// make sure this is the expected label/input combo
 		const inputLabel = component.find('label').at(2)
-		expect(inputLabel.props().children).toBe('Item Id')
+		expect(inputLabel.props().children).toBe('Page')
 
 		// change the value
 		component
-			.find('input')
+			.find('select')
 			.at(2)
-			.simulate('change', { target: { type: 'text', value: '10' } })
+			.simulate('change', { target: { type: 'select-one', value: 2 } })
 
 		// check that the value changed
 		expect(
 			component
-				.find('input')
+				.find('select')
 				.at(2)
 				.props()
-		).toHaveProperty('value', '10')
+		).toHaveProperty('value', 2)
 
 		// check the change to state
 		expect(component.state()).toHaveProperty('triggers')
 		expect(component.state().triggers[0].actions).toContainEqual({
 			type: 'nav:goto',
-			value: { id: '10' }
+			value: { id: 2 }
 		})
 
 		// check the rendered component
@@ -286,11 +326,12 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content} />)
+		const elements = [{ id: 1, type: 'mockType' }, { id: 2, type: 'mockType' }]
+		const component = mount(<TriggerListModal content={content} elements={elements} />)
 
 		component
 			.find('select')
-			.at(2)
+			.at(3)
 			.simulate('change', {
 				target: { value: 'animateScroll' }
 			})
@@ -299,7 +340,7 @@ describe('TriggerListModal', () => {
 
 		component
 			.find('select')
-			.at(2)
+			.at(3)
 			.simulate('change', {
 				target: { value: 'preventScroll' }
 			})
@@ -308,7 +349,7 @@ describe('TriggerListModal', () => {
 
 		component
 			.find('select')
-			.at(2)
+			.at(3)
 			.simulate('change', {
 				target: { value: 'jumpScroll' }
 			})
@@ -329,7 +370,8 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content} />)
+		const elements = [{ id: 1 }, { id: 2 }]
+		const component = mount(<TriggerListModal content={content} elements={elements} />)
 		const input = component.find(Switch).find('input')
 		input.simulate('change', { target: { type: 'checkbox', checked: true } })
 		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', true)
@@ -379,4 +421,140 @@ describe('TriggerListModal', () => {
 			expect(TriggerListModal.prototype.createNewDefaultActionValueObject(type)).toMatchSnapshot()
 		}
 	)
+
+	test('createNewDefaultActionValueObject selects assessment by id for start/end attempt triggers', () => {
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [{ type: 'assessment:startAttempt', value: { id: 2 } }]
+				}
+			]
+		}
+		const navItems = [
+			{ id: 1, type: 'mockType', flags: {} },
+			{ id: 2, type: 'mockType', flags: { assessment: true } }
+		]
+		const component = mount(<TriggerListModal content={content} navItems={navItems} />)
+
+		expect(
+			component.instance().createNewDefaultActionValueObject('assessment:startAttempt')
+		).toEqual({ id: 2 })
+		expect(component.instance().createNewDefaultActionValueObject('assessment:endAttempt')).toEqual(
+			{ id: 2 }
+		)
+	})
+
+	test('getElementText returns expected values', () => {
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Text',
+				content: { textGroup: [{ text: { value: 'mock text' } }] }
+			})
+		).toBe('TEXT: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Text',
+				content: { textGroup: [{ text: { value: 'very long mock text that is very long' } }] }
+			})
+		).toBe('TEXT: very long mock text that is very l...')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Heading',
+				content: { textGroup: [{ text: { value: 'mock text' } }] }
+			})
+		).toBe('HEADING: mock text')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Figure',
+				content: { textGroup: [{ text: { value: 'mock text' } }] }
+			})
+		).toBe('FIGURE: mock text')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.ActionButton',
+				content: { textGroup: [{ text: { value: 'mock text' } }] }
+			})
+		).toBe('BUTTON: mock text')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.List',
+				content: { textGroup: [{ text: { value: 'mock text' } }] }
+			})
+		).toBe('LIST: mock text')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Table',
+				content: { textGroup: { textGroup: [{ text: { value: 'mock text' } }] } }
+			})
+		).toBe('TABLE: mock text')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Break'
+			})
+		).toBe('BREAK')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.MathEquation',
+				content: { latex: 'mock latex' }
+			})
+		).toBe('MATH: mock latex')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Code',
+				content: { textGroup: [{ text: { value: 'mock text' } }] }
+			})
+		).toBe('CODE: mock text')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.YouTube'
+			})
+		).toBe('YouTube Video')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.IFrame',
+				content: { title: 'mock title' }
+			})
+		).toBe('IFRAME: mock title')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.IFrame',
+				content: { src: 'mock source' }
+			})
+		).toBe('IFRAME: mock source')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.IFrame',
+				content: {}
+			})
+		).toBe('IFRAME: No source!')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Question',
+				children: [
+					{
+						content: { textGroup: [{ text: { value: 'mock text' } }] }
+					}
+				]
+			})
+		).toBe('QUESTION: mock text')
+
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				content: { textGroup: [{ text: { value: 'mock text' } }] }
+			})
+		).toBe('QUESTION BANK')
+	})
 })

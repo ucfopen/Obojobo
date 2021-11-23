@@ -219,6 +219,8 @@ class Node extends React.Component {
 				showMoveButtons
 				isFirst={thisSiblingIndex === 0}
 				isLast={thisSiblingIndex >= siblingCount - 1}
+				elements={this.props.editor.children}
+				navItems={this.props.navItems}
 			/>
 		)
 	}

@@ -49,7 +49,7 @@ class TriggerListModal extends React.Component {
 				actions: [
 					{
 						type: 'nav:goto',
-						value: {}
+						value: { id: '' }
 					}
 				]
 			})
@@ -57,12 +57,18 @@ class TriggerListModal extends React.Component {
 	}
 
 	createNewDefaultActionValueObject(type) {
+		const props = this.props || {}
+
 		switch (type) {
 			case 'nav:goto':
+				return {
+					id: ''
+				}
+
 			case 'assessment:startAttempt':
 			case 'assessment:endAttempt':
 				return {
-					id: ''
+					id: props.navItems ? props.navItems.slice(-1)[0].id : ''
 				}
 
 			case 'nav:openExternalLink':
@@ -218,19 +224,99 @@ class TriggerListModal extends React.Component {
 		}))
 	}
 
+	getElementText(element) {
+		let text = ''
+
+		switch (element.type) {
+			case 'ObojoboDraft.Chunks.Text':
+				text = 'TEXT: ' + element.content.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.Heading':
+				text = 'HEADING: ' + element.content.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.Figure':
+				text = 'FIGURE: ' + element.content.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.ActionButton':
+				text = 'BUTTON: ' + element.content.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.List':
+				text = 'LIST: ' + element.content.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.Table':
+				text = 'TABLE: ' + element.content.textGroup.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.Break':
+				text = 'BREAK'
+				break
+			case 'ObojoboDraft.Chunks.MathEquation':
+				text = 'MATH: ' + element.content.latex
+				break
+			case 'ObojoboDraft.Chunks.Code':
+				text = 'CODE: ' + element.content.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.YouTube':
+				text = 'YouTube Video'
+				break
+			case 'ObojoboDraft.Chunks.IFrame':
+				text = 'IFRAME: ' + (element.content.title || element.content.src || 'No source!')
+				break
+			case 'ObojoboDraft.Chunks.Question':
+				text = 'QUESTION: ' + element.children[0].content.textGroup[0].text.value
+				break
+			case 'ObojoboDraft.Chunks.QuestionBank':
+				text = 'QUESTION BANK'
+				break
+			default:
+				text = element.type
+		}
+
+		if (text.length > 40) {
+			text = text.slice(0, 40).trim() + '...'
+		}
+
+		return text
+	}
+
+	isValidId(id, elements) {
+		if (id === '') return true
+
+		return !!elements.find(el => el.id === id)
+	}
+
 	renderActionOptions(triggerIndex, actionIndex, action) {
 		switch (action.type) {
 			case 'nav:goto':
 				return (
 					<div className="action-options">
-						<div>
-							<label>Item Id</label>
-							<input
-								className="input-item"
-								value={action.value.id || ''}
-								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
-							/>
-						</div>
+						{this.isValidId(action.value.id, this.props.navItems) ? (
+							<div>
+								<label>Page</label>
+								<select
+									className="select-item"
+									value={action.value.id}
+									onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+								>
+									{action.value.id ? null : <option> Select one... </option>}
+									{this.props.navItems
+										.filter(item => item.type === 'link')
+										.map(item => (
+											<option key={item.id} value={item.id}>
+												{item.label}
+											</option>
+										))}
+								</select>
+							</div>
+						) : (
+							<div>
+								<label>Page Id</label>
+								<input
+									className="input-item"
+									value={action.value.id || ''}
+									onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+								/>
+							</div>
+						)}
 					</div>
 				)
 			case 'nav:openExternalLink':
@@ -250,14 +336,33 @@ class TriggerListModal extends React.Component {
 			case 'assessment:endAttempt':
 				return (
 					<div className="action-options">
-						<div>
-							<label>Assessment Id</label>
-							<input
-								className="input-item"
-								value={action.value.id || ''}
-								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
-							/>
-						</div>
+						{this.isValidId(action.value.id, this.props.navItems) ? (
+							<div>
+								<label>Assessment</label>
+								<select
+									className="select-item"
+									value={action.value.id}
+									onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+								>
+									{this.props.navItems
+										.filter(item => item.flags.assessment)
+										.map(item => (
+											<option key={item.id} value={item.id}>
+												{item.label}
+											</option>
+										))}
+								</select>
+							</div>
+						) : (
+							<div>
+								<label>Assessment Id</label>
+								<input
+									className="input-item"
+									value={action.value.id || ''}
+									onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+								/>
+							</div>
+						)}
 					</div>
 				)
 			case 'viewer:alert':
@@ -299,14 +404,32 @@ class TriggerListModal extends React.Component {
 			case 'focus:component':
 				return (
 					<div className="action-options">
-						<div>
-							<label>Item Id</label>
-							<input
-								className="input-item"
-								value={action.value.id || ''}
-								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
-							/>
-						</div>
+						{this.isValidId(action.value.id, this.props.elements) ? (
+							<div>
+								<label>Item</label>
+								<select
+									className="select-item"
+									value={action.value.id}
+									onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+								>
+									{action.value.id ? null : <option> Select one... </option>}
+									{this.props.elements.map(el => (
+										<option key={el.id} value={el.id}>
+											{this.getElementText(el)}
+										</option>
+									))}
+								</select>
+							</div>
+						) : (
+							<div>
+								<label>Item Id</label>
+								<input
+									className="input-item"
+									value={action.value.id || ''}
+									onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+								/>
+							</div>
+						)}
 						<Switch
 							title="Fade Out Other Items"
 							checked={action.value.fade || false}
