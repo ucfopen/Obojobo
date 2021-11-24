@@ -275,6 +275,34 @@ const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	const file = event.target.files[0]
 	if (!file) return boundResolve()
 
+	// /*
+	// avoid usage in case a browser allows file upload despite invalid mime type
+	if (file.type != `${XML_MIME_TYPE}` && file.type != `${JSON_MIME_TYPE}`) 
+	{
+		window.alert('Invalid file, acceptable file types are JSON and XML.')		
+		return boundResolve()
+	}	
+	// */
+
+	// make sure the xml or json is properly formatted
+	/*
+	if (file.type == `${XML_MIME_TIME}`)
+	{
+		parse and check with regex
+		return boundResolve() is formatting incorrect
+	}
+	// */
+
+	/*
+	if (file.type == `${JSON_MIME_TIME}`)
+	{
+		parse json here
+		return boundResolve() if formatting incorrect
+	}
+	// */
+
+	console.log("current file: ", event.target.files[0])
+
 	const reader = new global.FileReader()
 	reader.readAsText(file, 'UTF-8')
 	reader.onload = moduleUploadFileLoaded.bind(this, boundResolve, boundReject, file.type)
