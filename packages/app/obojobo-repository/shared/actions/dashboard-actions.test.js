@@ -10,11 +10,16 @@ dayjs.extend(advancedFormat)
 describe('Dashboard Actions', () => {
 	let DashboardActions
 	let mockFileReader
+	let undefined
+
+	const JSON_MIME_TYPE = 'application/json'
+	const XML_MIME_TYPE = 'application/xml'
 
 	const originalFetch = global.fetch
 	const originalCreateElement = document.createElement
 	const originalFileReader = global.FileReader
 	const originalWindowLocationReload = window.location.reload
+	const originalAlert = global.alert
 
 	// this is lifted straight out of dashboard-actions, for ease of comparison
 	//  barring any better ways of using it
@@ -32,12 +37,15 @@ describe('Dashboard Actions', () => {
 
 	beforeAll(() => {
 		global.fetch = jest.fn()
+		delete global.alert
 	})
 
 	beforeEach(() => {
 		jest.resetModules()
 		jest.resetAllMocks()
 		jest.useFakeTimers()
+
+		global.alert = jest.fn()
 
 		delete window.location
 		window.location = {
@@ -70,6 +78,7 @@ describe('Dashboard Actions', () => {
 
 	afterAll(() => {
 		global.fetch = originalFetch
+		global.alert = originalAlert
 		document.createElement = originalCreateElement
 		global.FileReader = originalFileReader
 		window.location.reload = originalWindowLocationReload
@@ -469,7 +478,7 @@ describe('Dashboard Actions', () => {
 
 		const mockChangeEvent = {
 			target: {
-				files: [{ type: 'application/json' }]
+				files: [{ type: JSON_MIME_TYPE }]
 			}
 		}
 		createElementCopy.onchange(mockChangeEvent)
@@ -516,7 +525,7 @@ describe('Dashboard Actions', () => {
 
 		const mockChangeEvent = {
 			target: {
-				files: [{ type: 'fileType' }]
+				files: [{ type: XML_MIME_TYPE }]
 			}
 		}
 		createElementCopy.onchange(mockChangeEvent)
@@ -561,9 +570,11 @@ describe('Dashboard Actions', () => {
 		])
 		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
 
+		// the file type for this test is not important; we need
+		// only pass the conditional statement regarding mime types
 		const mockChangeEvent = {
 			target: {
-				files: [{ type: 'fileType' }]
+				files: [{ type: JSON_MIME_TYPE }]
 			}
 		}
 		createElementCopy.onchange(mockChangeEvent)
@@ -583,10 +594,50 @@ describe('Dashboard Actions', () => {
 				method: 'POST',
 				body: JSON.stringify({
 					content: 'fileContent',
-					format: 'application/xml' //defaults to this unless file type is 'application/json'
+					format: JSON_MIME_TYPE
 				})
 			})
 			expect(window.location.reload).not.toHaveBeenCalled()
+		})
+	})
+
+	test('importModuleFile calls an alert if provided an invalid file', () => {
+		// this test expects mockfilereader to be undefined but it gets
+		// a value in the previous tests so it is set to undefined again
+		mockFileReader = undefined
+
+		const actionReply = DashboardActions.importModuleFile()
+		expect(actionReply).toEqual({
+			type: DashboardActions.IMPORT_MODULE_FILE,
+			promise: expect.any(Object)
+		})
+
+		expect(document.createElement).toHaveBeenCalledTimes(1)
+		expect(document.createElement).toHaveBeenCalledWith('input')
+		expect(createElementCopy.setAttribute).toHaveBeenCalledTimes(2)
+		expect(createElementCopy.setAttribute.mock.calls).toEqual([
+			['type', 'file'],
+			['accept', 'application/json, application/xml']
+		])
+		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
+
+		// this is here because in chrome an svg can be uploaded;
+		// we need to test that the conditional is passed
+		const mockChangeEvent = {
+			target: {
+				files: [{ type: 'image/svg+xml' }]
+			}
+		}
+		createElementCopy.onchange(mockChangeEvent)
+
+		// if global.FileReader were called mockFileReader would be
+		// assigned a value again and it's expect() would fail
+		expect(global.FileReader).toHaveBeenCalledTimes(0)
+		expect(global.alert).toHaveBeenCalledTimes(1)
+		expect(mockFileReader).toBeUndefined()
+
+		return actionReply.promise.then(() => {
+			expect(global.fetch).toHaveBeenCalledTimes(0)
 		})
 	})
 
