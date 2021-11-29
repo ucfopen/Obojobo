@@ -21,39 +21,65 @@ $search-input-height: 30px;
 		}
 	}
 
-	input {
-		@include text-input;
+	form {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-		z-index: 1;
-		background: none;
-		top: 0;
-		left: 0;
-		width: calc(100% - 2px);
-		line-height: $search-input-height;
-		border: solid 1px $border-color;
-		background-color: white;
-		border-radius: 3px;
-		height: $search-input-height;
-		padding-left: 23px;
-		padding-right: 10px;
-		outline: none;
-		position: relative;
-		-webkit-appearance: none;
+		input {
+			@include text-input;
 
-		&::-webkit-search-cancel-button {
+			z-index: 1;
+			background: none;
+			top: 0;
+			left: 0;
+			width: 100%;
+			line-height: $search-input-height;
+			border: solid 1px $border-color;
+			background-color: white;
+			border-radius: 3px;
+			height: $search-input-height;
+			padding-left: 23px;
+			padding-right: 23px;
+			outline: none;
+			position: relative;
 			-webkit-appearance: none;
 
-			height: 10px;
-			width: 10px;
-			background: white;
-			border-radius: 50%;
-			color: $color-action;
-			cursor: pointer;
-			background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
+			&::-webkit-search-cancel-button {
+				-webkit-appearance: none;
+			}
+
+			&:focus {
+				outline-width: 0;
+			}
 		}
 
-		&:focus {
-			outline-width: 0;
+		button {
+			border: 1px solid transparent;
+			background-color: transparent;
+			cursor: pointer;
+			width: 9px;
+			height: 9px;
+			position: absolute;
+			right: -12px;
+
+			&:after {
+				content: '';
+				width: 9px;
+				height: 9px;
+				position: absolute;
+				background-color: white;
+				z-index: 1;
+				right: 20px;
+				top: 0;
+				bottom: 0;
+				margin: auto;
+				padding: 2px;
+				border-radius: 50%;
+				font-size: 12px;
+				cursor: pointer;
+				background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
+			}
 		}
 	}
 
