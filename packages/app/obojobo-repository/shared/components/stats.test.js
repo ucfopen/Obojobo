@@ -3,6 +3,7 @@ import { create, act } from 'react-test-renderer'
 import Button from './button'
 
 import Stats from './stats'
+import AssessmentStats from './stats/assessment-stats'
 import DataGridDrafts from './stats/data-grid-drafts'
 
 jest.mock('react-data-table-component', () => ({
@@ -14,6 +15,27 @@ jest.mock('react-data-table-component', () => ({
 }))
 
 describe('Stats', () => {
+	const loadUserModuleListMock = jest.fn()
+
+	const mockModuleList = [
+		{
+			draftId: 'mock-draft-id-1',
+			title: 'mock-title-1',
+			createdAt: 'mock-created-at',
+			updatedAt: 'mock-updated-at',
+			latestVersion: 'mock-latest-version',
+			revisionCount: 1
+		},
+		{
+			draftId: 'mock-draft-id-2',
+			title: 'mock-title-2',
+			createdAt: 'mock-created-at',
+			updatedAt: 'mock-updated-at',
+			latestVersion: 'mock-latest-version',
+			revisionCount: 1
+		}
+	]
+
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
@@ -32,70 +54,125 @@ describe('Stats', () => {
 				'canPreviewDrafts'
 			]
 		},
-		assessmentStats: {
-			isFetching: true,
-			hasFetched: false
+		loadUserModuleList: loadUserModuleListMock,
+		availableModules: {
+			isFetching: false,
+			hasFetched: true,
+			items: mockModuleList
 		},
-		allModules: [
-			{
-				draftId: 'mock-draft-id-1',
-				title: 'mock-title-1',
-				createdAt: 'mock-created-at',
-				updatedAt: 'mock-updated-at',
-				latestVersion: 'mock-latest-version',
-				revisionCount: 1
-			},
-			{
-				draftId: 'mock-draft-id-2',
-				title: 'mock-title-2',
-				createdAt: 'mock-created-at',
-				updatedAt: 'mock-updated-at',
-				latestVersion: 'mock-latest-version',
-				revisionCount: 1
-			}
-		]
+		assessmentStats: {
+			isFetching: false,
+			hasFetched: false,
+			items: []
+		}
 	})
 
-	test('Renders loading state correctly', () => {
+	test('Renders "modules loading" state correctly', () => {
+		let component
+		act(() => {
+			component = create(
+				<Stats
+					{...getTestProps()}
+					availableModules={{ isFetching: true, hasFetched: false, items: [] }}
+				/>
+			)
+		})
+		const tree = component.toJSON()
+
+		expect(loadUserModuleListMock).toHaveBeenCalledTimes(1)
+
+		// make sure the main container does not exist
+		expect(component.root.findAllByProps({ className: 'repository--section-wrapper' }).length).toBe(
+			0
+		)
+		expect(tree.children[tree.children.length - 1]).toBe('Loading...')
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Renders "modules loaded" state correctly', () => {
+		let component = create(
+			<Stats
+				{...getTestProps()}
+				availableModules={{ isFetching: false, hasFetched: true, items: [] }}
+			/>
+		)
+		const tree = component.toJSON()
+
+		// make sure the main container exists
+		expect(component.root.findAllByProps({ className: 'repository--section-wrapper' }).length).toBe(
+			1
+		)
+		expect(component.root.findByType(DataGridDrafts).props.rows).toEqual([])
+
+		expect(tree).toMatchSnapshot()
+
+		// make sure updates make it all the way through the component
+		act(() => {
+			component = create(
+				<Stats
+					{...getTestProps()}
+					availableModules={{ isFetching: false, hasFetched: true, items: mockModuleList }}
+				/>
+			)
+		})
+
+		expect(component.root.findByType(DataGridDrafts).props.rows).toEqual(mockModuleList)
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Renders correctly when assessment stat fetching has not started or finished', () => {
 		const component = create(<Stats {...getTestProps()} />)
-		const tree = component.toJSON()
 
+		const assessmentStatsContainer = component.root.findByProps({ className: 'stats' })
+		expect(assessmentStatsContainer.children).toEqual([])
+
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Renders loaded state correctly', () => {
+	test('Renders correctly when assessment stat fetching has started but not finished', () => {
 		const component = create(
 			<Stats
 				{...getTestProps()}
-				assessmentStats={{ isFetching: false, hasFetched: true, items: [] }}
+				assessmentStats={{
+					isFetching: true,
+					hasFetched: false,
+					items: []
+				}}
 			/>
 		)
-		const tree = component.toJSON()
 
+		const assessmentStatsContainer = component.root.findByProps({ className: 'stats' })
+		expect(assessmentStatsContainer.children[0]).toEqual('Loading...')
+
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Renders non-loaded non-fetching state correctly', () => {
+	test('Renders correctly when assessment stat fetching has finished', () => {
 		const component = create(
 			<Stats
 				{...getTestProps()}
-				assessmentStats={{ isFetching: false, hasFetched: false, items: [] }}
+				assessmentStats={{
+					isFetching: false,
+					hasFetched: true,
+					items: []
+				}}
 			/>
 		)
-		const tree = component.toJSON()
 
+		expect(component.root.findAllByType(AssessmentStats).length).toBe(1)
+
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Clicking on the load stats button calls loadModuleAssessmentDetails', () => {
 		const loadModuleAssessmentDetails = jest.fn()
 		const component = create(
-			<Stats
-				{...getTestProps()}
-				isFetching={false}
-				hasFetched={true}
-				loadModuleAssessmentDetails={loadModuleAssessmentDetails}
-			/>
+			<Stats {...getTestProps()} loadModuleAssessmentDetails={loadModuleAssessmentDetails} />
 		)
 
 		// Click on the Load drafts button:
