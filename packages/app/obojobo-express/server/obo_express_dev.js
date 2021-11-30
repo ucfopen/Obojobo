@@ -28,7 +28,7 @@ const getNewUserId = () => {
 		.then(result => parseInt(result.max_id, 10) + 1)
 }
 
-const createNewUser = (id, type) => {
+const createNewUser = (id, first, last, type) => {
 	// If the database is freshly reset, there won't be any users - assume the first id is 1
 	if (!id) id = 1
 	const capType = type.charAt(0).toUpperCase() + type.slice(1)
@@ -36,8 +36,8 @@ const createNewUser = (id, type) => {
 	const newUser = new User({
 		username: `sis:tst${type}${id}`,
 		email: `test_${type}_${id}@obojobo.com`,
-		firstName: 'Test',
-		lastName: `${capType} ${id}`,
+		firstName: first || 'Test',
+		lastName: last || `${capType} ${id}`,
 		roles: [capType]
 	})
 
@@ -173,15 +173,21 @@ module.exports = app => {
 					<h2>User Management Tools</h2>
 					<ul>
 						<li><b>Create new test users:</b>
-							<p>Add some inputs here for optional first/last/email etc. with reasonable defaults?</p>
-							<ul>
-								<li><a href="/dev/util/new_user?type=instructor">Create a new test instructor</a></li>
-								<li><a href="/dev/util/new_user?type=learner">Create a new test learner</a></li>
-							</ul>
+							<form id='new-user-form'
+								method='post'
+								action='/dev/util/new_user'>
+								<label for='first'>First name:</label>
+								<input type='text' name='first' placeholder='Test (Optional)'/>
+								<br/>
+								<label for='last'>Last name:</label>
+								<input type='text' name='last' placeholder='User (Optional)'/>
+								<br/>
+								<button type='submit' name='type' value='instructor'>Create new test instructor</button>
+								Note: The <b>canViewEditor</b>, <b>canCreateDrafts</b>, <b>canDeleteDrafts</b>, and <b>canPreviewDrafts</b> permissions are implicit for instructors.
+								<br/>
+								<button type='submit' name='type' value='learner'>Create new test learner</button>
+							</form>
 						</li>
-						<p>
-						Note: The <b>canViewEditor</b>, <b>canCreateDrafts</b>, <b>canDeleteDrafts</b>, and <b>canPreviewDrafts</b> permissions are implicit for instructors.
-						</p>
 						<li><b>Add permission to user:</b>
 							<form id='resource-select-form'
 								method='post'
@@ -404,9 +410,10 @@ module.exports = app => {
 		</html>`)
 	})
 
-	app.get('/dev/util/new_user', (req, res) => {
+	app.post('/dev/util/new_user', (req, res) => {
 		getNewUserId().then(newId => {
-			createNewUser(newId, req.query.type).then(() => {
+			const { first, last, type } = req.body
+			createNewUser(newId, first, last, type).then(() => {
 				res.redirect('/dev')
 			})
 		})
