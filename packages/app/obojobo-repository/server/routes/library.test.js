@@ -2,7 +2,7 @@ jest.mock('../models/collection')
 jest.mock('../models/draft_summary')
 jest.mock('obojobo-express/server/models/user')
 jest.mock('../models/draft_permissions')
-jest.mock('geopattern')
+jest.mock('trianglify')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 jest.mock(
@@ -18,7 +18,7 @@ jest.setTimeout(10000) // extend test timeout?
 
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
-let GeoPattern
+let trianglify
 
 let Collection
 let DraftSummary
@@ -66,12 +66,13 @@ describe('repository library route', () => {
 		jest.resetAllMocks()
 		mockCurrentUser = {
 			id: 99,
-			canViewEditor: true,
-			canPreviewDrafts: true,
-			canCreateDrafts: true,
-			canDeleteDrafts: true
+			perms: []
 		}
-		GeoPattern = require('geopattern')
+		trianglify = require('trianglify')
+		trianglify.mockReturnValue({
+			toSVG: jest.fn().mockReturnValue('mockTrianglifySVGInnerHTML')
+		})
+
 		Collection = require('../models/collection')
 		DraftSummary = require('../models/draft_summary')
 		UserModel = require('obojobo-express/server/models/user')
@@ -97,34 +98,34 @@ describe('repository library route', () => {
 	test('/library/module-icon/:moduleId returns the expected response with no headers', () => {
 		expect.hasAssertions()
 
-		const mockGeoPatternToString = jest.fn()
-		mockGeoPatternToString.mockReturnValueOnce('mockGeoPatternToString')
-
-		GeoPattern.generate = jest.fn()
-		GeoPattern.generate.mockReturnValueOnce({
-			toString: mockGeoPatternToString
-		})
-
 		return request(app)
 			.get('/library/module-icon/mockDraftId')
 			.then(response => {
-				expect(GeoPattern.generate).toHaveBeenCalledTimes(1)
-				expect(GeoPattern.generate).toHaveBeenCalledWith('mockDraftId')
-				expect(mockGeoPatternToString).toHaveBeenCalledTimes(1)
+				expect(trianglify).toHaveBeenCalled()
+				expect(trianglify).toHaveBeenCalledWith({
+					width: expect.any(Number),
+					height: expect.any(Number),
+					cellSize: expect.any(Number),
+					variance: expect.any(Number),
+					xColors: expect.any(String),
+					strokeWidth: expect.any(Number),
+					seed: expect.anything()
+				})
+				expect(trianglify().toSVG).toHaveBeenCalledTimes(1)
 				expect(response.statusCode).toBe(200)
 				expect(response.headers).toHaveProperty('etag', 'mockDraftId')
 				expect(response.headers).toHaveProperty('content-type')
 				expect(response.headers['content-type']).toContain('image/svg+xml')
 				//res.send will actually send a string buffer
 				expect(response.body).toBeInstanceOf(Buffer)
-				expect(response.body).toEqual(Buffer.from('mockGeoPatternToString'))
+				const bodyString = response.body.toString()
+				expect(bodyString).toContain('<svg')
+				expect(bodyString).toContain('mockTrianglifySVGInnerHTML')
 			})
 	})
 
 	test('/library/module-icon/:moduleId returns the expected response with certain headers', () => {
 		expect.hasAssertions()
-
-		GeoPattern.generate = jest.fn()
 
 		const mockRequestHeaders = {}
 		mockRequestHeaders['if-none-match'] = 'mockDraftId'
@@ -133,7 +134,7 @@ describe('repository library route', () => {
 			.get('/library/module-icon/mockDraftId')
 			.set(mockRequestHeaders)
 			.then(response => {
-				expect(GeoPattern.generate).not.toHaveBeenCalled()
+				expect(trianglify).not.toHaveBeenCalled()
 				expect(response.statusCode).toBe(304)
 				expect(response.body).toEqual({})
 			})

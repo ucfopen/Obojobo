@@ -1,0 +1,183 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--numeric-assessment {
+	$color-border: transparentize($color-shadow, 0.25);
+
+	.obojobo-draft--chunks--numeric-assessment--numeric-feedback {
+		border-radius: 0.25em;
+		margin-right: 1em;
+		background: rgba(255, 255, 255, 0.5);
+		margin-top: 1em;
+	}
+
+	> .input-section {
+		> .input-container {
+			display: flex;
+			align-items: center;
+
+			> .numeric-assessment--input {
+				@include text-input();
+
+				width: 11.3em;
+				height: 1.5em;
+
+				&:disabled {
+					background: transparentize($color-bg, 0.3);
+					border: 1px solid $color-transparent;
+				}
+			}
+
+			> .result-symbol {
+				width: 0;
+				position: relative;
+			}
+
+			> .review-flag {
+				width: 0;
+				z-index: $z-index-above-content;
+
+				> .obojobo-draft--components--flag {
+					position: relative;
+					left: -9.5em;
+
+					@include mq($until: desktop) {
+						top: -2em;
+						left: -9em;
+					}
+
+					@include mq($until: tablet) {
+						left: -7em;
+					}
+				}
+			}
+
+			> .units {
+				display: inline-block;
+				white-space: pre;
+				line-height: 1.9em;
+				vertical-align: middle;
+				margin-left: 0.5em;
+			}
+
+			> .matching-correct-answer {
+				color: $color-correct;
+				font-size: 0.8em;
+				font-family: $font-default;
+				display: inline-block;
+				white-space: nowrap;
+				vertical-align: middle;
+				margin-left: 1em;
+				line-height: 2.4em;
+
+				> .value {
+					font-family: $font-monospace;
+				}
+			}
+		}
+
+		> .review {
+			> .correct-answers {
+				margin-top: 2em;
+				font-size: 0.8em;
+				font-family: $font-default;
+
+				h2 {
+					color: $color-text;
+					font-size: 1em;
+					font-weight: bold;
+				}
+
+				ul {
+					list-style-position: inside;
+					padding: 0 1em;
+				}
+
+				.value {
+					font-family: $font-monospace;
+				}
+			}
+
+			> .no-correct-answers {
+				margin-top: 1em;
+				display: inline-block;
+			}
+		}
+	}
+
+	&.is-long-response {
+		> .input-section > .input-container > .numeric-assessment--input {
+			width: 100%;
+		}
+	}
+
+	&.is-mode-assessment {
+		/* prettier-ignore */
+		> .input-section > .input-container > .obojobo-draft--chunks--numeric-assessment--input-more-info > .obojobo-draft--components--more-info-button > .info {
+			top: -140%;
+
+			&::before {
+				top: 71%;
+			}
+		}
+	}
+
+	&.is-correct {
+		background: transparentize($color-correct, 0.9);
+
+		&.is-mode-practice {
+			.input-container {
+				.result-symbol::before {
+					content: '✔';
+					position: relative;
+					display: block;
+					color: $color-correct;
+					font-size: 2.5em;
+					left: -1em;
+					animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+
+					@include mq($until: desktop) {
+						font-size: 1.5em;
+						left: -1.1em;
+					}
+
+					@include mq($until: tablet) {
+						font-size: 1.2em;
+						position: relative;
+						left: -0.5em;
+						transform: translateY(-110%);
+					}
+				}
+			}
+		}
+	}
+
+	&.is-not-correct {
+		background: transparentize($color-incorrect, 0.9);
+
+		&.is-mode-practice {
+			.input-container {
+				.result-symbol::before {
+					content: '✖';
+					position: relative;
+					display: block;
+					color: $color-incorrect;
+					font-size: 2.5em;
+					left: -1em;
+					animation: obojobo-draft--animation--fadein 0.4s;
+
+					@include mq($until: desktop) {
+						font-size: 1.5em;
+						left: -1.1em;
+					}
+
+					@include mq($until: tablet) {
+						font-size: 1.2em;
+						position: relative;
+						left: -0.5em;
+						transform: translateY(-110%);
+					}
+				}
+			}
+		}
+	}
+}

@@ -3,65 +3,53 @@ const styleableTextRenderer = require('obojobo-document-engine/src/scripts/commo
 const xmlEncode = require('./xml-encode')
 
 const textGroupParser = textGroup => {
-	if (!textGroup) return ''
+	if (!textGroup) {
+		return ''
+	}
 
-	// Parse textGroup
-	let textGroupBodyXML = ''
-	textGroup.forEach(group => {
-		let dataXML = ''
-		for (const d in group.data) {
-			dataXML += ` ${d}="${xmlEncode(group.data[d])}"`
+	return `<textGroup>${textGroup
+		.map(t => `<t${getAttrsString(t.data)}>${textParser(t.text)}</t>`)
+		.join('')}</textGroup>`
+}
+
+const getAttrsString = attrs => {
+	if (!attrs) return ''
+
+	return (
+		' ' +
+		Object.keys(attrs)
+			.map(attrName => `${attrName}="${xmlEncode(attrs[attrName])}"`)
+			.join(' ')
+	)
+}
+
+const createChild = el => {
+	if (el.nodeType === 'text') {
+		return xmlEncode(el.text)
+	}
+
+	if (el.type === 'span') {
+		const innerXML = el.children.map(createChild).join('')
+
+		if (el.attrs && el.attrs.class && el.attrs.class === 'latex') {
+			return `<latex>${innerXML}</latex>`
+		} else if (el.attrs && el.attrs.style && el.attrs.style.color) {
+			return `<color text="${el.attrs.style.color}">${innerXML}</color>`
+		} else {
+			return innerXML
 		}
+	}
 
-		// Parse text value
-		const value = textParser(group.text)
-
-		textGroupBodyXML += `<t${dataXML}>${value}</t>`
-	})
-
-	return `<textGroup>` + textGroupBodyXML + `</textGroup>`
+	return `<${el.type}${getAttrsString(el.attrs)}>${el.children.map(createChild).join('')}</${
+		el.type
+	}>`
 }
 
 const textParser = text => {
 	const s = StyleableText.createFromObject(text)
 	s.normalizeStyles()
 
-	const mockElement = styleableTextRenderer(s)
-
-	return mockTextNodeParser(mockElement)
-}
-
-const mockTextNodeParser = mockTextNode => {
-	if (mockTextNode.nodeType === 'text') {
-		return mockElementParser(xmlEncode(mockTextNode.text || ''), mockTextNode.parent)
-	}
-
-	let mockElementChildrenStr = ''
-	if (mockTextNode.children) {
-		mockTextNode.children.forEach(child => {
-			mockElementChildrenStr += mockTextNodeParser(child)
-		})
-	}
-
-	return mockElementChildrenStr
-}
-
-const mockElementParser = (text, mockElement) => {
-	if (!mockElement) return text
-
-	const type = mockElement.type
-	let attrs = ''
-	for (const attr in mockElement.attrs) {
-		attrs += ` ${attr}="${xmlEncode(mockElement.attrs[attr])}"`
-
-		if (attr === 'class' && mockElement.attrs[attr] === 'latex') {
-			return mockElementParser(`<latex>${text}</latex>`, mockElement.parent)
-		}
-	}
-
-	text = type !== 'span' ? `<${type}${attrs}>${text}</${type}>` : text
-
-	return mockElementParser(text, mockElement.parent)
+	return createChild(styleableTextRenderer(s))
 }
 
 module.exports = textGroupParser

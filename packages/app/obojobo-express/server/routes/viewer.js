@@ -26,7 +26,7 @@ router
 		// This will prevent LTI users with a role of Learner
 		// from submitting scores back via LTI
 		// which Canvas doesn't support
-		if (!req.currentUser.canViewAsStudent) {
+		if (!req.currentUser.hasPermission('canViewAsStudent')) {
 			res.redirect(`/preview/${req.params.draftId}`)
 			return Promise.resolve()
 		}

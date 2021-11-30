@@ -1,0 +1,31 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--abstract-assessment--feedback {
+	border: 1px solid $color-shadow;
+	margin-top: -1.5em;
+	margin-left: 3em;
+	margin-right: 3em;
+	padding-top: 2em;
+	padding-bottom: 2em;
+	padding-left: 0;
+	padding-right: 0;
+	pointer-events: all;
+	background: none;
+	position: relative;
+	top: -2em;
+	border-radius: $dimension-rounded-radius;
+
+	@media (max-width: 61.24em) {
+		margin-left: 2.8em;
+		margin-right: 2.8em;
+	}
+
+	.delete-button {
+		top: 1em;
+	}
+
+	.label {
+		top: 0.5em;
+		left: 1em;
+	}
+}

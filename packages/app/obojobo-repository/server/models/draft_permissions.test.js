@@ -101,6 +101,7 @@ describe('DraftPermissions Model', () => {
 			  "firstName": "Jeffrey",
 			  "id": 1,
 			  "lastName": "Lebowski",
+			  "perms": Array [],
 			  "roles": Array [
 			    "student",
 			  ],

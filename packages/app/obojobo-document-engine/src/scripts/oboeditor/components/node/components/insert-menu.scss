@@ -1,9 +1,21 @@
 @import '~styles/includes';
 
 .editor--component--insert-menu {
+	$color-menu-border: #b2b2b2;
+	$color-menu-border-darker: darken($color-menu-border, 20%);
+	$color-menu-bg: #f9f9f9;
+	$color-highlight-bg: lighten($color-action, 50%);
+	$color-highlight-fg: darken($color-action, 10%);
+
 	position: absolute;
 	white-space: nowrap;
 	z-index: 10;
+	display: flex;
+	align-items: center;
+
+	.separator {
+		display: none;
+	}
 
 	&.align-left {
 		left: 0;
@@ -21,20 +33,23 @@
 		text-align: center;
 		text-decoration: none;
 		font-weight: bold;
-		border: solid 3px $color-shadow;
+		border: solid 2px $color-shadow;
 		border-radius: 50%;
 		color: $color-shadow;
-		background: $color-bg;
+		background-color: $color-bg;
+		margin-right: 0.2em;
+		vertical-align: middle;
+
+		&:focus {
+			outline: none;
+		}
 	}
 
 	.insert-button {
-		$color-highlight-bg: lighten($color-action, 50%);
-		$color-highlight-fg: darken($color-action, 10%);
-
 		position: relative;
 		display: none;
 		z-index: 99;
-		background-color: $color-bg;
+		background-color: $color-transparent;
 
 		span {
 			display: block;
@@ -42,9 +57,9 @@
 			left: 50%;
 			text-align: center;
 			opacity: 0;
-			background: $color-highlight-bg;
+			background-color: $color-highlight-bg;
 			color: $color-highlight-fg;
-			transform: translate(-50%, 2px);
+			transform: translate(-50%, 4px);
 			padding-left: 0.5em;
 			padding-right: 0.5em;
 			border-radius: $dimension-rounded-radius;
@@ -56,17 +71,19 @@
 
 		button {
 			display: block;
-			background-color: $color-bg2;
+			background-color: $color-transparent;
 			font-size: 1.3em;
 			color: $color-text;
 			text-align: center;
 			box-sizing: border-box;
 			padding: 0;
 			margin: 0;
-			width: 1.6em;
-			height: 1.4em;
+			width: 1.7em;
+			height: 1.5em;
 			cursor: pointer;
-			border: solid 1px $color-shadow;
+			border: none;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
 
 			&:not(:first-child) {
 				border-left: none;
@@ -74,8 +91,8 @@
 
 			svg {
 				vertical-align: top;
-				width: 32px; //stylelint-disable-line unit-blacklist
-				height: 32px; //stylelint-disable-line unit-blacklist
+				width: 32px; //stylelint-disable-line unit-disallowed-list
+				height: 32px; //stylelint-disable-line unit-disallowed-list
 				opacity: 0.7;
 
 				.fill {
@@ -88,30 +105,41 @@
 			}
 		}
 
+		&:last-child {
+			button {
+				border-top-right-radius: 0.15em;
+				border-bottom-right-radius: 0.15em;
+			}
+		}
+
 		&:hover {
+			z-index: 999;
+
 			span {
 				opacity: 1;
 			}
 
 			button {
-				background: $color-highlight-bg;
+				background-color: $color-highlight-bg;
 
 				svg {
 					opacity: 1;
 				}
 
-				.fill {
+				.fill,
+				.fill-hover {
 					fill: $color-highlight-fg;
 				}
 
-				.stroke {
+				.stroke,
+				.stroke-hover {
 					stroke: $color-highlight-fg;
 				}
 			}
 		}
 
 		button:focus {
-			background: $color-highlight-bg;
+			background-color: $color-highlight-bg;
 
 			+ span {
 				opacity: 1;
@@ -120,20 +148,47 @@
 	}
 
 	// Makes the insert menu keyboard accessible
-	&.is-open {
+	&.is-open,
+	&:hover {
 		min-width: 30em;
+		margin-left: -2px; //stylelint-disable-line unit-disallowed-list
+		background-color: $color-menu-bg;
+		border-radius: 2em;
+		border-top-right-radius: 0.5em;
+		border-bottom-right-radius: 0.5em;
+		border: 2px solid $color-menu-border;
+		height: 2em;
 
 		.insert-button {
 			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.drop-icon {
+			border: none;
+			background-color: $color-transparent;
+			color: $color-menu-border;
+			height: 1em;
+			line-height: 0;
+		}
+
+		.separator {
+			display: inline-block;
+			margin-left: 0;
+			margin-right: 0;
+			width: 1px; //stylelint-disable-line unit-disallowed-list
+			background-color: $color-shadow;
+			height: 2em;
+			vertical-align: middle;
+			pointer-events: none;
 		}
 	}
 
-	// Reveals the insert menu the expected way for mouse users
-	&:hover {
-		min-width: 30em;
+	&.is-open {
+		border: 2px solid $color-menu-border-darker;
 
-		.insert-button {
-			display: inline-block;
+		.drop-icon {
+			color: $color-menu-border-darker;
 		}
 	}
 }

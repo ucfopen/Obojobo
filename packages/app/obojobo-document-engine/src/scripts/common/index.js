@@ -15,6 +15,7 @@ import MockElement from './mockdom/mock-element'
 import MockTextNode from './mockdom/mock-text-node'
 import Modal from './components/modal/modal'
 import ModalContainer from './components/modal-container'
+import ModalPortal from './components/modal-portal'
 import ModalStore from './stores/modal-store'
 import ModalUtil from './util/modal-util'
 import MoreInfoButton from './components/more-info-button'
@@ -42,13 +43,16 @@ import TextGroupEl from './chunk/text-chunk/text-group-el'
 import TextGroupItem from './text-group/text-group-item'
 import TextGroupUtil from './text-group/text-group-util'
 import TextMenu from './components/text-menu'
+import Spinner from './components/spinner'
 import cloneProps from './util/clone-props'
 import focus from './page/focus'
 import isOrNot from './util/isornot'
 import withProtocol from './util/with-protocol'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
+import waitForElement from './util/wait-for-element'
 import debounce from './util/debounce'
+import timeoutPromise from './util/timeout-promise'
 import withoutUndefined from './util/without-undefined'
 
 export default {
@@ -70,6 +74,7 @@ export default {
 		ButtonBar,
 		MoreInfoButton,
 		Switch,
+		Spinner,
 		modal: {
 			bubble: {
 				Bubble,
@@ -79,6 +84,7 @@ export default {
 			Prompt,
 			SimpleMessage,
 			Modal,
+			ModalPortal,
 			Dialog,
 			SimpleDialog,
 			ErrorDialog,
@@ -134,12 +140,14 @@ export default {
 		ModalUtil,
 		ErrorUtil,
 		uuid,
+		waitForElement,
 		RangeParsing,
 		setProp,
 		cloneProps,
 		isOrNot,
 		withProtocol,
 		debounce,
+		timeoutPromise,
 		withoutUndefined
 	}
 }

@@ -8,24 +8,30 @@
 		margin-top: 0;
 	}
 
-	div {
-		margin: 0.5em 0;
-	}
-
-	div:first-child {
-		margin-top: 0;
-	}
-
-	div:last-child {
-		margin-bottom: 0;
-	}
-
 	> div > ul,
 	> div > ol {
 		padding-left: 3.5em;
 
 		@include mq($until: tablet) {
 			padding-left: 2em;
+		}
+	}
+
+	&.is-spacing-moderate {
+		margin-top: -0.5em;
+		margin-bottom: -0.5em;
+
+		li {
+			margin: 0.5em 0;
+		}
+	}
+
+	&.is-spacing-generous {
+		margin-top: -1em;
+		margin-bottom: -1em;
+
+		li {
+			margin: 1em 0;
 		}
 	}
 }

@@ -2,24 +2,76 @@
 
 exports[`ActionButton adapter construct builds with attributes 1`] = `
 Object {
-  "modelState": Object {
-    "listStyles": "mockStyle",
+  "dirty": false,
+  "editing": false,
+  "listStyles": "mockStyle",
+  "needsUpdate": false,
+  "spacing": "moderate",
+  "textGroup": TextGroup {
+    "dataTemplate": Object {
+      "align": "left",
+      "hangingIndent": false,
+      "indent": 0,
+    },
+    "items": Array [
+      TextGroupItem {
+        "data": Object {
+          "align": "left",
+          "hangingIndent": false,
+          "indent": 0,
+        },
+        "parent": [Circular],
+        "text": StyleableText {
+          "styleList": ChunkStyleList {
+            "styles": Array [],
+          },
+          "value": "",
+        },
+      },
+    ],
+    "maxItems": Infinity,
   },
 }
 `;
 
 exports[`ActionButton adapter construct builds without attributes 1`] = `
 Object {
-  "modelState": Object {
-    "listStyles": ListStyles {
-      "clone": [MockFunction],
-      "get": [MockFunction],
-      "getSetStyles": [MockFunction],
-      "init": [MockFunction],
-      "map": [MockFunction],
-      "set": [MockFunction],
-      "toDescriptor": [MockFunction],
+  "dirty": false,
+  "editing": false,
+  "listStyles": ListStyles {
+    "clone": [MockFunction],
+    "get": [MockFunction],
+    "getSetStyles": [MockFunction],
+    "init": [MockFunction],
+    "map": [MockFunction],
+    "set": [MockFunction],
+    "toDescriptor": [MockFunction],
+  },
+  "needsUpdate": false,
+  "spacing": "compact",
+  "textGroup": TextGroup {
+    "dataTemplate": Object {
+      "align": "left",
+      "hangingIndent": false,
+      "indent": 0,
     },
+    "items": Array [
+      TextGroupItem {
+        "data": Object {
+          "align": "left",
+          "hangingIndent": false,
+          "indent": 0,
+        },
+        "parent": [Circular],
+        "text": StyleableText {
+          "styleList": ChunkStyleList {
+            "styles": Array [],
+          },
+          "value": "",
+        },
+      },
+    ],
+    "maxItems": Infinity,
   },
 }
 `;

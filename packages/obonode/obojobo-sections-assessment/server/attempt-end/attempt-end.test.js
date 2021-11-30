@@ -57,7 +57,8 @@ describe('attempt-end', () => {
 			draftId: 'mockDraftId',
 			draftContentId: 'mockContentId',
 			assessmentId: 'mockAssessmentId',
-			state: 'mockAttemptState'
+			state: 'mockAttemptState',
+			completedAt: null
 		}
 
 		const mockCalculatedScore = {
@@ -209,7 +210,8 @@ describe('attempt-end', () => {
 			draftId: 'mockDraftId',
 			draftContentId: 'mockContentId',
 			assessmentId: 'mockAssessmentId',
-			state: 'mockAttemptState'
+			state: 'mockAttemptState',
+			completedAt: null
 		}
 
 		const mockCalculatedScore = {
@@ -299,5 +301,21 @@ describe('attempt-end', () => {
 			Error('Cannot end an attempt for a different module')
 		)
 		expect(insertEvents.insertAttemptScoredEvents).not.toHaveBeenCalled()
+	})
+
+	test('endAttempt rejects if attempt is already complete', async () => {
+		const endAttempt = require('./attempt-end')
+		const mockFetchAttemptByID = {
+			userId: 'mockAttemptUserId',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
+			assessmentId: 'mockAssessmentId',
+			state: 'mockAttemptState',
+			completedAt: 'today'
+		}
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockFetchAttemptByID)
+		await expect(endAttempt(mockReq, mockRes)).rejects.toThrow(
+			Error('Cannot end an attempt that has already ended')
+		)
 	})
 })

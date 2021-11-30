@@ -601,9 +601,9 @@ describe('VisualEditor', () => {
 		  "showPlaceholders": true,
 		  "updateObjective": [Function],
 		  "value": Array [
-		    Object {
-		      "text": "",
-		    },
+		  			Object {
+			  "text": "",
+			},
 		  ],
 		}
 	`)
@@ -626,20 +626,20 @@ describe('VisualEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
-		  "addObjective": [Function],
-		  "contentRect": null,
-		  "editable": true,
-		  "objectives": Array [],
-		  "removeObjective": [Function],
-		  "saveState": "",
-		  "showPlaceholders": true,
-		  "updateObjective": [Function],
-		  "value": Array [
-		    Object {
-		      "text": "",
-		    },
-		  ],
-		}
+			"addObjective": [Function],
+			"contentRect": null,
+			"editable": true,
+			"objectives": Array [],
+			"removeObjective": [Function],
+			"saveState": "",
+			"showPlaceholders": true,
+			"updateObjective": [Function],
+			"value": Array [
+			  Object {
+				"text": "",
+			  },
+			],
+		  }
 	`)
 	})
 

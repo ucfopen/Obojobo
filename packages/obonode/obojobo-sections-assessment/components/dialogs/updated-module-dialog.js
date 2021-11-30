@@ -2,9 +2,8 @@ import React from 'react'
 import Common from 'Common'
 
 const { Dialog } = Common.components.modal
-const { ModalUtil } = Common.util
 
-const UpdatedModuleDialog = ({ onConfirm }) => (
+const UpdatedModuleDialog = ({ onClose, onRestart }) => (
 	<Dialog
 		preventEsc
 		width="32rem"
@@ -14,11 +13,11 @@ const UpdatedModuleDialog = ({ onConfirm }) => (
 				value: 'Close Dialog',
 				altAction: true,
 				default: true,
-				onClick: ModalUtil.hide
+				onClick: onClose
 			},
 			{
 				value: 'Restart',
-				onClick: onConfirm
+				onClick: onRestart
 			}
 		]}
 	>
