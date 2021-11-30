@@ -1,4 +1,3 @@
-jest.mock('../models/draft_summary')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 jest.mock(
@@ -37,8 +36,6 @@ jest.mock('obojobo-repository/shared/components/pages/page-stats-server')
 
 const componentPropsDesiredProperties = ['title', 'currentUser', 'allModules']
 
-let DraftSummary
-
 // setup express server
 const path = require('path')
 const request = require('supertest')
@@ -65,21 +62,6 @@ app.use('/', require('obojobo-express/server/express_response_decorator'))
 app.use('/', require('obojobo-repository/server/routes/stats'))
 
 describe('repository stats route', () => {
-	const mockModuleSummary = [
-		{
-			draftId: 'mockDraftId',
-			title: 'mockDraftTitle'
-		},
-		{
-			draftId: 'mockDraftId2',
-			title: 'mockDraftTitle2'
-		},
-		{
-			draftId: 'mockDraftId3',
-			title: 'mockDraftTitle3'
-		}
-	]
-
 	beforeEach(() => {
 		jest.resetAllMocks()
 		mockCurrentUser = {
@@ -87,7 +69,6 @@ describe('repository stats route', () => {
 			// return true when the perm being asked about is 'canViewStatsPage
 			hasPermission: perm => perm === 'canViewStatsPage'
 		}
-		DraftSummary = require('../models/draft_summary')
 
 		//there's extra express garbage attached to the props we care about
 		//this roundabout solution exists to only pull out the ones we want
@@ -109,66 +90,23 @@ describe('repository stats route', () => {
 
 		expect.hasAssertions()
 
-		DraftSummary.fetchByUserId = jest.fn()
-		DraftSummary.fetchAll = jest.fn()
-
 		return request(app)
 			.get('/stats')
 			.then(response => {
-				expect(DraftSummary.fetchAll).toHaveBeenCalledTimes(0)
-				expect(DraftSummary.fetchByUserId).toHaveBeenCalledTimes(0)
-
 				expect(mockStatsComponent).toHaveBeenCalledTimes(0)
 				expect(response.statusCode).toBe(401)
 			})
 	})
 
-	test('get /stats sends the correct props to the Stats component when the user does not have canViewSystemStats', () => {
+	test('get /stats sends the correct props to the Stats component when the user has canViewStatsPage', () => {
 		expect.hasAssertions()
-
-		DraftSummary.fetchByUserId = jest.fn()
-		DraftSummary.fetchAll = jest.fn()
-		DraftSummary.fetchByUserId.mockResolvedValueOnce(mockModuleSummary)
 
 		return request(app)
 			.get('/stats')
 			.then(response => {
-				expect(DraftSummary.fetchAll).toHaveBeenCalledTimes(0)
-
-				expect(DraftSummary.fetchByUserId).toHaveBeenCalledTimes(1)
-				expect(DraftSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
-
 				expect(mockStatsComponent).toHaveBeenCalledTimes(1)
 				expect(mockStatsComponentConstructor).toHaveBeenCalledWith({
 					title: 'Stats',
-					allModules: mockModuleSummary,
-					currentUser: mockCurrentUser
-				})
-				expect(response.statusCode).toBe(200)
-			})
-	})
-
-	test('get /stats sends the correct props to the Stats component when the user has canViewSystemStats', () => {
-		mockCurrentUser.hasPermission = perm =>
-			perm === 'canViewStatsPage' || perm === 'canViewSystemStats'
-
-		expect.hasAssertions()
-
-		DraftSummary.fetchByUserId = jest.fn()
-		DraftSummary.fetchAll = jest.fn()
-		DraftSummary.fetchAll.mockResolvedValueOnce(mockModuleSummary)
-
-		return request(app)
-			.get('/stats')
-			.then(response => {
-				expect(DraftSummary.fetchByUserId).toHaveBeenCalledTimes(0)
-
-				expect(DraftSummary.fetchAll).toHaveBeenCalledTimes(1)
-
-				expect(mockStatsComponent).toHaveBeenCalledTimes(1)
-				expect(mockStatsComponentConstructor).toHaveBeenCalledWith({
-					title: 'Stats',
-					allModules: mockModuleSummary,
 					currentUser: mockCurrentUser
 				})
 				expect(response.statusCode).toBe(200)
