@@ -207,7 +207,7 @@ module.exports = app => {
 								}
 							</form>
 						</li>
-						<li><b>Add permission to user:</b>
+						<li><b>Remove permission from user:</b>
 							<form id='resource-select-form'
 								method='post'
 								action='/dev/util/permission'>
