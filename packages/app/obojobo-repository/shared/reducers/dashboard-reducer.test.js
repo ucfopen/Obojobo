@@ -24,7 +24,10 @@ const {
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
 	SHOW_ASSESSMENT_SCORE_DATA,
-	RESTORE_VERSION
+	RESTORE_VERSION,
+	GET_MODULES,
+	GET_DELETED_MODULES,
+	BULK_RESTORE_MODULES
 } = require('../actions/dashboard-actions')
 
 const Pack = require('redux-pack')
@@ -659,6 +662,143 @@ describe('Dashboard Reducer', () => {
 			hasFetched: true,
 			items: mockAttemptItems
 		})
+	})
+
+	test('GET_MODULES action modifies state correctly', () => {
+		// With user currently looking at "My Deleted Modules" page
+		const initialState = {
+			myModules: [
+				{
+					draftId: 'mockDraftId',
+					title: 'A Mock Module'
+				},
+				{
+					draftId: 'mockDraftId2',
+					title: 'B Mock Module'
+				},
+				{
+					draftId: 'mockDraftId3',
+					title: 'C Mock Module'
+				}
+			],
+			selectedModules: [],
+			showDeletedModules: true
+		}
+
+		const undeletedModules = [
+			{
+				draftId: 'mockDraftId4',
+				title: 'D Mock Module'
+			},
+			{
+				draftId: 'mockDraftId5',
+				title: 'E Mock Module'
+			}
+		]
+
+		const action = {
+			type: GET_MODULES,
+			payload: {
+				value: undeletedModules,
+				showDeletedModules: false
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+		const newState = handleSuccess(handler)
+		expect(newState.myModules).toEqual(undeletedModules)
+		expect(newState.showDeletedModules).toBe(false)
+	})
+
+	test('GET_DELETED_MODULES action modifies state correctly', () => {
+		// With user currently looking at "My Modules" page
+		const initialState = {
+			myModules: [
+				{
+					draftId: 'mockDraftId',
+					title: 'A Mock Module'
+				},
+				{
+					draftId: 'mockDraftId2',
+					title: 'B Mock Module'
+				},
+				{
+					draftId: 'mockDraftId3',
+					title: 'C Mock Module'
+				}
+			],
+			selectedModules: [],
+			showDeletedModules: true
+		}
+
+		const deletedModules = [
+			{
+				draftId: 'mockDraftId4',
+				title: 'D Mock Module'
+			},
+			{
+				draftId: 'mockDraftId5',
+				title: 'E Mock Module'
+			}
+		]
+
+		const action = {
+			type: GET_DELETED_MODULES,
+			payload: {
+				value: deletedModules,
+				showDeletedModules: true
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+		const newState = handleSuccess(handler)
+		expect(newState.myModules).toEqual(deletedModules)
+		expect(newState.showDeletedModules).toBe(true)
+	})
+
+	test('BULK_RESTORE_MODULES action modifies state correctly', () => {
+		const mockModuleList = [
+			{
+				draftId: 'mockDraftId',
+				title: 'A Mock Module'
+			},
+			{
+				draftId: 'mockDraftId2',
+				title: 'B Mock Module'
+			},
+			{
+				draftId: 'mockDraftId3',
+				title: 'C Mock Module'
+			}
+		]
+
+		const initialState = {
+			multiSelectMode: true,
+			showDeletedModules: true,
+			selectedModules: ['mockDraftId'],
+			myModules: [
+				{
+					draftId: 'mockDraftId3',
+					title: 'C Mock Module'
+				}
+			]
+		}
+
+		const action = {
+			type: BULK_RESTORE_MODULES,
+			payload: {
+				value: mockModuleList
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+		const newState = handleSuccess(handler)
+
+		expect(newState.myModules).not.toEqual(initialState.myModules)
+		expect(newState.myModules).toEqual(mockModuleList)
+		expect(newState.selectedModules).toEqual([])
+		expect(newState.multiSelectMode).toBe(false)
+		expect(newState.showDeletedModules).toBe(false)
 	})
 
 	test('unrecognized action types just return the current state', () => {

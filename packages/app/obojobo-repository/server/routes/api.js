@@ -56,6 +56,15 @@ router
 	})
 
 router
+	.route('/drafts-deleted')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		return DraftSummary.fetchDeletedByUserId(req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+router
 	.route('/drafts/:draftId/revisions')
 	.get([
 		requireCurrentUser,

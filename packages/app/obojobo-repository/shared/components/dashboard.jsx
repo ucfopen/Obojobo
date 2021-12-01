@@ -146,7 +146,16 @@ function Dashboard(props) {
 	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 
-	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
+	let moduleList = []
+	if (
+		props.filteredModules &&
+		props.filteredModules.length > 0 &&
+		typeof props.filteredModules !== 'undefined'
+	) {
+		moduleList = props.filteredModules
+	} else {
+		moduleList = props.myModules
+	}
 
 	const onKeyUp = e => {
 		if (e.key === 'Escape' && props.multiSelectMode && props.deselectModules) {
@@ -199,6 +208,22 @@ function Dashboard(props) {
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
 	}
 
+	const restoreModules = draftIds => {
+		setIsLoading(true)
+		props.bulkRestoreModules(draftIds).then(() => {
+			setIsLoading(false)
+			alert('The selected modules were successfully restored.')
+		})
+	}
+
+	const switchTabs = () => {
+		if (props.showDeletedModules) {
+			props.getModules()
+		} else {
+			props.getDeletedModules()
+		}
+	}
+
 	// Set a cookie when sortOrder changes on the client
 	// can't undefine document to test this 'else' case without breaking everything - maybe later
 	/* istanbul ignore else */
@@ -227,6 +252,23 @@ function Dashboard(props) {
 		'repository--item-list--collection--item--multi-wrapper '
 	itemCollectionMultiWrapperClassName += isLoading ? 'fade' : ''
 
+	const dashboardTitle = props.showDeletedModules ? 'My Deleted Modules' : 'My Modules'
+	const actionButtonMultiOperation = props.showDeletedModules ? (
+		<Button
+			className="multi-select secondary-button dangerous-button"
+			onClick={() => restoreModules(props.selectedModules)}
+		>
+			Restore All
+		</Button>
+	) : (
+		<Button
+			className="multi-select secondary-button dangerous-button"
+			onClick={() => deleteModules(props.selectedModules)}
+		>
+			Delete All
+		</Button>
+	)
+
 	return (
 		<span id="dashboard-root">
 			<RepositoryNav
@@ -242,12 +284,7 @@ function Dashboard(props) {
 					{props.multiSelectMode ? (
 						<div className="repository--main-content--control-bar is-multi-select-mode">
 							<span className="module-count">{getModuleCount(props.selectedModules)}</span>
-							<Button
-								className="multi-select secondary-button dangerous-button"
-								onClick={() => deleteModules(props.selectedModules)}
-							>
-								Delete All
-							</Button>
+							{actionButtonMultiOperation}
 							<Button
 								className="close-button"
 								onClick={() => props.deselectModules(props.selectedModules)}
@@ -257,11 +294,28 @@ function Dashboard(props) {
 						</div>
 					) : (
 						<div className="repository--main-content--control-bar is-not-multi-select-mode">
-							<MultiButton title="New Module">
-								<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
-								<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
-								<Button onClick={props.importModuleFile}>Upload...</Button>
-							</MultiButton>
+							{props.showDeletedModules ? (
+								<Button className="dashboard-menu-button go-back-container" onClick={switchTabs}>
+									<div className="go-back-icon">
+										<svg viewBox="0 0 134 150" version="1.1" xmlns="http://www.w3.org/2000/svg">
+											<path d="M 25,50 97.5,5 97.5,95 Z" />
+										</svg>
+									</div>
+									<span>Go back to my modules</span>
+								</Button>
+							) : (
+								<div className="repository-tab-buttons">
+									<MultiButton title="New Module">
+										<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
+										<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
+										<Button onClick={props.importModuleFile}>Upload...</Button>
+									</MultiButton>
+									<Button className="dashboard-menu-button" onClick={switchTabs}>
+										<div className="trash-can-icon"></div>
+										<span>Deleted modules</span>
+									</Button>
+								</div>
+							)}
 							<Search
 								value={props.moduleSearchString}
 								placeholder="Filter..."
@@ -270,7 +324,7 @@ function Dashboard(props) {
 						</div>
 					)}
 					<div className="repository--main-content--title">
-						<span>My Modules</span>
+						<span>{dashboardTitle}</span>
 						<div className="repository--main-content--sort">
 							<span>Sort</span>
 							<select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
@@ -293,6 +347,7 @@ function Dashboard(props) {
 											onSelect={e => handleSelectModule(e, draft.draftId, index)}
 											key={draft.draftId}
 											hasMenu={true}
+											isDeleted={props.showDeletedModules}
 											{...draft}
 										/>
 									))}
