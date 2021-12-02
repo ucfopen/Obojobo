@@ -8,6 +8,8 @@ dayjs.extend(advancedFormat)
 
 const JSON_MIME_TYPE = 'application/json'
 const XML_MIME_TYPE = 'application/xml'
+const XML_MIME_TYPE1 = 'text/xml'
+
 const defaultOptions = () => ({
 	method: 'GET',
 	credentials: 'include',
@@ -275,7 +277,11 @@ const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	const file = event.target.files[0]
 	if (!file) return boundResolve()
 	// avoid usage in case a browser allows file upload despite invalid mime type
-	if (file.type !== `${XML_MIME_TYPE}` && file.type !== `${JSON_MIME_TYPE}`) {
+	if (
+		file.type !== `${XML_MIME_TYPE}` &&
+		file.type !== `${JSON_MIME_TYPE}` &&
+		file.type !== `${XML_MIME_TYPE1}`
+	) {
 		// eslint-disable-next-line no-alert
 		window.alert('Invalid file, acceptable file types are JSON and XML.')
 		return boundResolve()
