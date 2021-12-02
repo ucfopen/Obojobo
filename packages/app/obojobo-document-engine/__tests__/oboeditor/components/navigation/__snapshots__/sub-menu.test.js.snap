@@ -30,7 +30,18 @@ exports[`SubMenu SubMenu component adds page 1`] = `
     }
   ],
   \\"showMoveButtons\\": true,
-  \\"isAssessment\\": false
+  \\"isAssessment\\": false,
+  \\"navItems\\": [
+    {
+      \\"id\\": 5,
+      \\"type\\": \\"link\\",
+      \\"label\\": \\"label5\\",
+      \\"contentType\\": \\"Page\\",
+      \\"flags\\": {
+        \\"assessment\\": false
+      }
+    }
+  ]
 }</div><div class=\\"add-page\\"><button class=\\"add-page-button\\">+ Page</button></div></li>"
 `;
 
@@ -92,7 +103,17 @@ exports[`SubMenu SubMenu component selected as assessment 1`] = `
     }
   ],
   "showMoveButtons": false,
-  "isAssessment": true
+  "isAssessment": true,
+  "navItems": [
+    {
+      "id": 6,
+      "type": "link",
+      "label": "label6",
+      "flags": {
+        "assessment": true
+      }
+    }
+  ]
 }
   </div>
 </li>

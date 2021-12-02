@@ -33,7 +33,12 @@ class ActionButton extends React.Component {
 	showTriggersModal() {
 		freezeEditor(this.props.editor)
 		ModalUtil.show(
-			<TriggerListModal content={this.props.element.content} onClose={this.closeModal} />
+			<TriggerListModal
+				content={this.props.element.content}
+				onClose={this.closeModal}
+				elements={this.props.elements}
+				navItems={this.props.navItems}
+			/>
 		)
 	}
 

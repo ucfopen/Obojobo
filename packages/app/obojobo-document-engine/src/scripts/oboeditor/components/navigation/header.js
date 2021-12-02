@@ -104,6 +104,8 @@ class Header extends React.Component {
 					savePage={this.props.savePage}
 					contentDescription={contentDescription}
 					markUnsaved={this.props.markUnsaved}
+					elements={this.props.list[this.props.index].children}
+					navItems={this.props.list}
 					hideButtonBar
 				/>
 			</li>

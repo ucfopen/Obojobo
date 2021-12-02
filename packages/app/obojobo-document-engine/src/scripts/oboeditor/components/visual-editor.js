@@ -586,7 +586,6 @@ class VisualEditor extends React.Component {
 						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
-								// navItems={this.props.navState.navItems}
 								renderElement={this.renderElement}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
