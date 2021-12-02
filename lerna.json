@@ -1,8 +1,6 @@
 {
-  "packages": [
-    "packages/**/*"
-  ],
-  "version": "13.2.1",
+  "packages": ["packages/**/*"],
+  "version": "14.0.0-alpha.1",
   "command": {
     "command": {
       "run": {
@@ -10,13 +8,7 @@
       }
     },
     "version": {
-      "allowBranch": [
-        "master",
-        "main",
-        "issue/*",
-        "dev/*",
-        "hotfix/*"
-      ]
+      "allowBranch": ["master", "main", "issue/*", "dev/*", "hotfix/*"]
     }
   }
 }
