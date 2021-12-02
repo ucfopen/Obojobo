@@ -4,10 +4,12 @@ import { ReactEditor } from 'slate-react'
 import LeftIcon from '../../assets/left-icon'
 import RightIcon from '../../assets/right-icon'
 import CenterIcon from '../../assets/center-icon'
+import JustifyIcon from '../../assets/justify-icon'
 
 const ALIGN_RIGHT = 'right'
 const ALIGN_CENTER = 'center'
 const ALIGN_LEFT = 'left'
+const ALIGN_JUSTIFY = 'justify'
 
 const AlignMarks = {
 	plugins: {
@@ -25,10 +27,19 @@ const AlignMarks = {
 				case 'e':
 					event.preventDefault()
 					return editor.setAlign(ALIGN_CENTER)
+				case 'j':
+					event.preventDefault()
+					return editor.setAlign(ALIGN_JUSTIFY)
 			}
+		},
+		renderLeaf(props) {
+			console.log("renderLeaf executed")
+			console.log(props)
 		},
 		commands: {
 			setAlign: (editor, align) => {
+				console.log("align:")
+				console.log(align)
 				const list = Array.from(
 					Editor.nodes(editor, {
 						mode: 'lowest',
@@ -65,6 +76,13 @@ const AlignMarks = {
 			type: ALIGN_RIGHT,
 			icon: RightIcon,
 			action: editor => editor.setAlign(ALIGN_RIGHT)
+		},
+		{
+			name: 'Justify',
+			shortcut: 'Shift+J',
+			type: ALIGN_JUSTIFY,
+			icon: JustifyIcon,
+			action: editor => editor.setAlign(ALIGN_JUSTIFY)
 		}
 	]
 }
