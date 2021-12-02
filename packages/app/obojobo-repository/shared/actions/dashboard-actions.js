@@ -7,8 +7,8 @@ dayjs.extend(advancedFormat)
 // =================== API =======================
 
 const JSON_MIME_TYPE = 'application/json'
-const XML_MIME_TYPE = 'application/xml'
-const XML_MIME_TYPE1 = 'text/xml'
+const XML_MIME_TYPE_APPLICATION = 'application/xml'
+const XML_MIME_TYPE_TEXT = 'text/xml'
 
 const defaultOptions = () => ({
 	method: 'GET',
@@ -267,7 +267,7 @@ const promptUserForModuleFileUpload = async () => {
 	return new Promise((resolve, reject) => {
 		const fileSelector = document.createElement('input')
 		fileSelector.setAttribute('type', 'file')
-		fileSelector.setAttribute('accept', `${JSON_MIME_TYPE}, ${XML_MIME_TYPE}`)
+		fileSelector.setAttribute('accept', `${JSON_MIME_TYPE}, ${XML_MIME_TYPE_APPLICATION}`)
 		fileSelector.onchange = moduleUploadFileSelected.bind(this, resolve, reject)
 		fileSelector.click()
 	})
@@ -278,9 +278,9 @@ const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	if (!file) return boundResolve()
 	// avoid usage in case a browser allows file upload despite invalid mime type
 	if (
-		file.type !== `${XML_MIME_TYPE}` &&
+		file.type !== `${XML_MIME_TYPE_APPLICATION}` &&
 		file.type !== `${JSON_MIME_TYPE}` &&
-		file.type !== `${XML_MIME_TYPE1}`
+		file.type !== `${XML_MIME_TYPE_TEXT}`
 	) {
 		// eslint-disable-next-line no-alert
 		window.alert('Invalid file, acceptable file types are JSON and XML.')
@@ -296,7 +296,7 @@ const moduleUploadFileLoaded = async (boundResolve, boundReject, fileType, e) =>
 	try {
 		const body = {
 			content: e.target.result,
-			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE
+			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE_APPLICATION
 		}
 
 		await apiCreateNewModule(false, body)
