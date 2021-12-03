@@ -135,6 +135,11 @@ const apiGetMyCollections = () => {
 	return fetch('/api/collections', defaultOptions()).then(res => res.json())
 }
 
+const apiRestoreModule = draftId => {
+	const options = { ...defaultOptions(), method: 'PUT' }
+	return fetch(`/api/drafts/restore/${draftId}`, options).then(res => res.json())
+}
+
 const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
 }
@@ -170,6 +175,10 @@ const apiRenameCollection = (id, title) => {
 const apiDeleteCollection = collection => {
 	const options = { ...defaultOptions(), method: 'DELETE' }
 	return fetch(`/api/collections/${collection.id}`, options).then(res => res.json())
+}
+
+const apiGetMyDeletedModules = () => {
+	return fetch('/api/drafts-deleted', defaultOptions()).then(res => res.json())
 }
 
 const apiCreateNewModule = (useTutorial, moduleContent, collectionId = null) => {
@@ -355,6 +364,12 @@ const bulkRemoveModulesFromCollection = (draftIds, collectionId) => ({
 	).then(() => apiGetModulesForCollection(collectionId))
 })
 
+const BULK_RESTORE_MODULES = 'BULK_RESTORE_MODULES'
+const bulkRestoreModules = draftIds => ({
+	type: BULK_RESTORE_MODULES,
+	promise: Promise.all(draftIds.map(id => apiRestoreModule(id))).then(apiGetMyModules)
+})
+
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false, options = { ...defaultModuleModeOptions }) => {
 	let apiModuleGetCall
@@ -536,6 +551,18 @@ const importModuleFile = searchString => ({
 	promise: promptUserForModuleFileUpload(searchString)
 })
 
+const GET_DELETED_MODULES = 'GET_DELETED_MODULES'
+const getDeletedModules = () => ({
+	type: GET_DELETED_MODULES,
+	promise: apiGetMyDeletedModules()
+})
+
+const GET_MODULES = 'GET_MODULES'
+const getModules = () => ({
+	type: GET_MODULES,
+	promise: apiGetMyModules()
+})
+
 const promptUserForModuleFileUpload = async () => {
 	return new Promise((resolve, reject) => {
 		const fileSelector = document.createElement('input')
@@ -606,6 +633,9 @@ module.exports = {
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
 	SHOW_ASSESSMENT_SCORE_DATA,
+	GET_DELETED_MODULES,
+	GET_MODULES,
+	BULK_RESTORE_MODULES,
 	filterModules,
 	filterCollections,
 	selectModules,
@@ -642,5 +672,8 @@ module.exports = {
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock,
-	showAssessmentScoreData
+	showAssessmentScoreData,
+	getDeletedModules,
+	getModules,
+	bulkRestoreModules
 }

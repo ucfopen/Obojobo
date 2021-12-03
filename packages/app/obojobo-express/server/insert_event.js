@@ -12,25 +12,6 @@ module.exports = async insertObject => {
 			insertObject
 		)
 
-		if (insertObject.caliperPayload) {
-			// Add in internal event id to extensions object:
-			if (!insertObject.caliperPayload.extensions) {
-				insertObject.caliperPayload.extensions = {}
-			}
-			insertObject.caliperPayload.extensions.internalEventId = insertEventResult.id
-
-			// Don't bother including this in the promise chain
-			// It's considered a non-essential insert and we're
-			// not going to wait for it
-			await t.none(
-				`
-				INSERT INTO caliper_store
-				(payload, is_preview)
-				VALUES ($[caliperPayload], $[isPreview])`,
-				insertObject
-			)
-		}
-
 		return insertEventResult
 	})
 }

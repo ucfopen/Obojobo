@@ -999,6 +999,21 @@ describe('api draft route', () => {
 					'message',
 					'You must be the author of this draft to delete it'
 				)
+		})
+	})
+
+	// restore draft
+	test('restore draft returns successfully', () => {
+		expect.assertions(4)
+		DraftModel.restoreByIdAndUser.mockResolvedValueOnce('mock-db-result')
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
+		return request(app)
+			.put('/api/drafts/restore/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-db-result')
 			})
 	})
 })

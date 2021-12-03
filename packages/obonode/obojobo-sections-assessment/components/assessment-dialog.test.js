@@ -300,17 +300,19 @@ describe('AssessmentDialog renders as expected', () => {
 				}
 			}
 		}
-		const spy = jest.spyOn(AssessmentUtil, 'startAttempt').mockReturnValue({})
+		Object.defineProperty(window, 'location', {
+			value: { reload: jest.fn() }
+		})
 
-		expect(AssessmentUtil.startAttempt).not.toHaveBeenCalled()
+		expect(window.location.reload).not.toHaveBeenCalled()
 
 		const component = renderer.create(<AssessmentDialog {...props} />)
 		const button = component.root.findAllByType('button')[1]
 		button.props.onClick()
 
-		expect(AssessmentUtil.startAttempt).toHaveBeenCalledWith(props.assessmentModel)
+		expect(window.location.reload).toHaveBeenCalled()
 
-		spy.mockRestore()
+		// spy.mockRestore()
 	})
 
 	test('END_ATTEMPT_SUCCESSFUL, clicking ok closes the dialog', () => {

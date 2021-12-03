@@ -24,7 +24,7 @@ const ButtonLink = require('./button-link')
 
 const short = require('short-uuid')
 
-const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
+const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../repository-constants')
 
 const renderOptionsDialog = (props, extension) => (
 	<ModuleOptionsDialog
@@ -385,6 +385,7 @@ function Dashboard(props) {
 					isMultiSelectMode={props.multiSelectMode}
 					onSelect={e => handleSelectModule(e, draft.draftId, index)}
 					hasMenu={true}
+					isDeleted={props.mode === MODE_DELETED}
 					{...draft}
 				/>
 			</div>
@@ -411,6 +412,15 @@ function Dashboard(props) {
 		)
 		if (response !== 'DELETE') return
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
+	}
+
+	const restoreModules = draftIds => {
+		setIsLoading(true)
+		props.bulkRestoreModules(draftIds).then(() => {
+			setIsLoading(false)
+			// eslint-disable-next-line no-alert
+			window.alert('The selected modules were successfully restored.')
+		})
 	}
 
 	// Set a cookie when moduleSortOrder changes on the client
@@ -584,6 +594,10 @@ function Dashboard(props) {
 			renderCollectionArea()
 			modulesTitle = 'My Modules'
 			break
+		// url is /dashboard/deleted
+		case MODE_DELETED:
+			modulesTitle = 'My Deleted Modules'
+			break
 		// url is /dashboard
 		case MODE_RECENT:
 		default:
@@ -620,18 +634,37 @@ function Dashboard(props) {
 
 	let mainControlBarRender = (
 		<div className="repository--main-content--control-bar is-not-multi-select-mode">
-			<MultiButton title="New...">
-				{newCollectionOptionsRender}
-				{newModuleButtonRender}
-				<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
-				<Button onClick={props.importModuleFile}>Upload...</Button>
-			</MultiButton>
+			{
+				props.mode === MODE_DELETED ?
+				<ButtonLink
+					className="repository--all-modules--button"
+					url="/dashboard/all"
+					target="_blank"
+				>
+					Return to All Modules
+				</ButtonLink>
+				:
+				<MultiButton title="New...">
+					{newCollectionOptionsRender}
+					{newModuleButtonRender}
+					<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
+					<Button onClick={props.importModuleFile}>Upload...</Button>
+				</MultiButton>
+			}
 			{collectionManageAreaRender}
 			{moduleFilterRender}
 		</div>
 	)
 	if (props.multiSelectMode && props.selectedModules.length > 0) {
 		let bulkCollectionActionButton = null
+		let bulkActionButton = (
+			<Button
+				className="multi-select secondary-button dangerous-button"
+				onClick={() => deleteModules(props.selectedModules)}
+			>
+				Delete All
+			</Button>
+		)
 		switch (props.mode) {
 			case MODE_COLLECTION:
 				bulkCollectionActionButton = (
@@ -640,6 +673,16 @@ function Dashboard(props) {
 						onClick={() => removeModulesFromCollection(props.selectedModules)}
 					>
 						Remove All From Collection
+					</Button>
+				)
+				break
+			case MODE_DELETED:
+				bulkActionButton = (
+					<Button
+						className="multi-select secondary-button dangerous-button"
+						onClick={() => restoreModules(props.selectedModules)}
+					>
+						Restore All
 					</Button>
 				)
 				break
@@ -661,12 +704,7 @@ function Dashboard(props) {
 			<div className="repository--main-content--control-bar is-multi-select-mode">
 				<span className="module-count">{getModuleCount(props.selectedModules)}</span>
 				{bulkCollectionActionButton}
-				<Button
-					className="multi-select secondary-button dangerous-button"
-					onClick={() => deleteModules(props.selectedModules)}
-				>
-					Delete All
-				</Button>
+				{bulkActionButton}
 				<Button
 					className="close-button"
 					onClick={() => props.deselectModules(props.selectedModules)}

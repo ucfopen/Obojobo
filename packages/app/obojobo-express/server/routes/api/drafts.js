@@ -273,4 +273,15 @@ router
 			.catch(res.unexpected)
 	})
 
+// Restore a Draft
+// mounted as /api/drafts/restore/:draftId
+router
+	.route('/restore/:draftId')
+	.put([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
+	.put((req, res) => {
+		return DraftModel.restoreByIdAndUser(req.params.draftId, req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
 module.exports = router

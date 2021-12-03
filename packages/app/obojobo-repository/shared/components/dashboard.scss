@@ -27,10 +27,57 @@
 			button.secondary-button {
 				margin: 0.3em 0.2em;
 				font-size: 0.65em;
+				width: 7em;
 			}
 
 			button.close-button {
 				background: none;
+			}
+		}
+
+		.repository-tab-buttons {
+			display: flex;
+			align-items: center;
+			gap: 0.5em;
+		}
+
+		.dashboard-menu-button {
+			min-height: 2.6em;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 0.5em;
+			position: relative;
+			border: 1px solid $color-action;
+			font-size: 0.65em;
+
+			.trash-can-icon {
+				width: 1.6em;
+				height: 1.6em;
+				background: url('./layouts/trash_can.svg') center center no-repeat;
+			}
+
+			&.go-back-container span {
+				margin-left: 2em;
+			}
+
+			.go-back-icon {
+				position: absolute;
+				height: 2.3em;
+				width: 2.3em;
+				left: 0.3em;
+				top: 50%;
+				transform: translate(0, -50%);
+
+				svg {
+					position: relative;
+					height: 100%;
+					width: 100%;
+					fill: white;
+					stroke-width: 0.5em;
+					stroke: $color-action;
+					top: 0.35em;
+				}
 			}
 		}
 	}

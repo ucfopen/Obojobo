@@ -96,7 +96,7 @@ class NavStore extends Store {
 				'nav:prev': () => {
 					oldNavTargetId = this.state.navTargetId
 					const prev = NavUtil.getPrev(this.state)
-					if (this.gotoItem(prev)) {
+					if (!this.state.locked && this.gotoItem(prev)) {
 						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:prev',
@@ -112,7 +112,7 @@ class NavStore extends Store {
 				'nav:next': () => {
 					oldNavTargetId = this.state.navTargetId
 					const next = NavUtil.getNext(this.state)
-					if (this.gotoItem(next)) {
+					if (!this.state.locked && this.gotoItem(next)) {
 						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:next',
@@ -134,6 +134,8 @@ class NavStore extends Store {
 
 						return
 					}
+
+					if (this.state.locked) return
 
 					oldNavTargetId = this.state.navTargetId
 					const navItem = this.state.itemsById[payload.value.id]

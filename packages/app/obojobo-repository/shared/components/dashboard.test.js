@@ -140,6 +140,7 @@ describe('Dashboard', () => {
 	let dashboardProps
 	let short
 
+	const originalAlert = global.alert
 	const originalConfirm = window.confirm
 	const originalLocationAssign = window.location.assign
 
@@ -160,10 +161,12 @@ describe('Dashboard', () => {
 		})
 
 		ReactModal.setAppElement = jest.fn()
+		delete global.alert
 	})
 
 	beforeEach(() => {
 		jest.resetAllMocks()
+		global.alert = jest.fn()
 
 		dashboardProps = {
 			currentUser: {
@@ -209,7 +212,10 @@ describe('Dashboard', () => {
 				hasFetched: false,
 				items: []
 			},
-			closeModal: jest.fn()
+			closeModal: jest.fn(),
+			getModules: jest.fn(),
+			getDeletedModules: jest.fn(),
+			bulkRestoreModules: jest.fn(() => Promise.resolve())
 		}
 
 		short = require('short-uuid')
@@ -224,6 +230,7 @@ describe('Dashboard', () => {
 	})
 
 	afterAll(() => {
+		global.alert = originalAlert
 		window.confirm = originalConfirm
 		window.location.assign = originalLocationAssign
 	})
@@ -1865,5 +1872,75 @@ describe('Dashboard', () => {
 			dashboardProps.collection
 		])
 		expect(window.location.assign).toBeCalledWith('/dashboard')
+	})
+
+	test('restoreModules function gets called as expected', async () => {
+		// Let's first show the deleted modules page so that the Restore All
+		// button shows up
+		const props = {
+			...dashboardProps,
+			showDeletedModules: true,
+			multiSelectMode: true
+		}
+		const reusableComponent = <Dashboard {...props} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		// Actual testing starts here
+		const mockClickEvent = { preventDefault: jest.fn() }
+
+		const restoreAllButton = component.root.findAllByType(Button)[0]
+		expect(restoreAllButton.children[0].children[0]).toBe('Restore All')
+
+		await act(async () => {
+			restoreAllButton.props.onClick(mockClickEvent)
+		})
+		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalled()
+
+		component.unmount()
+
+		return dashboardProps.bulkRestoreModules().then(() => {
+			expect(global.alert).toHaveBeenCalledTimes(1)
+			expect(global.alert).toHaveBeenCalledWith('The selected modules were successfully restored.')
+		})
+	})
+
+	test('dashboard switch tabs as expected', () => {
+		// Dashboard opens up at 'My Modules' tab
+		let props = {
+			...dashboardProps,
+			showDeletedModules: false,
+			multiSelectMode: false
+		}
+		let reusableComponent = <Dashboard {...props} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		// Going to 'My Deleted Modules' page...
+		let switchTabsButton = component.root.findAllByType(Button)[3]
+		act(() => {
+			switchTabsButton.props.onClick()
+		})
+		expect(dashboardProps.getDeletedModules).toHaveBeenCalled()
+
+		// Going to 'My Modules' page...
+		props = {
+			...dashboardProps,
+			showDeletedModules: true,
+			multiSelectMode: false
+		}
+		reusableComponent = <Dashboard {...props} />
+		act(() => {
+			component = create(reusableComponent)
+		})
+		switchTabsButton = component.root.findAllByType(Button)[0]
+		act(() => {
+			switchTabsButton.props.onClick()
+		})
+		expect(dashboardProps.getModules).toHaveBeenCalled()
 	})
 })

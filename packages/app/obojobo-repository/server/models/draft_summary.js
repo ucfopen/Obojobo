@@ -1,7 +1,7 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
-const buildQuery = (whereSQL, joinSQL = '', limitSQL = '') => {
+const buildQueryWhere = (whereSQL, joinSQL = '', deleted = 'FALSE', limitSQL = '') => {
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -16,7 +16,7 @@ const buildQuery = (whereSQL, joinSQL = '', limitSQL = '') => {
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
 		${joinSQL}
-		WHERE drafts.deleted = FALSE
+		WHERE drafts.deleted = ${deleted}
 		AND ${whereSQL}
 		WINDOW wnd AS (
 			PARTITION BY drafts_content.draft_id ORDER BY drafts_content.created_at
@@ -58,7 +58,7 @@ class DraftSummary {
 
 	static fetchAll() {
 		return db
-			.manyOrNone(buildQuery('TRUE'))
+			.manyOrNone(buildQueryWhere('TRUE'))
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				throw logger.logError('DraftSummary fetchAll Error', error)
@@ -67,7 +67,7 @@ class DraftSummary {
 
 	static fetchById(id) {
 		return db
-			.one(buildQuery('drafts.id = $[id]'), { id })
+			.one(buildQueryWhere('drafts.id = $[id]'), { id })
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				throw logger.logError('DraftSummary fetchById Error', error)
@@ -121,7 +121,7 @@ class DraftSummary {
 		const joinSQL = `JOIN repository_map_user_to_draft
 			ON repository_map_user_to_draft.draft_id = drafts.id`
 
-		const innerQuery = buildQuery(whereSQL, joinSQL)
+		const innerQuery = buildQueryWhere(whereSQL, joinSQL)
 		const query = `
 			SELECT inner_query.*
 			FROM (
@@ -143,7 +143,7 @@ class DraftSummary {
 
 	static fetchAndJoinWhereLimit(joinSQL, whereSQL, limitSQL, queryValues) {
 		return db
-			.any(buildQuery(whereSQL, joinSQL, limitSQL), queryValues)
+			.any(buildQueryWhere(whereSQL, joinSQL, 'FALSE', limitSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error(
@@ -158,9 +158,20 @@ class DraftSummary {
 			})
 	}
 
+	static fetchDeletedByUserId(userId) {
+		return DraftSummary.fetchAndJoinWhere(
+			`JOIN repository_map_user_to_draft
+				ON repository_map_user_to_draft.draft_id = drafts.id`,
+			`repository_map_user_to_draft.user_id = $[userId]`,
+			{ userId, deleted: 'TRUE' }
+		)
+	}
+
 	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {
+		const query = buildQueryWhere(whereSQL, joinSQL, queryValues.deleted)
+
 		return db
-			.any(buildQuery(whereSQL, joinSQL), queryValues)
+			.any(query, queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				throw logger.logError('Error loading DraftSummary by query', error)
@@ -169,7 +180,7 @@ class DraftSummary {
 
 	static fetchWhere(whereSQL, queryValues) {
 		return db
-			.any(buildQuery(whereSQL), queryValues)
+			.any(buildQueryWhere(whereSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				throw logger.logError('Error loading DraftSummary by query', error)

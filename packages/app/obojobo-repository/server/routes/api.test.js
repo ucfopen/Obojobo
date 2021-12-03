@@ -209,23 +209,91 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('get /drafts-all returns the expected response', () => {
+	test('get /drafts-stats returns the expected response when the user does not have the canViewStatsPage permission', () => {
+		// technically only have to return false for canViewStatsPage, but that's the only one being checked here anyway
+		mockCurrentUser.hasPermission = () => false
+
+		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchAll = jest.fn()
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/drafts-stats')
+			.then(response => {
+				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchAll).not.toHaveBeenCalled()
+
+				expect(response.statusCode).toBe(401)
+			})
+	})
+
+	test('get /drafts-stats returns the expected response when the user has the canViewStatsPage permission but not the canViewSystemStats permission', () => {
 		const mockResult = [
 			{ draftId: 'mockDraftId1', title: 'whatever1' },
 			{ draftId: 'mockDraftId2', title: 'whatever2' },
 			{ draftId: 'mockDraftId3', title: 'whatever3' }
 		]
 
+		mockCurrentUser.hasPermission = perm => perm === 'canViewStatsPage'
+
+		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchByUserId.mockResolvedValueOnce(mockResult)
+		DraftSummary.fetchAll = jest.fn()
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/drafts-stats')
+			.then(response => {
+				expect(DraftSummary.fetchByUserId).toHaveBeenCalled()
+				expect(DraftSummary.fetchAll).not.toHaveBeenCalled()
+
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toEqual(mockResult)
+			})
+	})
+
+	test('get /drafts-stats returns the expected response when the user has the canViewStatsPage and canViewSystemStats permissions', () => {
+		const mockResult = [
+			{ draftId: 'mockDraftId1', title: 'whatever1' },
+			{ draftId: 'mockDraftId2', title: 'whatever2' },
+			{ draftId: 'mockDraftId3', title: 'whatever3' }
+		]
+
+		DraftSummary.fetchByUserId = jest.fn()
 		DraftSummary.fetchAll = jest.fn()
 		DraftSummary.fetchAll.mockResolvedValueOnce(mockResult)
 
 		expect.hasAssertions()
 
 		return request(app)
-			.get('/drafts-all')
+			.get('/drafts-stats')
 			.then(response => {
+				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchAll).toHaveBeenCalled()
 
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toEqual(mockResult)
+			})
+	})
+
+	test('get /drafts-deleted returns the expected response', () => {
+		const mockResult = [
+			{ draftId: 'mockDraftId1', title: 'whatever1' },
+			{ draftId: 'mockDraftId2', title: 'whatever2' },
+			{ draftId: 'mockDraftId3', title: 'whatever3' }
+		]
+
+		DraftSummary.fetchDeletedByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId.mockResolvedValueOnce(mockResult)
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/drafts-deleted')
+			.then(response => {
+				expect(DraftSummary.fetchDeletedByUserId).toHaveBeenCalled()
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toEqual(mockResult)
 			})

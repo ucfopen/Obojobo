@@ -7,7 +7,7 @@ const {
 	requireCurrentUser,
 	requireCanPreviewDrafts
 } = require('obojobo-express/server/express_validators')
-const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../../shared/repository-constants')
+const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../../shared/repository-constants')
 const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 const { getUserModuleCount } = require('../services/count')
 const short = require('short-uuid')
@@ -52,6 +52,8 @@ const renderDashboard = (req, res, options) => {
 					return DraftSummary.fetchAllInCollection(options.collection.id, req.currentUser.id)
 				case MODE_ALL:
 					return DraftSummary.fetchByUserId(req.currentUser.id)
+				case MODE_DELETED:
+					return DraftSummary.fetchDeletedByUserId(req.currentUser.id)
 				case MODE_RECENT:
 				default:
 					moduleSortOrder = 'last updated'
@@ -94,6 +96,15 @@ router
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
 		renderDashboard(req, res, { ...defaultOptions, mode: MODE_ALL })
+	})
+
+// Dashboard page - deleted modules
+// mounted as /dashboard/deleted
+router
+	.route('/dashboard/deleted')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		renderDashboard(req, res, { ...defaultOptions, mode: MODE_DELETED })
 	})
 
 // Collection page - modules in collection
