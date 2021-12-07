@@ -35,7 +35,12 @@ let mockDashboardComponent
 let mockDashboardComponentConstructor
 jest.mock('obojobo-repository/shared/components/pages/page-dashboard-server')
 
-const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../../shared/repository-constants')
+const {
+	MODE_RECENT,
+	MODE_ALL,
+	MODE_COLLECTION,
+	MODE_DELETED
+} = require('../../shared/repository-constants')
 
 const componentPropsDesiredProperties = [
 	'title',
@@ -158,6 +163,7 @@ describe('repository dashboard route', () => {
 
 		DraftSummary.fetchAllInCollection = jest.fn()
 		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
 		DraftSummary.fetchRecentByUserId.mockResolvedValueOnce(mockModuleSummary)
@@ -177,6 +183,7 @@ describe('repository dashboard route', () => {
 
 				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchDeletedByUserId).not.toHaveBeenCalled()
 
 				expect(mockDashboardComponent).toHaveBeenCalledTimes(1)
 				expect(mockDashboardComponentConstructor).toHaveBeenCalledWith({
@@ -207,6 +214,7 @@ describe('repository dashboard route', () => {
 
 		DraftSummary.fetchAllInCollection = jest.fn()
 		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
 		DraftSummary.fetchByUserId.mockResolvedValueOnce(mockModuleSummary)
@@ -224,6 +232,7 @@ describe('repository dashboard route', () => {
 				expect(DraftSummary.fetchByUserId).toHaveBeenCalledTimes(1)
 				expect(DraftSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
 
+				expect(DraftSummary.fetchDeletedByUserId).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
 
@@ -256,6 +265,7 @@ describe('repository dashboard route', () => {
 
 		DraftSummary.fetchAllInCollection = jest.fn()
 		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
 		DraftSummary.fetchByUserId.mockResolvedValueOnce(mockModuleSummary)
@@ -273,6 +283,7 @@ describe('repository dashboard route', () => {
 				expect(DraftSummary.fetchByUserId).toHaveBeenCalledTimes(1)
 				expect(DraftSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
 
+				expect(DraftSummary.fetchDeletedByUserId).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
 
@@ -316,6 +327,7 @@ describe('repository dashboard route', () => {
 
 		DraftSummary.fetchAllInCollection = jest.fn()
 		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
 		DraftSummary.fetchAllInCollection.mockResolvedValueOnce(mockModuleSummary)
@@ -351,6 +363,7 @@ describe('repository dashboard route', () => {
 				)
 
 				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchDeletedByUserId).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
 
 				expect(mockDashboardComponent).toHaveBeenCalledTimes(1)
@@ -386,6 +399,7 @@ describe('repository dashboard route', () => {
 
 		DraftSummary.fetchAllInCollection = jest.fn()
 		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
 		const path = 'collections/mock-collection-safe-name-mockCollectionShortId'
@@ -411,6 +425,7 @@ describe('repository dashboard route', () => {
 
 				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchDeletedByUserId).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
 
 				expect(mockDashboardComponent).not.toHaveBeenCalled()
@@ -436,6 +451,7 @@ describe('repository dashboard route', () => {
 
 		DraftSummary.fetchAllInCollection = jest.fn()
 		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
 		const path = '/collections/mock-collection-safe-name-mockCollectionShortId'
@@ -462,10 +478,60 @@ describe('repository dashboard route', () => {
 
 				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchDeletedByUserId).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
 
 				expect(mockDashboardComponent).not.toHaveBeenCalled()
 				expect(response.statusCode).toBe(404)
+			})
+	})
+
+	test('get /dashboard/deleted sends the correct props to the Dashboard component with cookies set', () => {
+		expect.hasAssertions()
+
+		CountServices.getUserModuleCount.mockResolvedValueOnce(5)
+
+		CollectionSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchAllInCollection = jest.fn()
+		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchDeletedByUserId = jest.fn()
+		DraftSummary.fetchRecentByUserId = jest.fn()
+
+		DraftSummary.fetchDeletedByUserId.mockResolvedValueOnce(mockModuleSummary)
+
+		return request(app)
+			.get('/dashboard/deleted')
+			.set('cookie', [generateCookie('module', 'dashboard/deleted', 'last updated')])
+			.then(response => {
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledTimes(1)
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledTimes(1)
+				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(DraftSummary.fetchDeletedByUserId).toHaveBeenCalledTimes(1)
+				expect(DraftSummary.fetchDeletedByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
+
+				expect(mockDashboardComponent).toHaveBeenCalledTimes(1)
+				expect(mockDashboardComponentConstructor).toHaveBeenCalledWith({
+					title: 'Dashboard',
+					collection: {
+						id: null,
+						title: null
+					},
+					currentUser: mockCurrentUser,
+					mode: MODE_DELETED,
+					moduleCount: 5,
+					moduleSortOrder: 'last updated',
+					collectionSortOrder: 'alphabetical',
+					myCollections: [],
+					myModules: mockModuleSummary
+				})
+				expect(response.statusCode).toBe(200)
 			})
 	})
 })

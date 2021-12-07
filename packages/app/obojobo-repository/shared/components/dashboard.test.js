@@ -66,7 +66,7 @@ import ModuleOptionsDialog from './module-options-dialog'
 import VersionHistoryDialog from './version-history-dialog'
 import AssessmentScoreDataDialog from './assessment-score-data-dialog'
 
-const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
+const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../repository-constants')
 
 describe('Dashboard', () => {
 	const mockShortFromUUID = jest.fn()
@@ -140,7 +140,6 @@ describe('Dashboard', () => {
 	let dashboardProps
 	let short
 
-	const originalAlert = global.alert
 	const originalConfirm = window.confirm
 	const originalLocationAssign = window.location.assign
 
@@ -161,12 +160,10 @@ describe('Dashboard', () => {
 		})
 
 		ReactModal.setAppElement = jest.fn()
-		delete global.alert
 	})
 
 	beforeEach(() => {
 		jest.resetAllMocks()
-		global.alert = jest.fn()
 
 		dashboardProps = {
 			currentUser: {
@@ -212,10 +209,7 @@ describe('Dashboard', () => {
 				hasFetched: false,
 				items: []
 			},
-			closeModal: jest.fn(),
-			getModules: jest.fn(),
-			getDeletedModules: jest.fn(),
-			bulkRestoreModules: jest.fn(() => Promise.resolve())
+			closeModal: jest.fn()
 		}
 
 		short = require('short-uuid')
@@ -230,7 +224,6 @@ describe('Dashboard', () => {
 	})
 
 	afterAll(() => {
-		global.alert = originalAlert
 		window.confirm = originalConfirm
 		window.location.assign = originalLocationAssign
 	})
@@ -262,12 +255,14 @@ describe('Dashboard', () => {
 			'repository--main-content--control-bar is-not-multi-select-mode'
 		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
 
-		// MODE_ALL control bar has the 'New...' button and module filter
-		expect(controlBar.children.length).toBe(2)
+		// MODE_ALL control bar has the 'New...' button, 'Deleted Modules' link button and module filter
+		expect(controlBar.children.length).toBe(3)
 		expect(controlBar.children[0].props.title).toEqual('New...')
+		expect(controlBar.children[1].type).toEqual(ButtonLink)
+		expect(controlBar.children[1].props.url).toBe('/dashboard/deleted')
 
 		expect(component.root.findAllByType(Search).length).toBe(1)
-		expect(controlBar.children[1].type).toEqual(Search)
+		expect(controlBar.children[2].type).toEqual(Search)
 	}
 
 	const expectCollectionModeControlBar = component => {
@@ -292,23 +287,51 @@ describe('Dashboard', () => {
 		expect(controlBar.children[4].type).toEqual(Search)
 	}
 
-	const expectMultiSelectControlBar = (component, isCollectionMode) => {
+	const expectDeletedModeControlBar = component => {
+		const expectedControlBarClasses =
+			'repository--main-content--control-bar is-not-multi-select-mode'
+		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+
+		// MODE_DELETED control bar has the 'Return to All Modules' link button and module filter
+		expect(controlBar.children.length).toBe(2)
+		expect(controlBar.children[0].type).toEqual(ButtonLink)
+		expect(controlBar.children[0].props.url).toBe('/dashboard/all')
+
+		expect(component.root.findAllByType(Search).length).toBe(1)
+		expect(controlBar.children[1].type).toEqual(Search)
+	}
+
+	const expectMultiSelectControlBar = (
+		component,
+		isCollectionMode = false,
+		isDeleteMode = false
+	) => {
 		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
 		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
 
-		expect(controlBar.children.length).toBe(4)
+		if (isDeleteMode) {
+			expect(controlBar.children.length).toBe(3)
 
-		expect(controlBar.children[0].props.className).toBe('module-count')
-		expect(controlBar.children[0].type).toBe('span')
-		// In MODE_COLLECTION the bulk action will be to remove modules from the current collection
-		// In both other modes the bulk action will be to open a dialog to choose a collection to add all modules to
-		const collectionOperationButtonString = isCollectionMode
-			? 'Remove All From Collection'
-			: 'Add All To Collection'
-		expect(controlBar.children[1].props.children).toEqual(collectionOperationButtonString)
-		expect(controlBar.children[2].props.children).toEqual('Delete All')
-		expect(controlBar.children[3].props.className).toEqual('close-button')
-		expect(controlBar.children[3].children[0].children[0]).toBe('×')
+			expect(controlBar.children[0].props.className).toBe('module-count')
+			expect(controlBar.children[0].type).toBe('span')
+			expect(controlBar.children[1].props.children).toEqual('Restore All')
+			expect(controlBar.children[2].props.className).toEqual('close-button')
+			expect(controlBar.children[2].children[0].children[0]).toBe('×')
+		} else {
+			expect(controlBar.children.length).toBe(4)
+
+			expect(controlBar.children[0].props.className).toBe('module-count')
+			expect(controlBar.children[0].type).toBe('span')
+			// In MODE_COLLECTION the bulk action will be to remove modules from the current collection
+			// In both other modes the bulk action will be to open a dialog to choose a collection to add all modules to
+			const collectionOperationButtonString = isCollectionMode
+				? 'Remove All From Collection'
+				: 'Add All To Collection'
+			expect(controlBar.children[1].props.children).toEqual(collectionOperationButtonString)
+			expect(controlBar.children[2].props.children).toEqual('Delete All')
+			expect(controlBar.children[3].props.className).toEqual('close-button')
+			expect(controlBar.children[3].children[0].children[0]).toBe('×')
+		}
 
 		const moduleComponents = component.root.findAllByType(Module)
 		expect(moduleComponents.length).toBe(5)
@@ -491,18 +514,17 @@ describe('Dashboard', () => {
 		//numerous changes to check for within the main content area
 		const mainContent = component.root.findByProps({ className: 'repository--main-content' })
 		//some in the control bar
-		const expectedControlBarClasses =
-			'repository--main-content--control-bar is-not-multi-select-mode'
-		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
-		// MODE_ALL should have two things in the control bar - 'New Module +' button and module filter input
-		expect(controlBar.children.length).toBe(2)
-		expect(component.root.findAllByType(Search).length).toBe(1)
+		expectAllModeControlBar(component)
 
 		// MODE_ALL will not apply an extra class to the 'My Modules' title
 		expectNormalModulesAreaClassesWithTitle(mainContent, 'My Modules')
 
-		// MODE_ALL does not render the 'All Modules' button
-		expect(component.root.findAllByType(ButtonLink).length).toBe(0)
+		// MODE_ALL does not render the 'All Modules' button, but it does render a 'Deleted Modules' button
+		const buttonLinkComponents = component.root.findAllByType(ButtonLink)
+		expect(buttonLinkComponents.length).toBe(1)
+
+		expect(buttonLinkComponents[0].type).toEqual(ButtonLink)
+		expect(buttonLinkComponents[0].props.url).toBe('/dashboard/deleted')
 
 		expectRecentAndAllModeNewOptions(component)
 
@@ -541,7 +563,7 @@ describe('Dashboard', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('renders in MODE_RECENT with less modules than moduleCount, no collections', () => {
+	test('renders in MODE_RECENT with fewer modules than moduleCount, no collections', () => {
 		dashboardProps.mode = MODE_RECENT
 		// putting these in non-sequential order to test MODE_RECENT sorting
 		dashboardProps.myModules = [...standardMyModules]
@@ -819,6 +841,12 @@ describe('Dashboard', () => {
 		})
 		expectAllModeControlBar(component)
 
+		dashboardProps.mode = MODE_DELETED
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
+		expectDeletedModeControlBar(component)
+
 		dashboardProps.mode = MODE_COLLECTION
 		dashboardProps.collection = {
 			id: 'mockCollectionId',
@@ -855,6 +883,12 @@ describe('Dashboard', () => {
 			component = create(<Dashboard {...dashboardProps} />)
 		})
 		expectMultiSelectControlBar(component)
+
+		dashboardProps.mode = MODE_DELETED
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
+		expectMultiSelectControlBar(component, false, true)
 
 		dashboardProps.mode = MODE_COLLECTION
 		dashboardProps.collection = {
@@ -1874,18 +1908,50 @@ describe('Dashboard', () => {
 		expect(window.location.assign).toBeCalledWith('/dashboard')
 	})
 
+	test('renders with MODE_DELETED correctly, no modules, no multiselect', () => {
+		dashboardProps.mode = MODE_DELETED
+		const component = create(<Dashboard {...dashboardProps} />)
+
+		//numerous changes to check for within the main content area
+		const mainContent = component.root.findByProps({ className: 'repository--main-content' })
+		//some in the control bar
+		expectDeletedModeControlBar(component)
+
+		const moduleComponents = component.root.findAllByType(Module)
+		expect(moduleComponents.length).toBe(0)
+
+		// MODE_DELETED will change the 'My Modules' title to 'My Deleted Modules'
+		expectNormalModulesAreaClassesWithTitle(mainContent, 'My Deleted Modules')
+	})
+
+	test('renders with MODE_DELETE correctly, modules', () => {
+		dashboardProps.mode = MODE_DELETED
+		dashboardProps.myModules = [...standardMyModules]
+
+		const component = create(<Dashboard {...dashboardProps} />)
+
+		expectDeletedModeControlBar(component)
+
+		const moduleComponents = component.root.findAllByType(Module)
+		expect(moduleComponents.length).toBe(standardMyModules.length)
+	})
+
 	test('restoreModules function gets called as expected', async () => {
-		// Let's first show the deleted modules page so that the Restore All
-		// button shows up
-		const props = {
-			...dashboardProps,
-			showDeletedModules: true,
-			multiSelectMode: true
-		}
-		const reusableComponent = <Dashboard {...props} />
+		const originalAlert = global.alert
+		global.alert = jest.fn()
+
+		const mockSelectedModules = [standardMyModules[0].draftId, standardMyModules[1].draftId]
+
+		dashboardProps.mode = MODE_DELETED
+		dashboardProps.myModules = [...standardMyModules]
+		dashboardProps.multiSelectMode = true
+		dashboardProps.selectedModules = mockSelectedModules
+
+		dashboardProps.bulkRestoreModules = jest.fn().mockResolvedValue(true)
+
 		let component
 		act(() => {
-			component = create(reusableComponent)
+			component = create(<Dashboard {...dashboardProps} />)
 		})
 
 		// Actual testing starts here
@@ -1898,49 +1964,15 @@ describe('Dashboard', () => {
 			restoreAllButton.props.onClick(mockClickEvent)
 		})
 		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalled()
+		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalledWith(mockSelectedModules)
 
 		component.unmount()
 
 		return dashboardProps.bulkRestoreModules().then(() => {
 			expect(global.alert).toHaveBeenCalledTimes(1)
 			expect(global.alert).toHaveBeenCalledWith('The selected modules were successfully restored.')
-		})
-	})
 
-	test('dashboard switch tabs as expected', () => {
-		// Dashboard opens up at 'My Modules' tab
-		let props = {
-			...dashboardProps,
-			showDeletedModules: false,
-			multiSelectMode: false
-		}
-		let reusableComponent = <Dashboard {...props} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
+			global.alert = originalAlert
 		})
-
-		// Going to 'My Deleted Modules' page...
-		let switchTabsButton = component.root.findAllByType(Button)[3]
-		act(() => {
-			switchTabsButton.props.onClick()
-		})
-		expect(dashboardProps.getDeletedModules).toHaveBeenCalled()
-
-		// Going to 'My Modules' page...
-		props = {
-			...dashboardProps,
-			showDeletedModules: true,
-			multiSelectMode: false
-		}
-		reusableComponent = <Dashboard {...props} />
-		act(() => {
-			component = create(reusableComponent)
-		})
-		switchTabsButton = component.root.findAllByType(Button)[0]
-		act(() => {
-			switchTabsButton.props.onClick()
-		})
-		expect(dashboardProps.getModules).toHaveBeenCalled()
 	})
 })

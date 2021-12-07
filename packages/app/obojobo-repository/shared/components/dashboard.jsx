@@ -367,7 +367,7 @@ function Dashboard(props) {
 					<span className="repository--item-list--collection--empty-placeholder--text">
 						Nothing to see here!
 					</span>
-					{newModuleButton}
+					{props.mode !== MODE_DELETED && newModuleButton}
 				</p>
 			)
 		}
@@ -632,25 +632,34 @@ function Dashboard(props) {
 
 	const newModuleButtonRender = <Button onClick={() => onNewModuleClick(false)}>New Module</Button>
 
+	const deletedModulesButtonLinkRender =
+		props.mode === MODE_ALL ? (
+			<ButtonLink className="dashboard-menu-button" url="/dashboard/deleted">
+				<div className="trash-can-icon"></div>
+				<span>Deleted Modules</span>
+			</ButtonLink>
+		) : null
+
 	let mainControlBarRender = (
 		<div className="repository--main-content--control-bar is-not-multi-select-mode">
-			{
-				props.mode === MODE_DELETED ?
-				<ButtonLink
-					className="repository--all-modules--button"
-					url="/dashboard/all"
-					target="_blank"
-				>
-					Return to All Modules
+			{props.mode === MODE_DELETED ? (
+				<ButtonLink className="dashboard-menu-button go-back-container" url="/dashboard/all">
+					<div className="go-back-icon">
+						<svg viewBox="0 0 134 150" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path d="M 25,50 97.5,5 97.5,95 Z" />
+						</svg>
+					</div>
+					<span>Return to All Modules</span>
 				</ButtonLink>
-				:
+			) : (
 				<MultiButton title="New...">
 					{newCollectionOptionsRender}
 					{newModuleButtonRender}
 					<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
 					<Button onClick={props.importModuleFile}>Upload...</Button>
 				</MultiButton>
-			}
+			)}
+			{deletedModulesButtonLinkRender}
 			{collectionManageAreaRender}
 			{moduleFilterRender}
 		</div>

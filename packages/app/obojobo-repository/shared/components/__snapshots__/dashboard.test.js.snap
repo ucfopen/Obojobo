@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dashboard renders in MODE_RECENT with less modules than moduleCount, no collections 1`] = `
+exports[`Dashboard renders in MODE_RECENT with fewer modules than moduleCount, no collections 1`] = `
 <span
   id="dashboard-root"
 >
@@ -571,6 +571,14 @@ exports[`Dashboard renders with mode = MODE_ALL 1`] = `
             Upload...
           </mock-Button>
         </mock-MultiButton>
+        <mock-ButtonLink>
+          <div
+            className="trash-can-icon"
+          />
+          <span>
+            Deleted Modules
+          </span>
+        </mock-ButtonLink>
         <mock-Search />
       </div>
       <div
