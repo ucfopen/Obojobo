@@ -32,14 +32,8 @@ const AlignMarks = {
 					return editor.setAlign(ALIGN_JUSTIFY)
 			}
 		},
-		renderLeaf(props) {
-			console.log("renderLeaf executed")
-			console.log(props)
-		},
 		commands: {
 			setAlign: (editor, align) => {
-				console.log("align:")
-				console.log(align)
 				const list = Array.from(
 					Editor.nodes(editor, {
 						mode: 'lowest',

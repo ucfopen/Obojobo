@@ -118,7 +118,7 @@ describe('FormatMenu', () => {
 
 		component
 			.find('button')
-			.at(25)
+			.at(26)
 			.simulate('click')
 
 		expect(useEditor().unindentList).toHaveBeenCalled()
