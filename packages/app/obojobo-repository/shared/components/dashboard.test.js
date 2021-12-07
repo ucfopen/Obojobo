@@ -140,6 +140,7 @@ describe('Dashboard', () => {
 	let dashboardProps
 	let short
 
+	const originalAlert = global.alert
 	const originalConfirm = window.confirm
 	const originalLocationAssign = window.location.assign
 
@@ -160,10 +161,12 @@ describe('Dashboard', () => {
 		})
 
 		ReactModal.setAppElement = jest.fn()
+		delete global.alert
 	})
 
 	beforeEach(() => {
 		jest.resetAllMocks()
+		global.alert = jest.fn()
 
 		dashboardProps = {
 			currentUser: {
@@ -209,7 +212,10 @@ describe('Dashboard', () => {
 				hasFetched: false,
 				items: []
 			},
-			closeModal: jest.fn()
+			closeModal: jest.fn(),
+			getModules: jest.fn(),
+			getDeletedModules: jest.fn(),
+			bulkRestoreModules: jest.fn(() => Promise.resolve())
 		}
 
 		short = require('short-uuid')
@@ -224,6 +230,7 @@ describe('Dashboard', () => {
 	})
 
 	afterAll(() => {
+		global.alert = originalAlert
 		window.confirm = originalConfirm
 		window.location.assign = originalLocationAssign
 	})
