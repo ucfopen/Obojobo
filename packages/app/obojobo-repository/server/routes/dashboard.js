@@ -7,7 +7,12 @@ const {
 	requireCurrentUser,
 	requireCanPreviewDrafts
 } = require('obojobo-express/server/express_validators')
-const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../../shared/repository-constants')
+const {
+	MODE_RECENT,
+	MODE_ALL,
+	MODE_COLLECTION,
+	MODE_DELETED
+} = require('../../shared/repository-constants')
 const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 const { getUserModuleCount } = require('../services/count')
 const short = require('short-uuid')

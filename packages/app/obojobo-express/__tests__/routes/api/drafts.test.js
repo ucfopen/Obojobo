@@ -999,7 +999,7 @@ describe('api draft route', () => {
 					'message',
 					'You must be the author of this draft to delete it'
 				)
-		})
+			})
 	})
 
 	// restore draft
