@@ -106,9 +106,6 @@ describe('Figure editor', () => {
 	})
 
 	test('plugins.onKeyDown deals with [Delete]', () => {
-		jest.spyOn(Transforms, 'delete')
-		jest.spyOn(Editor, 'next').mockReturnValueOnce(true)
-
 		const editor = {
 			selection: {
 				anchor: {
@@ -125,10 +122,10 @@ describe('Figure editor', () => {
 		}
 
 		Figure.plugins.onKeyDown([{ children: [{ text: 'mockText' }] }, [0]], editor, event)
-		expect(Transforms.delete).not.toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
 
 		Figure.plugins.onKeyDown([{ children: [{ text: '' }] }, [0]], editor, event)
-		expect(Transforms.delete).toHaveBeenCalledTimes(1)
+		expect(event.preventDefault).toHaveBeenCalledTimes(1)
 	})
 
 	test('plugins.renderNode renders a figure when passed', () => {

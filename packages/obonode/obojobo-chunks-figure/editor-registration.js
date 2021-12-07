@@ -62,16 +62,8 @@ const Figure = {
 			if (event.key === 'Delete') {
 				const text = entry[0].children[0].text
 
-				if (text === '') {
-					const path = Editor.next(editor)[1]
-
+				if (editor.selection.anchor.offset === text.length) {
 					event.preventDefault()
-
-					Transforms.moveNodes(editor, { at: path, to: editor.selection.anchor.path })
-					Transforms.delete(editor, { at: path })
-					Editor.deleteForward(editor)
-
-					Transforms.select(editor, { ...editor.selection.anchor, offset: 0 })
 				}
 			}
 		},
