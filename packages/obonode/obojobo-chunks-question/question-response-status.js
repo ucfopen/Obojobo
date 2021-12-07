@@ -9,7 +9,7 @@ const { Spinner } = Common.components
 
 const QuestionResponseStatus = ({ responseSendState, timeout }) => {
 	return (
-		<div className="response-status-container">
+		<div className="response-status-container" aria-live="polite">
 			<CSSTransition
 				in={responseSendState === QuestionResponseSendStates.NOT_SENT}
 				classNames="response-status"
@@ -33,7 +33,7 @@ const QuestionResponseStatus = ({ responseSendState, timeout }) => {
 				classNames="response-status"
 				timeout={timeout}
 			>
-				<span className="is-response-state-recorded" aria-live="polite">Answer Saved</span>
+				<span className="is-response-state-recorded">Answer Saved</span>
 			</CSSTransition>
 
 			<CSSTransition
@@ -41,7 +41,7 @@ const QuestionResponseStatus = ({ responseSendState, timeout }) => {
 				classNames="response-status"
 				timeout={timeout}
 			>
-				<span className="is-response-state-error" aria-live="polite">✖ Error sending response</span>
+				<span className="is-response-state-error">✖ Error sending response</span>
 			</CSSTransition>
 
 			<CSSTransition in={!responseSendState} classNames="response-status" timeout={timeout}>
