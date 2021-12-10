@@ -39,7 +39,9 @@ class ModulePermissionsDialog extends React.Component {
 			const response = window.confirm('Remove yourself from this module?') //eslint-disable-line no-alert
 			if (!response) return
 		}
+
 		this.props.deleteModulePermissions(this.props.draftId, userId)
+		this.props.onClose()
 	}
 
 	renderModal() {
