@@ -134,6 +134,7 @@ exports[`Question Question in assessment answered correctly 1`] = `
     </div>
   </div>
   <div
+    aria-live="polite"
     className="response-status-container"
   >
     <span
@@ -324,6 +325,7 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
     </div>
   </div>
   <div
+    aria-live="polite"
     className="response-status-container"
   >
     <span
@@ -481,6 +483,7 @@ exports[`Question Question in assessment not answered 1`] = `
     </div>
   </div>
   <div
+    aria-live="polite"
     className="response-status-container"
   >
     <span
@@ -1541,6 +1544,7 @@ exports[`Question Survey question in assessment answered 1`] = `
     </div>
   </div>
   <div
+    aria-live="polite"
     className="response-status-container"
   >
     <span
@@ -1720,6 +1724,7 @@ exports[`Question Survey question in assessment not answered 1`] = `
     </div>
   </div>
   <div
+    aria-live="polite"
     className="response-status-container"
   >
     <span
