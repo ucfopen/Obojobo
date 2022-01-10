@@ -50,21 +50,26 @@
 	}
 
 	.size-input {
-		display: block;
+		display: flex;
+		align-items: center;
 
 		.custom-size-inputs {
-			display: inline;
+			display: flex;
+			align-items: center;
 			padding-left: 0.5em;
 		}
 
-		input[type='radio'] {
-			vertical-align: middle;
+		input {
+			margin-left: 0;
+		}
+
+		span {
+			padding-right: 0.3em;
 		}
 
 		label {
-			display: inline;
-			vertical-align: middle;
 			padding-left: 0.3em;
+			margin: 0.3em 0;
 		}
 	}
 
