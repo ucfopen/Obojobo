@@ -214,7 +214,6 @@ describe('Question', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-
 	})
 
 	test('Screen reader text matches when error sending answer', () => {
@@ -238,5 +237,4 @@ describe('Question', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
-
 })
