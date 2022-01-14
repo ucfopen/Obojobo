@@ -6,7 +6,6 @@ const sig = require('oauth-signature')
 const config = require('./config')
 const oauthKey = Object.keys(config.lti.keys)[0]
 const oauthSecret = config.lti.keys[oauthKey]
-const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 
 const User = require('obojobo-express/server/models/user')
 const DraftSummary = require('obojobo-repository/server/models/draft_summary')
@@ -83,6 +82,7 @@ const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 		oauth_version: '1.0'
 	}
 	const params = { ...paramsIn, ...oauthParams }
+
 	const hmac_sha1 = sig.generate(method, endpoint, params, oauthSecret, '', {
 		encodeSignature: false
 	})
@@ -132,6 +132,17 @@ module.exports = app => {
 				.map(draft => `<option value="${draft.draftId}">${draft.title}</option>`)
 				.join('')
 
+			// in support of quickly testing the split-run feature
+			// create a copy of the draft options, but auto-select the last one so it's different from the first option
+			const draftOptions2 = drafts
+				.map((draft, index) => {
+					if (index === drafts.length - 1) {
+						return `<option selected value="${draft.draftId}">${draft.title}</option>`
+					}
+					return `<option value="${draft.draftId}">${draft.title}</option>`
+				})
+				.join('')
+
 			let userSelectRender =
 				'<p>No users found. Create a student or instructor with the buttons above.</p>'
 			if (userOptions && userOptions.length) {
@@ -162,130 +173,174 @@ module.exports = app => {
 					<style>
 						iframe{
 							width: 620px;
-							height: 475px;
+							height: 770px;
 							resize: both;
 							overflow: auto;
+						}
+						@media only screen and (min-width: 1200px) {
+							body {
+								display: flex;
+								flex-direction: row;
+							}
+							section {
+								max-width: 620px;
+							}
 						}
 					</style>
 				</head>
 				<body>
-					<h1>Obojobo Next Express Dev Utils</h1>
-					<h2>User Management Tools</h2>
-					<ul>
-						<li><b>Create new test users:</b>
-							<form id='new-user-form'
-								method='post'
-								action='/dev/util/new_user'>
-								<label for='first'>First name:</label>
-								<input type='text' name='first' placeholder='Test (Optional)'/>
-								<br/>
-								<label for='last'>Last name:</label>
-								<input type='text' name='last' placeholder='User (Optional)'/>
-								<br/>
-								<button type='submit' name='type' value='instructor'>Create new test instructor</button>
-								Note: The <b>canViewEditor</b>, <b>canCreateDrafts</b>, <b>canDeleteDrafts</b>, and <b>canPreviewDrafts</b> permissions are implicit for instructors.
-								<br/>
-								<button type='submit' name='type' value='learner'>Create new test learner</button>
-							</form>
-						</li>
-						<li><b>Add permission to user:</b>
-							<form id='resource-select-form'
-								method='post'
-								action='/dev/util/permission'>
-								${userSelectRender}
-								${
-									userOptions.length
-										? `<br/>
-										<label for='permission'>Select module:</label>
-										<select name='permission'>
-											${permOptions}
-										</select>
-										<br/>
-										<input type='hidden' name='add_remove' value='add'/>
-										<button type='submit' value='submit'>Go</button>`
-										: ''
-								}
-							</form>
-						</li>
-						<li><b>Remove permission from user:</b>
-							<form id='resource-select-form'
-								method='post'
-								action='/dev/util/permission'>
-								${userSelectRender}
-								${
-									userOptions.length
-										? `<br/>
-										<label for='permission'>Select module:</label>
-										<select name='permission'>
-											${permOptions}
-										</select>
-										<br/>
-										<input type='hidden' name='add_remove' value='remove'/>
-										<button type='submit' value='submit'>Go</button>`
-										: ''
-								}
-							</form>
-						</li>
-					</ul>
-					<h2>LTI Tools</h2>
-					<ul>
-						<li><a href="/lti">LTI Instructions</a></li>
-						<li><b>LTI Course Nav:</b> (simulate LTI launch from clicking on LMS nav menu link)
-							<form id='course-nav-form'
-								method='post'
-								target='_blank'
-								action='/lti/dev/launch/course_navigation'>
-								<input type='hidden' name='resource_link_id' value='course_1' />
-								${userSelectRender}
-								${userOptions.length ? "<button type='submit' value='submit'>Go</button>" : ''}
-							</form>
-						</li>
-						<li><b>LTI Resource Selection:</b> (simulate LTI launch for resource/assignment selection)
-							<form id='resource-select-form'
-								method='get'
-								action='/lti/dev/launch/resource_selection'
-								target='the-iframe'>
-								${userSelectRender}
-								${
-									userOptions.length
-										? `<button onClick="scrollToIframe()" type='submit' value='submit'>Go</button>`
-										: ''
-								}
-							</form>
-						</li>
-						<li><b>LTI Assignment:</b> (simulate LTI launch for an assignment)
-							<form id='resource-select-form'
-								method='get'
-								action='/lti/dev/launch/view'
-								target='_blank'>
-								${userSelectRender}
-								${
-									userOptions.length
-										? `<br/>
-										<label for='draft_id'>Select module:</label>
-										<select name='draft_id'>
-											${draftOptions}
-										</select>
-										<br/>
-										<label for='import_enabled'>Score import enabled:</label>
-										<input type='checkbox' name='import_enabled' />
-										<br/>
-										<label for='resource_link_id'>LMS course ID:</label>
-										<input type='text' name='resource_link_id' placeholder="course_1"/>
-										<br/>
-										<button type='submit' value='submit'>Go</button>`
-										: ''
-								}
-							</form>
-						</li>
-					</ul>
-					<h2>Build Tools</h2>
-					<ul>
-						<li><a href="/routes">Express Routes</a></li>
-						<li><a href="/webpack-dev-server">Webpack Dev Server Assets</a></li>
-					</ul>
-					<h2>Iframe for simulating assignment selection overlay</h2>
-					<iframe id="the-iframe" name="the-iframe"></iframe>
+					<section>
+						<h1>Obojobo Next Express Dev Utils</h1>
+						<h2>User Management Tools</h2>
+						<ul>
+							<li><b>Create new test users:</b>
+								<form id='new-user-form'
+									method='post'
+									action='/dev/util/new_user'>
+									<label for='first'>First name:</label>
+									<input type='text' name='first' placeholder='Test (Optional)'/>
+									<br/>
+									<label for='last'>Last name:</label>
+									<input type='text' name='last' placeholder='User (Optional)'/>
+									<br/>
+									<button type='submit' name='type' value='instructor'>Create new test instructor</button>
+									Note: The <b>canViewEditor</b>, <b>canCreateDrafts</b>, <b>canDeleteDrafts</b>, and <b>canPreviewDrafts</b> permissions are implicit for instructors.
+									<br/>
+									<button type='submit' name='type' value='learner'>Create new test learner</button>
+								</form>
+							</li>
+							<li><b>Add permission to user:</b>
+								<form id='resource-select-form'
+									method='post'
+									action='/dev/util/permission'>
+									${userSelectRender}
+									${
+										userOptions.length
+											? `<br/>
+											<label for='permission'>Select module:</label>
+											<select name='permission'>
+												${permOptions}
+											</select>
+											<br/>
+											<input type='hidden' name='add_remove' value='add'/>
+											<button type='submit' value='submit'>Go</button>`
+											: ''
+									}
+								</form>
+							</li>
+							<li><b>Remove permission from user:</b>
+								<form id='resource-select-form'
+									method='post'
+									action='/dev/util/permission'>
+									${userSelectRender}
+									${
+										userOptions.length
+											? `<br/>
+											<label for='permission'>Select module:</label>
+											<select name='permission'>
+												${permOptions}
+											</select>
+											<br/>
+											<input type='hidden' name='add_remove' value='remove'/>
+											<button type='submit' value='submit'>Go</button>`
+											: ''
+									}
+								</form>
+							</li>
+						</ul>
+						<h2>LTI Tools</h2>
+						<ul>
+							<li><a href="/lti">LTI Instructions</a></li>
+							<li><b>LTI Course Nav:</b> (simulate LTI launch from clicking on LMS nav menu link)
+								<form id='course-nav-form'
+									method='post'
+									target='_blank'
+									action='/lti/dev/launch/course_navigation'>
+									<input type='hidden' name='resource_link_id' value='course_1' />
+									${userSelectRender}
+									${userOptions.length ? "<button type='submit' value='submit'>Go</button>" : ''}
+								</form>
+							</li>
+							<li><b>LTI Resource Selection:</b> (simulate LTI launch for resource/assignment selection)
+								<form id='resource-select-form'
+									method='get'
+									action='/lti/dev/launch/resource_selection'
+									target='the-iframe'>
+									${userSelectRender}
+									${
+										userOptions.length
+											? `<button onClick="scrollToIframe()" type='submit' value='submit'>Go</button>`
+											: ''
+									}
+								</form>
+							</li>
+							<li><b>LTI Assignment (Single Module):</b> (simulate LTI launch for an assignment)
+								<form id='resource-select-form'
+									method='get'
+									action='/lti/dev/launch/view'
+									target='_blank'>
+									${userSelectRender}
+									${
+										userOptions.length
+											? `<br/>
+											<label for='draft_id'>Select module:</label>
+											<select name='draft_id'>
+												${draftOptions}
+											</select>
+											<br/>
+											<label for='import_enabled'>Score import enabled:</label>
+											<input type='checkbox' name='import_enabled' />
+											<br/>
+											<label for='resource_link_id'>LMS course ID:</label>
+											<input type='text' name='resource_link_id' placeholder="course_1"/>
+											<br/>
+											<button type='submit' value='submit'>Go</button>`
+											: ''
+									}
+								</form>
+							</li>
+
+							<li><b>LTI Assignment (Split-Run):</b> (simulate LTI launch for an assignment)
+								<form id='resource-select-form'
+									method='get'
+									action='/lti/dev/launch/view-split'
+									target='_blank'>
+									${userSelectRender}
+									${
+										userOptions.length && drafts.length > 1
+											? `<br/>
+											<label for='draft_id'>Select first module:</label>
+											<select name='draft_id_1'>
+												${draftOptions}
+											</select>
+											<br/>
+											<label for='draft_id'>Select second module (must be different from first module):</label>
+											<select name='draft_id_2'>
+												${draftOptions2}
+											</select>
+											<br/>
+											<label for='import_enabled'>Score import enabled:</label>
+											<input type='checkbox' name='import_enabled' />
+											<br/>
+											<label for='resource_link_id'>LMS course ID:</label>
+											<input type='text' name='resource_link_id' placeholder="course_1"/>
+											<br/>
+											<button type='submit' value='submit'>Go</button>`
+											: '<br/>More than one module must be available to test a split-run embed'
+									}
+								</form>
+							</li>
+						</ul>
+						<h2>Build Tools</h2>
+						<ul>
+							<li><a href="/routes">Express Routes</a></li>
+							<li><a href="/webpack-dev-server">Webpack Dev Server Assets</a></li>
+						</ul>
+					</section>
+					<section>
+						<h2>Iframe for simulating assignment selection overlay</h2>
+						<iframe id="the-iframe" name="the-iframe"></iframe>
+					</section>
 				</body>
 			</html>`)
 		})
@@ -349,12 +404,42 @@ module.exports = app => {
 				lti_message_type: 'basic-lti-launch-request',
 				lti_version: 'LTI-1p0',
 				resource_link_id,
-				score_import: isTrueParam(req.query.score_import) ? 'true' : 'false'
+				score_import: req.query.import_enabled === 'on' ? 'true' : 'false'
 			}
+			const person = spoofLTIUser(user)
 			renderLtiLaunch(
-				{ ...ltiContext, ...user, ...params },
+				{ ...ltiContext, ...person, ...params },
 				'POST',
 				`${baseUrl(req)}/view/${draftId}`,
+				res
+			)
+		})
+	})
+
+	// builds a valid split-run document view lti launch and submits it
+	app.get('/lti/dev/launch/view-split/', (req, res) => {
+		User.fetchById(req.query.user_id).then(user => {
+			const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+			const draftId1 = req.query.draft_id_1 || '00000000-0000-0000-0000-000000000000'
+			const draftId2 = req.query.draft_id_2 || '00000000-0000-0000-0000-000000000000'
+
+			if (draftId1 === draftId2) return
+
+			const params = {
+				lis_outcome_service_url: 'https://example.fake/outcomes/fake',
+				lti_message_type: 'basic-lti-launch-request',
+				lti_version: 'LTI-1p0',
+				resource_link_id,
+				draftA: draftId1,
+				draftB: draftId2,
+				score_import: req.query.import_enabled === 'on' ? 'true' : 'false'
+			}
+			const person = spoofLTIUser(user)
+
+			renderLtiLaunch(
+				{ ...ltiContext, ...person, ...params },
+				'POST',
+				`${baseUrl(req)}/view-split`,
 				res
 			)
 		})

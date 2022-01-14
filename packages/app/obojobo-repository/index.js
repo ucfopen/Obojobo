@@ -7,7 +7,8 @@ module.exports = {
 			dashboard: 'shared/components/pages/page-dashboard-client.jsx',
 			stats: 'shared/components/pages/page-stats-client.jsx',
 			homepage: 'shared/components/pages/page-homepage.jsx',
-			'page-module': 'shared/components/pages/page-module-client.jsx'
+			'page-module': 'shared/components/pages/page-module-client.jsx',
+			'page-split-run-preview': 'shared/components/pages/page-split-run-preview.jsx'
 		}
 	}
 }

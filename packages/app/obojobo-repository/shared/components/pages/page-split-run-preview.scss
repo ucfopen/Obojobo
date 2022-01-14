@@ -1,0 +1,26 @@
+@import '../layouts/default.scss';
+
+.module-options-container {
+	display: flex;
+	justify-content: center;
+
+	.module-option {
+		border: 1px solid $color-transparent;
+		padding: 0 1em;
+		text-align: center;
+
+		a {
+			color: $color-text;
+			text-align: center;
+			text-decoration: none;
+		}
+
+		&:hover {
+			border-color: #e8e3eb;
+		}
+
+		&:not(:last-child) {
+			border-right: 1px solid $color-text;
+		}
+	}
+}

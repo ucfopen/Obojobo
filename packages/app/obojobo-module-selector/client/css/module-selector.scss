@@ -86,6 +86,16 @@ header {
 	padding: 0 30px;
 }
 
+.back-button {
+	position: absolute;
+	font-size: 12px;
+	cursor: pointer;
+	display: block;
+	text-align: left;
+	top: 10px;
+	left: 10px;
+}
+
 #list-header-wrapper {
 	left: 0;
 	right: 0;
@@ -104,16 +114,6 @@ header {
 			text-align: center;
 			padding-bottom: 15px;
 			display: inline-block;
-		}
-
-		#back-button {
-			position: absolute;
-			font-size: 12px;
-			cursor: pointer;
-			display: block;
-			text-align: left;
-			top: 10px;
-			left: 10px;
 		}
 
 		#select-section-title {
@@ -147,9 +147,32 @@ header {
 	}
 }
 
+.split-run-embed-button {
+	&.is-hidden {
+		display: none;
+	}
+}
+
 #list-container {
 	position: relative;
 	height: calc(100% - 166px);
+
+	#select-more-indicator {
+		font-size: 11pt;
+		line-height: 0.7em;
+		padding: 8px 12px;
+	}
+
+	#select-more-indicator,
+	#split-run-list-embed-button-wrapper {
+		display: block;
+		margin: 0.2em auto 0;
+		text-align: center;
+
+		&.is-hidden {
+			display: none;
+		}
+	}
 
 	.template {
 		display: none;
@@ -217,6 +240,19 @@ header {
 #section-select-object {
 	display: none;
 	height: 100vh;
+
+	.button.embed-button.disabled {
+		pointer-events: none;
+		opacity: 0.3;
+		filter: gray;
+		filter: grayscale(100%);
+	}
+
+	.split-run-embed-button {
+		font-size: 11pt;
+		line-height: 0.7em;
+		padding: 8px 12px;
+	}
 
 	.new-module-button-wrapper {
 		bottom: 0;
@@ -336,6 +372,12 @@ header {
 	overflow-y: scroll;
 }
 
+#split-run-selected-modules-list:empty::after {
+	display: block;
+	content: 'No Modules Selected';
+}
+
+#section-embed-type-selection header .blue-flourish,
 #section-progress header .blue-flourish,
 #section-module-selection header .blue-flourish {
 	height: 4px;
@@ -346,6 +388,7 @@ header {
 	top: 0;
 }
 
+#section-embed-type-selection header .heading-container h1,
 #section-progress header .heading-container h1,
 #section-module-selection header .heading-container h1 {
 	font-size: 17pt;
@@ -354,12 +397,26 @@ header {
 	word-break: break-word;
 }
 
+#section-embed-type-selection header .heading-container h1 .remaining-tagline,
 #section-progress header .heading-container h1 .remaining-tagline,
 #section-module-selection header .heading-container h1 .remaining-tagline {
 	display: inline-block;
 	height: 26px;
 }
 
+#section-module-selection header .heading-container {
+	position: relative;
+}
+
+#section-module-selection header .heading-container #embed-type-indicator {
+	font-size: 14pt;
+	left: 50%;
+	position: absolute;
+	top: 100%;
+	transform: translateX(-50%);
+}
+
+#section-embed-type-selection header .heading-container a,
 #section-module-selection header .heading-container a {
 	font-size: 8pt;
 	display: block;
@@ -368,6 +425,7 @@ header {
 	text-align: right;
 }
 
+#section-embed-type-selection > p,
 #section-module-selection > p {
 	font-weight: bold;
 	font-size: 12pt;
@@ -380,6 +438,7 @@ header {
 	flex-wrap: wrap;
 }
 
+#section-embed-type-selection .wizard-button-container,
 #section-module-selection .wizard-button-container {
 	width: 100%;
 	max-width: 247px;
@@ -431,6 +490,15 @@ header {
 		margin: 0 auto;
 		text-align: center;
 		margin-top: 20px;
+
+		#split-run-import-clarification {
+			margin: 0.2em 1em 1em;
+			text-align: left;
+
+			&.is-hidden {
+				display: none;
+			}
+		}
 	}
 
 	.buttons {
@@ -438,12 +506,43 @@ header {
 	}
 }
 
+#section-embed-type-selection,
 #section-module-selection {
 	display: none;
 	text-align: center;
 
 	.wizard-button {
 		transition: all 0.1s ease;
+	}
+
+	#single-module-button {
+		.wizard-button {
+			background-color: lighten($color-personal-action, 40%);
+			background-image: url('./single-module-icon.png');
+			background-repeat: no-repeat;
+			background-position: center 40px;
+			color: darken($color-personal-action, 30%);
+		}
+
+		&:hover .wizard-button {
+			background-color: lighten($color-personal-action, 30%);
+			background-position: center 36px;
+		}
+	}
+
+	#split-run-button {
+		.wizard-button {
+			background-color: lighten($color-action, 55%);
+			background-image: url('./split-run-icon.png');
+			background-repeat: no-repeat;
+			background-position: center 20px;
+			color: darken($color-action, 10%);
+		}
+
+		&:hover .wizard-button {
+			background-color: lighten($color-action, 50%);
+			background-position: center 16px;
+		}
 	}
 
 	#community-library-button {
@@ -473,6 +572,28 @@ header {
 		&:hover .wizard-button {
 			background-color: lighten($color-personal-action, 30%);
 			background-position: center 36px;
+		}
+	}
+}
+
+#section-module-selection {
+	#split-run-selected {
+		h2 {
+			margin: 0 auto;
+		}
+
+		ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		#split-run-category-embed-button {
+			margin: 0.2em 0 0;
+		}
+
+		&.is-hidden {
+			display: none;
 		}
 	}
 }

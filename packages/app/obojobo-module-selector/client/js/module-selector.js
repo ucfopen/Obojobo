@@ -4,6 +4,7 @@ import '../css/module-selector.scss'
 	const SETTINGS_IS_ASSIGNMENT = __isAssignment // eslint-disable-line no-undef
 	const TAB_COMMUNITY = 'Community Library'
 	const TAB_PERSONAL = 'My Modules'
+	const SECTION_EMBED_TYPE_SELECT = 'section-embed-type-selection'
 	const SECTION_MODULE_SELECT = 'section-module-selection'
 	const SECTION_SELECT_OBJECT = 'section-select-object'
 	const SECTION_PROGRESS = 'section-progress'
@@ -13,6 +14,7 @@ import '../css/module-selector.scss'
 	const CHANGE_SECTION_FADE_DELAY_MS = 250
 	const MAX_ITEMS = 20
 	const MESSAGE_LOGOUT = 'You have been logged out. Please refresh the page and try again.'
+	const MAX_SPLIT_RUN_OPTION_LENGTH = 2
 	const searchStrings = {}
 	const itemTemplateEl = document.querySelectorAll('.template.obo-item')[0]
 	const listContainerEl = document.getElementById('list-container')
@@ -30,6 +32,13 @@ import '../css/module-selector.scss'
 	let selectedItem = null
 	let allowScorePassback
 	let sectionState = null
+
+	// control whether the embed is for a single module or a split-run scenario
+	// in the split-run scenario, two modules will need to be selected prior to
+	//  the completion of the embed
+	// assume true for convenience
+	let embeddingSingleModule = true
+	let splitRunSelected = []
 
 	function empty(el) {
 		while (el.firstChild) el.removeChild(el.firstChild)
@@ -145,12 +154,6 @@ import '../css/module-selector.scss'
 
 	// navigation
 	function gotoSection(sectionId, skipFadeAnimation = false, addClass = '') {
-		sectionState = {
-			sectionId,
-			skipFadeAnimation,
-			addClass
-		}
-
 		if (sectionId === SECTION_PRE_PROGRESS) {
 			showProgress()
 			return
@@ -176,6 +179,16 @@ import '../css/module-selector.scss'
 				fadeOut(s)
 			})
 			fadeIn(newSectionEl, CHANGE_SECTION_FADE_DELAY_MS)
+		}
+
+		// for every section EXCEPT the option selection page, keep track of the args
+		//  so we can 'cancel' back to the correct state
+		if (sectionId !== SECTION_EMBED_OPTIONS) {
+			sectionState = {
+				sectionId,
+				skipFadeAnimation,
+				addClass
+			}
 		}
 	}
 
@@ -223,12 +236,23 @@ import '../css/module-selector.scss'
 		progressBarContainerEl.classList.add('success')
 		progressBarContainerEl.querySelector('span').innerHTML = 'Success!'
 		progressBarValueEl.style.width = '100%'
+
+		// TODO: this is all still currently built to only support a single selected module
+		// fix it to check the 'single/split-run' variable and adjust as needed
 		setTimeout(() => {
-			const ltiData = buildContentItem(
-				selectedItem.title,
-				buildLaunchUrl(selectedItem.draftId),
-				SETTINGS_IS_ASSIGNMENT
-			)
+			let title = ''
+			let url = ''
+			if (embeddingSingleModule) {
+				title = selectedItem.title
+				url = buildLaunchUrl([selectedItem.draftId])
+			} else {
+				title =
+					'Split-Run: ' +
+					splitRunSelected.reduce((prev, current) => `${prev.title} or ${current.title}`)
+				url = buildLaunchUrl(splitRunSelected.map(m => m.draftId))
+			}
+
+			const ltiData = buildContentItem(title, url, SETTINGS_IS_ASSIGNMENT)
 			const formEl = document.getElementById('submit-form')
 			formEl.querySelector('input[name=content_items]').value = JSON.stringify(ltiData)
 			formEl.submit()
@@ -252,12 +276,18 @@ import '../css/module-selector.scss'
 		}
 	}
 
-	function buildLaunchUrl(draftId) {
+	function buildLaunchUrl(draftIds) {
+		let draftString = ''
+		if (draftIds.length > 1) {
+			draftString = `?draftA=${draftIds[0]}&draftB=${draftIds[1]}`
+		} else {
+			draftString = draftIds[0]
+		}
 		return (
 			window.location.origin +
-			'/view/' +
-			draftId +
-			'?score_import=' +
+			(embeddingSingleModule ? '/view/' : '/view-split') +
+			draftString +
+			(embeddingSingleModule ? '?score_import=' : '&score_import=') +
 			(allowScorePassback ? 'true' : 'false')
 		)
 	}
@@ -271,6 +301,17 @@ import '../css/module-selector.scss'
 		cloneEl.querySelector('.preview').setAttribute('href', '/preview/' + lo.draftId)
 		cloneEl.setAttribute('data-lo-id', lo.draftId)
 		cloneEl.querySelector('.button').addEventListener('click', onEmbedClick)
+
+		if (!embeddingSingleModule) {
+			const alreadySelected = splitRunSelected.some(selected => selected.draftId === lo.draftId)
+			if (alreadySelected) cloneEl.querySelector('.button').classList.add('deselect-button')
+			cloneEl.querySelector('.button').innerHTML = alreadySelected ? 'Deselect' : 'Select'
+
+			if (splitRunSelected.length >= MAX_SPLIT_RUN_OPTION_LENGTH && !alreadySelected) {
+				cloneEl.querySelector('.button').classList.add('disabled')
+			}
+		}
+
 		listEl.appendChild(cloneEl)
 	}
 
@@ -353,6 +394,40 @@ import '../css/module-selector.scss'
 		hide(listEl.querySelector('.no-items'))
 	}
 
+	function resetSplitRunSelectedSectionList() {
+		const listEl = document.getElementById('split-run-selected-modules-list')
+		listEl.innerHTML = ''
+		document.getElementById('select-more-count').innerHTML =
+			MAX_SPLIT_RUN_OPTION_LENGTH - splitRunSelected.length
+
+		for (let i = 0; i < splitRunSelected.length; i++) {
+			appendListItem(splitRunSelected[i], listEl)
+		}
+
+		if (splitRunSelected.length >= MAX_SPLIT_RUN_OPTION_LENGTH) {
+			// disable all 'Select' buttons
+			// leave 'Deselect' buttons functional
+			const selectButtons = document
+				.getElementById('list-container')
+				.querySelectorAll('.button.embed-button:not(.deselect-button)')
+			selectButtons.forEach(button => button.classList.add('disabled'))
+
+			document.getElementById('select-more-indicator').classList.add('is-hidden')
+			document.getElementById('split-run-category-embed-button').classList.remove('is-hidden')
+			document.getElementById('split-run-list-embed-button-wrapper').classList.remove('is-hidden')
+		} else {
+			// enable all 'Select' buttons
+			const selectButtons = document
+				.getElementById('list-container')
+				.querySelectorAll('.button.embed-button:not(.deselect-button)')
+			selectButtons.forEach(button => button.classList.remove('disabled'))
+
+			document.getElementById('select-more-indicator').classList.remove('is-hidden')
+			document.getElementById('split-run-category-embed-button').classList.add('is-hidden')
+			document.getElementById('split-run-list-embed-button-wrapper').classList.add('is-hidden')
+		}
+	}
+
 	// UI:
 	function setupUI() {
 		listContainerEl.querySelector('ul.template').remove()
@@ -381,9 +456,34 @@ import '../css/module-selector.scss'
 			}
 		})
 
-		document.getElementById('back-button').addEventListener('click', event => {
+		document.getElementById('type-back-button').addEventListener('click', event => {
+			event.preventDefault()
+			gotoSection(SECTION_EMBED_TYPE_SELECT)
+		})
+
+		document.getElementById('module-back-button').addEventListener('click', event => {
 			event.preventDefault()
 			gotoSection(SECTION_MODULE_SELECT)
+		})
+
+		document.getElementById('single-module-button').addEventListener('click', event => {
+			event.preventDefault()
+			gotoSection(SECTION_MODULE_SELECT, false)
+			embeddingSingleModule = true
+			document.getElementById('embed-type-indicator').innerHTML = 'Embedding Single Module'
+			splitRunSelected = []
+			document.getElementById('split-run-selected').classList.add('is-hidden')
+			resetSplitRunSelectedSectionList()
+		})
+
+		document.getElementById('split-run-button').addEventListener('click', event => {
+			event.preventDefault()
+			gotoSection(SECTION_MODULE_SELECT, false)
+			embeddingSingleModule = false
+			document.getElementById('embed-type-indicator').innerHTML = 'Embedding Split-Run'
+			splitRunSelected = []
+			document.getElementById('split-run-selected').classList.remove('is-hidden')
+			resetSplitRunSelectedSectionList()
 		})
 
 		document.getElementById('community-library-button').addEventListener('click', event => {
@@ -398,6 +498,18 @@ import '../css/module-selector.scss'
 			gotoTab(TAB_PERSONAL)
 		})
 
+		document.getElementById('split-run-category-embed-button').addEventListener('click', event => {
+			event.preventDefault()
+			document.getElementById('split-run-import-clarification').classList.remove('is-hidden')
+			gotoSection(SECTION_EMBED_OPTIONS)
+		})
+
+		document.getElementById('split-run-list-embed-button').addEventListener('click', event => {
+			event.preventDefault()
+			document.getElementById('split-run-import-clarification').classList.remove('is-hidden')
+			gotoSection(SECTION_EMBED_OPTIONS)
+		})
+
 		document.getElementById('finish-button').addEventListener('click', event => {
 			event.preventDefault()
 			allowScorePassback =
@@ -407,7 +519,7 @@ import '../css/module-selector.scss'
 
 		document.getElementById('finish-cancel-button').addEventListener('click', event => {
 			event.preventDefault()
-			gotoSection(SECTION_SELECT_OBJECT, sectionState.skipFadeAnimation, sectionState.addClass)
+			gotoSection(sectionState.sectionId, sectionState.skipFadeAnimation, sectionState.addClass)
 		})
 	}
 
@@ -417,7 +529,29 @@ import '../css/module-selector.scss'
 		const draftId = oboItemEl.getAttribute('data-lo-id')
 		selectedItem = getDraftById(draftId)
 
-		gotoSection(SECTION_EMBED_OPTIONS)
+		if (embeddingSingleModule) {
+			document.getElementById('split-run-import-clarification').classList.add('is-hidden')
+			return gotoSection(SECTION_EMBED_OPTIONS)
+		}
+
+		// the same button serves two purposes - to select an unselected module or to deselect a selected module
+		// determine which by checking to see if the module this button belongs to is in the list of selected modules
+		const alreadySelected = splitRunSelected.some(
+			selected => selected.draftId === selectedItem.draftId
+		)
+		if (alreadySelected) {
+			splitRunSelected = splitRunSelected.filter(
+				selected => selected.draftId !== selectedItem.draftId
+			)
+			oboItemEl.querySelector('.button').classList.remove('deselect-button')
+		} else {
+			if (splitRunSelected.length >= MAX_SPLIT_RUN_OPTION_LENGTH) return
+			splitRunSelected.push(selectedItem)
+			oboItemEl.querySelector('.button').classList.add('deselect-button')
+		}
+
+		oboItemEl.querySelector('.button').innerHTML = alreadySelected ? 'Select' : 'Deselect'
+		resetSplitRunSelectedSectionList()
 	}
 
 	function handleError(result) {
@@ -453,5 +587,6 @@ import '../css/module-selector.scss'
 
 	// initalize:
 	setupUI()
-	gotoSection(SECTION_MODULE_SELECT)
+	// gotoSection(SECTION_MODULE_SELECT)
+	gotoSection(SECTION_EMBED_TYPE_SELECT)
 })()
