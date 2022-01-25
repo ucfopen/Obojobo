@@ -1,4 +1,3 @@
-jest.mock('../models/draft_summary')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 jest.mock(
@@ -24,7 +23,7 @@ jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) 
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
 	}
-	req.requireCanViewSystemStats = () => {
+	req.requireCanViewStatsPage = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
 	}
@@ -36,8 +35,6 @@ let mockStatsComponentConstructor
 jest.mock('obojobo-repository/shared/components/pages/page-stats-server')
 
 const componentPropsDesiredProperties = ['title', 'currentUser', 'allModules']
-
-let DraftSummary
 
 // setup express server
 const path = require('path')
@@ -65,28 +62,13 @@ app.use('/', require('obojobo-express/server/express_response_decorator'))
 app.use('/', require('obojobo-repository/server/routes/stats'))
 
 describe('repository stats route', () => {
-	const mockModuleSummary = [
-		{
-			draftId: 'mockDraftId',
-			title: 'mockDraftTitle'
-		},
-		{
-			draftId: 'mockDraftId2',
-			title: 'mockDraftTitle2'
-		},
-		{
-			draftId: 'mockDraftId3',
-			title: 'mockDraftTitle3'
-		}
-	]
-
 	beforeEach(() => {
 		jest.resetAllMocks()
 		mockCurrentUser = {
 			id: 99,
-			hasPermission: perm => perm === 'canViewSystemStats'
+			// return true when the perm being asked about is 'canViewStatsPage
+			hasPermission: perm => perm === 'canViewStatsPage'
 		}
-		DraftSummary = require('../models/draft_summary')
 
 		//there's extra express garbage attached to the props we care about
 		//this roundabout solution exists to only pull out the ones we want
@@ -102,22 +84,29 @@ describe('repository stats route', () => {
 		})
 	})
 
-	test('get /stats sends the correct props to the Stats component', () => {
-		expect.hasAssertions()
+	test('get /stats returns a "not authorized" if the viewer does not have canViewStatsPage', () => {
+		// always return false - a.k.a. the user does not have the right perms to use this
+		mockCurrentUser.hasPermission = () => false
 
-		DraftSummary.fetchAll = jest.fn()
-		DraftSummary.fetchAll.mockResolvedValueOnce(mockModuleSummary)
+		expect.hasAssertions()
 
 		return request(app)
 			.get('/stats')
 			.then(response => {
-				// expect(response).toBe(1)
-				expect(DraftSummary.fetchAll).toHaveBeenCalledTimes(1)
+				expect(mockStatsComponent).toHaveBeenCalledTimes(0)
+				expect(response.statusCode).toBe(401)
+			})
+	})
 
+	test('get /stats sends the correct props to the Stats component when the user has canViewStatsPage', () => {
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/stats')
+			.then(response => {
 				expect(mockStatsComponent).toHaveBeenCalledTimes(1)
 				expect(mockStatsComponentConstructor).toHaveBeenCalledWith({
 					title: 'Stats',
-					allModules: mockModuleSummary,
 					currentUser: mockCurrentUser
 				})
 				expect(response.statusCode).toBe(200)

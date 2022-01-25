@@ -18,6 +18,7 @@ class ImageProperties extends React.Component {
 		this.state = {
 			url: '',
 			alt: '',
+			error: null,
 			size: 100,
 			height: 100,
 			width: 100,
@@ -78,16 +79,21 @@ class ImageProperties extends React.Component {
 		}
 	}
 
-	onCloseChooseImageModal(mediaId) {
-		const stateChanges = { isChoosingImage: false }
+	onCloseChooseImageModal(mediaData) {
+		if (mediaData && mediaData.status === 'error') {
+			this.setState({ error: mediaData.value.message })
+			return
+		}
+
+		const stateChanges = { isChoosingImage: false, error: null }
 
 		// Close all modals if no url is specified
-		if (!mediaId && !this.state.url) {
+		if (!mediaData && !this.state.url) {
 			this.props.onConfirm(this.state)
 		}
 
-		if (mediaId) {
-			stateChanges.url = mediaId
+		if (mediaData) {
+			stateChanges.url = mediaData.media_id || mediaData.id
 		}
 
 		this.setState(stateChanges)
@@ -102,7 +108,8 @@ class ImageProperties extends React.Component {
 			return (
 				<ChooseImageModal
 					allowedUploadTypes={this.props.allowedUploadTypes}
-					onCloseChooseImageModal={mediaId => this.onCloseChooseImageModal(mediaId)}
+					onCloseChooseImageModal={mediaData => this.onCloseChooseImageModal(mediaData)}
+					error={this.state.error}
 				/>
 			)
 		}

@@ -19,7 +19,10 @@ const {
 	SHOW_MODULE_MORE,
 	SHOW_VERSION_HISTORY,
 	RESTORE_VERSION,
-	SHOW_ASSESSMENT_SCORE_DATA
+	SHOW_ASSESSMENT_SCORE_DATA,
+	GET_DELETED_MODULES,
+	GET_MODULES,
+	BULK_RESTORE_MODULES
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -83,7 +86,8 @@ function DashboardReducer(state, action) {
 						myModules: action.payload.value,
 						filteredModules,
 						selectedModules: [],
-						multiSelectMode: false
+						multiSelectMode: false,
+						showDeletedModules: false
 					}
 				}
 			})
@@ -227,6 +231,35 @@ function DashboardReducer(state, action) {
 				})
 			})
 
+		case GET_MODULES:
+			return handle(state, action, {
+				success: prevState => ({
+					...prevState,
+					myModules: action.payload.value,
+					showDeletedModules: false
+				})
+			})
+
+		case GET_DELETED_MODULES:
+			return handle(state, action, {
+				success: prevState => ({
+					selectedModules: prevState.selectedModules,
+					currentUser: prevState.currentUser,
+					myModules: action.payload.value,
+					showDeletedModules: true
+				})
+			})
+
+		case BULK_RESTORE_MODULES:
+			return handle(state, action, {
+				success: prevState => ({
+					selectedModules: [],
+					currentUser: prevState.currentUser,
+					myModules: action.payload.value,
+					showDeletedModules: false,
+					multiSelectMode: false
+				})
+			})
 		default:
 			return state
 	}

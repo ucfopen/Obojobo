@@ -4,13 +4,18 @@ exports[`Search renders correctly with a non-empty value 1`] = `
 <div
   className="repository--nav--links--search is-not-empty"
 >
-  <input
-    name="search"
-    onChange={[Function]}
-    placeholder="Search..."
-    type="search"
-    value="string"
-  />
+  <form>
+    <input
+      name="search"
+      onChange={[Function]}
+      placeholder="Search..."
+      type="search"
+      value="string"
+    />
+    <button
+      onClick={[Function]}
+    />
+  </form>
   <div
     className="repository--nav--links--search--icon"
   >
@@ -32,13 +37,15 @@ exports[`Search renders correctly with focusOnMount=true 1`] = `
 <div
   className="repository--nav--links--search is-empty"
 >
-  <input
-    name="search"
-    onChange={[Function]}
-    placeholder="Search..."
-    type="search"
-    value={null}
-  />
+  <form>
+    <input
+      name="search"
+      onChange={[Function]}
+      placeholder="Search..."
+      type="search"
+      value={null}
+    />
+  </form>
   <div
     className="repository--nav--links--search--icon"
   >
@@ -60,12 +67,14 @@ exports[`Search renders correctly with no props 1`] = `
 <div
   className="repository--nav--links--search is-empty"
 >
-  <input
-    name="search"
-    onChange={[Function]}
-    placeholder="Search..."
-    type="search"
-  />
+  <form>
+    <input
+      name="search"
+      onChange={[Function]}
+      placeholder="Search..."
+      type="search"
+    />
+  </form>
   <div
     className="repository--nav--links--search--icon"
   >

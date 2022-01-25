@@ -95,6 +95,22 @@ describe('Search', () => {
 		expect(searchProps.onChange).toHaveBeenCalledWith('string')
 	})
 
+	test('clicks clear filter button', () => {
+		let component
+		act(() => {
+			searchProps = { ...searchProps, value: 'mock-value' }
+			component = create(<Search {...searchProps} />)
+		})
+
+		const mockClickEvent = {
+			preventDefault: () => {}
+		}
+		component.root.findByType('button').props.onClick(mockClickEvent)
+
+		expect(searchProps.onChange).toHaveBeenCalledTimes(1)
+		expect(searchProps.onChange).toHaveBeenCalledWith('')
+	})
+
 	test('does not try to run props.onChange if it does not exist?', () => {
 		delete searchProps.onChange
 		let component
