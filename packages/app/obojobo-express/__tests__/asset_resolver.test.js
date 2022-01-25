@@ -14,10 +14,12 @@ const { assetForEnv } = require('../server/asset_resolver')
 describe('Asset Resolver', () => {
 	const originalNODE_ENV = process.env.NODE_ENV
 	const originalIS_WEBPACK = process.env.IS_WEBPACK
+	const originalCDN_ASSET_HOST = process.env.CDN_ASSET_HOST
 
 	afterAll(() => {
 		process.env.NODE_ENV = originalNODE_ENV
 		process.env.IS_WEBPACK = originalIS_WEBPACK
+		process.env.CDN_ASSET_HOST = originalCDN_ASSET_HOST
 	})
 
 	beforeEach(() => {
@@ -25,6 +27,7 @@ describe('Asset Resolver', () => {
 		delete process.env.NODE_ENV
 		delete process.env.ASSET_ENV
 		delete process.env.IS_WEBPACK
+		delete process.env.CDN_ASSET_HOST
 	})
 
 	test('assetForEnv builds pattern for dev server', () => {
@@ -89,5 +92,15 @@ describe('Asset Resolver', () => {
 		expect(webpackAssetPath('test.css')).toBe('/static-from-manifest/test.css')
 		expect(webpackAssetPath('subdir/test.json')).toBe('/static-from-manifest/subdir/test.json')
 		expect(webpackAssetPath('asset-that-doesnt-exist.js')).toBe(undefined) //eslint-disable-line no-undefined
+	})
+
+	test('CDN_ASSET_HOST is prepended to manifest assets when present', () => {
+		process.env.IS_WEBPACK = 'false'
+		process.env.CDN_ASSET_HOST = 'https://test-cdn-value.com'
+		const { webpackAssetPath } = require('../server/asset_resolver')
+
+		expect(webpackAssetPath('test.js')).toBe(
+			'https://test-cdn-value.com/static-from-manifest/test.js'
+		)
 	})
 })
