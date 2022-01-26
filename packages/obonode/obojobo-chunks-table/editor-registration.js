@@ -1,5 +1,5 @@
 import React from 'react'
-import { Transforms, Node, Range, Path, Editor, Element } from 'slate'
+import { Transforms, Node, Range, Editor, Element } from 'slate'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 //import ClipboardUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -41,39 +41,30 @@ const plugins = {
 	// Editable Plugins - These are used by the PageEditor component to augment React functions
 	// They affect individual nodes independently of one another
 	onKeyDown(entry, editor, event) {
-
-		const moveCursor = direction => {
-
-			const [tablePath] = Editor.nodes(editor, {
-				mode: 'lowest',
-				match: nodeMatch => Element.isElement(nodeMatch)
-			})
-
+		function moveCursor(direction) {
 			// Getting the cell in which we last clicked on.
-			const [node, row, col] = tablePath[1]
+			const [node, row, col] = editor.selection.anchor.path
 
-			let nextPath;
+			let nextPath
 
+			// Calculate next path based on direction given
 			switch (direction) {
-				case "down":
-					nextPath = [node, row+1, col, 0];
-					break;
-				case "right":
-					nextPath = [node, row, col+1, 0];
-					break;
-				case "up":
-					nextPath = [node, row-1, col, 0];
-					break;
-				case "left":
-					nextPath = [node, row, col-1, 0];
-					break;
-				default:
-					break;
+				case 'down':
+					nextPath = [node, row + 1, col, 0]
+					break
+				case 'right':
+					nextPath = [node, row, col + 1, 0]
+					break
+				case 'up':
+					nextPath = [node, row - 1, col, 0]
+					break
+				case 'left':
+					nextPath = [node, row, col - 1, 0]
+					break
 			}
 
+			// If next path is valid, jump to it
 			if (Node.has(editor, nextPath)) {
-				// If there is, jump down to the cell
-				// below the current one
 				const focus = Editor.start(editor, nextPath)
 				const anchor = Editor.end(editor, nextPath)
 				Transforms.setSelection(editor, {
@@ -81,11 +72,7 @@ const plugins = {
 					anchor
 				})
 			}
-
 		}
-
-		const collapsed = Range.isCollapsed(editor.selection);
-		console.log(collapsed);
 
 		switch (event.key) {
 			case 'Backspace':
@@ -95,26 +82,34 @@ const plugins = {
 			case 'Enter':
 			case 'ArrowDown':
 				event.preventDefault()
-				moveCursor("down");
-				break;
-			case 'Tab':
-			case 'ArrowRight':
-				if (collapsed) break;
+				moveCursor('down')
+				break
 
-				event.preventDefault();
-				moveCursor("right");
-				break;
-			case 'ArrowLeft':
-				if (collapsed) break;
+			case 'Tab':
+				event.preventDefault()
+				moveCursor('right')
+				break
+
+			case 'ArrowRight':
+				// If moving between characters, don't move to next cell
+				if (Range.isCollapsed(editor.selection)) break
 
 				event.preventDefault()
-				moveCursor("left");
-				break;
+				moveCursor('right')
+				break
+
+			case 'ArrowLeft':
+				// If moving between characters, don't move to next cell
+				if (Range.isCollapsed(editor.selection)) break
+
+				event.preventDefault()
+				moveCursor('left')
+				break
+
 			case 'ArrowUp':
 				event.preventDefault()
-				moveCursor("up");
-				break;
-
+				moveCursor('up')
+				break
 		}
 	},
 	renderNode(props) {
