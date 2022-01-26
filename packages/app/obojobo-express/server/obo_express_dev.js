@@ -344,6 +344,7 @@ module.exports = app => {
 		User.fetchById(req.query.user_id).then(user => {
 			const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
 			const draftId = req.query.draft_id || '00000000-0000-0000-0000-000000000000'
+			const person = spoofLTIUser(user)
 			const params = {
 				lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 				lti_message_type: 'basic-lti-launch-request',
@@ -352,7 +353,7 @@ module.exports = app => {
 				score_import: isTrueParam(req.query.score_import) ? 'true' : 'false'
 			}
 			renderLtiLaunch(
-				{ ...ltiContext, ...user, ...params },
+				{ ...ltiContext, ...person, ...params },
 				'POST',
 				`${baseUrl(req)}/view/${draftId}`,
 				res
