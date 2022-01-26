@@ -16,6 +16,7 @@ const POSSIBLE_PERMS = [
 	'canCreateDrafts',
 	'canDeleteDrafts',
 	'canPreviewDrafts',
+	'canViewStatsPage',
 	'canViewSystemStats'
 ]
 
@@ -196,13 +197,13 @@ module.exports = app => {
 								${
 									userOptions.length
 										? `<br/>
-										<label for='permission'>Select module:</label>
+										<label for='permission'>Select permission:</label>
 										<select name='permission'>
 											${permOptions}
 										</select>
 										<br/>
 										<input type='hidden' name='add_remove' value='add'/>
-										<button type='submit' value='submit'>Go</button>`
+										<button type='submit' value='submit'>Add</button>`
 										: ''
 								}
 							</form>
@@ -215,13 +216,13 @@ module.exports = app => {
 								${
 									userOptions.length
 										? `<br/>
-										<label for='permission'>Select module:</label>
+										<label for='permission'>Select permission:</label>
 										<select name='permission'>
 											${permOptions}
 										</select>
 										<br/>
 										<input type='hidden' name='add_remove' value='remove'/>
-										<button type='submit' value='submit'>Go</button>`
+										<button type='submit' value='submit'>Remove</button>`
 										: ''
 								}
 							</form>
