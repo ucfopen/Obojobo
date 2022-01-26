@@ -41,36 +41,80 @@ const plugins = {
 	// Editable Plugins - These are used by the PageEditor component to augment React functions
 	// They affect individual nodes independently of one another
 	onKeyDown(entry, editor, event) {
+
+		const moveCursor = direction => {
+
+			const [tablePath] = Editor.nodes(editor, {
+				mode: 'lowest',
+				match: nodeMatch => Element.isElement(nodeMatch)
+			})
+
+			// Getting the cell in which we last clicked on.
+			const [node, row, col] = tablePath[1]
+
+			let nextPath;
+
+			switch (direction) {
+				case "down":
+					nextPath = [node, row+1, col, 0];
+					break;
+				case "right":
+					nextPath = [node, row, col+1, 0];
+					break;
+				case "up":
+					nextPath = [node, row-1, col, 0];
+					break;
+				case "left":
+					nextPath = [node, row, col-1, 0];
+					break;
+				default:
+					break;
+			}
+
+			if (Node.has(editor, nextPath)) {
+				// If there is, jump down to the cell
+				// below the current one
+				const focus = Editor.start(editor, nextPath)
+				const anchor = Editor.end(editor, nextPath)
+				Transforms.setSelection(editor, {
+					focus,
+					anchor
+				})
+			}
+
+		}
+
+		const collapsed = Range.isCollapsed(editor.selection);
+		console.log(collapsed);
+
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
 				return KeyDownUtil.deleteNodeContents(event, editor, entry, event.key === 'Delete')
 
 			case 'Enter':
+			case 'ArrowDown':
 				event.preventDefault()
-				if (Range.isCollapsed(editor.selection)) {
-					// Getting the table object.
-					const [tablePath] = Editor.nodes(editor, {
-						mode: 'lowest',
-						match: nodeMatch => Element.isElement(nodeMatch)
-					})
+				moveCursor("down");
+				break;
+			case 'Tab':
+			case 'ArrowRight':
+				if (collapsed) break;
 
-					// Getting the cell in which we last clicked on.
-					const cellPath = tablePath[1]
+				event.preventDefault();
+				moveCursor("right");
+				break;
+			case 'ArrowLeft':
+				if (collapsed) break;
 
-					// Check if there is a row below this one
-					const siblingPath = Path.next(cellPath.slice(0, -1))
-					if (Node.has(editor, siblingPath)) {
-						// If there is, jump down to the cell
-						// below the current one
-						const focus = Editor.start(editor, siblingPath.concat(cellPath[cellPath.length - 1]))
-						const anchor = Editor.end(editor, siblingPath.concat(cellPath[cellPath.length - 1]))
-						Transforms.setSelection(editor, {
-							focus,
-							anchor
-						})
-					}
-				}
+				event.preventDefault()
+				moveCursor("left");
+				break;
+			case 'ArrowUp':
+				event.preventDefault()
+				moveCursor("up");
+				break;
+
 		}
 	},
 	renderNode(props) {
