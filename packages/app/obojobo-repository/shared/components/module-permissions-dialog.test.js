@@ -262,6 +262,8 @@ describe('ModulePermissionsDialog', () => {
 
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledTimes(1)
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledWith('mockDraftId', 99)
+		// checks that onClose has been called when removing current user's access
+		expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
 	})
 
 	test('"close" and "done" buttons call props.onClose', () => {

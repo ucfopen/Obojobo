@@ -8,7 +8,6 @@ jest.mock('obojobo-express/server/logger')
 jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/models/draft')
-jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
 jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle')
 jest.mock('./models/assessment')
 
@@ -37,7 +36,7 @@ const {
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
 	getSendToClientPromises,
-	insertAttemptStartCaliperEvent,
+	insertAttemptStartEvent,
 	getState,
 	loadChildren
 } = require('./attempt-start.js')
@@ -45,7 +44,6 @@ const {
 const testJson = require('obojobo-document-engine/test-object.json')
 const insertEvent = require('obojobo-express/server/insert_event')
 const Draft = require('obojobo-express/server/models/draft')
-const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const AssessmentModel = require('./models/assessment')
 const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
 
@@ -155,9 +153,6 @@ describe('start attempt route', () => {
 		AssessmentModel.createNewAttempt.mockResolvedValueOnce(mockAttempt)
 
 		insertEvent.mockReturnValueOnce('mockInsertResult')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptStartedEvent: jest.fn().mockReturnValue('mockCaliperPayload')
-		})
 
 		expect.hasAssertions()
 		return startAttempt(mockReq, mockRes).then(() => {
@@ -437,12 +432,9 @@ describe('start attempt route', () => {
 		expect(result).toEqual([0, 1])
 	})
 
-	test('insertAttemptStartCaliperEvent inserts a new attempt, creates events and replies with an expected object', () => {
-		const createAssessmentAttemptStartedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+	test('insertAttemptStartEvent inserts a new attempt, creates events and replies with an expected object', () => {
 		insertEvent.mockReturnValueOnce('mockInsertResult')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptStartedEvent
-		})
+
 		Date.prototype.toISOString = () => 'date' //eslint-disable-line
 
 		const mockDraft = {
@@ -450,7 +442,7 @@ describe('start attempt route', () => {
 			contentId: 'mockContentId'
 		}
 
-		const r = insertAttemptStartCaliperEvent(
+		const r = insertAttemptStartEvent(
 			'mockAttemptId',
 			1,
 			'mockUserId',
@@ -465,25 +457,9 @@ describe('start attempt route', () => {
 
 		// Make sure insertEvent was called
 		expect(insertEvent).toHaveBeenCalledTimes(1)
-
-		expect(createAssessmentAttemptStartedEvent).toHaveBeenCalledWith({
-			actor: {
-				id: 'mockUserId',
-				type: 'user'
-			},
-			assessmentId: 'mockAssessmentId',
-			attemptId: 'mockAttemptId',
-			draftId: 'mockDraftId',
-			contentId: 'mockContentId',
-			extensions: {
-				count: 1
-			}
-		})
-
 		expect(insertEvent).toHaveBeenCalledWith({
 			action: 'assessment:attemptStart',
 			actorTime: 'date',
-			caliperPayload: 'mockCaliperPayload',
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId',
 			eventVersion: '1.1.0',
