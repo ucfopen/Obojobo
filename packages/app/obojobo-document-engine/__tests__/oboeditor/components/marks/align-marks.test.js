@@ -6,6 +6,7 @@ import AlignMarks from '../../../../src/scripts/oboeditor/components/marks/align
 const ALIGN_RIGHT = 'right'
 const ALIGN_CENTER = 'center'
 const ALIGN_LEFT = 'left'
+const ALIGN_JUSTIFY = 'justify'
 
 describe('AlignMarks', () => {
 	test('onKeyDown does not toggle mark if wrong key is pressed', () => {
@@ -86,6 +87,22 @@ describe('AlignMarks', () => {
 		expect(mockChange.setAlign).toHaveBeenCalledWith(ALIGN_CENTER)
 	})
 
+	test('onKeyDown toggles Center if CTRL/CMD + Shift + J is pressed', () => {
+		const mockChange = {
+			setAlign: jest.fn()
+		}
+		const mockEvent = {
+			ctrlKey: true,
+			shiftKey: true,
+			key: 'j',
+			preventDefault: jest.fn()
+		}
+
+		AlignMarks.plugins.onKeyDown(mockEvent, mockChange, jest.fn())
+
+		expect(mockChange.setAlign).toHaveBeenCalledWith(ALIGN_JUSTIFY)
+	})
+
 	test('setAlign changes the alignment of Text nodes and other nodes', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 
@@ -123,6 +140,6 @@ describe('AlignMarks', () => {
 			mark.action(editor)
 		})
 
-		expect(editor.setAlign).toHaveBeenCalledTimes(3)
+		expect(editor.setAlign).toHaveBeenCalledTimes(4)
 	})
 })
