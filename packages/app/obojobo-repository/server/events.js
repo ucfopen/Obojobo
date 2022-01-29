@@ -28,7 +28,10 @@ oboEvents.on('HTTP_NOT_AUTHORIZED', ({ req, res, next }) => {
 			title: 'Not Authorized',
 			children: 'You do not have the permissions required to view this page.',
 			currentUser: req.currentUser,
-			appCSSUrl
+			appCSSUrl,
+			globals: {
+				staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+			}
 		}
 		res.render('pages/page-error.jsx', props)
 	})
@@ -42,7 +45,10 @@ oboEvents.on('HTTP_NOT_FOUND', ({ req, res, next }) => {
 			title: 'Not Found',
 			children: "The page you requested doesn't exist.",
 			currentUser: req.currentUser,
-			appCSSUrl
+			appCSSUrl,
+			globals: {
+				staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+			}
 		}
 		res.render('pages/page-error.jsx', props)
 	})
@@ -56,7 +62,10 @@ oboEvents.on('HTTP_UNEXPECTED', ({ req, res, next }) => {
 			title: 'Unexpected Server Error',
 			children: 'There was an internal server error.',
 			currentUser: req.currentUser,
-			appCSSUrl
+			appCSSUrl,
+			globals: {
+				staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+			}
 		}
 		res.render('pages/page-error.jsx', props)
 	})

@@ -18,7 +18,10 @@ router
 			currentUser: req.currentUser,
 			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('stats.css'),
-			appJsUrl: webpackAssetPath('stats.js')
+			appJsUrl: webpackAssetPath('stats.js'),
+			globals: {
+				staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+			}
 		}
 		res.render('pages/page-stats-server.jsx', props)
 	})
