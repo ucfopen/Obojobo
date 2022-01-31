@@ -5,7 +5,11 @@ const clientGlobals = require('../util/client-globals')
 
 const ModuleImage = props => (
 	<div className="repository--module-icon--image">
-		<img src={`${clientGlobals.staticAssetUrl}/library/module-icon/${props.id}`} width="100%" height="100%" />
+		<img
+			src={`${clientGlobals.staticAssetUrl || ''}/library/module-icon/${props.id}`}
+			width="100%"
+			height="100%"
+		/>
 	</div>
 )
 

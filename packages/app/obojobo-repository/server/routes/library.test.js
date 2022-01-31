@@ -2,6 +2,7 @@ jest.mock('../models/collection')
 jest.mock('../models/draft_summary')
 jest.mock('obojobo-express/server/models/user')
 jest.mock('../models/draft_permissions')
+jest.mock('../../shared/react-utils')
 jest.mock('trianglify')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
@@ -17,14 +18,11 @@ jest.mock(
 jest.setTimeout(10000) // extend test timeout?
 
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
-
 let trianglify
-
 let Collection
 let DraftSummary
 let UserModel
 let DraftPermissions
-
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
 
