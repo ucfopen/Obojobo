@@ -106,12 +106,26 @@ describe('NavUtil', () => {
 		expect(x).toBe('mockTriggerReturn')
 	})
 
-	test('goto', () => {
+	test('goto (ignoreLock not provided)', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.goto('mockId')
 		const expectedValue = {
 			value: {
-				id: 'mockId'
+				id: 'mockId',
+				ignoreLock: true
+			}
+		}
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:goto', expectedValue)
+		expect(x).toBe('mockTriggerReturn')
+	})
+
+	test('goto (ignoreLock provided)', () => {
+		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		const x = NavUtil.goto('mockId', false)
+		const expectedValue = {
+			value: {
+				id: 'mockId',
+				ignoreLock: false
 			}
 		}
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:goto', expectedValue)
