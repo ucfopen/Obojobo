@@ -363,7 +363,7 @@ describe('Table editor', () => {
 		}
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
 
 		event = {
 			key: 'ArrowRight',
@@ -429,7 +429,7 @@ describe('Table editor', () => {
 		}
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
 
 		event = {
 			key: 'ArrowRight',
@@ -446,6 +446,64 @@ describe('Table editor', () => {
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Tab], [ArrowRight] and expanded selection at end of row', () => {
+		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
+
+		const editor = {
+			children: [
+				{
+					type: TABLE_NODE,
+					content: {},
+					children: [
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								}
+							]
+						},
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext2' }]
+								}
+							]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0, 0], offset: 5 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		let event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+
+		event = {
+			key: 'ArrowRight',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace]', () => {

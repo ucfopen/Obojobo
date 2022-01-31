@@ -50,21 +50,29 @@ const plugins = {
 			// Calculate next path based on direction given
 			switch (direction) {
 				case 'down':
-					nextPath = [node, row + 1, col, 0]
+					nextPath = [node, row + 1, col]
 					break
 				case 'right':
-					nextPath = [node, row, col + 1, 0]
+					nextPath = [node, row, col + 1]
 					break
 				case 'up':
-					nextPath = [node, row - 1, col, 0]
+					nextPath = [node, row - 1, col]
 					break
 				case 'left':
-					nextPath = [node, row, col - 1, 0]
+					nextPath = [node, row, col - 1]
 					break
 			}
 
 			// If next path is valid, jump to it
 			if (Node.has(editor, nextPath)) {
+				const focus = Editor.start(editor, nextPath)
+				const anchor = Editor.end(editor, nextPath)
+				Transforms.setSelection(editor, {
+					focus,
+					anchor
+				})
+			} else if (direction === 'right' && Node.has(editor, (nextPath = [node, row + 1, 0]))) {
+				// If moving right but already at rightmost cell, move to beginning of the row below
 				const focus = Editor.start(editor, nextPath)
 				const anchor = Editor.end(editor, nextPath)
 				Transforms.setSelection(editor, {
@@ -86,12 +94,15 @@ const plugins = {
 				break
 
 			case 'Tab':
+				// If editing text, allow tab navigation to dropdown menu
+				if (Range.isCollapsed(editor.selection)) break
+
 				event.preventDefault()
 				moveCursor('right')
 				break
 
 			case 'ArrowRight':
-				// If moving between characters, don't move to next cell
+				// If editing text, don't move to next cell
 				if (Range.isCollapsed(editor.selection)) break
 
 				event.preventDefault()
@@ -99,7 +110,7 @@ const plugins = {
 				break
 
 			case 'ArrowLeft':
-				// If moving between characters, don't move to next cell
+				// If editing text, don't move to next cell
 				if (Range.isCollapsed(editor.selection)) break
 
 				event.preventDefault()
