@@ -2,22 +2,44 @@ import './trigger-list-modal.scss'
 
 import React from 'react'
 
-import SimpleDialog from '../../../common/components/modal/simple-dialog'
-import Button from '../../../common/components/button'
-import Switch from '../../../common/components/switch'
+import Common from 'obojobo-document-engine/src/scripts/common'
+const { SimpleDialog } = Common.components.modal
+const { Button, Switch } = Common.components
+const { OboModel } = Common.models
+
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 class TriggerListModal extends React.Component {
 	constructor(props) {
 		super(props)
 		this.inputRef = React.createRef()
-		this.state = { ...JSON.parse(JSON.stringify(props.content)) }
+		this.state = {
+			...JSON.parse(JSON.stringify(props.content)),
+			assessmentId: 'my-assessment'
+		}
 		if (!this.state.triggers) this.state.triggers = []
 
 		this.createTrigger = this.createTrigger.bind(this)
+		this.getAssessmentId = this.getAssessmentId.bind(this)
+		this.createNewDefaultActionValueObject = this.createNewDefaultActionValueObject.bind(this)
+	}
+
+	componentDidMount() {
+		this.getAssessmentId()
 	}
 
 	componentWillUnmount() {
 		if (this.props.onClose) this.props.onClose()
+	}
+
+	getAssessmentId() {
+		for (const id in OboModel.models) {
+			const model = OboModel.models[id]
+			if (model.attributes.type === ASSESSMENT_NODE) {
+				this.setState({ assessmentId: model.id })
+				break;
+			}
+		}
 	}
 
 	updateTriggerType(index, event) {
@@ -62,7 +84,7 @@ class TriggerListModal extends React.Component {
 			case 'assessment:startAttempt':
 			case 'assessment:endAttempt':
 				return {
-					id: ''
+					id: this.state.assessmentId
 				}
 
 			case 'nav:openExternalLink':
@@ -88,7 +110,6 @@ class TriggerListModal extends React.Component {
 					animateScroll: true,
 					preventScroll: false
 				}
-
 			default:
 				return {}
 		}
@@ -246,20 +267,6 @@ class TriggerListModal extends React.Component {
 						</div>
 					</div>
 				)
-			case 'assessment:startAttempt':
-			case 'assessment:endAttempt':
-				return (
-					<div className="action-options">
-						<div>
-							<label>Assessment Id</label>
-							<input
-								className="input-item"
-								value={action.value.id || ''}
-								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
-							/>
-						</div>
-					</div>
-				)
 			case 'viewer:alert':
 				return (
 					<div className="action-options">
@@ -371,8 +378,8 @@ class TriggerListModal extends React.Component {
 										<option value="nav:open">Open the navigation menu</option>
 										<option value="nav:close">Close the navigation menu</option>
 										<option value="nav:toggle">Toggle the navigation menu</option>
-										<option value="assessment:startAttempt">Start an attempt for</option>
-										<option value="assessment:endAttempt">End an attempt for</option>
+										<option value="assessment:startAttempt">Start an assessment attempt</option>
+										<option value="assessment:endAttempt">End an assessment attempt</option>
 										<option value="viewer:alert">Display a popup message</option>
 										<option value="viewer:scrollToTop">Scroll to the top of the page</option>
 										<option value="focus:component">Focus on a specific item</option>

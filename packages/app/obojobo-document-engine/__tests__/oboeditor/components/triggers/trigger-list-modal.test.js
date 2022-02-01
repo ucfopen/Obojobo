@@ -1,8 +1,12 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 
+import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import Switch from '../../../../src/scripts/common/components/switch'
+import SimpleDialog from '../../../../src/scripts/common/components/modal/simple-dialog'
 import TriggerListModal from '../../../../src/scripts/oboeditor/components/triggers/trigger-list-modal'
+
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 describe('TriggerListModal', () => {
 	test('renders all options', () => {
@@ -338,6 +342,27 @@ describe('TriggerListModal', () => {
 		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', false)
 	})
 
+	test('getAssessmentId returns correct assessment id', () => {
+		const o1 = new OboModel({ id: 'test-id'})
+		const o2 = new OboModel({ id: 'my-assessment', type: ASSESSMENT_NODE })
+
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+
+		expect(component.state().assessmentId).toBe('my-assessment')
+		expect(o1.parent).toBe(null)
+		expect(o1.triggers).toEqual([])
+		expect(o1.id).toEqual('test-id')
+		expect(o2.attributes.type).toBe(ASSESSMENT_NODE)
+	})
+
 	test('getScrollType returns correct value', () => {
 		const action = {
 			value: {
@@ -359,7 +384,6 @@ describe('TriggerListModal', () => {
 
 	test.each`
 		type
-		${'nav:goto'}
 		${'nav:prev'}
 		${'nav:next'}
 		${'nav:openExternalLink'}
@@ -368,8 +392,6 @@ describe('TriggerListModal', () => {
 		${'nav:open'}
 		${'nav:close'}
 		${'nav:toggle'}
-		${'assessment:startAttempt'}
-		${'assessment:endAttempt'}
 		${'viewer:alert'}
 		${'viewer:scrollToTop'}
 		${'focus:component'}
@@ -377,6 +399,31 @@ describe('TriggerListModal', () => {
 		'createNewDefaultActionValueObject($type) creates a new default action value object',
 		({ type }) => {
 			expect(TriggerListModal.prototype.createNewDefaultActionValueObject(type)).toMatchSnapshot()
+		}
+	)
+
+	test.each`
+		type
+		${'nav:goto'}
+		${'assessment:startAttempt'}
+		${'assessment:endAttempt'}
+	`(
+		'createNewDefaultActionValueObject($type) creates a new default action value object using assessment id',
+		({ type }) => {
+			const content = {
+				triggers: [
+					{
+						type: 'onMount',
+						actions: [{ type: 'focus:component', value: { fade: false } }]
+					}
+				]
+			}
+
+			const component = mount(<TriggerListModal content={content} />)
+			const select = component.find(SimpleDialog).find('select').at(1)
+
+			select.simulate('change', { target: { value: type } })
+			expect(component.state().assessmentId).toBe('my-assessment')
 		}
 	)
 })
