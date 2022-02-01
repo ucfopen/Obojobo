@@ -391,7 +391,7 @@ describe('TriggerListModal', () => {
 	})
 
 	test('getAssessmentId returns correct assessment id', () => {
-		const o1 = new OboModel({ id: 'test-id'})
+		const o1 = new OboModel({ id: 'test-id' })
 		const o2 = new OboModel({ id: 'my-assessment', type: ASSESSMENT_NODE })
 
 		const content = {
@@ -468,7 +468,10 @@ describe('TriggerListModal', () => {
 			}
 
 			const component = mount(<TriggerListModal content={content} />)
-			const select = component.find(SimpleDialog).find('select').at(1)
+			const select = component
+				.find(SimpleDialog)
+				.find('select')
+				.at(1)
 
 			select.simulate('change', { target: { value: type } })
 			expect(component.state().assessmentId).toBe('my-assessment')

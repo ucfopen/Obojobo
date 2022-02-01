@@ -37,7 +37,7 @@ class TriggerListModal extends React.Component {
 			const model = OboModel.models[id]
 			if (model.attributes.type === ASSESSMENT_NODE) {
 				this.setState({ assessmentId: model.id })
-				break;
+				break
 			}
 		}
 	}
