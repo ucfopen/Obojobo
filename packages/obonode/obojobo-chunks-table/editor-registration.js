@@ -98,7 +98,14 @@ const plugins = {
 				if (Range.isCollapsed(editor.selection)) break
 
 				event.preventDefault()
-				moveCursor('right')
+
+				// Handle Shift+Tab left navigation
+				if (event.shiftKey) {
+					moveCursor('left')
+				} else {
+					moveCursor('right')
+				}
+
 				break
 
 			case 'ArrowRight':

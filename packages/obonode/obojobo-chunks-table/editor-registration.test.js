@@ -327,6 +327,15 @@ describe('Table editor', () => {
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
+
+		event = {
+			key: 'Tab',
+			shiftKey: true,
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight] and collapsed selection on one child', () => {
@@ -375,6 +384,15 @@ describe('Table editor', () => {
 
 		event = {
 			key: 'ArrowLeft',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).not.toHaveBeenCalled()
+
+		event = {
+			key: 'Tab',
+			shiftKey: true,
 			preventDefault: jest.fn()
 		}
 
@@ -441,6 +459,15 @@ describe('Table editor', () => {
 
 		event = {
 			key: 'ArrowLeft',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).not.toHaveBeenCalled()
+
+		event = {
+			key: 'Tab',
+			shiftKey: true,
 			preventDefault: jest.fn()
 		}
 
