@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-html",
-	"version": "14.0.0",
+	"version": "14.1.0-alpha.0",
 	"license": "AGPL-3.0-only",
 	"description": "HTML content chunk for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^14.0.0"
+		"obojobo-lib-utils": "^14.1.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [

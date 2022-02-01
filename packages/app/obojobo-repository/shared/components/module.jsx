@@ -49,6 +49,7 @@ const Module = props => {
 				type="checkbox"
 				checked={props.isSelected}
 				onClick={onSelectModule}
+				readOnly
 			/>
 			{props.hasMenu ? (
 				<button onClick={handleClick}>

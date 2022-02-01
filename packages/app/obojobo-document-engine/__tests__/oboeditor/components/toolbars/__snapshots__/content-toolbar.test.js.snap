@@ -25,7 +25,9 @@ Ctrl+Shift+L\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32
 Ctrl+Shift+E\\" aria-label=\\"Center Align
 Ctrl+Shift+E\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M10.4,13h11.2v1H10.4V13z M10.4,23h11.2v1H10.4V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Right Align
 Ctrl+Shift+R\\" aria-label=\\"Right Align
-Ctrl+Shift+R\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Indent
+Ctrl+Shift+R\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Justify
+Ctrl+Shift+J\\" aria-label=\\"Justify
+Ctrl+Shift+J\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Indent
 Ctrl+Alt+Tab\\" aria-label=\\"Indent
 Ctrl+Alt+Tab\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M10.7 8.5L8.8 10 7 11.5v-6L8.8 7z\\"></path><path class=\\"icon\\" d=\\"M13.8 8H25v1H13.8zM7 13h18v1H7zm0 5h18v1H7zm0 5h18v1H7z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Unindent
 Ctrl+Shift+Tab\\" aria-label=\\"Unindent
@@ -61,7 +63,9 @@ exports[`Content Toolbar Toolbar node calls the action for a button 1`] = `
 ⌘+Shift+E\\" aria-label=\\"Center Align
 ⌘+Shift+E\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M10.4,13h11.2v1H10.4V13z M10.4,23h11.2v1H10.4V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Right Align
 ⌘+Shift+R\\" aria-label=\\"Right Align
-⌘+Shift+R\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Indent
+⌘+Shift+R\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Justify
+⌘+Shift+J\\" aria-label=\\"Justify
+⌘+Shift+J\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Indent
 ⌘+Alt+Tab\\" aria-label=\\"Indent
 ⌘+Alt+Tab\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M10.7 8.5L8.8 10 7 11.5v-6L8.8 7z\\"></path><path class=\\"icon\\" d=\\"M13.8 8H25v1H13.8zM7 13h18v1H7zm0 5h18v1H7zm0 5h18v1H7z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Unindent
 ⌘+Shift+Tab\\" aria-label=\\"Unindent
@@ -97,7 +101,9 @@ exports[`Content Toolbar Toolbar node for Mac 1`] = `
 ⌘+Shift+E\\" aria-label=\\"Center Align
 ⌘+Shift+E\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M10.4,13h11.2v1H10.4V13z M10.4,23h11.2v1H10.4V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Right Align
 ⌘+Shift+R\\" aria-label=\\"Right Align
-⌘+Shift+R\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Indent
+⌘+Shift+R\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Justify
+⌘+Shift+J\\" aria-label=\\"Justify
+⌘+Shift+J\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path d=\\"M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Indent
 ⌘+Alt+Tab\\" aria-label=\\"Indent
 ⌘+Alt+Tab\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\"><path class=\\"icon\\" d=\\"M10.7 8.5L8.8 10 7 11.5v-6L8.8 7z\\"></path><path class=\\"icon\\" d=\\"M13.8 8H25v1H13.8zM7 13h18v1H7zm0 5h18v1H7zm0 5h18v1H7z\\"></path></svg></button><button class=\\" is-not-selected\\" title=\\"Unindent
 ⌘+Shift+Tab\\" aria-label=\\"Unindent

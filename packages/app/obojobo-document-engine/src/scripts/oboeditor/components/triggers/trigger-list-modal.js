@@ -81,6 +81,11 @@ class TriggerListModal extends React.Component {
 	createNewDefaultActionValueObject(type) {
 		switch (type) {
 			case 'nav:goto':
+				return {
+					id: '',
+					ignoreLock: true
+				}
+
 			case 'assessment:startAttempt':
 			case 'assessment:endAttempt':
 				return {
@@ -250,6 +255,17 @@ class TriggerListModal extends React.Component {
 								className="input-item"
 								value={action.value.id || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+							/>
+							<Switch
+								title="Ignore Navigation Lock"
+								// eslint-disable-next-line no-undefined
+								checked={action.value.ignoreLock === undefined ? true : action.value.ignoreLock}
+								onChange={this.updateActionValue.bind(
+									this,
+									triggerIndex,
+									actionIndex,
+									'ignoreLock'
+								)}
 							/>
 						</div>
 					</div>

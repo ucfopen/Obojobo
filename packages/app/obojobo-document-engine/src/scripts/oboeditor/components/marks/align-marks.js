@@ -4,10 +4,12 @@ import { ReactEditor } from 'slate-react'
 import LeftIcon from '../../assets/left-icon'
 import RightIcon from '../../assets/right-icon'
 import CenterIcon from '../../assets/center-icon'
+import JustifyIcon from '../../assets/justify-icon'
 
 const ALIGN_RIGHT = 'right'
 const ALIGN_CENTER = 'center'
 const ALIGN_LEFT = 'left'
+const ALIGN_JUSTIFY = 'justify'
 
 const AlignMarks = {
 	plugins: {
@@ -25,6 +27,9 @@ const AlignMarks = {
 				case 'e':
 					event.preventDefault()
 					return editor.setAlign(ALIGN_CENTER)
+				case 'j':
+					event.preventDefault()
+					return editor.setAlign(ALIGN_JUSTIFY)
 			}
 		},
 		commands: {
@@ -65,6 +70,13 @@ const AlignMarks = {
 			type: ALIGN_RIGHT,
 			icon: RightIcon,
 			action: editor => editor.setAlign(ALIGN_RIGHT)
+		},
+		{
+			name: 'Justify',
+			shortcut: 'Shift+J',
+			type: ALIGN_JUSTIFY,
+			icon: JustifyIcon,
+			action: editor => editor.setAlign(ALIGN_JUSTIFY)
 		}
 	]
 }
