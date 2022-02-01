@@ -71,8 +71,18 @@ const plugins = {
 					focus,
 					anchor
 				})
-			} else if (direction === 'right' && Node.has(editor, (nextPath = [node, row + 1, 0]))) {
+			} else if (direction === 'right' && Node.has(editor, [node, row + 1, 0])) {
 				// If moving right but already at rightmost cell, move to beginning of the row below
+				nextPath = [node, row + 1, 0]
+				const focus = Editor.start(editor, nextPath)
+				const anchor = Editor.end(editor, nextPath)
+				Transforms.setSelection(editor, {
+					focus,
+					anchor
+				})
+			} else if (direction === 'left' && Node.has(editor, [node, row - 1, 0])) {
+				// If moving right but already at leftmost cell, move to beginning of the row above
+				nextPath = [node, row - 1, 0]
 				const focus = Editor.start(editor, nextPath)
 				const anchor = Editor.end(editor, nextPath)
 				Transforms.setSelection(editor, {

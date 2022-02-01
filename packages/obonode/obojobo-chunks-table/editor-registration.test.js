@@ -278,7 +278,7 @@ describe('Table editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight] and expanded selection on one child', () => {
+	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight], [Shift+Tab] and expanded selection on one child', () => {
 		const editor = {
 			children: [
 				{
@@ -338,7 +338,7 @@ describe('Table editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight] and collapsed selection on one child', () => {
+	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight], [Shift+Tab] and collapsed selection on one child', () => {
 		const editor = {
 			children: [
 				{
@@ -400,7 +400,7 @@ describe('Table editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight] and collapsed selection on multiple children', () => {
+	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight], [Shift+Tab] and collapsed selection on multiple children', () => {
 		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
 
 		const editor = {
@@ -526,6 +526,127 @@ describe('Table editor', () => {
 
 		event = {
 			key: 'ArrowRight',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Shift+Tab] and expanded selection at beginning of row', () => {
+		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
+
+		const editor = {
+			children: [
+				{
+					type: TABLE_NODE,
+					content: {},
+					children: [
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								},
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								}
+							]
+						},
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext2' }]
+								},
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								}
+							]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 1, 0, 0], offset: 1 },
+				focus: { path: [0, 1, 0, 0], offset: 5 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		const event = {
+			key: 'Tab',
+			shiftKey: true,
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [ArrowLeft] and expanded selection at beginning of row', () => {
+		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
+
+		const editor = {
+			children: [
+				{
+					type: TABLE_NODE,
+					content: {},
+					children: [
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								},
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								}
+							]
+						},
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext2' }]
+								},
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								}
+							]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 1, 0, 0], offset: 1 },
+				focus: { path: [0, 1, 0, 0], offset: 5 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		const event = {
+			key: 'ArrowLeft',
 			preventDefault: jest.fn()
 		}
 
