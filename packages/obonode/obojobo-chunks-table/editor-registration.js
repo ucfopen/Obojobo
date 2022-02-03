@@ -45,7 +45,7 @@ const plugins = {
 		const calculateNextPath = direction => {
 			const [node, row, col] = editor.selection.anchor.path
 
-			const totalCols = editor.children[0].children.length
+			const totalCols = editor.children[node].children[0].children.length
 
 			let nextPath
 
@@ -71,7 +71,7 @@ const plugins = {
 				// If moving right but already at rightmost cell, move to beginning of the row below
 				return [node, row + 1, 0]
 			} else if (direction === 'left' && Node.has(editor, [node, row - 1, totalCols - 1])) {
-				// If moving right but already at leftmost cell, move to end of the row above
+				// If moving left but already at leftmost cell, move to end of the row above
 				return [node, row - 1, totalCols - 1]
 			}
 
