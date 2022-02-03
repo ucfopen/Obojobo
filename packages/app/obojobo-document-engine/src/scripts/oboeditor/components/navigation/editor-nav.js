@@ -111,8 +111,8 @@ class EditorNav extends React.PureComponent {
 					)
 				case 'link':
 					elements = item.flags.assessment
-						? this.props.model.attributes.children[1].children[0].children
-						: this.props.model.attributes.children[0].children[index - 1].children
+						? this.props.model.attributes.children[1].children[0]
+						: this.props.model.attributes.children[0].children[index - 1]
 
 					return (
 						<SubMenu
@@ -120,7 +120,7 @@ class EditorNav extends React.PureComponent {
 							index={index}
 							isSelected={this.props.navState.navTargetId === item.id}
 							list={list}
-							elements={elements}
+							elements={elements ? elements.children : []}
 							onClick={this.onNavItemClick.bind(this, item)}
 							savePage={this.props.savePage}
 							markUnsaved={this.props.markUnsaved}

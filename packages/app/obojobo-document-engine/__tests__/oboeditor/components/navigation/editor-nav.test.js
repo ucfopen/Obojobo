@@ -142,7 +142,7 @@ describe('EditorNav', () => {
 							children: [{ children: [] }, { children: [] }]
 						},
 						{
-							children: [{ children: [] }, { children: [] }]
+							children: []
 						}
 					]
 				}
