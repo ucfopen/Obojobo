@@ -41,13 +41,14 @@ const plugins = {
 	// Editable Plugins - These are used by the PageEditor component to augment React functions
 	// They affect individual nodes independently of one another
 	onKeyDown(entry, editor, event) {
-		function moveCursor(direction) {
-			// Getting the cell in which we last clicked on.
+		// Calculate next path based on direction given
+		const calculateNextPath = direction => {
 			const [node, row, col] = editor.selection.anchor.path
+
+			const totalCols = editor.children[0].children.length
 
 			let nextPath
 
-			// Calculate next path based on direction given
 			switch (direction) {
 				case 'down':
 					nextPath = [node, row + 1, col]
@@ -65,24 +66,24 @@ const plugins = {
 
 			// If next path is valid, jump to it
 			if (Node.has(editor, nextPath)) {
-				const focus = Editor.start(editor, nextPath)
-				const anchor = Editor.end(editor, nextPath)
-				Transforms.setSelection(editor, {
-					focus,
-					anchor
-				})
+				return nextPath
 			} else if (direction === 'right' && Node.has(editor, [node, row + 1, 0])) {
 				// If moving right but already at rightmost cell, move to beginning of the row below
-				nextPath = [node, row + 1, 0]
-				const focus = Editor.start(editor, nextPath)
-				const anchor = Editor.end(editor, nextPath)
-				Transforms.setSelection(editor, {
-					focus,
-					anchor
-				})
-			} else if (direction === 'left' && Node.has(editor, [node, row - 1, 0])) {
-				// If moving right but already at leftmost cell, move to beginning of the row above
-				nextPath = [node, row - 1, 0]
+				return [node, row + 1, 0]
+			} else if (direction === 'left' && Node.has(editor, [node, row - 1, totalCols - 1])) {
+				// If moving right but already at leftmost cell, move to end of the row above
+				return [node, row - 1, totalCols - 1]
+			}
+
+			// If no adjacent paths, return current path
+			return editor.selection.anchor.path
+		}
+
+		// Move editor selection based on direction given
+		const moveCursor = direction => {
+			const nextPath = calculateNextPath(direction)
+
+			if (nextPath !== editor.selection.anchor.path) {
 				const focus = Editor.start(editor, nextPath)
 				const anchor = Editor.end(editor, nextPath)
 				Transforms.setSelection(editor, {
@@ -104,8 +105,8 @@ const plugins = {
 				break
 
 			case 'Tab':
-				// If editing text, allow tab navigation to dropdown menu
-				if (Range.isCollapsed(editor.selection)) break
+				// If shift isn't pressed and editing text, allow tab navigation to dropdown menu
+				if (!event.shiftKey && Range.isCollapsed(editor.selection)) break
 
 				event.preventDefault()
 

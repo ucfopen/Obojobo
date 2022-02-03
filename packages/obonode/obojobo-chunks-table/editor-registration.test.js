@@ -9,6 +9,58 @@ const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 describe('Table editor', () => {
+	let editor
+
+	beforeAll(() => {
+		editor = {
+			children: [
+				{
+					type: TABLE_NODE,
+					content: {},
+					children: [
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext1' }]
+								},
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext2' }]
+								}
+							]
+						},
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext3' }]
+								},
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{ text: 'mocktext4' }]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false,
+			isVoid: () => false,
+			apply: operation => {
+				editor.selection = operation.newProperties
+			}
+		}
+	})
+
 	test('insertData calls next if pasting a Slate fragment', () => {
 		const data = {
 			types: ['application/x-slate-fragment']
@@ -104,486 +156,76 @@ describe('Table editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Enter], [ArrowDown], [ArrowUp] and expanded selection on one child', () => {
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0, 0], offset: 1 },
-				focus: { path: [0, 0, 0], offset: 3 }
-			},
-			isInline: () => false
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 0], offset: 1 },
+			focus: { path: [0, 0, 0], offset: 3 }
 		}
-		let event = {
+
+		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 1, 0, 0])
+	})
 
-		event = {
+	test('plugins.onKeyDown deals with [ArrowDown]', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 0], offset: 1 },
+			focus: { path: [0, 0, 0], offset: 3 }
+		}
+
+		const event = {
 			key: 'ArrowDown',
 			preventDefault: jest.fn()
 		}
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 1, 0, 0])
+	})
 
-		event = {
+	test('plugins.onKeyDown deals with [ArrowUp]', () => {
+		editor.selection = {
+			anchor: { path: [0, 1, 0], offset: 1 },
+			focus: { path: [0, 1, 0], offset: 3 }
+		}
+
+		const event = {
 			key: 'ArrowUp',
 			preventDefault: jest.fn()
 		}
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 0, 0])
 	})
 
-	test('plugins.onKeyDown deals with [Enter], [ArrowDown], [ArrowUp] and collapsed selection on one child', () => {
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0, 0, 0], offset: 1 },
-				focus: { path: [0, 0, 0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		let event = {
-			key: 'Enter',
-			preventDefault: jest.fn()
+	test('plugins.onKeyDown deals with [Tab] on collapsed selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 1, 0, 0], offset: 1 },
+			focus: { path: [0, 1, 0, 0], offset: 1 }
 		}
 
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowDown',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowUp',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Enter], [ArrowDown], [ArrowUp] and collapsed selection on multiple children', () => {
-		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
-
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						},
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext2' }]
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0, 0, 0], offset: 1 },
-				focus: { path: [0, 0, 0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		let event = {
-			key: 'Enter',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(Transforms.setSelection).toHaveBeenCalled()
-
-		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
-
-		event = {
-			key: 'ArrowDown',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(Transforms.setSelection).toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowUp',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight], [Shift+Tab] and expanded selection on one child', () => {
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0, 0], offset: 1 },
-				focus: { path: [0, 0, 0], offset: 3 }
-			},
-			isInline: () => false
-		}
-		let event = {
-			key: 'Tab',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowRight',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowLeft',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-
-		event = {
-			key: 'Tab',
-			shiftKey: true,
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight], [Shift+Tab] and collapsed selection on one child', () => {
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0, 0, 0], offset: 1 },
-				focus: { path: [0, 0, 0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		let event = {
+		const event = {
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).not.toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowRight',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).not.toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowLeft',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).not.toHaveBeenCalled()
-
-		event = {
-			key: 'Tab',
-			shiftKey: true,
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).not.toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 1, 0, 0])
 	})
 
-	test('plugins.onKeyDown deals with [Tab], [ArrowLeft], [ArrowRight], [Shift+Tab] and collapsed selection on multiple children', () => {
-		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
-
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						},
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext2' }]
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0, 0, 0], offset: 1 },
-				focus: { path: [0, 0, 0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		let event = {
-			key: 'Tab',
-			preventDefault: jest.fn()
+	test('plugins.onKeyDown deals with [Shift+Tab]', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 1, 0], offset: 1 },
+			focus: { path: [0, 0, 1, 0], offset: 1 }
 		}
 
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).not.toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowRight',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).not.toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowLeft',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).not.toHaveBeenCalled()
-
-		event = {
-			key: 'Tab',
-			shiftKey: true,
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Tab], [ArrowRight] and expanded selection at end of row', () => {
-		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
-
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						},
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext2' }]
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0, 0, 0], offset: 1 },
-				focus: { path: [0, 0, 0, 0], offset: 5 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		let event = {
-			key: 'Tab',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-
-		event = {
-			key: 'ArrowRight',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Shift+Tab] and expanded selection at beginning of row', () => {
-		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
-
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								},
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						},
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext2' }]
-								},
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 1, 0, 0], offset: 1 },
-				focus: { path: [0, 1, 0, 0], offset: 5 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
 		const event = {
 			key: 'Tab',
 			shiftKey: true,
@@ -592,59 +234,79 @@ describe('Table editor', () => {
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 0, 0])
 	})
 
-	test('plugins.onKeyDown deals with [ArrowLeft] and expanded selection at beginning of row', () => {
-		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
-
-		const editor = {
-			children: [
-				{
-					type: TABLE_NODE,
-					content: {},
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								},
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						},
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext2' }]
-								},
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								}
-							]
-						}
-					]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 1, 0, 0], offset: 1 },
-				focus: { path: [0, 1, 0, 0], offset: 5 }
-			},
-			isInline: () => false,
-			isVoid: () => false
+	test('plugins.onKeyDown deals with [Tab] on expanded selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 0, 0], offset: 1 },
+			focus: { path: [0, 0, 0, 0], offset: 3 }
 		}
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 1, 0])
+	})
+
+	test('plugins.onKeyDown deals with [ArrowRight] on collapsed selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 0, 0], offset: 1 },
+			focus: { path: [0, 0, 0, 0], offset: 1 }
+		}
+
+		const event = {
+			key: 'ArrowRight',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).not.toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 0, 0])
+	})
+
+	test('plugins.onKeyDown deals with [ArrowRight] on expanded selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 0, 0], offset: 1 },
+			focus: { path: [0, 0, 0, 0], offset: 3 }
+		}
+
+		const event = {
+			key: 'ArrowRight',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 1, 0])
+	})
+
+	test('plugins.onKeyDown deals with [ArrowLeft] on collapsed selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 1, 0], offset: 2 },
+			focus: { path: [0, 0, 1, 0], offset: 2 }
+		}
+
+		const event = {
+			key: 'ArrowLeft',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).not.toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 1, 0])
+	})
+
+	test('plugins.onKeyDown deals with [ArrowLeft] on expanded selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 1, 0], offset: 2 },
+			focus: { path: [0, 0, 1, 0], offset: 5 }
+		}
+
 		const event = {
 			key: 'ArrowLeft',
 			preventDefault: jest.fn()
@@ -652,6 +314,55 @@ describe('Table editor', () => {
 
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 0, 0])
+	})
+
+	test('plugins.onKeyDown deals with [ArrowLeft] at beginning of row', () => {
+		editor.selection = {
+			anchor: { path: [0, 1, 0, 0], offset: 2 },
+			focus: { path: [0, 1, 0, 0], offset: 4 }
+		}
+
+		const event = {
+			key: 'ArrowLeft',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 1, 0])
+	})
+
+	test('plugins.onKeyDown deals with [ArrowRight] at end of row', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 1, 0], offset: 2 },
+			focus: { path: [0, 0, 1, 0], offset: 4 }
+		}
+
+		const event = {
+			key: 'ArrowRight',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 1, 0, 0])
+	})
+
+	test('plugins.onKeyDown deals with no available next paths', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 0, 0], offset: 2 },
+			focus: { path: [0, 0, 0, 0], offset: 4 }
+		}
+
+		const event = {
+			key: 'ArrowLeft',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(editor.selection.anchor.path).toEqual([0, 0, 0, 0])
 	})
 
 	test('plugins.onKeyDown deals with [Backspace]', () => {
