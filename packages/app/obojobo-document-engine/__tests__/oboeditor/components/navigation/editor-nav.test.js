@@ -39,7 +39,12 @@ describe('EditorNav', () => {
 	test('EditorNav component', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: {}
+				}
+			}
 		}
 		const component = renderer.create(<EditorNav {...props} />)
 		const tree = component.toJSON()
@@ -49,7 +54,12 @@ describe('EditorNav', () => {
 	test('EditorNav component adds page', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: {}
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 
@@ -65,7 +75,12 @@ describe('EditorNav', () => {
 	test('EditorNav component adds assessment', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: {}
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 
@@ -118,6 +133,19 @@ describe('EditorNav', () => {
 				open: false,
 				locked: true,
 				navTargetId: 56 // select this item
+			},
+			model: {
+				attributes: {
+					content: { start: null },
+					children: [
+						{
+							children: [{ children: [] }, { children: [] }]
+						},
+						{
+							children: [{ children: [] }, { children: [] }]
+						}
+					]
+				}
 			}
 		}
 		const component = renderer.create(<EditorNav {...props} />)
@@ -139,7 +167,20 @@ describe('EditorNav', () => {
 			])
 			.mockReturnValueOnce([])
 
-		const props = { navState: {} }
+		const props = {
+			navState: {},
+			model: {
+				attributes: {
+					content: {},
+					children: [
+						{},
+						{
+							children: [{ children: [{ children: [] }] }, { children: [{ children: [] }] }]
+						}
+					]
+				}
+			}
+		}
 		const component = mount(<EditorNav {...props} />)
 
 		component.instance().onNavItemClick({
@@ -157,7 +198,12 @@ describe('EditorNav', () => {
 	test('addAssessment hides the modal and calls EditorUtil', () => {
 		EditorUtil.getOrderedList.mockReturnValue([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: {}
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 
@@ -177,7 +223,12 @@ describe('EditorNav', () => {
 	test('addPage hides the modal and calls EditorUtil', () => {
 		EditorUtil.getOrderedList.mockReturnValue([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: {}
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 

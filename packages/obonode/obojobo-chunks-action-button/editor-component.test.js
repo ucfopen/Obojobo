@@ -88,7 +88,10 @@ describe('ActionButton Editor Node', () => {
 	})
 
 	test('opens modal', () => {
-		const component = mount(<ActionButton element={nodeData} selected={true} />)
+		const editor = {
+			children: [nodeData]
+		}
+		const component = mount(<ActionButton element={nodeData} selected={true} editor={editor} />)
 
 		component
 			.find('button')

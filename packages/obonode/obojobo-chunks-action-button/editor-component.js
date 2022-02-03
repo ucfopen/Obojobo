@@ -36,7 +36,7 @@ class ActionButton extends React.Component {
 			<TriggerListModal
 				content={this.props.element.content}
 				onClose={this.closeModal}
-				elements={this.props.elements}
+				elements={this.props.editor.children}
 				navItems={this.props.navItems}
 			/>
 		)
