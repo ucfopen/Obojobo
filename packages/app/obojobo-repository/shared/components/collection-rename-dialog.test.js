@@ -92,4 +92,35 @@ describe('CollectionRenameDialog', () => {
 
 		expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
 	})
+
+	test('pressing the "Enter" key calls onAccept', () => {
+		defaultProps.collectionModules = null
+		const reusableComponent = <CollectionRenameDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(<CollectionRenameDialog {...defaultProps} />)
+		})
+
+		const mockEventObject = {
+			target: {
+				value: 'mockInputValue'
+			}
+		}
+		const inputElement = component.root.findByType('input')
+
+		act(() => {
+			inputElement.props.onChange(mockEventObject)
+			component.update(reusableComponent)
+		})
+
+		act(() => {
+			// eslint-disable-next-line no-undef
+			inputElement.props.onKeyPress(new KeyboardEvent('keyup', { key: 'Enter' }))
+		})
+
+		expect(defaultProps.onAccept).toHaveBeenCalledTimes(1)
+		expect(defaultProps.onAccept).toHaveBeenCalledWith('mockCollectionId', 'mockInputValue')
+
+		expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+	})
 })

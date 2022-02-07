@@ -28,6 +28,7 @@ const CollectionOptionsDialog = props => {
 				<input
 					className="collection-rename-input"
 					value={collectionTitle}
+					onKeyPress={e => e.key === 'Enter' && onAccept()}
 					onChange={onInputChange}
 					aria-label="Rename Collection"
 				/>

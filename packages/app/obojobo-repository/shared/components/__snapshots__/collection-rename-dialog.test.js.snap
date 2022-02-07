@@ -25,6 +25,7 @@ exports[`CollectionRenameDialog renders with expected standard props 1`] = `
       aria-label="Rename Collection"
       className="collection-rename-input"
       onChange={[Function]}
+      onKeyPress={[Function]}
       value="mockCollectionTitle"
     />
     <button
