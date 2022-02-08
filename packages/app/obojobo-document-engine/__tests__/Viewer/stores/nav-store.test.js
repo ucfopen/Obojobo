@@ -366,17 +366,94 @@ describe('NavStore', () => {
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
-	test('nav:goto does not change page when locked', () => {
+	test('nav:goto does nothing if payload is undefined', () => {
 		NavStore.setState({
 			isInitialized: true,
-			navTargetId: 7,
+			navTargetId: 'mockId',
+			itemsById: {
+				mockId: { id: 'mockId', flags: {} }
+			}
+		})
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+		eventCallbacks['nav:goto']()
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+	})
+
+	test('nav:goto does nothing if payload.value is undefined', () => {
+		NavStore.setState({
+			isInitialized: true,
+			navTargetId: 'mockId',
+			itemsById: {
+				mockId: { id: 'mockId', flags: {} }
+			}
+		})
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+		eventCallbacks['nav:goto']({})
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+	})
+
+	test('nav:goto still changes page when locked if ignoreLock is not provided', () => {
+		NavStore.setState({
+			isInitialized: true,
+			navTargetId: 'mockId',
+			navTargetHistory: [],
+			itemsById: {
+				mockId: { id: 'mockId', flags: {} }
+			},
+			locked: true
+		})
+
+		const spy = jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+
+		// go
+		eventCallbacks['nav:goto']({ value: { id: 'mockId' } })
+		expect(NavStore.gotoItem).toHaveBeenCalledTimes(1)
+		expect(NavStore.gotoItem).toHaveBeenCalledWith({ flags: {}, id: 'mockId' })
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+
+		spy.mockRestore()
+	})
+
+	test('nav:goto still changes page when locked if ignoreLock is true', () => {
+		NavStore.setState({
+			isInitialized: true,
+			navTargetId: 'mockId',
+			navTargetHistory: [],
+			itemsById: {
+				mockId: { id: 'mockId', flags: {} }
+			},
+			locked: true
+		})
+
+		const spy = jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+
+		// go
+		eventCallbacks['nav:goto']({ value: { id: 'mockId', ignoreLock: true } })
+		expect(NavStore.gotoItem).toHaveBeenCalledTimes(1)
+		expect(NavStore.gotoItem).toHaveBeenCalledWith({ flags: {}, id: 'mockId' })
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+
+		spy.mockRestore()
+	})
+
+	test('nav:goto does not change page when locked if ignoreLock is false', () => {
+		NavStore.setState({
+			isInitialized: true,
+			navTargetId: 'mockId',
+			itemsById: {
+				mockId: { id: 'mockId', flags: {} }
+			},
 			locked: true
 		})
 
 		const spy = jest.spyOn(NavStore, 'gotoItem')
 
 		// go
-		eventCallbacks['nav:goto']()
+		eventCallbacks['nav:goto']({ value: { id: 'mockId', ignoreLock: false } })
 		expect(NavStore.gotoItem).not.toHaveBeenCalled()
 		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()

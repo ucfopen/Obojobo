@@ -385,7 +385,7 @@ Array [
 ]
 `;
 
-exports[`NavStore nav:goto does not change page when locked 1`] = `undefined`;
+exports[`NavStore nav:goto does not change page when locked if ignoreLock is false 1`] = `undefined`;
 
 exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
 Array [

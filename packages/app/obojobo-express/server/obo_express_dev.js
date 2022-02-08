@@ -6,7 +6,6 @@ const sig = require('oauth-signature')
 const config = require('./config')
 const oauthKey = Object.keys(config.lti.keys)[0]
 const oauthSecret = config.lti.keys[oauthKey]
-const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 
 const User = require('obojobo-express/server/models/user')
 const DraftSummary = require('obojobo-repository/server/models/draft_summary')
@@ -16,6 +15,7 @@ const POSSIBLE_PERMS = [
 	'canCreateDrafts',
 	'canDeleteDrafts',
 	'canPreviewDrafts',
+	'canViewStatsPage',
 	'canViewSystemStats'
 ]
 
@@ -196,13 +196,13 @@ module.exports = app => {
 								${
 									userOptions.length
 										? `<br/>
-										<label for='permission'>Select module:</label>
+										<label for='permission'>Select permission:</label>
 										<select name='permission'>
 											${permOptions}
 										</select>
 										<br/>
 										<input type='hidden' name='add_remove' value='add'/>
-										<button type='submit' value='submit'>Go</button>`
+										<button type='submit' value='submit'>Add</button>`
 										: ''
 								}
 							</form>
@@ -215,13 +215,13 @@ module.exports = app => {
 								${
 									userOptions.length
 										? `<br/>
-										<label for='permission'>Select module:</label>
+										<label for='permission'>Select permission:</label>
 										<select name='permission'>
 											${permOptions}
 										</select>
 										<br/>
 										<input type='hidden' name='add_remove' value='remove'/>
-										<button type='submit' value='submit'>Go</button>`
+										<button type='submit' value='submit'>Remove</button>`
 										: ''
 								}
 							</form>
@@ -267,8 +267,8 @@ module.exports = app => {
 											${draftOptions}
 										</select>
 										<br/>
-										<label for='import_enabled'>Score import enabled:</label>
-										<input type='checkbox' name='import_enabled' />
+										<label for='score_import'>Score import enabled:</label>
+										<input type='checkbox' name='score_import' />
 										<br/>
 										<label for='resource_link_id'>LMS course ID:</label>
 										<input type='text' name='resource_link_id' placeholder="course_1"/>
@@ -344,15 +344,17 @@ module.exports = app => {
 		User.fetchById(req.query.user_id).then(user => {
 			const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
 			const draftId = req.query.draft_id || '00000000-0000-0000-0000-000000000000'
+			const person = spoofLTIUser(user)
 			const params = {
 				lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 				lti_message_type: 'basic-lti-launch-request',
 				lti_version: 'LTI-1p0',
 				resource_link_id,
-				score_import: isTrueParam(req.query.score_import) ? 'true' : 'false'
+				score_import: req.query.score_import === 'on' ? 'true' : 'false'
 			}
+
 			renderLtiLaunch(
-				{ ...ltiContext, ...user, ...params },
+				{ ...ltiContext, ...person, ...params },
 				'POST',
 				`${baseUrl(req)}/view/${draftId}`,
 				res
