@@ -601,6 +601,54 @@ describe('Cell Editor Node', () => {
 		expect(thisValue.setState).toHaveBeenCalledWith({ isShowingDropDownMenu: true })
 	})
 
+	test('onFocus updates classnames and state on first selection', () => {
+
+		const button = { classList: { add: jest.fn() }}
+
+		const event = {
+			target: button
+		}
+
+		const thisValue = {
+			setState: jest.fn(),
+			state: {
+				focusedDropdownSelection: null
+			}
+		}
+
+		Cell.prototype.onFocus.bind(thisValue, event)()
+
+		expect(thisValue.setState).toHaveBeenCalled()
+		expect(thisValue.setState.mock.calls[0][0]).toEqual({ focusedDropdownSelection: button })
+		expect(button.classList.add).toHaveBeenCalled()
+
+	})
+
+	test('onFocus updates classnames and state after first selection', () => {
+
+		const oldButton = { classList: { remove: jest.fn() }}
+		const newButton = { classList: { add: jest.fn() }}
+
+		const event = {
+			target: newButton
+		}
+
+		const thisValue = {
+			setState: jest.fn(),
+			state: {
+				focusedDropdownSelection: oldButton
+			}
+		}
+
+		Cell.prototype.onFocus.bind(thisValue, event)()
+
+		expect(thisValue.setState).toHaveBeenCalled()
+		expect(thisValue.setState.mock.calls[0][0]).toEqual({ focusedDropdownSelection: newButton })
+		expect(oldButton.classList.remove).toHaveBeenCalled()
+		expect(newButton.classList.add).toHaveBeenCalled()
+
+	})
+
 	test('componentDidMount does nothing when Cell is not selected', () => {
 		const thisValue = {
 			props: {

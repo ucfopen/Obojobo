@@ -21,6 +21,7 @@ exports[`Cell Editor Node Cell component as selected header 1`] = `
     </button>
     <div
       className="drop-content-cell  is-not-open"
+      onFocus={[Function]}
     >
       <button
         onClick={[Function]}
@@ -78,6 +79,7 @@ exports[`Cell Editor Node Cell component selected 1`] = `
     </button>
     <div
       className="drop-content-cell  is-not-open"
+      onFocus={[Function]}
     >
       <button
         onClick={[Function]}
