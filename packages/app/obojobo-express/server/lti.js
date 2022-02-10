@@ -632,6 +632,7 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 // MAIN METHOD:
 //
 const sendHighestAssessmentScore = async (
+	attemptHistory,
 	userId,
 	draftDocument,
 	assessmentId,
@@ -735,20 +736,38 @@ const sendHighestAssessmentScore = async (
 			? requiredData.assessmentScoreRecord.id
 			: null
 
-		const scoreId = await insertLTIAssessmentScore(
-			assessmentScoreIdOrNull,
-			result.launchId,
-			result.scoreSent,
-			result.status,
-			result.statusDetails,
-			result.gradebookStatus,
-			logId
-		)
+		const finishAddingLTIAssessmentScore = async () => {
+			const scoreId = await insertLTIAssessmentScore(
+				assessmentScoreIdOrNull,
+				result.launchId,
+				result.scoreSent,
+				result.status,
+				result.statusDetails,
+				result.gradebookStatus,
+				logId
+			)
 
-		logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
+			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
 
-		result.ltiAssessmentScoreId = scoreId
-		result.dbStatus = DB_STATUS_RECORDED
+			result.ltiAssessmentScoreId = scoreId
+			result.dbStatus = DB_STATUS_RECORDED
+		}
+
+		// Do not send score to gradebook if the current score
+		// is the same as the score already on the gradebook.
+		if (attemptHistory && attemptHistory.length > 0) {
+			const attemptScores = attemptHistory.map(a => parseFloat(a.result.attemptScore))
+			const max = Math.max(...attemptScores)
+
+			if (max !== result.scoreSent) {
+				finishAddingLTIAssessmentScore()
+			}else {
+				// Do not send to gradebook
+				logger.error(`LTI score is the same as another score in gradebook. Not storing - success - id:`, logId)
+			}
+		}else {
+			finishAddingLTIAssessmentScore()
+		}
 	} catch (error) {
 		logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
 

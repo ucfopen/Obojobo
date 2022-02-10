@@ -108,11 +108,12 @@ const endAttempt = async (req, res) => {
 
 	// send the lti score
 	const ltiRequest = await lti.sendHighestAssessmentScore(
+		attemptHistory,
 		req.currentUser.id,
 		req.currentDocument,
 		attempt.assessmentId,
 		req.currentVisit.is_preview,
-		req.currentVisit.resource_link_id
+		req.currentVisit.resource_link_id,
 	)
 	logSuccess('sendLTIScore')
 

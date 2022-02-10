@@ -107,6 +107,8 @@ class Assessment extends React.Component {
 	}
 
 	onClickSubmit() {
+		console.log("onClickSubmit called")
+		// but then that dialog appears: are you ready to submit?
 		AssessmentUtil.forceSendResponsesForCurrentAttempt(
 			this.props.model,
 			this.props.moduleData.navState.context
@@ -114,6 +116,8 @@ class Assessment extends React.Component {
 	}
 
 	endAttempt() {
+		// This is called when we click "Yes" on the
+		// "are you ready to submit" dialog
 		return AssessmentUtil.endAttempt({
 			model: this.props.model,
 			context: this.props.moduleData.navState.context,
