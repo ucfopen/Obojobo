@@ -153,6 +153,50 @@ describe('EditorNav', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('EditorNav component with start page', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 4,
+				type: 'heading',
+				label: 'label4',
+				flags: {}
+			},
+			{
+				id: 56,
+				type: 'link',
+				label: 'label5',
+				contentType: 'Page',
+				flags: {
+					assessment: false
+				}
+			}
+		])
+
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 56 // select this item
+			},
+			model: {
+				attributes: {
+					content: { start: 56 },
+					children: [
+						{
+							children: [{ children: [] }, { children: [] }]
+						},
+						{
+							children: []
+						}
+					]
+				}
+			}
+		}
+		const component = renderer.create(<EditorNav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('EditorNav component clicks on page item', () => {
 		EditorUtil.getOrderedList
 			.mockReturnValueOnce([

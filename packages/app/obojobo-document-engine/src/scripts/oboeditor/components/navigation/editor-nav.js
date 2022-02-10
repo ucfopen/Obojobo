@@ -90,22 +90,26 @@ class EditorNav extends React.PureComponent {
 			})
 		}
 
-		const startPage =
-			this.props.model.attributes.content.start === null
-				? 0
-				: list.findIndex(el => el.id === this.props.model.attributes.content.start)
+		const startPage = this.props.model.attributes.content.start
+			? list.findIndex(el => el.id === this.props.model.attributes.content.start)
+			: 0
 
 		return list.map((item, index) => {
 			let elements
 
 			switch (item.type) {
 				case 'heading':
+					elements =
+						startPage === list.length - 1
+							? this.props.model.attributes.children[1].children[0]
+							: this.props.model.attributes.children[0].children[startPage]
+
 					return (
 						<Header
 							key={index}
 							index={index}
 							list={list}
-							elements={this.props.model.attributes.children[0].children[startPage].children}
+							elements={elements ? elements.children : []}
 							markUnsaved={this.props.markUnsaved}
 						/>
 					)
