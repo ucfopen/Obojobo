@@ -3,7 +3,7 @@
 .oboeditor-component {
 	position: relative;
 
-	.is-selected {
+	&.is-selected {
 		z-index: $z-index-above-content;
 	}
 
