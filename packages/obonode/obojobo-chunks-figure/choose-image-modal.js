@@ -3,9 +3,9 @@ import './choose-image-modal.scss'
 import React from 'react'
 
 import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
-import Common from 'obojobo-document-engine/src/scripts/common'
 
-const { SimpleDialog } = Common.components.modal
+import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
+import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
 import { uploadFileViaImageNode } from './utils'
 const IMAGE_BATCH_SIZE = 11 // load 11 images at a time
 
@@ -78,15 +78,14 @@ class ChooseImageModal extends React.Component {
 			: `${this.state.media.length} Recent Images loaded${this.state.hasMore ? ' with more' : ''}`
 
 		return (
-			<SimpleDialog
-				cancelOk
+			<SettingsDialog
 				title="Upload or Choose an Image"
 				onConfirm={() => this.props.onCloseChooseImageModal(this.state.url)}
 				onCancel={() => this.props.onCloseChooseImageModal(null)}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className="choose-image">
-					<div className="choose-image--image-controls">
+					<SettingsDialogRow className="choose-image--image-controls">
 						<div className="choose-image--image-controls--upload">
 							<input
 								type="file"
@@ -117,7 +116,7 @@ class ChooseImageModal extends React.Component {
 							tabIndex="0"
 							aria-label="Enter image URL"
 						/>
-					</div>
+					</SettingsDialogRow>
 					<div className="choose-image--divider" />
 					<small>Your Recently Uploaded Images</small>
 					<div
@@ -157,7 +156,7 @@ class ChooseImageModal extends React.Component {
 						) : null}
 					</div>
 				</div>
-			</SimpleDialog>
+			</SettingsDialog>
 		)
 	}
 }
