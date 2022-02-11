@@ -8,7 +8,8 @@ import ImageCaptionWidthTypes from './image-caption-width-types'
 import Image from './image'
 import { isUUID } from './utils'
 
-const { SimpleDialog } = Common.components.modal
+import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
+import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
 const { Button } = Common.components
 
 class ImageProperties extends React.Component {
@@ -119,7 +120,7 @@ class ImageProperties extends React.Component {
 			this.state.size === 'small' || this.state.size === 'custom'
 
 		return (
-			<SimpleDialog
+			<SettingsDialog
 				cancelOk
 				title="Image Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
@@ -127,7 +128,7 @@ class ImageProperties extends React.Component {
 			>
 				<div className={`image-properties is-size-${size}`}>
 					<div>
-						<div className="flex-container image-container">
+						<SettingsDialogRow className="flex-container image-container">
 							<Image
 								key={this.state.url}
 								chunk={{
@@ -147,7 +148,7 @@ class ImageProperties extends React.Component {
 							>
 								Change Image...
 							</Button>
-						</div>
+						</SettingsDialogRow>
 
 						<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
 						<input
@@ -186,7 +187,7 @@ class ImageProperties extends React.Component {
 						</select>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
-						<div
+						<SettingsDialogRow
 							id="obojobo-draft--chunks--figure--size"
 							role="radiogroup"
 							aria-label="Select size for image"
@@ -265,10 +266,10 @@ class ImageProperties extends React.Component {
 									</div>
 								) : null}
 							</div>
-						</div>
+						</SettingsDialogRow>
 					</div>
 				</div>
-			</SimpleDialog>
+			</SettingsDialog>
 		)
 	}
 }
