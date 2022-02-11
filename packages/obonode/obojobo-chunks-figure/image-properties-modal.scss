@@ -1,14 +1,9 @@
 @import '~styles/includes';
 
-.obojobo-draft--components--modal--settings-dialog .image-properties .row {
-	margin-bottom: 0;
-}
-
 .image-properties {
 	text-align: left;
 	display: flex;
 	width: 22em;
-	margin: 0 auto;
 
 	&.is-size-large,
 	&.is-size-medium {
@@ -54,26 +49,21 @@
 	}
 
 	.size-input {
-		display: flex;
-		align-items: center;
+		display: block;
 
 		.custom-size-inputs {
-			display: flex;
-			align-items: center;
+			display: inline;
 			padding-left: 0.5em;
 		}
 
-		input {
-			margin-left: 0;
-		}
-
-		span {
-			padding-right: 0.3em;
+		input[type='radio'] {
+			vertical-align: middle;
 		}
 
 		label {
+			display: inline;
+			vertical-align: middle;
 			padding-left: 0.3em;
-			margin: 0;
 		}
 	}
 
