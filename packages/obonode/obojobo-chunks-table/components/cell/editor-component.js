@@ -291,20 +291,49 @@ class Cell extends React.Component {
 	}
 
 	onFocus(event) {
-
-		if (this.state.focusedDropdownSelection) {
-			this.state.focusedDropdownSelection.classList.remove("focused")
-		}
-
 		event.target.classList.add("focused")
+	}
 
-		this.setState({ focusedDropdownSelection: event.target })
+	onEndFocus(event) {
+		event.target.classList.remove("focused")
+	}
 
+	onKeyDown(event) {
+
+
+		const cellControls = Array.from(document.getElementsByClassName("dropdown-cell")[0].getElementsByTagName("button"))
+		const currentIndex = cellControls.findIndex(e => event.target.innerHTML === e.innerHTML)
+
+		switch(event.key) {
+
+			case "ArrowDown":
+				event.preventDefault()
+				if (currentIndex === cellControls.length - 1) break
+
+				cellControls[currentIndex + 1].focus()
+				break
+
+			case "ArrowUp":
+				event.preventDefault()
+				if (currentIndex === 0) break
+
+				cellControls[currentIndex - 1].focus()
+				break;
+			case "Tab":
+				if (currentIndex === cellControls.length - 1) {
+					cellControls[0].click()
+				}
+				break;
+			case "Enter":
+				break;
+			default:
+				event.preventDefault()
+		}
 	}
 
 	renderDropdown() {
 		return (
-			<div className="dropdown-cell" contentEditable={false}>
+			<div className="dropdown-cell" contentEditable={false} onKeyDown={this.onKeyDown} >
 				<button
 					className={isOrNot(this.state.isOpen, 'open')}
 					onClick={this.toggleOpen}
@@ -312,7 +341,7 @@ class Cell extends React.Component {
 				>
 					<div className="table-options-icon"></div>
 				</button>
-				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')} onFocus={this.onFocus}>
+				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')} onFocus={this.onFocus} onBlur={this.onEndFocus}>
 					<button onClick={this.addRowAbove}>Insert Row Above</button>
 					<button onClick={this.addRowBelow}>Insert Row Below</button>
 					<button onClick={this.addColLeft}>Insert Column Left</button>
