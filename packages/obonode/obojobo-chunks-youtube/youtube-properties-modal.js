@@ -1,11 +1,10 @@
 import './youtube-properties-modal.scss'
 
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import { parseYouTubeURL, getStandardizedURLFromVideoId } from './parse-youtube-url'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 
-const { SimpleDialog } = Common.components.modal
+import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
 
 class YouTubeProperties extends React.Component {
 	constructor(props) {
@@ -172,12 +171,11 @@ class YouTubeProperties extends React.Component {
 
 	render() {
 		return (
-			<SimpleDialog
+			<SettingsDialog
 				cancelOk
 				title="YouTube Video"
 				focusOnFirstElement={this.focusOnFirstElement}
 				onConfirm={this.onConfirm}
-				width={'30rem'}
 			>
 				<form
 					ref={this.formRef}
@@ -232,7 +230,7 @@ class YouTubeProperties extends React.Component {
 						</Button>
 					)}
 				</form>
-			</SimpleDialog>
+			</SettingsDialog>
 		)
 	}
 }
