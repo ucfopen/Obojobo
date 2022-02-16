@@ -21,6 +21,11 @@ exports.up = function(db) {
 			defaultValue: 'public'
 		})
 		.then(() => {
+			return db.addIndex('repository_collections', 'collections_visibility_type_index', [
+				'visibility_type'
+			])
+		})
+		.then(() => {
 			db.addColumn('repository_collections', 'deleted', {
 				type: 'boolean',
 				defaultValue: false
@@ -29,9 +34,14 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.removeColumn('repository_collections', 'deleted').then(() => {
-		db.removeColumn('repository_collections', 'visibility_type')
-	})
+	return db
+		.removeColumn('repository_collections', 'deleted')
+		.then(() => {
+			return db.removeIndex('repository_collections', 'collections_visibility_type_index')
+		})
+		.then(() => {
+			db.removeColumn('repository_collections', 'visibility_type')
+		})
 }
 
 exports._meta = {
