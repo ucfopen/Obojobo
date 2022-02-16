@@ -28,9 +28,9 @@ exports.down = function(db) {
 				defaultValue: new String('now()')
 			},
 			payload: { type: 'json', notNull: true },
-			is_preview: { type: Boolean }
+			is_preview: { type: 'boolean' }
 		})
-		.then(result => {
+		.then(() => {
 			return db.addIndex('caliper_store', 'caliper_store_created_at_index', ['created_at'])
 		})
 		.then(() => {
