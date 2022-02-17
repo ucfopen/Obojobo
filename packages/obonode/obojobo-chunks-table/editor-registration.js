@@ -123,6 +123,9 @@ const plugins = {
 				// If editing text, don't move to next cell
 				if (Range.isCollapsed(editor.selection)) break
 
+				// If pressing Ctrl or Command, deselect text
+				if (event.metaKey || event.ctrlKey) break
+
 				event.preventDefault()
 				moveCursor('right')
 				break
@@ -130,6 +133,9 @@ const plugins = {
 			case 'ArrowLeft':
 				// If editing text, don't move to next cell
 				if (Range.isCollapsed(editor.selection)) break
+
+				// If pressing Ctrl or Command, deselect text
+				if (event.metaKey || event.ctrlKey) break
 
 				event.preventDefault()
 				moveCursor('left')

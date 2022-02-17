@@ -317,6 +317,22 @@ describe('Table editor', () => {
 		expect(editor.selection.anchor.path).toEqual([0, 0, 0, 0])
 	})
 
+	test('plugins.onKeyDown deals with [Ctrl]+[ArrowLeft] on expanded selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 1, 0], offset: 0 },
+			focus: { path: [0, 0, 1, 0], offset: 2 }
+		}
+
+		const event = {
+			key: 'ArrowLeft',
+			metaKey: true,
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
 	test('plugins.onKeyDown deals with [ArrowLeft] at beginning of row', () => {
 		editor.selection = {
 			anchor: { path: [0, 1, 0, 0], offset: 2 },
@@ -331,6 +347,22 @@ describe('Table editor', () => {
 		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(editor.selection.anchor.path).toEqual([0, 0, 1, 0])
+	})
+
+	test('plugins.onKeyDown deals with [Ctrl]+[ArrowRight] on expanded selection', () => {
+		editor.selection = {
+			anchor: { path: [0, 0, 1, 0], offset: 0 },
+			focus: { path: [0, 0, 1, 0], offset: 2 }
+		}
+
+		const event = {
+			key: 'ArrowRight',
+			metaKey: true,
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [ArrowRight] at end of row', () => {
