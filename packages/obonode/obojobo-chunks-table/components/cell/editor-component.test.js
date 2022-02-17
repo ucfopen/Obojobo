@@ -18,7 +18,6 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 describe('Cell Editor Node', () => {
 	let tableComponent
-	// let tableWithoutHeader
 
 	beforeAll(() => {
 		tableComponent = mount(
@@ -30,16 +29,6 @@ describe('Cell Editor Node', () => {
 				</thead>
 			</table>
 		)
-
-		// tableWithoutHeader = mount(
-		// 	<table>
-		// 		<thead>
-		// 			<tr>
-		// 				<Cell element={{ content: { header: false } }} selected={true} />
-		// 			</tr>
-		// 		</thead>
-		// 	</table>
-		// )
 	})
 
 	beforeEach(() => {
