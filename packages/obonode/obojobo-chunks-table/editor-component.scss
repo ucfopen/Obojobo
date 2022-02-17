@@ -104,11 +104,11 @@
 				font-family: $font-default;
 				font-size: 0.8em;
 
-				&:hover, &.focused {
+				&:hover,
+				&.focused {
 					background-color: $color-action-low-opacity;
 					color: $color-action;
 				}
-
 			}
 		}
 	}

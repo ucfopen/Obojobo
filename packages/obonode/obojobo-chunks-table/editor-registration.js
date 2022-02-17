@@ -116,7 +116,6 @@ const plugins = {
 				} else {
 					moveCursor('right')
 				}
-
 				break
 
 			case 'ArrowRight':

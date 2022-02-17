@@ -17,7 +17,7 @@ class Cell extends React.Component {
 		this.state = {
 			isOpen: false,
 			isShowingDropDownMenu: false,
-			focusedDropdownSelection: null,
+			focusedDropdownSelection: null
 		}
 
 		this.toggleOpen = this.toggleOpen.bind(this)
@@ -291,41 +291,40 @@ class Cell extends React.Component {
 	}
 
 	onFocus(event) {
-		event.target.classList.add("focused")
+		event.target.classList.add('focused')
 	}
 
 	onEndFocus(event) {
-		event.target.classList.remove("focused")
+		event.target.classList.remove('focused')
 	}
 
 	onKeyDown(event) {
-
-
-		const cellControls = Array.from(document.getElementsByClassName("dropdown-cell")[0].getElementsByTagName("button"))
+		const cellControls = Array.from(
+			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
+		)
 		const currentIndex = cellControls.findIndex(e => event.target.innerHTML === e.innerHTML)
 
-		switch(event.key) {
-
-			case "ArrowDown":
+		switch (event.key) {
+			case 'ArrowDown':
 				event.preventDefault()
 				if (currentIndex === cellControls.length - 1) break
 
 				cellControls[currentIndex + 1].focus()
 				break
 
-			case "ArrowUp":
+			case 'ArrowUp':
 				event.preventDefault()
 				if (currentIndex === 0) break
 
 				cellControls[currentIndex - 1].focus()
-				break;
-			case "Tab":
+				break
+			case 'Tab':
 				if (currentIndex === cellControls.length - 1) {
 					cellControls[0].click()
 				}
-				break;
-			case "Enter":
-				break;
+				break
+			case 'Enter':
+				break
 			default:
 				event.preventDefault()
 		}
@@ -333,7 +332,7 @@ class Cell extends React.Component {
 
 	renderDropdown() {
 		return (
-			<div className="dropdown-cell" contentEditable={false} onKeyDown={this.onKeyDown} >
+			<div className="dropdown-cell" contentEditable={false} onKeyDown={this.onKeyDown}>
 				<button
 					className={isOrNot(this.state.isOpen, 'open')}
 					onClick={this.toggleOpen}
@@ -341,7 +340,11 @@ class Cell extends React.Component {
 				>
 					<div className="table-options-icon"></div>
 				</button>
-				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')} onFocus={this.onFocus} onBlur={this.onEndFocus}>
+				<div
+					className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}
+					onFocus={this.onFocus}
+					onBlur={this.onEndFocus}
+				>
 					<button onClick={this.addRowAbove}>Insert Row Above</button>
 					<button onClick={this.addRowBelow}>Insert Row Below</button>
 					<button onClick={this.addColLeft}>Insert Column Left</button>
