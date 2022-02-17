@@ -341,7 +341,7 @@ router
 router
 	.route('/collections/new')
 	.post([requireCanCreateDrafts, checkValidationRules])
-	.post((req, res, next) => {
+	.post((req, res) => {
 		return Collection.createWithUser(req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
@@ -352,7 +352,7 @@ router
 router
 	.route('/collections/rename')
 	.post([requireCanCreateDrafts, checkValidationRules])
-	.post(async (req, res, next) => {
+	.post(async (req, res) => {
 		try {
 			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
 				req.currentUser.id,
@@ -373,7 +373,7 @@ router
 router
 	.route('/collections/:id')
 	.delete([requireCanDeleteDrafts, checkValidationRules])
-	.delete(async (req, res, next) => {
+	.delete(async (req, res) => {
 		try {
 			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
 				req.currentUser.id,
@@ -391,11 +391,11 @@ router
 	})
 
 // Add a module to a collection
-// mounted as api/collections/:id/module/add
+// mounted as api/collections/:id/modules/add
 router
-	.route('/collections/:id/module/add')
+	.route('/collections/:id/modules/add')
 	.post([requireCanCreateDrafts, checkValidationRules])
-	.post(async (req, res, next) => {
+	.post(async (req, res) => {
 		try {
 			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
 				req.currentUser.id,
@@ -417,11 +417,11 @@ router
 	})
 
 // Remove a module from a collection
-// mounted as api/collections/:id/module/remove
+// mounted as api/collections/:id/modules/remove
 router
-	.route('/collections/:id/module/remove')
+	.route('/collections/:id/modules/remove')
 	.delete([requireCanDeleteDrafts, checkValidationRules])
-	.delete(async (req, res, next) => {
+	.delete(async (req, res) => {
 		try {
 			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
 				req.currentUser.id,

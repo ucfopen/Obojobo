@@ -1070,7 +1070,7 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('post /collections/:id/module/add returns the expected response when the user owns the collection', () => {
+	test('post /collections/:id/modules/add returns the expected response when the user owns the collection', () => {
 		expect.hasAssertions()
 
 		Collection.addModule = jest.fn()
@@ -1079,7 +1079,7 @@ describe('repository api route', () => {
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
 
 		return request(app)
-			.post('/collections/mockCollectionId/module/add')
+			.post('/collections/mockCollectionId/modules/add')
 			.send({ draftId: 'mockDraftId' })
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
@@ -1097,7 +1097,7 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('post /collections/:id/module/add returns the expected response when the user does not own the collection', () => {
+	test('post /collections/:id/modules/add returns the expected response when the user does not own the collection', () => {
 		expect.hasAssertions()
 
 		Collection.addModule = jest.fn()
@@ -1105,7 +1105,7 @@ describe('repository api route', () => {
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(false)
 
 		return request(app)
-			.post('/collections/mockCollectionId/module/add')
+			.post('/collections/mockCollectionId/modules/add')
 			.send({ draftId: 'mockDraftId' })
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
@@ -1123,7 +1123,7 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('post /collections/:id/module/add handles errors', () => {
+	test('post /collections/:id/modules/add handles errors', () => {
 		expect.hasAssertions()
 
 		Collection.addModule = jest.fn()
@@ -1131,7 +1131,7 @@ describe('repository api route', () => {
 		DraftPermissions.userHasPermissionToCollection.mockRejectedValueOnce('some-error')
 
 		return request(app)
-			.post('/collections/mockCollectionId/module/add')
+			.post('/collections/mockCollectionId/modules/add')
 			.send({ draftId: 'mockDraftId' })
 			.then(response => {
 				expect(response.statusCode).toBe(500)
@@ -1141,7 +1141,7 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('delete /collections/:id/module/remove returns the expected response when the user owns the collection', () => {
+	test('delete /collections/:id/modules/remove returns the expected response when the user owns the collection', () => {
 		expect.hasAssertions()
 
 		Collection.removeModule = jest.fn()
@@ -1150,7 +1150,7 @@ describe('repository api route', () => {
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(true)
 
 		return request(app)
-			.delete('/collections/mockCollectionId/module/remove')
+			.delete('/collections/mockCollectionId/modules/remove')
 			.send({ draftId: 'mockDraftId' })
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
@@ -1168,7 +1168,7 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('delete /collections/:id/module/remove returns the expected response when the user does not own the collection', () => {
+	test('delete /collections/:id/modules/remove returns the expected response when the user does not own the collection', () => {
 		expect.hasAssertions()
 
 		Collection.removeModule = jest.fn()
@@ -1176,7 +1176,7 @@ describe('repository api route', () => {
 		DraftPermissions.userHasPermissionToCollection.mockResolvedValueOnce(false)
 
 		return request(app)
-			.delete('/collections/mockCollectionId/module/remove')
+			.delete('/collections/mockCollectionId/modules/remove')
 			.send({ draftId: 'mockDraftId' })
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
@@ -1194,7 +1194,7 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('delete /collections/:id/module/remove handles errors', () => {
+	test('delete /collections/:id/modules/remove handles errors', () => {
 		expect.hasAssertions()
 
 		Collection.removeModule = jest.fn()
@@ -1202,7 +1202,7 @@ describe('repository api route', () => {
 		DraftPermissions.userHasPermissionToCollection.mockRejectedValueOnce('some-error')
 
 		return request(app)
-			.delete('/collections/mockCollectionId/module/remove')
+			.delete('/collections/mockCollectionId/modules/remove')
 			.send({ draftId: 'mockDraftId' })
 			.then(response => {
 				expect(response.statusCode).toBe(500)

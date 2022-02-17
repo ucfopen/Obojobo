@@ -52,11 +52,11 @@ const apiGetCollectionsForModule = draftId => {
 
 const apiAddModuleToCollection = (draftId, collectionId) => {
 	const options = { ...defaultOptions(), method: 'POST', body: `{"draftId":"${draftId}"}` }
-	return fetch(`/api/collections/${collectionId}/module/add`, options).then(res => res.json())
+	return fetch(`/api/collections/${collectionId}/modules/add`, options).then(res => res.json())
 }
 const apiRemoveModuleFromCollection = (draftId, collectionId) => {
 	const options = { ...defaultOptions(), method: 'DELETE', body: `{"draftId":"${draftId}"}` }
-	return fetch(`/api/collections/${collectionId}/module/remove`, options).then(res => res.json())
+	return fetch(`/api/collections/${collectionId}/modules/remove`, options).then(res => res.json())
 }
 
 const apiSaveDraft = async (draftId, draftJSON) => {

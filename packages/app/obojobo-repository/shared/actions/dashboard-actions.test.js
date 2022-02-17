@@ -447,7 +447,7 @@ describe('Dashboard Actions', () => {
 			mockDraftIds.forEach(draftId => {
 				mockCollectionIds.forEach(collectionId => {
 					const expectedCall = global.fetch.mock.calls[callIndex++]
-					const expectedApiUrl = `/api/collections/${collectionId}/module/add`
+					const expectedApiUrl = `/api/collections/${collectionId}/modules/add`
 					expect(expectedCall[0]).toBe(expectedApiUrl)
 					expect(expectedCall[1]).toEqual({
 						...defaultFetchOptions,
@@ -486,7 +486,7 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).toHaveBeenCalledTimes(mockDraftIds.length + 1)
 			mockDraftIds.forEach((draftId, index) => {
 				const expectedCall = global.fetch.mock.calls[index]
-				expect(expectedCall[0]).toBe(`/api/collections/${mockCollectionId}/module/remove`)
+				expect(expectedCall[0]).toBe(`/api/collections/${mockCollectionId}/modules/remove`)
 				expect(expectedCall[1]).toEqual({
 					...defaultFetchOptions,
 					method: 'DELETE',
@@ -680,7 +680,7 @@ describe('Dashboard Actions', () => {
 
 		const actionReply = DashboardActions.moduleAddToCollection('mockDraftId', 'mockCollectionId')
 
-		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/add', {
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/add', {
 			...defaultFetchOptions,
 			method: 'POST',
 			body: '{"draftId":"mockDraftId"}'
@@ -711,7 +711,7 @@ describe('Dashboard Actions', () => {
 			'mockCollectionId'
 		)
 
-		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/remove', {
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/remove', {
 			...defaultFetchOptions,
 			method: 'DELETE',
 			body: '{"draftId":"mockDraftId"}'
@@ -802,7 +802,7 @@ describe('Dashboard Actions', () => {
 
 		const actionReply = DashboardActions.collectionAddModule('mockDraftId', 'mockCollectionId')
 
-		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/add', {
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/add', {
 			...defaultFetchOptions,
 			method: 'POST',
 			body: '{"draftId":"mockDraftId"}'
@@ -837,7 +837,7 @@ describe('Dashboard Actions', () => {
 			options
 		)
 
-		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/add', {
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/add', {
 			...defaultFetchOptions,
 			method: 'POST',
 			body: '{"draftId":"mockDraftId"}'
@@ -868,7 +868,7 @@ describe('Dashboard Actions', () => {
 
 		const actionReply = DashboardActions.collectionRemoveModule('mockDraftId', 'mockCollectionId')
 
-		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/remove', {
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/remove', {
 			...defaultFetchOptions,
 			method: 'DELETE',
 			body: '{"draftId":"mockDraftId"}'
@@ -903,7 +903,7 @@ describe('Dashboard Actions', () => {
 			options
 		)
 
-		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/module/remove', {
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/remove', {
 			...defaultFetchOptions,
 			method: 'DELETE',
 			body: '{"draftId":"mockDraftId"}'
