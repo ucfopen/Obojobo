@@ -62,7 +62,8 @@ exports.up = function(db) {
 				'ok_null_score_not_sent',
 				'ok_no_outcome_service',
 				'ok_gradebook_matches_assessment_score',
-				'ok_preview_mode'
+				'ok_preview_mode',
+				'ok_not_considered'
       );`)
 		})
 		.then(result => {

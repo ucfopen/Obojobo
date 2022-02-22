@@ -379,79 +379,89 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.info.mock.calls[7]).toEqual([
-				'LTI store "success" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
+				expect(logger.info.mock.calls[6]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.info.mock.calls[7]).toEqual([
+					'LTI store "success" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: 1,
-						status: 'success',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: 1,
+							status: 'success',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: 1,
-				status: 'success',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: 1,
+					status: 'success',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('send different assessment score results in "success" and "ok_gradebook_matches_assessment"', () => {
@@ -461,79 +471,89 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.info.mock.calls[7]).toEqual([
-				'LTI store "success" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
+				expect(logger.info.mock.calls[6]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.info.mock.calls[7]).toEqual([
+					'LTI store "success" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: 1,
-						status: 'success',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: 1,
+							status: 'success',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: 1,
-				status: 'success',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: 1,
+					status: 'success',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('send first assessment score results in "success" and "ok_gradebook_matches_assessment"', () => {
@@ -543,79 +563,89 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.info.mock.calls[7]).toEqual([
-				'LTI store "success" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
+				expect(logger.info.mock.calls[6]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.info.mock.calls[7]).toEqual([
+					'LTI store "success" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: 1,
-						status: 'success',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: 1,
+							status: 'success',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: 1,
-				status: 'success',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: 1,
+					status: 'success',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('send null assessment score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
@@ -625,75 +655,85 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending null score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_null_score_not_sent"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI not sending null score for user:"user-id" on draft:"draft-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_null_score_not_sent"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_score_is_null',
-						statusDetails: null,
-						gradebookStatus: 'ok_null_score_not_sent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_score_is_null',
+							statusDetails: null,
+							gradebookStatus: 'ok_null_score_not_sent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'not_attempted_score_is_null',
-				statusDetails: null,
-				gradebookStatus: 'ok_null_score_not_sent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'not_attempted_score_is_null',
+					statusDetails: null,
+					gradebookStatus: 'ok_null_score_not_sent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('send assessment score with no outcome results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', () => {
@@ -703,75 +743,85 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending null score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_null_score_not_sent"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI not sending null score for user:"user-id" on draft:"draft-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_null_score_not_sent"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_score_is_null',
-						statusDetails: null,
-						gradebookStatus: 'ok_null_score_not_sent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_score_is_null',
+							statusDetails: null,
+							gradebookStatus: 'ok_null_score_not_sent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'not_attempted_score_is_null',
-				statusDetails: null,
-				gradebookStatus: 'ok_null_score_not_sent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'not_attempted_score_is_null',
+					statusDetails: null,
+					gradebookStatus: 'ok_null_score_not_sent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('replaceResult fail for same score results in "error_replace_result_failed" and "ok_gradebook_matches_assessment_score"', () => {
@@ -781,83 +831,93 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', false, logId])
-			expect(logger.error.mock.calls[0]).toEqual([
-				'LTI replaceResult failed for user:"user-id" on draft:"draft-id"!',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.info.mock.calls[7]).toEqual([
-				'LTI store "error_replace_result_failed" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', false, logId])
+				expect(logger.error.mock.calls[0]).toEqual([
+					'LTI replaceResult failed for user:"user-id" on draft:"draft-id"!',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.info.mock.calls[7]).toEqual([
+					'LTI store "error_replace_result_failed" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: 1,
-						status: 'error_replace_result_failed',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: 1,
+							status: 'error_replace_result_failed',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: 1,
-				status: 'error_replace_result_failed',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: 1,
+					status: 'error_replace_result_failed',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('replaceResult fail for different score results in "error_replace_result_failed" and "error_newer_assessment_score_unsent"', () => {
@@ -867,83 +927,93 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', false, logId])
-			expect(logger.error.mock.calls[0]).toEqual([
-				'LTI replaceResult failed for user:"user-id" on draft:"draft-id"!',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "error_newer_assessment_score_unsent"',
-				logId
-			])
-			expect(logger.info.mock.calls[7]).toEqual([
-				'LTI store "error_replace_result_failed" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', false, logId])
+				expect(logger.error.mock.calls[0]).toEqual([
+					'LTI replaceResult failed for user:"user-id" on draft:"draft-id"!',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual([
+					'LTI gradebook status is "error_newer_assessment_score_unsent"',
+					logId
+				])
+				expect(logger.info.mock.calls[7]).toEqual([
+					'LTI store "error_replace_result_failed" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[8]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: 1,
-						status: 'error_replace_result_failed',
-						statusDetails: null,
-						gradebookStatus: 'error_newer_assessment_score_unsent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: 1,
+							status: 'error_replace_result_failed',
+							statusDetails: null,
+							gradebookStatus: 'error_newer_assessment_score_unsent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: 1,
-				status: 'error_replace_result_failed',
-				statusDetails: null,
-				gradebookStatus: 'error_newer_assessment_score_unsent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: 1,
+					status: 'error_replace_result_failed',
+					statusDetails: null,
+					gradebookStatus: 'error_newer_assessment_score_unsent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('missing key for newer assessment score results in "error_no_secret_for_key" and "error_newer_assessment_score_unsent"', () => {
@@ -953,73 +1023,83 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual(['LTI ERROR: No secret found for key:"nokey"'])
-			expect(logger.error.mock.calls[1]).toEqual(['LTI No secret found for key:"nokey"!', logId])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "error_newer_assessment_score_unsent"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "error_no_secret_for_key" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.error.mock.calls[0]).toEqual(['LTI ERROR: No secret found for key:"nokey"'])
+				expect(logger.error.mock.calls[1]).toEqual(['LTI No secret found for key:"nokey"!', logId])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "error_newer_assessment_score_unsent"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "error_no_secret_for_key" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'nokey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'error_no_secret_for_key',
-						statusDetails: null,
-						gradebookStatus: 'error_newer_assessment_score_unsent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'nokey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'error_no_secret_for_key',
+							statusDetails: null,
+							gradebookStatus: 'error_newer_assessment_score_unsent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'error_no_secret_for_key',
-				statusDetails: null,
-				gradebookStatus: 'error_newer_assessment_score_unsent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'error_no_secret_for_key',
+					statusDetails: null,
+					gradebookStatus: 'error_newer_assessment_score_unsent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('missing key for same assessment score results in "error_no_secret_for_key" and "ok_gradebook_matches_assessment_score"', () => {
@@ -1029,75 +1109,83 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		// expect(logger.error.mock.calls).toBe(1)
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.error.mock.calls[0]).toEqual(['LTI ERROR: No secret found for key:"nokey"'])
+				expect(logger.error.mock.calls[1]).toEqual(['LTI No secret found for key:"nokey"!', logId])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "error_no_secret_for_key" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual(['LTI ERROR: No secret found for key:"nokey"'])
-			expect(logger.error.mock.calls[1]).toEqual(['LTI No secret found for key:"nokey"!', logId])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "error_no_secret_for_key" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
-
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'nokey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'error_no_secret_for_key',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'nokey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'error_no_secret_for_key',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'error_no_secret_for_key',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'error_no_secret_for_key',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', () => {
@@ -1107,69 +1195,79 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: null,
-					launchKey: null,
-					body: {
-						lis_outcome_service_url: null,
-						lis_result_sourcedid: null
-					},
-					result: {
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: null,
-						scoreSent: null,
-						status: 'error_no_assessment_score_found',
-						statusDetails: null,
-						gradebookStatus: 'error_state_unknown',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
+						launchKey: null,
+						body: {
+							lis_outcome_service_url: null,
+							lis_result_sourcedid: null
+						},
+						result: {
+							launchId: null,
+							scoreSent: null,
+							status: 'error_no_assessment_score_found',
+							statusDetails: null,
+							gradebookStatus: 'error_state_unknown',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
+
+				expect(result).toEqual({
+					launchId: null,
+					scoreSent: null,
+					status: 'error_no_assessment_score_found',
+					statusDetails: null,
+					gradebookStatus: 'error_state_unknown',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: null
+				})
+
+				// throw in some tests for the logger output
+				expect(logger.info).toHaveBeenCalledWith(
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				)
+
+				expect(logger.error).toHaveBeenCalledWith(
+					'LTI no assessment score found, unable to proceed!',
+					logId
+				)
+				expect(logger.info).toHaveBeenCalledWith(
+					'LTI gradebook status is "error_state_unknown"',
+					logId
+				)
+				expect(logger.info).toHaveBeenCalledWith(
+					'LTI store "error_no_assessment_score_found" success - id:"new-lti-assessment-score-id"',
+					logId
+				)
+				expect(logger.info).toHaveBeenCalledWith('LTI complete', logId)
 			})
-
-			expect(result).toEqual({
-				launchId: null,
-				scoreSent: null,
-				status: 'error_no_assessment_score_found',
-				statusDetails: null,
-				gradebookStatus: 'error_state_unknown',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: null
-			})
-
-			// throw in some tests for the logger output
-			expect(logger.info).toHaveBeenCalledWith(
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			)
-
-			expect(logger.error).toHaveBeenCalledWith(
-				'LTI no assessment score found, unable to proceed!',
-				logId
-			)
-			expect(logger.info).toHaveBeenCalledWith(
-				'LTI gradebook status is "error_state_unknown"',
-				logId
-			)
-			expect(logger.info).toHaveBeenCalledWith(
-				'LTI store "error_no_assessment_score_found" success - id:"new-lti-assessment-score-id"',
-				logId
-			)
-			expect(logger.info).toHaveBeenCalledWith('LTI complete', logId)
-		})
 	})
 
 	test('no launch for different score results in "error_no_launch_found" and "error_state_unknown"', () => {
@@ -1179,69 +1277,82 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual(['LTI error attempting to retrieve launch', logId])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI gradebook status is "error_state_unknown"',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI store "error_no_launch_found" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.error.mock.calls[0]).toEqual([
+					'LTI error attempting to retrieve launch',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI gradebook status is "error_state_unknown"',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI store "error_no_launch_found" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: null,
-					launchKey: null,
-					body: {
-						lis_outcome_service_url: null,
-						lis_result_sourcedid: null
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: null,
-						scoreSent: null,
-						status: 'error_no_launch_found',
-						statusDetails: null,
-						gradebookStatus: 'error_state_unknown',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: null,
+						body: {
+							lis_outcome_service_url: null,
+							lis_result_sourcedid: null
+						},
+						result: {
+							launchId: null,
+							scoreSent: null,
+							status: 'error_no_launch_found',
+							statusDetails: null,
+							gradebookStatus: 'error_state_unknown',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: null,
-				scoreSent: null,
-				status: 'error_no_launch_found',
-				statusDetails: null,
-				gradebookStatus: 'error_state_unknown',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: null
+				expect(result).toEqual({
+					launchId: null,
+					scoreSent: null,
+					status: 'error_no_launch_found',
+					statusDetails: null,
+					gradebookStatus: 'error_state_unknown',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: null
+				})
 			})
-		})
 	})
 
 	test('no launch for same score results in "error_no_launch_found" and "ok_gradebook_matches_assessment_score"', () => {
@@ -1251,69 +1362,82 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual(['LTI error attempting to retrieve launch', logId])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI store "error_no_launch_found" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.error.mock.calls[0]).toEqual([
+					'LTI error attempting to retrieve launch',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI store "error_no_launch_found" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: null,
-					launchKey: null,
-					body: {
-						lis_outcome_service_url: null,
-						lis_result_sourcedid: null
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: null,
-						scoreSent: null,
-						status: 'error_no_launch_found',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: null,
+						body: {
+							lis_outcome_service_url: null,
+							lis_result_sourcedid: null
+						},
+						result: {
+							launchId: null,
+							scoreSent: null,
+							status: 'error_no_launch_found',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: null,
-				scoreSent: null,
-				status: 'error_no_launch_found',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: null
+				expect(result).toEqual({
+					launchId: null,
+					scoreSent: null,
+					status: 'error_no_launch_found',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: null
+				})
 			})
-		})
 	})
 
 	test('no launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
@@ -1323,73 +1447,86 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual(['LTI error attempting to retrieve launch', logId])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI not sending null score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "ok_null_score_not_sent"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.error.mock.calls[0]).toEqual([
+					'LTI error attempting to retrieve launch',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI not sending null score for user:"user-id" on draft:"draft-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "ok_null_score_not_sent"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: null,
-					launchKey: null,
-					body: {
-						lis_outcome_service_url: null,
-						lis_result_sourcedid: null
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: null,
-						scoreSent: null,
-						status: 'not_attempted_score_is_null',
-						statusDetails: null,
-						gradebookStatus: 'ok_null_score_not_sent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: null,
+						body: {
+							lis_outcome_service_url: null,
+							lis_result_sourcedid: null
+						},
+						result: {
+							launchId: null,
+							scoreSent: null,
+							status: 'not_attempted_score_is_null',
+							statusDetails: null,
+							gradebookStatus: 'ok_null_score_not_sent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: null,
-				scoreSent: null,
-				status: 'not_attempted_score_is_null',
-				statusDetails: null,
-				gradebookStatus: 'ok_null_score_not_sent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: null
+				expect(result).toEqual({
+					launchId: null,
+					scoreSent: null,
+					status: 'not_attempted_score_is_null',
+					statusDetails: null,
+					gradebookStatus: 'ok_null_score_not_sent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: null
+				})
 			})
-		})
 	})
 
 	test('expired launch for same score results in "error_launch_expired" and "ok_gradebook_matches_assessment_score"', () => {
@@ -1407,72 +1544,82 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "error_launch_expired" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "error_launch_expired" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'error_launch_expired',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'error_launch_expired',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'error_launch_expired',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'error_launch_expired',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('expired launch for different score results in "error_launch_expired" and "error_newer_assessment_score_unsent"', () => {
@@ -1490,72 +1637,82 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "error_newer_assessment_score_unsent"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "error_launch_expired" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "error_newer_assessment_score_unsent"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "error_launch_expired" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'error_launch_expired',
-						statusDetails: null,
-						gradebookStatus: 'error_newer_assessment_score_unsent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'error_launch_expired',
+							statusDetails: null,
+							gradebookStatus: 'error_newer_assessment_score_unsent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'error_launch_expired',
-				statusDetails: null,
-				gradebookStatus: 'error_newer_assessment_score_unsent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'error_launch_expired',
+					statusDetails: null,
+					gradebookStatus: 'error_newer_assessment_score_unsent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
@@ -1573,76 +1730,86 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending null score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_null_score_not_sent"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI not sending null score for user:"user-id" on draft:"draft-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_null_score_not_sent"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_score_is_null',
-						statusDetails: null,
-						gradebookStatus: 'ok_null_score_not_sent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_score_is_null',
+							statusDetails: null,
+							gradebookStatus: 'ok_null_score_not_sent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'not_attempted_score_is_null',
-				statusDetails: null,
-				gradebookStatus: 'ok_null_score_not_sent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'not_attempted_score_is_null',
+					statusDetails: null,
+					gradebookStatus: 'ok_null_score_not_sent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
@@ -1660,76 +1827,86 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending null score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_null_score_not_sent"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI not sending null score for user:"user-id" on draft:"draft-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_null_score_not_sent"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_score_is_null" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'not_attempted_score_is_null',
-				statusDetails: null,
-				gradebookStatus: 'ok_null_score_not_sent',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
-			})
-
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
+				expect(result).toEqual({
 					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+					scoreSent: null,
+					status: 'not_attempted_score_is_null',
+					statusDetails: null,
+					gradebookStatus: 'ok_null_score_not_sent',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
+
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_score_is_null',
-						statusDetails: null,
-						gradebookStatus: 'ok_null_score_not_sent',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_score_is_null',
+							statusDetails: null,
+							gradebookStatus: 'ok_null_score_not_sent',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 			})
-		})
 	})
 
 	test('expired launch for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', () => {
@@ -1747,76 +1924,86 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI No outcome service for user:"user-id" on draft:"draft-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_no_outcome_service"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_no_outcome_service_for_launch" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI No outcome service for user:"user-id" on draft:"draft-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_no_outcome_service"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_no_outcome_service_for_launch" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: null,
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_no_outcome_service_for_launch',
-						statusDetails: null,
-						gradebookStatus: 'ok_no_outcome_service',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: null,
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_no_outcome_service_for_launch',
+							statusDetails: null,
+							gradebookStatus: 'ok_no_outcome_service',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'not_attempted_no_outcome_service_for_launch',
-				statusDetails: null,
-				gradebookStatus: 'ok_no_outcome_service',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: null
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'not_attempted_no_outcome_service_for_launch',
+					statusDetails: null,
+					gradebookStatus: 'ok_no_outcome_service',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: null
+				})
 			})
-		})
 	})
 
 	test('invalid score results in "error_score_is_invalid" and "error_state_unknown"', () => {
@@ -1826,76 +2013,86 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"doggo", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual([
-				'LTI not sending invalid score "NaN" for user:"user-id" on draft:"draft-id"!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "error_state_unknown"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "error_score_is_invalid" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"doggo", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.error.mock.calls[0]).toEqual([
+					'LTI not sending invalid score "NaN" for user:"user-id" on draft:"draft-id"!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "error_state_unknown"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "error_score_is_invalid" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'error_score_is_invalid',
-						statusDetails: null,
-						gradebookStatus: 'error_state_unknown',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'error_score_is_invalid',
+							statusDetails: null,
+							gradebookStatus: 'error_state_unknown',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'error_score_is_invalid',
-				statusDetails: null,
-				gradebookStatus: 'error_state_unknown',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'error_score_is_invalid',
+					statusDetails: null,
+					gradebookStatus: 'error_state_unknown',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', () => {
@@ -1905,77 +2102,87 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"doggo", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI No outcome service for user:"user-id" on draft:"draft-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_no_outcome_service"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_no_outcome_service_for_launch" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			// expect(logger.error.mock.calls).toEqual(['LTI complete', logId])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				// expect(logger.error.mock.calls).toBe(1)
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"doggo", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI No outcome service for user:"user-id" on draft:"draft-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_no_outcome_service"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_no_outcome_service_for_launch" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				// expect(logger.error.mock.calls).toEqual(['LTI complete', logId])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: null,
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_no_outcome_service_for_launch',
-						statusDetails: null,
-						gradebookStatus: 'ok_no_outcome_service',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: null,
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_no_outcome_service_for_launch',
+							statusDetails: null,
+							gradebookStatus: 'ok_no_outcome_service',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'not_attempted_no_outcome_service_for_launch',
-				statusDetails: null,
-				gradebookStatus: 'ok_no_outcome_service',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: null
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'not_attempted_no_outcome_service_for_launch',
+					statusDetails: null,
+					gradebookStatus: 'ok_no_outcome_service',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: null
+				})
 			})
-		})
 	})
 
 	test('preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
@@ -1985,61 +2192,72 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"1", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_preview_mode"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id',
+				true
+			)
+			.then(() => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"1", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_preview_mode"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_preview_mode',
-						statusDetails: null,
-						gradebookStatus: 'ok_preview_mode',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_preview_mode',
+							statusDetails: null,
+							gradebookStatus: 'ok_preview_mode',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 			})
-		})
 	})
 
 	test('no launch for preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
@@ -2058,58 +2276,72 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"1", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
-				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual(['LTI error attempting to retrieve launch', logId])
-			expect(logger.info.mock.calls[2]).toEqual(['LTI not sending preview score', logId])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "ok_preview_mode"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id',
+				true
+			)
+			.then(() => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"1", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
+					logId
+				])
+				expect(logger.error.mock.calls[0]).toEqual([
+					'LTI error attempting to retrieve launch',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual(['LTI not sending preview score', logId])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "ok_preview_mode"',
+					logId
+				])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: null,
-					launchKey: null,
-					body: {
-						lis_outcome_service_url: null,
-						lis_result_sourcedid: null
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: null,
-						scoreSent: null,
-						status: 'not_attempted_preview_mode',
-						statusDetails: null,
-						gradebookStatus: 'ok_preview_mode',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
+						launchKey: null,
+						body: {
+							lis_outcome_service_url: null,
+							lis_result_sourcedid: null
+						},
+						result: {
+							launchId: null,
+							scoreSent: null,
+							status: 'not_attempted_preview_mode',
+							statusDetails: null,
+							gradebookStatus: 'ok_preview_mode',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 			})
-		})
 	})
 
 	test('null score in preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
@@ -2128,61 +2360,72 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_preview_mode"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id',
+				true
+			)
+			.then(() => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"null", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_preview_mode"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_preview_mode',
-						statusDetails: null,
-						gradebookStatus: 'ok_preview_mode',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_preview_mode',
+							statusDetails: null,
+							gradebookStatus: 'ok_preview_mode',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 			})
-		})
 	})
 
 	test('invalid score in preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
@@ -2201,61 +2444,72 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"doggo", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_preview_mode"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id',
+				true
+			)
+			.then(() => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"doggo", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_preview_mode"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_preview_mode',
-						statusDetails: null,
-						gradebookStatus: 'ok_preview_mode',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_preview_mode',
+							statusDetails: null,
+							gradebookStatus: 'ok_preview_mode',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 			})
-		})
 	})
 
 	test('expired launch for preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
@@ -2276,61 +2530,72 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = null
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"1", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI gradebook status is "ok_preview_mode"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual([
-				'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id',
+				true
+			)
+			.then(() => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"1", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"true"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI gradebook status is "ok_preview_mode"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual([
+					'LTI store "not_attempted_preview_mode" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[6]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'not_attempted_preview_mode',
-						statusDetails: null,
-						gradebookStatus: 'ok_preview_mode',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'not_attempted_preview_mode',
+							statusDetails: null,
+							gradebookStatus: 'ok_preview_mode',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 			})
-		})
 	})
 
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns expected values', () => {
@@ -2492,49 +2757,59 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
+			)
+			.then(result => {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: 1,
-						status: 'success',
-						statusDetails: null,
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'error',
-						ltiAssessmentScoreId: null,
-						outcomeServiceURL: 'lis_outcome_service_url'
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: 'lis_outcome_service_url',
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: 1,
+							status: 'success',
+							statusDetails: null,
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'error',
+							ltiAssessmentScoreId: null,
+							outcomeServiceURL: 'lis_outcome_service_url'
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: 1,
-				status: 'success',
-				statusDetails: null,
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'error',
-				ltiAssessmentScoreId: null,
-				outcomeServiceURL: 'lis_outcome_service_url'
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: 1,
+					status: 'success',
+					statusDetails: null,
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'error',
+					ltiAssessmentScoreId: null,
+					outcomeServiceURL: 'lis_outcome_service_url'
+				})
 			})
-		})
 	})
 
 	test('unexpected error works as expected', () => {
@@ -2544,73 +2819,83 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
+		const attemptHistory = []
+		const assessmentScoreBeingSent = 100
 
-		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.error.mock.calls[0][0]).toBe(
-				'LTI bad error, was **unexpected** :( Stack trace:'
+		return lti
+			.sendHighestAssessmentScore(
+				attemptHistory,
+				assessmentScoreBeingSent,
+				'user-id',
+				mockDraft,
+				'assessment-id'
 			)
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI store "error_unexpected" success - id:"new-lti-assessment-score-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+			.then(result => {
+				expect(logger.info.mock.calls[0]).toEqual([
+					'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[1]).toEqual([
+					'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+					logId
+				])
+				expect(logger.info.mock.calls[2]).toEqual([
+					'LTI launch with id:"launch-id" retrieved!',
+					logId
+				])
+				expect(logger.info.mock.calls[3]).toEqual([
+					'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+					logId
+				])
+				expect(logger.error.mock.calls[0][0]).toBe(
+					'LTI bad error, was **unexpected** :( Stack trace:'
+				)
+				expect(logger.info.mock.calls[4]).toEqual([
+					'LTI store "error_unexpected" success - id:"new-lti-assessment-score-id"',
+					logId
+				])
+				expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
 
-			expect(insertEvent).lastCalledWith({
-				action: 'lti:replaceResult',
-				actorTime: 'MOCKED-ISO-DATE-STRING',
-				payload: {
-					launchId: 'launch-id',
-					launchKey: 'testkey',
-					body: {
-						lis_outcome_service_url: null, // Shouldn't be null but is due to MockedBadReqVars
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					result: {
+				expect(insertEvent).lastCalledWith({
+					action: 'lti:replaceResult',
+					actorTime: 'MOCKED-ISO-DATE-STRING',
+					payload: {
 						launchId: 'launch-id',
-						scoreSent: null,
-						status: 'error_unexpected',
-						statusDetails: { message: 'Some Unexpected Error' },
-						gradebookStatus: 'ok_gradebook_matches_assessment_score',
-						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-						outcomeServiceURL: null
-					}
-				},
-				userId: 'user-id',
-				ip: '',
-				eventVersion: '2.1.0',
-				metadata: {},
-				draftId: 'draft-id',
-				isPreview: false,
-				contentId: 'content-id'
-			})
+						launchKey: 'testkey',
+						body: {
+							lis_outcome_service_url: null, // Shouldn't be null but is due to MockedBadReqVars
+							lis_result_sourcedid: 'lis_result_sourcedid'
+						},
+						result: {
+							launchId: 'launch-id',
+							scoreSent: null,
+							status: 'error_unexpected',
+							statusDetails: { message: 'Some Unexpected Error' },
+							gradebookStatus: 'ok_gradebook_matches_assessment_score',
+							dbStatus: 'recorded',
+							ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+							outcomeServiceURL: null
+						}
+					},
+					userId: 'user-id',
+					ip: '',
+					eventVersion: '2.1.0',
+					metadata: {},
+					draftId: 'draft-id',
+					isPreview: false,
+					contentId: 'content-id'
+				})
 
-			expect(result).toEqual({
-				launchId: 'launch-id',
-				scoreSent: null,
-				status: 'error_unexpected',
-				statusDetails: { message: 'Some Unexpected Error' },
-				gradebookStatus: 'ok_gradebook_matches_assessment_score',
-				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
-				outcomeServiceURL: null
+				expect(result).toEqual({
+					launchId: 'launch-id',
+					scoreSent: null,
+					status: 'error_unexpected',
+					statusDetails: { message: 'Some Unexpected Error' },
+					gradebookStatus: 'ok_gradebook_matches_assessment_score',
+					dbStatus: 'recorded',
+					ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+					outcomeServiceURL: null
+				})
 			})
-		})
 	})
 })

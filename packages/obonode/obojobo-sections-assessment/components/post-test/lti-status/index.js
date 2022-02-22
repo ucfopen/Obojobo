@@ -110,6 +110,10 @@ class LTIStatus extends React.Component {
 	}
 
 	getUIState(ltiProps) {
+		if (ltiProps.gradebookStatus === 'ok_not_considered') {
+			return UIStates.UI_SYNCED
+		}
+
 		if (
 			ltiProps.isPreviewing ||
 			!ltiProps.externalSystemLabel ||

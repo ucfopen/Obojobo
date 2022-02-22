@@ -1,4 +1,5 @@
 const AssessmentModel = require('../models/assessment')
+const AssessmentScore = require('../models/assessment-score')
 const getCalculatedScores = require('./get-calculated-scores')
 const insertEvents = require('../insert-events')
 const logger = require('obojobo-express/server/logger')
@@ -106,14 +107,18 @@ const endAttempt = async (req, res) => {
 	)
 	logSuccess('insertAttemptEndEvent')
 
+	const assessmentScoreInfo = await AssessmentScore.fetchById(assessmentScoreId)
+	const assessmentScore = assessmentScoreInfo.scoreDetails.assessmentScore
+
 	// send the lti score
 	const ltiRequest = await lti.sendHighestAssessmentScore(
 		attemptHistory,
+		assessmentScore,
 		req.currentUser.id,
 		req.currentDocument,
 		attempt.assessmentId,
 		req.currentVisit.is_preview,
-		req.currentVisit.resource_link_id,
+		req.currentVisit.resource_link_id
 	)
 	logSuccess('sendLTIScore')
 

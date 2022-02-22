@@ -33,6 +33,7 @@ const STATUS_ERROR_UNEXPECTED /*                    */ = 'error_unexpected'
 
 const DB_STATUS_RECORDED = 'recorded'
 const DB_STATUS_ERROR = 'error'
+const DB_STATUS_RECORDED_NOT_CONSIDERED = 'not_considered'
 
 const GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT /*  */ = 'error_newer_assessment_score_unsent'
 const GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN /*       */ = 'error_state_unknown'
@@ -41,6 +42,7 @@ const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT /*    */ = 'ok_null_score_not_sent
 const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE /**/ = 'ok_gradebook_matches_assessment_score'
 const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE /*     */ = 'ok_no_outcome_service'
 const GRADEBOOK_STATUS_OK_PREVIEW_MODE /*           */ = 'ok_preview_mode'
+const GRADEBOOK_STATUS_OK_NOT_CONSIDERED /*         */ = 'ok_not_considered'
 
 const OUTCOME_TYPE_UNKNOWN = 'unknownOutcome'
 const OUTCOME_TYPE_NO_OUTCOME = 'noOutcome'
@@ -633,6 +635,7 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 //
 const sendHighestAssessmentScore = async (
 	attemptHistory,
+	assessmentScoreBeingSent,
 	userId,
 	draftDocument,
 	assessmentId,
@@ -736,41 +739,37 @@ const sendHighestAssessmentScore = async (
 			? requiredData.assessmentScoreRecord.id
 			: null
 
-		const finishAddingLTIAssessmentScore = async () => {
-			const scoreId = await insertLTIAssessmentScore(
-				assessmentScoreIdOrNull,
-				result.launchId,
-				result.scoreSent,
-				result.status,
-				result.statusDetails,
-				result.gradebookStatus,
-				logId
-			)
-
-			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
-
-			result.ltiAssessmentScoreId = scoreId
-			result.dbStatus = DB_STATUS_RECORDED
-		}
-
-		// Do not send score to gradebook if the current score
-		// is the same as the score already on the gradebook.
+		// Do not send score to LMS if the current score
+		// is <= to the score already on the gradebook.
 		if (attemptHistory && attemptHistory.length > 0) {
 			const attemptScores = attemptHistory.map(a => parseFloat(a.result.attemptScore))
 			const max = Math.max(...attemptScores)
 
-			if (max !== result.scoreSent) {
-				finishAddingLTIAssessmentScore()
-			}else {
-				// Do not send to gradebook
-				logger.error(`LTI score is the same as another score in gradebook. Not storing - success - id:`, logId)
+			if (max > assessmentScoreBeingSent) {
+				result.dbStatus = DB_STATUS_RECORDED
+			} else {
+				// Do not send to LMS
+				result.dbStatus = DB_STATUS_RECORDED_NOT_CONSIDERED
+				result.gradebookStatus = GRADEBOOK_STATUS_OK_NOT_CONSIDERED
 			}
-		}else {
-			finishAddingLTIAssessmentScore()
+		} else {
+			result.dbStatus = DB_STATUS_RECORDED
 		}
+
+		const scoreId = await insertLTIAssessmentScore(
+			assessmentScoreIdOrNull,
+			result.launchId,
+			result.scoreSent,
+			result.status,
+			result.statusDetails,
+			result.gradebookStatus,
+			logId
+		)
+
+		logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
+		result.ltiAssessmentScoreId = scoreId
 	} catch (error) {
 		logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
-
 		result.dbStatus = DB_STATUS_ERROR
 	}
 
