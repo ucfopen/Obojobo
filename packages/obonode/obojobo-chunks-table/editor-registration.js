@@ -73,6 +73,10 @@ const plugins = {
 			} else if (direction === 'left' && Node.has(editor, [node, row - 1, totalCols - 1])) {
 				// If moving left but already at leftmost cell, move to end of the row above
 				return [node, row - 1, totalCols - 1]
+			} else if (direction === 'up' && Node.has(editor, [node - 1])) {
+				return [node - 1]
+			} else if (direction === 'down' && Node.has(editor, [node + 1])) {
+				return [node + 1]
 			}
 
 			// If no adjacent paths, return current path
