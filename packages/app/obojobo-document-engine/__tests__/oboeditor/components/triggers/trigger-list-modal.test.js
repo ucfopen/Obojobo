@@ -458,6 +458,12 @@ describe('TriggerListModal', () => {
 				content: { textGroup: [{ text: { value: 'very long mock text that is very long' } }] }
 			})
 		).toBe('TEXT: very long mock text that is very l...')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Text',
+				content: {}
+			})
+		).toBe('TEXT: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -465,6 +471,12 @@ describe('TriggerListModal', () => {
 				content: { textGroup: [{ text: { value: 'mock text' } }] }
 			})
 		).toBe('HEADING: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Heading',
+				content: {}
+			})
+		).toBe('HEADING: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -472,6 +484,12 @@ describe('TriggerListModal', () => {
 				content: { textGroup: [{ text: { value: 'mock text' } }] }
 			})
 		).toBe('FIGURE: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Figure',
+				content: {}
+			})
+		).toBe('FIGURE: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -479,6 +497,12 @@ describe('TriggerListModal', () => {
 				content: { textGroup: [{ text: { value: 'mock text' } }] }
 			})
 		).toBe('BUTTON: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.ActionButton',
+				content: {}
+			})
+		).toBe('BUTTON: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -486,6 +510,12 @@ describe('TriggerListModal', () => {
 				content: { textGroup: [{ text: { value: 'mock text' } }] }
 			})
 		).toBe('LIST: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.List',
+				content: {}
+			})
+		).toBe('LIST: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -493,6 +523,12 @@ describe('TriggerListModal', () => {
 				content: { textGroup: { textGroup: [{ text: { value: 'mock text' } }] } }
 			})
 		).toBe('TABLE: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Table',
+				content: { textGroup: {} }
+			})
+		).toBe('TABLE: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -513,6 +549,12 @@ describe('TriggerListModal', () => {
 				content: { textGroup: [{ text: { value: 'mock text' } }] }
 			})
 		).toBe('CODE: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Code',
+				content: {}
+			})
+		).toBe('CODE: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -549,6 +591,16 @@ describe('TriggerListModal', () => {
 				]
 			})
 		).toBe('QUESTION: mock text')
+		expect(
+			TriggerListModal.prototype.getElementText({
+				type: 'ObojoboDraft.Chunks.Question',
+				children: [
+					{
+						content: {}
+					}
+				]
+			})
+		).toBe('QUESTION: new node')
 
 		expect(
 			TriggerListModal.prototype.getElementText({

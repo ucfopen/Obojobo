@@ -225,44 +225,51 @@ class TriggerListModal extends React.Component {
 	}
 
 	getElementText(element) {
+		const content = element.content
 		let text = ''
 
 		switch (element.type) {
 			case 'ObojoboDraft.Chunks.Text':
-				text = 'TEXT: ' + element.content.textGroup[0].text.value
+				text = 'TEXT: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
 				break
 			case 'ObojoboDraft.Chunks.Heading':
-				text = 'HEADING: ' + element.content.textGroup[0].text.value
+				text = 'HEADING: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
 				break
 			case 'ObojoboDraft.Chunks.Figure':
-				text = 'FIGURE: ' + element.content.textGroup[0].text.value
+				text = 'FIGURE: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
 				break
 			case 'ObojoboDraft.Chunks.ActionButton':
-				text = 'BUTTON: ' + element.content.textGroup[0].text.value
+				text = 'BUTTON: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
 				break
 			case 'ObojoboDraft.Chunks.List':
-				text = 'LIST: ' + element.content.textGroup[0].text.value
+				text = 'LIST: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
 				break
 			case 'ObojoboDraft.Chunks.Table':
-				text = 'TABLE: ' + element.content.textGroup.textGroup[0].text.value
+				text =
+					'TABLE: ' +
+					(content.textGroup.textGroup ? content.textGroup.textGroup[0].text.value : 'new node')
 				break
 			case 'ObojoboDraft.Chunks.Break':
 				text = 'BREAK'
 				break
 			case 'ObojoboDraft.Chunks.MathEquation':
-				text = 'MATH: ' + element.content.latex
+				text = 'MATH: ' + content.latex
 				break
 			case 'ObojoboDraft.Chunks.Code':
-				text = 'CODE: ' + element.content.textGroup[0].text.value
+				text = 'CODE: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
 				break
 			case 'ObojoboDraft.Chunks.YouTube':
 				text = 'YouTube Video'
 				break
 			case 'ObojoboDraft.Chunks.IFrame':
-				text = 'IFRAME: ' + (element.content.title || element.content.src || 'No source!')
+				text = 'IFRAME: ' + (content.title || content.src || 'No source!')
 				break
 			case 'ObojoboDraft.Chunks.Question':
-				text = 'QUESTION: ' + element.children[0].content.textGroup[0].text.value
+				text =
+					'QUESTION: ' +
+					(element.children[0].content.textGroup
+						? element.children[0].content.textGroup[0].text.value
+						: 'new node')
 				break
 			case 'ObojoboDraft.Chunks.QuestionBank':
 				text = 'QUESTION BANK'
