@@ -1,11 +1,11 @@
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
+jest.mock('../../common/flux/dispatcher', () => ({
 	trigger: jest.fn(),
 	on: jest.fn(),
 	off: jest.fn()
 }))
 
-const MediaUtil = require('../../../src/scripts/viewer/util/media-util').default
-const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
+const MediaUtil = require('./media-util').default
+const Dispatcher = require('../../common/flux/dispatcher')
 
 const testModel = {
 	get: () => 'mocked-id'

@@ -3,8 +3,8 @@
 const originalFetch = global.fetch
 const originalSendBeacon = navigator.sendBeacon
 const originalToISOString = Date.prototype.toISOString
-const ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api').default
-const API = require('../../../src/scripts/viewer/util/api')
+const ViewerAPI = require('./viewer-api').default
+const API = require('./api')
 import mockConsole from 'jest-mock-console'
 let restoreConsole
 

@@ -1,7 +1,7 @@
-jest.mock('../../../src/scripts/common/flux/dispatcher')
+jest.mock('../../common/flux/dispatcher')
 
-import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+import AssessmentUtil from './assessment-util'
+import Dispatcher from '../../common/flux/dispatcher'
 
 const TYPE_ASSESSMENT = 'ObojoboDraft.Sections.Assessment'
 const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE = 'ok_no_outcome_service'

@@ -67,7 +67,7 @@
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
 		"testMatch": [
-			"**/__tests__/**/*.js?(x)"
+			"/**/*.test.js?(x)"
 		],
 		"setupFilesAfterEnv": [
 			"./setupTests.js"

@@ -1,8 +1,8 @@
 /* eslint no-extend-native: 0 */
 
 const originalFetch = global.fetch
-const API = require('../../../src/scripts/viewer/util/api')
-const EditorAPI = require('../../../src/scripts/viewer/util/editor-api').default
+const API = require('./api')
+const EditorAPI = require('./editor-api').default
 
 describe('EditorAPI', () => {
 	let mockJsonResult

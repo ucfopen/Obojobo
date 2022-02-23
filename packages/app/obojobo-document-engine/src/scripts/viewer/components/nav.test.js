@@ -1,12 +1,12 @@
 import { mount, shallow } from 'enzyme'
 
-import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
-import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
-import NavUtil from '../../../src/scripts/viewer/util/nav-util'
+import AssessmentUtil from '../util/assessment-util'
+import FocusUtil from '../util/focus-util'
+import NavUtil from '../util/nav-util'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-jest.mock('../../../src/scripts/viewer/util/focus-util')
+jest.mock('../util/focus-util')
 
 class MockStylableText {
 	constructor(text) {
@@ -35,7 +35,7 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 		StyleableTextComponent: mockStylableComponent
 	},
 	components: {
-		Button: require('../../../src/scripts/common/components/button').default
+		Button: require('../../common/components/button').default
 	},
 	flux: {
 		Dispatcher: {
@@ -48,13 +48,13 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 }))
 
 // AssessmentUtil
-jest.mock('../../../src/scripts/viewer/util/assessment-util', () => ({
+jest.mock('../util/assessment-util', () => ({
 	getAssessmentScoreForModel: jest.fn(),
 	getAttemptsRemaining: jest.fn()
 }))
 
 // NavUtil
-jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
+jest.mock('../util/nav-util', () => ({
 	canNavigate: jest.fn(),
 	goto: jest.fn(),
 	toggle: jest.fn(),
@@ -65,9 +65,9 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 }))
 
 // NavStore
-jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({}))
+jest.mock('../stores/nav-store', () => ({}))
 
-const Nav = require('../../../src/scripts/viewer/components/nav').default
+const Nav = require('./nav').default
 
 describe('Nav', () => {
 	const navItems = [

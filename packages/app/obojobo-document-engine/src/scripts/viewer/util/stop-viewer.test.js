@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 
-jest.mock('../../../src/scripts/viewer/util/viewer-api')
-jest.mock('../../../src/scripts/common/components/modal/no-button-modal')
+jest.mock('./viewer-api')
+jest.mock('../../common/components/modal/no-button-modal')
 jest.mock('sysend')
-jest.mock('../../../src/scripts/common/index', () => ({
+jest.mock('../../common/index', () => ({
 	flux: {
 		Dispatcher: {
 			trigger: jest.fn()
@@ -16,9 +16,9 @@ jest.mock('../../../src/scripts/common/index', () => ({
 	}
 }))
 
-const Common = require('../../../src/scripts/common/index')
-const StopViewer = require('../../../src/scripts/viewer/util/stop-viewer')
-const ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api').default
+const Common = require('../../common/index')
+const StopViewer = require('./stop-viewer')
+const ViewerAPI = require('./viewer-api').default
 const sysend = require('sysend')
 const ModalUtil = Common.util.ModalUtil
 const Dispatcher = Common.flux.Dispatcher

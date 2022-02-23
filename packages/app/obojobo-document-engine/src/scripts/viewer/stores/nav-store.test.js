@@ -1,10 +1,10 @@
-jest.mock('../../../src/scripts/viewer/util/viewer-api', () => ({
+jest.mock('../util/viewer-api', () => ({
 	postEvent: jest.fn(),
 	getVisitSessionStatus: jest.fn()
 }))
 
 // Nav Util
-jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
+jest.mock('../util/nav-util', () => ({
 	getFirst: jest.fn(),
 	getPrev: jest.fn(),
 	getNext: jest.fn(),
@@ -17,21 +17,21 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	getNavTargetModel: jest.fn()
 }))
 
-jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
+jest.mock('../util/focus-util', () => ({
 	clearFadeEffect: jest.fn()
 }))
 
-const Common = require('../../../src/scripts/common/index').default
-const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
-const ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api')
-const FocusUtil = require('../../../src/scripts/viewer/util/focus-util')
+const Common = require('../../common/index').default
+const NavUtil = require('../util/nav-util')
+const ViewerAPI = require('../util/viewer-api')
+const FocusUtil = require('../util/focus-util')
 
 // spy on dispatcher before loading navstore
 const Dispatcher = Common.flux.Dispatcher
 jest.spyOn(Dispatcher, 'on')
 jest.spyOn(Dispatcher, 'trigger')
 
-const NavStore = require('../../../src/scripts/viewer/stores/nav-store').default
+const NavStore = require('../stores/nav-store').default
 // gotta hold on to this because beforeEach will clear it before the tests
 const eventCallbacks = Dispatcher.on.mock.calls[0][0]
 

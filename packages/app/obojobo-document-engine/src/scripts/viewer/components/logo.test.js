@@ -1,9 +1,9 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import Logo from 'src/scripts/viewer/components/logo'
-import rd from 'src/scripts/viewer/components/rd'
+import Logo from './logo'
+import rd from './rd'
 
-jest.mock('src/scripts/viewer/components/rd')
+jest.mock('./rd')
 
 describe('Logo', () => {
 	test('renders correctly when inverted prop is true', () => {

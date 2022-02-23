@@ -1,16 +1,16 @@
-jest.mock('../../../src/scripts/common/flux/dispatcher')
-jest.mock('../../../src/scripts/common/models/obo-model')
-jest.mock('../../../src/scripts/viewer/util/viewer-api')
-jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({
+jest.mock('../../common/flux/dispatcher')
+jest.mock('../../common/models/obo-model')
+jest.mock('../util/viewer-api')
+jest.mock('./nav-store', () => ({
 	getState: () => ({
 		visitId: 'mock-visit-id'
 	})
 }))
 
-import MediaStore from '../../../src/scripts/viewer/stores/media-store'
-import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import OboModel from '../../../src/scripts/common/models/obo-model'
+import MediaStore from './media-store'
+import ViewerAPI from '../util/viewer-api'
+import Dispatcher from '../../common/flux/dispatcher'
+import OboModel from '../../common/models/obo-model'
 
 describe('Media Store', () => {
 	beforeEach(() => {

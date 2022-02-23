@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import Flag from '../../../src/scripts/viewer/components/flag'
+import Flag from './flag'
 
 describe('Flag', () => {
 	test('Renders CHOSEN_CORRECTLY', () => {

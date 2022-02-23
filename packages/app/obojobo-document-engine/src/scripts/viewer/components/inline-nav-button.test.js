@@ -1,10 +1,10 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import NavUtil from 'src/scripts/viewer/util/nav-util'
-import NavButton from 'src/scripts/viewer/components/inline-nav-button'
+import NavUtil from '../util/nav-util'
+import NavButton from './inline-nav-button'
 
-jest.mock('src/scripts/viewer/util/nav-util', () => ({
+jest.mock('../util/nav-util', () => ({
 	goNext: jest.fn(),
 	goPrev: jest.fn()
 }))

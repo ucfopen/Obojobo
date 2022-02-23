@@ -1,6 +1,6 @@
-jest.mock('../../../src/scripts/viewer/util/api')
-const API = require('../../../src/scripts/viewer/util/api')
-const AssessmentAPI = require('../../../src/scripts/viewer/util/assessment-api').default
+jest.mock('./api')
+const API = require('./api')
+const AssessmentAPI = require('./assessment-api').default
 
 describe('assessment-api', () => {
 	let mockJsonResult

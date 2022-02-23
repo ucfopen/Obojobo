@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import Header from 'src/scripts/viewer/components/header'
+import Header from './header'
 
 describe('Header', () => {
 	test('renders correctly with title, left position', () => {

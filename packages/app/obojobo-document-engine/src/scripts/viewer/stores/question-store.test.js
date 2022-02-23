@@ -1,11 +1,11 @@
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
-import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
-import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
-import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
+import Dispatcher from '../../common/flux/dispatcher'
+import QuestionStore from './question-store'
+import QuestionUtil from '../util/question-util'
+import FocusUtil from '../util/focus-util'
+import ViewerAPI from '../util/viewer-api'
 import mockConsole from 'jest-mock-console'
 
-jest.mock('../../../src/scripts/common/models/obo-model', () => {
+jest.mock('../../common/models/obo-model', () => {
 	return {
 		getRoot: () => {
 			return {
@@ -17,7 +17,7 @@ jest.mock('../../../src/scripts/common/models/obo-model', () => {
 		}
 	}
 })
-jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
+jest.mock('./nav-store', () => {
 	return {
 		getState: () => {
 			return {
@@ -26,10 +26,10 @@ jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
 		}
 	}
 })
-jest.mock('../../../src/scripts/viewer/util/viewer-api')
-jest.mock('../../../src/scripts/viewer/util/question-util')
-jest.mock('../../../src/scripts/viewer/util/focus-util')
-jest.mock('../../../src/scripts/common/util/uuid', () => {
+jest.mock('../util/viewer-api')
+jest.mock('../util/question-util')
+jest.mock('../util/focus-util')
+jest.mock('../../common/util/uuid', () => {
 	return () => 'mockUuid'
 })
 

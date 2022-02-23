@@ -1,8 +1,8 @@
-import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import OboModel from '../../../src/scripts/common/models/obo-model'
+import FocusUtil from './focus-util'
+import Dispatcher from '../../common/flux/dispatcher'
+import OboModel from '../../common/models/obo-model'
 
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
+jest.mock('../../common/flux/dispatcher', () => {
 	return {
 		trigger: jest.fn(),
 		on: jest.fn(),

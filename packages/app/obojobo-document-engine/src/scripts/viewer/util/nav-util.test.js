@@ -1,7 +1,7 @@
 /* eslint no-undefined: 0 */
 
 // Common
-jest.mock('../../../src/scripts/common/index', () => ({
+jest.mock('../../common/index', () => ({
 	models: {
 		OboModel: {
 			models: {}
@@ -14,8 +14,8 @@ jest.mock('../../../src/scripts/common/index', () => ({
 	}
 }))
 
-const Common = require('../../../src/scripts/common/index')
-const NavUtil = require('../../../src/scripts/viewer/util/nav-util').default
+const Common = require('../../common/index')
+const NavUtil = require('./nav-util').default
 
 const buildComplexNestedState = () => {
 	const mockItem4 = {

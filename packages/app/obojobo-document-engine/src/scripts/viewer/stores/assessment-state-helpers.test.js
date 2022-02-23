@@ -1,18 +1,18 @@
-jest.mock('obojobo-document-engine/src/scripts/viewer/stores/nav-store')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-api')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
-jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
-jest.mock('../../../src/scripts/viewer/util/question-util')
-jest.mock('../../../src/scripts/common/util/inject-katex-if-needed')
+jest.mock('./nav-store')
+jest.mock('../util/assessment-api')
+jest.mock('../util/nav-util')
+jest.mock('./question-store')
+jest.mock('../util/question-util')
+jest.mock('../../common/util/inject-katex-if-needed')
 
 import Common from 'Common'
-import AssessmentStateHelpers from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-state-helpers'
-import NavStore from 'obojobo-document-engine/src/scripts/viewer/stores/nav-store'
-import QuestionStore from 'obojobo-document-engine/src/scripts/viewer/stores/question-store'
-import AssessmentAPI from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
-import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
-import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
-import injectKatexIfNeeded from '../../../src/scripts/common/util/inject-katex-if-needed'
+import AssessmentStateHelpers from './assessment-state-helpers'
+import NavStore from './nav-store'
+import QuestionStore from './question-store'
+import AssessmentAPI from '../util/assessment-api'
+import QuestionUtil from '../util/question-util'
+import NavUtil from '../util/nav-util'
+import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 const { OboModel } = Common.models
 // const { ErrorUtil, ModalUtil } = Common.util

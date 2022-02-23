@@ -1,19 +1,19 @@
 /* eslint-disable no-console */
 
-import AssessmentStateMachine from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-state-machine'
-import AssessmentMachineStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-machine-states'
-import AssessmentStateActions from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-state-actions'
-import OboModel from '../../../src/scripts/common/models/obo-model'
-import AssessmentStateHelpers from '../../../src/scripts/viewer/stores/assessment-state-helpers'
-import AssessmentAPI from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
-import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
+import AssessmentStateMachine from './assessment-state-machine'
+import AssessmentMachineStates from './assessment-store/assessment-machine-states'
+import AssessmentStateActions from './assessment-store/assessment-state-actions'
+import OboModel from '../../common/models/obo-model'
+import AssessmentStateHelpers from './assessment-state-helpers'
+import AssessmentAPI from '../util/assessment-api'
+import NavUtil from '../util/nav-util'
 import mockConsole from 'jest-mock-console'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+import Dispatcher from '../../common/flux/dispatcher'
 
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-api')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
-jest.mock('../../../src/scripts/viewer/stores/question-store')
-jest.mock('../../../src/scripts/common/flux/dispatcher')
+jest.mock('../util/assessment-api')
+jest.mock('../util/nav-util')
+jest.mock('./question-store')
+jest.mock('../../common/flux/dispatcher')
 
 const {
 	PROMPTING_FOR_RESUME,

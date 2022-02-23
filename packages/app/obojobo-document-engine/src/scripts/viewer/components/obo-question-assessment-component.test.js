@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import OboQuestionAssessmentComponent from '../../../src/scripts/viewer/components/obo-question-assessment-component'
+import OboQuestionAssessmentComponent from './obo-question-assessment-component'
 
 describe('OboQuestionAssessmentComponent', () => {
 	test('static getRevealAnswerDefault returns never', () => {

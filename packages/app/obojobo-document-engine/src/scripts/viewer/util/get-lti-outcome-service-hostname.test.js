@@ -1,5 +1,4 @@
-const getHostname = require('obojobo-document-engine/src/scripts/viewer/util/get-lti-outcome-service-hostname')
-	.default
+const getHostname = require('./get-lti-outcome-service-hostname').default
 
 describe('get-lti-outcome-service-hostname', () => {
 	test('returns the hostname of the service URL', () => {

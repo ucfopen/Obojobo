@@ -1,8 +1,8 @@
-jest.mock('../../../src/scripts/common/models/obo-model')
-jest.mock('../../../src/scripts/common/page/focus')
+jest.mock('../../common/models/obo-model')
+jest.mock('../../common/page/focus')
 
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import FocusStore from '../../../src/scripts/viewer/stores/focus-store'
+import Dispatcher from '../../common/flux/dispatcher'
+import FocusStore from './focus-store'
 
 describe('FocusStore', () => {
 	let FocusStoreClass

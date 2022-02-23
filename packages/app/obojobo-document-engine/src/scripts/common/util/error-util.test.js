@@ -1,17 +1,17 @@
 import React from 'react'
 
-import ErrorUtil from '../../../src/scripts/common/util/error-util'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import ErrorDialog from '../../../src/scripts/common/components/modal/error-dialog'
+import ErrorUtil from './error-util'
+import Dispatcher from '../flux/dispatcher'
+import ErrorDialog from '../components/modal/error-dialog'
 
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
+jest.mock('../flux/dispatcher', () => {
 	return {
 		trigger: jest.fn(),
 		on: jest.fn(),
 		off: jest.fn()
 	}
 })
-// jest.mock('../../../src/scripts/common/components/modal/error-dialog')
+// jest.mock('../components/modal/error-dialog')
 
 describe('ErrorUtil', () => {
 	test('show will show a modal error dialog', () => {

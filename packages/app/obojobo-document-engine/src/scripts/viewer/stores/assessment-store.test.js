@@ -1,16 +1,16 @@
 import React from 'react'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
-import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
-import ModalUtil from '../../../src/scripts/common/util/modal-util'
-import OboModel from '../../../src/scripts/common/models/obo-model'
-import AssessmentStateMachine from '../../../src/scripts/viewer/stores/assessment-state-machine'
-import AssessmentAPI from '../../../src/scripts/viewer/util/assessment-api'
-import ErrorUtil from '../../../src/scripts/common/util/error-util'
+import Dispatcher from '../../common/flux/dispatcher'
+import AssessmentStore from './assessment-store'
+import AssessmentUtil from '../util/assessment-util'
+import ModalUtil from '../../common/util/modal-util'
+import OboModel from '../../common/models/obo-model'
+import AssessmentStateMachine from './assessment-state-machine'
+import AssessmentAPI from '../util/assessment-api'
+import ErrorUtil from '../../common/util/error-util'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
 
-jest.mock('../../../src/scripts/common/models/obo-model')
-jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
+jest.mock('../../common/models/obo-model')
+jest.mock('./nav-store', () => {
 	return {
 		getState: () => {
 			return {
@@ -19,13 +19,13 @@ jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
 		}
 	}
 })
-jest.mock('../../../src/scripts/viewer/stores/assessment-state-machine')
-jest.mock('../../../src/scripts/viewer/util/question-util')
-jest.mock('../../../src/scripts/viewer/util/focus-util')
-jest.mock('../../../src/scripts/common/util/error-util')
-jest.mock('../../../src/scripts/common/util/modal-util')
-jest.mock('../../../src/scripts/viewer/util/assessment-api')
-jest.mock('../../../src/scripts/common/util/uuid', () => {
+jest.mock('./assessment-state-machine')
+jest.mock('../util/question-util')
+jest.mock('../util/focus-util')
+jest.mock('../../common/util/error-util')
+jest.mock('../../common/util/modal-util')
+jest.mock('../util/assessment-api')
+jest.mock('../../common/util/uuid', () => {
 	return () => 'mockUuid'
 })
 
