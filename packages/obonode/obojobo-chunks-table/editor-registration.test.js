@@ -26,7 +26,7 @@ describe('Table editor', () => {
 				},
 				{
 					type: TABLE_NODE,
-					content: {},
+					content: { numCols: 2 },
 					children: [
 						{
 							type: TABLE_NODE,
