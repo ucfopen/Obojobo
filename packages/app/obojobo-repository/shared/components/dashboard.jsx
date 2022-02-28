@@ -398,7 +398,7 @@ function Dashboard(props) {
 		const response = prompt(
 			`Are you sure you want to remove these ${draftIds.length} selected modules from this collection? Type 'REMOVE' to confirm.`
 		)
-		if (response !== 'REMOVE') return
+		if (response !== 'REMOVE') return setIsLoading(false)
 		props
 			.bulkRemoveModulesFromCollection(draftIds, props.collection.id)
 			.then(() => setIsLoading(false))

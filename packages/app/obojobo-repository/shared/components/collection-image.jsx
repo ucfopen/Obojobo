@@ -14,7 +14,7 @@ const CollectionImage = props => (
 		>
 			<defs>
 				<pattern
-					id={`collection-img-id-${props.id}`}
+					id={`collection-img-id-${props.id}${props.context ? '-' + props.context : ''}`}
 					patternUnits="userSpaceOnUse"
 					width="150"
 					height="150"
@@ -22,10 +22,9 @@ const CollectionImage = props => (
 					// Offsetting the pattern to the left a little bit fills in the patterned hexagon
 					// This is a little hacky - maybe replace with math later, or constrain the pattern to the single hexagon
 					x="-10%"
-					dangerouslySetInnerHTML={{
-						__html: `<image xlink:href="/library/module-icon/${props.id}" width="100%" height="100%" />`
-					}}
-				/>
+				>
+					<image href={`/library/module-icon/${props.id}`} width="100%" height="100%" />
+				</pattern>
 			</defs>
 			<rect rx="5" height="80" width="80" fill="#e8e3eb" />
 			<path
@@ -44,5 +43,9 @@ const CollectionImage = props => (
 		</svg>
 	</div>
 )
+
+CollectionImage.defaultProps = {
+	context: false
+}
 
 module.exports = CollectionImage

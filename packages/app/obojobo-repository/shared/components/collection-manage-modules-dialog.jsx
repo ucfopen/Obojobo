@@ -75,7 +75,7 @@ const CollectionManageModulesDialog = props => {
 	return (
 		<div className="collection-manage-modules-dialog">
 			<div className="top-bar">
-				<CollectionImage id={props.collection.id} />
+				<CollectionImage id={props.collection.id} context="manage-modules-dialog" />
 				<div className="collection-title">{props.collection.title}</div>
 				<Button ariaLabel="Close" className="close-button" onClick={props.onClose}>
 					×

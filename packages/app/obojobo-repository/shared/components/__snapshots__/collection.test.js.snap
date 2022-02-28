@@ -23,17 +23,18 @@ exports[`Collection renders with expected standard props 1`] = `
       >
         <defs>
           <pattern
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "<image xlink:href=\\"/library/module-icon/mockCollectionId\\" width=\\"100%\\" height=\\"100%\\" />",
-              }
-            }
             height="150"
             id="collection-img-id-mockCollectionId"
             patternUnits="userSpaceOnUse"
             width="150"
             x="-10%"
-          />
+          >
+            <image
+              height="100%"
+              href="/library/module-icon/mockCollectionId"
+              width="100%"
+            />
+          </pattern>
         </defs>
         <rect
           fill="#e8e3eb"
@@ -102,17 +103,18 @@ exports[`Collection renders with expected standard props but hasMenu=false 1`] =
       >
         <defs>
           <pattern
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "<image xlink:href=\\"/library/module-icon/mockCollectionId\\" width=\\"100%\\" height=\\"100%\\" />",
-              }
-            }
             height="150"
             id="collection-img-id-mockCollectionId"
             patternUnits="userSpaceOnUse"
             width="150"
             x="-10%"
-          />
+          >
+            <image
+              height="100%"
+              href="/library/module-icon/mockCollectionId"
+              width="100%"
+            />
+          </pattern>
         </defs>
         <rect
           fill="#e8e3eb"
