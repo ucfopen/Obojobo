@@ -739,13 +739,13 @@ const sendHighestAssessmentScore = async (
 			? requiredData.assessmentScoreRecord.id
 			: null
 
-		// Do not send score to LMS if the current score
-		// is <= to the score already on the gradebook.
+		// Do not send assessment score to LMS if the score
+		// being sent is <= to the score already on the gradebook.
 		if (attemptHistory && attemptHistory.length > 0) {
 			const attemptScores = attemptHistory.map(a => parseFloat(a.result.attemptScore))
 			const max = Math.max(...attemptScores)
 
-			if (max > assessmentScoreBeingSent) {
+			if (assessmentScoreBeingSent > max) {
 				result.dbStatus = DB_STATUS_RECORDED
 			} else {
 				// Do not send to LMS

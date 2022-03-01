@@ -288,6 +288,20 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_OK_GRADEB
 </div>
 `;
 
+exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_OK_NOT_CONSIDERED returns synced 1`] = `
+<div
+  className="obojobo-draft--sections--assessment--lti-status"
+  role="dialog"
+  tabIndex="-1"
+>
+  <div
+    className="is-synced"
+  >
+    ✔ Your recorded score of 100% was sent to mocklti.
+  </div>
+</div>
+`;
+
 exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT returns noScoreSent 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status"

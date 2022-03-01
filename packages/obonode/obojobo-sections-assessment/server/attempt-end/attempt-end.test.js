@@ -1,6 +1,7 @@
 jest.mock('obojobo-express/server/lti')
 jest.mock('./get-calculated-scores')
 jest.mock('../models/assessment')
+jest.mock('../models/assessment-score')
 jest.mock('obojobo-express/server/logger')
 jest.mock('../assessment')
 jest.mock('./get-calculated-scores')
@@ -11,6 +12,7 @@ jest.mock('obojobo-express/server/models/draft')
 describe('attempt-end', () => {
 	const lti = require('obojobo-express/server/lti')
 	const AssessmentModel = require('../models/assessment')
+	const AssessmentScore = require('../models/assessment-score')
 	const getCalculatedScores = require('./get-calculated-scores')
 	const insertEvents = require('../insert-events')
 	const logger = require('obojobo-express/server/logger')
@@ -50,7 +52,7 @@ describe('attempt-end', () => {
 		jest.resetAllMocks()
 	})
 
-	test('endAttempt resovles and sends expected arguments to all external methods', async () => {
+	test('endAttempt resolves and sends expected arguments to all external methods', async () => {
 		// set up all the mock results
 		const mockFetchAttemptByID = {
 			userId: 'mockAttemptUserId',
@@ -87,6 +89,7 @@ describe('attempt-end', () => {
 		AssessmentModel.completeAttempt.mockResolvedValueOnce({
 			assessmentScoreId: 'mock-assessment-score-id'
 		})
+		AssessmentScore.fetchById.mockReturnValue({ scoreDetails: { assessmentScore: 100 } })
 		getCalculatedScores.mockResolvedValueOnce(mockCalculatedScore)
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockHighestScore)
 
@@ -141,6 +144,8 @@ describe('attempt-end', () => {
 			'mockCurrentVisitId'
 		)
 		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
+			"mockHistory",
+			100,
 			'mockCurrentUserId',
 			mockCurrentDocument,
 			'mockAssessmentId',
@@ -240,6 +245,7 @@ describe('attempt-end', () => {
 		AssessmentModel.completeAttempt.mockResolvedValueOnce({
 			assessmentScoreId: 'mock-assessment-score-id'
 		})
+		AssessmentScore.fetchById.mockReturnValue({ scoreDetails: { assessmentScore: 100 } })
 		getCalculatedScores.mockResolvedValueOnce(mockCalculatedScore)
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockHighestScore)
 

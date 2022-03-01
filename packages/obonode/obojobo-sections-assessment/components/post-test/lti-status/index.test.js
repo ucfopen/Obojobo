@@ -24,6 +24,7 @@ const GRADEBOOK_STATUS_ERROR_INVALID /*             */ = 'error_invalid'
 const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT /*    */ = 'ok_null_score_not_sent'
 const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE /**/ = 'ok_gradebook_matches_assessment_score'
 const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE /*     */ = 'ok_no_outcome_service'
+const GRADEBOOK_STATUS_OK_NOT_CONSIDERED /*         */ = 'ok_not_considered'
 
 const originalGetUIState = LTIStatus.prototype.getUIState
 describe('LTIStatus', () => {
@@ -68,6 +69,18 @@ describe('LTIStatus', () => {
 					ltiState={getLtiState(GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE)}
 					externalSystemLabel={mockSymbol}
 					assessmentScore={75.99}
+				/>
+			)
+		).toMatchSnapshot()
+	})
+
+	test('LTIStatus component with lti state GRADEBOOK_STATUS_OK_NOT_CONSIDERED returns synced', () => {
+		expect(
+			renderer.create(
+				<LTIStatus
+					ltiState={getLtiState(GRADEBOOK_STATUS_OK_NOT_CONSIDERED)}
+					externalSystemLabel={mockSymbol}
+					assessmentScore={100}
 				/>
 			)
 		).toMatchSnapshot()
@@ -502,6 +515,7 @@ describe('LTIStatus', () => {
 		const GB_NULL_SCORE = 'ok_null_score_not_sent'
 		const GB_MATCHES = 'ok_gradebook_matches_assessment_score'
 		const GB_NO_SERVICE = 'ok_no_outcome_service'
+		const GB_NOT_CONSIRERED = 'ok_not_considered'
 
 		// Function to create test case:
 		const tc = (
@@ -599,6 +613,31 @@ describe('LTIStatus', () => {
 			expect(tc(1, 1, 1, NO_RSNC, GB_NO_SERVICE)).toBe(UIStates.UI_NOT_LTI)
 			expect(tc(1, 1, 1, RS_FAIL, GB_NO_SERVICE)).toBe(UIStates.UI_NOT_LTI)
 			expect(tc(1, 1, 1, RS_PASS, GB_NO_SERVICE)).toBe(UIStates.UI_NOT_LTI)
+
+			expect(tc(0, 0, 0, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 0, 0, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 0, 0, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 0, 1, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 0, 1, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 0, 1, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 1, 0, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 1, 0, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 1, 0, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 1, 1, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 1, 1, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(0, 1, 1, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 0, 0, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 0, 0, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 0, 0, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 0, 1, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 0, 1, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 0, 1, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 1, 0, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 1, 0, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 1, 0, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 1, 1, NO_RSNC, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 1, 1, RS_FAIL, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
+			expect(tc(1, 1, 1, RS_PASS, GB_NOT_CONSIRERED)).toBe(UIStates.UI_SYNCED)
 		})
 	})
 })
