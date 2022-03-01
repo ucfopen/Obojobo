@@ -471,10 +471,7 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
-		const attemptHistory = [
-			{ result: { attemptScore: 90}},
-			{ result: { attemptScore: 0}}
-		]
+		const attemptHistory = [{ result: { attemptScore: 90 } }, { result: { attemptScore: 0 } }]
 		const assessmentScoreBeingSent = 100
 
 		return lti
@@ -658,10 +655,7 @@ describe('lti', () => {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
-		const attemptHistory = [
-			{ result: { attemptScore: 100}},
-			{ result: { attemptScore: 0}}
-		]
+		const attemptHistory = [{ result: { attemptScore: 100 } }, { result: { attemptScore: 0 } }]
 		const assessmentScoreBeingSent = 100
 
 		return lti

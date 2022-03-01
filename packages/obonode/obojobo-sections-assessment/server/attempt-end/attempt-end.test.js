@@ -144,7 +144,7 @@ describe('attempt-end', () => {
 			'mockCurrentVisitId'
 		)
 		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
-			"mockHistory",
+			'mockHistory',
 			100,
 			'mockCurrentUserId',
 			mockCurrentDocument,
