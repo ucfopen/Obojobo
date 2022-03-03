@@ -85,11 +85,22 @@ const plugins = {
 
 		// Move editor selection based on direction given
 		const moveCursor = direction => {
+			const currentPath = editor.selection.anchor.path
 			const nextPath = calculateNextPath(direction)
 
-			if (nextPath !== editor.selection.anchor.path) {
+			const isExitingTable = nextPath[0] !== currentPath[0]
+
+			if (nextPath !== currentPath) {
 				const focus = Editor.start(editor, nextPath)
-				const anchor = Editor.end(editor, nextPath)
+				let anchor
+
+				// If exiting table, do not select entire content of new node
+				if (isExitingTable) {
+					anchor = focus
+				} else {
+					anchor = Editor.end(editor, nextPath)
+				}
+
 				Transforms.setSelection(editor, {
 					focus,
 					anchor
