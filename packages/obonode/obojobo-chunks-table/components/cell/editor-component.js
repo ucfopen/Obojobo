@@ -319,9 +319,10 @@ class Cell extends React.Component {
 				cellControls[currentIndex - 1].focus()
 				break
 			case 'Tab':
-				if (currentIndex === cellControls.length - 1) {
+				if (currentIndex === cellControls.length - 1 && !event.shiftKey) {
 					cellControls[0].click()
 				}
+
 				break
 			case 'Enter':
 				break
