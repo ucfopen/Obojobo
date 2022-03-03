@@ -480,6 +480,36 @@ class VisualEditor extends React.Component {
 				item.plugins.onKeyDown(entry, this.editor, event)
 			}
 		}
+
+		// Handle ArrowUp from a node - this is default behavior
+		// in Chrome and Safari but not Firefox
+		if (event.key === 'ArrowUp' && !event.defaultPrevented) {
+			event.preventDefault()
+
+			const currentNode = this.editor.selection.anchor.path[0]
+
+			// Break out if already at top node
+			if (currentNode === 0) return
+
+			const aboveNode = currentNode - 1
+			const numChildrenAbove = this.editor.children[aboveNode].children.length
+
+			let abovePath = [aboveNode]
+
+			// If entering a node with multiple children (a table),
+			// go to the last child (bottom row)
+			if (numChildrenAbove > 1) {
+				abovePath = [aboveNode, numChildrenAbove - 1]
+			}
+
+			const focus = Editor.start(this.editor, abovePath)
+			const anchor = Editor.start(this.editor, abovePath)
+
+			Transforms.setSelection(this.editor, {
+				focus,
+				anchor
+			})
+		}
 	}
 
 	// Generates any necessary decorations, such as place holders
