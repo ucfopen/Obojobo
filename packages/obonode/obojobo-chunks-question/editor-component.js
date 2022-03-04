@@ -44,6 +44,7 @@ class Question extends React.Component {
 
 		// update this element's content.type
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+
 		Transforms.setNodes(
 			this.props.editor,
 			{ content: { ...this.props.element.content, type } },
@@ -72,6 +73,9 @@ class Question extends React.Component {
 
 		const item = Common.Registry.getItemForType(type)
 		const newBlock = item.cloneBlankNode()
+
+		// preserve whether this question is a survey or not
+		newBlock.questionType = this.props.element.content.type
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		const hasSolution = this.getHasSolution()
