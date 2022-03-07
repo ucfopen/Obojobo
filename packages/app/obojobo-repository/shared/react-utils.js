@@ -3,6 +3,20 @@ const { Provider } = require('react-redux')
 const { createStore, applyMiddleware, compose } = require('redux')
 const { middleware } = require('redux-pack')
 
+// if initial state contains a globals object, we need to copy
+// those globals into clientGlobals so that they can be loaded
+// as global constants anywhere in the application.
+function populateClientGlobals(initialState) {
+	if (initialState && initialState.globals) {
+		const clientGlobals = require('../shared/util/client-globals')
+		for (const property in initialState.globals) {
+			clientGlobals[property] = initialState.globals[property]
+		}
+		// freeze to prevent changes
+		Object.freeze(clientGlobals)
+	}
+}
+
 // used in the browser to hydrate a SSR page w/o Redux
 function hydrateElWithoutStore(Component, domSelector) {
 	const domEl = document.querySelector(domSelector)
@@ -32,7 +46,9 @@ function propsToStore(reducer, initialState, optionalMiddleware) {
 	return createStore(reducer, initialState, preppedMiddleware)
 }
 
+// this function is called on both the server and the client
 function createCommonReactApp(Component, store) {
+	populateClientGlobals(store.getState())
 	const app = React.createElement(Component)
 	const provider = React.createElement(Provider, { store }, app)
 	return provider
@@ -53,5 +69,6 @@ module.exports = {
 	hydrateElWithoutStore,
 	propsToStore,
 	createCommonReactApp,
-	convertPropsToString
+	convertPropsToString,
+	populateClientGlobals
 }

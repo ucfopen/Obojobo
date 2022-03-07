@@ -11,6 +11,7 @@ const {
 	requireDraftId,
 	getCurrentUser
 } = require('obojobo-express/server/express_validators')
+const { populateClientGlobals } = require('../../shared/react-utils')
 
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
@@ -21,7 +22,10 @@ router
 		const props = {
 			currentUser: req.currentUser,
 			// must use webpackAssetPath for all webpack assets to work in dev and production!
-			appCSSUrl: webpackAssetPath('homepage.css')
+			appCSSUrl: webpackAssetPath('homepage.css'),
+			globals: {
+				staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+			}
 		}
 		res.render('pages/page-homepage.jsx', props)
 	})
@@ -102,7 +106,10 @@ router
 		const props = {
 			currentUser: req.currentUser,
 			// must use webpackAssetPath for all webpack assets to work in dev and production!
-			appCSSUrl: webpackAssetPath('repository.css')
+			appCSSUrl: webpackAssetPath('repository.css'),
+			globals: {
+				staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+			}
 		}
 		res.render('pages/page-login.jsx', props)
 	})
@@ -122,8 +129,12 @@ router
 					pageCount: 1,
 					currentUser: req.currentUser,
 					// must use webpackAssetPath for all webpack assets to work in dev and production!
-					appCSSUrl: webpackAssetPath('repository.css')
+					appCSSUrl: webpackAssetPath('repository.css'),
+					globals: {
+						staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+					}
 				}
+				populateClientGlobals(props)
 				res.render('pages/page-library.jsx', props)
 			})
 			.catch(res.unexpected)
@@ -159,8 +170,12 @@ router
 				// must use webpackAssetPath for all webpack assets to work in dev and production!
 				appCSSUrl: webpackAssetPath('repository.css'),
 				appJsUrl: webpackAssetPath('page-module.js'),
+				globals: {
+					staticAssetUrl: process.env.CDN_ASSET_HOST || ''
+				},
 				canCopy
 			}
+
 			res.render('pages/page-module-server.jsx', props)
 		} catch (e) {
 			res.unexpected(e)

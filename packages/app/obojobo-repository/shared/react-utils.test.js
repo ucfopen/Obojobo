@@ -5,6 +5,7 @@ jest.mock('react-redux', () => ({
 	Provider: jest.fn()
 }))
 jest.mock('redux-pack')
+jest.mock('../shared/util/client-globals')
 
 let React
 let Redux // { createStore, applyMiddleware }
@@ -32,7 +33,7 @@ describe('react utils', () => {
 		mockReducerFunction: jest.fn()
 	}
 	const mockMiddleware = { middlewareKey: 'middlewareProp' }
-	const mockStore = { storeKey: 'storeProp' }
+	const mockStore = { storeKey: 'storeProp', getState: jest.fn().mockReturnValue({}) }
 
 	beforeAll(() => {
 		global.ReactDOM = {
@@ -160,5 +161,19 @@ describe('react utils', () => {
 			desiredKeyOne: 'desiredPropOne',
 			desiredKeyTwo: 'desiredPropTwo'
 		})
+	})
+
+	test('populateClientGlobals ignores missing globals', () => {
+		const clientGlobals = require('../shared/util/client-globals')
+		expect(clientGlobals).not.toHaveProperty('key')
+		reactUtils.populateClientGlobals({ nonGlobals: { key: 'value' } })
+		expect(clientGlobals).not.toHaveProperty('key')
+	})
+
+	test('populateClientGlobals registers globals', () => {
+		const clientGlobals = require('../shared/util/client-globals')
+		expect(clientGlobals).not.toHaveProperty('key')
+		reactUtils.populateClientGlobals({ globals: { key: 'value' } })
+		expect(clientGlobals).toHaveProperty('key', 'value')
 	})
 })

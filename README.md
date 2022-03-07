@@ -66,6 +66,36 @@ Once logged in, visit [https://127.0.0.1:8080/editor](https://127.0.0.1:8080/edi
 
 `yarn test` or `yarn test:ci`
 
+### Deployment and Setup
+
+For deployment, there are several places you can set configuration options.  Obojobo uses a hybrid of json files and environment variables. We are moving more toward using more environment variables. However, json config files can be found in several obojobo packages (they are usually in server/config/*.json files). Below are a set of environment variables that we recommend using
+
+- `CDN_ASSET_HOST`: If you want to host compiled browser assets (js/css/etc) on a CDN. Ex value: `https://site.com`
+- `NODE_ENV`: determines which environment from the config files will be used. Use production unless you have a use for multiple environments.
+- `DB_USER`: db user
+- `DB_PASS`: db pass
+- `DB_HOST`: db host
+- `DB_NAME`: db name
+- `DB_PORT`: db port
+- `DB_SSL_JSON`: enable or disable using ssl to connect to the database
+- `DB_TIMEOUT`: ex: 29000.  Used to set the pg-promise settings for query_timeout and statement_timeout.
+- `OBO_LTI_KEYS_JSON`: ex: '{"key1":"secret1","key2":"secret2}'.  Use json string to define valid lti key/secret pairs.
+- `OBO_LTI_USERNAME_PARAM`: What lti launch param do you want to use as the username in obojobo. ex: `user_id` or `lis_person_sourcedid`
+- `OBO_COOKIE_SECRET`: Randomized secret key that is used to encrypt cookies. See the docs for express-session.
+- `OBO_COOKIE_SECURE`: Set to true when using https.  See docs for express-session.  Used to set secure, sameSite and httpOnly options.
+- `DEBUG`: Logging Verbosity. Use obojobo_server:* for more output. ex: `obojobo_server:error,obojobo_server:warn`
+- `YARN_PRODUCTION`: Set to true. Makes sure yarn install includes dev dependencies.
+- `OBO_DEMO_PURGE_MODE`: Automatically purge old data for demo purposes or to limit database growth. Additional addon setup required. ex: disabled (default), DANGER-delete-HISTORY-data, DANGER-delete-ALL-data
+- `OBO_DEMO_PURGE_DAYS_AGO`: If purge mode is enabled, purge data older than this many days. ex: 7
+- `OBO_EDITLOCK_TIME_UNTIL_RELEASE_MINUTES`: Editor lock: period of inactivity to release the lock. ex: 45
+- `OBO_EDITLOCK_TIME_UNTIL_WARN_MINUTES`: Editor lock: period of inactivity to warn the user about lock release. ex: 40
+- `OBO_EDITLOCK_DB_LOCK_DURATION`: Editor lock: period of time a lock lasts unless it is renewed. ex: 5
+- `OBO_LTI_GUID`: A GUID unique to this install of Obojobo. Google LTI launch param tool_consumer_instance_guid for more details. ex: `edu.your-school.obojobo`
+- `MATERIA_OAUTH_KEY`: LTI Oauth key used just for the optional Materia integration.
+- `MATERIA_OAUTH_SECRET`: LTI Oauth secret used the optional Materia integration.
+- `MATERIA_HOST`: URL for the optional Materia integration. ex: https://your.materia.com
+- `OBO_OPTIONAL_NODES`: Comma separated list of optional nodes that are already installed to enable. ex: `*` or `obojobo-chunks-materia`
+
 ### Special Thanks
 
 Support for this work was provided by the National Science Foundation Scholarships in Science, Technology, Engineering, and Mathematics (S-STEM) program under [Award No.1643835](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1643835). Any opinions, findings, conclusions and recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.

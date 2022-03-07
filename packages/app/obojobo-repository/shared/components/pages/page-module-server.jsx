@@ -1,6 +1,8 @@
 const React = require('react')
 const DefaultLayout = require('../layouts/default')
-const { convertPropsToString } = require('../../react-utils')
+const { propsToStore, createCommonReactApp, convertPropsToString } = require('../../react-utils')
+const PageModule = require('./page-module-hoc')
+const AboutModuleReducer = require('../../reducers/about-module-reducer')
 
 const PageModuleServer = props => {
 	return (
@@ -10,7 +12,9 @@ const PageModuleServer = props => {
 			appScriptUrl={props.appJsUrl}
 			appCSSUrl={props.appCSSUrl}
 		>
-			<span id="react-hydrate-root" data-react-props={convertPropsToString(props)} />
+			<span id="react-hydrate-root" data-react-props={convertPropsToString(props)}>
+				{createCommonReactApp(PageModule, propsToStore(AboutModuleReducer, props))}
+			</span>
 		</DefaultLayout>
 	)
 }

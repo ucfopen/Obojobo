@@ -43,12 +43,19 @@ const getEnv = forceEnvTo => {
 	return (env || NODE_ENV).toLowerCase()
 }
 
+const resolveFromManifest = assetName => {
+	// eslint-disable-next-line no-undefined
+	if (!manifest[assetName]) return undefined
+	return `${process.env.CDN_ASSET_HOST || ''}${manifest[assetName]}`
+}
+
+// use the original name in the static path
+const resolveFromWebpackDevServer = assetName => `/static/${assetName}`
+
 const IS_WEBPACK = process.env.IS_WEBPACK === 'true'
 // NOTE: manifest created via `yarn build`
 const manifest = IS_WEBPACK ? {} : require('./public/compiled/manifest.json')
-const webpackAssetPath = IS_WEBPACK
-	? assetName => `/static/${assetName}` // use the original name in the static path
-	: assetName => manifest[assetName] // return path from the manifest
+const webpackAssetPath = IS_WEBPACK ? resolveFromWebpackDevServer : resolveFromManifest
 
 module.exports = {
 	assetForEnv,

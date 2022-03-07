@@ -12,6 +12,9 @@ describe('Server-side Module Page', () => {
 		const mockProps = {
 			appJsUrl: '/path/to/js',
 			appCSSUrl: '/path/to/css',
+			globals: {
+				staticAssetUrl: 'https://cdn.sample.com'
+			},
 			module: {
 				title: 'mockModuleTitle'
 			}
