@@ -90,41 +90,38 @@ class EditorNav extends React.PureComponent {
 			})
 		}
 
-		const startPage = this.props.model.attributes.content.start
-			? list.findIndex(el => el.id === this.props.model.attributes.content.start)
-			: 0
+		const { attributes } = this.props.model
+		const startId = attributes.content.start || attributes.children[0].children[0].id
+		const startPage =
+			startId === attributes.children[1]?.id
+				? attributes.children[1].children[0]
+				: attributes.children[0].children.find(el => el.id === startId)
 
 		return list.map((item, index) => {
-			let elements
-
 			switch (item.type) {
 				case 'heading':
-					elements =
-						startPage === list.length - 1
-							? this.props.model.attributes.children[1].children[0]
-							: this.props.model.attributes.children[0].children[startPage]
-
 					return (
 						<Header
 							key={index}
 							index={index}
 							list={list}
-							elements={elements ? elements.children : []}
+							// elements={startPage?.children}
+							elements={
+								startId === this.props.navState.navTargetId
+									? this.props.elements
+									: startPage?.children
+							}
 							markUnsaved={this.props.markUnsaved}
 						/>
 					)
 				case 'link':
-					elements = item.flags.assessment
-						? this.props.model.attributes.children[1].children[0]
-						: this.props.model.attributes.children[0].children[index - 1]
-
 					return (
 						<SubMenu
 							key={index}
 							index={index}
 							isSelected={this.props.navState.navTargetId === item.id}
 							list={list}
-							elements={elements ? elements.children : []}
+							elements={this.props.elements}
 							onClick={this.onNavItemClick.bind(this, item)}
 							savePage={this.props.savePage}
 							markUnsaved={this.props.markUnsaved}

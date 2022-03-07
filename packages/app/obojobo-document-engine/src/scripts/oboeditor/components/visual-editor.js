@@ -575,6 +575,7 @@ class VisualEditor extends React.Component {
 						</div>
 					)}
 					<EditorNav
+						elements={this.editor.children}
 						navState={this.props.navState}
 						model={this.props.model}
 						draftId={this.props.draftId}

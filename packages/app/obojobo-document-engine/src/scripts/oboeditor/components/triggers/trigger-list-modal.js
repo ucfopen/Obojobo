@@ -225,29 +225,38 @@ class TriggerListModal extends React.Component {
 	}
 
 	getElementText(element) {
-		const content = element.content
+		const { content, children } = element
 		let text = ''
 
 		switch (element.type) {
 			case 'ObojoboDraft.Chunks.Text':
-				text = 'TEXT: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
+				text =
+					'TEXT: ' +
+					(content.textGroup ? content.textGroup[0].text.value : children[0].children[0].text)
 				break
 			case 'ObojoboDraft.Chunks.Heading':
-				text = 'HEADING: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
+				text =
+					'HEADING: ' + (content.textGroup ? content.textGroup[0].text.value : children[0].text)
 				break
 			case 'ObojoboDraft.Chunks.Figure':
-				text = 'FIGURE: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
+				text = 'FIGURE: ' + (content.textGroup ? content.textGroup[0].text.value : children[0].text)
 				break
 			case 'ObojoboDraft.Chunks.ActionButton':
-				text = 'BUTTON: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
+				text = 'BUTTON: ' + (content.textGroup ? content.textGroup[0].text.value : children[0].text)
 				break
 			case 'ObojoboDraft.Chunks.List':
-				text = 'LIST: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
+				text =
+					'LIST: ' +
+					(content.textGroup
+						? content.textGroup[0].text.value
+						: children[0].children[0].children[0].text)
 				break
 			case 'ObojoboDraft.Chunks.Table':
 				text =
 					'TABLE: ' +
-					(content.textGroup.textGroup ? content.textGroup.textGroup[0].text.value : 'new node')
+					(content.textGroup.textGroup
+						? content.textGroup.textGroup[0].text.value
+						: children[0].children[0].children[0].text)
 				break
 			case 'ObojoboDraft.Chunks.Break':
 				text = 'BREAK'
@@ -256,7 +265,9 @@ class TriggerListModal extends React.Component {
 				text = 'MATH: ' + content.latex
 				break
 			case 'ObojoboDraft.Chunks.Code':
-				text = 'CODE: ' + (content.textGroup ? content.textGroup[0].text.value : 'new node')
+				text =
+					'CODE: ' +
+					(content.textGroup ? content.textGroup[0].text.value : children[0].children[0].text)
 				break
 			case 'ObojoboDraft.Chunks.YouTube':
 				text = 'YouTube Video'
@@ -267,9 +278,9 @@ class TriggerListModal extends React.Component {
 			case 'ObojoboDraft.Chunks.Question':
 				text =
 					'QUESTION: ' +
-					(element.children[0].content.textGroup
-						? element.children[0].content.textGroup[0].text.value
-						: 'new node')
+					(children[0].content.textGroup
+						? children[0].content.textGroup[0].text.value
+						: '[New Question]')
 				break
 			case 'ObojoboDraft.Chunks.QuestionBank':
 				text = 'QUESTION BANK'
@@ -411,7 +422,7 @@ class TriggerListModal extends React.Component {
 			case 'focus:component':
 				return (
 					<div className="action-options">
-						{this.isValidId(action.value.id, this.props.elements) ? (
+						{this.props.elements && this.isValidId(action.value.id, this.props.elements) ? (
 							<div>
 								<label>Item</label>
 								<select

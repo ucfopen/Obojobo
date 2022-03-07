@@ -461,9 +461,10 @@ describe('TriggerListModal', () => {
 		expect(
 			TriggerListModal.prototype.getElementText({
 				type: 'ObojoboDraft.Chunks.Text',
-				content: {}
+				content: {},
+				children: [{ children: [{ text: 'mock text' }] }]
 			})
-		).toBe('TEXT: new node')
+		).toBe('TEXT: mock text')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -474,9 +475,10 @@ describe('TriggerListModal', () => {
 		expect(
 			TriggerListModal.prototype.getElementText({
 				type: 'ObojoboDraft.Chunks.Heading',
-				content: {}
+				content: {},
+				children: [{ text: 'mock text' }]
 			})
-		).toBe('HEADING: new node')
+		).toBe('HEADING: mock text')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -487,9 +489,10 @@ describe('TriggerListModal', () => {
 		expect(
 			TriggerListModal.prototype.getElementText({
 				type: 'ObojoboDraft.Chunks.Figure',
-				content: {}
+				content: {},
+				children: [{ text: 'mock text' }]
 			})
-		).toBe('FIGURE: new node')
+		).toBe('FIGURE: mock text')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -500,9 +503,10 @@ describe('TriggerListModal', () => {
 		expect(
 			TriggerListModal.prototype.getElementText({
 				type: 'ObojoboDraft.Chunks.ActionButton',
-				content: {}
+				content: {},
+				children: [{ text: 'mock text' }]
 			})
-		).toBe('BUTTON: new node')
+		).toBe('BUTTON: mock text')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -513,9 +517,10 @@ describe('TriggerListModal', () => {
 		expect(
 			TriggerListModal.prototype.getElementText({
 				type: 'ObojoboDraft.Chunks.List',
-				content: {}
+				content: {},
+				children: [{ children: [{ children: [{ text: 'mock text' }] }] }]
 			})
-		).toBe('LIST: new node')
+		).toBe('LIST: mock text')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -526,9 +531,10 @@ describe('TriggerListModal', () => {
 		expect(
 			TriggerListModal.prototype.getElementText({
 				type: 'ObojoboDraft.Chunks.Table',
-				content: { textGroup: {} }
+				content: { textGroup: {} },
+				children: [{ children: [{ children: [{ text: 'mock text' }] }] }]
 			})
-		).toBe('TABLE: new node')
+		).toBe('TABLE: mock text')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -552,9 +558,10 @@ describe('TriggerListModal', () => {
 		expect(
 			TriggerListModal.prototype.getElementText({
 				type: 'ObojoboDraft.Chunks.Code',
-				content: {}
+				content: {},
+				children: [{ children: [{ text: 'mock text' }] }]
 			})
-		).toBe('CODE: new node')
+		).toBe('CODE: mock text')
 
 		expect(
 			TriggerListModal.prototype.getElementText({
@@ -600,7 +607,7 @@ describe('TriggerListModal', () => {
 					}
 				]
 			})
-		).toBe('QUESTION: new node')
+		).toBe('QUESTION: [New Question]')
 
 		expect(
 			TriggerListModal.prototype.getElementText({

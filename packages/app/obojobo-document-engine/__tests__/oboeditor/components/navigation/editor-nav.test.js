@@ -42,7 +42,8 @@ describe('EditorNav', () => {
 			navState: {},
 			model: {
 				attributes: {
-					content: {}
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
 				}
 			}
 		}
@@ -57,7 +58,8 @@ describe('EditorNav', () => {
 			navState: {},
 			model: {
 				attributes: {
-					content: {}
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
 				}
 			}
 		}
@@ -78,7 +80,8 @@ describe('EditorNav', () => {
 			navState: {},
 			model: {
 				attributes: {
-					content: {}
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
 				}
 			}
 		}
@@ -217,7 +220,7 @@ describe('EditorNav', () => {
 				attributes: {
 					content: {},
 					children: [
-						{},
+						{ children: [{}] },
 						{
 							children: [{ children: [{ children: [] }] }, { children: [{ children: [] }] }]
 						}
@@ -245,7 +248,8 @@ describe('EditorNav', () => {
 			navState: {},
 			model: {
 				attributes: {
-					content: {}
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
 				}
 			}
 		}
@@ -270,7 +274,8 @@ describe('EditorNav', () => {
 			navState: {},
 			model: {
 				attributes: {
-					content: {}
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
 				}
 			}
 		}
