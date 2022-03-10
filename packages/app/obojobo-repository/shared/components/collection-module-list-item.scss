@@ -15,7 +15,7 @@
 	}
 
 	.module-title {
-		max-width: calc(100% - #{$dimensions-image + $dimensions-close-button + 1.6em});
+		max-width: calc(100% - #{$dimensions-image + $dimensions-close-button + 2.8em});
 		display: inline-block;
 		margin: 0 $dimensions-close-button + 0.8em 0 0.8em;
 		vertical-align: middle;
