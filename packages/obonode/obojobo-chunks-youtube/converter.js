@@ -13,7 +13,6 @@ const slateToObo = node => ({
 	children: [],
 	content: withoutUndefined({
 		triggers: node.content.triggers,
-		objectives: node.content.objectives,
 		videoId: node.content.videoId,
 		startTime: node.content.startTime,
 		endTime: node.content.endTime

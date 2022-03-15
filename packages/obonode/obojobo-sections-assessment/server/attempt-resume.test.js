@@ -2,7 +2,6 @@
 
 jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
-jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
 jest.mock('./models/assessment')
 jest.mock('./insert-events')
 
@@ -18,7 +17,6 @@ const resumeAttempt = require('./attempt-resume')
 const insertEvents = require('./insert-events')
 const attemptStart = require('./attempt-start')
 const insertEvent = require('obojobo-express/server/insert_event')
-const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const Visit = require('obojobo-express/server/models/visit')
 const AssessmentModel = require('./models/assessment')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -74,13 +72,6 @@ describe('Resume Attempt Route', () => {
 				})
 			}
 		}
-
-		// mock the caliperEvent methods
-		const mockCreateAssessmentAttemptResumedEvent = jest.fn()
-		mockCreateAssessmentAttemptResumedEvent.mockReturnValue('mockCaliperPayload')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptResumedEvent: mockCreateAssessmentAttemptResumedEvent
-		})
 
 		const mockCurrentDocument = {
 			draftId: 'mockDraftId',
@@ -145,13 +136,6 @@ describe('Resume Attempt Route', () => {
 			}
 		}
 
-		// mock the caliperEvent methods
-		const mockCreateAssessmentAttemptResumedEvent = jest.fn()
-		mockCreateAssessmentAttemptResumedEvent.mockReturnValue('mockCaliperPayload')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptResumedEvent: mockCreateAssessmentAttemptResumedEvent
-		})
-
 		const mockCurrentDocument = {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId',
@@ -197,13 +181,6 @@ describe('Resume Attempt Route', () => {
 			}
 		}
 
-		// mock the caliperEvent methods
-		const mockCreateAssessmentAttemptResumedEvent = jest.fn()
-		mockCreateAssessmentAttemptResumedEvent.mockReturnValue('mockCaliperPayload')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptResumedEvent: mockCreateAssessmentAttemptResumedEvent
-		})
-
 		const mockCurrentDocument = {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId',
@@ -223,25 +200,11 @@ describe('Resume Attempt Route', () => {
 			'mockRemoteAddress'
 		)
 
-		expect(mockCreateAssessmentAttemptResumedEvent).toHaveBeenCalledTimes(1)
-		expect(mockCreateAssessmentAttemptResumedEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
-		Object {
-		  "actor": Object {
-		    "id": 1,
-		    "type": "user",
-		  },
-		  "assessmentId": "mockAssessmentId",
-		  "attemptId": "mockAttemptId",
-		  "contentId": "mockContentId",
-		  "draftId": "mockDraftId",
-		}
-	`)
 		expect(insertEvent).toHaveBeenCalledTimes(1)
 		expect(insertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
 		  "action": "assessment:attemptResume",
 		  "actorTime": "mockDate",
-		  "caliperPayload": "mockCaliperPayload",
 		  "contentId": "mockContentId",
 		  "draftId": "mockDraftId",
 		  "eventVersion": "1.2.0",

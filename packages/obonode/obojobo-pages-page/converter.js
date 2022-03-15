@@ -13,8 +13,7 @@ const slateToObo = node => ({
 	type: node.type,
 	children: node.children.map(child => Component.helpers.slateToObo(child)),
 	content: withoutUndefined({
-		triggers: node.content.triggers,
-		objectives: node.content.objectives
+		triggers: node.content.triggers
 	})
 })
 

@@ -5,6 +5,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 /**
@@ -19,8 +20,8 @@ const slateToObo = node => {
 	const children = []
 	const content = {
 		triggers: node.content.triggers,
-		objectives: node.content.objectives,
-		type: node.content.type
+		type: node.content.type,
+		revealAnswer: node.content.revealAnswer
 	}
 
 	node.children.forEach(child => {
@@ -31,6 +32,10 @@ const slateToObo = node => {
 				break
 
 			case MCASSESSMENT_NODE:
+				children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
+				break
+
+			case NUMERIC_ASSESSMENT_NODE:
 				children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
 				break
 
@@ -56,25 +61,26 @@ const slateToObo = node => {
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
-	const slateNode = Object.assign({}, node)
-	slateNode.children = node.children.map(child => {
-		if (child.type === MCASSESSMENT_NODE) {
+	const clonedNode = JSON.parse(JSON.stringify(node))
+
+	clonedNode.children = clonedNode.children.map(child => {
+		if (child.type === MCASSESSMENT_NODE || child.type === NUMERIC_ASSESSMENT_NODE) {
 			return Common.Registry.getItemForType(child.type).oboToSlate(child)
 		} else {
 			return Component.helpers.oboToSlate(child)
 		}
 	})
 
-	if (node.content.solution) {
+	if (clonedNode.content.solution) {
 		const solution = {
 			type: QUESTION_NODE,
 			subtype: SOLUTION_NODE,
-			children: [Common.Registry.getItemForType(PAGE_NODE).oboToSlate(node.content.solution)]
+			children: [Common.Registry.getItemForType(PAGE_NODE).oboToSlate(clonedNode.content.solution)]
 		}
-		slateNode.children.push(solution)
+		clonedNode.children.push(solution)
 	}
 
-	return slateNode
+	return clonedNode
 }
 
 export default { slateToObo, oboToSlate }

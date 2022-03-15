@@ -13,7 +13,6 @@ const slateToObo = node => ({
 	children: [],
 	content: withoutUndefined({
 		triggers: node.content.triggers,
-		objectives: node.content.objectives,
 		latex: node.content.latex,
 		alt: node.content.alt,
 		align: node.content.align,

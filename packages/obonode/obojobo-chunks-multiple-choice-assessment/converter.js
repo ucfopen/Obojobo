@@ -2,6 +2,9 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
+import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
+const MC_CHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+
 /**
  * Generates an Obojobo MCAssessment Node from a Slate node.
  * Copies the id, type, triggers, shuffle, and sets the responseType
@@ -17,7 +20,7 @@ const slateToObo = node => {
 	const children = node.children.map(child => {
 		if (child.content.score === 100) correct++
 
-		return Common.Registry.getItemForType(child.type).slateToObo(child)
+		return Common.Registry.getItemForType(child.type).slateToObo(child, MC_CHOICE_NODE)
 	})
 
 	if (correct > 1 && responseType === 'pick-one') {
@@ -33,7 +36,6 @@ const slateToObo = node => {
 		children,
 		content: withoutUndefined({
 			triggers: node.content.triggers,
-			objectives: node.content.objectives,
 			responseType,
 			shuffle: node.content.shuffle
 		})
@@ -58,7 +60,7 @@ const oboToSlate = node => {
 	const questionType = questionModel.attributes.content.type
 
 	slateNode.children = node.children.map(child =>
-		Common.Registry.getItemForType(child.type).oboToSlate(child)
+		Common.Registry.getItemForType(CHOICE_NODE).oboToSlate(child)
 	)
 	slateNode.questionType = questionType
 
