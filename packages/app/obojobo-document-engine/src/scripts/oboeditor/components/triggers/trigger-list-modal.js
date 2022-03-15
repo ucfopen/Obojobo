@@ -173,7 +173,7 @@ class TriggerListModal extends React.Component {
 					? Object.assign(trigger, {
 							actions: trigger.actions.concat({
 								type: 'nav:goto',
-								value: {}
+								value: { id: '' }
 							})
 					  })
 					: trigger
