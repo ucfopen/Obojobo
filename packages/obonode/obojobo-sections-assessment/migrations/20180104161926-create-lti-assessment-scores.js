@@ -43,7 +43,8 @@ exports.up = function(db) {
         'error_no_launch_found',
         'error_launch_expired',
         'error_score_is_invalid',
-        'error_unexpected'
+        'error_unexpected',
+		'not_considered'
       );`)
 		})
 		.then(result => {
