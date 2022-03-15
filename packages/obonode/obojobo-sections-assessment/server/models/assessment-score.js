@@ -150,7 +150,6 @@ class AssessmentScore {
 		newScore.resourceLinkId = resourceLinkId // update resourceLink
 		newScore.scoreDetails.attemptNumber = 1 // fix the attemptNumber
 		// dispatch an event?
-		// store a caliper event?
 		return newScore.create(dbTransaction)
 	}
 }

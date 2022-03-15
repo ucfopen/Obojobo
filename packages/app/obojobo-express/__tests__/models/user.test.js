@@ -390,6 +390,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
@@ -407,6 +408,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
@@ -424,6 +426,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
@@ -441,6 +444,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 

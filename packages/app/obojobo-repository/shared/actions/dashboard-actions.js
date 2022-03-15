@@ -7,7 +7,9 @@ dayjs.extend(advancedFormat)
 // =================== API =======================
 
 const JSON_MIME_TYPE = 'application/json'
-const XML_MIME_TYPE = 'application/xml'
+const XML_MIME_TYPE_APPLICATION = 'application/xml'
+const XML_MIME_TYPE_TEXT = 'text/xml'
+
 const defaultOptions = () => ({
 	method: 'GET',
 	credentials: 'include',
@@ -112,8 +114,17 @@ const apiDeleteModule = draftId => {
 	return fetch(`/api/drafts/${draftId}`, options).then(res => res.json())
 }
 
+const apiRestoreModule = draftId => {
+	const options = { ...defaultOptions(), method: 'PUT' }
+	return fetch(`/api/drafts/restore/${draftId}`, options).then(res => res.json())
+}
+
 const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
+}
+
+const apiGetMyDeletedModules = () => {
+	return fetch('/api/drafts-deleted', defaultOptions()).then(res => res.json())
 }
 
 const apiCreateNewModule = (useTutorial, body = {}) => {
@@ -225,6 +236,12 @@ const bulkDeleteModules = draftIds => ({
 	promise: Promise.all(draftIds.map(id => apiDeleteModule(id))).then(apiGetMyModules)
 })
 
+const BULK_RESTORE_MODULES = 'BULK_RESTORE_MODULES'
+const bulkRestoreModules = draftIds => ({
+	type: BULK_RESTORE_MODULES,
+	promise: Promise.all(draftIds.map(id => apiRestoreModule(id))).then(apiGetMyModules)
+})
+
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false) => ({
 	type: CREATE_NEW_MODULE,
@@ -261,11 +278,23 @@ const importModuleFile = searchString => ({
 	promise: promptUserForModuleFileUpload(searchString)
 })
 
+const GET_DELETED_MODULES = 'GET_DELETED_MODULES'
+const getDeletedModules = () => ({
+	type: GET_DELETED_MODULES,
+	promise: apiGetMyDeletedModules()
+})
+
+const GET_MODULES = 'GET_MODULES'
+const getModules = () => ({
+	type: GET_MODULES,
+	promise: apiGetMyModules()
+})
+
 const promptUserForModuleFileUpload = async () => {
 	return new Promise((resolve, reject) => {
 		const fileSelector = document.createElement('input')
 		fileSelector.setAttribute('type', 'file')
-		fileSelector.setAttribute('accept', `${JSON_MIME_TYPE}, ${XML_MIME_TYPE}`)
+		fileSelector.setAttribute('accept', `${JSON_MIME_TYPE}, ${XML_MIME_TYPE_APPLICATION}`)
 		fileSelector.onchange = moduleUploadFileSelected.bind(this, resolve, reject)
 		fileSelector.click()
 	})
@@ -274,6 +303,16 @@ const promptUserForModuleFileUpload = async () => {
 const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	const file = event.target.files[0]
 	if (!file) return boundResolve()
+	// avoid usage in case a browser allows file upload despite invalid mime type
+	if (
+		file.type !== `${XML_MIME_TYPE_APPLICATION}` &&
+		file.type !== `${JSON_MIME_TYPE}` &&
+		file.type !== `${XML_MIME_TYPE_TEXT}`
+	) {
+		// eslint-disable-next-line no-alert
+		window.alert('Invalid file, acceptable file types are JSON and XML.')
+		return boundResolve()
+	}
 
 	const reader = new global.FileReader()
 	reader.readAsText(file, 'UTF-8')
@@ -284,7 +323,7 @@ const moduleUploadFileLoaded = async (boundResolve, boundReject, fileType, e) =>
 	try {
 		const body = {
 			content: e.target.result,
-			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE
+			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE_APPLICATION
 		}
 
 		await apiCreateNewModule(false, body)
@@ -315,6 +354,9 @@ module.exports = {
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
 	SHOW_ASSESSMENT_SCORE_DATA,
+	GET_DELETED_MODULES,
+	GET_MODULES,
+	BULK_RESTORE_MODULES,
 	filterModules,
 	selectModules,
 	deselectModules,
@@ -333,5 +375,8 @@ module.exports = {
 	restoreVersion,
 	importModuleFile,
 	checkModuleLock,
-	showAssessmentScoreData
+	showAssessmentScoreData,
+	getDeletedModules,
+	getModules,
+	bulkRestoreModules
 }

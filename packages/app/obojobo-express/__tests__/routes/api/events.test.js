@@ -80,7 +80,7 @@ describe('api draft events route', () => {
 	})
 
 	test('inserts event', () => {
-		expect.assertions(4)
+		expect.assertions(3)
 		db.one.mockResolvedValueOnce('inserted created_at') // mocks insertEvent
 
 		return request(app)
@@ -90,7 +90,6 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(200)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', null)
 			})
 	})
 

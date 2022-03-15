@@ -837,6 +837,23 @@ Ctrl+Shift+R"
         </svg>
       </button>
       <button
+        aria-label="Justify
+Ctrl+Shift+J"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Justify
+Ctrl+Shift+J"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z"
+          />
+        </svg>
+      </button>
+      <button
         aria-label="Indent
 Ctrl+Alt+Tab"
         className=" is-not-selected"
@@ -1463,6 +1480,23 @@ Ctrl+Shift+R"
         </svg>
       </button>
       <button
+        aria-label="Justify
+Ctrl+Shift+J"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Justify
+Ctrl+Shift+J"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z"
+          />
+        </svg>
+      </button>
+      <button
         aria-label="Indent
 Ctrl+Alt+Tab"
         className=" is-not-selected"
@@ -2085,6 +2119,23 @@ Ctrl+Shift+R"
           <path
             className="icon"
             d="M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Justify
+Ctrl+Shift+J"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Justify
+Ctrl+Shift+J"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z"
           />
         </svg>
       </button>
@@ -2761,6 +2812,23 @@ Ctrl+Shift+R"
         </svg>
       </button>
       <button
+        aria-label="Justify
+Ctrl+Shift+J"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Justify
+Ctrl+Shift+J"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z"
+          />
+        </svg>
+      </button>
+      <button
         aria-label="Indent
 Ctrl+Alt+Tab"
         className=" is-not-selected"
@@ -3379,6 +3447,23 @@ Ctrl+Shift+R"
           <path
             className="icon"
             d="M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13H25v1H13.8V13z M13.8,23H25v1H13.8V23z"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Justify
+Ctrl+Shift+J"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Justify
+Ctrl+Shift+J"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7,8h18v1H7V8z M7,18h18v1H7V18z M13.8,13h11.2v1H7V13z M13.8,23h11.2v1H7V23z"
           />
         </svg>
       </button>

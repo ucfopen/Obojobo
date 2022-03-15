@@ -247,14 +247,14 @@ describe('TriggerListModal', () => {
 		// change the value
 		component
 			.find('input')
-			.at(2)
+			.at(3)
 			.simulate('change', { target: { type: 'text', value: '10' } })
 
 		// check that the value changed
 		expect(
 			component
 				.find('input')
-				.at(2)
+				.at(3)
 				.props()
 		).toHaveProperty('value', '10')
 
@@ -268,6 +268,54 @@ describe('TriggerListModal', () => {
 		// check the rendered component
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('sets value that was previously undefined', () => {
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [{ type: 'nav:goto', value: { id: 1 } }]
+				},
+				{
+					type: 'onUnmount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+
+		// make sure this is the expected label/input combo
+		const inputLabel = component.find('label').at(2)
+		expect(inputLabel.props().children).toBe('Item Id')
+
+		expect(
+			component
+				.find('input')
+				.at(2)
+				.props()
+		).toHaveProperty('checked', true)
+
+		// change the value
+		component
+			.find('input')
+			.at(2)
+			.simulate('change', { target: { type: 'boolean', value: false } })
+
+		// check that the value changed
+		expect(
+			component
+				.find('input')
+				.at(2)
+				.props()
+		).toHaveProperty('checked', false)
+
+		// check the change to state
+		expect(component.state()).toHaveProperty('triggers')
+		expect(component.state().triggers[0].actions).toContainEqual({
+			type: 'nav:goto',
+			value: { id: 1, ignoreLock: false }
+		})
 	})
 
 	test('changes scroll type', () => {

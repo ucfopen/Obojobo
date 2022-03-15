@@ -11,7 +11,7 @@ const {
 	requireCurrentDocument,
 	checkValidationRules,
 	check,
-	requireCanViewSystemStats
+	requireCanViewStatsPage
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
@@ -39,10 +39,27 @@ router
 	})
 
 router
-	.route('/drafts-all')
-	.get([requireCurrentUser, requireCanViewSystemStats])
+	.route('/drafts-stats')
+	.get([requireCurrentUser, requireCanViewStatsPage])
 	.get((req, res) => {
-		return DraftSummary.fetchAll()
+		const canSeeAllModuleStats = req.currentUser.hasPermission('canViewSystemStats')
+
+		if (canSeeAllModuleStats) {
+			return DraftSummary.fetchAll()
+				.then(res.success)
+				.catch(res.unexpected)
+		} else {
+			return DraftSummary.fetchByUserId(req.currentUser.id)
+				.then(res.success)
+				.catch(res.unexpected)
+		}
+	})
+
+router
+	.route('/drafts-deleted')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		return DraftSummary.fetchDeletedByUserId(req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
