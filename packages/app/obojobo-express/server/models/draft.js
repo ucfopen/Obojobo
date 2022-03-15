@@ -98,7 +98,30 @@ class Draft {
 				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id, userId })
 			})
 			.catch(error => {
-				logger.logError('Draft fetchById Error', error)
+				logger.logError('Draft deleteByIdAndUser Error', error)
+				throw error
+			})
+	}
+
+	static restoreByIdAndUser(id, userId) {
+		return db
+			.none(
+				`
+			UPDATE drafts
+			SET deleted = FALSE
+			WHERE id = $[id]
+			AND user_id = $[userId]
+			`,
+				{
+					id,
+					userId
+				}
+			)
+			.then(() => {
+				oboEvents.emit(Draft.EVENT_DRAFT_RESTORED, { id, userId })
+			})
+			.catch(error => {
+				logger.logError('Draft restoreByIdAndUser Error', error)
 				throw error
 			})
 	}
@@ -293,5 +316,6 @@ class Draft {
 Draft.EVENT_NEW_DRAFT_CREATED = 'EVENT_NEW_DRAFT_CREATED'
 Draft.EVENT_DRAFT_DELETED = 'EVENT_DRAFT_DELETED'
 Draft.EVENT_DRAFT_UPDATED = 'EVENT_DRAFT_UPDATED'
+Draft.EVENT_DRAFT_RESTORED = 'EVENT_DRAFT_RESTORED'
 
 module.exports = Draft

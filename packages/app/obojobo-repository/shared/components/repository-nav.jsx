@@ -41,7 +41,7 @@ const RepositoryNav = props => {
 						<a href="/dashboard">Dashboard</a>
 					</div>
 				) : null}
-				{props.userPerms.indexOf('canViewSystemStats') > -1 ? (
+				{props.userPerms.indexOf('canViewStatsPage') > -1 ? (
 					<div className="repository--nav--links--link">
 						<a href="/stats">Stats</a>
 					</div>
