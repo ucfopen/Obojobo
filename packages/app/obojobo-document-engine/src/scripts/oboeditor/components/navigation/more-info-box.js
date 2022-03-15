@@ -175,7 +175,14 @@ class MoreInfoBox extends React.Component {
 
 	showTriggersModal() {
 		// Prevent info box from closing when modal is opened
-		ModalUtil.show(<TriggerListModal content={this.state.content} onClose={this.closeModal} />)
+		ModalUtil.show(
+			<TriggerListModal
+				content={this.state.content}
+				onClose={this.closeModal}
+				elements={this.props.elements}
+				navItems={this.props.navItems}
+			/>
+		)
 		this.setState({ modalOpen: true })
 	}
 
@@ -303,7 +310,7 @@ class MoreInfoBox extends React.Component {
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
 							</div>
-							<div>
+							<div className="properties--row">
 								<span className="triggers">
 									Triggers:
 									{triggers && triggers.length > 0 ? (

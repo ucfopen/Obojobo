@@ -91,6 +91,74 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
 </div>
 `;
 
+exports[`EditorNav EditorNav component with start page 1`] = `
+<div
+  className="visual-editor--draft-nav  is-locked is-not-open is-enabled"
+>
+  <ul>
+    <li
+      className="heading is-not-selected"
+    >
+      <span>
+        label4
+      </span>
+      <div
+        className="visual-editor--more-info "
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="Toggle More Info Box"
+          className="more-info-button "
+          onClick={[Function]}
+          tabIndex={0}
+        >
+          <svg
+            fill="none"
+            stroke="#000"
+            viewBox="0 0 214 214"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="107"
+              cy="107"
+              r="100"
+              strokeWidth="14"
+            />
+            <circle
+              cx="57"
+              cy="107"
+              fill="#000"
+              r="7"
+              strokeWidth="16"
+            />
+            <circle
+              cx="107"
+              cy="107"
+              fill="#000"
+              r="7"
+              strokeWidth="16"
+            />
+            <circle
+              cx="157"
+              cy="107"
+              fill="#000"
+              r="7"
+              strokeWidth="16"
+            />
+          </svg>
+        </button>
+      </div>
+    </li>
+  </ul>
+  <button
+    className="add-node-button"
+    onClick={[Function]}
+  >
+    + Add Assessment
+  </button>
+</div>
+`;
+
 exports[`EditorNav addAssessment hides the modal and calls EditorUtil 1`] = `undefined`;
 
 exports[`EditorNav addAssessment hides the modal and calls EditorUtil 2`] = `undefined`;

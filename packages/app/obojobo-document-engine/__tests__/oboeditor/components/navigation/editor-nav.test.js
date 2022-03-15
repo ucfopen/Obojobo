@@ -39,7 +39,13 @@ describe('EditorNav', () => {
 	test('EditorNav component', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
+				}
+			}
 		}
 		const component = renderer.create(<EditorNav {...props} />)
 		const tree = component.toJSON()
@@ -49,7 +55,13 @@ describe('EditorNav', () => {
 	test('EditorNav component adds page', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 
@@ -65,7 +77,13 @@ describe('EditorNav', () => {
 	test('EditorNav component adds assessment', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 
@@ -118,6 +136,63 @@ describe('EditorNav', () => {
 				open: false,
 				locked: true,
 				navTargetId: 56 // select this item
+			},
+			model: {
+				attributes: {
+					content: { start: null },
+					children: [
+						{
+							children: [{ children: [] }, { children: [] }]
+						},
+						{
+							children: []
+						}
+					]
+				}
+			}
+		}
+		const component = renderer.create(<EditorNav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('EditorNav component with start page', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 4,
+				type: 'heading',
+				label: 'label4',
+				flags: {}
+			},
+			{
+				id: 56,
+				type: 'link',
+				label: 'label5',
+				contentType: 'Page',
+				flags: {
+					assessment: false
+				}
+			}
+		])
+
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 56 // select this item
+			},
+			model: {
+				attributes: {
+					content: { start: 56 },
+					children: [
+						{
+							children: [{ children: [] }, { children: [] }]
+						},
+						{
+							children: []
+						}
+					]
+				}
 			}
 		}
 		const component = renderer.create(<EditorNav {...props} />)
@@ -139,7 +214,20 @@ describe('EditorNav', () => {
 			])
 			.mockReturnValueOnce([])
 
-		const props = { navState: {} }
+		const props = {
+			navState: {},
+			model: {
+				attributes: {
+					content: {},
+					children: [
+						{ children: [{}] },
+						{
+							children: [{ children: [{ children: [] }] }, { children: [{ children: [] }] }]
+						}
+					]
+				}
+			}
+		}
 		const component = mount(<EditorNav {...props} />)
 
 		component.instance().onNavItemClick({
@@ -157,7 +245,13 @@ describe('EditorNav', () => {
 	test('addAssessment hides the modal and calls EditorUtil', () => {
 		EditorUtil.getOrderedList.mockReturnValue([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 
@@ -177,7 +271,13 @@ describe('EditorNav', () => {
 	test('addPage hides the modal and calls EditorUtil', () => {
 		EditorUtil.getOrderedList.mockReturnValue([])
 		const props = {
-			navState: {}
+			navState: {},
+			model: {
+				attributes: {
+					content: { start: 'mockId' },
+					children: [{ children: [{}] }]
+				}
+			}
 		}
 		const component = mount(<EditorNav {...props} />)
 

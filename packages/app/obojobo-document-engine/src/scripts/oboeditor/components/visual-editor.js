@@ -517,6 +517,8 @@ class VisualEditor extends React.Component {
 	renderElement(props) {
 		if (props.element.type === 'a') return LinkMark.plugins.renderNode(props)
 
+		props.navItems = EditorUtil.getOrderedList(this.props.navState)
+
 		const item = Common.Registry.getItemForType(props.element.type)
 		if (item) {
 			return item.plugins.renderNode(props)
@@ -573,6 +575,7 @@ class VisualEditor extends React.Component {
 						</div>
 					)}
 					<EditorNav
+						elements={this.editor.children}
 						navState={this.props.navState}
 						model={this.props.model}
 						draftId={this.props.draftId}

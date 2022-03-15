@@ -90,11 +90,29 @@ class EditorNav extends React.PureComponent {
 			})
 		}
 
+		const { attributes } = this.props.model
+		const startId = attributes.content.start || attributes.children[0].children[0].id
+		const startPage =
+			startId === attributes.children[1]?.id
+				? attributes.children[1].children[0]
+				: attributes.children[0].children.find(el => el.id === startId)
+
 		return list.map((item, index) => {
 			switch (item.type) {
 				case 'heading':
 					return (
-						<Header key={index} index={index} list={list} markUnsaved={this.props.markUnsaved} />
+						<Header
+							key={index}
+							index={index}
+							list={list}
+							// elements={startPage?.children}
+							elements={
+								startId === this.props.navState.navTargetId
+									? this.props.elements
+									: startPage?.children
+							}
+							markUnsaved={this.props.markUnsaved}
+						/>
 					)
 				case 'link':
 					return (
@@ -103,6 +121,7 @@ class EditorNav extends React.PureComponent {
 							index={index}
 							isSelected={this.props.navState.navTargetId === item.id}
 							list={list}
+							elements={this.props.elements}
 							onClick={this.onNavItemClick.bind(this, item)}
 							savePage={this.props.savePage}
 							markUnsaved={this.props.markUnsaved}

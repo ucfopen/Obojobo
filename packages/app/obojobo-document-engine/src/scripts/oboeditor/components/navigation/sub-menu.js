@@ -261,6 +261,8 @@ class SubMenu extends React.Component {
 				moveNode={this.movePage}
 				showMoveButtons={!item.flags.assessment}
 				isAssessment={item.flags.assessment}
+				elements={this.props.elements}
+				navItems={this.props.list}
 			/>
 		)
 	}
