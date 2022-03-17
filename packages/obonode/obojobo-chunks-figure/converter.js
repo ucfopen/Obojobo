@@ -22,13 +22,13 @@ const slateToObo = node => {
 		children: [],
 		content: withoutUndefined({
 			triggers: node.content.triggers,
+			objectives: node.content.objectives,
 			textGroup: [captionLine],
 			alt: node.content.alt,
 			url: node.content.url,
 			size: node.content.size,
 			width: node.content.width,
-			height: node.content.height,
-			captionWidth: node.content.captionWidth
+			height: node.content.height
 		})
 	}
 }

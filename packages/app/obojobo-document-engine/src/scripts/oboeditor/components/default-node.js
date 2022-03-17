@@ -8,7 +8,9 @@ const slateToObo = node => {
 	const json = {}
 	json.id = node.key
 	json.type = node.type
-	if (node.data) json.content = node.data.get('content') || {}
+	if (node.data) {
+		json.content = node.data.get('content') || {}
+	}
 	json.children = []
 
 	return json

@@ -4,23 +4,17 @@
 	$color-button-bg: lighten($color-action, 9%);
 
 	text-align: center;
-	max-width: 27rem;
+	width: 27rem;
 	background-color: $color-bg2;
 	padding: 1rem;
-	margin: 0 auto;
 
 	.choose-image--image-controls {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		margin-bottom: 1rem;
 
 		.choose-image--image-controls--upload {
 			flex: 1;
-
-			.error-message {
-				color: $color-dangerous;
-				font-size: 0.8em;
-			}
 		}
 
 		.choose-image--image-controls--or {

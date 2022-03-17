@@ -3,10 +3,9 @@ import './choose-image-modal.scss'
 import React from 'react'
 
 import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
-import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
-import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
-import { uploadFileViaImageNode } from './utils'
+const { SimpleDialog } = Common.components.modal
 const IMAGE_BATCH_SIZE = 11 // load 11 images at a time
 
 class ChooseImageModal extends React.Component {
@@ -31,9 +30,10 @@ class ChooseImageModal extends React.Component {
 
 	handleFileChange(event) {
 		const file = event.target.files[0]
-
-		uploadFileViaImageNode(file).then(mediaData => {
-			this.props.onCloseChooseImageModal(mediaData)
+		const formData = new window.FormData()
+		formData.append('userImage', file, file.name)
+		API.postMultiPart('/api/media/upload', formData).then(mediaData => {
+			this.props.onCloseChooseImageModal(mediaData.media_id)
 		})
 	}
 
@@ -78,14 +78,15 @@ class ChooseImageModal extends React.Component {
 			: `${this.state.media.length} Recent Images loaded${this.state.hasMore ? ' with more' : ''}`
 
 		return (
-			<SettingsDialog
+			<SimpleDialog
+				cancelOk
 				title="Upload or Choose an Image"
 				onConfirm={() => this.props.onCloseChooseImageModal(this.state.url)}
 				onCancel={() => this.props.onCloseChooseImageModal(null)}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className="choose-image">
-					<SettingsDialogRow className="choose-image--image-controls">
+					<div className="choose-image--image-controls">
 						<div className="choose-image--image-controls--upload">
 							<input
 								type="file"
@@ -100,9 +101,6 @@ class ChooseImageModal extends React.Component {
 									Upload New Image
 								</span>
 							</label>
-							<span className="error-message">
-								{this.props.error ? 'Error: ' + this.props.error : ''}
-							</span>
 						</div>
 
 						<p className="choose-image--image-controls--or">or</p>
@@ -111,12 +109,12 @@ class ChooseImageModal extends React.Component {
 							id="choose-image--image-controls--url"
 							type="text"
 							placeholder="Enter image URL"
-							value={this.props.url}
+							value={this.state.url}
 							onChange={e => this.setState({ url: e.target.value })}
 							tabIndex="0"
 							aria-label="Enter image URL"
 						/>
-					</SettingsDialogRow>
+					</div>
 					<div className="choose-image--divider" />
 					<small>Your Recently Uploaded Images</small>
 					<div
@@ -132,9 +130,9 @@ class ChooseImageModal extends React.Component {
 								key={media.id}
 								id={media.id}
 								src={`/api/media/${media.id}/small`}
-								onClick={() => this.props.onCloseChooseImageModal(media)}
+								onClick={() => this.props.onCloseChooseImageModal(media.id)}
 								onKeyPress={event =>
-									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media))
+									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media.id))
 								}
 								role="button"
 								alt={`Select image ${i + 1}: ${media.fileName}`}
@@ -156,7 +154,7 @@ class ChooseImageModal extends React.Component {
 						) : null}
 					</div>
 				</div>
-			</SettingsDialog>
+			</SimpleDialog>
 		)
 	}
 }

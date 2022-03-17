@@ -50,7 +50,7 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
           Click close dialog to review and catalog your answers.
         </p>
         <p>
-          When you're ready, click reload to view the updated module before starting a new attempt.
+          When you're ready, click restart to start a new attempt with the updated module
         </p>
       </div>
       <div

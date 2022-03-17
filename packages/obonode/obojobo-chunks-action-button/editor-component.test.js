@@ -178,9 +178,7 @@ test('Action Button Editor displays id for nav:goto trigger', () => {
 	const value = { id: 'mockId' }
 
 	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
-	expect(component.find('span').html()).toEqual(
-		'<span>Go to mockId (Ignore Navigation Lock)</span>'
-	)
+	expect(component.find('span').html()).toEqual('<span>Go to mockId</span>')
 })
 
 test('Action Button Editor displays empty id for nav:goto trigger', () => {

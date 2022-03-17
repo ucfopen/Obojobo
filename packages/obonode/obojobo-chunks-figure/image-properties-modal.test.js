@@ -6,19 +6,12 @@ import ImageProperties from './image-properties-modal'
 const mockedDebounce = jest.fn().mockImplementation((time, fn) => fn())
 
 jest.mock('./choose-image-modal', () => {
-	const error = {
-		status: 'error',
-		value: {
-			message: 'File too large'
-		}
-	}
 	const MockChooseImageModal = props => {
 		return (
 			<div id="choose-image-modal-mock-id">
 				MockChooseImageModal
 				<button onClick={() => props.onCloseChooseImageModal(null)}>Cancel</button>
-				<button onClick={() => props.onCloseChooseImageModal({ id: 'new_id' })}>OK</button>
-				<button onClick={() => props.onCloseChooseImageModal(error)}>Error</button>
+				<button onClick={() => props.onCloseChooseImageModal('new_id')}>OK</button>
 			</div>
 		)
 	}
@@ -179,17 +172,6 @@ describe('Image Properties Modal', () => {
 		// if url is uuid do not set state.urlInputText
 		expect(component.instance().state.isChoosingImage).toBe(true)
 		expect(component.html()).toMatchSnapshot()
-	})
-
-	test('ImageProperties component handles file upload error', () => {
-		const component = mount(<ImageProperties content={{ url: null }} onConfirm={jest.fn()} />)
-
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
-
-		expect(component.instance().state.error).toBe('File too large')
 	})
 
 	test('ImageProperties component focuses on first element', () => {

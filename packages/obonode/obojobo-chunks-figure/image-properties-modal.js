@@ -8,8 +8,7 @@ import ImageCaptionWidthTypes from './image-caption-width-types'
 import Image from './image'
 import { isUUID } from './utils'
 
-import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
-import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
+const { SimpleDialog } = Common.components.modal
 const { Button } = Common.components
 
 class ImageProperties extends React.Component {
@@ -19,7 +18,6 @@ class ImageProperties extends React.Component {
 		this.state = {
 			url: '',
 			alt: '',
-			error: null,
 			size: 100,
 			height: 100,
 			width: 100,
@@ -80,21 +78,16 @@ class ImageProperties extends React.Component {
 		}
 	}
 
-	onCloseChooseImageModal(mediaData) {
-		if (mediaData && mediaData.status === 'error') {
-			this.setState({ error: mediaData.value.message })
-			return
-		}
-
-		const stateChanges = { isChoosingImage: false, error: null }
+	onCloseChooseImageModal(mediaId) {
+		const stateChanges = { isChoosingImage: false }
 
 		// Close all modals if no url is specified
-		if (!mediaData && !this.state.url) {
+		if (!mediaId && !this.state.url) {
 			this.props.onConfirm(this.state)
 		}
 
-		if (mediaData) {
-			stateChanges.url = mediaData.media_id || mediaData.id
+		if (mediaId) {
+			stateChanges.url = mediaId
 		}
 
 		this.setState(stateChanges)
@@ -109,8 +102,7 @@ class ImageProperties extends React.Component {
 			return (
 				<ChooseImageModal
 					allowedUploadTypes={this.props.allowedUploadTypes}
-					onCloseChooseImageModal={mediaData => this.onCloseChooseImageModal(mediaData)}
-					error={this.state.error}
+					onCloseChooseImageModal={mediaId => this.onCloseChooseImageModal(mediaId)}
 				/>
 			)
 		}
@@ -120,7 +112,7 @@ class ImageProperties extends React.Component {
 			this.state.size === 'small' || this.state.size === 'custom'
 
 		return (
-			<SettingsDialog
+			<SimpleDialog
 				cancelOk
 				title="Image Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
@@ -128,7 +120,7 @@ class ImageProperties extends React.Component {
 			>
 				<div className={`image-properties is-size-${size}`}>
 					<div>
-						<SettingsDialogRow className="flex-container image-container">
+						<div className="flex-container image-container">
 							<Image
 								key={this.state.url}
 								chunk={{
@@ -148,7 +140,7 @@ class ImageProperties extends React.Component {
 							>
 								Change Image...
 							</Button>
-						</SettingsDialogRow>
+						</div>
 
 						<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
 						<input
@@ -187,7 +179,7 @@ class ImageProperties extends React.Component {
 						</select>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
-						<SettingsDialogRow
+						<div
 							id="obojobo-draft--chunks--figure--size"
 							role="radiogroup"
 							aria-label="Select size for image"
@@ -266,10 +258,10 @@ class ImageProperties extends React.Component {
 									</div>
 								) : null}
 							</div>
-						</SettingsDialogRow>
+						</div>
 					</div>
 				</div>
-			</SettingsDialog>
+			</SimpleDialog>
 		)
 	}
 }

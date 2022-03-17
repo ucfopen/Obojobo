@@ -34,10 +34,6 @@
 			}
 		}
 
-		&.drag-over {
-			border: 3px dashed transparentize($color-action, 0.7);
-		}
-
 		.image-toolbar {
 			position: absolute;
 			top: 50%;
@@ -49,14 +45,6 @@
 				margin-top: 0.2em;
 				margin-bottom: 0.2em;
 			}
-		}
-
-		.error-message {
-			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: -1em;
-			color: $color-error;
 		}
 
 		.delete-button {

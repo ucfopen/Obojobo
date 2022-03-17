@@ -17,7 +17,6 @@ import {
 	unfreezeEditor
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 import ImageCaptionWidthTypes from './image-caption-width-types'
-import { uploadFileViaImageNode } from './utils'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
@@ -32,14 +31,6 @@ const { Button } = Common.components
 class Figure extends React.Component {
 	constructor(props) {
 		super(props)
-
-		this.state = { draggingOver: false, url: '', errorMessage: '' }
-
-		this.onImageDrop = this.onImageDrop.bind(this)
-		this.onDragImageOver = this.onDragImageOver.bind(this)
-		this.onDragImageLeave = this.onDragImageLeave.bind(this)
-		this.updateImageSlateNode = this.updateImageSlateNode.bind(this)
-		this.getCorrectImageContent = this.getCorrectImageContent.bind(this)
 		this.focusFigure = this.focusFigure.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showImagePropertiesModal = this.showImagePropertiesModal.bind(this)
@@ -67,12 +58,10 @@ class Figure extends React.Component {
 
 	showImagePropertiesModal() {
 		freezeEditor(this.props.editor)
-		const content = this.getCorrectImageContent()
-
 		ModalUtil.show(
 			<ImageProperties
 				allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
-				content={content}
+				content={this.props.element.content}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseImagePropertiesModal}
 			/>
@@ -100,10 +89,6 @@ class Figure extends React.Component {
 
 	changeProperties(content) {
 		this.onCloseImagePropertiesModal()
-		this.updateImageSlateNode(content)
-	}
-
-	updateImageSlateNode(content) {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
@@ -112,55 +97,11 @@ class Figure extends React.Component {
 		)
 	}
 
-	getCorrectImageContent() {
-		if (this.state.url) {
-			// Image added by dragging and dropping
-			return { url: this.state.url, width: null, height: null, size: 'small' }
-		} else {
-			// Image added with the modal
-			return this.props.element.content
-		}
-	}
-
-	onDragImageOver(e) {
-		e.preventDefault()
-
-		this.setState({ draggingOver: true })
-	}
-
-	onImageDrop(e) {
-		this.setState({ errorMessage: '' })
-		if (e.dataTransfer && e.dataTransfer.items && e.dataTransfer.items.length > 0) {
-			const item = e.dataTransfer.items[0]
-			if (item.kind === 'file') {
-				const file = item.getAsFile()
-
-				uploadFileViaImageNode(file).then(mediaData => {
-					if (mediaData && mediaData.status === 'error') {
-						this.setState({ errorMessage: mediaData.value.message })
-						return
-					}
-
-					const content = { url: mediaData.media_id }
-					this.setState({ url: content.url })
-					this.updateImageSlateNode(content)
-				})
-			}
-		}
-
-		this.setState({ draggingOver: false })
-	}
-
-	onDragImageLeave() {
-		this.setState({ draggingOver: false })
-	}
-
 	render() {
-		const content = this.getCorrectImageContent()
+		const { content } = this.props.element
 		const hasAltText = content.alt && content.alt.length !== 0
 		const selected = this.props.selected
 		const isSelected = isOrNot(selected, 'selected')
-		const draggingOver = this.state.draggingOver ? 'drag-over' : ''
 		const captionWidth = content.captionWidth || ImageCaptionWidthTypes.IMAGE_WIDTH
 
 		const customStyle = {}
@@ -191,13 +132,10 @@ class Figure extends React.Component {
 					)}
 					<figure className="container">
 						<div
-							className={`figure-box  ${isSelected}  ${draggingOver}`}
+							className={`figure-box  ${isSelected}`}
 							style={customStyle}
 							contentEditable={false}
 							onClick={this.focusFigure}
-							onDrop={this.onImageDrop}
-							onDragLeave={this.onDragImageLeave}
-							onDragOver={this.onDragImageOver}
 						>
 							<Button
 								className="delete-button"
@@ -217,7 +155,6 @@ class Figure extends React.Component {
 									Image Properties
 								</Button>
 							</div>
-							<p className="error-message">{this.state.errorMessage}</p>
 							<Image
 								style={customStyle}
 								key={content.url + content.width + content.height + content.size}
