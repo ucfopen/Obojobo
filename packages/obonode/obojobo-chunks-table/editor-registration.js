@@ -74,8 +74,10 @@ const plugins = {
 				// If moving left but already at leftmost cell, move to end of the row above
 				return [node, row - 1, numCols - 1]
 			} else if (direction === 'up' && Node.has(editor, [node - 1])) {
+				// Move to node above table
 				return [node - 1]
 			} else if (direction === 'down' && Node.has(editor, [node + 1])) {
+				// Move to node below table
 				return [node + 1]
 			}
 
