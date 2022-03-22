@@ -410,7 +410,7 @@ function Dashboard(props) {
 		const response = prompt(
 			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
 		)
-		if (response !== 'DELETE') return
+		if (response !== 'DELETE') return setIsLoading(false)
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
 	}
 
