@@ -168,8 +168,7 @@ function DashboardReducer(state, action) {
 						moduleCount: action.payload.value.allCount,
 						filteredModules,
 						selectedModules: [],
-						multiSelectMode: false,
-						showDeletedModules: false
+						multiSelectMode: false
 					}
 				}
 			})
@@ -421,28 +420,24 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => ({
 					...prevState,
-					myModules: action.payload.value,
-					showDeletedModules: false
+					myModules: action.payload.value
 				})
 			})
 
 		case GET_DELETED_MODULES:
 			return handle(state, action, {
 				success: prevState => ({
-					selectedModules: prevState.selectedModules,
-					currentUser: prevState.currentUser,
-					myModules: action.payload.value,
-					showDeletedModules: true
+					...prevState,
+					myModules: action.payload.value
 				})
 			})
 
 		case BULK_RESTORE_MODULES:
 			return handle(state, action, {
 				success: prevState => ({
+					...prevState,
 					selectedModules: [],
-					currentUser: prevState.currentUser,
 					myModules: action.payload.value,
-					showDeletedModules: false,
 					multiSelectMode: false
 				})
 			})
