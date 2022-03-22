@@ -1,0 +1,59 @@
+@import '~styles/includes';
+
+.objective-container {
+	div {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 1em;
+	}
+
+	label {
+		font-weight: 600;
+		margin-right: 0.5em;
+	}
+
+	.objective-input {
+		font-family: $font-monospace;
+		position: relative;
+		font-size: 0.85em;
+		border: solid;
+		background: $color-bg;
+		border-color: $color-unchosen-correct;
+		border-width: 1px;
+		padding: 1em;
+		width: 26em;
+		max-height: 60vh;
+		overflow: auto;
+		border-radius: $dimension-rounded-radius;
+	}
+	.objective-input--objective {
+		font-family: $font-default;
+		position: relative;
+		font-size: 0.85em;
+		border: solid;
+		background: $color-bg;
+		border-color: $color-unchosen-correct;
+		border-width: 1px;
+		padding: 1em;
+		width: 26em;
+		max-height: 60vh;
+		overflow: auto;
+		border-radius: $dimension-rounded-radius;
+	}
+	.objective-input--error {
+		border-color: $color-error;
+	}
+
+	.objective-error {
+		color: $color-error;
+		font-size: small;
+	}
+}
+
+.objective-tips {
+	font-size: medium;
+	text-align: left;
+	color: $color-unchosen-correct;
+	margin-top: 0.5em;
+}

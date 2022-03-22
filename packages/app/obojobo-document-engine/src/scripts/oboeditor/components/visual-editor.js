@@ -36,6 +36,7 @@ import { withHistory } from 'slate-history'
 // This file overwrites some Slate methods to fix weird bugs in the Slate system
 // It should be deleted when the Slate bugs are remedied
 import '../overwrite-bug-fixes'
+import ObjectiveProvider from './objectives/objective-provider'
 
 class VisualEditor extends React.Component {
 	constructor(props) {
@@ -44,12 +45,41 @@ class VisualEditor extends React.Component {
 
 		const json = this.importFromJSON()
 
+		this.addObjective = objective => {
+			this.setState({ objectives: this.state.objectives.concat(objective) })
+		}
+
+		this.removeObjective = objectiveId => {
+			this.setState({
+				objectives: this.state.objectives.filter(o => o.objectiveId !== objectiveId)
+			})
+		}
+
+		this.updateObjective = (objectiveId, objectiveLabel, description) => {
+			this.setState({
+				objectives: this.state.objectives.map(objective => {
+					if (objective.objectiveId === objectiveId) {
+						return {
+							...objective,
+							objectiveLabel,
+							description
+						}
+					}
+					return objective
+				})
+			})
+		}
+
 		this.state = {
 			value: json,
 			saveState: 'saveSuccessful',
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
-			contentRect: null
+			contentRect: null,
+			objectives: this.props.model?.objectives ?? [],
+			addObjective: this.addObjective,
+			removeObjective: this.removeObjective,
+			updateObjective: this.updateObjective
 		}
 
 		this.pageEditorContainerRef = React.createRef()
@@ -363,6 +393,7 @@ class VisualEditor extends React.Component {
 		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
 		json.content.start = EditorStore.state.startingId
+		json.content.objectives = this.state.objectives
 
 		// deal with content
 		this.props.model.children.forEach(child => {
@@ -572,28 +603,30 @@ class VisualEditor extends React.Component {
 							<ContentToolbar editor={this.editor} value={this.state.value} />
 						</div>
 					)}
-					<EditorNav
-						navState={this.props.navState}
-						model={this.props.model}
-						draftId={this.props.draftId}
-						savePage={this.exportCurrentToJSON}
-						markUnsaved={this.markUnsaved}
-					/>
+					<ObjectiveProvider state={this.state}>
+						<EditorNav
+							navState={this.props.navState}
+							model={this.props.model}
+							draftId={this.props.draftId}
+							savePage={this.exportCurrentToJSON}
+							markUnsaved={this.markUnsaved}
+						/>
 
-					<div className="component obojobo-draft--modules--module" role="main">
-						<VisualEditorErrorBoundry editorRef={this.editor}>
-							<Editable
-								className="obojobo-draft--pages--page"
-								renderElement={this.renderElement}
-								renderLeaf={this.renderLeaf}
-								decorate={this.decorate}
-								readOnly={!this.state.editable || this.props.readOnly}
-								onKeyDown={this.onKeyDown}
-								onCut={this.onCut}
-								onClick={this.onClick}
-							/>
-						</VisualEditorErrorBoundry>
-					</div>
+						<div className="component obojobo-draft--modules--module" role="main">
+							<VisualEditorErrorBoundry editorRef={this.editor}>
+								<Editable
+									className="obojobo-draft--pages--page"
+									renderElement={this.renderElement}
+									renderLeaf={this.renderLeaf}
+									decorate={this.decorate}
+									readOnly={!this.state.editable || this.props.readOnly}
+									onKeyDown={this.onKeyDown}
+									onCut={this.onCut}
+									onClick={this.onClick}
+								/>
+							</VisualEditorErrorBoundry>
+						</div>
+					</ObjectiveProvider>
 				</Slate>
 			</div>
 		)

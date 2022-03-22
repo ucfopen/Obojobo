@@ -1,0 +1,29 @@
+@import '~styles/includes';
+
+.objective-list-modal {
+	position: relative;
+	width: 32em;
+	min-height: 56vh;
+	background: $color-bg2;
+	padding: 0.5em;
+	border-radius: $dimension-rounded-radius;
+
+	.button {
+		position: absolute;
+		bottom: 0.5vh;
+		right: calc(50% - 9vh);
+		width: 18vh;
+	}
+
+	.objective-list-header {
+		margin: -0.7em 0em 1em 0em;
+	}
+
+	.objective-list-subheader {
+		font: $font-monospace;
+	}
+}
+
+.no-global-objectives {
+	min-height: 2.2em;
+}
