@@ -27,6 +27,7 @@
 		overflow: auto;
 		border-radius: $dimension-rounded-radius;
 	}
+
 	.objective-input--objective {
 		font-family: $font-default;
 		position: relative;
@@ -41,6 +42,7 @@
 		overflow: auto;
 		border-radius: $dimension-rounded-radius;
 	}
+
 	.objective-input--error {
 		border-color: $color-error;
 	}

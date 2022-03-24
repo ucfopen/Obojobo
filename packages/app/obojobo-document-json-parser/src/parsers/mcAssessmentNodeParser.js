@@ -9,7 +9,11 @@ const mcAssessmentNodeParser = (node, childrenParser) => {
 	const objectivesXML = processObjectives(node.content.objectives)
 
 	return (
-		`<MCAssessment${attrs}${id}>` + childrenParser(node.children) + triggersXML + objectivesXML + `</MCAssessment>`
+		`<MCAssessment${attrs}${id}>` +
+		childrenParser(node.children) +
+		triggersXML +
+		objectivesXML +
+		`</MCAssessment>`
 	)
 }
 

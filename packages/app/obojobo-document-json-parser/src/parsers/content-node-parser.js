@@ -7,7 +7,13 @@ const contentNodeParser = (node, childrenParser) => {
 	const triggersXML = processTriggers(node.content.triggers)
 	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<Content${attrs}${id}>` + childrenParser(node.children) + triggersXML + objectivesXML + `</Content>`
+	return (
+		`<Content${attrs}${id}>` +
+		childrenParser(node.children) +
+		triggersXML +
+		objectivesXML +
+		`</Content>`
+	)
 }
 
 module.exports = contentNodeParser

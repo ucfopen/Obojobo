@@ -9,7 +9,11 @@ const questionBankNodeParser = (node, childrenParser) => {
 	const objectivesXML = processObjectives(node.content.objectives)
 
 	return (
-		`<QuestionBank${attrs}${id}>` + childrenParser(node.children) + triggersXML + objectivesXML + `</QuestionBank>`
+		`<QuestionBank${attrs}${id}>` +
+		childrenParser(node.children) +
+		triggersXML +
+		objectivesXML +
+		`</QuestionBank>`
 	)
 }
 

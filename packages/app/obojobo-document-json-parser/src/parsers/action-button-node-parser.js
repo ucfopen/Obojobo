@@ -10,7 +10,9 @@ const actionButtonNodeParser = node => {
 	const triggersXML = processTriggers(node.content.triggers)
 	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<ActionButton${attrs}${id}>` + textGroupXML + triggersXML  + objectivesXML + `</ActionButton>`
+	return (
+		`<ActionButton${attrs}${id}>` + textGroupXML + triggersXML + objectivesXML + `</ActionButton>`
+	)
 }
 
 module.exports = actionButtonNodeParser

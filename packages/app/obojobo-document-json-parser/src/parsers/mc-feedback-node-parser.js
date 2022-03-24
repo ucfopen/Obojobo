@@ -8,7 +8,13 @@ const mcFeedbackNodeParser = (node, childrenParser) => {
 	const triggersXML = processTriggers(node.content.triggers)
 	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<MCFeedback${attrs}${id}>` + childrenParser(node.children) + triggersXML + objectivesXML + `</MCFeedback>`
+	return (
+		`<MCFeedback${attrs}${id}>` +
+		childrenParser(node.children) +
+		triggersXML +
+		objectivesXML +
+		`</MCFeedback>`
+	)
 }
 
 module.exports = mcFeedbackNodeParser

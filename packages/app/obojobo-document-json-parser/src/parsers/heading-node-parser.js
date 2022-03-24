@@ -13,7 +13,13 @@ const headingNodeParser = node => {
 	const objectivesXML = processObjectives(node.content.objectives)
 	const attrs = processAttrs(node.content, ['triggers', 'textGroup'])
 
-	return `<Heading ${headingLevel}${attrs}${id}>` + textGroupXML + triggersXML + objectivesXML + `</Heading>`
+	return (
+		`<Heading ${headingLevel}${attrs}${id}>` +
+		textGroupXML +
+		triggersXML +
+		objectivesXML +
+		`</Heading>`
+	)
 }
 
 module.exports = headingNodeParser

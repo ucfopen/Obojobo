@@ -8,8 +8,14 @@ const moduleNodeParser = (node, childrenParser) => {
 	const attrs = processAttrs(node.content, ['triggers', 'actions'])
 	const triggersXML = processTriggers(node.content.triggers)
 	const objectivesXML = processObjectives(node.content.objectives)
-	
-	return `<Module${attrs}${id}>` + childrenParser(node.children) + triggersXML + objectivesXML + `</Module>`
+
+	return (
+		`<Module${attrs}${id}>` +
+		childrenParser(node.children) +
+		triggersXML +
+		objectivesXML +
+		`</Module>`
+	)
 }
 
 module.exports = moduleNodeParser

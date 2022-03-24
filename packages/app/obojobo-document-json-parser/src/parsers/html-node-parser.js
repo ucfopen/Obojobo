@@ -7,7 +7,7 @@ const htmlNodeParser = node => {
 	const triggersXML = processTriggers(node.content.triggers)
 	const objectivesXML = processObjectives(node.content.objectives)
 	if (triggersXML) {
-		return `<HTML${attrs}${id}>${triggersXML}`+ objectivesXML + `</HTML>`
+		return `<HTML${attrs}${id}>${triggersXML}` + objectivesXML + `</HTML>`
 	}
 
 	return `<HTML${attrs}${id} />`

@@ -8,7 +8,13 @@ const mcAnswerNodeParser = (node, childrenParser) => {
 	const triggersXML = processTriggers(node.content.triggers)
 	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<MCAnswer${attrs}${id}>` + childrenParser(node.children) + triggersXML + objectivesXML + `</MCAnswer>`
+	return (
+		`<MCAnswer${attrs}${id}>` +
+		childrenParser(node.children) +
+		triggersXML +
+		objectivesXML +
+		`</MCAnswer>`
+	)
 }
 
 module.exports = mcAnswerNodeParser
