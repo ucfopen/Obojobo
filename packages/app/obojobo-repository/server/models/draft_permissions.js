@@ -18,6 +18,20 @@ class DraftPermissions {
 			})
 	}
 
+	static updateAccessLevel(draftId, userId, accessLevel) {
+		return db
+			.none(
+				`UPDATE repository_map_user_to_draft
+				SET access_level = $[accessLevel]
+				WHERE draft_id = $[draftId]
+				AND user_id = $[userId]`,
+				{ accessLevel, userId, draftId }
+			)
+			.catch(error => {
+				throw logger.logError('Error updateAccessLevel', error)
+			})
+	}
+
 	static removeOwnerFromDraft(draftId, userId) {
 		return db
 			.none(
@@ -42,7 +56,8 @@ class DraftPermissions {
 				users.email,
 				users.username,
 				users.created_at,
-				users.roles
+				users.roles,
+				access_level
 			FROM repository_map_user_to_draft
 			JOIN users
 				ON users.id = user_id
@@ -51,7 +66,11 @@ class DraftPermissions {
 				{ draftId }
 			)
 			.then(results => {
-				return results.map(r => User.dbResultToModel(r))
+				return results.map(r => {
+					const u = User.dbResultToModel(r)
+					u.accessLevel = r.access_level
+					return u
+				})
 			})
 			.catch(error => {
 				throw logger.logError('Error getDraftOwners', error)
@@ -65,7 +84,8 @@ class DraftPermissions {
 				`SELECT user_id
 				FROM repository_map_user_to_draft
 				WHERE draft_id = $[draftId]
-				AND user_id = $[userId]`,
+				AND user_id = $[userId]
+				AND (access_level = 'Full' OR access_level = 'Partial')`,
 				{ userId, draftId }
 			)
 
@@ -73,6 +93,23 @@ class DraftPermissions {
 			return result !== null
 		} catch (error) {
 			throw logger.logError('Error userHasPermissionToDraft', error)
+		}
+	}
+
+	// returns a string
+	static async getUserAccessLevelToDraft(userId, draftId) {
+		try {
+			const result = await db.oneOrNone(
+				`SELECT access_level
+				FROM repository_map_user_to_draft
+				WHERE draft_id = $[draftId]
+				AND user_id = $[userId]`,
+				{ userId, draftId }
+			)
+
+			return result ? result.access_level : null
+		} catch (error) {
+			throw logger.logError('Error getUserAccessLevelToDraft', error)
 		}
 	}
 

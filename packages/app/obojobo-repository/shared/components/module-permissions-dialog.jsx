@@ -15,6 +15,7 @@ class ModulePermissionsDialog extends React.Component {
 		this.closePeoplePicker = this.closePeoplePicker.bind(this)
 		this.addPerson = this.addPerson.bind(this)
 		this.removePerson = this.removePerson.bind(this)
+		this.changeAccessLevel = this.changeAccessLevel.bind(this)
 	}
 
 	componentDidMount() {
@@ -44,6 +45,10 @@ class ModulePermissionsDialog extends React.Component {
 		this.props.onClose()
 	}
 
+	changeAccessLevel(userId, targetLevel) {
+		this.props.changeAccessLevel(this.props.draftId, userId, targetLevel)
+	}
+
 	renderModal() {
 		if (this.state.peoplePickerOpen) {
 			return (
@@ -70,6 +75,20 @@ class ModulePermissionsDialog extends React.Component {
 		if (this.props.draftPermissions[this.props.draftId]) {
 			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
 				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
+					<div className="repository--main-content--sort access-level">
+						<span>Access Level:</span>
+						<select onChange={event => this.changeAccessLevel(p.id, event.target.value)}>
+							<option value="Full" selected={p.accessLevel == 'Full'}>
+								Full
+							</option>
+							<option value="Partial" selected={p.accessLevel == 'Partial'}>
+								Partial
+							</option>
+							<option value="Minimal" selected={p.accessLevel == 'Minimal'}>
+								Minimal
+							</option>
+						</select>
+					</div>
 					<Button
 						className="close-button"
 						onClick={() => {

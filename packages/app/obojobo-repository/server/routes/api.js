@@ -259,6 +259,44 @@ router
 		}
 	})
 
+// update a user's access level
+router
+	.route('/drafts/:draftId/permission/update')
+	.post([requireCurrentUser, requireCurrentDocument])
+	.post(async (req, res) => {
+		try {
+			const userId = req.body.userId
+			const draftId = req.currentDocument.draftId
+			const targetLevel = req.body.accessLevel
+
+			// Guard against invalid access levels
+			// if (!["Full", "Partial", "Minimal"].includes(accessLevel)) {
+			// 	res.status(400).send("Invalid access level")
+			// }
+
+			// check if same access level
+			const currentLevel = await DraftPermissions.getUserAccessLevelToDraft(
+				req.body.userId,
+				draftId
+			)
+
+			if (currentLevel === targetLevel) {
+				res.success()
+				return
+			}
+
+			// make sure the target userId exists
+			// fetchById will throw if not found
+			await UserModel.fetchById(userId)
+
+			// add permissions
+			await DraftPermissions.updateAccessLevel(draftId, userId, targetLevel)
+			res.success()
+		} catch (error) {
+			res.unexpected(error)
+		}
+	})
+
 // delete a permission for a user to a draft
 router
 	.route('/drafts/:draftId/permission/:userId')

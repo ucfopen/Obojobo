@@ -219,6 +219,36 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
+	test('changeAccessLevel returns the expected output and calls other functions correctly', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.changeAccessLevel('mockDraftId', 99, 'Partial')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId/permission/update', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"userId":99, "accessLevel":"Partial"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.CHANGE_ACCESS_LEVEL,
+			promise: expect.any(Object)
+		})
+
+		// should get draft permissions after changing them
+		return actionReply.promise.then(() => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(global.fetch).toHaveBeenCalledWith(
+				'/api/drafts/mockDraftId/permission',
+				defaultFetchOptions
+			)
+		})
+	})
+
 	// three (plus one default) ways of calling deleteModulePermissions
 	const assertDeleteModulePermissionsRunsWithOptions = (secondaryLookupUrl, options) => {
 		global.fetch.mockResolvedValueOnce(standardFetchResponse)

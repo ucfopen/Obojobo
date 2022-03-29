@@ -49,6 +49,7 @@ const renderPermissionsDialog = (props, extension) => (
 		loadUsersForModule={props.loadUsersForModule}
 		onClose={props.closeModal}
 		addUserToModule={props.addUserToModule}
+		changeAccessLevel={props.changeAccessLevel}
 		draftPermissions={props.draftPermissions}
 		deleteModulePermissions={extension.deleteModulePermissions}
 		currentUserId={props.currentUser.id}

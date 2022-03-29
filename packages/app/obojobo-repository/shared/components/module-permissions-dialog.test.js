@@ -30,6 +30,7 @@ describe('ModulePermissionsDialog', () => {
 			loadUsersForModule: jest.fn(),
 			addUserToModule: jest.fn(),
 			deleteModulePermissions: jest.fn(),
+			changeAccessLevel: jest.fn(),
 			onClose: jest.fn()
 		}
 	})
@@ -207,6 +208,33 @@ describe('ModulePermissionsDialog', () => {
 
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledTimes(1)
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledWith('mockDraftId', 1)
+	})
+
+	test('props.changeAccessLevel is called when a peopleListItem access level is changed', () => {
+		defaultProps.draftPermissions['mockDraftId'] = {
+			items: [{ id: 1, accessLevel: 'Full' }, { id: 99, accessLevel: 'Mimimal' }]
+		}
+		const reusableComponent = <ModulePermissionsDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		expectLoadUsersForModuleToBeCalledOnceWithId()
+
+		const peopleListItems = component.root.findAllByType(PeopleListItem)
+		expect(peopleListItems.length).toBe(2)
+		expect(peopleListItems[0].props.id).toBe(1)
+		expect(peopleListItems[0].props.isMe).toBe(false)
+		expect(peopleListItems[1].props.id).toBe(99)
+		expect(peopleListItems[1].props.isMe).toBe(true)
+
+		act(() => {
+			peopleListItems[0].findByType('select').props.onChange({ target: { value: 'Partial' } })
+		})
+
+		expect(defaultProps.changeAccessLevel).toHaveBeenCalledTimes(1)
+		expect(defaultProps.changeAccessLevel).toHaveBeenCalledWith('mockDraftId', 1, 'Partial')
 	})
 
 	test('confirmation window denied when "x" button is clicked on peopleList item for current user', () => {
