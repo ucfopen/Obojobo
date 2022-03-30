@@ -6,6 +6,10 @@
 		border: 1px solid $color-transparent;
 		border-bottom: 1px solid $color-transparent;
 		opacity: 0.4;
+
+		&:hover {
+			background: $color-button-bg;
+		}
 	}
 
 	border: 0;
@@ -18,7 +22,8 @@
 	text-decoration: none;
 	font-size: 0.7em;
 
-	&:disabled {
+	&:disabled,
+	&.disabled {
 		@include disabled();
 	}
 

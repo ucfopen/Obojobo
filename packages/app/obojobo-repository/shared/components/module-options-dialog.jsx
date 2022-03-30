@@ -33,13 +33,18 @@ const ModuleOptionsDialog = props => (
 		</div>
 		<div className="wrapper">
 			<h1 className="title">Module Options</h1>
+			<p>Your Access Level: {props.accessLevel}</p>
 			<div className="buttons-with-labels">
 				<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
 					Preview
 				</ButtonLink>
 				<div className="label">View with preview controls.</div>
 
-				<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
+				<ButtonLink
+					url={urlForEditor(props.editor, props.draftId)}
+					target="_blank"
+					disabled={props.accessLevel === 'Minimal'}
+				>
 					Edit
 				</ButtonLink>
 				<div className="label">Write, edit, and update.</div>
@@ -49,6 +54,7 @@ const ModuleOptionsDialog = props => (
 					onClick={() => {
 						props.showModulePermissions(props)
 					}}
+					disabled={props.accessLevel !== 'Full'}
 				>
 					Share
 				</Button>
@@ -67,6 +73,7 @@ const ModuleOptionsDialog = props => (
 				<Button
 					id="moduleOptionsDialog-showVersionHistoryButton"
 					onClick={() => props.showVersionHistory(props)}
+					disabled={props.accessLevel === 'Minimal'}
 				>
 					Version History
 				</Button>
@@ -119,6 +126,7 @@ const ModuleOptionsDialog = props => (
 							props.stopLoadingAnimation
 						)
 					}}
+					disabled={props.accessLevel !== 'Full'}
 				>
 					Delete
 				</Button>

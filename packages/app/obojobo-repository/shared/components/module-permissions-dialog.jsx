@@ -77,7 +77,10 @@ class ModulePermissionsDialog extends React.Component {
 				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
 					<div className="repository--main-content--sort access-level">
 						<span>Access Level:</span>
-						<select onChange={event => this.changeAccessLevel(p.id, event.target.value)}>
+						<select
+							onChange={event => this.changeAccessLevel(p.id, event.target.value)}
+							disabled={p.id === this.props.currentUserId}
+						>
 							<option value="Full" selected={p.accessLevel == 'Full'}>
 								Full
 							</option>

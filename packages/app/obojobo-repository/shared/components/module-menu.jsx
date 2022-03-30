@@ -20,10 +20,12 @@ const ModuleMenu = props => {
 				<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
 					Preview
 				</ButtonLink>
-				<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
-					Edit
-				</ButtonLink>
-				<Button onClick={onShare}>Share</Button>
+				{props.accessLevel === 'Minimal' ? null : (
+					<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
+						Edit
+					</ButtonLink>
+				)}
+				{props.accessLevel === 'Full' ? <Button onClick={onShare}>Share</Button> : null}
 				<hr />
 				<Button onClick={onMore} className="more">
 					More...

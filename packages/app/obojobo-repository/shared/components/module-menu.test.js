@@ -35,6 +35,24 @@ describe('ModuleMenu', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
+	test('ModuleMenu renders correctly with "Minimal" access level', () => {
+		defaultProps.accessLevel = 'Minimal'
+		const component = create(<ModuleMenu {...defaultProps} />)
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('ModuleMenu renders correctly with "Partial" access level', () => {
+		defaultProps.accessLevel = 'Partial'
+		const component = create(<ModuleMenu {...defaultProps} />)
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('ModuleMenu renders correctly with "Full" access level', () => {
+		defaultProps.accessLevel = 'Full'
+		const component = create(<ModuleMenu {...defaultProps} />)
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
 	test('ModuleMenu renders correctly with className prop', () => {
 		defaultProps.className = 'extra-class'
 		const component = create(<ModuleMenu {...defaultProps} />)
@@ -53,6 +71,7 @@ describe('ModuleMenu', () => {
 
 	test('"Share" button onClick calls showModulePermissions', () => {
 		defaultProps.showModulePermissions = jest.fn()
+		defaultProps.accessLevel = 'Full'
 		const component = create(<ModuleMenu {...defaultProps} />)
 
 		component.root.findAllByType(Button)[0].props.onClick()
@@ -63,6 +82,7 @@ describe('ModuleMenu', () => {
 
 	test('"More..." button onClick calls showModuleMore', () => {
 		defaultProps.showModuleMore = jest.fn()
+		defaultProps.accessLevel = 'Full'
 		const component = create(<ModuleMenu {...defaultProps} />)
 
 		component.root.findAllByType(Button)[1].props.onClick()

@@ -90,7 +90,7 @@ describe('DraftSummary Model', () => {
 
 	// This is just the DraftSummary non-public 'buildQuery' method.
 	// Not sure if there's a good way of exposing that, so will just use this.
-	const queryBuilder = (whereSQL, joinSQL = '', deleted = 'FALSE', limitSQL = '') =>
+	const queryBuilder = (whereSQL, joinSQL = '', selectSQL = '', deleted = 'FALSE', limitSQL = '') =>
 		`
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -100,6 +100,7 @@ describe('DraftSummary Model', () => {
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
+			${selectSQL}
 			'visual' AS editor
 		FROM drafts
 		JOIN drafts_content
@@ -237,8 +238,9 @@ describe('DraftSummary Model', () => {
 		const whereSQL = 'repository_map_user_to_draft.user_id = $[userId]'
 		const joinSQL = `JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
+		const selectSQL = 'repository_map_user_to_draft.access_level AS access_level,'
 		const limitSQL = 'LIMIT 5'
-		const query = queryBuilder(whereSQL, joinSQL, 'FALSE', limitSQL)
+		const query = queryBuilder(whereSQL, joinSQL, selectSQL, 'FALSE', limitSQL)
 
 		return DraftSummary.fetchRecentByUserId(0).then(summary => {
 			const [actualQuery, options] = db.any.mock.calls[0]
@@ -328,22 +330,28 @@ describe('DraftSummary Model', () => {
 
 		const whereSQL = ''
 		const joinSQL = ''
+		const selectSQL = ''
 		const limitSQL = ''
 		const mockQueryValues = { id: 'mockDraftId' }
 
-		return DraftSummary.fetchAndJoinWhereLimit(whereSQL, joinSQL, limitSQL, mockQueryValues).catch(
-			err => {
-				expect(logger.error).toHaveBeenCalledWith(
-					'fetchAndJoinWhereLimit Error',
-					'not found in db',
-					whereSQL,
-					joinSQL,
-					limitSQL,
-					mockQueryValues
-				)
-				expect(err).toBe('Error loading DraftSummary by query')
-			}
-		)
+		return DraftSummary.fetchAndJoinWhereLimit(
+			whereSQL,
+			joinSQL,
+			selectSQL,
+			limitSQL,
+			mockQueryValues
+		).catch(err => {
+			expect(logger.error).toHaveBeenCalledWith(
+				'fetchAndJoinWhereLimit Error',
+				'not found in db',
+				whereSQL,
+				joinSQL,
+				selectSQL,
+				limitSQL,
+				mockQueryValues
+			)
+			expect(err).toBe('Error loading DraftSummary by query')
+		})
 	})
 
 	test('fetchAndJoinWhere catches database errors', () => {
@@ -646,7 +654,7 @@ describe('DraftSummary Model', () => {
 		const whereSQL = 'repository_map_user_to_draft.user_id = $[userId]'
 		const joinSQL = `JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
-		const query = queryBuilder(whereSQL, joinSQL, 'TRUE')
+		const query = queryBuilder(whereSQL, joinSQL, '', 'TRUE')
 
 		return DraftSummary.fetchDeletedByUserId(0).then(summary => {
 			expect(db.any).toHaveBeenCalledWith(query, { userId: 0, deleted: 'TRUE' })

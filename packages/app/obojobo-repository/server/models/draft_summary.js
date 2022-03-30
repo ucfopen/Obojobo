@@ -1,7 +1,13 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
-const buildQueryWhere = (whereSQL, joinSQL = '', deleted = 'FALSE', limitSQL = '') => {
+const buildQueryWhere = (
+	whereSQL,
+	joinSQL = '',
+	selectSQL = '',
+	deleted = 'FALSE',
+	limitSQL = ''
+) => {
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -11,6 +17,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '', deleted = 'FALSE', limitSQL = '
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
+			${selectSQL}
 			'visual' AS editor
 		FROM drafts
 		JOIN drafts_content
@@ -40,11 +47,13 @@ class DraftSummary {
 		content,
 		id,
 		first_name,
-		last_name
+		last_name,
+		access_level
 	}) {
 		this.draftId = draft_id
 		this.title = title
 		this.userId = user_id
+		this.access_level = access_level
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version
@@ -85,6 +94,7 @@ class DraftSummary {
 
 	static fetchRecentByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhereLimit(
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
@@ -141,14 +151,15 @@ class DraftSummary {
 			})
 	}
 
-	static fetchAndJoinWhereLimit(joinSQL, whereSQL, limitSQL, queryValues) {
+	static fetchAndJoinWhereLimit(selectSQL, joinSQL, whereSQL, limitSQL, queryValues) {
 		return db
-			.any(buildQueryWhere(whereSQL, joinSQL, 'FALSE', limitSQL), queryValues)
+			.any(buildQueryWhere(whereSQL, joinSQL, selectSQL, 'FALSE', limitSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error(
 					'fetchAndJoinWhereLimit Error',
 					error.message,
+					selectSQL,
 					joinSQL,
 					whereSQL,
 					limitSQL,
@@ -168,7 +179,7 @@ class DraftSummary {
 	}
 
 	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {
-		const query = buildQueryWhere(whereSQL, joinSQL, queryValues.deleted)
+		const query = buildQueryWhere(whereSQL, joinSQL, '', queryValues.deleted)
 
 		return db
 			.any(query, queryValues)

@@ -37,6 +37,9 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
     >
       Module Options
     </h1>
+    <p>
+      Your Access Level: 
+    </p>
     <div
       className="buttons-with-labels"
     >
@@ -68,6 +71,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       </div>
       <button
         className="repository--button "
+        disabled={true}
         onClick={[Function]}
       >
         Share
@@ -90,6 +94,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       </div>
       <button
         className="repository--button "
+        disabled={false}
         onClick={[Function]}
       >
         Version History
@@ -147,6 +152,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       </div>
       <button
         className="repository--button dangerous-button delete-button"
+        disabled={true}
         onClick={[Function]}
       >
         Delete

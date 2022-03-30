@@ -27,4 +27,15 @@ describe('ButtonLink', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('renders with disabled prop', () => {
+		const mockProps = {
+			disabled: true
+		}
+
+		const component = renderer.create(<ButtonLink {...mockProps}>Link Text</ButtonLink>)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
 })
