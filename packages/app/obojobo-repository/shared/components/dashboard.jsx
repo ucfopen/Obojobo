@@ -410,7 +410,7 @@ function Dashboard(props) {
 		const response = prompt(
 			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
 		)
-		if (response !== 'DELETE') return
+		if (response !== 'DELETE') return setIsLoading(false)
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
 	}
 
@@ -447,6 +447,9 @@ function Dashboard(props) {
 				case MODE_RECENT:
 					// Default view is 'only show the five most recent changes', do nothing with the path
 					break
+				case MODE_DELETED:
+					modeUrlString = `${modeUrlString}/deleted`
+					break
 				case MODE_ALL:
 				default:
 					modeUrlString = `${modeUrlString}/all`
@@ -456,7 +459,6 @@ function Dashboard(props) {
 			const commonCookieString = `expires=${expires.toUTCString()}; path=${modeUrlString}`
 			document.cookie = `moduleSortOrder=${moduleSortOrder}; ${commonCookieString}`
 			document.cookie = `collectionSortOrder=${collectionSortOrder}; ${commonCookieString}`
-			// setLastSelectedIndex(0)
 		}, [moduleSortOrder, collectionSortOrder])
 	}
 
@@ -537,7 +539,6 @@ function Dashboard(props) {
 			</React.Fragment>
 		)
 
-		// eslint-disable-next-line no-case-declarations
 		let collectionFilterRender = null
 		if (props.myCollections.length > 0) {
 			collectionFilterRender = (

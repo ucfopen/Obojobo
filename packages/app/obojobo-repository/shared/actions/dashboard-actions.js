@@ -369,7 +369,7 @@ const bulkRemoveModulesFromCollection = (draftIds, collectionId) => ({
 const BULK_RESTORE_MODULES = 'BULK_RESTORE_MODULES'
 const bulkRestoreModules = draftIds => ({
 	type: BULK_RESTORE_MODULES,
-	promise: Promise.all(draftIds.map(id => apiRestoreModule(id))).then(apiGetMyModules)
+	promise: Promise.all(draftIds.map(id => apiRestoreModule(id))).then(apiGetMyDeletedModules)
 })
 
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
