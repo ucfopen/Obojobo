@@ -143,6 +143,7 @@ class FileMenu extends React.PureComponent {
 			{
 				name: 'Delete Module...',
 				type: 'action',
+				disabled: this.props.accessLevel !== 'Full',
 				action: () => {
 					const buttons = [
 						{

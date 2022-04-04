@@ -53,7 +53,7 @@ class DraftSummary {
 		this.draftId = draft_id
 		this.title = title
 		this.userId = user_id
-		this.access_level = access_level
+		this.accessLevel = access_level
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version
@@ -85,6 +85,7 @@ class DraftSummary {
 
 	static fetchByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
@@ -105,6 +106,7 @@ class DraftSummary {
 
 	static fetchAllInCollection(collectionId) {
 		return DraftSummary.fetchAndJoinWhere(
+			'',
 			`JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id`,
 			`repository_map_drafts_to_collections.collection_id = $[collectionId]`,
@@ -114,6 +116,7 @@ class DraftSummary {
 
 	static fetchAllInCollectionForUser(collectionId, userId) {
 		return DraftSummary.fetchAndJoinWhere(
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id
 			JOIN repository_map_user_to_draft
@@ -171,6 +174,7 @@ class DraftSummary {
 
 	static fetchDeletedByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
+			'',
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
@@ -178,8 +182,8 @@ class DraftSummary {
 		)
 	}
 
-	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {
-		const query = buildQueryWhere(whereSQL, joinSQL, '', queryValues.deleted)
+	static fetchAndJoinWhere(selectSQL, joinSQL, whereSQL, queryValues) {
+		const query = buildQueryWhere(whereSQL, joinSQL, selectSQL, queryValues.deleted)
 
 		return db
 			.any(query, queryValues)

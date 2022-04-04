@@ -82,8 +82,9 @@ describe('api draft route', () => {
 		// mock the document returned by fetchById
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: { title: 'mock-document-json' },
+			authorId: 99,
+			accessLevel: 'Full'
 		}
 
 		// mock the xmlDocument Getter
@@ -112,11 +113,14 @@ describe('api draft route', () => {
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
+		const mockDocument = { title: 'mock-document-json' }
+
 		// mock the document returned by fetchById
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: 'Full'
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
@@ -136,7 +140,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/xml')
 				expect(response.statusCode).toBe(200)
 				expect(response.text).toContain('mock-xml')
-				expect(jsonToXml).toHaveBeenCalledWith('mock-document-json')
+				expect(jsonToXml).toHaveBeenCalledWith(mockDocument)
 			})
 	})
 
@@ -147,10 +151,14 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+
+		const mockDocument = { title: 'mock-document-json' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: 'Full'
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
@@ -168,7 +176,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 				expect(jsonToXml).not.toHaveBeenCalled()
 			})
 	})
@@ -180,10 +188,13 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: 'Full'
 		}
 
 		DraftModel.fetchDraftByVersion.mockResolvedValueOnce(mockDraftModel)
@@ -203,7 +214,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 				expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledWith(
 					'00000000-0000-0000-0000-000000000000',
 					'00000000-0000-0000-0000-000000000001'
@@ -219,9 +230,11 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
+			document: mockDocument,
 			authorId: 99
 		}
 
@@ -256,9 +269,11 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
+			document: mockDocument,
 			authorId: 99
 		}
 
@@ -277,7 +292,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 				expect(jsonToXml).not.toHaveBeenCalled()
 			})
 	})
@@ -289,9 +304,11 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
+			document: mockDocument,
 			authorId: 99
 		}
 
@@ -310,7 +327,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 			})
 	})
 
@@ -321,9 +338,11 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
+			document: mockDocument,
 			authorId: 99
 		}
 
@@ -342,7 +361,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 			})
 	})
 

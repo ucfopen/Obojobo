@@ -221,7 +221,8 @@ describe('DraftSummary Model', () => {
 		const whereSQL = 'repository_map_user_to_draft.user_id = $[userId]'
 		const joinSQL = `JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
-		const query = queryBuilder(whereSQL, joinSQL)
+		const selectSQL = 'repository_map_user_to_draft.access_level AS access_level,'
+		const query = queryBuilder(whereSQL, joinSQL, selectSQL)
 
 		return DraftSummary.fetchByUserId(0).then(summary => {
 			const [actualQuery, options] = db.any.mock.calls[0]
@@ -275,7 +276,8 @@ describe('DraftSummary Model', () => {
 				ON repository_map_drafts_to_collections.draft_id = drafts.id
 			JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
-		const query = queryBuilder(whereSQL, joinSQL)
+		const selectSQL = `repository_map_user_to_draft.access_level AS access_level,`
+		const query = queryBuilder(whereSQL, joinSQL, selectSQL)
 
 		return DraftSummary.fetchAllInCollectionForUser('mockCollectionId', 0).then(summary => {
 			expect(db.any).toHaveBeenCalledWith(query, { collectionId: 'mockCollectionId', userId: 0 })
@@ -362,12 +364,18 @@ describe('DraftSummary Model', () => {
 
 		const whereSQL = ''
 		const joinSQL = ''
+		const selectSQL = ''
 		const mockQueryValues = { id: 'mockDraftId' }
 
-		return DraftSummary.fetchAndJoinWhere(whereSQL, joinSQL, mockQueryValues).catch(err => {
-			expect(logger.logError).toHaveBeenCalledWith('Error loading DraftSummary by query', mockError)
-			expect(err).toBe(mockError)
-		})
+		return DraftSummary.fetchAndJoinWhere(selectSQL, whereSQL, joinSQL, mockQueryValues).catch(
+			err => {
+				expect(logger.logError).toHaveBeenCalledWith(
+					'Error loading DraftSummary by query',
+					mockError
+				)
+				expect(err).toBe(mockError)
+			}
+		)
 	})
 
 	test('fetchWhere catches database errors', () => {
@@ -654,7 +662,9 @@ describe('DraftSummary Model', () => {
 		const whereSQL = 'repository_map_user_to_draft.user_id = $[userId]'
 		const joinSQL = `JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
-		const query = queryBuilder(whereSQL, joinSQL, '', 'TRUE')
+		const selectSQL = ''
+
+		const query = queryBuilder(whereSQL, joinSQL, selectSQL, 'TRUE')
 
 		return DraftSummary.fetchDeletedByUserId(0).then(summary => {
 			expect(db.any).toHaveBeenCalledWith(query, { userId: 0, deleted: 'TRUE' })

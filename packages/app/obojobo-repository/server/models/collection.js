@@ -129,7 +129,7 @@ class Collection {
 
 		const whereSQL = `repository_collections.id = $[collectionId]`
 
-		return DraftSummary.fetchAndJoinWhere(joinOn, whereSQL, { collectionId: this.id })
+		return DraftSummary.fetchAndJoinWhere('', joinOn, whereSQL, { collectionId: this.id })
 			.then(draftSummaries => {
 				this.drafts = draftSummaries
 				return this

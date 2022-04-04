@@ -54,7 +54,11 @@ router
 				// get the current version
 				draftModel = await DraftModel.fetchById(req.params.draftId)
 			}
+
+			// Get the draft document and attach the user's access level for module deletion purposes
 			const draftDocument = draftModel.document
+			draftDocument.accessLevel = access_level
+
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument

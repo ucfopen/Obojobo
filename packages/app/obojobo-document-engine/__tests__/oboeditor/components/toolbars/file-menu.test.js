@@ -166,13 +166,27 @@ describe('File Menu', () => {
 			title: 'mockTitle'
 		}
 
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel="Full" />)
 
 		component
 			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('FileMenu does not call Delete if accessLevel is not "Full"', () => {
+		const model = {
+			title: 'mockTitle'
+		}
+
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel="Partial" />)
+
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
+			.simulate('click')
+
+		expect(ModalUtil.show).not.toHaveBeenCalled()
 	})
 
 	test('FileMenu calls Copy LTI Link', () => {

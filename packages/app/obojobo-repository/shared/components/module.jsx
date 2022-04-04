@@ -71,7 +71,7 @@ const Module = props => {
 					draftId={props.draftId}
 					editor={props.editor}
 					title={props.title}
-					accessLevel={props.access_level}
+					accessLevel={props.accessLevel}
 				/>
 			) : null}
 			{props.children}
