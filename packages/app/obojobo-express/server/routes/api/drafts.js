@@ -263,16 +263,18 @@ router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
 	.delete(async (req, res) => {
-		const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+		const access_level = await DraftPermissions.getUserAccessLevelToDraft(
 			req.currentUser.id,
 			req.params.draftId
 		)
 
+		const hasPerms = access_level === 'Full'
+
 		if (!hasPerms) {
-			return res.notAuthorized('You must be the author of this draft to delete it')
+			return res.notAuthorized('You must have "Full" access to this draft to delete it')
 		}
 
-		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
+		return DraftModel.deleteById(req.params.draftId)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

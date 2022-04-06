@@ -488,7 +488,7 @@ describe('server/express', () => {
 			}
 			next()
 		})
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
 
 		const response = await request(app)
@@ -530,7 +530,7 @@ describe('server/express', () => {
 			}
 			next()
 		})
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
 
 		const response = await request(app)
@@ -587,7 +587,7 @@ describe('server/express', () => {
 			}
 			next()
 		})
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(null)
 		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
 
 		const response = await request(app)
@@ -642,7 +642,7 @@ describe('server/express', () => {
 			}
 			next()
 		})
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(null)
 		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
 
 		const response = await request(app)
@@ -662,7 +662,7 @@ describe('server/express', () => {
 
 	test('GET /api/assessments/:draftId/details fails', async () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		AssessmentModel.fetchAttemptHistoryDetails.mockRejectedValueOnce(Error('Oops!'))
 
 		const response = await request(app)

@@ -659,7 +659,7 @@ describe('DraftSummary Model', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawDraftSummary)
 
-		const whereSQL = 'repository_map_user_to_draft.user_id = $[userId]'
+		const whereSQL = `repository_map_user_to_draft.user_id = $[userId] AND access_level = 'Full'`
 		const joinSQL = `JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
 		const selectSQL = ''

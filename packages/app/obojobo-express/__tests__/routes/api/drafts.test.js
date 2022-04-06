@@ -986,7 +986,8 @@ describe('api draft route', () => {
 
 	test('delete draft returns successfully', () => {
 		expect.assertions(4)
-		DraftModel.deleteByIdAndUser.mockResolvedValueOnce('mock-db-result')
+		DraftModel.deleteById.mockResolvedValueOnce('mock-db-result')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -1000,7 +1001,10 @@ describe('api draft route', () => {
 
 	test('delete 500s when the database errors', () => {
 		expect.assertions(5)
-		DraftModel.deleteByIdAndUser.mockRejectedValueOnce('oh no')
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftModel.deleteById.mockRejectedValueOnce('oh no')
+
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -1016,7 +1020,7 @@ describe('api draft route', () => {
 	test('delete 401s when a user tries deleting a draft they do not own', () => {
 		expect.assertions(5)
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Partial')
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 
 		return request(app)
@@ -1028,7 +1032,7 @@ describe('api draft route', () => {
 				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'You must be the author of this draft to delete it'
+					'You must have "Full" access to this draft to delete it'
 				)
 			})
 	})
