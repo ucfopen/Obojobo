@@ -122,6 +122,12 @@ const apiCreateNewModule = (useTutorial, body = {}) => {
 	return fetch(url, options).then(res => res.json())
 }
 
+const apiCopyModule = draft => {
+	const newTitle = draft.title + ' - Copy'
+	const options = { ...defaultOptions(), method: 'POST', body: JSON.stringify({ title: newTitle }) }
+	return fetch(`/api/drafts/${draft.draftId}/copy`, options)
+}
+
 const apiGetModuleLock = async draftId => {
 	const res = await fetch(`/api/locks/${draftId}`, defaultOptions())
 	const data = await res.json()
@@ -194,6 +200,12 @@ const addUserToModule = (draftId, userId) => ({
 	)
 })
 
+const BULK_ADD_USER_TO_MODULES = 'BULK_ADD_USER_TO_MODULES'
+const bulkAddUserToModules = (drafts, userId) => ({
+	type: BULK_ADD_USER_TO_MODULES,
+	promise: Promise.all(drafts.map(draft => apiAddPermissionsToModule(draft.draftId, userId)))
+})
+
 const DELETE_MODULE_PERMISSIONS = 'DELETE_MODULE_PERMISSIONS'
 const deleteModulePermissions = (draftId, userId) => ({
 	type: DELETE_MODULE_PERMISSIONS,
@@ -220,15 +232,21 @@ const deleteModule = draftId => ({
 })
 
 const BULK_DELETE_MODULES = 'BULK_DELETE_MODULES'
-const bulkDeleteModules = draftIds => ({
+const bulkDeleteModules = drafts => ({
 	type: BULK_DELETE_MODULES,
-	promise: Promise.all(draftIds.map(id => apiDeleteModule(id))).then(apiGetMyModules)
+	promise: Promise.all(drafts.map(draft => apiDeleteModule(draft.draftId))).then(apiGetMyModules)
 })
 
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false) => ({
 	type: CREATE_NEW_MODULE,
 	promise: apiCreateNewModule(useTutorial).then(apiGetMyModules)
+})
+
+const BULK_COPY_MODULES = 'BULK_COPY_MODULES'
+const bulkCopyModules = drafts => ({
+	type: BULK_COPY_MODULES,
+	promise: Promise.all(drafts.map(draft => apiCopyModule(draft))).then(apiGetMyModules)
 })
 
 const FILTER_MODULES = 'FILTER_MODULES'
@@ -300,6 +318,7 @@ module.exports = {
 	LOAD_USER_SEARCH,
 	CLOSE_MODAL,
 	ADD_USER_TO_MODULE,
+	BULK_ADD_USER_TO_MODULES,
 	LOAD_USERS_FOR_MODULE,
 	CREATE_NEW_MODULE,
 	CLEAR_PEOPLE_SEARCH_RESULTS,
@@ -315,6 +334,7 @@ module.exports = {
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
 	SHOW_ASSESSMENT_SCORE_DATA,
+	BULK_COPY_MODULES,
 	filterModules,
 	selectModules,
 	deselectModules,
@@ -324,7 +344,9 @@ module.exports = {
 	deleteModulePermissions,
 	searchForUser,
 	addUserToModule,
+	bulkAddUserToModules,
 	createNewModule,
+	bulkCopyModules,
 	showModulePermissions,
 	loadUsersForModule,
 	clearPeopleSearchResults,

@@ -7,6 +7,7 @@ const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
+const PeopleSearchDialog = require('./people-search-dialog-hoc')
 const ModuleOptionsDialog = require('./module-options-dialog')
 const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
@@ -15,6 +16,9 @@ const Search = require('./search')
 const ReactModal = require('react-modal')
 const AssessmentScoreDataDialog = require('./assessment-score-data-dialog')
 const Spinner = require('./spinner')
+const {
+	downloadDocument
+} = require('obojobo-document-engine/src/scripts/common/util/download-document')
 
 const renderOptionsDialog = props => (
 	<ModuleOptionsDialog
@@ -186,14 +190,17 @@ function Dashboard(props) {
 		setLastSelectedIndex(index)
 	}
 
-	const deleteModules = draftIds => {
+	const deleteModules = drafts => {
 		setIsLoading(true)
 		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
-			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
+			`Are you sure you want to DELETE these ${drafts.length} selected modules? Type 'DELETE' to confirm.`
 		)
-		if (response !== 'DELETE') return
-		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
+		if (response !== 'DELETE') {
+			setIsLoading(false)
+			return
+		}
+		props.bulkDeleteModules(drafts).then(() => setIsLoading(false))
 	}
 
 	// Set a cookie when sortOrder changes on the client
@@ -240,6 +247,34 @@ function Dashboard(props) {
 						<div className="repository--main-content--control-bar is-multi-select-mode">
 							<span className="module-count">{getModuleCount(props.selectedModules)}</span>
 							<Button
+								className="multi-select secondary-button"
+								onClick={() =>
+									props.selectedModules.map(draft => downloadDocument(draft.draftId, 'xml'))
+								}
+							>
+								Download XML
+							</Button>
+							<Button
+								className="multi-select secondary-button"
+								onClick={() =>
+									props.selectedModules.map(draft => downloadDocument(draft.draftId, 'json'))
+								}
+							>
+								Download JSON
+							</Button>
+							<Button
+								className="multi-select secondary-button"
+								onClick={() => props.bulkCopyModules(props.selectedModules)}
+							>
+								Copy
+							</Button>
+							<Button
+								className="multi-select secondary-button"
+								onClick={() => props.showModulePermissions(props)}
+							>
+								Share
+							</Button>
+							<Button
 								className="multi-select secondary-button dangerous-button"
 								onClick={() => deleteModules(props.selectedModules)}
 							>
@@ -285,9 +320,9 @@ function Dashboard(props) {
 									{moduleList.sort(getSortMethod(sortOrder)).map((draft, index) => (
 										<Module
 											isNew={draft.draftId === newModuleId}
-											isSelected={props.selectedModules.includes(draft.draftId)}
+											isSelected={props.selectedModules.includes(draft)}
 											isMultiSelectMode={props.multiSelectMode}
-											onSelect={e => handleSelectModule(e, draft.draftId, index)}
+											onSelect={e => handleSelectModule(e, draft, index)}
 											key={draft.draftId}
 											hasMenu={true}
 											{...draft}

@@ -12,6 +12,8 @@ const {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	BULK_DELETE_MODULES,
+	BULK_COPY_MODULES,
+	BULK_ADD_USER_TO_MODULES,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	SELECT_MODULES,
@@ -153,6 +155,33 @@ function DashboardReducer(state, action) {
 					newState.draftPermissions = { ...newState.draftPermissions }
 					newState.draftPermissions[newState.selectedModule.draftId] = searchPeople
 					if (action.payload.modules) newState.myModules = action.payload.modules
+					return newState
+				}
+			})
+
+		case BULK_ADD_USER_TO_MODULES:
+			return handle(state, action, {
+				success: prevState => {
+					const newState = {
+						...prevState,
+						selectedModules: [],
+						multiSelectMode: false,
+						draftPermissions: action.payload.value
+					}
+					newState.draftPermissions = { ...newState.draftPermissions }
+					return newState
+				}
+			})
+
+		case BULK_COPY_MODULES:
+			return handle(state, action, {
+				success: prevState => {
+					const newState = {
+						...prevState,
+						myModules: action.payload.value,
+						selectedModules: [],
+						multiSelectMode: false
+					}
 					return newState
 				}
 			})

@@ -16,6 +16,21 @@ describe('Dashboard Actions', () => {
 	const originalFileReader = global.FileReader
 	const originalWindowLocationReload = window.location.reload
 
+	const standardMyModules = [
+		{
+			draftId: 'mockDraftId1',
+			title: 'D Module Title ',
+			createdAt: new Date(10000000000).toISOString(),
+			updatedAt: new Date(200000000000).toISOString()
+		},
+		{
+			draftId: 'mockDraftId2',
+			title: 'A Module Title 2',
+			createdAt: new Date(20000000000).toISOString(),
+			updatedAt: new Date(400000000000).toISOString()
+		}
+	]
+
 	// this is lifted straight out of dashboard-actions, for ease of comparison
 	//  barring any better ways of using it
 	const defaultFetchOptions = {
@@ -169,6 +184,7 @@ describe('Dashboard Actions', () => {
 			method: 'POST',
 			body: '{"userId":99}'
 		})
+
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
 			json: () => ({ value: 'mockSecondaryPermissionsVal' })
@@ -187,6 +203,41 @@ describe('Dashboard Actions', () => {
 				defaultFetchOptions
 			)
 			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+
+	test('bulkAddUserToModule returns the expected output and calls other functions correctly', () => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+
+		const actionReply = DashboardActions.bulkAddUserToModules(
+			[{ draftId: 'mockDraftId1' }, { draftId: 'mockDraftId2' }],
+			99
+		)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId1/permission', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"userId":99}'
+		})
+
+		global.fetch.mockResolvedValue({
+			json: () => ({ value: 'mockSecondaryPermissionsVal1' })
+		})
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId2/permission', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"userId":99}'
+		})
+
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValue({
+			json: () => ({ value: 'mockSecondaryPermissionsVal2' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_ADD_USER_TO_MODULES,
+			promise: expect.any(Object)
 		})
 	})
 
@@ -287,8 +338,9 @@ describe('Dashboard Actions', () => {
 
 	const assertBulkDeleteModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
 		global.fetch.mockResolvedValue(standardFetchResponse)
+
 		const actionReply = DashboardActions.bulkDeleteModules(
-			['mockDraftId1', 'mockDraftId2'],
+			[standardMyModules[0], standardMyModules[1]],
 			options
 		)
 
@@ -324,6 +376,24 @@ describe('Dashboard Actions', () => {
 	}
 	test('bulkDeleteModules returns expected output and calls other functions', () => {
 		return assertBulkDeleteModulesRunsWithOptions('/api/drafts')
+	})
+
+	test('bulkCopyModules returns expected output and calls other functions', () => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+
+		const actionReply = DashboardActions.bulkCopyModules([
+			standardMyModules[0],
+			standardMyModules[1]
+		])
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_COPY_MODULES,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expect(finalResponse).toEqual({ value: 'mockVal' })
+		})
 	})
 
 	// three (plus one default) ways of calling createNewModule plus tutorial/normal module

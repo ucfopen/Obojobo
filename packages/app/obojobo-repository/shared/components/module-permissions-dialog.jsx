@@ -18,7 +18,9 @@ class ModulePermissionsDialog extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.loadUsersForModule(this.props.draftId)
+		if (!this.props.selectedModules) {
+			this.props.loadUsersForModule(this.props.draftId)
+		}
 	}
 
 	openPeoplePicker() {
@@ -30,7 +32,10 @@ class ModulePermissionsDialog extends React.Component {
 	}
 
 	addPerson(person) {
-		this.props.addUserToModule(this.props.draftId, person.id)
+		this.props.selectedModules
+			? this.props.bulkAddUserToModules(this.props.selectedModules, person.id)
+			: this.props.addUserToModule(this.props.draftId, person.id)
+
 		this.closePeoplePicker()
 	}
 
@@ -65,7 +70,10 @@ class ModulePermissionsDialog extends React.Component {
 
 	render() {
 		let accessListItemsRender = null
-		if (this.props.draftPermissions[this.props.draftId]) {
+		if (
+			this.props.draftPermissions[this.props.draftId] &&
+			this.props.draftPermissions[this.props.draftId].items.type != 'missing'
+		) {
 			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
 				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
 					<Button

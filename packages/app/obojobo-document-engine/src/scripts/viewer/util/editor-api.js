@@ -1,4 +1,5 @@
 import API from './api'
+//const API = require('./api')
 
 const EditorAPI = {
 	getDraft(id) {

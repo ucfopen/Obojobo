@@ -28,6 +28,8 @@ describe('Dashboard HOC', () => {
 			createNewModule: DashboardActions.createNewModule,
 			closeModal: DashboardActions.closeModal,
 			addUserToModule: DashboardActions.addUserToModule,
+			bulkAddUserToModules: DashboardActions.bulkAddUserToModules,
+			bulkCopyModules: DashboardActions.bulkCopyModules,
 			loadUsersForModule: DashboardActions.loadUsersForModule,
 			deleteModulePermissions: DashboardActions.deleteModulePermissions,
 			deselectModules: DashboardActions.deselectModules,

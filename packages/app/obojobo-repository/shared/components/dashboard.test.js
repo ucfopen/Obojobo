@@ -13,6 +13,8 @@ jest.mock('./module-options-dialog', () => props => {
 	return <mock-ModuleOptionsDialog {...props}></mock-ModuleOptionsDialog>
 })
 
+jest.mock('obojobo-document-engine/src/scripts/common/util/download-document')
+
 import React from 'react'
 import { create, act } from 'react-test-renderer'
 
@@ -63,6 +65,8 @@ describe('Dashboard', () => {
 	]
 
 	let dashboardProps
+
+	let mockDownloadDocument
 
 	const originalConfirm = window.confirm
 	const originalLocationAssign = window.location.assign
@@ -133,6 +137,8 @@ describe('Dashboard', () => {
 			},
 			closeModal: jest.fn()
 		}
+
+		mockDownloadDocument = require('obojobo-document-engine/src/scripts/common/util/download-document')
 	})
 
 	afterEach(() => {
@@ -236,7 +242,7 @@ describe('Dashboard', () => {
 		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
 		const controlBar = component.root.findByProps({ className: expectedControlBarClasses })
 
-		expect(controlBar.children.length).toBe(3)
+		expect(controlBar.children.length).toBe(7)
 		expect(component.root.findAllByType(Search).length).toBe(0)
 
 		expectMultiSelectOptions(controlBar)
@@ -265,8 +271,12 @@ describe('Dashboard', () => {
 
 	const expectMultiSelectOptions = controlBar => {
 		expect(controlBar.children[0].props.className).toBe('module-count')
-		expect(controlBar.children[1].children[0].children[0]).toBe('Delete All')
-		expect(controlBar.children[2].children[0].children[0]).toBe('×')
+		expect(controlBar.children[1].children[0].children[0]).toBe('Download XML')
+		expect(controlBar.children[2].children[0].children[0]).toBe('Download JSON')
+		expect(controlBar.children[3].children[0].children[0]).toBe('Copy')
+		expect(controlBar.children[4].children[0].children[0]).toBe('Share')
+		expect(controlBar.children[5].children[0].children[0]).toBe('Delete All')
+		expect(controlBar.children[6].children[0].children[0]).toBe('×')
 	}
 
 	const expectCookiePropForPath = (prop, value, path) => {
@@ -420,7 +430,7 @@ describe('Dashboard', () => {
 			preventDefault: jest.fn()
 		}
 
-		const deleteAllButton = component.root.findAllByType(Button)[0]
+		const deleteAllButton = component.root.findAllByType(Button)[4]
 		expect(deleteAllButton.children[0].children[0]).toBe('Delete All')
 
 		window.prompt = jest.fn()
@@ -439,6 +449,105 @@ describe('Dashboard', () => {
 		component.unmount()
 	})
 
+	test('"Download XML" button calls downloadDocument with the correct arguments', () => {
+		dashboardProps.downloadDocument = jest.fn()
+		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[1]]
+		dashboardProps.multiSelectMode = true
+
+		const reusableComponent = <Dashboard {...dashboardProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		const downloadJSONbutton = component.root.findAllByType(Button)[0]
+		expect(downloadJSONbutton.children[0].children[0]).toBe('Download XML')
+
+		downloadJSONbutton.props.onClick()
+		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledTimes(2)
+		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledWith('mockDraftId', 'xml')
+		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledWith('mockDraftId2', 'xml')
+
+		component.unmount()
+	})
+
+	test('"Download JSON" button calls downloadDocument with the correct arguments', () => {
+		dashboardProps.downloadDocument = jest.fn()
+
+		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[1]]
+		dashboardProps.multiSelectMode = true
+
+		const reusableComponent = <Dashboard {...dashboardProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		const downloadJSONbutton = component.root.findAllByType(Button)[1]
+		expect(downloadJSONbutton.children[0].children[0]).toBe('Download JSON')
+
+		downloadJSONbutton.props.onClick()
+		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledTimes(2)
+		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledWith('mockDraftId', 'json')
+		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledWith('mockDraftId2', 'json')
+
+		component.unmount()
+	})
+
+	test('"Copy" button makes copies of modules', async () => {
+		dashboardProps.bulkCopyModules = jest.fn()
+		dashboardProps.selectedModules = [[standardMyModules[0], standardMyModules[1]]]
+		dashboardProps.multiSelectMode = true
+
+		const reusableComponent = <Dashboard {...dashboardProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		const mockClickEvent = {
+			preventDefault: jest.fn()
+		}
+
+		const copyButton = component.root.findAllByType(Button)[2]
+		expect(copyButton.children[0].children[0]).toBe('Copy')
+
+		await act(async () => {
+			copyButton.props.onClick(mockClickEvent)
+		})
+
+		expect(dashboardProps.bulkCopyModules).toHaveBeenCalledTimes(1)
+		expect(dashboardProps.bulkCopyModules).toHaveBeenCalledWith(dashboardProps.selectedModules)
+
+		component.unmount()
+	})
+
+	test('"Share" calls showModulePermissions', async () => {
+		dashboardProps.showModulePermissions = jest.fn()
+		dashboardProps.selectedModules = ['mockId', 'mockId2']
+		dashboardProps.multiSelectMode = true
+
+		const reusableComponent = <Dashboard {...dashboardProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		const mockClickEvent = {
+			preventDefault: jest.fn()
+		}
+
+		const shareButton = component.root.findAllByType(Button)[3]
+		expect(shareButton.children[0].children[0]).toBe('Share')
+
+		await act(async () => {
+			shareButton.props.onClick(mockClickEvent)
+		})
+		expect(dashboardProps.showModulePermissions).toHaveBeenCalledTimes(1)
+
+		component.unmount()
+	})
+
 	test('"Deselect All" button calls functions appropriately', () => {
 		dashboardProps.deselectModules = jest.fn()
 		dashboardProps.selectedModules = ['mockId', 'mockId2']
@@ -449,7 +558,7 @@ describe('Dashboard', () => {
 			component = create(reusableComponent)
 		})
 
-		const deselectAllButton = component.root.findAllByType(Button)[1]
+		const deselectAllButton = component.root.findAllByType(Button)[5]
 		expect(deselectAllButton.children[0].children[0]).toBe('×')
 
 		act(() => {
@@ -502,15 +611,15 @@ describe('Dashboard', () => {
 			moduleComponents[0].props.onSelect(mockClickEvent)
 		})
 		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId2'])
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith([standardMyModules[1]])
 
-		dashboardProps.selectedModules = ['mockDraftId2']
+		dashboardProps.selectedModules = [standardMyModules[1]]
 		dashboardProps.multiSelectMode = true
 
 		act(() => {
 			component.update(<Dashboard {...dashboardProps} />)
 		})
-		expect(moduleComponents[0].props.isSelected).toBe(true)
+		expect(moduleComponents[0].props.isSelected).toBe(true) // problem here
 
 		act(() => {
 			const mockClickEvent = {
@@ -519,7 +628,7 @@ describe('Dashboard', () => {
 			moduleComponents[0].props.onSelect(mockClickEvent)
 		})
 		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockDraftId2'])
+		expect(dashboardProps.deselectModules).toHaveBeenCalledWith([standardMyModules[1]])
 
 		component.unmount()
 	})

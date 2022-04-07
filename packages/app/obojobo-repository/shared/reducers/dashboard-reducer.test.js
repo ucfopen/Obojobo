@@ -13,6 +13,8 @@ const {
 	LOAD_USER_SEARCH,
 	LOAD_USERS_FOR_MODULE,
 	ADD_USER_TO_MODULE,
+	BULK_ADD_USER_TO_MODULES,
+	BULK_COPY_MODULES,
 	CLEAR_PEOPLE_SEARCH_RESULTS,
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
@@ -187,6 +189,65 @@ describe('Dashboard Reducer', () => {
 		}
 	}
 
+	test('BULK_ADD_USER_TO_MODULES action modifies state correctly', () => {
+		const mockModule1 = {
+			draftId: 'mockDraftId',
+			title: 'Mock Module Title 1'
+		}
+		const mockModule2 = {
+			draftId: 'mockDraftId2',
+			title: 'Mock Module Title 2'
+		}
+
+		const mockModuleList = [mockModule1, mockModule2]
+
+		const initialState = {
+			shareSearchString: 'oldSearchString',
+			searchPeople: null,
+			selectedModules: [mockModule1, mockModule2],
+			draftPermissions: {
+				mockDraftId: {},
+				mockDraftId2: {}
+			},
+			myModules: mockModuleList
+		}
+
+		const payloadValue = {
+			mockDraftId: {
+				id: 0,
+				displayName: 'firstName lastName'
+			},
+			mockDraftId2: {
+				id: 0,
+				displayName: 'firstName lastName'
+			}
+		}
+
+		const action = {
+			type: BULK_ADD_USER_TO_MODULES,
+			payload: {
+				modules: mockModuleList,
+				value: payloadValue
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+
+		expect(newState.draftPermissions).not.toEqual(initialState.draftPermissions)
+		expect(newState.draftPermissions).toEqual({
+			mockDraftId: {
+				id: 0,
+				displayName: 'firstName lastName'
+			},
+			mockDraftId2: {
+				id: 0,
+				displayName: 'firstName lastName'
+			}
+		})
+	})
+
 	test('CREATE_NEW_MODULE action modifies state correctly', () => {
 		runCreateOrDeleteModuleActionTest(CREATE_NEW_MODULE)
 	})
@@ -234,11 +295,57 @@ describe('Dashboard Reducer', () => {
 		}
 
 		const handler = dashboardReducer(initialState, action)
-
 		const newState = handleSuccess(handler)
 		expect(newState.myModules).not.toEqual(initialState.myModules)
 		expect(newState.myModules).toEqual(mockModuleList)
 		expect(newState.filteredModules).toEqual(mockModuleList)
+		expect(newState.selectedModules).toEqual([])
+		expect(newState.multiSelectMode).toBe(false)
+	})
+
+	test('BULK_COPY_MODULES action modifies state correctly', () => {
+		const mockModuleList = [
+			{
+				draftId: 'mockDraftId',
+				title: 'A Mock Module'
+			},
+			{
+				draftId: 'mockDraftId2',
+				title: 'B Mock Module'
+			}
+		]
+
+		const copiedMockModuleList = [
+			{
+				title: 'A Mock Module'
+			},
+			{
+				title: 'B Mock Module'
+			},
+			{
+				title: 'A Mock Module - Copy'
+			}
+		]
+
+		const initialState = {
+			multiSelectMode: true,
+			moduleSearchString: '',
+			selectedModules: mockModuleList[0],
+			myModules: mockModuleList
+		}
+
+		const action = {
+			type: BULK_COPY_MODULES,
+			payload: {
+				value: copiedMockModuleList
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+		expect(newState.myModules).not.toEqual(initialState.myModules)
+		expect(newState.myModules).toEqual(copiedMockModuleList)
 		expect(newState.selectedModules).toEqual([])
 		expect(newState.multiSelectMode).toBe(false)
 	})
