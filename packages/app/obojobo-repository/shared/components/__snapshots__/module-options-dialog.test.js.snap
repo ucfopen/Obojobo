@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] = `
+exports[`ModuleOptionsDialog renders correctly with Full access level 1`] = `
 <div
   className="module-permissions-dialog"
 >
@@ -39,6 +39,356 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
     </h1>
     <p>
       Your Access Level: 
+      Full
+    </p>
+    <div
+      className="buttons-with-labels"
+    >
+      <a
+        className="repository--button "
+        download={null}
+        href="/preview/mockDraftId"
+        target="_blank"
+      >
+        Preview
+      </a>
+      <div
+        className="label"
+      >
+        View with preview controls.
+      </div>
+      <a
+        className="repository--button "
+        download={null}
+        href="/url/for/editor"
+        target="_blank"
+      >
+        Edit
+      </a>
+      <div
+        className="label"
+      >
+        Write, edit, and update.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Share
+      </button>
+      <div
+        className="label"
+      >
+        Add or remove collaborators.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Assessment Stats
+      </button>
+      <div
+        className="label"
+      >
+        View scores by student.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Version History
+      </button>
+      <div
+        className="label"
+      >
+        View and restore previous versions.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Manage Collections
+      </button>
+      <div
+        className="label"
+      >
+        Add to or remove from private collections.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Download JSON
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in JSON format.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Download XML
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in XML format.
+      </div>
+      <a
+        className="repository--button "
+        download={null}
+        href="/library/mockDraftId"
+        target="_blank"
+      >
+        Public Page
+      </a>
+      <div
+        className="label"
+      >
+        Visit this modules public page.
+      </div>
+      <button
+        className="repository--button dangerous-button delete-button"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Delete
+      </button>
+      <div
+        className="label delete-label"
+      >
+        Say farewell.
+      </div>
+    </div>
+    <button
+      className="repository--button done-button secondary-button"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ModuleOptionsDialog renders correctly with Minimal access level 1`] = `
+<div
+  className="module-permissions-dialog"
+>
+  <div
+    className="top-bar"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <img
+        height="100%"
+        src="/library/module-icon/mockDraftId"
+        width="100%"
+      />
+    </div>
+    <div
+      className="module-title"
+    >
+      Mock Module Title
+    </div>
+    <button
+      aria-label="Close"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="wrapper"
+  >
+    <h1
+      className="title"
+    >
+      Module Options
+    </h1>
+    <p>
+      Your Access Level: 
+      Minimal
+    </p>
+    <div
+      className="buttons-with-labels"
+    >
+      <a
+        className="repository--button "
+        download={null}
+        href="/preview/mockDraftId"
+        target="_blank"
+      >
+        Preview
+      </a>
+      <div
+        className="label"
+      >
+        View with preview controls.
+      </div>
+      <a
+        className="repository--button  disabled"
+      >
+        Edit
+      </a>
+      <div
+        className="label"
+      >
+        Write, edit, and update.
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Share
+      </button>
+      <div
+        className="label"
+      >
+        Add or remove collaborators.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Assessment Stats
+      </button>
+      <div
+        className="label"
+      >
+        View scores by student.
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Version History
+      </button>
+      <div
+        className="label"
+      >
+        View and restore previous versions.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Manage Collections
+      </button>
+      <div
+        className="label"
+      >
+        Add to or remove from private collections.
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Download JSON
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in JSON format.
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Download XML
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in XML format.
+      </div>
+      <a
+        className="repository--button "
+        download={null}
+        href="/library/mockDraftId"
+        target="_blank"
+      >
+        Public Page
+      </a>
+      <div
+        className="label"
+      >
+        Visit this modules public page.
+      </div>
+      <button
+        className="repository--button dangerous-button delete-button"
+        disabled={true}
+        onClick={[Function]}
+      >
+        Delete
+      </button>
+      <div
+        className="label delete-label"
+      >
+        Say farewell.
+      </div>
+    </div>
+    <button
+      className="repository--button done-button secondary-button"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ModuleOptionsDialog renders correctly with Partial access level 1`] = `
+<div
+  className="module-permissions-dialog"
+>
+  <div
+    className="top-bar"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <img
+        height="100%"
+        src="/library/module-icon/mockDraftId"
+        width="100%"
+      />
+    </div>
+    <div
+      className="module-title"
+    >
+      Mock Module Title
+    </div>
+    <button
+      aria-label="Close"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="wrapper"
+  >
+    <h1
+      className="title"
+    >
+      Module Options
+    </h1>
+    <p>
+      Your Access Level: 
+      Partial
     </p>
     <div
       className="buttons-with-labels"
@@ -117,6 +467,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       </div>
       <button
         className="repository--button "
+        disabled={false}
         onClick={[Function]}
       >
         Download JSON
@@ -128,6 +479,7 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       </div>
       <button
         className="repository--button "
+        disabled={false}
         onClick={[Function]}
       >
         Download XML
@@ -153,6 +505,182 @@ exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] 
       <button
         className="repository--button dangerous-button delete-button"
         disabled={true}
+        onClick={[Function]}
+      >
+        Delete
+      </button>
+      <div
+        className="label delete-label"
+      >
+        Say farewell.
+      </div>
+    </div>
+    <button
+      className="repository--button done-button secondary-button"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] = `
+<div
+  className="module-permissions-dialog"
+>
+  <div
+    className="top-bar"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <img
+        height="100%"
+        src="/library/module-icon/mockDraftId"
+        width="100%"
+      />
+    </div>
+    <div
+      className="module-title"
+    >
+      Mock Module Title
+    </div>
+    <button
+      aria-label="Close"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="wrapper"
+  >
+    <h1
+      className="title"
+    >
+      Module Options
+    </h1>
+    <p>
+      Your Access Level: 
+      Full
+    </p>
+    <div
+      className="buttons-with-labels"
+    >
+      <a
+        className="repository--button "
+        download={null}
+        href="/preview/mockDraftId"
+        target="_blank"
+      >
+        Preview
+      </a>
+      <div
+        className="label"
+      >
+        View with preview controls.
+      </div>
+      <a
+        className="repository--button "
+        download={null}
+        href="/url/for/editor"
+        target="_blank"
+      >
+        Edit
+      </a>
+      <div
+        className="label"
+      >
+        Write, edit, and update.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Share
+      </button>
+      <div
+        className="label"
+      >
+        Add or remove collaborators.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Assessment Stats
+      </button>
+      <div
+        className="label"
+      >
+        View scores by student.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Version History
+      </button>
+      <div
+        className="label"
+      >
+        View and restore previous versions.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Manage Collections
+      </button>
+      <div
+        className="label"
+      >
+        Add to or remove from private collections.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Download JSON
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in JSON format.
+      </div>
+      <button
+        className="repository--button "
+        disabled={false}
+        onClick={[Function]}
+      >
+        Download XML
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in XML format.
+      </div>
+      <a
+        className="repository--button "
+        download={null}
+        href="/library/mockDraftId"
+        target="_blank"
+      >
+        Public Page
+      </a>
+      <div
+        className="label"
+      >
+        Visit this modules public page.
+      </div>
+      <button
+        className="repository--button dangerous-button delete-button"
+        disabled={false}
         onClick={[Function]}
       >
         Delete

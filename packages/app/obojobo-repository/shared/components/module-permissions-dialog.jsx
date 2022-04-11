@@ -75,7 +75,7 @@ class ModulePermissionsDialog extends React.Component {
 		if (this.props.draftPermissions[this.props.draftId]) {
 			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
 				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
-					<div className="repository--main-content--sort access-level">
+					<div className="access-level-dropdown">
 						<span>Access Level:</span>
 						<select
 							onChange={event => this.changeAccessLevel(p.id, event.target.value)}
@@ -84,10 +84,10 @@ class ModulePermissionsDialog extends React.Component {
 							<option value="Full" selected={p.accessLevel == 'Full'}>
 								Full
 							</option>
-							<option value="Partial" selected={p.accessLevel == 'Partial'}>
+							<option value="Partial" selected={p.accessLevel === 'Partial'}>
 								Partial
 							</option>
-							<option value="Minimal" selected={p.accessLevel == 'Minimal'}>
+							<option value="Minimal" selected={p.accessLevel === 'Minimal'}>
 								Minimal
 							</option>
 						</select>
@@ -97,6 +97,7 @@ class ModulePermissionsDialog extends React.Component {
 						onClick={() => {
 							this.removePerson(p.id)
 						}}
+						disabled={p.id === this.props.currentUserId}
 					>
 						×
 					</Button>

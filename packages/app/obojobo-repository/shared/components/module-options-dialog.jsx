@@ -94,6 +94,7 @@ const ModuleOptionsDialog = props => (
 					onClick={() => {
 						downloadDocument(props.draftId, 'json')
 					}}
+					disabled={props.accessLevel === 'Minimal'}
 				>
 					Download JSON
 				</Button>
@@ -104,6 +105,7 @@ const ModuleOptionsDialog = props => (
 					onClick={() => {
 						downloadDocument(props.draftId, 'xml')
 					}}
+					disabled={props.accessLevel === 'Minimal'}
 				>
 					Download XML
 				</Button>

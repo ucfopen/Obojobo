@@ -20,7 +20,8 @@ describe('ModuleOptionsDialog', () => {
 		defaultProps = {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
-			editor: 'mockEditorType'
+			editor: 'mockEditorType',
+			accessLevel: 'Full'
 		}
 
 		mockRepositoryUtils = require('../repository-utils')
@@ -33,6 +34,37 @@ describe('ModuleOptionsDialog', () => {
 	})
 
 	test('renders correctly with standard expected props', () => {
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Minimal access level', () => {
+		defaultProps.accessLevel = 'Minimal'
+
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Partial access level', () => {
+		defaultProps.accessLevel = 'Partial'
+
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Full access level', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
