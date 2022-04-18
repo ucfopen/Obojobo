@@ -288,12 +288,18 @@ const extendedPropsDefault = props => ({
 	deleteModulePermissions: props.deleteModulePermissions
 })
 
-const getModuleCount = modules => {
-	if (modules.length === 1) {
-		return '1 Module Selected:'
+const getModuleCount = (numFull, numPartial, numMinimal) => {
+	let string = ''
+
+	if (numFull + numPartial + numMinimal === 1) {
+		string += '1 Module Selected'
 	} else {
-		return `${modules.length} Modules Selected:`
+		string += `${numFull + numPartial + numMinimal} Modules Selected`
 	}
+
+	string += ` (${numFull} Full, ${numPartial} Partial, ${numMinimal} Minimal):`
+
+	return string
 }
 
 const getSortMethod = sortOrder => {
@@ -323,6 +329,11 @@ function Dashboard(props) {
 	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 
+	// Keep track of access levels of selected modules
+	const [numFullSelected, setNumFullSelected] = useState(props.numFullSelected || 0)
+	const [numPartialSelected, setNumPartialSelected] = useState(props.numPartialSelected || 0)
+	const [numMinimalSelected, setNumMinimalSelected] = useState(props.numMinimalSelected || 0)
+
 	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
 
 	const onKeyUp = e => {
@@ -338,6 +349,8 @@ function Dashboard(props) {
 
 	const handleSelectModule = (event, draftId, index) => {
 		let originIndex = lastSelectedIndex
+		let isDeselecting
+
 		if (event.shiftKey && lastSelectedIndex !== index) {
 			// No module is 'selected' yet - set the shift-click 'origin' from the last one that was clicked
 			if (!props.selectedModules.length) {
@@ -348,17 +361,69 @@ function Dashboard(props) {
 			// Accommodates for group selecting backwards in the list and prevents duplicate selections
 			const [startIdx, endIdx] =
 				originIndex < index ? [originIndex, index + 1] : [index, originIndex + 1]
-			const idList = moduleList.map(m => m.draftId)
-			props.selectModules(
-				idList.slice(startIdx, endIdx).filter(id => !props.selectedModules.includes(id))
+
+			const currentSelection = moduleList.slice(startIdx, endIdx)
+			const newlySelected = currentSelection.filter(
+				currentModule =>
+					!props.selectedModules.some(oldModule => oldModule.draftId === currentModule.draftId)
 			)
+
+			const updated = newlySelected.map(module => ({ module: module, action: 'select' }))
+			updateAccessLevelCounts(updated)
+
+			props.selectModules(newlySelected)
 		} else {
-			props.selectedModules.includes(draftId)
-				? props.deselectModules([draftId])
-				: props.selectModules([draftId])
+			const selectedModule = moduleList.filter(draft => draft.draftId === draftId)[0]
+
+			if (props.selectedModules.some(module => module.draftId === draftId)) {
+				props.deselectModules([selectedModule])
+
+				isDeselecting = true
+			} else {
+				props.selectModules([selectedModule])
+
+				isDeselecting = false
+			}
+
+			updateAccessLevelCounts([
+				{ module: selectedModule, action: isDeselecting ? 'deselect' : 'select' }
+			])
 		}
 
 		setLastSelectedIndex(index)
+	}
+
+	const updateAccessLevelCounts = selection => {
+		// Create and update non-state variables to avoid asynchronous state updates
+		let totalFull = numFullSelected
+		let totalPartial = numPartialSelected
+		let totalMinimal = numMinimalSelected
+
+		selection.forEach(({ module, action }) => {
+			switch (module.accessLevel) {
+				case 'Full':
+					action === 'select' ? (totalFull += 1) : (totalFull -= 1)
+					break
+				case 'Partial':
+					action === 'select' ? (totalPartial += 1) : (totalPartial -= 1)
+					break
+				case 'Minimal':
+					action === 'select' ? (totalMinimal += 1) : (totalMinimal -= 1)
+					break
+			}
+		})
+
+		setNumFullSelected(totalFull)
+		setNumPartialSelected(totalPartial)
+		setNumMinimalSelected(totalMinimal)
+	}
+
+	const clearSelection = () => {
+		setNumFullSelected(0)
+		setNumMinimalSelected(0)
+		setNumPartialSelected(0)
+
+		props.deselectModules(props.selectedModules)
 	}
 
 	const renderModules = (modules, sortOrder, newModuleId, newModuleButton) => {
@@ -382,7 +447,7 @@ function Dashboard(props) {
 			>
 				<Module
 					isNew={draft.draftId === newModuleId}
-					isSelected={props.selectedModules.includes(draft.draftId)}
+					isSelected={props.selectedModules.some(module => module.draftId === draft.draftId)}
 					isMultiSelectMode={props.multiSelectMode}
 					onSelect={e => handleSelectModule(e, draft.draftId, index)}
 					hasMenu={true}
@@ -405,17 +470,25 @@ function Dashboard(props) {
 			.then(() => setIsLoading(false))
 	}
 
-	const deleteModules = draftIds => {
+	const deleteModules = drafts => {
 		setIsLoading(true)
 		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
-			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
+			`Are you sure you want to DELETE these ${drafts.length} selected modules? Type 'DELETE' to confirm.`
 		)
-		if (response !== 'DELETE') return
+		if (response !== 'DELETE') {
+			setIsLoading(false)
+			return
+		}
+
+		const draftIds = drafts.map(draft => draft.draftId)
+
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
 	}
 
-	const restoreModules = draftIds => {
+	const restoreModules = drafts => {
+		const draftIds = drafts.map(draft => draft.draftId)
+
 		setIsLoading(true)
 		props.bulkRestoreModules(draftIds).then(() => {
 			setIsLoading(false)
@@ -671,6 +744,7 @@ function Dashboard(props) {
 			<Button
 				className="multi-select secondary-button dangerous-button"
 				onClick={() => deleteModules(props.selectedModules)}
+				disabled={numMinimalSelected > 0 || numPartialSelected > 0}
 			>
 				Delete All
 			</Button>
@@ -680,7 +754,9 @@ function Dashboard(props) {
 				bulkCollectionActionButton = (
 					<Button
 						className="multi-select secondary-button"
-						onClick={() => removeModulesFromCollection(props.selectedModules)}
+						onClick={() =>
+							removeModulesFromCollection(props.selectedModules.map(draft => draft.draftId))
+						}
 					>
 						Remove All From Collection
 					</Button>
@@ -712,13 +788,12 @@ function Dashboard(props) {
 
 		mainControlBarRender = (
 			<div className="repository--main-content--control-bar is-multi-select-mode">
-				<span className="module-count">{getModuleCount(props.selectedModules)}</span>
+				<span className="module-count">
+					{getModuleCount(numFullSelected, numPartialSelected, numMinimalSelected)}
+				</span>
 				{bulkCollectionActionButton}
 				{bulkActionButton}
-				<Button
-					className="close-button"
-					onClick={() => props.deselectModules(props.selectedModules)}
-				>
+				<Button className="close-button" onClick={clearSelection}>
 					×
 				</Button>
 			</div>

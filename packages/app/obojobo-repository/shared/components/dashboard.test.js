@@ -108,30 +108,35 @@ describe('Dashboard', () => {
 		{
 			draftId: 'mockDraftId',
 			title: 'D Module Title ',
+			accessLevel: 'Full',
 			createdAt: new Date(10000000000).toISOString(),
 			updatedAt: new Date(200000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId2',
 			title: 'A Module Title 2',
+			accessLevel: 'Full',
 			createdAt: new Date(20000000000).toISOString(),
 			updatedAt: new Date(400000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId3',
 			title: 'C Module Title 3',
+			accessLevel: 'Partial',
 			createdAt: new Date(30000000000).toISOString(),
 			updatedAt: new Date(300000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId4',
 			title: 'B Module Title 4',
+			accessLevel: 'Partial',
 			createdAt: new Date(40000000000).toISOString(),
 			updatedAt: new Date(100000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId5',
 			title: 'E Module Title 5',
+			accessLevel: 'Minimal',
 			createdAt: new Date(50000000000).toISOString(),
 			updatedAt: new Date(500000000000).toISOString()
 		}
@@ -913,7 +918,9 @@ describe('Dashboard', () => {
 	test('renders selected module count properly when one or multiple modules are selected', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.multiSelectMode = true
-		dashboardProps.selectedModules = [standardMyModules[0].draftId, standardMyModules[1].draftId]
+		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[1]]
+		dashboardProps.numFullSelected = 2
+
 		let component
 		act(() => {
 			component = create(<Dashboard {...dashboardProps} />)
@@ -922,15 +929,137 @@ describe('Dashboard', () => {
 		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
 		let controlBar = component.root.findByProps({ className: expectedControlBarClasses })
 
-		expect(controlBar.children[0].children[0]).toEqual('2 Modules Selected:')
+		expect(controlBar.children[0].children[0]).toEqual(
+			'2 Modules Selected (2 Full, 0 Partial, 0 Minimal):'
+		)
 
-		dashboardProps.selectedModules = [standardMyModules[0].draftId]
+		dashboardProps.selectedModules = [standardMyModules[0]]
+		dashboardProps.numFullSelected = 1
+
 		act(() => {
 			component = create(<Dashboard {...dashboardProps} />)
 		})
 
 		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
-		expect(controlBar.children[0].children[0]).toEqual('1 Module Selected:')
+		expect(controlBar.children[0].children[0]).toEqual(
+			'1 Module Selected (1 Full, 0 Partial, 0 Minimal):'
+		)
+
+		component.unmount()
+	})
+
+	test('updates selected module count properly when new module is selected', () => {
+		dashboardProps.myModules = [...standardMyModules]
+		dashboardProps.multiSelectMode = true
+		dashboardProps.selectedModules = [standardMyModules[0]]
+		dashboardProps.numFullSelected = 1
+		dashboardProps.selectModules = jest.fn()
+
+		let component
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
+
+		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
+		let controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+
+		// Begin with one full access level module selected
+		expect(controlBar.children[0].children[0]).toEqual(
+			'1 Module Selected (1 Full, 0 Partial, 0 Minimal):'
+		)
+
+		const moduleComponents = component.root.findAllByType(Module)
+
+		// Select a partial access level module
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[1].props.onSelect(mockClickEvent)
+		})
+
+		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[3]]
+
+		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+		expect(controlBar.children[0].children[0]).toEqual(
+			'2 Modules Selected (1 Full, 1 Partial, 0 Minimal):'
+		)
+
+		// Select a minimal access level module
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[4].props.onSelect(mockClickEvent)
+		})
+
+		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[3]]
+
+		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+		expect(controlBar.children[0].children[0]).toEqual(
+			'3 Modules Selected (1 Full, 1 Partial, 1 Minimal):'
+		)
+
+		component.unmount()
+	})
+
+	test('updates selected module count properly when module is deselected', () => {
+		dashboardProps.myModules = [...standardMyModules]
+		dashboardProps.multiSelectMode = true
+		dashboardProps.selectedModules = [
+			standardMyModules[0],
+			standardMyModules[3],
+			standardMyModules[4]
+		]
+		dashboardProps.numFullSelected = 1
+		dashboardProps.numPartialSelected = 1
+		dashboardProps.numMinimalSelected = 1
+		dashboardProps.deselectModules = jest.fn()
+
+		let component
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
+
+		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
+		let controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+
+		// Begin with one of each access level selected
+		expect(controlBar.children[0].children[0]).toEqual(
+			'3 Modules Selected (1 Full, 1 Partial, 1 Minimal):'
+		)
+
+		const moduleComponents = component.root.findAllByType(Module)
+
+		// Deselect a partial access level module
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[1].props.onSelect(mockClickEvent)
+		})
+
+		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[4]]
+
+		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+		expect(controlBar.children[0].children[0]).toEqual(
+			'2 Modules Selected (1 Full, 0 Partial, 1 Minimal):'
+		)
+
+		// Deselect a minimal access level module
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[4].props.onSelect(mockClickEvent)
+		})
+
+		dashboardProps.selectedModules = [standardMyModules[0]]
+
+		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+		expect(controlBar.children[0].children[0]).toEqual(
+			'1 Module Selected (1 Full, 0 Partial, 0 Minimal):'
+		)
 
 		component.unmount()
 	})
@@ -1130,7 +1259,7 @@ describe('Dashboard', () => {
 
 	// This will only be available in MODE_COLLECTION
 	test('"Remove All From Collection" button calls functions appropriately', async () => {
-		const mockSelectedModules = ['mockId', 'mockId2']
+		const mockSelectedModules = [standardMyModules[1], standardMyModules[2]]
 
 		dashboardProps.bulkRemoveModulesFromCollection = jest.fn(() => Promise.resolve())
 
@@ -1172,7 +1301,7 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.bulkRemoveModulesFromCollection).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.bulkRemoveModulesFromCollection).toHaveBeenCalledWith(
-			mockSelectedModules,
+			mockSelectedModules.map(draft => draft.draftId),
 			'mockCollectionId'
 		)
 
@@ -1262,6 +1391,7 @@ describe('Dashboard', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.selectModules = jest.fn()
 		dashboardProps.deselectModules = jest.fn()
+
 		let component
 		act(() => {
 			component = create(<Dashboard {...dashboardProps} />)
@@ -1277,9 +1407,9 @@ describe('Dashboard', () => {
 			moduleComponents[0].props.onSelect(mockClickEvent)
 		})
 		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId2'])
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith([standardMyModules[1]])
 
-		dashboardProps.selectedModules = ['mockDraftId2']
+		dashboardProps.selectedModules = [standardMyModules[1]]
 		dashboardProps.multiSelectMode = true
 
 		act(() => {
@@ -1294,7 +1424,7 @@ describe('Dashboard', () => {
 			moduleComponents[0].props.onSelect(mockClickEvent)
 		})
 		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.deselectModules).toHaveBeenCalledWith(['mockDraftId2'])
+		expect(dashboardProps.deselectModules).toHaveBeenCalledWith([standardMyModules[1]])
 
 		component.unmount()
 	})
@@ -1343,7 +1473,7 @@ describe('Dashboard', () => {
 			moduleComponents[2].props.onSelect(mockClickEvent)
 		})
 		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId3'])
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith([standardMyModules[2]])
 		dashboardProps.selectModules.mockReset()
 
 		component.unmount()
@@ -1382,7 +1512,10 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
 		// this seems a bit magical without knowing the sort order based on last updated times - maybe replace with some variables and math later
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId4', 'mockDraftId3'])
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith([
+			standardMyModules[3],
+			standardMyModules[2]
+		])
 		dashboardProps.selectModules.mockReset()
 
 		component.unmount()
@@ -1391,7 +1524,7 @@ describe('Dashboard', () => {
 	test('shift-clicking a module when modules are already selected properly selects additonal modules', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.selectModules = jest.fn()
-		dashboardProps.selectedModules = ['mockDraftId4']
+		dashboardProps.selectedModules = [standardMyModules[3]]
 		let component
 		act(() => {
 			component = create(<Dashboard {...dashboardProps} />)
@@ -1407,7 +1540,7 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.selectModules).toHaveBeenCalledTimes(1)
 		// mockDraftId4 is already in 'selectedModules', so it will not be passed to 'selectModules'
-		expect(dashboardProps.selectModules).toHaveBeenCalledWith(['mockDraftId2'])
+		expect(dashboardProps.selectModules).toHaveBeenCalledWith([standardMyModules[1]])
 		dashboardProps.selectModules.mockReset()
 	})
 
@@ -1947,7 +2080,7 @@ describe('Dashboard', () => {
 		const originalAlert = global.alert
 		global.alert = jest.fn()
 
-		const mockSelectedModules = [standardMyModules[0].draftId, standardMyModules[1].draftId]
+		const mockSelectedModules = [standardMyModules[0], standardMyModules[1]]
 
 		dashboardProps.mode = MODE_DELETED
 		dashboardProps.myModules = [...standardMyModules]
@@ -1971,7 +2104,9 @@ describe('Dashboard', () => {
 			restoreAllButton.props.onClick(mockClickEvent)
 		})
 		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalled()
-		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalledWith(mockSelectedModules)
+		expect(dashboardProps.bulkRestoreModules).toHaveBeenCalledWith(
+			mockSelectedModules.map(module => module.draftId)
+		)
 
 		component.unmount()
 
