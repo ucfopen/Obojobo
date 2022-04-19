@@ -174,7 +174,7 @@ class DraftSummary {
 
 	static fetchDeletedByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
-			'',
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId] AND access_level = 'Full'`,

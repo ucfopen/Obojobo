@@ -468,6 +468,7 @@ function Dashboard(props) {
 		props
 			.bulkRemoveModulesFromCollection(draftIds, props.collection.id)
 			.then(() => setIsLoading(false))
+		clearSelection()
 	}
 
 	const deleteModules = drafts => {
@@ -484,6 +485,8 @@ function Dashboard(props) {
 		const draftIds = drafts.map(draft => draft.draftId)
 
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
+
+		clearSelection()
 	}
 
 	const restoreModules = drafts => {
@@ -495,6 +498,7 @@ function Dashboard(props) {
 			// eslint-disable-next-line no-alert
 			window.alert('The selected modules were successfully restored.')
 		})
+		clearSelection()
 	}
 
 	// Set a cookie when moduleSortOrder changes on the client
@@ -613,6 +617,7 @@ function Dashboard(props) {
 
 		// eslint-disable-next-line no-case-declarations
 		let collectionFilterRender = null
+
 		if (props.myCollections.length > 0) {
 			collectionFilterRender = (
 				<Search
@@ -778,7 +783,11 @@ function Dashboard(props) {
 				bulkCollectionActionButton = (
 					<Button
 						className="multi-select secondary-button"
-						onClick={() => props.showCollectionBulkAddModulesDialog(props.selectedModules)}
+						onClick={() =>
+							props.showCollectionBulkAddModulesDialog(
+								props.selectedModules.map(draft => draft.draftId)
+							)
+						}
 					>
 						Add All To Collection
 					</Button>

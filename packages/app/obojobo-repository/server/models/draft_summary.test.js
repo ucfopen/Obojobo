@@ -662,7 +662,7 @@ describe('DraftSummary Model', () => {
 		const whereSQL = `repository_map_user_to_draft.user_id = $[userId] AND access_level = 'Full'`
 		const joinSQL = `JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
-		const selectSQL = ''
+		const selectSQL = 'repository_map_user_to_draft.access_level AS access_level,'
 
 		const query = queryBuilder(whereSQL, joinSQL, selectSQL, 'TRUE')
 

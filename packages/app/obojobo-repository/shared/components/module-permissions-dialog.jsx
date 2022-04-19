@@ -81,7 +81,7 @@ class ModulePermissionsDialog extends React.Component {
 							onChange={event => this.changeAccessLevel(p.id, event.target.value)}
 							disabled={p.id === this.props.currentUserId}
 						>
-							<option value="Full" selected={p.accessLevel == 'Full'}>
+							<option value="Full" selected={p.accessLevel === 'Full'}>
 								Full
 							</option>
 							<option value="Partial" selected={p.accessLevel === 'Partial'}>

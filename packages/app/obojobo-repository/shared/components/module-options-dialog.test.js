@@ -47,8 +47,7 @@ describe('ModuleOptionsDialog', () => {
 
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
-		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
-		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+		expect(mockRepositoryUtils.urlForEditor).not.toHaveBeenCalled()
 
 		expect(component.toJSON()).toMatchSnapshot()
 	})

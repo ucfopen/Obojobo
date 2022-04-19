@@ -1222,7 +1222,7 @@ describe('Dashboard', () => {
 	})
 
 	test('"Add All To Collection" button calls functions appropriately', () => {
-		const mockSelectedModules = ['mockId', 'mockId2']
+		const mockSelectedModules = [standardMyModules[0], standardMyModules[1]]
 
 		dashboardProps.showCollectionBulkAddModulesDialog = jest.fn(() => Promise.resolve())
 
@@ -1251,7 +1251,7 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.showCollectionBulkAddModulesDialog).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.showCollectionBulkAddModulesDialog).toHaveBeenCalledWith(
-			mockSelectedModules
+			mockSelectedModules.map(module => module.draftId)
 		)
 
 		component.unmount()
@@ -1266,6 +1266,7 @@ describe('Dashboard', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.multiSelectMode = true
 		dashboardProps.selectedModules = mockSelectedModules
+		dashboardProps.deselectModules = jest.fn()
 
 		dashboardProps.mode = MODE_COLLECTION
 		dashboardProps.collection = {
@@ -1310,8 +1311,9 @@ describe('Dashboard', () => {
 
 	test('"Delete All" button calls functions appropriately', async () => {
 		dashboardProps.bulkDeleteModules = jest.fn(() => Promise.resolve())
-		dashboardProps.selectedModules = ['mockId', 'mockId2']
+		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[1]]
 		dashboardProps.multiSelectMode = true
+		dashboardProps.deselectModules = jest.fn()
 		const reusableComponent = <Dashboard {...dashboardProps} />
 		let component
 		act(() => {
@@ -2086,6 +2088,7 @@ describe('Dashboard', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.multiSelectMode = true
 		dashboardProps.selectedModules = mockSelectedModules
+		dashboardProps.deselectModules = jest.fn()
 
 		dashboardProps.bulkRestoreModules = jest.fn().mockResolvedValue(true)
 
