@@ -241,9 +241,10 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === 'Full'
 			if (!canShare) {
-				res.notAuthorized('Current User has no permissions to selected draft')
+				res.notAuthorized('Current User does not have permission to share this draft')
 				return
 			}
 
@@ -307,7 +308,8 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === 'Full'
 			if (!canShare) {
 				res.notAuthorized('Current User has no permissions to selected draft')
 				return

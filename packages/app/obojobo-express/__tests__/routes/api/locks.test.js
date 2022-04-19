@@ -73,7 +73,7 @@ describe('Route api/locks', () => {
 
 	test('post lock calls expected Validators', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		expect(mockValidatorThatPasses).toHaveBeenCalledTimes(0)
@@ -88,7 +88,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns expected results', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		expect(mockValidatorThatPasses).toHaveBeenCalledTimes(0)
@@ -102,9 +102,9 @@ describe('Route api/locks', () => {
 			})
 	})
 
-	test('post lock returns not authorized when user doesnt have permission to draft', () => {
+	test('post lock returns not authorized when user doesnt have "Full" or "Partial" access level to draft', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Minimal')
 
 		return request(app)
 			.post('/api/locks/mock-draft-id')
@@ -122,7 +122,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns not authorized when a different user has a lock', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: 'someone-else' })
 
 		return request(app)
@@ -140,7 +140,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns not authorized when creating a lock doesnt work', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: 'some-other-user' })
 
@@ -159,7 +159,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns a 403 when the contentId does not match', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockImplementationOnce(() => {
+		DraftPermissions.getUserAccessLevelToDraft.mockImplementationOnce(() => {
 			throw new Error('Current version of draft does not match requested lock.')
 		})
 
@@ -179,7 +179,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns a 500 when an unexpected error occurs', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockImplementationOnce(() => {
+		DraftPermissions.getUserAccessLevelToDraft.mockImplementationOnce(() => {
 			throw new Error('mock-error')
 		})
 
@@ -199,7 +199,7 @@ describe('Route api/locks', () => {
 
 	test('post lock calls EditLock.deleteExpiredLocks', () => {
 		expect.hasAssertions()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: mockCurrentUser.id })
 

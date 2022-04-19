@@ -77,26 +77,7 @@ class DraftPermissions {
 			})
 	}
 
-	// returns a boolean
-	static async userHasPermissionToDraft(userId, draftId) {
-		try {
-			const result = await db.oneOrNone(
-				`SELECT user_id
-				FROM repository_map_user_to_draft
-				WHERE draft_id = $[draftId]
-				AND user_id = $[userId]
-				AND (access_level = 'Full' OR access_level = 'Partial')`,
-				{ userId, draftId }
-			)
-
-			// oneOrNone returns null when there are no results
-			return result !== null
-		} catch (error) {
-			throw logger.logError('Error userHasPermissionToDraft', error)
-		}
-	}
-
-	// returns a string
+	// returns a string (or null)
 	static async getUserAccessLevelToDraft(userId, draftId) {
 		try {
 			const result = await db.oneOrNone(
@@ -118,10 +99,10 @@ class DraftPermissions {
 		try {
 			const results = await Promise.all([
 				DraftPermissions.draftIsPublic(draftId),
-				DraftPermissions.userHasPermissionToDraft(userId, draftId)
+				DraftPermissions.getUserAccessLevelToDraft(userId, draftId)
 			])
 
-			return results[0] === true || results[1] === true
+			return results[0] === true || results[1] !== null
 		} catch (error) {
 			throw logger.logError('Error userHasPermissionToCopy', error)
 		}

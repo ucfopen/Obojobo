@@ -24,10 +24,12 @@ router
 	.post([requireDraftId, requireCanViewEditor, requireContentId, checkValidationRules])
 	.post(async (req, res) => {
 		try {
-			const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+			const access_level = await DraftPermissions.getUserAccessLevelToDraft(
 				req.currentUser.id,
 				req.params.draftId
 			)
+
+			const hasPerms = access_level === 'Full' || access_level === 'Partial'
 
 			if (!hasPerms) {
 				return res.notAuthorized('You do not have the required access to edit this module.')
