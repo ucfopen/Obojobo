@@ -1920,7 +1920,7 @@ describe('Dashboard Actions', () => {
 		})
 	}
 	test('bulkRestoreModules returns expected output and calls other functions', () => {
-		return assertBulkRestoreModulesRunsWithOptions('/api/drafts')
+		return assertBulkRestoreModulesRunsWithOptions('/api/drafts-deleted')
 	})
 
 	const assertGetMyDeletedModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
