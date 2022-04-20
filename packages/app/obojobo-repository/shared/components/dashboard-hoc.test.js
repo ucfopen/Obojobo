@@ -24,7 +24,16 @@ describe('Dashboard HOC', () => {
 
 		expect(ReactRedux.connect).toHaveBeenCalledTimes(1)
 		expect(ReactRedux.connect).toHaveBeenCalledWith(expect.any(Function), {
+			createNewCollection: DashboardActions.createNewCollection,
+			loadCollectionModules: DashboardActions.loadCollectionModules,
+			showCollectionManageModules: DashboardActions.showCollectionManageModules,
+			showCollectionBulkAddModulesDialog: DashboardActions.showCollectionBulkAddModulesDialog,
+			collectionAddModule: DashboardActions.collectionAddModule,
+			collectionRemoveModule: DashboardActions.collectionRemoveModule,
+			showCollectionRename: DashboardActions.showCollectionRename,
+			renameCollection: DashboardActions.renameCollection,
 			restoreVersion: DashboardActions.restoreVersion,
+			deleteCollection: DashboardActions.deleteCollection,
 			createNewModule: DashboardActions.createNewModule,
 			closeModal: DashboardActions.closeModal,
 			addUserToModule: DashboardActions.addUserToModule,
@@ -37,11 +46,21 @@ describe('Dashboard HOC', () => {
 			showAssessmentScoreData: DashboardActions.showAssessmentScoreData,
 			filterModules: DashboardActions.filterModules,
 			importModuleFile: DashboardActions.importModuleFile,
+			filterCollections: DashboardActions.filterCollections,
 			deleteModule: DashboardActions.deleteModule,
 			bulkDeleteModules: DashboardActions.bulkDeleteModules,
+			bulkAddModulesToCollection: DashboardActions.bulkAddModulesToCollection,
+			bulkRemoveModulesFromCollection: DashboardActions.bulkRemoveModulesFromCollection,
 			showModulePermissions: DashboardActions.showModulePermissions,
 			showVersionHistory: DashboardActions.showVersionHistory,
-			checkModuleLock: DashboardActions.checkModuleLock
+			showModuleManageCollections: DashboardActions.showModuleManageCollections,
+			loadModuleCollections: DashboardActions.loadModuleCollections,
+			moduleAddToCollection: DashboardActions.moduleAddToCollection,
+			moduleRemoveFromCollection: DashboardActions.moduleRemoveFromCollection,
+			checkModuleLock: DashboardActions.checkModuleLock,
+			bulkRestoreModules: DashboardActions.bulkRestoreModules,
+			getDeletedModules: DashboardActions.getDeletedModules,
+			getModules: DashboardActions.getModules
 		})
 
 		expect(mockReduxConnectReturn).toHaveBeenCalledTimes(1)

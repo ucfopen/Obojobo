@@ -27,10 +27,8 @@ describe('ModulePermissionsDialog', () => {
 			title: 'Mock Module Title',
 			currentUserId: 99,
 			draftPermissions: {},
-			selectedModules: null,
 			loadUsersForModule: jest.fn(),
 			addUserToModule: jest.fn(),
-			bulkAddUserToModules: jest.fn(),
 			deleteModulePermissions: jest.fn(),
 			onClose: jest.fn()
 		}
@@ -184,45 +182,6 @@ describe('ModulePermissionsDialog', () => {
 		expectPeopleSearchModalToBeRendered(component, false)
 	})
 
-	test('props.bulkAddUserToModule is called when PeopleSearchDialog.onSelectPerson while multiple modules are selected', () => {
-		// im writing here!
-		defaultProps.selectedModules = [
-			{
-				draftId: 'mockDraftId1'
-			},
-			{
-				draftId: 'mockDraftId2'
-			}
-		]
-
-		const reusableComponent = <ModulePermissionsDialog {...defaultProps} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
-		})
-
-		expectPeopleSearchModalToBeRendered(component, false)
-
-		act(() => {
-			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
-			component.update(reusableComponent)
-		})
-
-		expectPeopleSearchModalToBeRendered(component, true)
-
-		act(() => {
-			component.root.findByType(PeopleSearchDialog).props.onSelectPerson({ id: 1000 })
-			component.update(reusableComponent)
-		})
-		expect(defaultProps.bulkAddUserToModules).toHaveBeenCalledTimes(1)
-		expect(defaultProps.bulkAddUserToModules).toHaveBeenCalledWith(
-			defaultProps.selectedModules,
-			1000
-		)
-
-		expectPeopleSearchModalToBeRendered(component, false)
-	})
-
 	test('props.deleteModulePermissions is called when a peopleListItem "x" button is clicked', () => {
 		defaultProps.draftPermissions['mockDraftId'] = {
 			items: [{ id: 1 }, { id: 99 }]
@@ -303,6 +262,8 @@ describe('ModulePermissionsDialog', () => {
 
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledTimes(1)
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledWith('mockDraftId', 99)
+		// checks that onClose has been called when removing current user's access
+		expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
 	})
 
 	test('"close" and "done" buttons call props.onClose', () => {

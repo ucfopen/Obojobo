@@ -6,13 +6,60 @@
   "commit": false,
   "contributors": [
     {
+      "login": "deundrewilliams",
+      "name": "deundrewilliams",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41072160?v=4",
+      "profile": "https://github.com/deundrewilliams",
+      "contributions": [
+        "code",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "SJJacques",
+      "name": "Steve Jacques",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71739913?v=4",
+      "profile": "https://github.com/SJJacques",
+      "contributions": [
+        "code",
+        "test",
+        "review",
+        "bug"
+      ]
+    },
+    {
+      "login": "walid-i",
+      "name": "walid-i",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57739844?v=4",
+      "profile": "https://github.com/walid-i",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "jpeterson976",
+      "name": "Jacob Peterson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46502440?v=4",
+      "profile": "https://github.com/jpeterson976",
+      "contributions": [
+        "code",
+        "test",
+        "review",
+        "bug"
+      ]
+    },
+    {
       "login": "maufcost",
-      "name": "Mauricio Figueiredo",
+      "name": "Mauricio Costa",
       "avatar_url": "https://avatars1.githubusercontent.com/u/39862359?v=4",
       "profile": "https://github.com/maufcost",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "review",
+        "bug"
       ]
     },
     {
@@ -117,9 +164,14 @@
       "avatar_url": "https://avatars1.githubusercontent.com/u/1275983?v=4",
       "profile": "https://github.com/FrenjaminBanklin",
       "contributions": [
-        "code",
         "bug",
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "projectManagement",
         "test",
+        "tool",
         "review"
       ]
     },
@@ -182,11 +234,14 @@
       "profile": "https://ianturgeon.com",
       "contributions": [
         "code",
+        "doc",
         "test",
         "ideas",
+        "infra",
         "platform",
         "projectManagement",
         "maintenance",
+        "review",
         "tool"
       ]
     },
@@ -202,7 +257,8 @@
         "design",
         "ideas",
         "projectManagement",
-        "review"
+        "review",
+        "tool"
       ]
     }
   ],
@@ -211,5 +267,6 @@
   "projectOwner": "ucfopen",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "none"
 }

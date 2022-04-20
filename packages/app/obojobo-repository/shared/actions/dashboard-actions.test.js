@@ -10,11 +10,18 @@ dayjs.extend(advancedFormat)
 describe('Dashboard Actions', () => {
 	let DashboardActions
 	let mockFileReader
+	let undefined
+
+	const JSON_MIME_TYPE = 'application/json'
+	const XML_MIME_TYPE = 'application/xml'
+
+	const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
 
 	const originalFetch = global.fetch
 	const originalCreateElement = document.createElement
 	const originalFileReader = global.FileReader
 	const originalWindowLocationReload = window.location.reload
+	const originalAlert = global.alert
 
 	const standardMyModules = [
 		{
@@ -47,12 +54,15 @@ describe('Dashboard Actions', () => {
 
 	beforeAll(() => {
 		global.fetch = jest.fn()
+		delete global.alert
 	})
 
 	beforeEach(() => {
 		jest.resetModules()
 		jest.resetAllMocks()
 		jest.useFakeTimers()
+
+		global.alert = jest.fn()
 
 		delete window.location
 		window.location = {
@@ -85,10 +95,29 @@ describe('Dashboard Actions', () => {
 
 	afterAll(() => {
 		global.fetch = originalFetch
+		global.alert = originalAlert
 		document.createElement = originalCreateElement
 		global.FileReader = originalFileReader
 		window.location.reload = originalWindowLocationReload
 	})
+
+	const expectGetMyCollectionsCalled = () => {
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections', defaultFetchOptions)
+	}
+
+	const expectGetCollectionsForModuleCalled = () => {
+		expect(global.fetch).toHaveBeenCalledWith(
+			`/api/drafts/mockDraftId/collections`,
+			defaultFetchOptions
+		)
+	}
+
+	const expectGetModulesForCollectionCalled = () => {
+		expect(global.fetch).toHaveBeenCalledWith(
+			'/api/collections/mockCollectionId/modules',
+			defaultFetchOptions
+		)
+	}
 
 	test('showModulePermissions returns the expected output', () => {
 		const mockModule = { draftId: 'mockDraftId' }
@@ -206,41 +235,6 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
-	test('bulkAddUserToModule returns the expected output and calls other functions correctly', () => {
-		global.fetch.mockResolvedValue(standardFetchResponse)
-
-		const actionReply = DashboardActions.bulkAddUserToModules(
-			[{ draftId: 'mockDraftId1' }, { draftId: 'mockDraftId2' }],
-			99
-		)
-
-		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId1/permission', {
-			...defaultFetchOptions,
-			method: 'POST',
-			body: '{"userId":99}'
-		})
-
-		global.fetch.mockResolvedValue({
-			json: () => ({ value: 'mockSecondaryPermissionsVal1' })
-		})
-
-		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId2/permission', {
-			...defaultFetchOptions,
-			method: 'POST',
-			body: '{"userId":99}'
-		})
-
-		global.fetch.mockReset()
-		global.fetch.mockResolvedValue({
-			json: () => ({ value: 'mockSecondaryPermissionsVal2' })
-		})
-
-		expect(actionReply).toEqual({
-			type: DashboardActions.BULK_ADD_USER_TO_MODULES,
-			promise: expect.any(Object)
-		})
-	})
-
 	// three (plus one default) ways of calling deleteModulePermissions
 	const assertDeleteModulePermissionsRunsWithOptions = (secondaryLookupUrl, options) => {
 		global.fetch.mockResolvedValueOnce(standardFetchResponse)
@@ -279,6 +273,25 @@ describe('Dashboard Actions', () => {
 			})
 		})
 	}
+	//options will contain mode: MODE_COLLECTION and collectionId
+	test('deleteModulePermissions returns expected output and calls other functions, mode MODE_COLLECTION', () => {
+		const options = {
+			mode: MODE_COLLECTION,
+			collectionId: 'mockCollectionId'
+		}
+		return assertDeleteModulePermissionsRunsWithOptions(
+			'/api/drafts/mockDraftId/permission',
+			options
+		)
+	})
+	//options will contain mode: MODE_RECENT
+	test('deleteModulePermissions returns expected output and calls other functions, mode MODE_RECENT', () => {
+		return assertDeleteModulePermissionsRunsWithOptions('/api/recent/drafts', { mode: MODE_RECENT })
+	})
+	//options will contain mode: MODE_ALL
+	test('deleteModulePermissions returns expected output and calls other functions, mode MODE_ALL', () => {
+		return assertDeleteModulePermissionsRunsWithOptions('/api/drafts', { mode: MODE_ALL })
+	})
 	// no options, default should be equivalent to MODE_ALL
 	test('deleteModulePermissions returns expected output and calls other functions, default', () => {
 		return assertDeleteModulePermissionsRunsWithOptions('/api/drafts')
@@ -332,15 +345,67 @@ describe('Dashboard Actions', () => {
 			})
 		})
 	}
+	//options will contain mode: MODE_COLLECTION and collectionId
+	test('deleteModule returns expected output and calls other functions, mode MODE_COLLECTION', () => {
+		const options = {
+			mode: MODE_COLLECTION,
+			collectionId: 'mockCollectionId'
+		}
+		return assertDeleteModuleRunsWithOptions(
+			'/api/collections/mockCollectionId/modules',
+			'{"collectionId":"mockCollectionId"}',
+			options
+		)
+	})
+	//options will contain mode: MODE_RECENT
+	test('deleteModule returns expected output and calls other functions, mode MODE_RECENT', () => {
+		return assertDeleteModuleRunsWithOptions('/api/recent/drafts', '{"collectionId":null}', {
+			mode: MODE_RECENT
+		})
+	})
+	//options will contain mode: MODE_ALL
+	test('deleteModule returns expected output and calls other functions, mode MODE_ALL', () => {
+		return assertDeleteModuleRunsWithOptions('/api/drafts', '{"collectionId":null}', {
+			mode: MODE_ALL
+		})
+	})
+	// no options, default should be equivalent to MODE_ALL
 	test('deleteModule returns expected output and calls other functions, default', () => {
-		return assertDeleteModuleRunsWithOptions('/api/drafts')
+		return assertDeleteModuleRunsWithOptions('/api/drafts', '{"collectionId":null}')
+	})
+
+	test('createNewCollection returns the expected output', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+		const actionReply = DashboardActions.createNewCollection()
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/new', {
+			...defaultFetchOptions,
+			method: 'POST'
+		})
+
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockCollectionList' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.CREATE_NEW_COLLECTION,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expectGetMyCollectionsCalled()
+
+			expect(finalResponse).toEqual({ value: 'mockCollectionList' })
+		})
 	})
 
 	const assertBulkDeleteModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+		if (typeof fetchBody === 'undefined') fetchBody = '{}'
 		global.fetch.mockResolvedValue(standardFetchResponse)
 
 		const actionReply = DashboardActions.bulkDeleteModules(
-			[standardMyModules[0], standardMyModules[1]],
+			[standardMyModules[0].draftId, standardMyModules[1].draftId],
 			options
 		)
 
@@ -396,6 +461,80 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
+	test('bulkAddModulesToCollection calls other functions', () => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+
+		const mockDraftIds = ['draft-id-1', 'draft-id-2', 'draft-id-3']
+		const mockCollectionIds = ['collection-id-1', 'collection-id-2']
+
+		const actionReply = DashboardActions.bulkAddModulesToCollection(mockDraftIds, mockCollectionIds)
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_ADD_MODULES_TO_COLLECTIONS,
+			promise: expect.any(Object)
+		})
+
+		actionReply.promise.then(() => {
+			const expectedNumberOfCalls = mockDraftIds.length * mockCollectionIds.length
+			expect(global.fetch).toHaveBeenCalledTimes(expectedNumberOfCalls)
+
+			let callIndex = 0
+			mockDraftIds.forEach(draftId => {
+				mockCollectionIds.forEach(collectionId => {
+					const expectedCall = global.fetch.mock.calls[callIndex++]
+					const expectedApiUrl = `/api/collections/${collectionId}/modules/add`
+					expect(expectedCall[0]).toBe(expectedApiUrl)
+					expect(expectedCall[1]).toEqual({
+						...defaultFetchOptions,
+						method: 'POST',
+						body: `{"draftId":"${draftId}"}`
+					})
+				})
+			})
+
+			expect(callIndex).toEqual(expectedNumberOfCalls)
+		})
+	})
+
+	test('bulkRemoveModulesFromCollection returns expected output and calls other functions', () => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+
+		const mockCollectionId = 'mockCollectionId'
+
+		const mockDraftIds = ['draft-id-1', 'draft-id-2', 'draft-id-3']
+
+		const actionReply = DashboardActions.bulkRemoveModulesFromCollection(
+			mockDraftIds,
+			mockCollectionId
+		)
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_REMOVE_MODULES_FROM_COLLECTION,
+			meta: {
+				changedCollectionId: mockCollectionId,
+				currentCollectionId: mockCollectionId
+			},
+			promise: expect.any(Object)
+		})
+
+		actionReply.promise.then(() => {
+			expect(global.fetch).toHaveBeenCalledTimes(mockDraftIds.length + 1)
+			mockDraftIds.forEach((draftId, index) => {
+				const expectedCall = global.fetch.mock.calls[index]
+				expect(expectedCall[0]).toBe(`/api/collections/${mockCollectionId}/modules/remove`)
+				expect(expectedCall[1]).toEqual({
+					...defaultFetchOptions,
+					method: 'DELETE',
+					body: `{"draftId":"${draftId}"}`
+				})
+			})
+
+			const lastCall = global.fetch.mock.calls[mockDraftIds.length]
+			expect(lastCall[0]).toBe(`/api/collections/${mockCollectionId}/modules`)
+			expect(lastCall[1]).toEqual(defaultFetchOptions)
+		})
+	})
+
 	// three (plus one default) ways of calling createNewModule plus tutorial/normal module
 	const assertCreateNewModuleRunsWithOptions = (
 		createUrl,
@@ -431,18 +570,59 @@ describe('Dashboard Actions', () => {
 			})
 		})
 	}
-	// no options, default should be equivalent to MODE_ALL
-	test('createNewModule returns expected output and calls other functions', () => {
+	//options will contain mode: MODE_COLLECTION and collectionId
+	test('createNewModule returns expected output and calls other functions, mode MODE_COLLECTION', () => {
+		const options = {
+			mode: MODE_COLLECTION,
+			collectionId: 'mockCollectionId'
+		}
 		return assertCreateNewModuleRunsWithOptions(
 			'/api/drafts/new',
-			'{}',
+			'{"collectionId":"mockCollectionId","moduleContent":{}}',
+			'/api/collections/mockCollectionId/modules',
+			false,
+			options
+		)
+	})
+	//options will contain mode: MODE_RECENT
+	test('createNewModule returns expected output and calls other functions, mode MODE_RECENT', () => {
+		const options = { mode: MODE_RECENT }
+		return assertCreateNewModuleRunsWithOptions(
+			'/api/drafts/new',
+			'{"collectionId":null,"moduleContent":{}}',
+			'/api/recent/drafts',
+			false,
+			options
+		)
+	})
+	//options will contain mode: MODE_ALL
+	test('createNewModule returns expected output and calls other functions, mode MODE_ALL', () => {
+		const options = { mode: MODE_ALL }
+		return assertCreateNewModuleRunsWithOptions(
+			'/api/drafts/new',
+			'{"collectionId":null,"moduleContent":{}}',
+			'/api/drafts',
+			false,
+			options
+		)
+	})
+	// no options, default should be equivalent to MODE_ALL
+	test('createNewModule returns expected output and calls other functions, mode MODE_ALL', () => {
+		return assertCreateNewModuleRunsWithOptions(
+			'/api/drafts/new',
+			'{"collectionId":null,"moduleContent":{}}',
 			'/api/drafts'
 			//no argument indicating tutorial - should default to false
 		)
 	})
 	// same as above, but making a tutorial
-	test('createNewModule returns expected output and calls other functions, tutorial', () => {
-		return assertCreateNewModuleRunsWithOptions('/api/drafts/tutorial', '{}', '/api/drafts', true)
+	test('createNewModule returns expected output and calls other functions, mode MODE_ALL, tutorial', () => {
+		return assertCreateNewModuleRunsWithOptions(
+			'/api/drafts/tutorial',
+			'{"collectionId":null,"moduleContent":{}}',
+			'/api/drafts',
+			true
+		)
 	})
 
 	test('filterModules returns the expected output', () => {
@@ -451,6 +631,16 @@ describe('Dashboard Actions', () => {
 		expect(global.fetch).not.toHaveBeenCalled()
 		expect(actionReply).toEqual({
 			type: DashboardActions.FILTER_MODULES,
+			searchString: 'mockSearchString'
+		})
+	})
+
+	test('filterCollections returns the expected output', () => {
+		const actionReply = DashboardActions.filterCollections('mockSearchString')
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.FILTER_COLLECTIONS,
 			searchString: 'mockSearchString'
 		})
 	})
@@ -486,6 +676,434 @@ describe('Dashboard Actions', () => {
 		expect(actionReply).toEqual({
 			type: DashboardActions.SHOW_MODULE_MORE,
 			module: mockModule
+		})
+	})
+
+	test('showModuleManageCollections returns the expected output', () => {
+		const mockModule = {
+			draftId: 'mockDraftId',
+			title: 'Mock Draft Title'
+		}
+		const actionReply = DashboardActions.showModuleManageCollections(mockModule)
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.SHOW_MODULE_MANAGE_COLLECTIONS,
+			module: mockModule
+		})
+	})
+
+	test('loadModuleCollections returns the expected output', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.loadModuleCollections('mockDraftId')
+
+		expectGetCollectionsForModuleCalled()
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.LOAD_MODULE_COLLECTIONS,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(() => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+		})
+	})
+
+	test('moduleAddToCollection returns the expected output and calls other functions correctly', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.moduleAddToCollection('mockDraftId', 'mockCollectionId')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/add', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"draftId":"mockDraftId"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.MODULE_ADD_TO_COLLECTION,
+			promise: expect.any(Object)
+		})
+
+		// should get draft permissions after changing them
+		return actionReply.promise.then(finalResponse => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expectGetCollectionsForModuleCalled()
+			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+
+	test('moduleRemoveFromCollection returns the expected output and calls other functions correctly', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.moduleRemoveFromCollection(
+			'mockDraftId',
+			'mockCollectionId'
+		)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/remove', {
+			...defaultFetchOptions,
+			method: 'DELETE',
+			body: '{"draftId":"mockDraftId"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.MODULE_REMOVE_FROM_COLLECTION,
+			promise: expect.any(Object)
+		})
+
+		// should get draft permissions after changing them
+		return actionReply.promise.then(finalResponse => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expectGetCollectionsForModuleCalled()
+			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+
+	test('showCollectionBulkAddModulesDialog returns the expected output', () => {
+		const mockSelectedModules = []
+		const actionReply = DashboardActions.showCollectionBulkAddModulesDialog(mockSelectedModules)
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
+			selectedModules: mockSelectedModules
+		})
+	})
+
+	test('showCollectionManageModules returns the expected output', () => {
+		const mockCollection = {
+			id: 'mockCollectionId',
+			title: 'Mock Collection Title'
+		}
+		const actionReply = DashboardActions.showCollectionManageModules(mockCollection)
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.SHOW_COLLECTION_MANAGE_MODULES,
+			collection: mockCollection
+		})
+	})
+
+	test('loadCollectionModules returns the expected output, no options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.loadCollectionModules('mockCollectionId')
+
+		expectGetModulesForCollectionCalled()
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.LOAD_COLLECTION_MODULES,
+			meta: {
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: null
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(() => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+		})
+	})
+	test('loadCollectionModules returns the expected output, options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const options = { collectionId: 'otherMockCollectionId' }
+		const actionReply = DashboardActions.loadCollectionModules('mockCollectionId', options)
+
+		expectGetModulesForCollectionCalled()
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.LOAD_COLLECTION_MODULES,
+			meta: {
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: 'otherMockCollectionId'
+			},
+			promise: expect.any(Object)
+		})
+	})
+
+	test('collectionAddModule returns the expected output and calls other functions, no options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.collectionAddModule('mockDraftId', 'mockCollectionId')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/add', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"draftId":"mockDraftId"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.COLLECTION_ADD_MODULE,
+			meta: {
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: undefined // eslint-disable-line no-undefined
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expectGetModulesForCollectionCalled()
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+	test('collectionAddModule returns the expected output and calls other functions with options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const options = { collectionId: 'otherMockCollectionId' }
+		const actionReply = DashboardActions.collectionAddModule(
+			'mockDraftId',
+			'mockCollectionId',
+			options
+		)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/add', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"draftId":"mockDraftId"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.COLLECTION_ADD_MODULE,
+			meta: {
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: 'otherMockCollectionId'
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expectGetModulesForCollectionCalled()
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+
+	test('collectionRemoveModule returns the expected output and calls other functions, no options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.collectionRemoveModule('mockDraftId', 'mockCollectionId')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/remove', {
+			...defaultFetchOptions,
+			method: 'DELETE',
+			body: '{"draftId":"mockDraftId"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.COLLECTION_REMOVE_MODULE,
+			meta: {
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: undefined // eslint-disable-line no-undefined
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expectGetModulesForCollectionCalled()
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+	test('collectionRemoveModule returns the expected output and calls other functions with options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const options = { collectionId: 'otherMockCollectionId' }
+		const actionReply = DashboardActions.collectionRemoveModule(
+			'mockDraftId',
+			'mockCollectionId',
+			options
+		)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId/modules/remove', {
+			...defaultFetchOptions,
+			method: 'DELETE',
+			body: '{"draftId":"mockDraftId"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.COLLECTION_REMOVE_MODULE,
+			meta: {
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: 'otherMockCollectionId'
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expectGetModulesForCollectionCalled()
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+		})
+	})
+
+	test('searchForModuleNotInCollection returns the expected output and calls other functions', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.searchForModuleNotInCollection(
+			'searchString',
+			'mockCollectionId'
+		)
+
+		expect(global.fetch).toHaveBeenCalledWith(
+			'/api/collections/mockCollectionId/modules/search?q=searchString',
+			defaultFetchOptions
+		)
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.LOAD_MODULE_SEARCH,
+			meta: {
+				searchString: 'searchString'
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(() => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+		})
+	})
+
+	test('clearModuleSearchResults returns the expected output', () => {
+		const actionReply = DashboardActions.clearModuleSearchResults()
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.CLEAR_MODULE_SEARCH_RESULTS
+		})
+	})
+
+	test('showCollectionRename returns the expected output', () => {
+		const mockCollection = {
+			id: 'mockCollectionId',
+			title: 'Mock Collection Title'
+		}
+		const actionReply = DashboardActions.showCollectionRename(mockCollection)
+
+		expect(global.fetch).not.toHaveBeenCalled()
+		expect(actionReply).toEqual({
+			type: DashboardActions.SHOW_COLLECTION_RENAME,
+			collection: mockCollection
+		})
+	})
+
+	test('renameCollection returns the expected output and calls other functions correctly, no options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.renameCollection('mockCollectionId', 'New Title')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/rename', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"id":"mockCollectionId","title":"New Title"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondReturnVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.RENAME_COLLECTION,
+			meta: {
+				changedCollectionTitle: 'New Title',
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: undefined //eslint-disable-line no-undefined
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResult => {
+			expectGetMyCollectionsCalled()
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(finalResult).toEqual({ value: 'mockSecondReturnVal' })
+		})
+	})
+	test('renameCollection returns the expected output and calls other functions correctly with options', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+		const options = { collectionId: 'otherMockCollectionId' }
+		const actionReply = DashboardActions.renameCollection('mockCollectionId', 'New Title', options)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/rename', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"id":"mockCollectionId","title":"New Title"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondReturnVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.RENAME_COLLECTION,
+			meta: {
+				changedCollectionTitle: 'New Title',
+				changedCollectionId: 'mockCollectionId',
+				currentCollectionId: 'otherMockCollectionId'
+			},
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResult => {
+			expectGetMyCollectionsCalled()
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(finalResult).toEqual({ value: 'mockSecondReturnVal' })
+		})
+	})
+
+	test('deleteCollection returns the expected output and calls other functions correctly', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const mockCollection = { id: 'mockCollectionId', title: 'Mock Collection Title' }
+		const actionReply = DashboardActions.deleteCollection(mockCollection)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/collections/mockCollectionId', {
+			...defaultFetchOptions,
+			method: 'DELETE'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondReturnVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.DELETE_COLLECTION,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResult => {
+			expectGetMyCollectionsCalled()
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(finalResult).toEqual({ value: 'mockSecondReturnVal' })
 		})
 	})
 
@@ -539,7 +1157,7 @@ describe('Dashboard Actions', () => {
 
 		const mockChangeEvent = {
 			target: {
-				files: [{ type: 'application/json' }]
+				files: [{ type: JSON_MIME_TYPE }]
 			}
 		}
 		createElementCopy.onchange(mockChangeEvent)
@@ -558,15 +1176,18 @@ describe('Dashboard Actions', () => {
 				...defaultFetchOptions,
 				method: 'POST',
 				body: JSON.stringify({
-					content: 'fileContent',
-					format: 'application/json'
+					collectionId: null,
+					moduleContent: {
+						content: 'fileContent',
+						format: 'application/json'
+					}
 				})
 			})
 			expect(window.location.reload).toHaveBeenCalledTimes(1)
 		})
 	})
 
-	test('importModuleFile returns the expected output and calls other functions correctly - valid file, non-json', () => {
+	test('importModuleFile returns the expected output and calls other functions correctly - valid file, xml', () => {
 		global.fetch.mockResolvedValueOnce({ ...standardFetchResponse, ok: true })
 
 		const actionReply = DashboardActions.importModuleFile()
@@ -586,7 +1207,7 @@ describe('Dashboard Actions', () => {
 
 		const mockChangeEvent = {
 			target: {
-				files: [{ type: 'fileType' }]
+				files: [{ type: XML_MIME_TYPE }]
 			}
 		}
 		createElementCopy.onchange(mockChangeEvent)
@@ -605,8 +1226,11 @@ describe('Dashboard Actions', () => {
 				...defaultFetchOptions,
 				method: 'POST',
 				body: JSON.stringify({
-					content: 'fileContent',
-					format: 'application/xml' //defaults to this unless file type is 'application/json'
+					collectionId: null,
+					moduleContent: {
+						content: 'fileContent',
+						format: 'application/xml' //defaults to this unless file type is 'application/json'
+					}
 				})
 			})
 			expect(window.location.reload).toHaveBeenCalledTimes(1)
@@ -631,9 +1255,11 @@ describe('Dashboard Actions', () => {
 		])
 		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
 
+		// the file type for this test is not important; we need
+		// only pass the conditional statement regarding mime types
 		const mockChangeEvent = {
 			target: {
-				files: [{ type: 'fileType' }]
+				files: [{ type: JSON_MIME_TYPE }]
 			}
 		}
 		createElementCopy.onchange(mockChangeEvent)
@@ -652,11 +1278,54 @@ describe('Dashboard Actions', () => {
 				...defaultFetchOptions,
 				method: 'POST',
 				body: JSON.stringify({
-					content: 'fileContent',
-					format: 'application/xml' //defaults to this unless file type is 'application/json'
+					collectionId: null,
+					moduleContent: {
+						content: 'fileContent',
+						format: JSON_MIME_TYPE
+					}
 				})
 			})
 			expect(window.location.reload).not.toHaveBeenCalled()
+		})
+	})
+
+	test('importModuleFile calls an alert if provided an invalid file', () => {
+		// this test expects mockfilereader to be undefined but it gets
+		// a value in the previous tests so it is set to undefined again
+		mockFileReader = undefined
+
+		const actionReply = DashboardActions.importModuleFile()
+		expect(actionReply).toEqual({
+			type: DashboardActions.IMPORT_MODULE_FILE,
+			promise: expect.any(Object)
+		})
+
+		expect(document.createElement).toHaveBeenCalledTimes(1)
+		expect(document.createElement).toHaveBeenCalledWith('input')
+		expect(createElementCopy.setAttribute).toHaveBeenCalledTimes(2)
+		expect(createElementCopy.setAttribute.mock.calls).toEqual([
+			['type', 'file'],
+			['accept', 'application/json, application/xml']
+		])
+		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
+
+		// this is here because in chrome an svg can be uploaded;
+		// we need to test that the conditional is passed
+		const mockChangeEvent = {
+			target: {
+				files: [{ type: 'image/svg+xml' }]
+			}
+		}
+		createElementCopy.onchange(mockChangeEvent)
+
+		// if global.FileReader were called mockFileReader would be
+		// assigned a value again and it's expect() would fail
+		expect(global.FileReader).toHaveBeenCalledTimes(0)
+		expect(global.alert).toHaveBeenCalledTimes(1)
+		expect(mockFileReader).toBeUndefined()
+
+		return actionReply.promise.then(() => {
+			expect(global.fetch).toHaveBeenCalledTimes(0)
 		})
 	})
 
@@ -1216,5 +1885,106 @@ describe('Dashboard Actions', () => {
 			expect(error).toBeInstanceOf(Error)
 			expect(error.message).toBe('Failed to check lock for module with id mockDraftId.')
 		})
+	})
+
+	const assertBulkRestoreModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+		const actionReply = DashboardActions.bulkRestoreModules(
+			['mockDraftId1', 'mockDraftId2'],
+			options
+		)
+
+		expect(global.fetch).toHaveBeenCalledTimes(2)
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/restore/mockDraftId1', {
+			...defaultFetchOptions,
+			method: 'PUT',
+			body: fetchBody
+		})
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/restore/mockDraftId2', {
+			...defaultFetchOptions,
+			method: 'PUT',
+			body: fetchBody
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryResponse' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.BULK_RESTORE_MODULES,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
+
+			expect(finalResponse).toEqual({
+				value: 'mockSecondaryResponse'
+			})
+		})
+	}
+	test('bulkRestoreModules returns expected output and calls other functions', () => {
+		return assertBulkRestoreModulesRunsWithOptions('/api/drafts-deleted')
+	})
+
+	const assertGetMyDeletedModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+		const actionReply = DashboardActions.getDeletedModules(options)
+
+		expect(global.fetch).toHaveBeenCalledTimes(1)
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts-deleted', {
+			...defaultFetchOptions,
+			method: 'GET',
+			body: fetchBody
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryResponse' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.GET_DELETED_MODULES,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(global.fetch).not.toHaveBeenCalled()
+			expect(finalResponse).toEqual({ value: 'mockVal' })
+		})
+	}
+	test('apiGetMyDeletedModules returns the expected output', () => {
+		return assertGetMyDeletedModulesRunsWithOptions('/api/drafts-deleted')
+	})
+
+	const assertGetMyModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+		const actionReply = DashboardActions.getModules(options)
+
+		expect(global.fetch).toHaveBeenCalledTimes(1)
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts', {
+			...defaultFetchOptions,
+			method: 'GET',
+			body: fetchBody
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryResponse' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.GET_MODULES,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(global.fetch).not.toHaveBeenCalled()
+			expect(finalResponse).toEqual({ value: 'mockVal' })
+		})
+	}
+	test('apiGetMyModules returns the expected output', () => {
+		return assertGetMyModulesRunsWithOptions('/api/drafts')
 	})
 })

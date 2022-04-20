@@ -18,9 +18,7 @@ class ModulePermissionsDialog extends React.Component {
 	}
 
 	componentDidMount() {
-		if (!this.props.selectedModules) {
-			this.props.loadUsersForModule(this.props.draftId)
-		}
+		this.props.loadUsersForModule(this.props.draftId)
 	}
 
 	openPeoplePicker() {
@@ -32,10 +30,7 @@ class ModulePermissionsDialog extends React.Component {
 	}
 
 	addPerson(person) {
-		this.props.selectedModules
-			? this.props.bulkAddUserToModules(this.props.selectedModules, person.id)
-			: this.props.addUserToModule(this.props.draftId, person.id)
-
+		this.props.addUserToModule(this.props.draftId, person.id)
 		this.closePeoplePicker()
 	}
 
@@ -44,7 +39,9 @@ class ModulePermissionsDialog extends React.Component {
 			const response = window.confirm('Remove yourself from this module?') //eslint-disable-line no-alert
 			if (!response) return
 		}
+
 		this.props.deleteModulePermissions(this.props.draftId, userId)
+		this.props.onClose()
 	}
 
 	renderModal() {
@@ -70,10 +67,7 @@ class ModulePermissionsDialog extends React.Component {
 
 	render() {
 		let accessListItemsRender = null
-		if (
-			this.props.draftPermissions[this.props.draftId] &&
-			this.props.draftPermissions[this.props.draftId].items.type != 'missing'
-		) {
+		if (this.props.draftPermissions[this.props.draftId]) {
 			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
 				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
 					<Button
