@@ -2,10 +2,10 @@
 
 .repository--button {
 	@mixin disabled() {
-		cursor: not-allowed;
 		border: 1px solid $color-transparent;
 		border-bottom: 1px solid $color-transparent;
 		opacity: 0.4;
+		pointer-events: none;
 	}
 
 	border: 0;
@@ -18,8 +18,7 @@
 	text-decoration: none;
 	font-size: 0.7em;
 
-	&:disabled,
-	&.disabled {
+	&:disabled {
 		@include disabled();
 	}
 

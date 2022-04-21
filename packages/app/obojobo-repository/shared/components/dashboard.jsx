@@ -362,6 +362,7 @@ function Dashboard(props) {
 			const [startIdx, endIdx] =
 				originIndex < index ? [originIndex, index + 1] : [index, originIndex + 1]
 
+			// Get newly selected modules
 			const currentSelection = moduleList.slice(startIdx, endIdx)
 			const newlySelected = currentSelection.filter(
 				currentModule =>
@@ -458,13 +459,14 @@ function Dashboard(props) {
 		))
 	}
 
-	const removeModulesFromCollection = draftIds => {
+	const removeModulesFromCollection = drafts => {
 		setIsLoading(true)
 		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
-			`Are you sure you want to remove these ${draftIds.length} selected modules from this collection? Type 'REMOVE' to confirm.`
+			`Are you sure you want to remove these ${drafts.length} selected modules from this collection? Type 'REMOVE' to confirm.`
 		)
 		if (response !== 'REMOVE') return setIsLoading(false)
+		const draftIds = drafts.map(draft => draft.draftId)
 		props
 			.bulkRemoveModulesFromCollection(draftIds, props.collection.id)
 			.then(() => setIsLoading(false))
@@ -756,9 +758,7 @@ function Dashboard(props) {
 				bulkCollectionActionButton = (
 					<Button
 						className="multi-select secondary-button"
-						onClick={() =>
-							removeModulesFromCollection(props.selectedModules.map(draft => draft.draftId))
-						}
+						onClick={() => removeModulesFromCollection(props.selectedModules)}
 					>
 						Remove All From Collection
 					</Button>
@@ -780,11 +780,7 @@ function Dashboard(props) {
 				bulkCollectionActionButton = (
 					<Button
 						className="multi-select secondary-button"
-						onClick={() =>
-							props.showCollectionBulkAddModulesDialog(
-								props.selectedModules.map(draft => draft.draftId)
-							)
-						}
+						onClick={() => props.showCollectionBulkAddModulesDialog(props.selectedModules)}
 					>
 						Add All To Collection
 					</Button>

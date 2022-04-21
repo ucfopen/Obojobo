@@ -357,11 +357,11 @@ const bulkDeleteModules = draftIds => ({
 })
 
 const BULK_ADD_MODULES_TO_COLLECTIONS = 'BULK_ADD_MODULES_TO_COLLECTIONS'
-const bulkAddModulesToCollection = (draftIds, collectionIds) => {
+const bulkAddModulesToCollection = (drafts, collectionIds) => {
 	const allPromises = []
-	draftIds.forEach(draftId => {
+	drafts.forEach(draft => {
 		collectionIds.forEach(collectionId => {
-			allPromises.push(apiAddModuleToCollection(draftId, collectionId))
+			allPromises.push(apiAddModuleToCollection(draft.draftId, collectionId))
 		})
 	})
 

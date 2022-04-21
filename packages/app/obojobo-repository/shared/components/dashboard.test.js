@@ -1251,7 +1251,7 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.showCollectionBulkAddModulesDialog).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.showCollectionBulkAddModulesDialog).toHaveBeenCalledWith(
-			mockSelectedModules.map(module => module.draftId)
+			mockSelectedModules
 		)
 
 		component.unmount()
