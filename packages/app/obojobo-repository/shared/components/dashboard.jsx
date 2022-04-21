@@ -602,17 +602,15 @@ function Dashboard(props) {
 		// url is /dashboard
 		case MODE_RECENT:
 		default:
-			if (props.myModules.length < props.moduleCount) {
-				allModulesButtonRender = (
-					<ButtonLink
-						className="repository--all-modules--button"
-						url="/dashboard/all"
-						target="_blank"
-					>
-						All Modules
-					</ButtonLink>
-				)
-			}
+			allModulesButtonRender = (
+				<ButtonLink
+					className="repository--all-modules--button"
+					url="/dashboard/all"
+					target="_blank"
+				>
+					All Modules
+				</ButtonLink>
+			)
 
 			renderCollectionArea()
 

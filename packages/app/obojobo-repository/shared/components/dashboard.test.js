@@ -401,12 +401,6 @@ describe('Dashboard', () => {
 		expect(placeholderComponents[1].findByType(Button).children[0].children[0]).toBe(
 			'New Collection'
 		)
-
-		// 'All Modules' button should not be rendered; myModules.length === moduleCount
-		expect(component.root.findAllByType(ButtonLink).length).toBe(0)
-
-		// Shouldn't be any modal dialogs open, either
-		expect(component.root.findAllByType(ReactModal).length).toBe(0)
 	}
 
 	const expectModeAllOrModeCollectionRender = cookiePath => {
