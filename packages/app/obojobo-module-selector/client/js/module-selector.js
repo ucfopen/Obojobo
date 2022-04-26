@@ -310,7 +310,10 @@ import '../css/module-selector.scss'
 			.then(respJson => {
 				if (respJson.status !== 'ok') throw 'Failed loading modules'
 
-				data.allItems = data.items = respJson.value
+				// personal module lookup has an extra layer indicating total module count
+				data.allItems = data.items = respJson.value.modules
+					? respJson.value.modules
+					: respJson.value
 				populateSection(section, title, color)
 
 				if (searchEl.value !== '') {

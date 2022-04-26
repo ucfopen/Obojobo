@@ -1,6 +1,6 @@
 const parseAttemptReport = require('./parse-attempt-report')
 
-describe('parseAtttemptReport', () => {
+describe('parseAttemptReport', () => {
 	test('parseAttemptReport returns modified attempt objects', () => {
 		expect(parseAttemptReport([])).toEqual([])
 		expect(
