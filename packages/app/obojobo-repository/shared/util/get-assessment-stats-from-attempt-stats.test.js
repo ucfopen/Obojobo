@@ -199,6 +199,16 @@ describe('getAssessmentStatsFromAttemptStats', () => {
 					userId: 'User-Beta',
 					assessmentScore: null,
 					completedAt: 'mock-date'
+				},
+				// Draft-C Version-1 Assessment-1 Resource-X User-Alpha:
+				{
+					draftId: 'Draft-C',
+					draftContentId: 'Version-1',
+					resourceLinkId: 'Resource-X',
+					assessmentId: 'Assessment-1',
+					userId: 'User-Alpha',
+					assessmentScore: null,
+					completedAt: null
 				}
 			])
 		).toEqual([
@@ -249,6 +259,15 @@ describe('getAssessmentStatsFromAttemptStats', () => {
 				assessmentId: 'Assessment-1',
 				userId: 'User-Beta',
 				highestAssessmentScore: null
+			}),
+			expect.objectContaining({
+				draftId: 'Draft-C',
+				draftContentId: 'Version-1',
+				resourceLinkId: 'Resource-X',
+				assessmentId: 'Assessment-1',
+				userId: 'User-Alpha',
+				highestAssessmentScore: null,
+				completedAt: null
 			})
 		])
 	})

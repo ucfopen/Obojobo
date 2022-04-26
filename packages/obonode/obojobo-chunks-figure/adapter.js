@@ -23,13 +23,14 @@ const Adapter = {
 		model.setStateProp('width', null, p => parseInt(p, 10))
 		model.setStateProp('height', null, p => parseInt(p, 10))
 		model.setStateProp('alt', null)
-		model.setStateProp('captionWidth', ImageCaptionWidthTypes.IMAGE_WIDTH, p => p.toLowerCase(), [
-			ImageCaptionWidthTypes.IMAGE_WIDTH,
-			ImageCaptionWidthTypes.TEXT_WIDTH
-		])
 
 		if (model.modelState.size === 'large' || model.modelState.size === 'medium') {
 			model.modelState.captionWidth = ImageCaptionWidthTypes.IMAGE_WIDTH
+		} else {
+			model.setStateProp('captionWidth', ImageCaptionWidthTypes.IMAGE_WIDTH, p => p.toLowerCase(), [
+				ImageCaptionWidthTypes.IMAGE_WIDTH,
+				ImageCaptionWidthTypes.TEXT_WIDTH
+			])
 		}
 	},
 
