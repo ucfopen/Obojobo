@@ -1,6 +1,478 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Stats Renders loaded state correctly 1`] = `
+exports[`Stats Renders "modules loaded" state correctly 1`] = `
+<span
+  id="stats-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <input
+        className="repository--drafts-search"
+        onChange={[Function]}
+        placeholder="Search (By title or draftId)"
+        value=""
+      />
+      <div
+        className="repository--data-grid-drafts-container"
+      >
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "name": "Draft ID",
+                "selector": "draftId",
+                "sortable": true,
+              },
+              Object {
+                "name": "Title",
+                "selector": "title",
+                "sortable": true,
+              },
+              Object {
+                "name": "Created At",
+                "selector": "createdAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Updated At",
+                "selector": "updatedAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Latest Version",
+                "selector": "latestVersion",
+                "sortable": true,
+              },
+              Object {
+                "name": "Revision Count",
+                "selector": "revisionCount",
+                "sortable": true,
+              },
+              Object {
+                "cell": [Function],
+                "name": "Preview",
+              },
+            ]
+          }
+          data={Array []}
+          dense={true}
+          keyField="draftId"
+          onSelectedRowsChange={[Function]}
+          pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={100}
+          paginationRowsPerPageOptions={
+            Array [
+              100,
+            ]
+          }
+          selectableRows={true}
+          striped={true}
+          title="Modules (0 Results)"
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Load stats for 0 selected modules
+      </button>
+      <div
+        className="stats"
+      />
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Stats Renders "modules loaded" state correctly 2`] = `
+<span
+  id="stats-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <input
+        className="repository--drafts-search"
+        onChange={[Function]}
+        placeholder="Search (By title or draftId)"
+        value=""
+      />
+      <div
+        className="repository--data-grid-drafts-container"
+      >
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "name": "Draft ID",
+                "selector": "draftId",
+                "sortable": true,
+              },
+              Object {
+                "name": "Title",
+                "selector": "title",
+                "sortable": true,
+              },
+              Object {
+                "name": "Created At",
+                "selector": "createdAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Updated At",
+                "selector": "updatedAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Latest Version",
+                "selector": "latestVersion",
+                "sortable": true,
+              },
+              Object {
+                "name": "Revision Count",
+                "selector": "revisionCount",
+                "sortable": true,
+              },
+              Object {
+                "cell": [Function],
+                "name": "Preview",
+              },
+            ]
+          }
+          data={Array []}
+          dense={true}
+          keyField="draftId"
+          onSelectedRowsChange={[Function]}
+          pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={100}
+          paginationRowsPerPageOptions={
+            Array [
+              100,
+            ]
+          }
+          selectableRows={true}
+          striped={true}
+          title="Modules (0 Results)"
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Load stats for 0 selected modules
+      </button>
+      <div
+        className="stats"
+      />
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Stats Renders "modules loading" state correctly 1`] = `
+<span
+  id="stats-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  Loading...
+</span>
+`;
+
+exports[`Stats Renders correctly when assessment stat fetching has finished 1`] = `
 <span
   id="stats-root"
 >
@@ -391,6 +863,24 @@ exports[`Stats Renders loaded state correctly 1`] = `
                   columns={
                     Array [
                       Object {
+                        "advanced": false,
+                        "name": "First Name",
+                        "selector": "userFirstName",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
+                        "name": "Last Name",
+                        "selector": "userLastName",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "User Roles",
+                        "selector": "userRoles",
+                        "sortable": true,
+                      },
+                      Object {
                         "advanced": true,
                         "name": "Course ID",
                         "selector": "contextId",
@@ -453,24 +943,6 @@ exports[`Stats Renders loaded state correctly 1`] = `
                       },
                       Object {
                         "advanced": false,
-                        "name": "First Name",
-                        "selector": "userFirstName",
-                        "sortable": true,
-                      },
-                      Object {
-                        "advanced": false,
-                        "name": "Last Name",
-                        "selector": "userLastName",
-                        "sortable": true,
-                      },
-                      Object {
-                        "advanced": true,
-                        "name": "User Roles",
-                        "selector": "userRoles",
-                        "sortable": true,
-                      },
-                      Object {
-                        "advanced": false,
                         "cell": [Function],
                         "name": "Final Assessment Score",
                         "selector": "highestAssessmentScore",
@@ -514,7 +986,213 @@ exports[`Stats Renders loaded state correctly 1`] = `
 </span>
 `;
 
-exports[`Stats Renders loading state correctly 1`] = `
+exports[`Stats Renders correctly when assessment stat fetching has not started or finished 1`] = `
+<span
+  id="stats-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <input
+        className="repository--drafts-search"
+        onChange={[Function]}
+        placeholder="Search (By title or draftId)"
+        value=""
+      />
+      <div
+        className="repository--data-grid-drafts-container"
+      >
+        <div
+          className="react-data-table-component"
+          columns={
+            Array [
+              Object {
+                "name": "Draft ID",
+                "selector": "draftId",
+                "sortable": true,
+              },
+              Object {
+                "name": "Title",
+                "selector": "title",
+                "sortable": true,
+              },
+              Object {
+                "name": "Created At",
+                "selector": "createdAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Updated At",
+                "selector": "updatedAt",
+                "sortable": true,
+              },
+              Object {
+                "name": "Latest Version",
+                "selector": "latestVersion",
+                "sortable": true,
+              },
+              Object {
+                "name": "Revision Count",
+                "selector": "revisionCount",
+                "sortable": true,
+              },
+              Object {
+                "cell": [Function],
+                "name": "Preview",
+              },
+            ]
+          }
+          data={
+            Array [
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-1",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-1",
+                "updatedAt": "mock-updated-at",
+              },
+              Object {
+                "createdAt": "mock-created-at",
+                "draftId": "mock-draft-id-2",
+                "latestVersion": "mock-latest-version",
+                "revisionCount": 1,
+                "title": "mock-title-2",
+                "updatedAt": "mock-updated-at",
+              },
+            ]
+          }
+          dense={true}
+          keyField="draftId"
+          onSelectedRowsChange={[Function]}
+          pagination={true}
+          paginationComponentOptions={
+            Object {
+              "noRowsPerPage": true,
+            }
+          }
+          paginationPerPage={100}
+          paginationRowsPerPageOptions={
+            Array [
+              100,
+            ]
+          }
+          selectableRows={true}
+          striped={true}
+          title="Modules (2 Results)"
+        >
+          react-data-table-component
+        </div>
+      </div>
+      <button
+        className="repository--button "
+        disabled={true}
+        onClick={[Function]}
+      >
+        Load stats for 0 selected modules
+      </button>
+      <div
+        className="stats"
+      />
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Stats Renders correctly when assessment stat fetching has started but not finished 1`] = `
 <span
   id="stats-root"
 >
@@ -717,212 +1395,6 @@ exports[`Stats Renders loading state correctly 1`] = `
       >
         Loading...
       </div>
-    </section>
-  </div>
-</span>
-`;
-
-exports[`Stats Renders non-loaded non-fetching state correctly 1`] = `
-<span
-  id="stats-root"
->
-  <div
-    className="repository--section-wrapper repository--stick-to-top"
-    onBlur={[Function]}
-    onFocus={[Function]}
-    onMouseLeave={[Function]}
-  >
-    <nav
-      className="repository--nav"
-    >
-      <a
-        href="/"
-      >
-        <div
-          className="repository--nav--logo"
-        >
-          Obojobo
-        </div>
-      </a>
-      <div
-        className="repository--nav--links--link"
-      >
-        <a
-          href="/library"
-        >
-          Module Library
-        </a>
-      </div>
-      <div
-        className="repository--nav--links--link"
-      >
-        <a
-          href="/dashboard"
-        >
-          Dashboard
-        </a>
-      </div>
-      <div
-        className="repository--nav--current-user"
-      >
-        <button
-          onClick={[Function]}
-        >
-          <div
-            className="repository--nav--current-user--name"
-          >
-            firstName lastName
-          </div>
-          <div
-            className="avatar repository--nav--current-user--avatar"
-          >
-            <div
-              className="avatar--image"
-            >
-              <img
-                alt=""
-                src="/path/to/avatar"
-              />
-            </div>
-          </div>
-        </button>
-        <div
-          className="repository--nav--current-user--menu is-not-open"
-        >
-          <div
-            className="repository--nav--current-user--link"
-          >
-            <a
-              href="/profile/logout"
-            >
-              Log Out
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
-  <div
-    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
-  >
-    <div
-      className="repository--section-wrapper--full-width-bg"
-    />
-    <section
-      className="repository--title-banner repository--info-banner"
-    >
-      <h1
-        className="repository--title-banner--title"
-      />
-    </section>
-  </div>
-  <div
-    className="repository--section-wrapper"
-  >
-    <section
-      className="repository--main-content"
-    >
-      <input
-        className="repository--drafts-search"
-        onChange={[Function]}
-        placeholder="Search (By title or draftId)"
-        value=""
-      />
-      <div
-        className="repository--data-grid-drafts-container"
-      >
-        <div
-          className="react-data-table-component"
-          columns={
-            Array [
-              Object {
-                "name": "Draft ID",
-                "selector": "draftId",
-                "sortable": true,
-              },
-              Object {
-                "name": "Title",
-                "selector": "title",
-                "sortable": true,
-              },
-              Object {
-                "name": "Created At",
-                "selector": "createdAt",
-                "sortable": true,
-              },
-              Object {
-                "name": "Updated At",
-                "selector": "updatedAt",
-                "sortable": true,
-              },
-              Object {
-                "name": "Latest Version",
-                "selector": "latestVersion",
-                "sortable": true,
-              },
-              Object {
-                "name": "Revision Count",
-                "selector": "revisionCount",
-                "sortable": true,
-              },
-              Object {
-                "cell": [Function],
-                "name": "Preview",
-              },
-            ]
-          }
-          data={
-            Array [
-              Object {
-                "createdAt": "mock-created-at",
-                "draftId": "mock-draft-id-1",
-                "latestVersion": "mock-latest-version",
-                "revisionCount": 1,
-                "title": "mock-title-1",
-                "updatedAt": "mock-updated-at",
-              },
-              Object {
-                "createdAt": "mock-created-at",
-                "draftId": "mock-draft-id-2",
-                "latestVersion": "mock-latest-version",
-                "revisionCount": 1,
-                "title": "mock-title-2",
-                "updatedAt": "mock-updated-at",
-              },
-            ]
-          }
-          dense={true}
-          keyField="draftId"
-          onSelectedRowsChange={[Function]}
-          pagination={true}
-          paginationComponentOptions={
-            Object {
-              "noRowsPerPage": true,
-            }
-          }
-          paginationPerPage={100}
-          paginationRowsPerPageOptions={
-            Array [
-              100,
-            ]
-          }
-          selectableRows={true}
-          striped={true}
-          title="Modules (2 Results)"
-        >
-          react-data-table-component
-        </div>
-      </div>
-      <button
-        className="repository--button "
-        disabled={true}
-        onClick={[Function]}
-      >
-        Load stats for 0 selected modules
-      </button>
-      <div
-        className="stats"
-      />
     </section>
   </div>
 </span>

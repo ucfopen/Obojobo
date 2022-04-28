@@ -9,10 +9,17 @@ const {
 	downloadDocument
 } = require('obojobo-document-engine/src/scripts/common/util/download-document')
 
-const deleteModule = (title, draftId, deleteFn) => {
+const deleteModule = (
+	title,
+	draftId,
+	deleteFn,
+	startLoadingAnimationFn,
+	stopLoadingAnimationFn
+) => {
 	const response = confirm(`Delete "${title}" id: ${draftId} ?`) //eslint-disable-line no-alert, no-undef
 	if (!response) return
-	deleteFn(draftId)
+	startLoadingAnimationFn()
+	deleteFn(draftId).then(stopLoadingAnimationFn)
 }
 
 const ModuleOptionsDialog = props => (
@@ -66,6 +73,16 @@ const ModuleOptionsDialog = props => (
 				<div className="label">View and restore previous versions.</div>
 
 				<Button
+					id="moduleOptionsDialog-manageCollectionsButton"
+					onClick={() => {
+						props.showModuleManageCollections(props)
+					}}
+				>
+					Manage Collections
+				</Button>
+				<div className="label">Add to or remove from private collections.</div>
+
+				<Button
 					id="moduleOptionsDialog-downloadJSONButton"
 					onClick={() => {
 						downloadDocument(props.draftId, 'json')
@@ -94,7 +111,13 @@ const ModuleOptionsDialog = props => (
 					id="moduleOptionsDialog-deleteButton"
 					className="dangerous-button delete-button"
 					onClick={() => {
-						deleteModule(props.title, props.draftId, props.deleteModule)
+						deleteModule(
+							props.title,
+							props.draftId,
+							props.deleteModule,
+							props.startLoadingAnimation,
+							props.stopLoadingAnimation
+						)
 					}}
 				>
 					Delete

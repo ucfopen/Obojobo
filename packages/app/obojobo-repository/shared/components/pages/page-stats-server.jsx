@@ -20,6 +20,11 @@ const PageStatsServer = props => {
 }
 
 PageStatsServer.defaultProps = {
+	availableModules: {
+		hasFetched: false,
+		isFetching: false,
+		items: []
+	},
 	assessmentStats: {
 		hasFetched: false,
 		isFetching: false,

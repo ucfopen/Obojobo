@@ -1,0 +1,1120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard renders in MODE_RECENT with fewer modules than moduleCount, no collections 1`] = `
+<span
+  id="dashboard-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div
+        className="repository--main-content--control-bar is-not-multi-select-mode"
+      >
+        <mock-MultiButton>
+          <mock-Button>
+            New Collection
+          </mock-Button>
+          <hr />
+          <mock-Button>
+            New Module
+          </mock-Button>
+          <mock-Button>
+            New Tutorial
+          </mock-Button>
+          <mock-Button>
+            Upload...
+          </mock-Button>
+        </mock-MultiButton>
+      </div>
+      <div
+        className="repository--main-content--title repository--my-modules-title stretch-width"
+      >
+        <span>
+          My Recent Modules
+        </span>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper "
+            >
+              <div
+                className="repository--item-list--collection--module-container"
+                onClick={[Function]}
+              >
+                <mock-Module />
+              </div>
+              <div
+                className="repository--item-list--collection--module-container"
+                onClick={[Function]}
+              >
+                <mock-Module />
+              </div>
+              <div
+                className="repository--item-list--collection--module-container"
+                onClick={[Function]}
+              >
+                <mock-Module />
+              </div>
+              <div
+                className="repository--item-list--collection--module-container"
+                onClick={[Function]}
+              >
+                <mock-Module />
+              </div>
+              <div
+                className="repository--item-list--collection--module-container"
+                onClick={[Function]}
+              >
+                <mock-Module />
+              </div>
+              <mock-ButtonLink>
+                All Modules
+              </mock-ButtonLink>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="repository--main-content--title repository--my-collections-title"
+      >
+        <span>
+          My Collections
+        </span>
+        <div
+          className="repository--main-content--sort repository--collection-sort"
+        >
+          <span>
+            Sort
+          </span>
+          <select
+            onChange={[Function]}
+            value="alphabetical"
+          >
+            <option
+              value="newest"
+            >
+              Newest
+            </option>
+            <option
+              value="alphabetical"
+            >
+              Alphabetical
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper"
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Collection
+                </mock-Button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Dashboard renders with default props 1`] = `
+<span
+  id="dashboard-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div
+        className="repository--main-content--control-bar is-not-multi-select-mode"
+      >
+        <mock-MultiButton>
+          <mock-Button>
+            New Collection
+          </mock-Button>
+          <hr />
+          <mock-Button>
+            New Module
+          </mock-Button>
+          <mock-Button>
+            New Tutorial
+          </mock-Button>
+          <mock-Button>
+            Upload...
+          </mock-Button>
+        </mock-MultiButton>
+      </div>
+      <div
+        className="repository--main-content--title repository--my-modules-title stretch-width"
+      >
+        <span>
+          My Recent Modules
+        </span>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper "
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Module
+                </mock-Button>
+              </p>
+              <mock-ButtonLink>
+                All Modules
+              </mock-ButtonLink>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="repository--main-content--title repository--my-collections-title"
+      >
+        <span>
+          My Collections
+        </span>
+        <div
+          className="repository--main-content--sort repository--collection-sort"
+        >
+          <span>
+            Sort
+          </span>
+          <select
+            onChange={[Function]}
+            value="alphabetical"
+          >
+            <option
+              value="newest"
+            >
+              Newest
+            </option>
+            <option
+              value="alphabetical"
+            >
+              Alphabetical
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper"
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Collection
+                </mock-Button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Dashboard renders with mode = MODE_ALL 1`] = `
+<span
+  id="dashboard-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div
+        className="repository--main-content--control-bar is-not-multi-select-mode"
+      >
+        <mock-MultiButton>
+          <mock-Button>
+            New Collection
+          </mock-Button>
+          <hr />
+          <mock-Button>
+            New Module
+          </mock-Button>
+          <mock-Button>
+            New Tutorial
+          </mock-Button>
+          <mock-Button>
+            Upload...
+          </mock-Button>
+        </mock-MultiButton>
+        <mock-ButtonLink>
+          <div
+            className="trash-can-icon"
+          />
+          <span>
+            Deleted Modules
+          </span>
+        </mock-ButtonLink>
+        <mock-Search />
+      </div>
+      <div
+        className="repository--main-content--title repository--my-modules-title "
+      >
+        <span>
+          My Modules
+        </span>
+        <div
+          className="repository--main-content--sort repository--module-sort"
+        >
+          <span>
+            Sort
+          </span>
+          <select
+            onChange={[Function]}
+            value="alphabetical"
+          >
+            <option
+              value="newest"
+            >
+              Newest
+            </option>
+            <option
+              value="alphabetical"
+            >
+              Alphabetical
+            </option>
+            <option
+              value="last updated"
+            >
+              Last updated
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper "
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Module
+                </mock-Button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="repository--main-content--title repository--my-collections-title"
+      >
+        <span>
+          My Collections
+        </span>
+        <div
+          className="repository--main-content--sort repository--collection-sort"
+        >
+          <span>
+            Sort
+          </span>
+          <select
+            onChange={[Function]}
+            value="alphabetical"
+          >
+            <option
+              value="newest"
+            >
+              Newest
+            </option>
+            <option
+              value="alphabetical"
+            >
+              Alphabetical
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper"
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Collection
+                </mock-Button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Dashboard renders with mode = MODE_COLLECTION 1`] = `
+<span
+  id="dashboard-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div
+        className="repository--main-content--control-bar is-not-multi-select-mode"
+      >
+        <mock-MultiButton>
+          <mock-Button>
+            New Module
+          </mock-Button>
+          <mock-Button>
+            New Tutorial
+          </mock-Button>
+          <mock-Button>
+            Upload...
+          </mock-Button>
+        </mock-MultiButton>
+        <mock-Button>
+          Manage Modules
+        </mock-Button>
+        <mock-Button>
+          Rename
+        </mock-Button>
+        <mock-Button>
+          Delete Collection
+        </mock-Button>
+        <mock-Search />
+      </div>
+      <div
+        className="repository--main-content--title repository--my-modules-title "
+      >
+        <span>
+          Modules in 'Mock Collection Title'
+        </span>
+        <div
+          className="repository--main-content--sort repository--module-sort"
+        >
+          <span>
+            Sort
+          </span>
+          <select
+            onChange={[Function]}
+            value="alphabetical"
+          >
+            <option
+              value="newest"
+            >
+              Newest
+            </option>
+            <option
+              value="alphabetical"
+            >
+              Alphabetical
+            </option>
+            <option
+              value="last updated"
+            >
+              Last updated
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper "
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Module
+                </mock-Button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</span>
+`;
+
+exports[`Dashboard renders with mode = MODE_RECENT 1`] = `
+<span
+  id="dashboard-root"
+>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <h1
+        className="repository--title-banner--title"
+      />
+    </section>
+  </div>
+  <div
+    className="repository--section-wrapper"
+  >
+    <section
+      className="repository--main-content"
+    >
+      <div
+        className="repository--main-content--control-bar is-not-multi-select-mode"
+      >
+        <mock-MultiButton>
+          <mock-Button>
+            New Collection
+          </mock-Button>
+          <hr />
+          <mock-Button>
+            New Module
+          </mock-Button>
+          <mock-Button>
+            New Tutorial
+          </mock-Button>
+          <mock-Button>
+            Upload...
+          </mock-Button>
+        </mock-MultiButton>
+      </div>
+      <div
+        className="repository--main-content--title repository--my-modules-title stretch-width"
+      >
+        <span>
+          My Recent Modules
+        </span>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper "
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Module
+                </mock-Button>
+              </p>
+              <mock-ButtonLink>
+                All Modules
+              </mock-ButtonLink>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="repository--main-content--title repository--my-collections-title"
+      >
+        <span>
+          My Collections
+        </span>
+        <div
+          className="repository--main-content--sort repository--collection-sort"
+        >
+          <span>
+            Sort
+          </span>
+          <select
+            onChange={[Function]}
+            value="alphabetical"
+          >
+            <option
+              value="newest"
+            >
+              Newest
+            </option>
+            <option
+              value="alphabetical"
+            >
+              Alphabetical
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        className="repository--item-list--collection"
+      >
+        <div
+          className="repository--item-list--collection--item-wrapper"
+        >
+          <div
+            className="repository--item-list--row"
+          >
+            <div
+              className="repository--item-list--collection--item--multi-wrapper"
+            >
+              <p
+                className="repository--item-list--collection--empty-placeholder"
+              >
+                <span
+                  className="repository--item-list--collection--empty-placeholder--text"
+                >
+                  Nothing to see here!
+                </span>
+                <mock-Button>
+                  New Collection
+                </mock-Button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</span>
+`;

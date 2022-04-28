@@ -42,9 +42,18 @@ const renderEl = (props, node, index, indent) => {
 			)
 		case 'element': {
 			const ElType = node.type
+			const color = node.getColorOfFirstCharacter()
+
 			return (
-				<ElType key={key} start={node.start} style={{ listStyleType: node.listStyleType }}>
-					{renderChildren(props, node.children, indent + 1)}
+				<ElType
+					key={key}
+					start={node.start}
+					style={{
+						listStyleType: node.listStyleType,
+						color: color
+					}}
+				>
+					<span style={{ color: 'black' }}>{renderChildren(props, node.children, indent + 1)}</span>
 				</ElType>
 			)
 		}
@@ -129,7 +138,7 @@ const List = props => {
 
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
-			<TextChunk className={`obojobo-draft--chunks--list pad`}>
+			<TextChunk className={`obojobo-draft--chunks--list pad is-spacing-${data.spacing}`}>
 				<div data-indent={data.indent}>{renderEl(props, rootUl, 0, 0)}</div>
 			</TextChunk>
 		</OboComponent>

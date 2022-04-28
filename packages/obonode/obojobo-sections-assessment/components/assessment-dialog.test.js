@@ -5,6 +5,8 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import AssessmentDialog from './assessment-dialog'
+import AssessmentScoreReporter from './assessment-score-reporter'
+import AssessmentScoreReportView from './assessment-score-report-view'
 import { ERROR_INVALID_ATTEMPT_END } from '../server/error-constants'
 
 const { AssessmentMachineStates } = Viewer.stores.assessmentStore
@@ -44,17 +46,16 @@ jest.mock('obojobo-document-engine/src/scripts/viewer', () => ({
 		NavUtil: {
 			getNavLabelForModel: () => 'mock-nav-label'
 		}
-	},
-	assessment: {
-		...jest.requireActual('obojobo-document-engine/src/scripts/viewer').default.assessment,
-		AssessmentScoreReportView: function AssessmentScoreReportView() {
-			return <div>mockAssessmentScoreReportView</div>
-		},
-		AssessmentScoreReporter: () => ({
-			getReportFor: jest.fn()
-		})
 	}
 }))
+
+jest.mock('./assessment-score-reporter')
+AssessmentScoreReporter.mockImplementation(() => ({
+	getReportFor: jest.fn()
+}))
+
+jest.mock('./assessment-score-report-view')
+AssessmentScoreReportView.mockImplementation(() => <div>mockAssessmentScoreReportView</div>)
 
 describe('AssessmentDialog renders as expected', () => {
 	beforeEach(() => {
@@ -299,17 +300,19 @@ describe('AssessmentDialog renders as expected', () => {
 				}
 			}
 		}
-		const spy = jest.spyOn(AssessmentUtil, 'startAttempt').mockReturnValue({})
+		Object.defineProperty(window, 'location', {
+			value: { reload: jest.fn() }
+		})
 
-		expect(AssessmentUtil.startAttempt).not.toHaveBeenCalled()
+		expect(window.location.reload).not.toHaveBeenCalled()
 
 		const component = renderer.create(<AssessmentDialog {...props} />)
 		const button = component.root.findAllByType('button')[1]
 		button.props.onClick()
 
-		expect(AssessmentUtil.startAttempt).toHaveBeenCalledWith(props.assessmentModel)
+		expect(window.location.reload).toHaveBeenCalled()
 
-		spy.mockRestore()
+		// spy.mockRestore()
 	})
 
 	test('END_ATTEMPT_SUCCESSFUL, clicking ok closes the dialog', () => {

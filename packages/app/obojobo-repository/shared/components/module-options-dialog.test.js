@@ -32,7 +32,7 @@ describe('ModuleOptionsDialog', () => {
 		window.confirm = originalConfirm
 	})
 
-	test('ModuleOptionsDialog renders correctly with standard expected props', () => {
+	test('renders correctly with standard expected props', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
@@ -50,6 +50,18 @@ describe('ModuleOptionsDialog', () => {
 
 		expect(defaultProps.showModulePermissions).toHaveBeenCalledTimes(1)
 		expect(defaultProps.showModulePermissions).toHaveBeenCalledWith(defaultProps)
+	})
+
+	test('"Manage Collections" button calls showModuleManageCollections', () => {
+		defaultProps.showModuleManageCollections = jest.fn()
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		component.root
+			.findByProps({ id: 'moduleOptionsDialog-manageCollectionsButton' })
+			.props.onClick()
+
+		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledTimes(1)
+		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledWith(defaultProps)
 	})
 
 	test('"Version History" button calls showVersionHistory', () => {
@@ -111,7 +123,9 @@ describe('ModuleOptionsDialog', () => {
 	})
 
 	test('"Delete" button brings up confirmation dialog, confirmed', () => {
-		defaultProps.deleteModule = jest.fn()
+		defaultProps.deleteModule = jest.fn(() => Promise.resolve())
+		defaultProps.startLoadingAnimation = jest.fn()
+		defaultProps.stopLoadingAnimation = jest.fn()
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		window.confirm = jest.fn()

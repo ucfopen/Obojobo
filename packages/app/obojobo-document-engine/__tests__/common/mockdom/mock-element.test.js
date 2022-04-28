@@ -109,4 +109,29 @@ describe('MockElement', () => {
 		expect(root.firstChild).toBe(childA)
 		expect(root.lastChild).toBe(childC)
 	})
+
+	test('getColorOfFirstCharacter returns expected color if node is a list element', () => {
+		const root = new MockElement('root')
+		const li = new MockElement('li')
+
+		root.addChild(li)
+
+		li.addChild({
+			text: {
+				styleList: {
+					styles: [
+						{ type: 'mock', start: 12 },
+						{ type: 'underline', start: 1 },
+						{ type: 'color', start: 0, data: { text: '#ccc' } }
+					]
+				}
+			}
+		})
+
+		const rootColor = root.getColorOfFirstCharacter()
+		expect(rootColor).toBe('#000')
+
+		const liColor = li.getColorOfFirstCharacter()
+		expect(liColor).toBe('#ccc')
+	})
 })

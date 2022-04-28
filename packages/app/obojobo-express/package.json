@@ -1,14 +1,14 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "13.0.1",
+	"version": "15.0.0-alpha.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
 	"scripts": {
 		"start": "./bin/start_obojobo_server",
 		"build": "webpack --mode production",
-		"db:initdocker": "docker run --name db_postgres -e POSTGRES_PASSWORD=mysecretpassword -d --restart=unless-stopped -p 5432:5432 postgres:9.6.21-alpine",
+		"db:initdocker": "docker run --name db_postgres -e POSTGRES_PASSWORD=mysecretpassword -d --restart=unless-stopped -p 5432:5432 postgres:13.3-alpine",
 		"db:reset": "obojobo-migrate reset",
 		"db:migrateup": "obojobo-migrate up",
 		"db:migratedown": "obojobo-migrate down",
@@ -40,7 +40,6 @@
 	},
 	"dependencies": {
 		"body-parser": "^1.19.0",
-		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js.git#v1.0.0",
 		"camelcase": "^6.2.0",
 		"camelcase-keys": "^6.1.0",
 		"compression": "^1.7.4",
@@ -70,9 +69,9 @@
 		"uuid": "^8.3.2"
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^13.0.1",
-		"obojobo-document-xml-parser": "^13.0.1",
-		"obojobo-lib-utils": "^13.0.1"
+		"obojobo-document-engine": "^15.0.0-alpha.0",
+		"obojobo-document-xml-parser": "^15.0.0-alpha.0",
+		"obojobo-lib-utils": "^15.0.0-alpha.0"
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^5.5.0",
@@ -82,7 +81,7 @@
 		"css-loader": "^5.2.0",
 		"express-list-endpoints": "^5.0.0",
 		"mini-css-extract-plugin": "^1.4.0",
-		"node-sass": "^5.0.0",
+		"node-sass": "^7.0.0",
 		"oauth-signature": "^1.5.0",
 		"postcss-loader": "^5.2.0",
 		"sass-loader": "^11.0.1",

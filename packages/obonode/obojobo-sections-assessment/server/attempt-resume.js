@@ -1,6 +1,5 @@
 const AssessmentModel = require('./models/assessment')
 const attemptStart = require('./attempt-start')
-const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
 const insertEvents = require('./insert-events')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -55,7 +54,6 @@ const resumeAttempt = async (
 		}
 	}
 
-	const { createAssessmentAttemptResumedEvent } = createCaliperEvent(null, hostname)
 	await insertEvent({
 		action: 'assessment:attemptResume',
 		actorTime: new Date().toISOString(),
@@ -70,14 +68,7 @@ const resumeAttempt = async (
 		draftId: currentDocument.draftId,
 		contentId: currentDocument.contentId,
 		eventVersion: '1.2.0',
-		isPreview: currentVisit.is_preview,
-		caliperPayload: createAssessmentAttemptResumedEvent({
-			actor: { type: 'user', id: currentUser.id },
-			draftId: currentDocument.draftId,
-			contentId: currentDocument.contentId,
-			assessmentId: attempt.assessmentId,
-			attemptId: attempt.id
-		})
+		isPreview: currentVisit.is_preview
 	})
 
 	// update response

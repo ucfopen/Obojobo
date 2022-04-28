@@ -98,6 +98,7 @@ Object {
     "listStyles": Object {
       "indents": Object {},
     },
+    "spacing": "compact",
     "textGroup": Array [
       Object {
         "text": Object {
@@ -225,6 +226,7 @@ Object {
       "indents": Object {},
       "type": "unordered",
     },
+    "spacing": "moderate",
     "textGroup": Array [
       Object {
         "text": Object {

@@ -25,7 +25,7 @@ describe('Server Events', () => {
 
 		require('./events')
 
-		expect(oboEvents.on).toHaveBeenCalledTimes(5)
+		expect(oboEvents.on).toHaveBeenCalledTimes(4)
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_NOT_AUTHORIZED', expect.any(Function))
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_NOT_FOUND', expect.any(Function))
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_UNEXPECTED', expect.any(Function))
@@ -36,7 +36,7 @@ describe('Server Events', () => {
 		expect(oboEvents.on).toHaveBeenCalledWith(DraftModel.EVENT_DRAFT_DELETED, expect.any(Function))
 	})
 
-	test('maps a user to a module when its created', () => {
+	test("maps a user to a module when it's created", () => {
 		// verify we have the right callback
 		const [eventName, newDraftListener] = oboEvents.on.mock.calls[0]
 		expect(eventName).toBe(DraftModel.EVENT_NEW_DRAFT_CREATED)
@@ -49,22 +49,9 @@ describe('Server Events', () => {
 		expect(db.none.mock.calls[0][0]).toContain('INSERT INTO repository_map_user_to_draft')
 	})
 
-	test('cleans ownership when a draft is deleted', () => {
-		// verify we have the right callback
-		const [eventName, deleteDraftListener] = oboEvents.on.mock.calls[1]
-		expect(eventName).toBe(DraftModel.EVENT_DRAFT_DELETED)
-		expect(deleteDraftListener.length).toBe(0) // callback function arguments
-		expect(db.none).toHaveBeenCalledTimes(0)
-
-		// call the callback
-		deleteDraftListener()
-		expect(db.none).toHaveBeenCalledTimes(1)
-		expect(db.none.mock.calls[0][0]).toContain('DELETE FROM repository_map_user_to_draft')
-	})
-
 	test('HTTP_NOT_AUTHORIZED events render a page', () => {
 		// verify we have the right callback
-		const [eventName, notAuthorizedListener] = oboEvents.on.mock.calls[2]
+		const [eventName, notAuthorizedListener] = oboEvents.on.mock.calls[1]
 		expect(eventName).toBe('HTTP_NOT_AUTHORIZED')
 		expect(notAuthorizedListener.length).toBe(1) // callback function arguments
 
@@ -86,7 +73,7 @@ describe('Server Events', () => {
 
 	test('HTTP_NOT_FOUND events render a page', () => {
 		// verify we have the right callback
-		const [eventName, notFoundListener] = oboEvents.on.mock.calls[3]
+		const [eventName, notFoundListener] = oboEvents.on.mock.calls[2]
 		expect(eventName).toBe('HTTP_NOT_FOUND')
 		expect(notFoundListener.length).toBe(1) // callback function arguments
 
@@ -108,7 +95,7 @@ describe('Server Events', () => {
 
 	test('HTTP_UNEXPECTED events render a page', () => {
 		// verify we have the right callback
-		const [eventName, unexpectedListener] = oboEvents.on.mock.calls[4]
+		const [eventName, unexpectedListener] = oboEvents.on.mock.calls[3]
 		expect(eventName).toBe('HTTP_UNEXPECTED')
 		expect(unexpectedListener.length).toBe(1) // callback function arguments
 

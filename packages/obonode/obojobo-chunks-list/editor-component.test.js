@@ -42,7 +42,8 @@ describe('List Editor Node', () => {
 			editor: {},
 			element: {
 				content: {
-					listStyles: {}
+					listStyles: {},
+					spacing: 'compact'
 				}
 			}
 		}
@@ -69,7 +70,8 @@ describe('List Editor Node', () => {
 			},
 			element: {
 				content: {
-					listStyles: {}
+					listStyles: {},
+					spacing: 'compact'
 				}
 			}
 		}
