@@ -31,7 +31,7 @@ const NewIframeModal = props => {
 		if (props.content.src) {
 			// The user clicked on the Change... button (They are coming from
 			// the edit-iframe-modal)
-			handleSourceChange({ target: { value: props.content.src }})
+			handleSourceChange({ target: { value: props.content.src } })
 		}
 
 		focusOnFirstElement()

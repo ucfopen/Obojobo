@@ -56,10 +56,7 @@ class EditIframeModal extends React.Component {
 	componentDidMount() {
 		this.changeBtnRef.current.focus()
 
-		this.updateSettingsBasedOnContentType(
-			this.state.contentType,
-			!this.state.controlsChanged
-		)
+		this.updateSettingsBasedOnContentType(this.state.contentType, !this.state.controlsChanged)
 
 		// Setting styles of selected inputs based on props from new-iframe-modal
 		this.handleSizingClickStyle(this.state.sizing)

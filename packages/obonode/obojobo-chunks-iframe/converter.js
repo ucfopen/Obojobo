@@ -26,8 +26,8 @@ const slateToObo = node => {
 			autoload: node.content.autoload,
 			controls: node.content.controls,
 			sizing: node.content.sizing,
-            contentType: node.content.contentType,
-            controlsChanged: node.content.controlsChanged
+			contentType: node.content.contentType,
+			controlsChanged: node.content.controlsChanged
 		})
 	}
 

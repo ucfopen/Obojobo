@@ -341,7 +341,7 @@ describe('EditIframeModal', () => {
 			<EditIFrameModal
 				content={{
 					src: '',
-					contentType: IFrameContentTypes.MEDIA,
+					contentType: IFrameContentTypes.MEDIA
 				}}
 			/>
 		)
