@@ -1,15 +1,11 @@
 import './youtube-properties-modal.scss'
 
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
-const { SimpleDialog } = Common.components.modal
 import {
 	parseURLOrEmbedCode,
 	getStandardizedURLFromVideoId
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/url-embed-code-check'
-import { parseYouTubeURL, getStandardizedURLFromVideoId } from './parse-youtube-url'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
-
 import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
 
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
