@@ -41,7 +41,7 @@ class ObjectiveItem extends React.Component {
 	}
 
 	handleCheckboxChange() {
-		this.props.onCheck(this.state.objectiveId)
+		this.props.onCheck({ id: this.state.objectiveId, description: this.state.objectiveDescription, label: this.state.objectiveLabel })
 		this.setState({ selected: !this.state.selected })
 	}
 
