@@ -77,7 +77,7 @@ class ObjectiveListModal extends React.Component {
 		this.addObjective(newObjectiveObject)
 
 		this.setState(prevState => ({
-			objectives: prevState.objectives.concat({ objectiveId: id }),
+			objectives: prevState.objectives.concat(newObjectiveObject),
 			globalObjectives: prevState.globalObjectives.concat(newObjectiveObject),
 			newObjective: false
 		}))
@@ -105,7 +105,7 @@ class ObjectiveListModal extends React.Component {
 		this.updateObjective(id, label, description)
 	}
 
-	onCheck(id) {
+	onCheck({ id, label, description }) {
 		if (this.state.objectives.filter(o => o.objectiveId === id).length) {
 			// local objectives contain objective with objectiveId = 'id' so remove it, since deselecting it
 			this.setState(prevState => ({
@@ -114,7 +114,7 @@ class ObjectiveListModal extends React.Component {
 		} else {
 			// local doesn't contain objective with objectiveId = 'id' so add it
 			this.setState(prevState => ({
-				objectives: prevState.objectives.concat({ objectiveId: id })
+				objectives: prevState.objectives.concat({ objectiveId: id, objectiveLabel: label, description })
 			}))
 		}
 	}
