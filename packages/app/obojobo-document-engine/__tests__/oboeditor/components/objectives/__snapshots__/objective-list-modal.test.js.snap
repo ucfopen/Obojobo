@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Objective List Modal ObjectiveListModal allows checkbox deselection 1`] = `ReactWrapper {}`;
+
+exports[`Objective List Modal ObjectiveListModal allows checkbox selection 1`] = `ReactWrapper {}`;
+
+exports[`Objective List Modal ObjectiveListModal cancels edit mode 1`] = `ReactWrapper {}`;
+
+exports[`Objective List Modal ObjectiveListModal cancels new objective creation 1`] = `ReactWrapper {}`;
+
+exports[`Objective List Modal ObjectiveListModal renders correctly 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog "
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+      tabIndex="-1"
+    >
+      <input
+        aria-label="Start of dialog"
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <h1
+          className="heading"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Objective Library
+        </h1>
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            className="objective-list-header"
+          >
+            <div
+              className="objective-list-subheader"
+            >
+              <p>
+                Select one or more objectives that apply to this item
+              </p>
+            </div>
+          </div>
+          <div
+            className="objective-list-modal"
+          >
+            <div>
+              <div
+                className="objective-block is-not-objective-label-selected"
+              >
+                <div
+                  className="objective-content"
+                  name="objective-content"
+                >
+                  <input
+                    checked={false}
+                    id="mock-id-1"
+                    name="objectives[]"
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                  <div
+                    className="objective-label"
+                    onClick={[Function]}
+                  >
+                    mock-label-1
+                  </div>
+                  <div
+                    className="objective-description"
+                    onClick={[Function]}
+                  />
+                </div>
+                <div
+                  className="objective-options"
+                >
+                  <span>
+                    <a
+                      className="edit-link"
+                      onClick={[Function]}
+                    >
+                      Edit
+                    </a>
+                  </span>
+                  <span>
+                    <div
+                      className="close-btn"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="obojobo-draft--components--delete-button"
+                      >
+                        <button>
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                className="objective-block is-not-objective-label-selected"
+              >
+                <div
+                  className="objective-content"
+                  name="objective-content"
+                >
+                  <input
+                    checked={false}
+                    id="mock-id-2"
+                    name="objectives[]"
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                  <div
+                    className="objective-label"
+                    onClick={[Function]}
+                  >
+                    mock-label-2
+                  </div>
+                  <div
+                    className="objective-description"
+                    onClick={[Function]}
+                  />
+                </div>
+                <div
+                  className="objective-options"
+                >
+                  <span>
+                    <a
+                      className="edit-link"
+                      onClick={[Function]}
+                    >
+                      Edit
+                    </a>
+                  </span>
+                  <span>
+                    <div
+                      className="close-btn"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="obojobo-draft--components--delete-button"
+                      >
+                        <button>
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              className="button"
+            >
+              <div
+                className="obojobo-draft--components--button is-not-dangerous align-center"
+                contentEditable={false}
+              >
+                <button
+                  className="button"
+                  contentEditable={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  + Create Objective
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        aria-label="End of dialog"
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Objective Input ObjectiveInput renders correctly 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog "
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+      tabIndex="-1"
+    >
+      <input
+        aria-label="Start of dialog"
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <h1
+          className="heading"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Create New Objective
+        </h1>
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            className="objective-container"
+          >
+            <div>
+              <label
+                htmlFor="objective-label"
+                style={
+                  Object {
+                    "marginRight": "1.5em",
+                  }
+                }
+              >
+                Label:
+              </label>
+              <input
+                className="objective-input"
+                id="objective-label"
+                onChange={[Function]}
+                placeholder="This objective's label (1.2, A, B, etc...) "
+                type="text"
+                value=""
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="objective-input"
+                style={
+                  Object {
+                    "marginRight": "1.5em",
+                  }
+                }
+              >
+                Objective:
+              </label>
+              <input
+                className="objective-input--objective"
+                id="objective-input"
+                onChange={[Function]}
+                placeholder="Type your objective here..."
+                type="text"
+                value=""
+              />
+            </div>
+            <span
+              className="objective-error"
+            >
+              
+            </span>
+          </div>
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[MockFunction]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        aria-label="End of dialog"
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;

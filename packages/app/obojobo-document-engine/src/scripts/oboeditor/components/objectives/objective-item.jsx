@@ -14,7 +14,7 @@ class ObjectiveItem extends React.Component {
 			selected: false
 		}
 
-		this.sendData = this.sendData.bind(this)
+		// this.sendData = this.sendData.bind(this)
 		this.deleteObjective = this.deleteObjective.bind(this)
 		this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
 	}
@@ -28,10 +28,10 @@ class ObjectiveItem extends React.Component {
 		})
 	}
 
-	sendData() {
-		this.props.onUpdate(this.state.objectiveId, this.state.objectiveDescription)
-		this.setState({ editMode: false })
-	}
+	// sendData() {
+	// 	this.props.onUpdate(this.state.objectiveId, this.state.objectiveDescription)
+	// 	this.setState({ editMode: false })
+	// }
 
 	deleteObjective() {
 		// eslint-disable-next-line no-alert
@@ -51,6 +51,7 @@ class ObjectiveItem extends React.Component {
 				<DeleteButton />
 			</div>
 		)
+
 		const editButton = (
 			<a
 				className="edit-link"

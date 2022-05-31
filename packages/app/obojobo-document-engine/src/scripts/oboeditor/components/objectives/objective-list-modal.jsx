@@ -22,14 +22,14 @@ class ObjectiveListModal extends React.Component {
 		this.state.newObjective = false
 
 		this.state.editMode = false
-		this.state.editData = null
+		this.state.editData = { id: '', label: '', description: '' }
 
 		this.addObjective = this.props.objectiveContext.addObjective
 		this.removeObjective = this.props.objectiveContext.removeObjective
 		this.updateObjective = this.props.objectiveContext.updateObjective
 
 		this.createNewObjective = this.createNewObjective.bind(this)
-		this.handleObjectiveInput = this.handleObjectiveInput.bind(this)
+		// this.handleObjectiveInput = this.handleObjectiveInput.bind(this)
 
 		this.objectiveListHeader = (
 			<div className="objective-list-header">
@@ -83,9 +83,9 @@ class ObjectiveListModal extends React.Component {
 		}))
 	}
 
-	handleObjectiveInput(objective) {
-		this.setState({ newObjectiveInput: objective.target.value })
-	}
+	// handleObjectiveInput(objective) {
+	// 	this.setState({ newObjectiveInput: objective.target.value })
+	// }
 
 	initializeEdit(data) {
 		this.setState({ editMode: true, editData: data })

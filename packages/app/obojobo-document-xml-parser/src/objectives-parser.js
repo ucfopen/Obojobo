@@ -3,6 +3,7 @@ const parseObjectives = el => {
 		if (objectivesEl.value === null) {
 			return { objectiveId: objectivesEl.attributes.id }
 		}
+
 		return {
 			objectiveId: objectivesEl.attributes.id,
 			objectiveLabel: objectivesEl.attributes.label,
