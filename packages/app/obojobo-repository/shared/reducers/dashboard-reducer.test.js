@@ -17,11 +17,29 @@ const {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	BULK_DELETE_MODULES,
+	BULK_ADD_MODULES_TO_COLLECTIONS,
+	BULK_REMOVE_MODULES_FROM_COLLECTION,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
+	FILTER_COLLECTIONS,
 	SELECT_MODULES,
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
+	CREATE_NEW_COLLECTION,
+	SHOW_MODULE_MANAGE_COLLECTIONS,
+	LOAD_MODULE_COLLECTIONS,
+	MODULE_ADD_TO_COLLECTION,
+	MODULE_REMOVE_FROM_COLLECTION,
+	SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
+	SHOW_COLLECTION_MANAGE_MODULES,
+	LOAD_COLLECTION_MODULES,
+	COLLECTION_ADD_MODULE,
+	COLLECTION_REMOVE_MODULE,
+	LOAD_MODULE_SEARCH,
+	CLEAR_MODULE_SEARCH_RESULTS,
+	SHOW_COLLECTION_RENAME,
+	RENAME_COLLECTION,
+	DELETE_COLLECTION,
 	SHOW_VERSION_HISTORY,
 	SHOW_ASSESSMENT_SCORE_DATA,
 	RESTORE_VERSION,
@@ -49,6 +67,119 @@ describe('Dashboard Reducer', () => {
 	beforeEach(() => {
 		Pack.handle.mockClear()
 	})
+
+	const runCreateOrDeleteCollectionActionTest = (testAction, testFilter = false) => {
+		const mockCollectionList = [
+			{
+				id: 'mockCollectionId',
+				title: '' // filtering logic has a branch for empty titles that needs covering
+			},
+			{
+				id: 'mockCollectionId2',
+				title: 'B Mock Collection'
+			}
+		]
+
+		const initialState = {
+			collectionSearchString: testFilter ? 'B' : '',
+			myCollections: [
+				{
+					id: 'oldMockCollectionId',
+					title: 'Old Mock Collection'
+				}
+			],
+			filteredCollections: [
+				{
+					id: 'oldMockCollectionId',
+					title: 'Old Mock Collection'
+				}
+			]
+		}
+		const action = {
+			type: testAction,
+			// this action occurs after a new collection is created and the current user's
+			//  collections are queried - so it will contain a list of collections
+			payload: {
+				value: mockCollectionList
+			}
+		}
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+		expect(newState.myCollections).not.toEqual(initialState.myCollections)
+		expect(newState.myCollections).toEqual(mockCollectionList)
+
+		// empty collectionSearchString = no filtering
+		if (testFilter) {
+			expect(newState.filteredCollections).not.toEqual(initialState.filteredCollections)
+			expect(newState.filteredCollections).toEqual([{ ...mockCollectionList[1] }])
+		} else {
+			expect(newState.filteredCollections).not.toEqual(initialState.filteredCollections)
+			expect(newState.filteredCollections).toEqual(mockCollectionList)
+		}
+	}
+
+	const runRenameCollectionActionTest = (testFilter = false, testSameCollection = false) => {
+		const mockCollectionList = [
+			{
+				id: 'mockCollectionId',
+				title: 'A Mock Collection'
+			},
+			{
+				id: 'mockCollectionId2',
+				title: 'B Mock Collection'
+			}
+		]
+
+		const initialState = {
+			collectionSearchString: testFilter ? 'B' : '',
+			myCollections: [
+				{
+					id: 'oldMockCollectionId',
+					title: 'Old Mock Collection'
+				}
+			],
+			filteredCollections: [
+				{
+					id: 'oldMockCollectionId',
+					title: 'Old Mock Collection'
+				}
+			],
+			collection: {
+				id: 'collectionId',
+				title: 'Collection Title'
+			}
+		}
+		const action = {
+			type: RENAME_COLLECTION,
+			meta: {
+				changedCollectionTitle: 'New Collection Title',
+				changedCollectionId: 'collectionId',
+				// eslint-disable-next-line no-undefined
+				currentCollectionId: testSameCollection ? 'collectionId' : undefined
+			},
+			payload: {
+				value: mockCollectionList
+			}
+		}
+		const handler = dashboardReducer(initialState, action)
+		// RENAME_COLLECTION is an asynchronous action - state changes on success
+		const newState = handleSuccess(handler)
+		expect(newState.myCollections).not.toEqual(initialState.myCollections)
+		expect(newState.myCollections).toEqual(mockCollectionList)
+		if (testFilter) {
+			expect(newState.filteredCollections).not.toEqual(initialState.filteredCollections)
+			expect(newState.filteredCollections).toEqual([{ ...mockCollectionList[1] }])
+		} else {
+			expect(newState.filteredCollections).not.toEqual(initialState.filteredCollections)
+			expect(newState.filteredCollections).toEqual(mockCollectionList)
+		}
+		const expectedCollectionTitle = testSameCollection
+			? 'New Collection Title'
+			: initialState.collection.title
+		expect(newState.collection.title).toEqual(expectedCollectionTitle)
+	}
 
 	const runCreateOrDeleteModuleActionTest = testAction => {
 		const isDeleteModuleTest = testAction === DELETE_MODULE
@@ -84,7 +215,10 @@ describe('Dashboard Reducer', () => {
 			// this action occurs after the current user's modules are
 			//  queried - so it will contain a list of modules
 			payload: {
-				value: mockModuleList
+				value: {
+					allCount: mockModuleList.length,
+					modules: mockModuleList
+				}
 			}
 		}
 
@@ -146,6 +280,7 @@ describe('Dashboard Reducer', () => {
 			draftPermissions: {
 				mockDraftId: mockInitialDraftPermissions
 			},
+			moduleCount: mockModuleList.length + 1,
 			myModules: [
 				...mockModuleList,
 				{
@@ -155,7 +290,10 @@ describe('Dashboard Reducer', () => {
 			]
 		}
 
-		const modulePayload = mockModuleList
+		const modulePayload = {
+			allCount: mockModuleList.length,
+			modules: mockModuleList
+		}
 
 		const action = {
 			type: testAction,
@@ -185,10 +323,117 @@ describe('Dashboard Reducer', () => {
 			items: mockUserList
 		})
 		if (testModules) {
+			expect(newState.moduleCount).not.toEqual(initialState.moduleCount)
+			expect(newState.myModules).not.toEqual(initialState.myModules)
+			expect(newState.moduleCount).toEqual(mockModuleList.length)
+			expect(newState.myModules).toEqual(mockModuleList)
+		}
+	}
+
+	const runModuleCollectionActions = testAction => {
+		const mockCollectionList = [
+			{
+				id: 'mockCollectionId',
+				title: 'Mock Collection Title'
+			},
+			{
+				id: 'mockCollectionId2',
+				title: 'Mock Collection Title 2'
+			}
+		]
+
+		const initialState = {
+			draftCollections: [{ ...mockCollectionList[0] }]
+		}
+
+		const action = {
+			type: testAction,
+			payload: {
+				value: mockCollectionList
+			}
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+		expect(newState.draftCollections).not.toEqual(initialState.draftCollections)
+		expect(newState.draftCollections).toEqual(mockCollectionList)
+	}
+
+	const runCollectionModuleActions = (testAction, testCurrentCollection = false) => {
+		const mockModuleList = [
+			{
+				draftId: 'mockModuleId',
+				title: 'Mock Collection Title'
+			},
+			{
+				draftId: 'mockModuleId2',
+				title: 'Mock Collection Title 2'
+			}
+		]
+
+		const initialState = {
+			collectionModules: [{ ...mockModuleList[0] }],
+			// eslint-disable-next-line no-undefined
+			myModules: testCurrentCollection ? [{ ...mockModuleList[0] }] : undefined
+		}
+
+		const action = {
+			type: testAction,
+			meta: {
+				changedCollectionId: 'mockCollectionId',
+				// eslint-disable-next-line no-undefined
+				currentCollectionId: testCurrentCollection ? 'mockCollectionId' : undefined
+			},
+			payload: {
+				value: {
+					allCount: mockModuleList.length,
+					modules: mockModuleList
+				}
+			}
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+		expect(newState.collectionModules).not.toEqual(initialState.collectionModules)
+		expect(newState.collectionModules).toEqual(mockModuleList)
+		if (testCurrentCollection) {
 			expect(newState.myModules).not.toEqual(initialState.myModules)
 			expect(newState.myModules).toEqual(mockModuleList)
 		}
 	}
+
+	test('CREATE_NEW_COLLECTION action modifies state correctly - no filter', () => {
+		runCreateOrDeleteCollectionActionTest(CREATE_NEW_COLLECTION)
+	})
+	test('CREATE_NEW_COLLECTION action modifies state correctly - filter', () => {
+		runCreateOrDeleteCollectionActionTest(CREATE_NEW_COLLECTION, true)
+	})
+	//DELETE_COLLECTION and CREATE_NEW_COLLECTION should have identical results based on inputs
+	test('DELETE_COLLECTION action modifies state correctly - no filter', () => {
+		runCreateOrDeleteCollectionActionTest(DELETE_COLLECTION)
+	})
+	test('DELETE_COLLECTION action modifies state correctly - filter', () => {
+		runCreateOrDeleteCollectionActionTest(DELETE_COLLECTION, true)
+	})
+
+	// more or less the same as CREATE_NEW_COLLECTION, but will make additional state
+	//  adjustment if currentCollectionId === changedCollectionId
+	test('RENAME_COLLECTION action modifies state correctly - no filter, not same collection', () => {
+		runRenameCollectionActionTest()
+	})
+	test('RENAME_COLLECTION action modifies state correctly - no filter, same collection', () => {
+		runRenameCollectionActionTest(false, true)
+	})
+	test('RENAME_COLLECTION action modifies state correctly - filter, not same collection', () => {
+		runRenameCollectionActionTest(true)
+	})
+	test('RENAME_COLLECTION action modifies state correctly - filter, same collection', () => {
+		runRenameCollectionActionTest(true, true)
+	})
 
 	test('CREATE_NEW_MODULE action modifies state correctly', () => {
 		runCreateOrDeleteModuleActionTest(CREATE_NEW_MODULE)
@@ -232,7 +477,10 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: BULK_DELETE_MODULES,
 			payload: {
-				value: mockModuleList
+				value: {
+					modules: mockModuleList,
+					allCount: mockModuleList.length
+				}
 			}
 		}
 
@@ -242,6 +490,74 @@ describe('Dashboard Reducer', () => {
 		expect(newState.myModules).not.toEqual(initialState.myModules)
 		expect(newState.myModules).toEqual(mockModuleList)
 		expect(newState.filteredModules).toEqual(mockModuleList)
+		expect(newState.selectedModules).toEqual([])
+		expect(newState.multiSelectMode).toBe(false)
+	})
+
+	test('BULK_ADD_MODULES_TO_COLLECTIONS action modifies state correctly', () => {
+		const initialState = {
+			multiSelectMode: true,
+			selectedModules: ['mockDraftId1', 'mockDraftId2']
+		}
+
+		const action = {
+			type: BULK_ADD_MODULES_TO_COLLECTIONS
+		}
+
+		// BULK_ADD_MODULES_TO_COLLECTIONS is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.selectedModules).toEqual([])
+		expect(newState.multiSelectMode).toBe(false)
+	})
+
+	test('BULK_REMOVE_MODULES_FROM_COLLECTION action modifies state correctly', () => {
+		const mockModuleList = [
+			{
+				draftId: 'mockDraftId2',
+				title: 'Mock Module 2'
+			}
+		]
+
+		const oldModules = [
+			{
+				draftId: 'mockDraftId1',
+				title: 'Mock Module 1'
+			},
+			{
+				draftId: 'mockDraftId2',
+				title: 'Mock Module 2'
+			},
+			{
+				draftId: 'mockDraftId3',
+				title: 'Mock Module 3'
+			}
+		]
+
+		const initialState = {
+			multiSelectMode: true,
+			selectedModules: ['mockDraftId1', 'mockDraftId3'],
+			myModules: [...oldModules],
+			moduleCount: oldModules.length,
+			collectionModules: [...oldModules]
+		}
+
+		const action = {
+			type: BULK_REMOVE_MODULES_FROM_COLLECTION,
+			payload: {
+				value: {
+					modules: mockModuleList,
+					allCount: mockModuleList.length
+				}
+			}
+		}
+
+		const handler = dashboardReducer(initialState, action)
+
+		const newState = handleSuccess(handler)
+		expect(newState.myModules).not.toEqual(initialState.myModules)
+		expect(newState.myModules).toEqual(mockModuleList)
+		expect(newState.moduleCount).toEqual(mockModuleList.length)
+		expect(newState.collectionModules).toEqual(mockModuleList)
 		expect(newState.selectedModules).toEqual([])
 		expect(newState.multiSelectMode).toBe(false)
 	})
@@ -343,6 +659,38 @@ describe('Dashboard Reducer', () => {
 		expect(newState.moduleSearchString).toBe('B')
 	})
 
+	test('FILTER_COLLECTIONS action modifies state correctly', () => {
+		const initialState = {
+			collectionSearchString: 'oldSearchString',
+			myCollections: [
+				{
+					id: 'mockCollectionId',
+					title: 'A Mock Collection'
+				},
+				{
+					id: 'mockCollectionId2',
+					title: 'B Mock Collection'
+				}
+			],
+			filteredCollections: [
+				{
+					id: 'oldMockCollectionId',
+					title: 'Old Mock Collection'
+				}
+			]
+		}
+		const action = {
+			type: FILTER_COLLECTIONS,
+			searchString: 'B'
+		}
+
+		// FILTER_COLLECTIONS is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.myCollections).toEqual(initialState.myCollections)
+		expect(newState.filteredCollections).toEqual([{ ...initialState.myCollections[1] }])
+		expect(newState.collectionSearchString).toBe('B')
+	})
+
 	test('SELECT_MODULES action modifies state correctly', () => {
 		const initialState = {
 			multiSelectMode: false,
@@ -431,6 +779,16 @@ describe('Dashboard Reducer', () => {
 		runModuleUserActionTest(ADD_USER_TO_MODULE)
 	})
 
+	test('LOAD_MODULE_COLLECTIONS action modifies state correctly', () => {
+		runModuleCollectionActions(LOAD_MODULE_COLLECTIONS)
+	})
+	test('MODULE_ADD_TO_COLLECTION action modifies state correctly', () => {
+		runModuleCollectionActions(MODULE_ADD_TO_COLLECTION)
+	})
+	test('MODULE_REMOVE_FROM_COLLECTION action modifies state correctly', () => {
+		runModuleCollectionActions(MODULE_REMOVE_FROM_COLLECTION)
+	})
+
 	test('LOAD_USER_SEARCH action modifies state correctly', () => {
 		const initialState = {
 			shareSearchString: 'oldSearchString',
@@ -470,6 +828,172 @@ describe('Dashboard Reducer', () => {
 		expect(newState.searchPeople).toEqual({
 			items: mockUserList
 		})
+	})
+
+	test('SHOW_MODULE_MANAGE_COLLECTIONS action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			selectedModule: {
+				draftId: 'someMockDraftId',
+				title: 'Some Mock Module Title'
+			}
+		}
+		const mockSelectedModule = {
+			draftId: 'otherMockDraftId',
+			title: 'Some Other Mock Module Title'
+		}
+		const action = {
+			type: SHOW_MODULE_MANAGE_COLLECTIONS,
+			module: mockSelectedModule
+		}
+
+		// SHOW_MODULE_MANAGE_COLLECTIONS is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.dialog).toBe('module-manage-collections')
+		expect(newState.selectedModule).not.toEqual(initialState.selectedModule)
+		expect(newState.selectedModule).toEqual(mockSelectedModule)
+	})
+
+	test('SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			selectedModules: []
+		}
+
+		const mockSelectedModules = ['mockDraftId1', 'mockDraftId2']
+
+		const action = {
+			type: SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG,
+			selectedModules: mockSelectedModules
+		}
+
+		// SHOW_COLLECTION_BULK_ADD_MODULES_DIALOG is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.dialog).toBe('collection-bulk-add-modules')
+		expect(newState.selectedModules).toEqual(mockSelectedModules)
+	})
+
+	test('SHOW_COLLECTION_MANAGE_MODULES action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			selectedCollection: {
+				id: 'someMockCollectionId',
+				title: 'Some Mock Collection Title'
+			},
+			searchModules: null
+		}
+		const mockSelectedCollection = {
+			id: 'otherMockCollectionId',
+			title: 'Some Other Mock Collection Title'
+		}
+		const action = {
+			type: SHOW_COLLECTION_MANAGE_MODULES,
+			collection: mockSelectedCollection
+		}
+
+		// SHOW_COLLECTION_MANAGE_MODULES is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.dialog).toBe('collection-manage-modules')
+		expect(newState.selectedCollection).not.toEqual(initialState.selectedCollection)
+		expect(newState.selectedCollection).toEqual(mockSelectedCollection)
+		expect(newState.searchModules).toEqual({ ...defaultSearchResultsState })
+	})
+
+	test('LOAD_MODULE_SEARCH action modifies state correctly', () => {
+		const initialState = {
+			collectionModuleSearchString: 'oldSearchString',
+			searchModules: { ...defaultSearchResultsState }
+		}
+
+		const mockModuleList = [
+			{
+				draftId: 'mockDraftId',
+				title: 'Mock Draft Title'
+			},
+			{
+				draftId: 'mockDraftId2',
+				title: 'Mock Draft Title 2'
+			}
+		]
+		const action = {
+			type: LOAD_MODULE_SEARCH,
+			meta: {
+				searchString: 'newSearchString'
+			},
+			payload: {
+				value: {
+					modules: mockModuleList
+				}
+			}
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+		let newState
+
+		newState = handleStart(handler)
+		expect(newState.collectionModuleSearchString).toEqual('newSearchString')
+		expect(newState.searchModules).toEqual(initialState.searchModules)
+
+		newState = handleSuccess(handler)
+		expect(newState.searchModules).not.toEqual(initialState.searchModules)
+		expect(newState.searchModules).toEqual({
+			items: mockModuleList
+		})
+	})
+
+	test('CLEAR_MODULE_SEARCH_RESULTS action modifies state correctly', () => {
+		const initialState = {
+			shareSearchString: 'oldSearchString',
+			searchModules: null
+		}
+
+		const action = { type: CLEAR_MODULE_SEARCH_RESULTS }
+
+		// CLEAR_MODULE_SEARCH_RESULTS is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.searchModules).toEqual(defaultSearchResultsState)
+		expect(newState.shareSearchString).toBe('')
+	})
+
+	test('COLLECTION_ADD_MODULE action modifies state correctly - not same collection', () => {
+		runCollectionModuleActions(COLLECTION_ADD_MODULE)
+	})
+	test('COLLECTION_ADD_MODULE action modifies state correctly - same collection', () => {
+		runCollectionModuleActions(COLLECTION_ADD_MODULE, true)
+	})
+	test('COLLECTION_REMOVE_MODULE action modifies state correctly - not same collection', () => {
+		runCollectionModuleActions(COLLECTION_REMOVE_MODULE)
+	})
+	test('COLLECTION_REMOVE_MODULE action modifies state correctly - same collection', () => {
+		runCollectionModuleActions(COLLECTION_REMOVE_MODULE, true)
+	})
+	test('LOAD_COLLECTION_MODULES action modifies state correctly - not same collection', () => {
+		runCollectionModuleActions(LOAD_COLLECTION_MODULES)
+	})
+	test('LOAD_COLLECTION_MODULES action modifies state correctly - same collection', () => {
+		runCollectionModuleActions(LOAD_COLLECTION_MODULES, true)
+	})
+
+	test('SHOW_COLLECTION_RENAME action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			selectedCollection: null
+		}
+		const mockSelectedCollection = {
+			id: 'mockCollectionId',
+			title: 'Mock Collection Title'
+		}
+		const action = {
+			type: SHOW_COLLECTION_RENAME,
+			collection: mockSelectedCollection
+		}
+
+		// SHOW_COLLECTION_RENAME is a synchronous action - state changes immediately
+		const newState = dashboardReducer(initialState, action)
+		expect(newState.dialog).toBe('collection-rename')
+		expect(newState.selectedCollection).not.toEqual(initialState.selectedCollection)
+		expect(newState.selectedCollection).toEqual(mockSelectedCollection)
 	})
 
 	test('SHOW_VERSION_HISTORY action modifies state correctly', () => {
@@ -681,8 +1205,7 @@ describe('Dashboard Reducer', () => {
 					title: 'C Mock Module'
 				}
 			],
-			selectedModules: [],
-			showDeletedModules: true
+			selectedModules: []
 		}
 
 		const undeletedModules = [
@@ -699,15 +1222,13 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: GET_MODULES,
 			payload: {
-				value: undeletedModules,
-				showDeletedModules: false
+				value: undeletedModules
 			}
 		}
 
 		const handler = dashboardReducer(initialState, action)
 		const newState = handleSuccess(handler)
 		expect(newState.myModules).toEqual(undeletedModules)
-		expect(newState.showDeletedModules).toBe(false)
 	})
 
 	test('GET_DELETED_MODULES action modifies state correctly', () => {
@@ -727,8 +1248,7 @@ describe('Dashboard Reducer', () => {
 					title: 'C Mock Module'
 				}
 			],
-			selectedModules: [],
-			showDeletedModules: true
+			selectedModules: []
 		}
 
 		const deletedModules = [
@@ -745,15 +1265,13 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: GET_DELETED_MODULES,
 			payload: {
-				value: deletedModules,
-				showDeletedModules: true
+				value: deletedModules
 			}
 		}
 
 		const handler = dashboardReducer(initialState, action)
 		const newState = handleSuccess(handler)
 		expect(newState.myModules).toEqual(deletedModules)
-		expect(newState.showDeletedModules).toBe(true)
 	})
 
 	test('BULK_RESTORE_MODULES action modifies state correctly', () => {
@@ -774,7 +1292,6 @@ describe('Dashboard Reducer', () => {
 
 		const initialState = {
 			multiSelectMode: true,
-			showDeletedModules: true,
 			selectedModules: ['mockDraftId'],
 			myModules: [
 				{
@@ -798,7 +1315,6 @@ describe('Dashboard Reducer', () => {
 		expect(newState.myModules).toEqual(mockModuleList)
 		expect(newState.selectedModules).toEqual([])
 		expect(newState.multiSelectMode).toBe(false)
-		expect(newState.showDeletedModules).toBe(false)
 	})
 
 	test('unrecognized action types just return the current state', () => {
