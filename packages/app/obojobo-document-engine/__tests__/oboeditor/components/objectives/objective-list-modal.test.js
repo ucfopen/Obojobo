@@ -37,12 +37,37 @@ describe('Objective List Modal', () => {
 		expect(props.onClose).toHaveBeenCalled()
 	})
 
+	test('ObjectiveListModal unmounts with no close prop', () => {
+		const props = {
+			content: { objectives: [] },
+			objectiveContext: { objectives: [] }
+		}
+
+		const component = mount(<ObjectiveListModal {...props} />)
+
+		expect(function() {
+			component.unmount()
+		}).not.toThrow()
+	})
+
+	test('ObjectiveListModal populates state with default values', () => {
+		const props = {
+			content: {},
+			objectiveContext: {},
+			onClose: jest.fn()
+		}
+
+		const component = mount(<ObjectiveListModal {...props} />)
+		expect(component.instance().state.objectives).toEqual([])
+		expect(component.instance().state.globalObjectives).toEqual([])
+	})
+
 	test('ObjectiveListModal deletes objective', () => {
 		const confirm = jest.spyOn(window, 'confirm').mockReturnValue(true)
 
 		const props = {
 			content: {
-				objectives: []
+				objectives: [{ objectiveId: 'mock-id-1', objectiveLabel: 'mock-label-1' }]
 			},
 			objectiveContext: {
 				objectives: [
@@ -63,6 +88,7 @@ describe('Objective List Modal', () => {
 			.simulate('click')
 
 		expect(confirm).toBeCalled()
+		// expect(component.instance().state).toBe({})
 	})
 
 	test('ObjectiveListModal creates new objective', () => {
@@ -156,6 +182,11 @@ describe('Objective List Modal', () => {
 						objectiveId: 'mock-id-1',
 						objectiveLabel: 'mock-label-1',
 						description: 'mock-description-1'
+					},
+					{
+						objectiveId: 'mock-id-2',
+						objectiveLabel: 'mock-label-2',
+						description: 'mock-description-2'
 					}
 				],
 				addObjective: jest.fn(),
