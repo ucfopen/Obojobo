@@ -39,7 +39,8 @@
 		],
 		"canViewAsStudent": ["Learner", "urn:lti:role:ims/lis/Learner"],
 		"canViewStatsPage": [],
-		"canViewSystemStats": []
+		"canViewSystemStats": [],
+		"canViewAdminPage": []
 	},
 	"test": {
 		"canDoThing": ["roleName"]

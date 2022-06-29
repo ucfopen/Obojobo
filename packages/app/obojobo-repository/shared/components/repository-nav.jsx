@@ -46,6 +46,11 @@ const RepositoryNav = props => {
 						<a href="/stats">Stats</a>
 					</div>
 				) : null}
+				{props.userPerms.indexOf('canViewAdminPage') > -1 ? (
+					<div className="repository--nav--links--link">
+						<a href="/admin">Admin</a>
+					</div>
+				) : null}
 				{props.userId !== 0 ? (
 					<div className="repository--nav--current-user">
 						<button onClick={onToggleMenu}>

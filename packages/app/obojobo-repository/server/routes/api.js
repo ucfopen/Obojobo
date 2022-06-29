@@ -6,6 +6,7 @@ const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
 const DraftPermissions = require('../models/draft_permissions')
 const DraftsMetadata = require('../models/drafts_metadata')
+const AdminInterface = require('../models/admin_interface')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
@@ -443,5 +444,18 @@ router
 			res.unexpected(error)
 		}
 	})
+
+// Do something with the admin interface
+router
+	.route('/admin-do-something')
+	.post((req, res) => {
+		console.log("In the router, req.currentUser.id:")
+		console.log(req.currentUser.id)
+		
+		return AdminInterface.doSomething("an id")
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+	
 
 module.exports = router
