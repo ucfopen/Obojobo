@@ -376,7 +376,13 @@ class Media {
 		let file
 
 		try {
-			file = await fs.readFile(fileInfo.path)
+			if (fileInfo.buffer) {
+				// allow fileInfo to already contain a loaded buffer
+				file = fileInfo.buffer
+			} else {
+				// load the file from disk
+				file = await fs.readFile(fileInfo.path)
+			}
 		} catch (error) {
 			// calling methods expect a thenable object to be returned
 			logger.logError('Error Reading media file', error)
@@ -387,7 +393,7 @@ class Media {
 
 		if (!isValid) {
 			// Delete the temporary media stored by Multer
-			await fs.unlink(fileInfo.path)
+			if (fileInfo.path) await fs.unlink(fileInfo.path)
 			throw new Error(
 				`File upload only supports the following filetypes: ${mediaConfig.allowedMimeTypesRegex
 					.split('|')
@@ -408,7 +414,7 @@ class Media {
 			})
 
 			// Delete the temporary media stored by Multer
-			await fs.unlink(fileInfo.path)
+			if (fileInfo.path) await fs.unlink(fileInfo.path)
 
 			oboEvents.emit(Media.EVENT_IMAGE_CREATED, {
 				userId,
