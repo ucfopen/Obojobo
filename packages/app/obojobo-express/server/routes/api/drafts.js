@@ -158,9 +158,13 @@ router
 		let draftXml = !format ? draftTemplateXML : null
 
 		if (format === 'application/json') {
-			// draftJson = content
-			const jsonContent = JSON.parse(content)
-			draftJson = await extractAndUploadEmbeddedImages(jsonContent, req.currentUser.id)
+			try {
+				const jsonContent = typeof content === 'string' ? JSON.parse(content) : content
+				draftJson = await extractAndUploadEmbeddedImages(jsonContent, req.currentUser.id)
+			} catch (e){
+				logger.error('Parse JSON Failed:', e, content)
+				return res.unexpected(e)
+			}
 		} else if (format === 'application/xml') {
 			draftXml = content
 			try {

@@ -256,7 +256,7 @@ class Media {
 		let mediaBinaryId = null
 
 		if (!binary || !size || !mimetype || !dimensions || !mode) {
-			throw new Error('One or more required arguments not provided.')
+			throw new Error('Inserting an image, but one or more required arguments not provided.')
 		}
 
 		if (mode === MODE_INSERT_ORIGINAL_IMAGE && !userId) {
