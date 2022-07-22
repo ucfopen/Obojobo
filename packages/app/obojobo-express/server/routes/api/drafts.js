@@ -18,6 +18,8 @@ const {
 	requireCanDeleteDrafts,
 	checkContentId
 } = oboRequire('server/express_validators')
+const Media = oboRequire('server/models/media')
+const mime = require('mime')
 
 const isNoDataFromQueryError = e => {
 	return (
@@ -102,12 +104,53 @@ router
 		}
 	})
 
+async function traverse(o, func) {
+	for (let i in o) {
+		await func.apply(this, [i, o[i], o])
+		if (o[i] !== null && typeof o[i] === 'object') {
+			//going one step down in the object tree!!
+			await traverse(o[i], func)
+		}
+	}
+}
+
+const extractAndUploadEmbeddedImages = async (draftJson, userId) => {
+	await traverse(draftJson, async (key, val, obj) => {
+		if (
+			key === 'type' &&
+			val === 'ObojoboDraft.Chunks.Figure' &&
+			typeof obj?.content?.imageBinary === 'string'
+		) {
+			// use the filename to determine the mimetype
+			const mimetype = mime.getType(obj.content.filename)
+			// load the base64 data into a buffer
+			const buf = Buffer.from(obj.content.imageBinary, 'base64')
+
+			// mock the fileInfo needed by Media
+			const mockFileInfo = {
+				originalname: obj.content.filename,
+				mimetype,
+				size: buf.length,
+				buffer: buf
+			}
+
+			// save the media asset to the db
+			const mediaRecord = await Media.createAndSave(userId, mockFileInfo)
+
+			// update the json
+			obj.content.url = mediaRecord.media_id
+			delete obj.content.imageBinary
+		}
+	})
+	return draftJson
+}
+
 // Create a Draft
 // mounted as /api/drafts/new
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res, next) => {
+	.post(async (req, res, next) => {
 		const content = req.body.content
 		const format = req.body.format
 
@@ -115,7 +158,13 @@ router
 		let draftXml = !format ? draftTemplateXML : null
 
 		if (format === 'application/json') {
-			draftJson = content
+			try {
+				const jsonContent = typeof content === 'string' ? JSON.parse(content) : content
+				draftJson = await extractAndUploadEmbeddedImages(jsonContent, req.currentUser.id)
+			} catch (e){
+				logger.error('Parse JSON Failed:', e, content)
+				return res.unexpected(e)
+			}
 		} else if (format === 'application/xml') {
 			draftXml = content
 			try {
@@ -132,12 +181,13 @@ router
 			}
 		}
 
-		return DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
-			.then(draft => {
-				res.set('Obo-DraftContentId', draft.content.id)
-				res.success({ id: draft.id, contentId: draft.content.id })
-			})
-			.catch(res.unexpected)
+		try {
+			const draft = await DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
+			res.set('Obo-DraftContentId', draft.content.id)
+			res.success({ id: draft.id, contentId: draft.content.id })
+		} catch (error) {
+			res.unexpected(error)
+		}
 	})
 // Create an editable tutorial document
 // mounted as /api/drafts/tutorial
