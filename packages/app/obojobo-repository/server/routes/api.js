@@ -15,7 +15,8 @@ const {
 	requireCanCreateDrafts,
 	requireCanDeleteDrafts,
 	check,
-	requireCanViewStatsPage
+	requireCanViewStatsPage,
+	requireCanViewAdminPage,
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
@@ -167,6 +168,49 @@ router
 			res.unexpected(error)
 		}
 	})
+
+router
+	.route('/users/all')
+	.get([requireCanViewAdminPage])
+	.get(async (req, res) => {
+		try {
+			let users = await UserModel.getAll()
+			users = users.map(u => u.toJSON())
+			res.success(users)
+		} catch (error) {
+			res.unexpected(error)
+		}
+	})
+
+router
+.route('/permissions/add')
+.post([requireCanViewAdminPage])
+.post(async (req, res) => {
+	const userId = req.body.userId
+	const perm = req.body.perm
+
+	try {
+		await AdminInterface.addPermission(userId, perm)
+		res.success()
+	} catch (error) {
+		res.unexpected(error)
+	}
+})
+
+router
+.route('/permissions/remove')
+.post([requireCanViewAdminPage])
+.post(async (req, res) => {
+	const userId = req.body.userId
+	const perm = req.body.perm
+
+	try {
+		await AdminInterface.removePermission(userId, perm)
+		res.success()
+	} catch (error) {
+		res.unexpected(error)
+	}
+})
 
 // Copy a draft to the current user
 // mounted as /api/drafts/:draftId/copy
@@ -445,17 +489,5 @@ router
 		}
 	})
 
-// Do something with the admin interface
-router
-	.route('/admin-do-something')
-	.post((req, res) => {
-		console.log("In the router, req.currentUser.id:")
-		console.log(req.currentUser.id)
-		
-		return AdminInterface.doSomething("an id")
-			.then(res.success)
-			.catch(res.unexpected)
-	})
-	
 
 module.exports = router

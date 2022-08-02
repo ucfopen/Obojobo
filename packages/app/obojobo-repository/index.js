@@ -6,6 +6,7 @@ module.exports = {
 			repository: 'shared/components/pages/page-library.jsx',
 			dashboard: 'shared/components/pages/page-dashboard-client.jsx',
 			stats: 'shared/components/pages/page-stats-client.jsx',
+			admin: 'shared/components/pages/page-admin-client.jsx',
 			homepage: 'shared/components/pages/page-homepage.jsx',
 			'page-module': 'shared/components/pages/page-module-client.jsx'
 		}

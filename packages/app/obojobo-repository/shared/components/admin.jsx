@@ -5,68 +5,135 @@ const React = require('react')
 const { useState, useEffect } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
+const Button = require('./button')
+
+const POSSIBLE_ROLES = [
+	'canViewEditor',
+	'canCreateDrafts',
+	'canDeleteDrafts',
+	'canPreviewDrafts',
+	'canViewStatsPage',
+	'canViewSystemStats',
+	'canViewAdminPage',
+]
+
+const NO_SELECTION_USER = 'no-select-user'
+const NO_SELECTION_MODULE = 'no-select-module'
+const NO_SELECTION_PERMISSION = 'no-select-permission'
 
 function Admin({
 	currentUser,
 	title,
-	doSomething
+	loadUserList,
+	addUserPermission,
+	removeUserPermission,
 }) {
+	const [users, setUsers] = useState([])
+	const [fetching, setFetching] = useState(true)
+	const [selectedUser, setSelectedUser] = useState(NO_SELECTION_USER)
+	const [selectedPermission, setSelectedPermission] = useState(NO_SELECTION_PERMISSION)
 
-	const [selectedDrafts, setSelectedDrafts] = useState([])
-	const [search, setSearch] = useState('')
-	const [selectedUser, setSelectedUser] = useState(null)
-	const [selectedModule, setSelectedModule] = useState(null)
-
-	// When the component is mounted in the browser, request the list of available modules for the current user
 	useEffect(() => {
-		loadUserModuleList()
+		// Load all modules on this obo instance
+		loadAllUsers()
+		.then(() => setFetching(null))
 	}, [])
 
-	const loadStats = () => {
-		loadModuleAssessmentDetails(selectedDrafts)
+	const loadAllUsers = () => {
+		return new Promise(async resolve => {
+			const allUsers = await loadUserList()
+			if (allUsers &&
+				allUsers.payload && 
+				allUsers.payload.value &&
+				allUsers.payload.value && 
+				allUsers.payload.value.length > 0) {
+
+				setUsers(allUsers.payload.value)
+			}else {
+				setUsers([])
+			}
+
+			resolve()
+		})
 	}
 
-	const onSearchChange = event => {
-		setSearch(event.target.value)
+	const onAddUserPermission = async () => {
+		if (selectedUser === NO_SELECTION_USER) return
+		if (selectedPermission === NO_SELECTION_PERMISSION) return
+
+		await addUserPermission(selectedUser, selectedPermission)
 	}
 
-	const onAddModuleAccess = () => {
-		console.log("onAddModuleAccess called")
-		doSomething()
+	const onRemoveUserPermission = async () => {
+		if (selectedUser === NO_SELECTION_USER) return
+		if (selectedPermission === NO_SELECTION_PERMISSION) return
+
+		await removeUserPermission(selectedUser, selectedPermission)
 	}
 
-	const onRemoveModuleAccess = () => {
-
+	const renderPermissionSelectList = () => {
+		return (
+			<select
+				name="select-user-permission"
+				value={selectedPermission}
+				onChange={e => setSelectedPermission(e.target.value)}
+			>
+				<option
+					key={NO_SELECTION_PERMISSION}
+					value={NO_SELECTION_PERMISSION}
+				>
+					Select permission
+				</option>
+				{POSSIBLE_ROLES.map((r, i) => {
+					return (
+						<option key={i} value={r}>{r}</option>
+					)
+				})}
+			</select>
+		)
 	}
 
-	// Renders any tools involving adding, deleting, or modifying module access
-	let toolsModuleAccess = [
+	const renderUserSelectList = () => {
+		return (
+			<select
+				name="select-user"
+				value={selectedUser}
+				onChange={e => setSelectedUser(e.target.value)}
+			>
+				<option
+					key={NO_SELECTION_USER}
+					value={NO_SELECTION_USER}
+				>
+					Select user
+				</option>
+				{users.map((u, i) => {
+					return (
+						<option key={i} value={u.id}>
+							{u.lastName}, {u.firstName}
+						</option>
+					)
+				})}
+			</select>
+		)
+	}
+
+	// Contains any tools involving modifying module access, user permission, etc
+	const getTools = () => [
 		<div className="tool" key="tool-add-module-access">
-			<p className="title">Add module access</p>
-
+			<p className="title">Manage User Permissions</p>
 			<div className="row">
 				<p>Select user:</p>
-				<select name="user-id"></select>
+				{renderUserSelectList()}
 			</div>
 			<div className="row">
-				<p>Select module:</p>
-				<select name="module-id"></select>
+				<p>Select permission:</p>
+				{renderPermissionSelectList()}
 			</div>
-			<button onClick={onAddModuleAccess}>Add</button>
+			<div className="row buttons">
+				<Button className="tool-button" onClick={onAddUserPermission}>{"Add"}</Button>
+				<Button className="tool-button" onClick={onRemoveUserPermission}>{"Remove"}</Button>
+			</div>
 		</div>,
-		<div className="tool" key="tool-remove-module-access">
-			<p className="title">Remove module access</p>
-
-			<div className="row">
-				<p>Select user:</p>
-				<select name="user-id"></select>
-			</div>
-			<div className="row">
-				<p>Select module:</p>
-				<select name="module-id"></select>
-			</div>
-			<button onClick={onRemoveModuleAccess}>Remove</button>
-		</div>
 	]
 
 	return (
@@ -79,7 +146,11 @@ function Admin({
 				noticeCount={0}
 			/>
 			<RepositoryBanner title={title} className="default-bg" />
-			{toolsModuleAccess}
+			<div className="repository--section-wrapper">
+				<section className="repository--main-content">
+					{fetching ? <p>Loading...</p> : getTools()}
+				</section>
+			</div>
 		</span>
 	)
 }

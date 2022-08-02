@@ -1,25 +1,6 @@
 @import '../../client/css/defaults';
 
 #admin-root {
-	p {
-		background-color: purple;
-		color: red;
-	}
-
-	div {
-		background-color: green;
-		color: pink;
-	}
-
-	.title {
-		background-color: salmon;
-		color: orange;
-	}
-
-	.repository--main-content {
-		max-width: inherit;
-	}
-
 	.repository--section-wrapper {
 		max-width: inherit;
 	}
@@ -38,5 +19,39 @@
 		padding: 0.25em;
 		width: 14em;
 		margin-bottom: 1em;
+	}
+
+	.title {
+		background-color: $color-banner-bg;
+		color: $color-action-minor;
+		border-radius: 0.25em;
+		padding: 1em;
+		margin: 0;
+	}
+
+	select {
+		padding: 0.8em;
+		border-radius: 0.25em;
+		min-width: 30%;
+	}
+
+	.repository--button  {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.row.buttons {
+		justify-content: left;
+		gap: 1em;
+	}
+
+	.tool-button {
+		width: 6em;
 	}
 }
