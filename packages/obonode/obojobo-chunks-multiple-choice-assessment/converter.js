@@ -37,7 +37,8 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			responseType,
-			shuffle: node.content.shuffle
+			shuffle: node.content.shuffle,
+			partialScoring: node.content.partialScoring
 		})
 	}
 }

@@ -64,7 +64,7 @@ describe('Question Editor Node', () => {
 		const props = {
 			element: {
 				content: { type: 'default' },
-				children: [{}, { subtype: SOLUTION_NODE }]
+				children: [{ content: {} }, { subtype: SOLUTION_NODE }]
 			}
 		}
 		const component = renderer.create(<Question {...props} />)
@@ -77,7 +77,7 @@ describe('Question Editor Node', () => {
 		const props = {
 			element: {
 				content: { type: 'default' },
-				children: [{}, { subtype: SOLUTION_NODE }]
+				children: [{ content: {} }, { subtype: SOLUTION_NODE }]
 			}
 		}
 		const spy = jest.spyOn(Question.prototype, 'getIsInAssessment').mockReturnValue(false)
@@ -93,7 +93,7 @@ describe('Question Editor Node', () => {
 		const props = {
 			element: {
 				content: { type: 'survey' },
-				children: [{}]
+				children: [{ content: {} }]
 			}
 		}
 		const component = renderer.create(<Question {...props} />)
@@ -106,7 +106,7 @@ describe('Question Editor Node', () => {
 		const props = {
 			element: {
 				content: { type: 'default' },
-				children: [{}]
+				children: [{ content: {} }]
 			}
 		}
 		const component = mount(<Question {...props} />)
@@ -124,7 +124,7 @@ describe('Question Editor Node', () => {
 		const props = {
 			element: {
 				content: { type: 'default' },
-				children: [{}]
+				children: [{ content: {} }]
 			}
 		}
 		const component = mount(<Question {...props} />)
@@ -146,7 +146,10 @@ describe('Question Editor Node', () => {
 			editor: {},
 			element: {
 				content: { type: 'default' },
-				children: [{ type: BREAK_NODE }, { id: 'mock-mca-id', type: MCASSESSMENT_NODE }]
+				children: [
+					{ type: BREAK_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE, content: {} }
+				]
 			}
 		}
 		const component = mount(<Question {...props} />)
@@ -155,7 +158,10 @@ describe('Question Editor Node', () => {
 		ReactEditor.findPath.mockReturnValue(path)
 
 		// turn ON survey
-		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: true } })
+		component
+			.find({ type: 'checkbox' })
+			.at(1)
+			.simulate('change', { target: { checked: true } })
 
 		component.update()
 
@@ -173,7 +179,10 @@ describe('Question Editor Node', () => {
 		Transforms.setNodes.mockClear()
 
 		// turn OFF survey
-		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: false } })
+		component
+			.find({ type: 'checkbox' })
+			.at(1)
+			.simulate('change', { target: { checked: false } })
 
 		component.update()
 
@@ -196,7 +205,7 @@ describe('Question Editor Node', () => {
 				content: { type: 'default' },
 				children: [
 					{ type: BREAK_NODE },
-					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE, content: {} },
 					{ subtype: SOLUTION_NODE }
 				]
 			}
@@ -207,7 +216,10 @@ describe('Question Editor Node', () => {
 		ReactEditor.findPath.mockReturnValue(path)
 
 		// turn ON survey
-		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: true } })
+		component
+			.find({ type: 'checkbox' })
+			.at(1)
+			.simulate('change', { target: { checked: true } })
 
 		component.update()
 
@@ -225,7 +237,10 @@ describe('Question Editor Node', () => {
 		Transforms.setNodes.mockClear()
 
 		// turn OFF survey
-		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: false } })
+		component
+			.find({ type: 'checkbox' })
+			.at(1)
+			.simulate('change', { target: { checked: false } })
 
 		component.update()
 
@@ -241,6 +256,99 @@ describe('Question Editor Node', () => {
 		)
 	})
 
+	test('Question toggles partial scoring', () => {
+		const props = {
+			editor: {},
+			element: {
+				content: { type: 'default' },
+				children: [
+					{ type: BREAK_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE, content: {} }
+				]
+			}
+		}
+		const component = mount(<Question {...props} />)
+		const pathOfMCAssessment = [9, 2, 1]
+		ReactEditor.findPath.mockReturnValue(pathOfMCAssessment)
+
+		// turn ON partial scoring
+		component
+			.find({ type: 'checkbox' })
+			.at(0)
+			.simulate('change', { target: { checked: true } })
+
+		component.update()
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { partialScoring: true } },
+			{ at: pathOfMCAssessment }
+		)
+
+		Transforms.setNodes.mockClear()
+
+		// turn OFF partial scoring
+		component
+			.find({ type: 'checkbox' })
+			.at(0)
+			.simulate('change', { target: { checked: false } })
+
+		component.update()
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { partialScoring: false } },
+			{ at: pathOfMCAssessment }
+		)
+	})
+
+	test('Question toggles partial scoring with a solution', () => {
+		const props = {
+			editor: {},
+			element: {
+				content: { type: 'default' },
+				children: [
+					{ type: BREAK_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE, content: {} },
+					{ subtype: SOLUTION_NODE }
+				]
+			}
+		}
+		const component = mount(<Question {...props} />)
+		const pathOfMCAssessment = [9, 2, 1]
+		ReactEditor.findPath.mockReturnValue(pathOfMCAssessment)
+
+		// turn ON partial scoring
+		component
+			.find({ type: 'checkbox' })
+			.at(0)
+			.simulate('change', { target: { checked: true } })
+
+		component.update()
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { partialScoring: true } },
+			{ at: pathOfMCAssessment }
+		)
+
+		Transforms.setNodes.mockClear()
+
+		// turn OFF survey
+		component
+			.find({ type: 'checkbox' })
+			.at(0)
+			.simulate('change', { target: { checked: false } })
+
+		component.update()
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { partialScoring: false } },
+			{ at: pathOfMCAssessment }
+		)
+	})
+
 	test('Changing question type updates the assessment node', () => {
 		const props = {
 			editor: {},
@@ -248,7 +356,7 @@ describe('Question Editor Node', () => {
 				content: { type: 'default' },
 				children: [
 					{ type: BREAK_NODE },
-					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE, content: {} },
 					{ subtype: SOLUTION_NODE }
 				]
 			}
@@ -270,7 +378,10 @@ describe('Question Editor Node', () => {
 			editor: {},
 			element: {
 				content: { type: 'default' },
-				children: [{ type: BREAK_NODE }, { id: 'mock-mca-id', type: MCASSESSMENT_NODE }]
+				children: [
+					{ type: BREAK_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE, content: {} }
+				]
 			}
 		}
 		ReactEditor.findPath.mockReturnValue([])

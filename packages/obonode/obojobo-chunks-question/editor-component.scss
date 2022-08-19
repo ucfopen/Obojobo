@@ -33,6 +33,10 @@
 			font-size: 0.7em;
 			cursor: pointer;
 
+			&.scoring {
+				right: 13.7em;
+			}
+
 			&:hover {
 				border: 1px solid $color-action;
 				background: lighten($color-action, 48%);

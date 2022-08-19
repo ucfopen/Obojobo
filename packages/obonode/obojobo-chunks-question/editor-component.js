@@ -24,6 +24,7 @@ class Question extends React.Component {
 		this.addSolution = this.addSolution.bind(this)
 		this.delete = this.delete.bind(this)
 		this.onSetType = this.onSetType.bind(this)
+		this.onSetScoring = this.onSetScoring.bind(this)
 		this.onSetAssessmentType = this.onSetAssessmentType.bind(this)
 		this.isInAssessment = this.getIsInAssessment()
 	}
@@ -58,6 +59,24 @@ class Question extends React.Component {
 			this.props.editor,
 			{ questionType: type },
 			{ at: path.concat(lastChildIndex) }
+		)
+	}
+
+	onSetScoring(event) {
+		const hasSolution = this.getHasSolution()
+		let assessmentNode
+
+		if (hasSolution) {
+			assessmentNode = this.props.element.children[this.props.element.children.length - 2]
+		} else {
+			assessmentNode = this.props.element.children[this.props.element.children.length - 1]
+		}
+
+		const path = ReactEditor.findPath(this.props.editor, assessmentNode)
+		return Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...assessmentNode.content, partialScoring: event.target.checked } },
+			{ at: path }
 		)
 	}
 
@@ -166,13 +185,16 @@ class Question extends React.Component {
 
 		const hasSolution = this.getHasSolution()
 		let questionType
+		let partialScoring
 
-		// The question type is determined by the MCAssessment or the NumericAssessement
+		// The question type is determined by the MCAssessment or the NumericAssessment
 		// This is either the last node or the second to last node
 		if (hasSolution) {
 			questionType = element.children[element.children.length - 2].type
+			partialScoring = element.children[element.children.length - 2].content.partialScoring || false
 		} else {
 			questionType = element.children[element.children.length - 1].type
+			partialScoring = element.children[element.children.length - 1].content.partialScoring || false
 		}
 
 		return (
@@ -196,6 +218,12 @@ class Question extends React.Component {
 									<option value={MCASSESSMENT_NODE}>Multiple choice</option>
 									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
 								</select>
+								{questionType === MCASSESSMENT_NODE ? (
+									<label className="question-type scoring" contentEditable={false}>
+										<input type="checkbox" checked={partialScoring} onChange={this.onSetScoring} />
+										Partial Scoring
+									</label>
+								) : null}
 								<label className="question-type" contentEditable={false}>
 									<input type="checkbox" checked={isTypeSurvey} onChange={this.onSetType} />
 									Survey Only
