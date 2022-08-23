@@ -10,6 +10,10 @@ const ActionButtonEditorAction = props => {
 			} else {
 				description = 'Go to ""'
 			}
+			// eslint-disable-next-line no-undefined
+			if (props.value.id && props.value.ignoreLock === undefined ? true : props.value.ignoreLock) {
+				description = `${description} (Ignore Navigation Lock)`
+			}
 
 			break
 		case 'nav:prev':
