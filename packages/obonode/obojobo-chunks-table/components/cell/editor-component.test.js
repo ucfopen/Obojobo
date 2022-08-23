@@ -599,183 +599,144 @@ describe('Cell Editor Node', () => {
 		expect(thisValue.setState).toHaveBeenCalledWith({ isShowingDropDownMenu: true })
 	})
 
-	test('onFocus updates classname', () => {
-		const button = { classList: { add: jest.fn() } }
+	describe('focusing dropdown option', () => {
+		const button = {
+			classList: {
+				add: jest.fn(),
+				remove: jest.fn()
+			}
+		}
 
 		const event = {
 			target: button
 		}
 
-		const thisValue = {}
+		beforeEach(() => {
+			jest.restoreAllMocks()
+		})
 
-		Cell.prototype.onFocus.bind(thisValue, event)()
+		test('onFocus updates classname', () => {
+			Cell.prototype.onFocus.bind({}, event)()
 
-		expect(button.classList.add).toHaveBeenCalled()
+			expect(button.classList.add).toHaveBeenCalled()
+		})
+
+		test('onEndFocus updates classname', () => {
+			Cell.prototype.onEndFocus.bind({}, event)()
+
+			expect(button.classList.remove).toHaveBeenCalled()
+		})
 	})
 
-	test('onEndFocus updates classname', () => {
-		const button = { classList: { remove: jest.fn() } }
+	describe('handling key presses on dropdown options', () => {
+		let component
+		let cellControls
 
-		const event = {
-			target: button
-		}
+		beforeEach(() => {
+			component = tableComponent
+			document.body.innerHTML = component.html()
+			cellControls = Array.from(
+				document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
+			)
+		})
 
-		const thisValue = {}
+		test('selects option below when [ArrowDown] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'ArrowDown'
+			}
 
-		Cell.prototype.onEndFocus.bind(thisValue, event)()
+			const focus = jest.spyOn(cellControls[2], 'focus')
 
-		expect(button.classList.remove).toHaveBeenCalled()
-	})
+			Cell.prototype.onKeyDown(event)
 
-	test('onKeyDown handles ArrowDown on control selection', () => {
-		const component = tableComponent
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(focus).toHaveBeenCalled()
+		})
 
-		document.body.innerHTML = component.html()
+		test('does nothing when [ArrowDown] is pressed with no option below', () => {
+			const event = {
+				target: cellControls[cellControls.length - 1],
+				preventDefault: jest.fn(),
+				key: 'ArrowDown'
+			}
 
-		const allButtons = Array.from(
-			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
-		)
+			const onFocus = jest.spyOn(Cell.prototype, 'onFocus')
+			Cell.prototype.onKeyDown(event)
 
-		const event = {
-			target: allButtons[1],
-			preventDefault: jest.fn(),
-			key: 'ArrowDown'
-		}
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(onFocus).not.toHaveBeenCalled()
+		})
 
-		const focus = jest.spyOn(allButtons[2], 'focus')
+		test('selects option above when [ArrowUp] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'ArrowUp'
+			}
 
-		Cell.prototype.onKeyDown(event)
+			const focus = jest.spyOn(cellControls[0], 'focus')
 
-		expect(focus).toHaveBeenCalled()
-	})
+			Cell.prototype.onKeyDown(event)
 
-	test('onKeyDown handles ArrowDown on bottommost control selection', () => {
-		const component = tableComponent
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(focus).toHaveBeenCalled()
+		})
 
-		document.body.innerHTML = tableComponent.html()
+		test('does nothing when [ArrowUp] is pressed with no option above', () => {
+			const event = {
+				target: cellControls[0],
+				preventDefault: jest.fn(),
+				key: 'ArrowUp'
+			}
 
-		const allButtons = Array.from(
-			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
-		)
+			const onFocus = jest.spyOn(Cell.prototype, 'onFocus')
 
-		const event = {
-			target: allButtons[allButtons.length - 1],
-			preventDefault: jest.fn(),
-			key: 'ArrowDown'
-		}
+			Cell.prototype.onKeyDown(event)
 
-		Cell.prototype.onKeyDown(event)
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(onFocus).not.toHaveBeenCalled()
+		})
 
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
+		test('executes default behavior when [Tab] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'Tab'
+			}
 
-	test('onKeyDown handles ArrowUp on control selection', () => {
-		const component = tableComponent
+			Cell.prototype.onKeyDown(event)
 
-		document.body.innerHTML = component.html()
+			expect(event.preventDefault).not.toHaveBeenCalled()
+		})
 
-		const allButtons = Array.from(
-			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
-		)
+		test('closes dropdown menu when [Tab] is pressed on bottommost dropdown option', () => {
+			const event = {
+				target: cellControls[cellControls.length - 1],
+				preventDefault: jest.fn(),
+				key: 'Tab'
+			}
 
-		const event = {
-			target: allButtons[1],
-			preventDefault: jest.fn(),
-			key: 'ArrowUp'
-		}
+			const click = jest.spyOn(cellControls[0], 'click')
 
-		const focus = jest.spyOn(allButtons[0], 'focus')
+			Cell.prototype.onKeyDown(event)
 
-		Cell.prototype.onKeyDown(event)
+			expect(event.preventDefault).not.toHaveBeenCalled()
+			expect(click).toHaveBeenCalled()
+		})
 
-		expect(focus).toHaveBeenCalled()
-	})
+		test('executes default behavior when [Enter] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'Enter'
+			}
 
-	test('onKeyDown handles ArrowUp on topmost control selection', () => {
-		const component = tableComponent
+			Cell.prototype.onKeyDown(event)
 
-		document.body.innerHTML = component.html()
-
-		const allButtons = Array.from(
-			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
-		)
-
-		const event = {
-			target: allButtons[0],
-			preventDefault: jest.fn(),
-			key: 'ArrowUp'
-		}
-
-		Cell.prototype.onKeyDown(event)
-
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('onKeyDown handles Tab on control selection', () => {
-		const component = tableComponent
-
-		document.body.innerHTML = component.html()
-
-		const allButtons = Array.from(
-			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
-		)
-
-		const event = {
-			target: allButtons[1],
-			preventDefault: jest.fn(),
-			key: 'Tab'
-		}
-
-		Cell.prototype.onKeyDown(event)
-
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('onKeyDown handles Tab on bottommost control selection', () => {
-		const component = tableComponent
-
-		document.body.innerHTML = component.html()
-
-		const allButtons = Array.from(
-			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
-		)
-
-		const event = {
-			target: allButtons[allButtons.length - 1],
-			preventDefault: jest.fn(),
-			key: 'Tab'
-		}
-
-		const click = jest.spyOn(allButtons[0], 'click')
-
-		Cell.prototype.onKeyDown(event)
-
-		expect(click).toHaveBeenCalled()
-	})
-
-	test('onKeyDown handles Enter on control selection', () => {
-		const onFocus = jest.spyOn(Cell.prototype, 'onFocus')
-
-		const component = tableComponent
-
-		document.body.innerHTML = component.html()
-
-		const allButtons = Array.from(
-			document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
-		)
-
-		const event = {
-			target: allButtons[1],
-			preventDefault: jest.fn(),
-			key: 'Enter'
-		}
-
-		Cell.prototype.onKeyDown(event)
-
-		expect(onFocus).not.toHaveBeenCalled()
+			expect(event.preventDefault).not.toHaveBeenCalled()
+		})
 	})
 
 	test('componentDidMount does nothing when Cell is not selected', () => {

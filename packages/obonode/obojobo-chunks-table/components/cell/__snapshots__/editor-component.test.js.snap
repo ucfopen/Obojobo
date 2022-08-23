@@ -119,9 +119,3 @@ exports[`Cell Editor Node Cell component selected 1`] = `
   </div>
 </td>
 `;
-
-exports[`Cell Editor Node onKeyDown handles ArrowDown on bottommost control selection 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-open\\"><div class=\\"table-options-icon\\"></div></button><div class=\\"drop-content-cell  is-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;
-
-exports[`Cell Editor Node onKeyDown handles ArrowUp on topmost control selection 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-open\\"><div class=\\"table-options-icon\\"></div></button><div class=\\"drop-content-cell  is-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;
-
-exports[`Cell Editor Node onKeyDown handles Tab on control selection 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-open\\"><div class=\\"table-options-icon\\"></div></button><div class=\\"drop-content-cell  is-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;

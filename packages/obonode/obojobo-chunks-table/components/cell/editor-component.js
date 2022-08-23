@@ -306,19 +306,23 @@ class Cell extends React.Component {
 
 		switch (event.key) {
 			case 'ArrowDown':
+				// If not at bottommost option, move to option below
 				event.preventDefault()
+
 				if (currentIndex === cellControls.length - 1) break
 
 				cellControls[currentIndex + 1].focus()
 				break
 
 			case 'ArrowUp':
+				// If not at topmost option, move to option above
 				event.preventDefault()
 				if (currentIndex === 0) break
 
 				cellControls[currentIndex - 1].focus()
 				break
 			case 'Tab':
+				// If at bottommost option and shift key not pressed, close dropdown menu
 				if (currentIndex === cellControls.length - 1 && !event.shiftKey) {
 					cellControls[0].click()
 				}

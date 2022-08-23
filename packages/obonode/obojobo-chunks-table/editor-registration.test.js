@@ -10,75 +10,71 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 describe('Table editor', () => {
-	let editor
-
-	beforeAll(() => {
-		editor = {
-			children: [
-				{
-					type: TEXT_NODE,
-					children: [
-						{
-							type: TEXT_NODE,
-							children: [{ text: 'top text' }]
-						}
-					]
-				},
-				{
-					type: TABLE_NODE,
-					content: { numCols: 2 },
-					children: [
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext1' }]
-								},
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext2' }]
-								}
-							]
-						},
-						{
-							type: TABLE_NODE,
-							subtype: TABLE_ROW_NODE,
-							children: [
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext3' }]
-								},
-								{
-									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
-									children: [{ text: 'mocktext4' }]
-								}
-							]
-						}
-					]
-				},
-				{
-					type: TEXT_NODE,
-					children: [
-						{
-							type: TEXT_NODE,
-							children: [{ text: 'bottom text' }]
-						}
-					]
-				}
-			],
-			isInline: () => false,
-			isVoid: () => false,
-			apply: operation => {
-				editor.selection = operation.newProperties
+	const editor = {
+		children: [
+			{
+				type: TEXT_NODE,
+				children: [
+					{
+						type: TEXT_NODE,
+						children: [{ text: 'top text' }]
+					}
+				]
+			},
+			{
+				type: TABLE_NODE,
+				content: { numCols: 2 },
+				children: [
+					{
+						type: TABLE_NODE,
+						subtype: TABLE_ROW_NODE,
+						children: [
+							{
+								type: TABLE_NODE,
+								subtype: TABLE_CELL_NODE,
+								children: [{ text: 'mocktext1' }]
+							},
+							{
+								type: TABLE_NODE,
+								subtype: TABLE_CELL_NODE,
+								children: [{ text: 'mocktext2' }]
+							}
+						]
+					},
+					{
+						type: TABLE_NODE,
+						subtype: TABLE_ROW_NODE,
+						children: [
+							{
+								type: TABLE_NODE,
+								subtype: TABLE_CELL_NODE,
+								children: [{ text: 'mocktext3' }]
+							},
+							{
+								type: TABLE_NODE,
+								subtype: TABLE_CELL_NODE,
+								children: [{ text: 'mocktext4' }]
+							}
+						]
+					}
+				]
+			},
+			{
+				type: TEXT_NODE,
+				children: [
+					{
+						type: TEXT_NODE,
+						children: [{ text: 'bottom text' }]
+					}
+				]
 			}
+		],
+		isInline: () => false,
+		isVoid: () => false,
+		apply: operation => {
+			editor.selection = operation.newProperties
 		}
-	})
+	}
 
 	test('insertData calls next if pasting a Slate fragment', () => {
 		const data = {
