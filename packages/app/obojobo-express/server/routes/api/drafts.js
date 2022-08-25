@@ -34,6 +34,7 @@ router
 	.get([requireDraftId, requireCanViewEditor, checkContentId, checkValidationRules])
 	.get(async (req, res) => {
 		try {
+			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
 			const access_level = await DraftPermissions.getUserAccessLevelToDraft(
 				req.currentUser.id,
 				req.params.draftId
@@ -42,7 +43,7 @@ router
 
 			if (!hasPerms) {
 				return res.notAuthorized(
-					'Your access level must be "Partial" or higher to edit this module.'
+					'Your access level must be "Partial" or higher to retrieve this information.'
 				)
 			}
 
@@ -55,7 +56,7 @@ router
 				draftModel = await DraftModel.fetchById(req.params.draftId)
 			}
 
-			// Get the draft document and attach the user's access level
+			// Get the draft document and attach the user's access level for use in editor
 			const draftDocument = draftModel.document
 			draftDocument.accessLevel = access_level
 

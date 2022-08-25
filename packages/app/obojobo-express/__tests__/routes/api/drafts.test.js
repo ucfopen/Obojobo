@@ -406,7 +406,7 @@ describe('api draft route', () => {
 				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'Your access level must be "Partial" or higher to edit this module.'
+					'Your access level must be "Partial" or higher to retrieve this information.'
 				)
 			})
 	})

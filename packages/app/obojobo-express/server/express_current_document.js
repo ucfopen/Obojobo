@@ -32,7 +32,7 @@ const requireCurrentDocument = req => {
 		return Promise.reject(new Error('DraftDocument Required'))
 	}
 
-	return DraftDocument.fetchById(draftId, req.currentUser.id).then(draftDocument => {
+	return DraftDocument.fetchById(draftId).then(draftDocument => {
 		setCurrentDocument(req, draftDocument)
 		return req.currentDocument
 	})

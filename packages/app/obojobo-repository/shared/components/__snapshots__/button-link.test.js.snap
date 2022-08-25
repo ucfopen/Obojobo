@@ -11,14 +11,6 @@ exports[`ButtonLink renders when given props 1`] = `
 </a>
 `;
 
-exports[`ButtonLink renders with disabled prop 1`] = `
-<a
-  className="repository--button  disabled"
->
-  Link Text
-</a>
-`;
-
 exports[`ButtonLink renders with no extra classes 1`] = `
 <a
   className="repository--button "

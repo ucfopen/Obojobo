@@ -32,7 +32,7 @@ router
 			const hasPerms = access_level === 'Full' || access_level === 'Partial'
 
 			if (!hasPerms) {
-				return res.notAuthorized('You do not have the required access to edit this module.')
+				return res.notAuthorized('You do not have the required access level to edit this module.')
 			}
 
 			// attempt to lock

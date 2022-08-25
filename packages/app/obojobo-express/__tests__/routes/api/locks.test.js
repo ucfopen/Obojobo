@@ -115,7 +115,7 @@ describe('Route api/locks', () => {
 				expect(response.body).toHaveProperty('value')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'You do not have the required access to edit this module.'
+					'You do not have the required access level to edit this module.'
 				)
 			})
 	})

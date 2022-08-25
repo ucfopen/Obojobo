@@ -20,8 +20,7 @@ describe('Button', () => {
 		const mockOnClick = jest.fn()
 
 		const mockProps = {
-			onClick: mockOnClick,
-			disabled: false
+			onClick: mockOnClick
 		}
 
 		const component = mount(<Button {...mockProps}>Button Text</Button>)
