@@ -118,7 +118,7 @@ class ModulePermissionsDialog extends React.Component {
 				</div>
 				<div className="wrapper">
 					<h1 className="title">Module Access</h1>
-					<div className="sub-title">People who can edit this module</div>
+					<div className="sub-title">People who can access this module</div>
 					<Button id="modulePermissionsDialog-addPeopleButton" onClick={this.openPeoplePicker}>
 						Add People
 					</Button>

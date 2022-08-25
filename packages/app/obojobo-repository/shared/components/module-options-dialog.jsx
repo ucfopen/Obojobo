@@ -1,4 +1,4 @@
-require('./module-permissions-dialog.scss')
+require('./module-options-dialog.scss')
 
 const React = require('react')
 const ModuleImage = require('./module-image')
@@ -23,7 +23,7 @@ const deleteModule = (
 }
 
 const ModuleOptionsDialog = props => (
-	<div className="module-permissions-dialog">
+	<div className="module-options-dialog">
 		<div className="top-bar">
 			<ModuleImage id={props.draftId} />
 			<div className="module-title">{props.title}</div>
@@ -42,7 +42,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">View with preview controls.</div>
 				</div>
 
-				{props.accessLevel === 'Minimal' ? null : (
+				{props.accessLevel !== 'Minimal' && (
 					<div className="button-label-group">
 						<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
 							Edit
@@ -51,7 +51,7 @@ const ModuleOptionsDialog = props => (
 					</div>
 				)}
 
-				{props.accessLevel !== 'Full' ? null : (
+				{props.accessLevel === 'Full' && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-shareButton"
@@ -78,7 +78,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">View scores by student.</div>
 				</div>
 
-				{props.accessLevel === 'Minimal' ? null : (
+				{props.accessLevel !== 'Minimal' && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-showVersionHistoryButton"
@@ -103,7 +103,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">Add to or remove from private collections.</div>
 				</div>
 
-				{props.accessLevel === 'Minimal' ? null : (
+				{props.accessLevel !== 'Minimal' && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-downloadJSONButton"
@@ -118,7 +118,7 @@ const ModuleOptionsDialog = props => (
 					</div>
 				)}
 
-				{props.accessLevel === 'Minimal' ? null : (
+				{props.accessLevel !== 'Minimal' && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-downloadXMLButton"
@@ -140,7 +140,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">Visit this modules public page.</div>
 				</div>
 
-				{props.accessLevel !== 'Full' ? null : (
+				{props.accessLevel === 'Full' && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-deleteButton"

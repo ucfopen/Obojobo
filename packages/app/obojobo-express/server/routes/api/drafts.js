@@ -55,7 +55,7 @@ router
 				draftModel = await DraftModel.fetchById(req.params.draftId)
 			}
 
-			// Get the draft document and attach the user's access level for module deletion purposes
+			// Get the draft document and attach the user's access level
 			const draftDocument = draftModel.document
 			draftDocument.accessLevel = access_level
 

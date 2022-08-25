@@ -2,7 +2,7 @@
 
 exports[`ModuleOptionsDialog renders correctly with Full access level 1`] = `
 <div
-  className="module-permissions-dialog"
+  className="module-options-dialog"
 >
   <div
     className="top-bar"
@@ -218,7 +218,7 @@ exports[`ModuleOptionsDialog renders correctly with Full access level 1`] = `
 
 exports[`ModuleOptionsDialog renders correctly with Minimal access level 1`] = `
 <div
-  className="module-permissions-dialog"
+  className="module-options-dialog"
 >
   <div
     className="top-bar"
@@ -337,7 +337,7 @@ exports[`ModuleOptionsDialog renders correctly with Minimal access level 1`] = `
 
 exports[`ModuleOptionsDialog renders correctly with Partial access level 1`] = `
 <div
-  className="module-permissions-dialog"
+  className="module-options-dialog"
 >
   <div
     className="top-bar"
@@ -521,7 +521,7 @@ exports[`ModuleOptionsDialog renders correctly with Partial access level 1`] = `
 
 exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] = `
 <div
-  className="module-permissions-dialog"
+  className="module-options-dialog"
 >
   <div
     className="top-bar"

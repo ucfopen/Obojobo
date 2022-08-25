@@ -82,7 +82,7 @@
 
 		// text-align: left;
 		height: 11.5em;
-		overflow-y: scroll;
+		overflow-y: auto;
 		list-style: none;
 		font-size: 0.9em;
 		padding: 0;
@@ -99,32 +99,6 @@
 				margin-bottom: 1em;
 			}
 		}
-	}
-
-	.buttons-with-labels {
-		text-align: left;
-		margin: 1em 0;
-		grid-gap: 0.6em;
-		align-items: center;
-
-		.label {
-			font-size: 0.8em;
-			margin-left: 0.6em;
-		}
-
-		.repository--button {
-			min-width: 10.5em;
-			display: inline-block;
-			text-align: center;
-			margin-right: 1em;
-		}
-	}
-
-	.button-label-group {
-		display: grid;
-		grid-template-columns: 8em auto;
-		margin: 0.6em;
-		align-items: center;
 	}
 
 	.access-level-dropdown {
@@ -171,5 +145,12 @@
 				cursor: not-allowed;
 			}
 		}
+	}
+
+	.button-label-group {
+		display: grid;
+		grid-template-columns: 8em auto;
+		margin: 0.6em;
+		align-items: center;
 	}
 }
