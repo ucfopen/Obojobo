@@ -13,7 +13,6 @@ router
 	.route('/admin')
 	.get([requireCurrentUser, requireCanViewAdminPage])
 	.get((req, res) => {
-		console.log("REACHED ADMIN ROUTE")
 		const props = {
 			title: 'Admin',
 			currentUser: req.currentUser,
