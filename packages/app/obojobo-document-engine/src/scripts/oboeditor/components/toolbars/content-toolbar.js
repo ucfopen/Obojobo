@@ -71,7 +71,8 @@ const ContentToolbar = props => {
 				// for keyboard shortcuts
 				const hotKey = isMac ? '⌘+' : 'Ctrl+'
 				const shortcut = mark.shortcut ? '\n' + hotKey + mark.shortcut : ''
-				const isSelected = getIsSelected(marks, mark) && nodeType !== HTML_NODE
+				const isSelected = getIsSelected(marks, mark)
+				const allowStyleChanges = nodeType !== HTML_NODE
 				const Icon = mark.icon
 
 				return (
@@ -81,6 +82,7 @@ const ContentToolbar = props => {
 						onClick={() => mark.action(props.editor)}
 						title={mark.name + shortcut}
 						aria-label={mark.name + shortcut}
+						disabled={!allowStyleChanges}
 					>
 						<Icon editor={props.editor} />
 					</button>

@@ -52,30 +52,16 @@ describe('ScriptMarks', () => {
 		expect(editor.toggleScript).toHaveBeenCalledWith(1)
 	})
 
-	test('renderLeaf displays expected style', () => {
+	test('renderLeaf diplays expected style', () => {
 		expect(
 			ScriptMarks.plugins.renderLeaf({
 				leaf: {
 					sup: true,
 					num: 1
 				},
-				children: {
-					props: 'mockChildProps'
-				}
+				children: 'mockChild'
 			})
-		).toMatchInlineSnapshot(`
-		Object {
-		  "children": <sup>
-		    Object {
-		      "props": "mockChildProps",
-		    }
-		  </sup>,
-		  "leaf": Object {
-		    "num": 1,
-		    "sup": true,
-		  },
-		}
-	`)
+		).toMatchSnapshot()
 
 		expect(
 			ScriptMarks.plugins.renderLeaf({
@@ -83,73 +69,18 @@ describe('ScriptMarks', () => {
 					sup: true,
 					num: -1
 				},
-				children: {
-					props: 'mockChildProps'
-				}
+				children: 'mockChild'
 			})
-		).toMatchInlineSnapshot(`
-		Object {
-		  "children": <sub>
-		    Object {
-		      "props": "mockChildProps",
-		    }
-		  </sub>,
-		  "leaf": Object {
-		    "num": -1,
-		    "sup": true,
-		  },
-		}
-	`)
+		).toMatchSnapshot()
 	})
 
 	test('renderLeaf does nothing', () => {
 		expect(
 			ScriptMarks.plugins.renderLeaf({
 				leaf: {},
-				children: {
-					props: 'mockChildProps'
-				}
+				children: 'mockChild'
 			})
-		).toMatchInlineSnapshot(`
-		Object {
-		  "children": Object {
-		    "props": "mockChildProps",
-		  },
-		  "leaf": Object {},
-		}
-	`)
-	})
-
-	test('renderLeaf does not style HTML nodes', () => {
-		expect(
-			ScriptMarks.plugins.renderLeaf({
-				leaf: {
-					sup: true,
-					num: 1
-				},
-				children: {
-					props: {
-						parent: {
-							type: 'ObojoboDraft.Chunks.HTML'
-						}
-					}
-				}
-			})
-		).toMatchInlineSnapshot(`
-		Object {
-		  "children": Object {
-		    "props": Object {
-		      "parent": Object {
-		        "type": "ObojoboDraft.Chunks.HTML",
-		      },
-		    },
-		  },
-		  "leaf": Object {
-		    "num": 1,
-		    "sup": true,
-		  },
-		}
-		`)
+		).toMatchSnapshot()
 	})
 
 	test('toggleScript removes marks', () => {

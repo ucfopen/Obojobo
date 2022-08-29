@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScriptMarks renderLeaf diplays expected style 1`] = `
+Object {
+  "children": <sup>
+    mockChild
+  </sup>,
+  "leaf": Object {
+    "num": 1,
+    "sup": true,
+  },
+}
+`;
+
+exports[`ScriptMarks renderLeaf diplays expected style 2`] = `
+Object {
+  "children": <sub>
+    mockChild
+  </sub>,
+  "leaf": Object {
+    "num": -1,
+    "sup": true,
+  },
+}
+`;
+
+exports[`ScriptMarks renderLeaf does nothing 1`] = `
+Object {
+  "children": "mockChild",
+  "leaf": Object {},
+}
+`;

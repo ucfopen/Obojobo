@@ -16,8 +16,6 @@ const QUOTE_MARK = 'q'
 const MONOSPACE_MARK = 'monospace'
 const LATEX_MARK = '_latex'
 
-const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
-
 const BasicMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
@@ -48,11 +46,6 @@ const BasicMarks = {
 		renderLeaf(props) {
 			let { children } = props
 			const { leaf } = props
-			const { parent } = children.props
-
-			if (parent && parent.type === HTML_NODE) {
-				return props
-			}
 
 			if (leaf[LATEX_MARK]) {
 				children = (
