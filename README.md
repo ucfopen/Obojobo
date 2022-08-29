@@ -10,6 +10,7 @@ Our focus is on making and delivering fantastic learning content to students. Ob
 View the [Obojobo Next Documentation](https://ucfopen.github.io/Obojobo-Docs/).
 
 [Join UCF Open Slack Discussions](https://dl.ucf.edu/join-ucfopen)
+[![Join UCF Open Slack Discussions](https://badgen.net/badge/icon/ucfopen?icon=slack&label=slack&color=purple)](https://dl.ucf.edu/join-ucfopen)
 
 The previous version of Obojobo, renamed to Obojobo Classic, is located here: https://github.com/ucfopen/Obojobo-Classic
 
