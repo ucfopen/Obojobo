@@ -75,10 +75,13 @@ describe('Content Toolbar', () => {
 
 		const component = shallow(<ContentToolbar editor={editor} />)
 
-		const buttons = component.find('button')
+		const allButtons = component.find('button')
 
-		// Check that every button is disabled
-		buttons.forEach(e => expect(e.props().disabled === false))
+		expect(allButtons.length).toBeGreaterThan(0)
+
+		for (let i = 0; i < allButtons.length; i++) {
+			expect(allButtons.at(i).props()['disabled']).toBeTruthy()
+		}
 	})
 
 	test('Toolbar node calls the action for a button', () => {
