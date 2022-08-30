@@ -853,6 +853,7 @@ Ctrl+Shift+R"
         aria-label="Justify
 Ctrl+Shift+J"
         className=" is-not-selected"
+        disabled={false}
         onClick={[Function]}
         title="Justify
 Ctrl+Shift+J"
@@ -1512,6 +1513,7 @@ Ctrl+Shift+R"
         aria-label="Justify
 Ctrl+Shift+J"
         className=" is-not-selected"
+        disabled={false}
         onClick={[Function]}
         title="Justify
 Ctrl+Shift+J"
@@ -2171,6 +2173,7 @@ Ctrl+Shift+R"
         aria-label="Justify
 Ctrl+Shift+J"
         className=" is-not-selected"
+        disabled={false}
         onClick={[Function]}
         title="Justify
 Ctrl+Shift+J"
@@ -2876,6 +2879,7 @@ Ctrl+Shift+R"
         aria-label="Justify
 Ctrl+Shift+J"
         className=" is-not-selected"
+        disabled={false}
         onClick={[Function]}
         title="Justify
 Ctrl+Shift+J"
@@ -3531,6 +3535,7 @@ Ctrl+Shift+R"
         aria-label="Justify
 Ctrl+Shift+J"
         className=" is-not-selected"
+        disabled={false}
         onClick={[Function]}
         title="Justify
 Ctrl+Shift+J"
