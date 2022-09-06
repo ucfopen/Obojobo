@@ -3,8 +3,6 @@ const insertEvent = oboRequire('server/insert_event')
 const User = oboRequire('server/models/user')
 const config = oboRequire('server/config')
 const logger = oboRequire('server/logger')
-const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
-const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
 const oboEvents = oboRequire('server/obo_events')
 
 const saveSessionPromise = req =>
@@ -55,9 +53,7 @@ const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 		})
 }
 
-const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) => {
-	const { createLTIPickerEvent } = createCaliperEvent(null, hostname)
-
+const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey) => {
 	return insertEvent({
 		action: 'lti:pickerLaunch',
 		actorTime: new Date().toISOString(),
@@ -71,13 +67,7 @@ const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) 
 		metadata: {},
 		eventVersion: '1.0.0',
 		draftId: null,
-		contentId: null,
-		caliperPayload: createLTIPickerEvent({
-			actor: {
-				type: ACTOR_USER,
-				id: user.id
-			}
-		})
+		contentId: null
 	})
 }
 
@@ -188,8 +178,7 @@ exports.assignmentSelection = (req, res, next) => {
 				user,
 				req.connection.remoteAddress,
 				req.lti.body,
-				req.lti.consumer_key,
-				req.hostname
+				req.lti.consumer_key
 			)
 		})
 		.then(() => next())

@@ -20,7 +20,7 @@ const stopPropagation = event => event.stopPropagation()
 
 // Expected Props:
 // id: String - the id of the item to edit
-// content: Object - the item data for the node.  Each key-value pair would be edited independantly
+// content: Object - the item data for the node.  Each key-value pair would be edited independently
 // saveId: Function(oldId, newId) - updates the id.  Returns a string error if the id couldn't save
 // saveContent: Function(oldContent, newContent) - updates the content. Returns a string error if the content is invalid
 // contentDescription: [Object] - a list of descriptions that tells which content attributes to display and how
@@ -36,7 +36,8 @@ class MoreInfoBox extends React.Component {
 			error: null,
 			isOpen: false,
 			modalOpen: false,
-			content: this.props.content
+			content: this.props.content,
+			isIdDisabled: true
 		}
 
 		this.onWindowMouseDown = this.onWindowMouseDown.bind(this)
@@ -175,7 +176,7 @@ class MoreInfoBox extends React.Component {
 	close() {
 		if (this.state.isOpen === true) {
 			if (this.props.onBlur) this.props.onBlur('info')
-			this.setState({ isOpen: false })
+			this.setState({ isOpen: false, isIdDisabled: true })
 		}
 	}
 
@@ -278,7 +279,6 @@ class MoreInfoBox extends React.Component {
 				)
 		}
 	}
-
 	renderInfoBox() {
 		const { triggers, variables } = this.state.content
 
@@ -293,6 +293,7 @@ class MoreInfoBox extends React.Component {
 									<label htmlFor="oboeditor--components--more-info-box--id-input">Id</label>
 									<input
 										autoFocus
+										readOnly={this.state.isIdDisabled}
 										type="text"
 										id="oboeditor--components--more-info-box--id-input"
 										value={this.state.currentId}
@@ -301,9 +302,24 @@ class MoreInfoBox extends React.Component {
 										onClick={stopPropagation}
 										ref={this.idInput}
 									/>
-									<Button onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}>
-										Copy Id
-									</Button>
+									{this.state.isIdDisabled ? (
+										<div>
+											<Button onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}>
+												Copy Id
+											</Button>
+											<Button
+												altAction
+												onClick={() => {
+													this.setState({ isIdDisabled: false })
+													this.idInput.current.focus()
+												}}
+											>
+												✎ Edit
+											</Button>
+										</div>
+									) : (
+										<Button onClick={() => this.setState({ isIdDisabled: true })}>OK</Button>
+									)}
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
 							</div>

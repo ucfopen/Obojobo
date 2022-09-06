@@ -20,22 +20,6 @@ oboEvents.on(DraftModel.EVENT_NEW_DRAFT_CREATED, newDraft => {
 		.catch(logger.error)
 })
 
-// when a draft is deleted, remove all of it's permissions
-oboEvents.on(DraftModel.EVENT_DRAFT_DELETED, () => {
-	// remove all permissions for all deleted drafts
-	return db
-		.none(
-			`
-			DELETE FROM repository_map_user_to_draft
-			USING drafts
-			WHERE
-			drafts.id = repository_map_user_to_draft.draft_id
-			AND
-			drafts.deleted = TRUE`
-		)
-		.catch(logger.error)
-})
-
 // 401 Error Page
 oboEvents.on('HTTP_NOT_AUTHORIZED', ({ req, res, next }) => {
 	req.responseHandled = true

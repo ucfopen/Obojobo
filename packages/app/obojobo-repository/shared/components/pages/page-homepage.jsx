@@ -14,6 +14,7 @@ const PageHomepage = props => (
 	>
 		<RepositoryNav
 			userId={props.currentUser.id}
+			userPerms={props.currentUser.perms}
 			avatarUrl={props.currentUser.avatarUrl}
 			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
 			noticeCount={0}
@@ -57,12 +58,6 @@ const PageHomepage = props => (
 					<p>
 						We started on day one enabling our users to build research studies that were previously
 						impossible.
-					</p>
-
-					<p>
-						The power to create new types of learning modules combined with standardized{' '}
-						<a href="http://www.imsglobal.org/activity/caliper">Caliper</a> events gives you access
-						to all the data you can handle.
 					</p>
 				</div>
 			</section>

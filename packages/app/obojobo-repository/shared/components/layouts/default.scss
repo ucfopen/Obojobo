@@ -64,6 +64,21 @@
 	@include mq($from: zero, $until: mobileL) {
 		justify-content: space-around;
 	}
+
+	&.fade {
+		animation: fade-out 1s;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+
+		to {
+			opacity: 0.5;
+		}
+	}
 }
 
 .repository--main-content {
@@ -122,6 +137,10 @@
 		@include mq($from: zero, $until: mobileL) {
 			display: none;
 		}
+	}
+
+	&.stretch-width::before {
+		right: 0;
 	}
 
 	.repository--main-content--sort {

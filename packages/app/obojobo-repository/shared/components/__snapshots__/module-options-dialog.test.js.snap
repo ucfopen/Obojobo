@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard expected props 1`] = `
+exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] = `
 <div
   className="module-permissions-dialog"
 >
@@ -42,6 +42,7 @@ exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard
     >
       <a
         className="repository--button "
+        download={null}
         href="/preview/mockDraftId"
         target="_blank"
       >
@@ -54,6 +55,7 @@ exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard
       </div>
       <a
         className="repository--button "
+        download={null}
         href="/url/for/editor"
         target="_blank"
       >
@@ -79,12 +81,34 @@ exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard
         className="repository--button "
         onClick={[Function]}
       >
+        Assessment Stats
+      </button>
+      <div
+        className="label"
+      >
+        View scores by student.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
         Version History
       </button>
       <div
         className="label"
       >
         View and restore previous versions.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Manage Collections
+      </button>
+      <div
+        className="label"
+      >
+        Add to or remove from private collections.
       </div>
       <button
         className="repository--button "
@@ -110,6 +134,7 @@ exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard
       </div>
       <a
         className="repository--button "
+        download={null}
         href="/library/mockDraftId"
         target="_blank"
       >

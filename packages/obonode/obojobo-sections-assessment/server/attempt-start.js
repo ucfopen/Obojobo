@@ -1,5 +1,4 @@
 const AssessmentModel = require('./models/assessment')
-const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
 const { logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
 
@@ -100,7 +99,7 @@ const startAttempt = (req, res) => {
 				result.state.chosen
 			)
 			res.success(result)
-			return insertAttemptStartCaliperEvent(
+			return insertAttemptStartEvent(
 				result.attemptId,
 				assessmentProperties.numAttemptsTaken,
 				req.currentUser.id,
@@ -197,7 +196,7 @@ const getSendToClientPromises = (assessmentNode, attemptState, req, res) => {
 	return promises
 }
 
-const insertAttemptStartCaliperEvent = (
+const insertAttemptStartEvent = (
 	attemptId,
 	numAttemptsTaken,
 	userId,
@@ -208,7 +207,6 @@ const insertAttemptStartCaliperEvent = (
 	remoteAddress,
 	visitId
 ) => {
-	const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
 		action: ACTION_ASSESSMENT_ATTEMPT_START,
 		actorTime: new Date().toISOString(),
@@ -223,17 +221,7 @@ const insertAttemptStartCaliperEvent = (
 		metadata: {},
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId,
-		eventVersion: '1.1.0',
-		caliperPayload: createAssessmentAttemptStartedEvent({
-			actor: { type: 'user', id: userId },
-			draftId: draftDocument.draftId,
-			contentId: draftDocument.contentId,
-			assessmentId: assessmentId,
-			attemptId: attemptId,
-			extensions: {
-				count: numAttemptsTaken
-			}
-		})
+		eventVersion: '1.1.0'
 	})
 }
 
@@ -242,7 +230,7 @@ module.exports = {
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
 	getSendToClientPromises,
-	insertAttemptStartCaliperEvent,
+	insertAttemptStartEvent,
 	loadChildren,
 	getState
 }

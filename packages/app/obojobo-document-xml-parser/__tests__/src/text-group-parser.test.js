@@ -145,4 +145,17 @@ describe('TextGroup parser', () => {
 
 		expect(parsed[0].text.value).toBe('')
 	})
+
+	test('Handles missing text item', () => {
+		setTextGroupElements([
+			{
+				name: 'sup',
+				value: undefined
+			}
+		])
+
+		const parsed = textGroupParser(textGroup)
+
+		expect(parsed[0].text.value).toBe('')
+	})
 })

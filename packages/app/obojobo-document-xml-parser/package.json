@@ -4,10 +4,10 @@
 		"xml-js": "^1.0.2"
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^12.1.0"
+		"obojobo-lib-utils": "^15.0.0"
 	},
 	"name": "obojobo-document-xml-parser",
-	"version": "12.1.0",
+	"version": "15.0.0",
 	"license": "AGPL-3.0-only",
 	"main": "xml2draft.js",
 	"scripts": {

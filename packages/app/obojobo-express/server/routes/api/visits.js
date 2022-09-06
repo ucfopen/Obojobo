@@ -4,9 +4,6 @@ const logger = oboRequire('server/logger')
 const ltiUtil = oboRequire('server/lti')
 const viewerState = oboRequire('server/viewer/viewer_state')
 const insertEvent = oboRequire('server/insert_event')
-const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
-const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
-const { getSessionIds } = oboRequire('server/routes/api/events/caliper_utils')
 const {
 	checkValidationRules,
 	requireCurrentUser,
@@ -89,7 +86,6 @@ router
 			})
 			.then(launchResult => {
 				launch = launchResult
-				const { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
 					action: 'visit:start',
 					actorTime: new Date().toISOString(),
@@ -101,13 +97,7 @@ router
 					contentId: req.currentDocument.contentId,
 					payload: { visitId: req.currentVisit.id, variables: variableValues },
 					eventVersion: '1.1.0',
-					visitId: req.currentVisit.id,
-					caliperPayload: createViewerSessionLoggedInEvent({
-						actor: { type: ACTOR_USER, id: req.currentUser.id },
-						draftId: req.currentDocument.draftId,
-						contentId: req.currentDocument.contentId,
-						sessionIds: getSessionIds(req.session)
-					})
+					visitId: req.currentVisit.id
 				})
 			})
 			.then(() => {

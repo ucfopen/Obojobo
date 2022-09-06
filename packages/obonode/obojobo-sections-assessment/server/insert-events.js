@@ -1,4 +1,3 @@
-const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
 const lti = require('obojobo-express/server/lti')
 
@@ -16,7 +15,6 @@ const insertAttemptEndEvents = (
 	originalAttemptId = null,
 	originalScoreId = null
 ) => {
-	const { createAssessmentAttemptSubmittedEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
 		action: 'assessment:attemptEnd',
 		actorTime: new Date().toISOString(),
@@ -34,20 +32,7 @@ const insertAttemptEndEvents = (
 		draftId,
 		contentId,
 		eventVersion: '1.3.0',
-		isPreview: isPreview,
-		caliperPayload: createAssessmentAttemptSubmittedEvent({
-			actor: { type: 'user', id: userId },
-			draftId,
-			contentId,
-			assessmentId,
-			attemptId,
-			extensions: {
-				attemptCount: attemptNumber,
-				imported: originalAttemptId !== null,
-				originalAttemptId,
-				originalScoreId
-			}
-		})
+		isPreview: isPreview
 	})
 }
 
@@ -74,8 +59,6 @@ const insertAttemptScoredEvents = (
 	originalAttemptId = null,
 	originalScoreId = null
 ) => {
-	const { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
-
 	return lti
 		.getLatestHighestAssessmentScoreRecord(
 			user.id,
@@ -112,25 +95,7 @@ const insertAttemptScoredEvents = (
 				draftId: draftDocument.draftId,
 				contentId: draftDocument.contentId,
 				eventVersion: '2.2.0',
-				isPreview: isPreview,
-				caliperPayload: createAssessmentAttemptScoredEvent({
-					actor: { type: 'serverApp' },
-					draftId: draftDocument.draftId,
-					contentId: draftDocument.contentId,
-					assessmentId,
-					attemptId: attemptId,
-					attemptScore,
-					extensions: {
-						attemptCount: attemptNumber,
-						attemptScore,
-						assessmentScore,
-						highestAssessmentScore: highestAssessmentScoreRecord.score,
-						ltiScoreSent,
-						imported: originalAttemptId !== null,
-						originalAttemptId,
-						originalScoreId
-					}
-				})
+				isPreview: isPreview
 			})
 		})
 }
@@ -155,8 +120,7 @@ const insertAttemptInvalidatedEvent = (
 		draftId,
 		contentId,
 		eventVersion: '1.0.0',
-		isPreview,
-		caliperPayload: {}
+		isPreview
 	})
 }
 

@@ -307,7 +307,10 @@ describe('Draft Model', () => {
 
 		return DraftModel.deleteByIdAndUser('draft_id', 'user_id').then(voidResult => {
 			expect(voidResult).toBe(undefined) //eslint-disable-line no-undefined
-			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_DELETED', { id: 'draft_id' })
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_DELETED', {
+				id: 'draft_id',
+				userId: 'user_id'
+			})
 		})
 	})
 
@@ -317,6 +320,29 @@ describe('Draft Model', () => {
 		db.none.mockRejectedValueOnce('mock-error')
 
 		return expect(DraftModel.deleteByIdAndUser('draft_id', 'user_id')).rejects.toBe('mock-error')
+	})
+
+	test('restoreByIdAndUser reverts delete flag', () => {
+		expect.hasAssertions()
+		const oboEvents = require('../../server/obo_events')
+
+		db.none.mockResolvedValueOnce()
+
+		return DraftModel.restoreByIdAndUser('draft_id', 'user_id').then(voidResult => {
+			expect(voidResult).toBe(undefined) //eslint-disable-line no-undefined
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_RESTORED', {
+				id: 'draft_id',
+				userId: 'user_id'
+			})
+		})
+	})
+
+	test('restoreByIdAndUser fails as expected', () => {
+		expect.hasAssertions()
+
+		db.none.mockRejectedValueOnce('mock-error')
+
+		return expect(DraftModel.restoreByIdAndUser('draft_id', 'user_id')).rejects.toBe('mock-error')
 	})
 
 	test('getChildNodesByType returns all nodes with a matching type', () => {

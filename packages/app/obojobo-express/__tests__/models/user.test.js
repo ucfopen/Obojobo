@@ -52,8 +52,8 @@ describe('user model', () => {
 		})
 
 		expect(u.roles).toHaveLength(2)
-		expect(u.canDoThing).toBe(true)
-		expect(u.canDoThingOtherThing).toBe(undefined)
+		expect(u.hasPermission('canDoThing')).toBe(true)
+		expect(u.hasPermission('canDoThingOtherThing')).toBe(false)
 
 		u = new User({
 			id: 5,
@@ -64,8 +64,8 @@ describe('user model', () => {
 			roles: ['roleName2', 'otherRoleName']
 		})
 		expect(u.roles).toHaveLength(2)
-		expect(u.canDoThing).toBe(false)
-		expect(u.canDoThingOtherThing).toBe(undefined)
+		expect(u.hasPermission('canDoThing')).toBe(false)
+		expect(u.hasPermission('canDoThingOtherThing')).toBe(false)
 	})
 
 	test('hasPermission behaves', () => {
@@ -259,6 +259,7 @@ describe('user model', () => {
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",
+		    "perms": Array [],
 		    "roles": Array [],
 		    "username": "someusername",
 		  },
@@ -267,6 +268,7 @@ describe('user model', () => {
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",
+		    "perms": Array [],
 		    "roles": Array [],
 		    "username": "someusername",
 		  },
@@ -293,6 +295,7 @@ describe('user model', () => {
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",
+		    "perms": Array [],
 		    "roles": Array [],
 		    "username": "someusername",
 		  },
@@ -301,6 +304,7 @@ describe('user model', () => {
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",
+		    "perms": Array [],
 		    "roles": Array [],
 		    "username": "someusername",
 		  },
@@ -381,11 +385,13 @@ describe('user model', () => {
 			username: 'someusername',
 			roles: ['Instructor']
 		})
-		expect(u.canViewEditor).toBe(true)
-		expect(u.canEditDrafts).toBe(true)
-		expect(u.canDeleteDrafts).toBe(true)
-		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canPreviewDrafts).toBe(true)
+		expect(u.hasPermission('canViewEditor')).toBe(true)
+		expect(u.hasPermission('canEditDrafts')).toBe(true)
+		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
+		expect(u.hasPermission('canCreateDrafts')).toBe(true)
+		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
+		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
 	test('Administrator role gives expected perms', () => {
@@ -397,11 +403,13 @@ describe('user model', () => {
 			username: 'someusername',
 			roles: ['urn:lti:instrole:ims/lis/Administrator']
 		})
-		expect(u.canViewEditor).toBe(true)
-		expect(u.canEditDrafts).toBe(true)
-		expect(u.canDeleteDrafts).toBe(true)
-		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canPreviewDrafts).toBe(true)
+		expect(u.hasPermission('canViewEditor')).toBe(true)
+		expect(u.hasPermission('canEditDrafts')).toBe(true)
+		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
+		expect(u.hasPermission('canCreateDrafts')).toBe(true)
+		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
+		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
 	test('TeachingAssistant role gives expected perms', () => {
@@ -413,11 +421,13 @@ describe('user model', () => {
 			username: 'someusername',
 			roles: ['urn:lti:role:ims/lis/TeachingAssistant']
 		})
-		expect(u.canViewEditor).toBe(true)
-		expect(u.canEditDrafts).toBe(true)
-		expect(u.canDeleteDrafts).toBe(true)
-		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canPreviewDrafts).toBe(true)
+		expect(u.hasPermission('canViewEditor')).toBe(true)
+		expect(u.hasPermission('canEditDrafts')).toBe(true)
+		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
+		expect(u.hasPermission('canCreateDrafts')).toBe(true)
+		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
+		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
 	test('ContentDeveloper role gives expected perms', () => {
@@ -429,11 +439,13 @@ describe('user model', () => {
 			username: 'someusername',
 			roles: ['ContentDeveloper']
 		})
-		expect(u.canViewEditor).toBe(true)
-		expect(u.canEditDrafts).toBe(true)
-		expect(u.canDeleteDrafts).toBe(true)
-		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canPreviewDrafts).toBe(true)
+		expect(u.hasPermission('canViewEditor')).toBe(true)
+		expect(u.hasPermission('canEditDrafts')).toBe(true)
+		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
+		expect(u.hasPermission('canCreateDrafts')).toBe(true)
+		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
+		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
 	test('Learner role gives expected perms', () => {
@@ -445,10 +457,10 @@ describe('user model', () => {
 			username: 'someusername',
 			roles: ['Learner']
 		})
-		expect(u.canViewEditor).toBe(false)
-		expect(u.canEditDrafts).toBe(false)
-		expect(u.canDeleteDrafts).toBe(false)
-		expect(u.canCreateDrafts).toBe(false)
-		expect(u.canPreviewDrafts).toBe(false)
+		expect(u.hasPermission('canViewEditor')).toBe(false)
+		expect(u.hasPermission('canEditDrafts')).toBe(false)
+		expect(u.hasPermission('canDeleteDrafts')).toBe(false)
+		expect(u.hasPermission('canCreateDrafts')).toBe(false)
+		expect(u.hasPermission('canPreviewDrafts')).toBe(false)
 	})
 })

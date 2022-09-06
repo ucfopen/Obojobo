@@ -92,4 +92,164 @@ describe('Rubric editor', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
+
+	test('Rubric section correctly renders rubric summary', () => {
+		let component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'highest',
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		let tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'pass-fail',
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'pass-fail',
+						passedType: '$attempt_score',
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'pass-fail',
+						failedType: '$attempt_score',
+						unableToPassType: 'no-value',
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'pass-fail',
+						failedType: 'no-score',
+						unableToPassType: '$highest_attempt_score',
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'pass-fail',
+						failedType: 'set-value',
+						unableToPassType: 'no-score',
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'pass-fail',
+						failedType: 'set-value',
+						unableToPassType: 'set-value',
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						type: 'pass-fail',
+						failedType: 'set-value',
+						unableToPassType: 'set-value',
+						mods: []
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
 })

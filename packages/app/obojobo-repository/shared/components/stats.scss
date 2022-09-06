@@ -1,0 +1,27 @@
+@import '../../client/css/defaults';
+
+#stats-root {
+	.repository--main-content {
+		max-width: inherit;
+	}
+
+	.repository--section-wrapper {
+		max-width: inherit;
+	}
+
+	.repository--data-grid-drafts-container {
+		max-height: 30em;
+		overflow: scroll;
+		margin-bottom: 1em;
+	}
+
+	.repository--assessment-stats {
+		height: 50em;
+	}
+
+	.repository--drafts-search {
+		padding: 0.25em;
+		width: 14em;
+		margin-bottom: 1em;
+	}
+}
