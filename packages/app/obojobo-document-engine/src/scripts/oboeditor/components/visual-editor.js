@@ -489,7 +489,6 @@ class VisualEditor extends React.Component {
 			return item.plugins.decorate(entry, this.editor)
 		}
 
-		console.log('decorate', entry)
 		const [node, path] = entry
 
 		if (node && Text.isText(node)) {
@@ -497,20 +496,18 @@ class VisualEditor extends React.Component {
 
 			const { text } = node
 
-			const match = varRegex.exec(text)
-			console.log('match', match)
+			const decorations = []
 
-			if (match) {
-				console.log(text.substring(match.index, match.index + match[0].length))
-				return [
-					{
-						anchor: { path, offset: match.index },
-						focus: { path, offset: match.index + match[0].length },
-						highlight: true,
-						variable: text.substring(match.index + 2, match.index + 2 + match[0].length - 4)
-					}
-				]
+			let match
+			while ((match = varRegex.exec(text))) {
+				decorations.push({
+					anchor: { path, offset: match.index },
+					focus: { path, offset: match.index + match[0].length },
+					highlight: true,
+					variable: text.substring(match.index + 2, match.index + 2 + match[0].length - 4)
+				})
 			}
+			if (decorations.length) return decorations
 		}
 
 		return []
@@ -535,7 +532,7 @@ class VisualEditor extends React.Component {
 			)
 		}
 
-		console.log('renderLeaf', props)
+		// console.log('renderLeaf', props)
 
 		if (leaf.highlight) {
 			return (
