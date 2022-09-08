@@ -6,7 +6,8 @@ import {
 	WITHIN_A_RANGE,
 	requirementDropdown,
 	marginDropdown,
-	simplifedToFullText
+	simplifedToFullText,
+	PERCENT
 } from '../constants'
 import NumericEntry from '../entry/numeric-entry'
 import {
@@ -95,12 +96,30 @@ const getRangeEndValidityString = (startValueString, endValueString) => {
 	}
 }
 
-const onBlurAnswer = event => {
-	event.target.setCustomValidity(getValidityString(event.target.value))
-	event.target.reportValidity()
+const getMarginOfErrorValidityString = (answer, errorType) => {
+
+	// Filter out leading zeroes
+	const parsedAnswer = parseInt(answer)
+
+	switch(simplifedToFullText[errorType]) {
+		case PERCENT: {
+			if (parsedAnswer === 0)
+				return 'Answer cannot be 0 while Error Type is Percent'
+			else
+				return ''
+		}
+		default:
+			return ''
+	}
+
 }
 
-const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
+const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSelectChange }) => {
+
+	const answerRef = React.createRef()
+
+	const marginErrorTypeRef = React.createRef()
+
 	const inputStartRef = React.createRef()
 	const inputEndRef = React.createRef()
 	const { requirement, answer, start, end, margin, type } = numericChoice
@@ -109,6 +128,24 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		// Clear out the error string and then update state
 		event.target.setCustomValidity('')
 		onHandleInputChange(event)
+	}
+
+	const onBlurAnswer = event => {
+
+		// Get normal error validity string
+		let answerValidityString = getValidityString(event.target.value)
+
+		// Validate for margin of error
+		if (answerValidityString === '' && !isRefRelatedTarget(event, marginErrorTypeRef)) {
+			answerValidityString = getMarginOfErrorValidityString(answer, type)
+		}
+
+		if (answerValidityString !== '') {
+			editor.addToErrors(event.target)
+		}
+
+		event.target.setCustomValidity(answerValidityString)
+		event.target.reportValidity()
 	}
 
 	const onBlurErrorValue = event => {
@@ -149,6 +186,16 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		}
 
 		onBlurAnswer(event)
+	}
+
+	const onBlurMarginOfErrorType = event => {
+
+		// If not moving to related input, get validity string
+		if (!isRefRelatedTarget(event, answerRef)) {
+			event.target.setCustomValidity(getMarginOfErrorValidityString(answer, type))
+			event.target.reportValidity()
+		}
+
 	}
 
 	switch (simplifedToFullText[requirement]) {
@@ -222,6 +269,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							onBlur={onBlurAnswer}
 							contentEditable={false}
 							autoComplete="off"
+							ref={answerRef}
 						/>
 					</label>
 					<label className="select margin-type">
@@ -231,6 +279,8 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="margin-type"
 							value={simplifedToFullText[type]}
 							onChange={onHandleSelectChange}
+							ref={marginErrorTypeRef}
+							onBlur={onBlurMarginOfErrorType}
 						>
 							{marginDropdown.map(type => (
 								<option key={type}>{type}</option>
