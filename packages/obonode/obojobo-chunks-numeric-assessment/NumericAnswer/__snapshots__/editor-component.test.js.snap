@@ -379,6 +379,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Absolute"
       >
@@ -458,6 +459,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Absolute"
       >
@@ -537,6 +539,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Absolute"
       >
@@ -616,6 +619,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Absolute"
       >
@@ -695,6 +699,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Absolute"
       >
@@ -774,6 +779,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Absolute"
       >
@@ -853,6 +859,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Absolute"
       >
@@ -932,6 +939,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Percent"
       >
@@ -1011,6 +1019,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Percent"
       >
@@ -1090,6 +1099,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Percent"
       >
@@ -1169,6 +1179,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Percent"
       >
@@ -1248,6 +1259,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Percent"
       >
@@ -1327,6 +1339,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Percent"
       >
@@ -1406,6 +1419,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       <select
         className="select-item"
         name="margin-type"
+        onBlur={[Function]}
         onChange={[Function]}
         value="Percent"
       >

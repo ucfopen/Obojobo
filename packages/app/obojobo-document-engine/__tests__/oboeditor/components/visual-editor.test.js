@@ -1451,4 +1451,25 @@ describe('VisualEditor', () => {
 		expect(spy).not.toHaveBeenCalled()
 		expect(instance.state.saveState).toBe('')
 	})
+
+	test('PageEditor component doesnt save if any input field is invalid', () => {
+		const props = { model: { title: '' } }
+		const mockFn = jest.fn()
+		const spy = jest.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
+
+		const mockReportValidty = jest.fn().mockReturnValue(false)
+
+		const component = mount(<VisualEditor {...props} />)
+		const instance = component.instance()
+
+		document.getElementsByTagName('input')[0].reportValidity = jest.fn().mockReturnValue(false)
+
+		instance.markUnsaved()
+		instance.saveModule('mockId')
+
+		// eslint-disable-next-line no-undefined
+		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
+		expect(spy).not.toHaveBeenCalled()
+		expect(instance.state.saveState).toBe('')
+	})
 })

@@ -364,6 +364,18 @@ class VisualEditor extends React.Component {
 		const json = this.props.model.flatJSON()
 		json.content.start = EditorStore.state.startingId
 
+		// Check validity of all input and select elements
+		const inputFields = document.querySelectorAll('input,select')
+		const message = 'Cannot save this module while errors are present'
+
+		for (const field of Array.from(inputFields)) {
+			field.blur()
+			if (field.reportValidity() === false) {
+				window.alert(message) //eslint-disable-line no-alert
+				return
+			}
+		}
+
 		// deal with content
 		this.props.model.children.forEach(child => {
 			let contentJSON = {}

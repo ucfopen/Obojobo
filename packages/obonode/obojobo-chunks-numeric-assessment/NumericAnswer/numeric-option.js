@@ -96,26 +96,24 @@ const getRangeEndValidityString = (startValueString, endValueString) => {
 	}
 }
 
-const getMarginOfErrorValidityString = (answer, errorType) => {
-
+const getMarginOfErrorAnswerValidityString = (answer, errorType) => {
 	// Filter out leading zeroes
-	const parsedAnswer = parseInt(answer)
+	const parsedAnswer = parseInt(answer, 10)
 
-	switch(simplifedToFullText[errorType]) {
+	switch (simplifedToFullText[errorType]) {
 		case PERCENT: {
-			if (parsedAnswer === 0)
+			if (parsedAnswer === 0) {
 				return 'Answer cannot be 0 while Error Type is Percent'
-			else
+			} else {
 				return ''
+			}
 		}
 		default:
 			return ''
 	}
-
 }
 
-const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSelectChange }) => {
-
+const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
 	const answerRef = React.createRef()
 
 	const marginErrorTypeRef = React.createRef()
@@ -124,6 +122,31 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSel
 	const inputEndRef = React.createRef()
 	const { requirement, answer, start, end, margin, type } = numericChoice
 
+	// Clear out any custom validity after a field changes to ensure old errors don't show
+	const clearCustomValidity = () => {
+		if (answerRef.current) {
+			answerRef.current.setCustomValidity('')
+		}
+
+		if (inputStartRef.current) {
+			inputStartRef.current.setCustomValidity('')
+		}
+
+		if (inputEndRef.current) {
+			inputEndRef.current.setCustomValidity('')
+		}
+
+		if (marginErrorTypeRef.current) {
+			marginErrorTypeRef.current.setCustomValidity('')
+		}
+	}
+
+	const onAnswerTypeChange = event => {
+		clearCustomValidity()
+
+		onHandleSelectChange(event)
+	}
+
 	const onChangeNumericValue = event => {
 		// Clear out the error string and then update state
 		event.target.setCustomValidity('')
@@ -131,24 +154,27 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSel
 	}
 
 	const onBlurAnswer = event => {
+		clearCustomValidity()
 
 		// Get normal error validity string
 		let answerValidityString = getValidityString(event.target.value)
 
 		// Validate for margin of error
 		if (answerValidityString === '' && !isRefRelatedTarget(event, marginErrorTypeRef)) {
-			answerValidityString = getMarginOfErrorValidityString(answer, type)
+			answerValidityString = getMarginOfErrorAnswerValidityString(event.target.value, type)
 		}
 
-		if (answerValidityString !== '') {
-			editor.addToErrors(event.target)
-		}
+		// if (answerValidityString !== '') {
+		// 	editor.addToErrors(event.target)
+		// }
 
 		event.target.setCustomValidity(answerValidityString)
 		event.target.reportValidity()
 	}
 
 	const onBlurErrorValue = event => {
+		clearCustomValidity()
+
 		const errorAmount = parseFloat(event.target.value)
 
 		if (!Number.isFinite(errorAmount)) {
@@ -163,6 +189,7 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSel
 	}
 
 	const onBlurStart = event => {
+		clearCustomValidity()
 		// If the user is moving to a related input then don't show range errors.
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
@@ -176,6 +203,7 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSel
 	}
 
 	const onBlurEnd = event => {
+		clearCustomValidity()
 		// If the user is moving to a related input then don't show range errors.
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
@@ -189,13 +217,13 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSel
 	}
 
 	const onBlurMarginOfErrorType = event => {
+		clearCustomValidity()
 
 		// If not moving to related input, get validity string
 		if (!isRefRelatedTarget(event, answerRef)) {
-			event.target.setCustomValidity(getMarginOfErrorValidityString(answer, type))
+			event.target.setCustomValidity(getMarginOfErrorAnswerValidityString(answer, type))
 			event.target.reportValidity()
 		}
-
 	}
 
 	switch (simplifedToFullText[requirement]) {
@@ -208,7 +236,7 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSel
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onHandleSelectChange}
+							onChange={onAnswerTypeChange}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -252,7 +280,7 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onHandleSel
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onHandleSelectChange}
+							onChange={onAnswerTypeChange}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
