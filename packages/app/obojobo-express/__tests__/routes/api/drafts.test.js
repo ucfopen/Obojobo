@@ -8,6 +8,7 @@ jest.mock('obojobo-document-json-parser/json-to-xml-parser')
 jest.mock('obojobo-repository/server/models/draft_permissions')
 
 import DraftModel from '../../../server/models/draft'
+import { FULL, PARTIAL, MINIMAL } from '../../../server/constants'
 const CollectionModel = require('obojobo-repository/server/models/collection')
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
@@ -68,7 +69,6 @@ describe('api draft route', () => {
 		xml.mockReset()
 		jsonToXml.mockReset()
 		DraftPermissions.getUserAccessLevelToDraft.mockReset()
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValue('Full')
 		CollectionModel.addModule.mockReset()
 	})
 	afterEach(() => {})
@@ -83,7 +83,7 @@ describe('api draft route', () => {
 			root: { yell: mockYell },
 			document: { title: 'mock-document-json' },
 			authorId: 99,
-			accessLevel: 'Full'
+			accessLevel: FULL
 		}
 
 		// mock the xmlDocument Getter
@@ -92,7 +92,7 @@ describe('api draft route', () => {
 		})
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -119,11 +119,11 @@ describe('api draft route', () => {
 			root: { yell: mockYell },
 			document: mockDocument,
 			authorId: 99,
-			accessLevel: 'Full'
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		jsonToXml.mockReturnValueOnce('mock-xml')
 
@@ -157,11 +157,11 @@ describe('api draft route', () => {
 			root: { yell: mockYell },
 			document: mockDocument,
 			authorId: 99,
-			accessLevel: 'Full'
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -193,11 +193,11 @@ describe('api draft route', () => {
 			root: { yell: mockYell },
 			document: mockDocument,
 			authorId: 99,
-			accessLevel: 'Full'
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchDraftByVersion.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -234,11 +234,12 @@ describe('api draft route', () => {
 		const mockDraftModel = {
 			root: { yell: mockYell },
 			document: mockDocument,
-			authorId: 99
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchDraftByVersion.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -273,11 +274,12 @@ describe('api draft route', () => {
 		const mockDraftModel = {
 			root: { yell: mockYell },
 			document: mockDocument,
-			authorId: 99
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -308,11 +310,12 @@ describe('api draft route', () => {
 		const mockDraftModel = {
 			root: { yell: mockYell },
 			document: mockDocument,
-			authorId: 99
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -342,11 +345,12 @@ describe('api draft route', () => {
 		const mockDraftModel = {
 			root: { yell: mockYell },
 			document: mockDocument,
-			authorId: 99
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -387,7 +391,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user does not have access level with editing permission', () => {
 		expect.assertions(5)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Minimal')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
 		mockCurrentUser = { id: 88, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
@@ -413,7 +417,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user does not have canViewEditor rights NOR access level with editing permission', () => {
 		expect.assertions(4)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Minimal')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
 		mockCurrentUser = { id: 88, hasPermission: () => false } // mock current logged in user
 
 		return request(app)
@@ -438,7 +442,7 @@ describe('api draft route', () => {
 			'mockValues'
 		)
 		DraftModel.fetchById.mockRejectedValueOnce(mockError)
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -455,7 +459,7 @@ describe('api draft route', () => {
 		expect.assertions(5)
 		// mock a failure to find the draft
 		DraftModel.fetchById.mockRejectedValueOnce('mock-other-error')
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
 			.then(response => {
@@ -986,7 +990,7 @@ describe('api draft route', () => {
 	test('delete draft returns successfully', () => {
 		expect.assertions(4)
 		DraftModel.deleteById.mockResolvedValueOnce('mock-db-result')
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -1001,7 +1005,7 @@ describe('api draft route', () => {
 	test('delete 500s when the database errors', () => {
 		expect.assertions(5)
 
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		DraftModel.deleteById.mockRejectedValueOnce('oh no')
 
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
@@ -1016,10 +1020,10 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('delete 401s when a user tries deleting a draft they do not own', () => {
+	test('delete 401s when a user tries deleting a draft they do not have Full access to', () => {
 		expect.assertions(5)
 
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Partial')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 
 		return request(app)

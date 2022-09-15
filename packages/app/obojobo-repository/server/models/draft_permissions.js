@@ -77,7 +77,7 @@ class DraftPermissions {
 			})
 	}
 
-	// returns a string (or null)
+	// returns an int (or null)
 	static async getUserAccessLevelToDraft(userId, draftId) {
 		try {
 			const result = await db.oneOrNone(

@@ -1,3 +1,5 @@
+import { FULL, PARTIAL } from '../../../obojobo-express/server/constants'
+
 describe('DraftPermissions Model', () => {
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/logger')
@@ -68,14 +70,14 @@ describe('DraftPermissions Model', () => {
 
 		db.none.mockResolvedValueOnce('mock-db-results')
 
-		return DraftPermissions.updateAccessLevel('MDID', 'MUID', 'Partial').then(model => {
+		return DraftPermissions.updateAccessLevel('MDID', 'MUID', PARTIAL).then(model => {
 			expect(model).toBe('mock-db-results')
 			const [query, options] = db.none.mock.calls[0]
 			expect(query).toContain('UPDATE repository_map_user_to_draft')
 			expect(options).toEqual({
 				userId: 'MUID',
 				draftId: 'MDID',
-				accessLevel: 'Partial'
+				accessLevel: PARTIAL
 			})
 		})
 	})
@@ -84,7 +86,7 @@ describe('DraftPermissions Model', () => {
 		expect.hasAssertions()
 		db.none.mockRejectedValueOnce(mockError)
 
-		return DraftPermissions.updateAccessLevel('MDID', 'MUID', 'Partial').catch(error => {
+		return DraftPermissions.updateAccessLevel('MDID', 'MUID', PARTIAL).catch(error => {
 			expect(logger.logError).toHaveBeenCalledWith('Error updateAccessLevel', mockError)
 			expect(error).toBe(mockError)
 		})
@@ -160,10 +162,10 @@ describe('DraftPermissions Model', () => {
 	test('getUserAccessLevelToDraft retrieves a data from the database', () => {
 		expect.hasAssertions()
 
-		db.oneOrNone.mockResolvedValueOnce({ access_level: 'Full' })
+		db.oneOrNone.mockResolvedValueOnce({ access_level: FULL })
 
 		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').then(access_level => {
-			expect(access_level).toBe('Full')
+			expect(access_level).toBe(FULL)
 			const [query, options] = db.oneOrNone.mock.calls[0]
 			expect(query).toContain('SELECT')
 			expect(query).toContain('FROM repository_map_user_to_draft')
@@ -204,10 +206,10 @@ describe('DraftPermissions Model', () => {
 	test('getUserAccessLevel retrieves a data from the database when user exists', () => {
 		expect.hasAssertions()
 
-		db.oneOrNone.mockResolvedValueOnce({ access_level: 'Full' })
+		db.oneOrNone.mockResolvedValueOnce({ access_level: FULL })
 
 		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').then(accessLevel => {
-			expect(accessLevel).toEqual('Full')
+			expect(accessLevel).toEqual(FULL)
 			const [query, options] = db.oneOrNone.mock.calls[0]
 			expect(query).toContain('SELECT')
 			expect(query).toContain('FROM repository_map_user_to_draft')

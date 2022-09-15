@@ -25,6 +25,7 @@ const isNoDataFromQueryError = e => {
 		e instanceof pgp.errors.QueryResultError && e.code === pgp.errors.queryResultErrorCode.noData
 	)
 }
+const { levelName, FULL, PARTIAL } = require('../../constants')
 
 // Get a complete Draft Document Tree (for editing)
 // optional query variable: contentId=<draftContentId>
@@ -39,7 +40,8 @@ router
 				req.currentUser.id,
 				req.params.draftId
 			)
-			const hasPerms = access_level === 'Full' || access_level === 'Partial'
+
+			const hasPerms = access_level === FULL || access_level === PARTIAL
 
 			if (!hasPerms) {
 				return res.notAuthorized(
@@ -58,7 +60,7 @@ router
 
 			// Get the draft document and attach the user's access level for use in editor
 			const draftDocument = draftModel.document
-			draftDocument.accessLevel = access_level
+			draftDocument.accessLevel = levelName[access_level]
 
 			res.format({
 				'application/xml': async () => {
@@ -269,10 +271,12 @@ router
 			req.params.draftId
 		)
 
-		const hasPerms = access_level === 'Full'
+		const hasPerms = access_level === FULL
 
 		if (!hasPerms) {
-			return res.notAuthorized('You must have "Full" access to this draft to delete it')
+			return res.notAuthorized(
+				'You must have "' + levelName[FULL] + '" access to this draft to delete it'
+			)
 		}
 
 		return DraftModel.deleteById(req.params.draftId)

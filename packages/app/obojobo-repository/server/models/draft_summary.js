@@ -1,5 +1,6 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
+const { levelName } = require('obojobo-express/server/constants')
 
 const buildQueryWhere = (
 	whereSQL,
@@ -53,7 +54,7 @@ class DraftSummary {
 		this.draftId = draft_id
 		this.title = title
 		this.userId = user_id
-		this.accessLevel = access_level
+		this.accessLevel = levelName[access_level]
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version

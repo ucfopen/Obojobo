@@ -17,9 +17,9 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
 	return db
 		.addColumn('repository_map_user_to_draft', 'access_level', {
-			type: 'varchar',
-			length: 7,
-			defaultValue: 'Full'
+			type: 'int',
+			notNull: true,
+			defaultValue: 1
 		})
 		.then(() => {
 			return db.addIndex('repository_map_user_to_draft', 'user_access_level_index', [

@@ -42,6 +42,7 @@ const assessmentExpress = require('./express')
 const express_response_decorator = require('obojobo-express/server/express_response_decorator')
 const express = require('express')
 const { ERROR_INVALID_ATTEMPT_END, ERROR_INVALID_ATTEMPT_RESUME } = require('./error-constants')
+const { FULL } = require('obojobo-express/server/constants')
 const DraftPermissions = require('../../../app/obojobo-repository/server/models/draft_permissions')
 let app
 
@@ -488,7 +489,7 @@ describe('server/express', () => {
 			}
 			next()
 		})
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
 
 		const response = await request(app)
@@ -530,7 +531,7 @@ describe('server/express', () => {
 			}
 			next()
 		})
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
 
 		const response = await request(app)
@@ -662,7 +663,7 @@ describe('server/express', () => {
 
 	test('GET /api/assessments/:draftId/details fails', async () => {
 		expect.hasAssertions()
-		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce('Full')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		AssessmentModel.fetchAttemptHistoryDetails.mockRejectedValueOnce(Error('Oops!'))
 
 		const response = await request(app)

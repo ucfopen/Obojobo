@@ -6,6 +6,7 @@ const DraftPermissions = require('obojobo-repository/server/models/draft_permiss
 const { checkValidationRules, requireDraftId, requireContentId, requireCanViewEditor } = oboRequire(
 	'server/express_validators'
 )
+const { FULL, PARTIAL } = require('../../constants')
 
 // CHECK A LOCK
 // mounted as /api/locks/:draftId
@@ -29,7 +30,7 @@ router
 				req.params.draftId
 			)
 
-			const hasPerms = access_level === 'Full' || access_level === 'Partial'
+			const hasPerms = access_level === FULL || access_level === PARTIAL
 
 			if (!hasPerms) {
 				return res.notAuthorized('You do not have the required access level to edit this module.')
