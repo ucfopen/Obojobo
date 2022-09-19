@@ -40,10 +40,12 @@ class ModulePermissionsDialog extends React.Component {
 		if (userId === this.props.currentUserId) {
 			const response = window.confirm('Remove yourself from this module?') //eslint-disable-line no-alert
 			if (!response) return
-		}
 
-		this.props.deleteModulePermissions(this.props.draftId, userId)
-		this.props.onClose()
+			this.props.deleteModulePermissions(this.props.draftId, userId)
+			this.props.onClose()
+		} else {
+			this.props.deleteModulePermissions(this.props.draftId, userId)
+		}
 	}
 
 	changeAccessLevel(userId, targetLevel) {
@@ -77,7 +79,7 @@ class ModulePermissionsDialog extends React.Component {
 			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
 				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
 					<div className="access-level-dropdown">
-						<span>Access Level:</span>
+						<span>Level:</span>
 						<select
 							onChange={event => this.changeAccessLevel(p.id, event.target.value)}
 							disabled={p.id === this.props.currentUserId}

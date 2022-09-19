@@ -89,14 +89,14 @@
 		margin: 0;
 
 		li {
-			max-width: 75%;
+			max-width: 95%;
 
 			&:first-child {
-				margin-top: 1em;
+				margin-top: 0.5em;
 			}
 
 			&:last-child {
-				margin-bottom: 1em;
+				margin-bottom: 0.5em;
 			}
 		}
 	}
@@ -107,6 +107,7 @@
 		align-items: center;
 		margin: 5px;
 		font-size: 0.8em;
+		flex: 2;
 
 		select {
 			font-family: 'Libre Franklin', Arial, sans-serif;
