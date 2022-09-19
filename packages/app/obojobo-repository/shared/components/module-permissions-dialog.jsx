@@ -6,6 +6,7 @@ const ReactModal = require('react-modal')
 const Button = require('./button')
 const PeopleSearchDialog = require('./people-search-dialog-hoc')
 const PeopleListItem = require('./people-list-item')
+const { FULL, PARTIAL, MINIMAL, levelName } = require('obojobo-express/server/constants')
 
 class ModulePermissionsDialog extends React.Component {
 	constructor(props) {
@@ -81,13 +82,13 @@ class ModulePermissionsDialog extends React.Component {
 							onChange={event => this.changeAccessLevel(p.id, event.target.value)}
 							disabled={p.id === this.props.currentUserId}
 						>
-							<option value="Full" selected={p.accessLevel === 'Full'}>
+							<option value={levelName[FULL]} selected={p.accessLevel === FULL}>
 								Full
 							</option>
-							<option value="Partial" selected={p.accessLevel === 'Partial'}>
+							<option value={levelName[PARTIAL]} selected={p.accessLevel === PARTIAL}>
 								Partial
 							</option>
-							<option value="Minimal" selected={p.accessLevel === 'Minimal'}>
+							<option value={levelName[MINIMAL]} selected={p.accessLevel === MINIMAL}>
 								Minimal
 							</option>
 						</select>

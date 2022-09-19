@@ -1,6 +1,6 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
-const { levelName } = require('obojobo-express/server/constants')
+const { FULL } = require('obojobo-express/server/constants')
 
 const buildQueryWhere = (
 	whereSQL,
@@ -54,7 +54,7 @@ class DraftSummary {
 		this.draftId = draft_id
 		this.title = title
 		this.userId = user_id
-		this.accessLevel = levelName[access_level]
+		this.accessLevel = access_level
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version
@@ -178,7 +178,7 @@ class DraftSummary {
 			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
-			`repository_map_user_to_draft.user_id = $[userId] AND access_level = 'Full'`,
+			`repository_map_user_to_draft.user_id = $[userId] AND access_level = ${FULL}`,
 			{ userId, deleted: 'TRUE' }
 		)
 	}

@@ -5,6 +5,7 @@ import { create } from 'react-test-renderer'
 
 import Button from './button'
 import ModuleMenu from './module-menu'
+import { FULL, PARTIAL, MINIMAL } from 'obojobo-express/server/constants'
 
 describe('ModuleMenu', () => {
 	let defaultProps
@@ -36,19 +37,19 @@ describe('ModuleMenu', () => {
 	})
 
 	test('ModuleMenu renders correctly with "Minimal" access level', () => {
-		defaultProps.accessLevel = 'Minimal'
+		defaultProps.accessLevel = MINIMAL
 		const component = create(<ModuleMenu {...defaultProps} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('ModuleMenu renders correctly with "Partial" access level', () => {
-		defaultProps.accessLevel = 'Partial'
+		defaultProps.accessLevel = PARTIAL
 		const component = create(<ModuleMenu {...defaultProps} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('ModuleMenu renders correctly with "Full" access level', () => {
-		defaultProps.accessLevel = 'Full'
+		defaultProps.accessLevel = FULL
 		const component = create(<ModuleMenu {...defaultProps} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
@@ -71,7 +72,7 @@ describe('ModuleMenu', () => {
 
 	test('"Share" button onClick calls showModulePermissions', () => {
 		defaultProps.showModulePermissions = jest.fn()
-		defaultProps.accessLevel = 'Full'
+		defaultProps.accessLevel = FULL
 		const component = create(<ModuleMenu {...defaultProps} />)
 
 		component.root.findAllByType(Button)[0].props.onClick()
@@ -82,7 +83,7 @@ describe('ModuleMenu', () => {
 
 	test('"More..." button onClick calls showModuleMore', () => {
 		defaultProps.showModuleMore = jest.fn()
-		defaultProps.accessLevel = 'Full'
+		defaultProps.accessLevel = FULL
 		const component = create(<ModuleMenu {...defaultProps} />)
 
 		component.root.findAllByType(Button)[1].props.onClick()

@@ -5,6 +5,7 @@ import React from 'react'
 import { create } from 'react-test-renderer'
 
 import ModuleOptionsDialog from './module-options-dialog'
+import { FULL, PARTIAL, MINIMAL } from 'obojobo-express/server/constants'
 
 describe('ModuleOptionsDialog', () => {
 	let defaultProps
@@ -21,7 +22,7 @@ describe('ModuleOptionsDialog', () => {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
 			editor: 'mockEditorType',
-			accessLevel: 'Full'
+			accessLevel: FULL
 		}
 
 		mockRepositoryUtils = require('../repository-utils')
@@ -43,7 +44,7 @@ describe('ModuleOptionsDialog', () => {
 	})
 
 	test('renders correctly with Minimal access level', () => {
-		defaultProps.accessLevel = 'Minimal'
+		defaultProps.accessLevel = MINIMAL
 
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
@@ -53,7 +54,7 @@ describe('ModuleOptionsDialog', () => {
 	})
 
 	test('renders correctly with Partial access level', () => {
-		defaultProps.accessLevel = 'Partial'
+		defaultProps.accessLevel = PARTIAL
 
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 

@@ -4,7 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import ClipboardUtil from '../../util/clipboard-util'
 import EditorAPI from 'obojobo-document-engine/src/scripts/viewer/util/editor-api'
 import { downloadDocument } from '../../../common/util/download-document'
-
+import { FULL } from 'obojobo-express/server/constants'
 import DropDownMenu from './drop-down-menu'
 
 const { Prompt } = Common.components.modal
@@ -143,7 +143,7 @@ class FileMenu extends React.PureComponent {
 			{
 				name: 'Delete Module...',
 				type: 'action',
-				disabled: this.props.accessLevel !== 'Full',
+				disabled: this.props.accessLevel !== FULL,
 				action: () => {
 					const buttons = [
 						{

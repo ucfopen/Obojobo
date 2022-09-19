@@ -21,6 +21,7 @@ const CollectionBulkAddModulesDialog = require('./collection-bulk-add-modules-di
 const CollectionManageModulesDialog = require('./collection-manage-modules-dialog')
 const CollectionRenameDialog = require('./collection-rename-dialog')
 const ButtonLink = require('./button-link')
+const { FULL, PARTIAL, MINIMAL } = require('obojobo-express/server/constants')
 
 const short = require('short-uuid')
 
@@ -402,13 +403,13 @@ function Dashboard(props) {
 
 		selection.forEach(({ module, action }) => {
 			switch (module.accessLevel) {
-				case 'Full':
+				case FULL:
 					action === 'select' ? (totalFull += 1) : (totalFull -= 1)
 					break
-				case 'Partial':
+				case PARTIAL:
 					action === 'select' ? (totalPartial += 1) : (totalPartial -= 1)
 					break
-				case 'Minimal':
+				case MINIMAL:
 					action === 'select' ? (totalMinimal += 1) : (totalMinimal -= 1)
 					break
 			}

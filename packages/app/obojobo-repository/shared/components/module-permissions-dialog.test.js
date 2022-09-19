@@ -9,6 +9,8 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import { create, act } from 'react-test-renderer'
 
+import { FULL, PARTIAL, MINIMAL } from 'obojobo-express/server/constants'
+
 import ModulePermissionsDialog from './module-permissions-dialog'
 import PeopleSearchDialog from './people-search-dialog-hoc'
 import PeopleListItem from './people-list-item'
@@ -212,7 +214,7 @@ describe('ModulePermissionsDialog', () => {
 
 	test('props.changeAccessLevel is called when a peopleListItem access level is changed', () => {
 		defaultProps.draftPermissions['mockDraftId'] = {
-			items: [{ id: 1, accessLevel: 'Full' }, { id: 99, accessLevel: 'Mimimal' }]
+			items: [{ id: 1, accessLevel: FULL }, { id: 99, accessLevel: MINIMAL }]
 		}
 		const reusableComponent = <ModulePermissionsDialog {...defaultProps} />
 		let component
@@ -230,11 +232,11 @@ describe('ModulePermissionsDialog', () => {
 		expect(peopleListItems[1].props.isMe).toBe(true)
 
 		act(() => {
-			peopleListItems[0].findByType('select').props.onChange({ target: { value: 'Partial' } })
+			peopleListItems[0].findByType('select').props.onChange({ target: { value: PARTIAL } })
 		})
 
 		expect(defaultProps.changeAccessLevel).toHaveBeenCalledTimes(1)
-		expect(defaultProps.changeAccessLevel).toHaveBeenCalledWith('mockDraftId', 1, 'Partial')
+		expect(defaultProps.changeAccessLevel).toHaveBeenCalledWith('mockDraftId', 1, PARTIAL)
 	})
 
 	test('confirmation window denied when "x" button is clicked on peopleList item for current user', () => {

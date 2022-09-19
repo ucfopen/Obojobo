@@ -1,3 +1,5 @@
+import { FULL } from 'obojobo-express/server/constants'
+
 describe('DraftSummary Model', () => {
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/logger')
@@ -659,7 +661,7 @@ describe('DraftSummary Model', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawDraftSummary)
 
-		const whereSQL = `repository_map_user_to_draft.user_id = $[userId] AND access_level = 'Full'`
+		const whereSQL = `repository_map_user_to_draft.user_id = $[userId] AND access_level = ${FULL}`
 		const joinSQL = `JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`
 		const selectSQL = 'repository_map_user_to_draft.access_level AS access_level,'

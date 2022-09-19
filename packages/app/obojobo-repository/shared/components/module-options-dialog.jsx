@@ -8,6 +8,7 @@ const { urlForEditor } = require('../repository-utils')
 const {
 	downloadDocument
 } = require('obojobo-document-engine/src/scripts/common/util/download-document')
+const { FULL, MINIMAL, levelName } = require('obojobo-express/server/constants')
 
 const deleteModule = (
 	title,
@@ -33,7 +34,7 @@ const ModuleOptionsDialog = props => (
 		</div>
 		<div className="wrapper">
 			<h1 className="title">Module Options</h1>
-			<p>Your Access Level: {props.accessLevel}</p>
+			<p>Your Access Level: {levelName[props.accessLevel]}</p>
 			<div className="buttons-with-labels">
 				<div className="button-label-group">
 					<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
@@ -42,7 +43,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">View with preview controls.</div>
 				</div>
 
-				{props.accessLevel !== 'Minimal' && (
+				{props.accessLevel !== MINIMAL && (
 					<div className="button-label-group">
 						<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
 							Edit
@@ -51,14 +52,14 @@ const ModuleOptionsDialog = props => (
 					</div>
 				)}
 
-				{props.accessLevel === 'Full' && (
+				{props.accessLevel === FULL && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-shareButton"
 							onClick={() => {
 								props.showModulePermissions(props)
 							}}
-							disabled={props.accessLevel !== 'Full'}
+							disabled={props.accessLevel !== FULL}
 						>
 							Share
 						</Button>
@@ -78,12 +79,12 @@ const ModuleOptionsDialog = props => (
 					<div className="label">View scores by student.</div>
 				</div>
 
-				{props.accessLevel !== 'Minimal' && (
+				{props.accessLevel !== MINIMAL && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-showVersionHistoryButton"
 							onClick={() => props.showVersionHistory(props)}
-							disabled={props.accessLevel === 'Minimal'}
+							disabled={props.accessLevel === MINIMAL}
 						>
 							Version History
 						</Button>
@@ -103,14 +104,14 @@ const ModuleOptionsDialog = props => (
 					<div className="label">Add to or remove from private collections.</div>
 				</div>
 
-				{props.accessLevel !== 'Minimal' && (
+				{props.accessLevel !== MINIMAL && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-downloadJSONButton"
 							onClick={() => {
 								downloadDocument(props.draftId, 'json')
 							}}
-							disabled={props.accessLevel === 'Minimal'}
+							disabled={props.accessLevel === MINIMAL}
 						>
 							Download JSON
 						</Button>
@@ -118,14 +119,14 @@ const ModuleOptionsDialog = props => (
 					</div>
 				)}
 
-				{props.accessLevel !== 'Minimal' && (
+				{props.accessLevel !== MINIMAL && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-downloadXMLButton"
 							onClick={() => {
 								downloadDocument(props.draftId, 'xml')
 							}}
-							disabled={props.accessLevel === 'Minimal'}
+							disabled={props.accessLevel === MINIMAL}
 						>
 							Download XML
 						</Button>
@@ -140,7 +141,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">Visit this modules public page.</div>
 				</div>
 
-				{props.accessLevel === 'Full' && (
+				{props.accessLevel === FULL && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-deleteButton"
@@ -154,7 +155,7 @@ const ModuleOptionsDialog = props => (
 									props.stopLoadingAnimation
 								)
 							}}
-							disabled={props.accessLevel !== 'Full'}
+							disabled={props.accessLevel !== FULL}
 						>
 							Delete
 						</Button>

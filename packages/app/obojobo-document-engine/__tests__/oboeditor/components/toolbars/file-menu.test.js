@@ -16,6 +16,8 @@ jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 import { downloadDocument } from '../../../../src/scripts/common/util/download-document'
 jest.mock('../../../../src/scripts/common/util/download-document')
 
+import { FULL, PARTIAL } from 'obojobo-express/server/constants'
+
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
@@ -166,7 +168,7 @@ describe('File Menu', () => {
 			title: 'mockTitle'
 		}
 
-		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel="Full" />)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel={FULL} />)
 
 		component
 			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
@@ -180,7 +182,7 @@ describe('File Menu', () => {
 			title: 'mockTitle'
 		}
 
-		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel="Partial" />)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel={PARTIAL} />)
 
 		component
 			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))

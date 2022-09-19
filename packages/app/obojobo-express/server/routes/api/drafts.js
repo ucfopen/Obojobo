@@ -60,7 +60,7 @@ router
 
 			// Get the draft document and attach the user's access level for use in editor
 			const draftDocument = draftModel.document
-			draftDocument.accessLevel = levelName[access_level]
+			draftDocument.accessLevel = access_level
 
 			res.format({
 				'application/xml': async () => {

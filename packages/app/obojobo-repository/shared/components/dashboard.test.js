@@ -67,6 +67,7 @@ import VersionHistoryDialog from './version-history-dialog'
 import AssessmentScoreDataDialog from './assessment-score-data-dialog'
 
 const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../repository-constants')
+const { FULL, PARTIAL, MINIMAL } = require('obojobo-express/server/constants')
 
 describe('Dashboard', () => {
 	const mockShortFromUUID = jest.fn()
@@ -108,35 +109,35 @@ describe('Dashboard', () => {
 		{
 			draftId: 'mockDraftId',
 			title: 'D Module Title ',
-			accessLevel: 'Full',
+			accessLevel: FULL,
 			createdAt: new Date(10000000000).toISOString(),
 			updatedAt: new Date(200000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId2',
 			title: 'A Module Title 2',
-			accessLevel: 'Full',
+			accessLevel: FULL,
 			createdAt: new Date(20000000000).toISOString(),
 			updatedAt: new Date(400000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId3',
 			title: 'C Module Title 3',
-			accessLevel: 'Partial',
+			accessLevel: PARTIAL,
 			createdAt: new Date(30000000000).toISOString(),
 			updatedAt: new Date(300000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId4',
 			title: 'B Module Title 4',
-			accessLevel: 'Partial',
+			accessLevel: PARTIAL,
 			createdAt: new Date(40000000000).toISOString(),
 			updatedAt: new Date(100000000000).toISOString()
 		},
 		{
 			draftId: 'mockDraftId5',
 			title: 'E Module Title 5',
-			accessLevel: 'Minimal',
+			accessLevel: MINIMAL,
 			createdAt: new Date(50000000000).toISOString(),
 			updatedAt: new Date(500000000000).toISOString()
 		}

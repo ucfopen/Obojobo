@@ -9,6 +9,7 @@ import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import OboModel from 'src/scripts/common/models/obo-model'
+import { FULL } from 'obojobo-express/server/constants'
 
 import { Editor, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -45,6 +46,34 @@ let restoreConsole
 describe('VisualEditor', () => {
 	let props
 
+	const defaultProps = {
+		page: {
+			id: 122,
+			set: jest.fn(),
+			attributes: {
+				children: [
+					{
+						type: BREAK_NODE,
+						content: {},
+						children: []
+					}
+				]
+			},
+			get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
+			toJSON: () => ({
+				children: [
+					{
+						type: BREAK_NODE,
+						content: {},
+						children: []
+					}
+				]
+			})
+		},
+		model: { title: 'Mock Title' },
+		draft: { accessLevel: FULL }
+	}
+
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
@@ -71,7 +100,7 @@ describe('VisualEditor', () => {
 				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
 			model: { title: 'Mock Title' },
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 	})
 
@@ -264,60 +293,15 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component with deleted page to another page', () => {
-		const prevProps = {
-			page: {
-				id: 122,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' },
-			draft: { accessLevel: 'Full' }
-		}
+		const prevProps = defaultProps
 
 		const newProps = {
+			...defaultProps,
 			page: {
+				...defaultProps.page,
 				id: 123,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn(),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' },
-			draft: { accessLevel: 'Full' }
+				get: jest.fn()
+			}
 		}
 
 		const spy = jest.spyOn(VisualEditor.prototype, 'exportToJSON').mockReturnValueOnce()
@@ -334,60 +318,15 @@ describe('VisualEditor', () => {
 
 	test('VisualEditor component with page updating to another page', () => {
 		OboModel.models = { 122: 'mock content' }
-		const prevProps = {
-			page: {
-				id: 122,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' },
-			draft: { accessLevel: 'Full' }
-		}
+		const prevProps = defaultProps
 
 		const newProps = {
+			...defaultProps,
 			page: {
+				...defaultProps.page,
 				id: 123,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn(),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' },
-			draft: { accessLevel: 'Full' }
+				get: jest.fn()
+			}
 		}
 
 		const spy = jest.spyOn(VisualEditor.prototype, 'exportToJSON')
@@ -568,7 +507,7 @@ describe('VisualEditor', () => {
 					return { content: {}, children: [] }
 				}
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 
 		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
@@ -631,7 +570,7 @@ describe('VisualEditor', () => {
 					return { content: {}, children: [] }
 				}
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 
 		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
@@ -717,7 +656,7 @@ describe('VisualEditor', () => {
 					return { content: {}, children: [] }
 				}
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 		const component = mount(<VisualEditor {...props} />)
 		const plugins = component.instance().plugins
@@ -861,7 +800,7 @@ describe('VisualEditor', () => {
 				toJSON: () => ({ children: [{ type: 'mock node' }] })
 			},
 			model: { title: 'Mock Title' },
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 		const component = mount(<VisualEditor {...props} />)
 
@@ -893,7 +832,7 @@ describe('VisualEditor', () => {
 				flatJSON: () => ({ content: {} }),
 				children: []
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -925,7 +864,7 @@ describe('VisualEditor', () => {
 				flatJSON: () => ({ content: {} }),
 				children: []
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -977,7 +916,7 @@ describe('VisualEditor', () => {
 				flatJSON: () => ({ content: {} }),
 				children: []
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -1100,7 +1039,7 @@ describe('VisualEditor', () => {
 				flatJSON: () => ({ content: {} }),
 				children: []
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -1163,7 +1102,7 @@ describe('VisualEditor', () => {
 				flatJSON: () => ({ content: {} }),
 				children: []
 			},
-			draft: { accessLevel: 'Full' }
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
