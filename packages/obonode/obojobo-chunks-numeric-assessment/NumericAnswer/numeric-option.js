@@ -164,10 +164,6 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 			answerValidityString = getMarginOfErrorAnswerValidityString(event.target.value, type)
 		}
 
-		// if (answerValidityString !== '') {
-		// 	editor.addToErrors(event.target)
-		// }
-
 		event.target.setCustomValidity(answerValidityString)
 		event.target.reportValidity()
 	}
