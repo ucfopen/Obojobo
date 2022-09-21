@@ -1456,13 +1456,14 @@ describe('VisualEditor', () => {
 		const props = { model: { title: '' } }
 		const mockFn = jest.fn()
 		const spy = jest.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
+		const hasInvalidFieldsSpy = jest.spyOn(VisualEditor.prototype, 'hasInvalidFields')
 
-		const mockReportValidty = jest.fn().mockReturnValue(false)
+		const input = document.createElement('input')
+		input.reportValidity = jest.fn().mockReturnValue(false)
+		document.body.appendChild(input)
 
 		const component = mount(<VisualEditor {...props} />)
 		const instance = component.instance()
-
-		document.getElementsByTagName('input')[0].reportValidity = jest.fn().mockReturnValue(false)
 
 		instance.markUnsaved()
 		instance.saveModule('mockId')
@@ -1470,6 +1471,40 @@ describe('VisualEditor', () => {
 		// eslint-disable-next-line no-undefined
 		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
 		expect(spy).not.toHaveBeenCalled()
+		expect(hasInvalidFieldsSpy).toHaveBeenCalled()
 		expect(instance.state.saveState).toBe('')
+
+		document.body.removeChild(input)
+	})
+
+	test('PageEditor component saves if all input fields are valid', () => {
+		const props = {
+			model: {
+				title: '',
+				flatJSON: jest.fn().mockReturnValue({ content: {} }),
+				children: []
+			},
+			saveDraft: jest.fn().mockResolvedValue(true)
+		}
+		const spy = jest
+			.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
+			.mockImplementation(() => {})
+		const hasInvalidFieldsSpy = jest.spyOn(VisualEditor.prototype, 'hasInvalidFields')
+
+		const input = document.createElement('input')
+		input.reportValidity = jest.fn().mockReturnValue(true)
+		document.body.appendChild(input)
+
+		const component = mount(<VisualEditor {...props} />)
+		const instance = component.instance()
+
+		instance.markUnsaved()
+		instance.saveModule('mockId')
+
+		expect(hasInvalidFieldsSpy).toHaveBeenCalled()
+		expect(spy).toHaveBeenCalled()
+		expect(instance.state.saveState).toBe('saving')
+
+		document.body.removeChild(input)
 	})
 })
