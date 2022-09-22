@@ -312,7 +312,6 @@ describe('NumericOption', () => {
 	})
 
 	describe('margin of error', () => {
-
 		describe('error amount', () => {
 			test('reports input error if a non-positive number', () => {
 				const onSelectChange = jest.fn()
@@ -561,8 +560,6 @@ describe('NumericOption', () => {
 				expect(reportValidity).toHaveBeenCalledTimes(1)
 			})
 		})
-
-
 	})
 
 	describe('within a range', () => {
