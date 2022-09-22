@@ -143,7 +143,6 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 
 	const onAnswerTypeChange = event => {
 		clearCustomValidity()
-
 		onHandleSelectChange(event)
 	}
 
