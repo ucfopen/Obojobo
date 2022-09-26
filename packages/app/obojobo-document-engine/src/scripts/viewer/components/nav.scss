@@ -5,6 +5,7 @@
 	$color-nav-highlight: $color-obojobo-blue;
 	$color-nav-hover: darken($color-highlight, 25%);
 	$padding: 2rem;
+	$color-nav-bg-red-alert: #ff0000;
 
 	position: fixed;
 	top: 0;
@@ -13,7 +14,7 @@
 	z-index: 0;
 	font-family: $font-default;
 	color: $color-text;
-	background: $color-nav-bg;
+	background: $color-nav-bg-red-alert;
 	font-size: 1rem;
 	width: $dimension-nav-menu;
 	padding: $padding;
@@ -403,10 +404,20 @@
 
 	&.is-not-enabled {
 		display: none;
+		background: $color-nav-bg-red-alert;
 	}
 
 	&.is-not-open .viewer--components--logo {
 		opacity: 0;
+		background: $color-nav-bg-red-alert;
+	}
+
+	&.is-red-alert {
+		background: $color-nav-bg-red-alert;
+	}
+
+	&.is-not-red-alert {
+		background: $color-nav-bg;
 	}
 }
 

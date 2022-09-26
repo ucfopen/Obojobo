@@ -212,13 +212,36 @@ class NavStore extends Store {
 					if (navItem) {
 						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 					}
+				},
+				'nav:setRedAlert': payload => {
+					ViewerAPI.postEvent({
+						//APIUtil.postEvent({
+						draftId: this.state.draftId,
+						action: 'nav:setRedAlert',
+						eventVersion: '1.0.0',
+						visitId: this.state.visitId,
+						payload: {
+							from: this.state.redAlert,
+							to: payload.value.redAlert
+						}
+					})
+					this.state.redAlert = payload.value.redAlert
+					return this.triggerChange()
 				}
 			},
 			this
 		)
 	}
 
-	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
+	init(
+		draftId,
+		model,
+		startingId,
+		startingPath,
+		visitId,
+		viewState = {},
+		isRedAlertEnabled = false
+	) {
 		this.state = {
 			isInitialized: true,
 			items: {},
@@ -227,6 +250,7 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
+			redAlert: isRedAlertEnabled,
 			locked:
 				viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
 					? Boolean(viewState['nav:isLocked'].value)

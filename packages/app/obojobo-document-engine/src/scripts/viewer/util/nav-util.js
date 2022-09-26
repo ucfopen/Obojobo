@@ -254,6 +254,16 @@ const NavUtil = {
 
 	isNavOpen(state) {
 		return state.open
+	},
+	setRedAlert(redAlert) {
+		return Dispatcher.trigger('nav:setRedAlert', {
+			value: {
+				redAlert
+			}
+		})
+	},
+	isRedAlertEnabled(state) {
+		return state.redAlert
 	}
 }
 

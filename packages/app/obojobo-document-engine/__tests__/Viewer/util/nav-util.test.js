@@ -531,4 +531,22 @@ describe('NavUtil', () => {
 		NavUtil.resetContext()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:resetContext')
 	})
+
+	test('isRedAlertEnabled returns the red alert status from a state object', () => {
+		const redAlert = true
+		const navState = {
+			redAlert
+		}
+		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(navState)
+		expect(isRedAlertEnabled).toBe(redAlert)
+	})
+
+	test('setRedAlert calls Dispatcher.trigger', () => {
+		const redAlert = true
+		NavUtil.setRedAlert(redAlert)
+
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:setRedAlert', {
+			value: { redAlert }
+		})
+	})
 })

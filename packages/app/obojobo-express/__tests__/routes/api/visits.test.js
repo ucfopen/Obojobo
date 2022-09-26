@@ -25,7 +25,7 @@ jest.mock('../../../server/express_current_user', () => (req, res, next) => {
 	next()
 })
 
-// ovveride requireCurrentDocument to provide our own
+// overide requireCurrentDocument to provide our own
 let mockCurrentDocument
 jest.mock('../../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
@@ -53,6 +53,7 @@ describe('api visits route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		db.one.mockReset()
+		db.oneOrNone.mockReset()
 		insertEvent.mockReset()
 		ltiUtil.retrieveLtiLaunch = jest.fn()
 		viewerState.get = jest.fn()
@@ -275,6 +276,7 @@ describe('api visits route', () => {
 			Object {
 			  "extensions": Array [],
 			  "isPreviewing": true,
+			  "isRedAlertEnabled": false,
 			  "lti": Object {
 			    "lisOutcomeServiceUrl": null,
 			  },
@@ -443,6 +445,85 @@ describe('api visits route', () => {
 					userId: 99,
 					visitId: validUUID()
 				})
+			})
+	})
+
+	test('/start uses default red alert status of current user/draft when DB does not return one', () => {
+		expect.hasAssertions()
+		const originalVisitSession = {}
+		mockSession.visitSessions = originalVisitSession
+		const isRedAlertEnabled = false
+		mockCurrentUser = { id: 99 }
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'obojobo.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		//this solves coverage but is not satisfying
+		db.oneOrNone.mockResolvedValue(null)
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(response.body.value).toHaveProperty('isRedAlertEnabled', isRedAlertEnabled)
+			})
+	})
+
+	test('/start gets red alert status of current user/draft from DB', () => {
+		const isRedAlertEnabled = true
+		expect.hasAssertions()
+		const originalVisitSession = {}
+		mockSession.visitSessions = originalVisitSession
+
+		mockCurrentUser = { id: 99 }
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'obojobo.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		//this solves coverage but is not satisfying
+		db.oneOrNone.mockResolvedValue({ is_enabled: isRedAlertEnabled })
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(db.oneOrNone).toBeCalledTimes(1)
+				expect(db.oneOrNone).toBeCalledWith(
+					expect.stringContaining('SELECT is_enabled FROM red_alert_status'),
+					expect.objectContaining({
+						userId: mockCurrentUser.id,
+						draftId: mockCurrentDocument.draftId
+					})
+				)
+				expect(response.statusCode).toBe(200)
+				expect(response.body.value).toHaveProperty(
+					'isRedAlertEnabled',
+					isRedAlertEnabled,
+					isRedAlertEnabled
+				)
 			})
 	})
 })

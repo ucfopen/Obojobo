@@ -4,6 +4,7 @@ const logger = oboRequire('server/logger')
 const ltiUtil = oboRequire('server/lti')
 const viewerState = oboRequire('server/viewer/viewer_state')
 const insertEvent = oboRequire('server/insert_event')
+const db = oboRequire('server/db')
 const {
 	checkValidationRules,
 	requireCurrentUser,
@@ -45,6 +46,9 @@ router
 		let viewState
 		let visitStartExtensions
 		let launch
+		let isRedAlertEnabled = false
+		const userId = req.currentUser.id
+		const draftId = req.currentDocument.draftId
 
 		return Promise.all([
 			viewerState.get(
@@ -54,6 +58,7 @@ router
 			),
 			getDraftAndStartVisitProps(req, res)
 		])
+
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
@@ -89,7 +94,26 @@ router
 					payload: { visitId: req.currentVisit.id },
 					eventVersion: '1.0.0',
 					visitId: req.currentVisit.id
+					//isRedAlertEnabled: req.currentVisit
 				})
+			})
+			.then(() =>
+				db.oneOrNone(
+					`
+					SELECT is_enabled FROM red_alert_status
+					WHERE
+						user_id = $[userId]
+						AND draft_id = $[draftId]
+				`,
+					{
+						userId,
+						draftId
+					}
+				)
+			)
+			.then(result => {
+				//console.log(result.is_enabled)
+				if (result) isRedAlertEnabled = result.is_enabled
 			})
 			.then(() => {
 				logger.log(
@@ -111,7 +135,8 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
-					extensions: visitStartExtensions
+					extensions: visitStartExtensions,
+					isRedAlertEnabled
 				})
 			})
 			.catch(err => {
