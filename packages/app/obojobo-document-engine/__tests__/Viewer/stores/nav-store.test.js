@@ -729,6 +729,25 @@ describe('NavStore', () => {
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
 
+	test('nav:setRedAlert event fires and updates state', () => {
+		const redAlert = false
+		NavStore.setState({
+			redAlert
+		})
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:setRedAlert']({ value: { id: 'mockID', redAlert: !redAlert } })
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+		const payloadToAPI = ViewerAPI.postEvent.mock.calls[0][0].payload
+		expect(payloadToAPI).toEqual({ from: redAlert, to: !redAlert })
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
 	test('question:scoreSet does not set flag if question not found', () => {
 		NavStore.setState({ isInitialized: true, itemsById: {} })
 		// simulate trigger

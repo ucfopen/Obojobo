@@ -6,6 +6,8 @@
 	$color-nav-hover: darken($color-highlight, 25%);
 	$padding: 2rem;
 
+	$color-nav-bg-red-alert: #ff0000;
+
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -26,6 +28,10 @@
 
 	&:focus {
 		outline: none;
+	}
+
+	&.is-red-alert {
+		background: $color-nav-bg-red-alert;
 	}
 
 	@include mq($until: desktop) {

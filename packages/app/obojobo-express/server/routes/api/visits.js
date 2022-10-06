@@ -4,6 +4,7 @@ const logger = oboRequire('server/logger')
 const ltiUtil = oboRequire('server/lti')
 const viewerState = oboRequire('server/viewer/viewer_state')
 const insertEvent = oboRequire('server/insert_event')
+const db = oboRequire('server/db')
 const {
 	checkValidationRules,
 	requireCurrentUser,
@@ -42,9 +43,13 @@ router
 			`VISIT: Begin start visit for visitId="${req.currentVisit.id}", draftContentId="${req.currentDocument.contentId}"`
 		)
 
+		let isRedAlertEnabled = false
 		let viewState
 		let visitStartExtensions
 		let launch
+
+		const userId = req.currentUser.id
+		const draftId = req.currentDocument.draftId
 
 		return Promise.all([
 			viewerState.get(
@@ -91,6 +96,23 @@ router
 					visitId: req.currentVisit.id
 				})
 			})
+			.then(() =>
+				db.oneOrNone(
+					`
+							SELECT is_enabled FROM red_alert_status
+							WHERE
+								user_id = $[userId]
+								AND draft_id = $[draftId]
+					`,
+					{
+						userId,
+						draftId
+					}
+				)
+			)
+			.then(result => {
+				if (result) isRedAlertEnabled = result.is_enabled
+			})
 			.then(() => {
 				logger.log(
 					`VISIT: Start visit success for visitId="${req.currentVisit.id}", draftId="${req.currentDocument.draftId}", userId="${req.currentUser.id}"`
@@ -107,6 +129,7 @@ router
 				req.session.visitSessions[req.currentDocument.draftId] = true
 
 				res.success({
+					isRedAlertEnabled,
 					visitId: req.currentVisit.id,
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
