@@ -105,6 +105,10 @@ export default class Question extends React.Component {
 		event.preventDefault()
 
 		if (this.getMode() !== 'practice') {
+			QuestionUtil.sendResponse(
+				this.props.model.get('id'),
+				NavUtil.getContext(this.props.moduleData.navState)
+			)
 			return
 		}
 
