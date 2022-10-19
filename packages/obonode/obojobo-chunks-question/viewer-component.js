@@ -20,6 +20,7 @@ const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
 const FOCUS_TARGET_QUESTION = 'question'
 const FOCUS_TARGET_ANSWERS = 'answers'
+const FOCUS_TARGET_REFOCUS = 'refocus'
 
 export default class Question extends React.Component {
 	constructor(props) {
@@ -32,6 +33,7 @@ export default class Question extends React.Component {
 		this.assessmentComponentRef = React.createRef()
 		this.resultsRef = React.createRef()
 		this.explanationRef = React.createRef()
+		this.questionRef = React.createRef()
 
 		this.onClickBlocker = this.onClickBlocker.bind(this)
 		this.onClickReset = this.onClickReset.bind(this)
@@ -109,6 +111,7 @@ export default class Question extends React.Component {
 				this.props.model.get('id'),
 				NavUtil.getContext(this.props.moduleData.navState)
 			)
+			this.nextFocus = FOCUS_TARGET_REFOCUS
 			return
 		}
 
@@ -472,6 +475,12 @@ export default class Question extends React.Component {
 					{ preventScroll: true, region: 'answers' }
 				)
 				break
+
+			case FOCUS_TARGET_REFOCUS:
+				//code to refocus
+				delete this.nextFocus
+				FocusUtil.focusComponent(this.props.model.get('id'), { preventScroll: true })
+				break
 		}
 	}
 
@@ -503,6 +512,7 @@ export default class Question extends React.Component {
 				questionIndex={this.props.questionIndex}
 				moduleData={moduleData}
 				resultsRef={this.resultsRef}
+				questionRef={this.questionRef}
 				assessmentComponentRef={this.assessmentComponentRef}
 				type={type}
 				mode={mode}
