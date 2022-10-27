@@ -12,6 +12,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -59,6 +87,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -106,6 +162,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -153,6 +237,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -200,6 +312,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -247,6 +387,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -294,6 +462,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -341,6 +537,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -420,6 +644,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -499,6 +751,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -578,6 +858,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -657,6 +965,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -736,6 +1072,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -815,6 +1179,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -894,6 +1286,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -973,6 +1393,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1052,6 +1500,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1131,6 +1607,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1210,6 +1714,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1289,6 +1821,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1368,6 +1928,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1447,6 +2035,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1508,6 +2124,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1569,6 +2213,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1630,6 +2302,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1691,6 +2391,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1752,6 +2480,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
@@ -1813,6 +2569,34 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
       className="select requirement"
     >
       Answer Type
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "left": "0em",
+            "position": "relative",
+            "top": "0%",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+        >
+          <div
+            className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+          >
+            <button
+              aria-label="Click for some examples of how to input your answer"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              type="button"
+            >
+              ?
+            </button>
+          </div>
+        </div>
+      </div>
       <select
         className="select-item"
         name="requirement"
