@@ -11,7 +11,7 @@ const { TextChunk } = Common.chunk
 const Excerpt = props => {
     const modelState = props.model.modelState
 
-    console.log(modelState)
+    // console.log(modelState)
 
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>

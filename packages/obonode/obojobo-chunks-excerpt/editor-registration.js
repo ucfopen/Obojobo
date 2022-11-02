@@ -1,47 +1,25 @@
-import { Editor, Node, Element, Transforms, Text } from 'slate'
-import { ReactEditor } from 'slate-react'
-import Converter from './converter'
-import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
-import Line from './components/line/editor-component'
-import ExcerptContent from './components/excerpt-content/editor-component'
-import Citation from './components/citation/editor-component'
-import EditorComponent from './editor-component'
 import React from 'react'
-import emptyNode from './empty-node.json'
-
-import normalizeNode from './changes/normalize-node'
+import { Editor, Element, Node, Text, Transforms } from 'slate'
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
 import indentOrTab from './changes/indent-or-tab'
+import Citation from './components/citation/editor-component'
+import ExcerptContent from './components/excerpt-content/editor-component'
+import Line from './components/line/editor-component'
+import Converter from './converter'
+import EditorComponent from './editor-component'
+import emptyNode from './empty-node.json'
+import Icon from './icon'
+
 
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
 const EXCERPT_CONTENT = 'ObojoboDraft.Chunks.Excerpt.ExcerptContent'
 const CITE_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationText'
 const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
-const EXCERPT_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptText'
 const EXCERPT_TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptLine'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
-
-// {
-/* <Excerpt>
-	<ExcerptBody>
-
-	</ExcerptBody>
-	<ExcerptCitation>
-
-	</ExcerptCitation>
-</Excerpt>
-
-{
-	type: "Excerpt",
-	content: {
-		body: [ {} ],
-		citation: [ {} ]
-	}
-} */
-// }
 
 const Excerpt = {
 	name: EXCERPT_NODE,

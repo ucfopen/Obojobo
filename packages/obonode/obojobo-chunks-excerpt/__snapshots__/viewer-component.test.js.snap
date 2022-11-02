@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Excerpt Excerpt component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Excerpt"
+  id="obo-id"
+  tabIndex={-1}
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-undefined is-bottom-edge-type-undefined is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
+  >
+    <blockquote
+      cite="test"
+    >
+      <div
+        className="excerpt-content"
+      >
+        <div
+          className="wrapper"
+        >
+          <div
+            className="component"
+            data-focussed={false}
+            data-id={null}
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.Excerpt"
+            id="obo-null"
+            tabIndex={-1}
+          >
+            <div
+              className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-undefined is-bottom-edge-type-undefined is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
+            >
+              <blockquote
+                cite="test"
+              >
+                <div
+                  className="excerpt-content"
+                >
+                  <div
+                    className="wrapper"
+                  />
+                  <div
+                    className="overlay"
+                  />
+                </div>
+              </blockquote>
+            </div>
+          </div>
+          <div
+            className="component"
+            data-focussed={false}
+            data-id={null}
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.Excerpt"
+            id="obo-null"
+            tabIndex={-1}
+          >
+            <div
+              className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-undefined is-bottom-edge-type-undefined is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
+            >
+              <blockquote
+                cite="test"
+              >
+                <div
+                  className="excerpt-content"
+                >
+                  <div
+                    className="wrapper"
+                  >
+                    <div
+                      className="component"
+                      data-focussed={false}
+                      data-id={null}
+                      data-obo-component={true}
+                      data-type="ObojoboDraft.Chunks.Excerpt"
+                      id="obo-null"
+                      tabIndex={-1}
+                    >
+                      <div
+                        className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-undefined is-bottom-edge-type-undefined is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
+                      >
+                        <blockquote
+                          cite="test"
+                        >
+                          <div
+                            className="excerpt-content"
+                          >
+                            <div
+                              className="wrapper"
+                            />
+                            <div
+                              className="overlay"
+                            />
+                          </div>
+                        </blockquote>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="overlay"
+                  />
+                </div>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div
+          className="overlay"
+        />
+      </div>
+    </blockquote>
+  </div>
+</div>
+`;
