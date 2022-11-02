@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Excerpt Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "type": "SlateNode",
+        },
+      ],
+      "content": Object {
+        "bodyStyle": "term-green",
+        "citation": Array [
+          Object {},
+        ],
+        "font": "monospace",
+      },
+      "subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": undefined,
+          "content": Object {
+            "align": "left",
+            "hangingIndent": false,
+            "indent": 0,
+          },
+          "subtype": "ObojoboDraft.Chunks.Excerpt.CitationLine",
+          "type": "ObojoboDraft.Chunks.Excerpt",
+        },
+      ],
+      "content": Object {
+        "hangingIndent": 0,
+        "indent": 0,
+      },
+      "subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+  ],
+  "content": Object {
+    "bodyStyle": "term-green",
+    "citation": Array [
+      Object {},
+    ],
+    "font": "monospace",
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
+
+exports[`Excerpt Converter oboToSlate converts an OboNode to a Slate node with citation line 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "type": "SlateNode",
+        },
+      ],
+      "content": Object {
+        "bodyStyle": "term-green",
+        "citation": Array [
+          Object {
+            "data": Object {
+              "align": "center",
+              "hangingIndent": 0,
+              "indent": 0,
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "Citation Text",
+            },
+          },
+        ],
+        "font": "monospace",
+      },
+      "subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": undefined,
+          "content": Object {
+            "align": "center",
+            "hangingIndent": 0,
+            "indent": 0,
+          },
+          "subtype": "ObojoboDraft.Chunks.Excerpt.CitationLine",
+          "type": "ObojoboDraft.Chunks.Excerpt",
+        },
+      ],
+      "content": Object {
+        "hangingIndent": 0,
+        "indent": 0,
+      },
+      "subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+  ],
+  "content": Object {
+    "bodyStyle": "term-green",
+    "citation": Array [
+      Object {
+        "data": Object {
+          "align": "center",
+          "hangingIndent": 0,
+          "indent": 0,
+        },
+        "text": Object {
+          "styleList": Array [],
+          "value": "Citation Text",
+        },
+      },
+    ],
+    "font": "monospace",
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
+
+exports[`Excerpt Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "type": "OboNode",
+    },
+  ],
+  "content": Object {
+    "citation": Array [
+      Object {
+        "data": Object {
+          "align": undefined,
+          "hangingIndent": 0,
+          "indent": 0,
+        },
+        "text": Object {
+          "styleList": Array [],
+          "value": "",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
+
+exports[`Excerpt Converter slateToObo converts a Slate node to an OboNode with triggers 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "type": "OboNode",
+    },
+  ],
+  "content": Object {
+    "citation": Array [
+      Object {
+        "data": Object {
+          "align": undefined,
+          "hangingIndent": 0,
+          "indent": 0,
+        },
+        "text": Object {
+          "styleList": Array [],
+          "value": "",
+        },
+      },
+    ],
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
