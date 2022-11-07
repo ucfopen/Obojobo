@@ -32,7 +32,6 @@ export default class Question extends React.Component {
 		this.assessmentComponentRef = React.createRef()
 		this.resultsRef = React.createRef()
 		this.explanationRef = React.createRef()
-		this.questionRef = React.createRef()
 
 		this.onClickBlocker = this.onClickBlocker.bind(this)
 		this.onClickReset = this.onClickReset.bind(this)
@@ -512,7 +511,6 @@ export default class Question extends React.Component {
 				questionIndex={this.props.questionIndex}
 				moduleData={moduleData}
 				resultsRef={this.resultsRef}
-				questionRef={this.questionRef}
 				assessmentComponentRef={this.assessmentComponentRef}
 				type={type}
 				mode={mode}
