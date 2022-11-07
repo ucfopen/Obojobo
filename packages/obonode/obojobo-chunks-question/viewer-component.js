@@ -20,7 +20,6 @@ const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
 const FOCUS_TARGET_QUESTION = 'question'
 const FOCUS_TARGET_ANSWERS = 'answers'
-const FOCUS_TARGET_REFOCUS = 'refocus'
 
 export default class Question extends React.Component {
 	constructor(props) {
@@ -44,6 +43,7 @@ export default class Question extends React.Component {
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		this.getInstructions = this.getInstructions.bind(this)
+		this.onEnterPress = this.onEnterPress.bind(this)
 	}
 
 	componentDidMount() {
@@ -111,7 +111,7 @@ export default class Question extends React.Component {
 				this.props.model.get('id'),
 				NavUtil.getContext(this.props.moduleData.navState)
 			)
-			this.nextFocus = FOCUS_TARGET_REFOCUS
+			this.onEnterPress()
 			return
 		}
 
@@ -248,6 +248,12 @@ export default class Question extends React.Component {
 	applyFlipCSS() {
 		this.setState({ isFlipping: true })
 		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
+	}
+	//delays refocus on input to account for saved text rendering causing a visual loss of focus
+	onEnterPress() {
+		setTimeout(() => {
+			this.assessmentComponentRef.current.inputRef.current.focus()
+		}, 80)
 	}
 
 	getMode() {
@@ -475,12 +481,6 @@ export default class Question extends React.Component {
 					{ preventScroll: true, region: 'answers' }
 				)
 				break
-
-			case FOCUS_TARGET_REFOCUS:
-				//code to refocus
-				delete this.nextFocus
-				FocusUtil.focusComponent(this.props.model.get('id'), { preventScroll: true })
-				break
 		}
 	}
 
@@ -537,6 +537,7 @@ export default class Question extends React.Component {
 				onClickShowExplanation={this.onClickShowExplanation}
 				onClickHideExplanation={this.onClickHideExplanation}
 				onClickBlocker={this.onClickBlocker}
+				onEnterPress={this.onEnterPress}
 			/>
 		)
 	}
