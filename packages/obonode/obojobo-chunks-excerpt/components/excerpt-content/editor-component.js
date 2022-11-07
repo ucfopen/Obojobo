@@ -1,12 +1,12 @@
 // import '../../viewer-component.scss'
 
-import React from 'react'
-import { ReactEditor } from 'slate-react'
-import { Editor, Transforms, Range } from 'slate'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+import React from 'react'
+import { Editor, Range, Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
+import getPresetProps from '../../get-preset-props'
 import EdgeControls from '../edge-controls'
 import ExcerptEditControls from '../excerpt-edit-controls'
-import getPresetProps from '../../get-preset-props'
 
 const getEdgeOptionsForBodyStyle = bodyStyle => {
 	switch (bodyStyle) {
@@ -29,28 +29,28 @@ const getEdgeOptionsForBodyStyle = bodyStyle => {
 }
 
 const ExcerptContent = props => {
-	const onChangeEdge = (edge, edgeType) => {
-		const [parent, parentPath] = Editor.parent(
-			props.editor,
-			ReactEditor.findPath(props.editor, props.element)
-		)
-		const parentContent = parent.content
-		const newContent = { ...parentContent, [edge]: edgeType }
+	// const onChangeEdge = (edge, edgeType) => {
+	// 	const [parent, parentPath] = Editor.parent(
+	// 		props.editor,
+	// 		ReactEditor.findPath(props.editor, props.element)
+	// 	)
+	// 	const parentContent = parent.content
+	// 	const newContent = { ...parentContent, [edge]: edgeType }
 
-		// We update both this node and the parent node, as they both maintain copies of the same
-		// content - necessary to get both to re-render
-		Transforms.setNodes(props.editor, { content: { ...newContent } }, { at: parentPath })
-		Transforms.setNodes(
-			props.editor,
-			{ content: { ...newContent } },
-			{ at: ReactEditor.findPath(props.editor, props.element) }
-		)
-	}
+	// 	// We update both this node and the parent node, as they both maintain copies of the same
+	// 	// content - necessary to get both to re-render
+	// 	Transforms.setNodes(props.editor, { content: { ...newContent } }, { at: parentPath })
+	// 	Transforms.setNodes(
+	// 		props.editor,
+	// 		{ content: { ...newContent } },
+	// 		{ at: ReactEditor.findPath(props.editor, props.element) }
+	// 	)
+	// }
 
 	// I was moving these methods over here, and then maybe I can no longer have to duplicate
 	// properties and just use properties on this one, Excerpt Content?!
 	const onChangePreset = presetValue => {
-		const [parent, parentPath] = Editor.parent(
+		const [, parentPath] = Editor.parent(
 			props.editor,
 			ReactEditor.findPath(props.editor, props.element)
 		)
@@ -68,7 +68,7 @@ const ExcerptContent = props => {
 	}
 
 	const onChangeContentValue = (contentValueName, value) => {
-		const [parent, parentPath] = Editor.parent(
+		const [, parentPath] = Editor.parent(
 			props.editor,
 			ReactEditor.findPath(props.editor, props.element)
 		)
