@@ -68,6 +68,10 @@ class AssessmentStore extends Store {
 			this.abandonImport(payload.value.id)
 		})
 
+		Dispatcher.on('assessment:saveAttempt', payload => {
+			this.saveAttempt(payload.value.id)
+		})
+
 		Dispatcher.on('assessment:endAttempt', payload => {
 			this.endAttempt(payload.value.id)
 		})
@@ -273,6 +277,21 @@ class AssessmentStore extends Store {
 
 	abandonImport(id) {
 		this.doMachineAction(id, AssessmentStateActions.ABANDON_IMPORT)
+	}
+
+	saveAttempt(id) {
+		return AssessmentAPI.saveAttempt({
+			...this.state.assessments[id].current,
+			visitId: NavStore.getState().visitId
+		})
+			.then(res => {
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res)
+				}
+			})
+			.catch(e => {
+				console.error(e) /* eslint-disable-line no-console */
+			})
 	}
 
 	endAttempt(id) {

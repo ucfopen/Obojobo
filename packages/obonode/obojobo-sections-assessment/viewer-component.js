@@ -130,7 +130,7 @@ class Assessment extends React.Component {
 		)
 	}
 
-	getAssessmentComponent() {
+	getAssessmentComponent(assessment) {
 		switch (this.state.curStep) {
 			case 'pre-test':
 				return (
@@ -147,6 +147,7 @@ class Assessment extends React.Component {
 			case 'test':
 				return (
 					<Test
+						assessment={assessment}
 						model={this.props.model.children.at(1)}
 						moduleData={this.props.moduleData}
 						onClickSubmit={this.onClickSubmit}
@@ -202,7 +203,7 @@ class Assessment extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--sections--assessment"
 			>
-				{this.getAssessmentComponent()}
+				{this.getAssessmentComponent(assessment)}
 
 				<ModalPortal>
 					<AssessmentDialog

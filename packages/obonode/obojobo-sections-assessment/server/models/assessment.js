@@ -59,6 +59,37 @@ class AssessmentModel {
 		// @TODO: return hydrated Assessment objects
 	}
 
+	// Save the state of an attempt in progress
+	static saveAttempt(
+		assessmentId,
+		attemptId,
+		userId,
+		draftId,
+		draftContentId,
+		state
+	) {
+		return db
+			.none(
+				`
+				UPDATE attempts
+				SET
+					updated_at = now(),
+					state = $[state]
+				WHERE
+					id = $[attemptId]
+					AND user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND assessment_id = $[assessmentId]
+					AND draft_content_id = $[draftContentId]
+				`,
+				{ attemptId, assessmentId, userId, draftId, draftContentId, state }
+			)
+			.catch(error => {
+				logger.error('Assessment saveAttempt Error', error.message)
+				return Promise.reject(error)
+			})
+	}
+
 	// Finish an attempt and write a new assessment score record
 	static completeAttempt(
 		assessmentId,

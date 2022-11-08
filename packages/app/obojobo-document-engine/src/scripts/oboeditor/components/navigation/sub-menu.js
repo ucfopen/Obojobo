@@ -235,6 +235,21 @@ class SubMenu extends React.Component {
 					]
 				},
 				{
+					name: 'pace',
+					description: 'Pacing',
+					type: 'select',
+					values: [
+						{
+							value: 'all',
+							description: 'Show all questions simultaneously'
+						},
+						{
+							value: 'single',
+							description: 'Show one question at a time'
+						}
+					]
+				},
+				{
 					name: 'lock-nav',
 					description: 'Lock Navigation During Attempts',
 					type: 'abstract-toggle',

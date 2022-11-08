@@ -3,7 +3,8 @@
 	"content": {
 		"title": "Assessment",
 		"review": "never",
-		"attempts": 3
+		"attempts": 3,
+		"pace": "all"
 	},
 	"type":"ObojoboDraft.Sections.Assessment",
 	"children":[

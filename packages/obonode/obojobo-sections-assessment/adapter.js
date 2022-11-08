@@ -24,6 +24,7 @@ const Adapter = {
 			'always',
 			'no-attempts-remaining'
 		])
+		model.setStateProp('pace', 'all', p => p, ['all', 'single'])
 	},
 
 	clone(model, clone) {

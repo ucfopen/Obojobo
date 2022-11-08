@@ -87,6 +87,7 @@ const startAttempt = (req, res) => {
 				req.currentDocument.contentId,
 				req.body.assessmentId,
 				{
+					currentQuestion: 0,
 					chosen: attemptState.chosen
 				},
 				req.currentVisit.is_preview,
@@ -136,8 +137,9 @@ const getState = assessmentProperties => {
 	// from the draftTree
 	chosenAssessment = chosenAssessment.map(node => {
 		return {
+			id: node.id,
 			type: node.type,
-			id: node.id
+			response: {}
 		}
 	})
 

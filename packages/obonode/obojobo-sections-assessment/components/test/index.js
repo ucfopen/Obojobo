@@ -35,13 +35,24 @@ class AssessmentTest extends React.Component {
 
 		let buttonLabel
 		let buttonAriaLabel
+		let currentClickHandler
+
+		// assessment status: questions, potentially which have been answered already?
+		// we'd probably have to use AssessmentUtil or the state machine to track current question from here
+		// const assessment = this.props.assessment
+		// assessment configuration - pace is in here
+		// const assessmentConfig = this.props.model.parent.attributes.content
+
 		if (this.props.isAttemptSubmitting) {
 			buttonLabel = buttonAriaLabel = 'Loading ...'
+			currentClickHandler = () => {}
 		} else if (!this.props.isAttemptReadyToSubmit) {
 			buttonLabel = 'Submit'
 			buttonAriaLabel = 'Submit (Not all questions have been saved)'
+			currentClickHandler = this.props.onClickSubmit
 		} else {
 			buttonLabel = buttonAriaLabel = 'Submit'
+			currentClickHandler = this.props.onClickSubmit
 		}
 
 		return (
@@ -51,7 +62,7 @@ class AssessmentTest extends React.Component {
 					<Button
 						ariaLabel={buttonAriaLabel}
 						disabled={this.props.isAttemptSubmitting}
-						onClick={this.props.onClickSubmit}
+						onClick={currentClickHandler}
 						value={buttonLabel}
 					/>
 					{!this.props.isAttemptReadyToSubmit ? (
