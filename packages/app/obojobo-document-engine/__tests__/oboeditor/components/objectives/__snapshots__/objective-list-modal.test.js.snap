@@ -17,7 +17,9 @@ exports[`Objective List Modal ObjectiveListModal renders correctly 1`] = `
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
