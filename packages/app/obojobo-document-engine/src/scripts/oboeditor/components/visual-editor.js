@@ -101,6 +101,7 @@ class VisualEditor extends React.Component {
 		this.renderElement = this.renderElement.bind(this)
 		this.setEditorFocus = this.setEditorFocus.bind(this)
 		this.onClick = this.onClick.bind(this)
+		this.hasInvalidFields = this.hasInvalidFields.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -225,10 +226,17 @@ class VisualEditor extends React.Component {
 			//eslint-disable-next-line
 			return undefined // Returning undefined will allow browser to close normally
 		}
+
+		if (this.hasInvalidFields()) {
+			//eslint-disable-next-line
+			return undefined
+		}
+
 		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
+
 		//eslint-disable-next-line
 		return undefined
 	}
@@ -385,8 +393,29 @@ class VisualEditor extends React.Component {
 		this.saveModule(this.props.draftId)
 	}
 
+	// Checks all input and select fields to see if any have false validity
+	hasInvalidFields() {
+		const inputFields = document.querySelectorAll('input,select')
+
+		for (const field of Array.from(inputFields)) {
+			field.blur()
+			if (field.reportValidity() === false) {
+				return true
+			}
+		}
+
+		return false
+	}
+
 	saveModule(draftId) {
 		if (this.props.readOnly) {
+			return
+		}
+
+		// Check validity of all input and select elements
+		if (this.hasInvalidFields()) {
+			const message = 'Cannot save this module while errors are present'
+			window.alert(message) //eslint-disable-line no-alert
 			return
 		}
 

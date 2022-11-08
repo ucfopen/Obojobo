@@ -311,338 +311,507 @@ describe('NumericOption', () => {
 		)
 	})
 
-	test('Error amount reports input error if a non-positive number', () => {
-		const onSelectChange = jest.fn()
-		const onInputChange = jest.fn()
-		const component = mount(
-			<NumericOption
-				numericChoice={{ requirement: 'margin', type: 'percent' }}
-				onHandleSelectChange={onSelectChange}
-				onHandleInputChange={onInputChange}
-			/>
-		)
-		const setCustomValidity = jest.fn()
-		const reportValidity = jest.fn()
+	describe('margin of error', () => {
+		describe('error amount', () => {
+			test('reports input error if a non-positive number', () => {
+				const onSelectChange = jest.fn()
+				const onInputChange = jest.fn()
+				const component = mount(
+					<NumericOption
+						numericChoice={{ requirement: 'margin', type: 'percent' }}
+						onHandleSelectChange={onSelectChange}
+						onHandleInputChange={onInputChange}
+					/>
+				)
+				const setCustomValidity = jest.fn()
+				const reportValidity = jest.fn()
 
-		component
-			.find('.input-item')
-			.at(1)
-			.simulate('blur', {
+				component
+					.find('.input-item')
+					.at(1)
+					.simulate('blur', {
+						target: {
+							setCustomValidity,
+							reportValidity,
+							value: '1'
+						}
+					})
+				expect(setCustomValidity).toHaveBeenCalledTimes(1)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('')
+				expect(reportValidity).toHaveBeenCalledTimes(1)
+
+				component
+					.find('.input-item')
+					.at(1)
+					.simulate('blur', {
+						target: {
+							setCustomValidity,
+							reportValidity,
+							value: '0'
+						}
+					})
+				expect(setCustomValidity).toHaveBeenCalledTimes(2)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('Error amount must be greater than 0')
+				expect(reportValidity).toHaveBeenCalledTimes(2)
+
+				component
+					.find('.input-item')
+					.at(1)
+					.simulate('blur', {
+						target: {
+							setCustomValidity,
+							reportValidity,
+							value: ''
+						}
+					})
+				expect(setCustomValidity).toHaveBeenCalledTimes(3)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('Enter a numeric error amount')
+				expect(reportValidity).toHaveBeenCalledTimes(3)
+
+				component
+					.find('.input-item')
+					.at(1)
+					.simulate('blur', {
+						target: {
+							setCustomValidity,
+							reportValidity,
+							value: 'x'
+						}
+					})
+				expect(setCustomValidity).toHaveBeenCalledTimes(4)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('Enter a numeric error amount')
+				expect(reportValidity).toHaveBeenCalledTimes(4)
+
+				component
+					.find('.input-item')
+					.at(1)
+					.simulate('blur', {
+						target: {
+							setCustomValidity,
+							reportValidity,
+							value: '0.001'
+						}
+					})
+				expect(setCustomValidity).toHaveBeenCalledTimes(5)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('')
+				expect(reportValidity).toHaveBeenCalledTimes(5)
+			})
+		})
+
+		describe('answer', () => {
+			test('reports when blur from answer input', () => {
+				const onSelectChange = jest.fn()
+				const onInputChange = jest.fn()
+				const component = renderer.create(
+					<NumericOption
+						numericChoice={{ requirement: 'margin', type: 'percent' }}
+						onHandleSelectChange={onSelectChange}
+						onHandleInputChange={onInputChange}
+					/>
+				)
+				const setCustomValidity = jest.fn()
+				const reportValidity = jest.fn()
+				NumericEntry.mockImplementation(() => ({
+					status: OK
+				}))
+
+				NumericEntryRange.mockImplementation(() => ({
+					isSingular: true
+				}))
+
+				// Is ref related target
+				isRefRelatedTarget.mockImplementation(() => true)
+				component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
+					target: {
+						setCustomValidity,
+						reportValidity,
+						value: '0'
+					},
+					relatedTarget: component.root.findAllByProps({ className: 'select-item' })[1]
+				})
+				expect(setCustomValidity).toHaveBeenCalledTimes(1)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('')
+				expect(reportValidity).toHaveBeenCalledTimes(1)
+
+				// Is not ref related target
+				isRefRelatedTarget.mockImplementation(() => false)
+				component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
+					target: {
+						setCustomValidity,
+						reportValidity,
+						value: '0'
+					},
+					relatedTarget: component.root.findAllByProps({ className: 'select-item' })[0]
+				})
+				expect(setCustomValidity).toHaveBeenCalledTimes(2)
+				expect(setCustomValidity).toHaveBeenLastCalledWith(
+					'Answer cannot be 0 while Error Type is Percent'
+				)
+				expect(reportValidity).toHaveBeenCalledTimes(2)
+			})
+		})
+
+		describe('error type', () => {
+			test('Expected validation is reported when blur from error type', () => {
+				const onSelectChange = jest.fn()
+				const onInputChange = jest.fn()
+				let component = renderer.create(
+					<NumericOption
+						numericChoice={{ requirement: 'margin', type: 'percent', answer: 0 }}
+						onHandleSelectChange={onSelectChange}
+						onHandleInputChange={onInputChange}
+					/>
+				)
+				const setCustomValidity = jest.fn()
+				const reportValidity = jest.fn()
+				NumericEntry.mockImplementation(() => ({
+					status: OK
+				}))
+
+				NumericEntryRange.mockImplementation(() => ({
+					isSingular: true
+				}))
+
+				// Is ref related target
+				isRefRelatedTarget.mockImplementation(() => true)
+
+				component.root.findAllByType('input')[0].value = '0'
+
+				component.root.findAllByType('select')[1].props.onBlur({
+					target: {
+						setCustomValidity,
+						reportValidity,
+						value: 'Percent'
+					},
+					relatedTarget: component.root.findAllByProps({ className: 'margin-value' })[0]
+				})
+				expect(setCustomValidity).toHaveBeenCalledTimes(0)
+
+				// Is not ref related target
+				isRefRelatedTarget.mockImplementation(() => false)
+				component.root.findAllByType('select')[1].props.onBlur({
+					target: {
+						setCustomValidity,
+						reportValidity,
+						value: 'Percent'
+					},
+					relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
+				})
+				expect(setCustomValidity).toHaveBeenCalledTimes(1)
+				expect(setCustomValidity).toHaveBeenLastCalledWith(
+					'Answer cannot be 0 while Error Type is Percent'
+				)
+				expect(reportValidity).toHaveBeenCalledTimes(1)
+
+				component = renderer.create(
+					<NumericOption
+						numericChoice={{ requirement: 'margin', type: 'percent', answer: 1 }}
+						onHandleSelectChange={onSelectChange}
+						onHandleInputChange={onInputChange}
+					/>
+				)
+
+				isRefRelatedTarget.mockImplementation(() => false)
+				component.root.findAllByType('select')[1].props.onBlur({
+					target: {
+						setCustomValidity,
+						reportValidity,
+						value: 'Percent'
+					},
+					relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
+				})
+				expect(setCustomValidity).toHaveBeenCalledTimes(2)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('')
+				expect(reportValidity).toHaveBeenCalledTimes(2)
+			})
+
+			test('Expected validation is reported when blur from error type as absolute', () => {
+				const onSelectChange = jest.fn()
+				const onInputChange = jest.fn()
+				const component = renderer.create(
+					<NumericOption
+						numericChoice={{ requirement: 'margin', type: 'Absolute', answer: 0 }}
+						onHandleSelectChange={onSelectChange}
+						onHandleInputChange={onInputChange}
+					/>
+				)
+				const setCustomValidity = jest.fn()
+				const reportValidity = jest.fn()
+				NumericEntry.mockImplementation(() => ({
+					status: OK
+				}))
+
+				NumericEntryRange.mockImplementation(() => ({
+					isSingular: true
+				}))
+
+				// Is not ref related target
+				isRefRelatedTarget.mockImplementation(() => false)
+				component.root.findAllByType('select')[1].props.onBlur({
+					target: {
+						setCustomValidity,
+						reportValidity,
+						value: 'Absolute'
+					},
+					relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
+				})
+				expect(setCustomValidity).toHaveBeenCalledTimes(1)
+				expect(setCustomValidity).toHaveBeenLastCalledWith('')
+				expect(reportValidity).toHaveBeenCalledTimes(1)
+			})
+		})
+	})
+
+	describe('within a range', () => {
+		test('Expected validation is reported when blur from start input', () => {
+			const onSelectChange = jest.fn()
+			const onInputChange = jest.fn()
+			const component = renderer.create(
+				<NumericOption
+					numericChoice={{ requirement: 'range', start: '1', end: '1' }}
+					onHandleSelectChange={onSelectChange}
+					onHandleInputChange={onInputChange}
+				/>
+			)
+			const setCustomValidity = jest.fn()
+			const reportValidity = jest.fn()
+			NumericEntry.mockImplementation(() => ({
+				status: OK
+			}))
+
+			NumericEntryRange.mockImplementation(() => ({
+				isSingular: true
+			}))
+
+			isRefRelatedTarget.mockImplementation(() => true)
+			component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
 				target: {
 					setCustomValidity,
 					reportValidity,
 					value: '1'
-				}
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
-		expect(setCustomValidity).toHaveBeenCalledTimes(1)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(1)
+			expect(setCustomValidity).toHaveBeenCalledTimes(1)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(1)
 
-		component
-			.find('.input-item')
-			.at(1)
-			.simulate('blur', {
+			isRefRelatedTarget.mockImplementation(() => false)
+			component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '0'
-				}
+					value: '1'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
-		expect(setCustomValidity).toHaveBeenCalledTimes(2)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('Error amount must be greater than 0')
-		expect(reportValidity).toHaveBeenCalledTimes(2)
+			expect(setCustomValidity).toHaveBeenCalledTimes(2)
+			expect(setCustomValidity).toHaveBeenLastCalledWith(
+				'Start value should be smaller than the end value'
+			)
+			expect(reportValidity).toHaveBeenCalledTimes(2)
 
-		component
-			.find('.input-item')
-			.at(1)
-			.simulate('blur', {
+			NumericEntryRange.mockImplementation(() => {
+				throw 'Invalid range: min value must be larger than max value'
+			})
+
+			isRefRelatedTarget.mockImplementation(() => true)
+			component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: ''
-				}
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
-		expect(setCustomValidity).toHaveBeenCalledTimes(3)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('Enter a numeric error amount')
-		expect(reportValidity).toHaveBeenCalledTimes(3)
+			expect(setCustomValidity).toHaveBeenCalledTimes(3)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(3)
 
-		component
-			.find('.input-item')
-			.at(1)
-			.simulate('blur', {
+			isRefRelatedTarget.mockImplementation(() => false)
+			component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: 'x'
-				}
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
-		expect(setCustomValidity).toHaveBeenCalledTimes(4)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('Enter a numeric error amount')
-		expect(reportValidity).toHaveBeenCalledTimes(4)
+			expect(setCustomValidity).toHaveBeenCalledTimes(4)
+			expect(setCustomValidity).toHaveBeenLastCalledWith(
+				"Start value can't be larger than the end value"
+			)
+			expect(reportValidity).toHaveBeenCalledTimes(4)
 
-		component
-			.find('.input-item')
-			.at(1)
-			.simulate('blur', {
+			NumericEntryRange.mockImplementation(() => {
+				throw 'Some other error'
+			})
+
+			isRefRelatedTarget.mockImplementation(() => true)
+			component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '0.001'
-				}
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
-		expect(setCustomValidity).toHaveBeenCalledTimes(5)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(5)
-	})
+			expect(setCustomValidity).toHaveBeenCalledTimes(5)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(5)
 
-	test('Expected validation is reported when blur from start input', () => {
-		const onSelectChange = jest.fn()
-		const onInputChange = jest.fn()
-		const component = renderer.create(
-			<NumericOption
-				numericChoice={{ requirement: 'range', start: '1', end: '1' }}
-				onHandleSelectChange={onSelectChange}
-				onHandleInputChange={onInputChange}
-			/>
-		)
-		const setCustomValidity = jest.fn()
-		const reportValidity = jest.fn()
-		NumericEntry.mockImplementation(() => ({
-			status: OK
-		}))
-
-		NumericEntryRange.mockImplementation(() => ({
-			isSingular: true
-		}))
-
-		isRefRelatedTarget.mockImplementation(() => true)
-		component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '1'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(1)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(1)
-
-		isRefRelatedTarget.mockImplementation(() => false)
-		component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '1'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(2)
-		expect(setCustomValidity).toHaveBeenLastCalledWith(
-			'Start value should be smaller than the end value'
-		)
-		expect(reportValidity).toHaveBeenCalledTimes(2)
-
-		NumericEntryRange.mockImplementation(() => {
-			throw 'Invalid range: min value must be larger than max value'
+			isRefRelatedTarget.mockImplementation(() => false)
+			component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(6)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(6)
 		})
 
-		isRefRelatedTarget.mockImplementation(() => true)
-		component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
+		test('Expected validation is reported when blur from end input', () => {
+			const onSelectChange = jest.fn()
+			const onInputChange = jest.fn()
+			const component = renderer.create(
+				<NumericOption
+					numericChoice={{ requirement: 'range', start: '1', end: '1' }}
+					onHandleSelectChange={onSelectChange}
+					onHandleInputChange={onInputChange}
+				/>
+			)
+			const setCustomValidity = jest.fn()
+			const reportValidity = jest.fn()
+			NumericEntry.mockImplementation(() => ({
+				status: OK
+			}))
+
+			NumericEntryRange.mockImplementation(() => ({
+				isSingular: true
+			}))
+
+			isRefRelatedTarget.mockImplementation(() => true)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '1'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(1)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(1)
+
+			isRefRelatedTarget.mockImplementation(() => false)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '1'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(2)
+			expect(setCustomValidity).toHaveBeenLastCalledWith(
+				'End value should be larger than the start value'
+			)
+			expect(reportValidity).toHaveBeenCalledTimes(2)
+
+			NumericEntryRange.mockImplementation(() => {
+				throw 'Invalid range: min value must be larger than max value'
+			})
+
+			isRefRelatedTarget.mockImplementation(() => true)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(3)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(3)
+
+			isRefRelatedTarget.mockImplementation(() => false)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(4)
+			expect(setCustomValidity).toHaveBeenLastCalledWith(
+				"End value can't be smaller than the start value"
+			)
+			expect(reportValidity).toHaveBeenCalledTimes(4)
+
+			NumericEntryRange.mockImplementation(() => {
+				throw 'Some other error'
+			})
+
+			isRefRelatedTarget.mockImplementation(() => true)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(5)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(5)
+
+			isRefRelatedTarget.mockImplementation(() => false)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(6)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(6)
+
+			NumericEntryRange.mockImplementation(() => ({
+				isSingular: false
+			}))
+			isRefRelatedTarget.mockImplementation(() => true)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(7)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(7)
+
+			isRefRelatedTarget.mockImplementation(() => false)
+			component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
+				target: {
+					setCustomValidity,
+					reportValidity,
+					value: '2'
+				},
+				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
+			})
+			expect(setCustomValidity).toHaveBeenCalledTimes(8)
+			expect(setCustomValidity).toHaveBeenLastCalledWith('')
+			expect(reportValidity).toHaveBeenCalledTimes(8)
 		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(3)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(3)
-
-		isRefRelatedTarget.mockImplementation(() => false)
-		component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(4)
-		expect(setCustomValidity).toHaveBeenLastCalledWith(
-			"Start value can't be larger than the end value"
-		)
-		expect(reportValidity).toHaveBeenCalledTimes(4)
-
-		NumericEntryRange.mockImplementation(() => {
-			throw 'Some other error'
-		})
-
-		isRefRelatedTarget.mockImplementation(() => true)
-		component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(5)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(5)
-
-		isRefRelatedTarget.mockImplementation(() => false)
-		component.root.findAllByProps({ className: 'input-item' })[0].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(6)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(6)
-	})
-
-	test('Expected validation is reported when blur from end input', () => {
-		const onSelectChange = jest.fn()
-		const onInputChange = jest.fn()
-		const component = renderer.create(
-			<NumericOption
-				numericChoice={{ requirement: 'range', start: '1', end: '1' }}
-				onHandleSelectChange={onSelectChange}
-				onHandleInputChange={onInputChange}
-			/>
-		)
-		const setCustomValidity = jest.fn()
-		const reportValidity = jest.fn()
-		NumericEntry.mockImplementation(() => ({
-			status: OK
-		}))
-
-		NumericEntryRange.mockImplementation(() => ({
-			isSingular: true
-		}))
-
-		isRefRelatedTarget.mockImplementation(() => true)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '1'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(1)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(1)
-
-		isRefRelatedTarget.mockImplementation(() => false)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '1'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(2)
-		expect(setCustomValidity).toHaveBeenLastCalledWith(
-			'End value should be larger than the start value'
-		)
-		expect(reportValidity).toHaveBeenCalledTimes(2)
-
-		NumericEntryRange.mockImplementation(() => {
-			throw 'Invalid range: min value must be larger than max value'
-		})
-
-		isRefRelatedTarget.mockImplementation(() => true)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(3)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(3)
-
-		isRefRelatedTarget.mockImplementation(() => false)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(4)
-		expect(setCustomValidity).toHaveBeenLastCalledWith(
-			"End value can't be smaller than the start value"
-		)
-		expect(reportValidity).toHaveBeenCalledTimes(4)
-
-		NumericEntryRange.mockImplementation(() => {
-			throw 'Some other error'
-		})
-
-		isRefRelatedTarget.mockImplementation(() => true)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(5)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(5)
-
-		isRefRelatedTarget.mockImplementation(() => false)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(6)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(6)
-
-		NumericEntryRange.mockImplementation(() => ({
-			isSingular: false
-		}))
-		isRefRelatedTarget.mockImplementation(() => true)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(7)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(7)
-
-		isRefRelatedTarget.mockImplementation(() => false)
-		component.root.findAllByProps({ className: 'input-item' })[1].props.onBlur({
-			target: {
-				setCustomValidity,
-				reportValidity,
-				value: '2'
-			},
-			relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
-		})
-		expect(setCustomValidity).toHaveBeenCalledTimes(8)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('')
-		expect(reportValidity).toHaveBeenCalledTimes(8)
 	})
 })
