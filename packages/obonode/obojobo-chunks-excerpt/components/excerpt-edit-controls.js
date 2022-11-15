@@ -3,7 +3,11 @@ import React, { useState } from 'react'
 import iconFontSizeSmall from '../icon-font-size-small.svg'
 import iconFontSizeMedium from '../icon-font-size-medium.svg'
 import iconFontSizeLarge from '../icon-font-size-large.svg'
-import iconLineHeightCompact from '../icon-line-height-compact.svg'
+
+// This type of import results in an 'invalid prop `src` for img' error
+// import iconLineHeightCompact from '../icon-line-height-compact.svg'
+
+const iconLineHeightCompact = require('../icon-line-height-compact.svg')
 import iconLineHeightModerate from '../icon-line-height-moderate.svg'
 import iconLineHeightGenerous from '../icon-line-height-generous.svg'
 import iconWidthLarge from '../icon-width-large.svg'
@@ -120,6 +124,8 @@ const getEffectDescription = bodyStyle => {
 const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 	const [isShowingMoreOptions, setIsShowingMoreOptions] = useState(false)
 
+	const effectAvailable = isEffectAvailable(content.bodyStyle)
+
 	return (
 		<div
 			contentEditable={false}
@@ -220,7 +226,7 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 							</label>
 							<RadioIcons
 								name="width"
-								ariaLabel="blah"
+								ariaLabel="width"
 								options={[
 									{ label: 'large', icon: <img src={iconWidthLarge} /> },
 									{ label: 'medium', icon: <img src={iconWidthMedium} /> },
@@ -238,7 +244,7 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 							</label>
 							<RadioIcons
 								name="font-size"
-								ariaLabel="blah"
+								ariaLabel="font size"
 								options={[
 									{ label: 'smaller', icon: <img src={iconFontSizeSmall} /> },
 									{ label: 'regular', icon: <img src={iconFontSizeMedium} /> },
@@ -254,7 +260,7 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 							</label>
 							<RadioIcons
 								name="line-height"
-								ariaLabel="blah"
+								ariaLabel="line height"
 								options={[
 									{ label: 'compact', icon: <img src={iconLineHeightCompact} /> },
 									{ label: 'moderate', icon: <img src={iconLineHeightModerate} /> },
@@ -266,10 +272,10 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 						</div>
 						<div>
 							<label
-								className={`effect-settings ${isEffectAvailable ? 'is-enabled' : 'is-not-enabled'}`}
+								className={`effect-settings ${effectAvailable ? 'is-enabled' : 'is-not-enabled'}`}
 							>
 								<input
-									disabled={!isEffectAvailable}
+									disabled={!effectAvailable}
 									type="checkbox"
 									checked={content.effect}
 									onChange={event => {

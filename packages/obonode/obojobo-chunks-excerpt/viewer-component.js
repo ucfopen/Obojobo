@@ -9,9 +9,7 @@ const { TextGroupEl } = Common.chunk.textChunk
 const { TextChunk } = Common.chunk
 
 const Excerpt = props => {
-    const modelState = props.model.modelState
-
-    // console.log(modelState)
+	const modelState = props.model.modelState
 
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>

@@ -2,7 +2,6 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
-
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
 // const EXCERPT_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptText'
 // const EXCERPT_TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptLine'
@@ -16,9 +15,6 @@ const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
  * @returns {Object} An Obojobo Excerpt node
  */
 const slateToObo = node => {
-
-	// console.log('node:', node)
-
 	const excerptContent = node.children[0].children
 	const citationText = node.children[1].children
 
@@ -38,8 +34,6 @@ const slateToObo = node => {
 	// })
 
 	const citationTextGroup = citationText.map(line => {
-		// console.log('line be', line)
-
 		const textLine = {
 			text: { value: '', styleList: [] },
 			data: {
@@ -53,8 +47,6 @@ const slateToObo = node => {
 
 		return textLine
 	})
-
-	// console.log('excerpt content: ', excerptContent)
 
 	return {
 		id: node.id,
@@ -90,22 +82,20 @@ const oboToSlate = node => {
 
 	// console.log('slateNode children: ', slateNode.children)
 
-
-	slateNode.children = slateNode.children.map(child =>{
-
+	slateNode.children = slateNode.children.map(child => {
 		// console.log('child: ', child)
 
 		const children = Common.Registry.getItemForType(child.type).oboToSlate(child)
 
-		return({
+		return {
 			type: EXCERPT_NODE,
 			subtype: 'ObojoboDraft.Chunks.Excerpt.ExcerptContent',
 			content: {
 				...slateNode.content
 			},
 
-			children: children ? [children] : []
-		})
+			children: [children]
+		}
 	})
 
 	slateNode.children.push({
@@ -128,8 +118,6 @@ const oboToSlate = node => {
 
 	// delete slateNode.content.excerpt
 	// delete slateNode.content.citation
-
-	// console.log('oboToSlate', node, slateNode)
 
 	return slateNode
 }

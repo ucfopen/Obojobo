@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Radio Icons Node builds the expected component 1`] = `
+<div
+  aria-label="sizes"
+  className="radio-icons"
+  role="radiogroup"
+>
+  <div
+    className="options"
+  >
+    <label
+      className="is-not-selected is-option-small"
+      onMouseDown={[Function]}
+      style={
+        Object {
+          "transform": "translate(0px, 0)",
+        }
+      }
+    >
+      <input
+        checked={false}
+        name="sizes"
+        onChange={[Function]}
+        type="radio"
+        value="small"
+      />
+      <span>
+        small
+      </span>
+      image
+    </label>
+    <label
+      className="is-selected is-option-medium"
+      onMouseDown={[Function]}
+      style={
+        Object {
+          "transform": "translate(-1px, 0)",
+        }
+      }
+    >
+      <input
+        checked={true}
+        name="sizes"
+        onChange={[Function]}
+        type="radio"
+        value="medium"
+      />
+      <span>
+        medium
+      </span>
+      image
+    </label>
+    <label
+      className="is-not-selected is-option-large"
+      onMouseDown={[Function]}
+      style={
+        Object {
+          "transform": "translate(-2px, 0)",
+        }
+      }
+    >
+      <input
+        checked={false}
+        name="sizes"
+        onChange={[Function]}
+        type="radio"
+        value="large"
+      />
+      <span>
+        large
+      </span>
+      image
+    </label>
+  </div>
+</div>
+`;

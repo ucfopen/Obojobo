@@ -7,26 +7,24 @@ import ExcerptAdapter from './adapter'
 const { TextGroup } = Common.textGroup
 // const { TextGroupAdapter } = Common.chunk.textChunk
 
-
 describe('Excerpt adapter', () => {
+	const defaultState = {
+		bodyStyle: 'filled-box',
+		width: 'medium',
+		font: 'sans',
+		lineHeight: 'moderate',
+		fontSize: 'smaller',
+		effect: false
+	}
 
-    const defaultState = {
-        bodyStyle: 'filled-box',
-        width: 'medium',
-        font: 'sans',
-        lineHeight: 'moderate',
-        fontSize: 'smaller',
-        effect: false,
-    }
+	const defaultStateWithCitation = {
+		...defaultState,
+		citation: TextGroup.create(1, {})
+	}
 
-    const defaultStateWithCitation = {
-        ...defaultState,
-        citation: TextGroup.create(1, {})
-    }
-
-    // const defaultAttrs = {
-    //     bodyStyle:
-    // }
+	// const defaultAttrs = {
+	//     bodyStyle:
+	// }
 
 	test('construct builds without attributes', () => {
 		const model = new OboModel({})
@@ -40,137 +38,135 @@ describe('Excerpt adapter', () => {
 		const attrs = {
 			content: {
 				citation: [
-                    {
-                        data: { align: 'center', hangingIndent: 0, indent: 0 },
-                        text: { styleList: null, value: 'Placeholder text' }
-                    }
-                ]
+					{
+						data: { align: 'center', hangingIndent: 0, indent: 0 },
+						text: { styleList: null, value: 'Placeholder text' }
+					}
+				]
 			}
-        }
+		}
 
 		const model = new OboModel(attrs)
 		const expected = {
-            ...defaultStateWithCitation,
-            citation: TextGroup.fromDescriptor(attrs.content.citation, 1, {})
-        }
-        ExcerptAdapter.construct(model, attrs)
+			...defaultStateWithCitation,
+			citation: TextGroup.fromDescriptor(attrs.content.citation, 1, {})
+		}
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
+	})
 
-    test('construct builds with empty content object', () => {
-
-        const attrs = {
-			content: { }
-        }
+	test('construct builds with empty content object', () => {
+		const attrs = {
+			content: {}
+		}
 
 		const model = new OboModel(attrs)
 		const expected = defaultStateWithCitation
-        ExcerptAdapter.construct(model, attrs)
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
+	})
 
-    test('construct builds with font attribute', () => {
-        const attrs = {
+	test('construct builds with font attribute', () => {
+		const attrs = {
 			content: {
-				font: 'monospace',
+				font: 'monospace'
 			}
-        }
+		}
 
 		const model = new OboModel(attrs)
 		const expected = {
-            ...defaultStateWithCitation,
-            font: 'monospace'
-        }
-        ExcerptAdapter.construct(model, attrs)
+			...defaultStateWithCitation,
+			font: 'monospace'
+		}
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
+	})
 
-    test('construct builds with bodyStyle attribute', () => {
-        const attrs = {
+	test('construct builds with bodyStyle attribute', () => {
+		const attrs = {
 			content: {
-				bodyStyle: 'card',
+				bodyStyle: 'card'
 			}
-        }
+		}
 
 		const model = new OboModel(attrs)
 		const expected = {
-            ...defaultStateWithCitation,
-            bodyStyle: 'card'
-        }
-        ExcerptAdapter.construct(model, attrs)
+			...defaultStateWithCitation,
+			bodyStyle: 'card'
+		}
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
+	})
 
-    test('construct builds with width attribute', () => {
-        const attrs = {
+	test('construct builds with width attribute', () => {
+		const attrs = {
 			content: {
-				width: 'large',
+				width: 'large'
 			}
-        }
+		}
 
 		const model = new OboModel(attrs)
 		const expected = {
-            ...defaultStateWithCitation,
-            width: 'large'
-        }
-        ExcerptAdapter.construct(model, attrs)
+			...defaultStateWithCitation,
+			width: 'large'
+		}
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
+	})
 
-    test('construct builds with fontSize attribute', () => {
-        const attrs = {
+	test('construct builds with fontSize attribute', () => {
+		const attrs = {
 			content: {
-				fontSize: 'smaller',
+				fontSize: 'smaller'
 			}
-        }
+		}
 
 		const model = new OboModel(attrs)
 		const expected = {
-            ...defaultStateWithCitation,
-            fontSize: 'smaller'
-        }
-        ExcerptAdapter.construct(model, attrs)
+			...defaultStateWithCitation,
+			fontSize: 'smaller'
+		}
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
+	})
 
-    test('construct builds with lineHeight attribute', () => {
-        const attrs = {
+	test('construct builds with lineHeight attribute', () => {
+		const attrs = {
 			content: {
-				lineHeight: 'generous',
+				lineHeight: 'generous'
 			}
-        }
+		}
 
 		const model = new OboModel(attrs)
 		const expected = {
-            ...defaultStateWithCitation,
-            lineHeight: 'generous'
-        }
-        ExcerptAdapter.construct(model, attrs)
+			...defaultStateWithCitation,
+			lineHeight: 'generous'
+		}
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
+	})
 
-    test('construct builds with effect attribute', () => {
-        const attrs = {
+	test('construct builds with effect attribute', () => {
+		const attrs = {
 			content: {
-				effect: true,
+				effect: true
 			}
-        }
+		}
 
 		const model = new OboModel(attrs)
 		const expected = {
-            ...defaultStateWithCitation,
-            effect: true
-        }
-        ExcerptAdapter.construct(model, attrs)
+			...defaultStateWithCitation,
+			effect: true
+		}
+		ExcerptAdapter.construct(model, attrs)
 
 		expect(model.modelState).toEqual(expected)
-    })
-
+	})
 })

@@ -29,6 +29,7 @@ const getEdgeOptionsForBodyStyle = bodyStyle => {
 }
 
 const ExcerptContent = props => {
+	// console.log('props: ', props)
 	// const onChangeEdge = (edge, edgeType) => {
 	// 	const [parent, parentPath] = Editor.parent(
 	// 		props.editor,
@@ -50,6 +51,7 @@ const ExcerptContent = props => {
 	// I was moving these methods over here, and then maybe I can no longer have to duplicate
 	// properties and just use properties on this one, Excerpt Content?!
 	const onChangePreset = presetValue => {
+		// console.log('changing preset in excerpt-content to ', presetValue)
 		const [, parentPath] = Editor.parent(
 			props.editor,
 			ReactEditor.findPath(props.editor, props.element)
@@ -68,6 +70,7 @@ const ExcerptContent = props => {
 	}
 
 	const onChangeContentValue = (contentValueName, value) => {
+		// console.log('changing content value', contentValueName,' in excerpt-content to', value)
 		const [, parentPath] = Editor.parent(
 			props.editor,
 			ReactEditor.findPath(props.editor, props.element)
@@ -83,6 +86,9 @@ const ExcerptContent = props => {
 	const edgeOptions = getEdgeOptionsForBodyStyle(props.element.content.bodyStyle)
 
 	const shouldShowEdgeControls = props.selected && Range.isCollapsed(props.editor.selection)
+
+	// console.log('selected: ', props.selected)
+	// console.log('isCollapsed: ', Range.isCollapsed(props.editor.selection))
 
 	return (
 		<div className="excerpt-content">
