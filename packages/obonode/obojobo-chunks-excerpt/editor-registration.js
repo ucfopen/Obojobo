@@ -12,7 +12,6 @@ import EditorComponent from './editor-component'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 
-
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
 const EXCERPT_CONTENT = 'ObojoboDraft.Chunks.Excerpt.ExcerptContent'
 const CITE_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationText'
@@ -239,7 +238,6 @@ const Excerpt = {
 				// console.log('nodesToRemove: ', nodesToRemove.length)
 
 				if (nodesToRemove.length > 0) {
-
 					// Remove Node
 					for (const node of nodesToRemove) {
 						Transforms.removeNodes(editor, { at: node })

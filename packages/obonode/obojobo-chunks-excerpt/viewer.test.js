@@ -6,10 +6,10 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 		textChunk: {
 			TextGroupAdapter: jest.fn()
 		}
-    },
-    textGroup: {
-        TextGroup: jest.fn()
-    }
+	},
+	textGroup: {
+		TextGroup: jest.fn()
+	}
 }))
 
 jest.mock('./viewer-component', () => ({}))

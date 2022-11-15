@@ -14,46 +14,45 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
 
 describe('Excerpt Converter', () => {
+	const mockSlateToObo = jest.fn(() => ({ type: 'OboNode' }))
+	const mockOboToSlate = jest.fn(() => ({ type: 'SlateNode' }))
 
-    const mockSlateToObo = jest.fn(() => ({ type: 'OboNode' }))
-    const mockOboToSlate = jest.fn(() => ({ type: 'SlateNode' }))
+	const mockGetItemForType = jest
+		.spyOn(Common.Registry, 'getItemForType')
+		.mockImplementation(() => ({
+			slateToObo: mockSlateToObo,
+			oboToSlate: mockOboToSlate
+		}))
 
-    const mockGetItemForType = jest.spyOn(Common.Registry, 'getItemForType').mockImplementation(() => ({
-        slateToObo: mockSlateToObo,
-        oboToSlate: mockOboToSlate
-    }))
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
 
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
-
 		const slateNode = {
 			id: 'mockKey',
 			type: EXCERPT_NODE,
-			content: {  },
+			content: {},
 			children: [
 				{
-                    id: 'mockKey',
+					id: 'mockKey',
 					type: 'mockType',
 					content: {},
 					children: [{ text: 'Excerpt text', b: true, type: TEXT_NODE }]
-                },
-                {
-                    type: 'mockType',
-                    content: { hangingIndent: 0, indent: 0 },
-                    children: [{
-                        type: 'mockType',
-                        content: { hangingIndent: 0, indent: 0 },
-                        children: [
-                            { text: 'Citation Line' }
-                        ]
-                    }]
-                }
+				},
+				{
+					type: 'mockType',
+					content: { hangingIndent: 0, indent: 0 },
+					children: [
+						{
+							type: 'mockType',
+							content: { hangingIndent: 0, indent: 0 },
+							children: [{ text: 'Citation Line' }]
+						}
+					]
+				}
 			]
-        }
+		}
 
 		const oboNode = Converter.slateToObo(slateNode)
 
@@ -67,82 +66,74 @@ describe('Excerpt Converter', () => {
 			content: { triggers: 'mock-triggers' },
 			children: [
 				{
-                    id: 'mockKey',
+					id: 'mockKey',
 					type: 'mockType',
 					content: {},
 					children: [{ text: 'Excerpt text', b: true, type: TEXT_NODE }]
-                },
-                {
-                    type: 'mockType',
-                    content: { hangingIndent: 0, indent: 0 },
-                    children: [{
-                        type: 'mockType',
-                        content: { hangingIndent: 0, indent: 0 },
-                        children: [
-                            { text: 'Citation Line' }
-                        ]
-                    }]
-                }
+				},
+				{
+					type: 'mockType',
+					content: { hangingIndent: 0, indent: 0 },
+					children: [
+						{
+							type: 'mockType',
+							content: { hangingIndent: 0, indent: 0 },
+							children: [{ text: 'Citation Line' }]
+						}
+					]
+				}
 			]
 		}
-        const oboNode = Converter.slateToObo(slateNode)
+		const oboNode = Converter.slateToObo(slateNode)
 
-        // console.log(oboNode)
+		// console.log(oboNode)
 
-        // expect(false).toEqual(true)
+		// expect(false).toEqual(true)
 
-        expect(oboNode).toMatchSnapshot()
+		expect(oboNode).toMatchSnapshot()
 
-        expect(mockGetItemForType).toHaveBeenCalled()
-        expect(mockGetItemForType).toHaveBeenCalledWith(TEXT_NODE)
+		expect(mockGetItemForType).toHaveBeenCalled()
+		expect(mockGetItemForType).toHaveBeenCalledWith(TEXT_NODE)
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
-
-        const nodeChild = { type: 'OboNode' }
+		const nodeChild = { type: 'OboNode' }
 
 		const oboNode = {
 			id: 'mockKey',
-            type: EXCERPT_NODE,
-            children: [
-                nodeChild
-            ],
+			type: EXCERPT_NODE,
+			children: [nodeChild],
 			content: {
-                font: 'monospace',
-                bodyStyle: 'term-green',
-                citation: [
-                    {  }
-                ]
-			}
-		}
-		const slateNode = Converter.oboToSlate(oboNode)
-
-        expect(slateNode).toMatchSnapshot()
-
-        expect(mockOboToSlate).toHaveBeenCalledWith(nodeChild)
-	})
-
-    test('oboToSlate converts an OboNode to a Slate node with citation line', () => {
-        const oboNode = {
-			id: 'mockKey',
-            type: EXCERPT_NODE,
-            children: [
-                { type: 'OboNode' }
-            ],
-			content: {
-                font: 'monospace',
-                bodyStyle: 'term-green',
-                citation: [
-                    {
-                        data: { align: 'center', indent: 0, hangingIndent: 0 },
-                        text: { value: 'Citation Text', styleList: [] }
-                     }
-                ]
+				font: 'monospace',
+				bodyStyle: 'term-green',
+				citation: [{}]
 			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
-    })
 
+		expect(mockOboToSlate).toHaveBeenCalledWith(nodeChild)
+	})
+
+	test('oboToSlate converts an OboNode to a Slate node with citation line', () => {
+		const oboNode = {
+			id: 'mockKey',
+			type: EXCERPT_NODE,
+			children: [{ type: 'OboNode' }],
+			content: {
+				font: 'monospace',
+				bodyStyle: 'term-green',
+				citation: [
+					{
+						data: { align: 'center', indent: 0, hangingIndent: 0 },
+						text: { value: 'Citation Text', styleList: [] }
+					}
+				]
+			}
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
 })
