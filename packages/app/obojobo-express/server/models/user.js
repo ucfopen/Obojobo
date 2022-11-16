@@ -173,7 +173,16 @@ class User {
 	}
 
 	toJSON() {
-		const allowedKeys = ['id', 'firstName', 'lastName', 'username', 'roles', 'perms', 'avatarUrl']
+		const allowedKeys = [
+			'id',
+			'firstName',
+			'lastName',
+			'username',
+			'roles',
+			'perms',
+			'avatarUrl',
+			'accessLevel'
+		]
 		const safeUser = {}
 		copyAttributesFn(safeUser, this, allowedKeys)
 		return safeUser
