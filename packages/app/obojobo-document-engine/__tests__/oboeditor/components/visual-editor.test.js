@@ -1249,7 +1249,7 @@ describe('VisualEditor', () => {
 	})
 
 	test('PageEditor component doesnt save if any input field is invalid', () => {
-		const props = { model: { title: '' } }
+		const props = { model: { title: '' }, draft: { accessLevel: FULL } }
 		const mockFn = jest.fn()
 		const spy = jest.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
 		const hasInvalidFieldsSpy = jest.spyOn(VisualEditor.prototype, 'hasInvalidFields')
@@ -1280,7 +1280,8 @@ describe('VisualEditor', () => {
 				flatJSON: jest.fn().mockReturnValue({ content: {} }),
 				children: []
 			},
-			saveDraft: jest.fn().mockResolvedValue(true)
+			saveDraft: jest.fn().mockResolvedValue(true),
+			draft: { accessLevel: FULL }
 		}
 		const spy = jest
 			.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
