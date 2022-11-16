@@ -275,8 +275,6 @@ describe('Excerpt Content Node', () => {
 			.at(0)
 			.simulate('click')
 
-		// console.log(component.find('.more-options').at(0).find('.radio-icons').at(0).find('input').at(0).debug())
-
 		// Select 'large' width option
 		component
 			.find('.more-options')

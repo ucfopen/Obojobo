@@ -80,11 +80,7 @@ const slateToObo = node => {
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 
-	// console.log('slateNode children: ', slateNode.children)
-
 	slateNode.children = slateNode.children.map(child => {
-		// console.log('child: ', child)
-
 		const children = Common.Registry.getItemForType(child.type).oboToSlate(child)
 
 		return {
@@ -116,8 +112,8 @@ const oboToSlate = node => {
 		})
 	})
 
-	// delete slateNode.content.excerpt
-	// delete slateNode.content.citation
+	delete slateNode.content.excerpt
+	delete slateNode.content.citation
 
 	return slateNode
 }

@@ -5,7 +5,6 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import ExcerptAdapter from './adapter'
 const { TextGroup } = Common.textGroup
-// const { TextGroupAdapter } = Common.chunk.textChunk
 
 describe('Excerpt adapter', () => {
 	const defaultState = {
@@ -21,10 +20,6 @@ describe('Excerpt adapter', () => {
 		...defaultState,
 		citation: TextGroup.create(1, {})
 	}
-
-	// const defaultAttrs = {
-	//     bodyStyle:
-	// }
 
 	test('construct builds without attributes', () => {
 		const model = new OboModel({})

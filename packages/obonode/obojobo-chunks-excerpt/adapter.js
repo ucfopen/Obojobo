@@ -58,14 +58,10 @@ const Adapter = {
 
 		if (attrs && attrs.content) {
 			if (attrs.content.citation) {
-				// console.log('building textGroup from ', attrs.content.citation, 1, {})
-
 				model.modelState.citation = TextGroup.fromDescriptor(attrs.content.citation, 1, {})
 			} else {
 				model.modelState.citation = TextGroup.create(1, {})
 			}
-
-			// console.log('set citation to ', model.modelState.citation)
 
 			if (attrs.content.font) {
 				model.modelState.font = attrs.content.font
@@ -91,8 +87,6 @@ const Adapter = {
 				model.modelState.effect = attrs.content.effect
 			}
 		}
-
-		// console.log("model: ", model)
 	}
 }
 

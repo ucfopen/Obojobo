@@ -69,8 +69,6 @@ describe('Radio Icons', () => {
 			/>
 		)
 
-		// console.log(component.debug());
-
 		component
 			.find('input')
 			.at(0)

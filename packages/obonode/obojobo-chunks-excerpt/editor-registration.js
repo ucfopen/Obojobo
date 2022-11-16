@@ -52,7 +52,6 @@ const Excerpt = {
 
 			Transforms.insertFragment(editor, fragment)
 		},
-		// normalizeNode,
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {
@@ -94,10 +93,9 @@ const Excerpt = {
 		},
 		onKeyDown(entry, editor, event) {
 			switch (event.key) {
-				//@TODO:
-				// case 'Backspace':
-				// case 'Delete':
-				// 	return KeyDownUtil.deleteEmptyParent(event, editor, entry, event.key === 'Delete')
+				case 'Backspace':
+				case 'Delete':
+					return KeyDownUtil.deleteEmptyParent(event, editor, entry, event.key === 'Delete')
 
 				case 'Tab':
 					// TAB+SHIFT
@@ -114,16 +112,7 @@ const Excerpt = {
 			}
 		},
 		normalizeNode(entry, editor, next) {
-			// console.log('in normalize')
 			const [node, path] = entry
-
-			// console.log('normalizing', node)
-
-			// console.log('Children: ', Node.children(editor, path))
-
-			// if (Element.isElement(node) && node.type === EXCERPT_NODE && !node.subtype) {
-			// 	console.log('NN', node, path)
-			// }
 
 			// EXCERPT_CONTENT shouldn't have any loose text nodes:
 			if (
@@ -173,11 +162,7 @@ const Excerpt = {
 					}
 				}
 
-				// console.log('nodesToRemove:', nodesToRemove.length)
-
 				if (nodesToRemove.length > 0) {
-					// console.log('REMOVE')
-
 					for (const node of nodesToRemove) {
 						Transforms.removeNodes(editor, { at: node })
 					}
@@ -186,7 +171,6 @@ const Excerpt = {
 				}
 
 				if (!citeLineNode) {
-					// console.log('ADD', 'CitationLine')
 					Transforms.insertNodes(
 						editor,
 						[
@@ -211,7 +195,6 @@ const Excerpt = {
 				let citeTextNode = null
 
 				for (const [child, childPath] of Node.children(editor, path)) {
-					// console.log('child: ', child)
 					switch (child.subtype) {
 						case EXCERPT_CONTENT:
 							if (!contentNode) {
@@ -235,8 +218,6 @@ const Excerpt = {
 					}
 				}
 
-				// console.log('nodesToRemove: ', nodesToRemove.length)
-
 				if (nodesToRemove.length > 0) {
 					// Remove Node
 					for (const node of nodesToRemove) {
@@ -247,24 +228,20 @@ const Excerpt = {
 				if (!contentNode) {
 					// Add in content nodes
 					const a = { ...emptyNode.children[0] }
-					// console.log('ADD2', a)
 					Transforms.insertNodes(editor, a, { at: path.concat(0) })
 					return
 				}
 
 				if (!citeTextNode) {
 					const b = { ...emptyNode.children[1] }
-					// console.log('ADD3', path, b, path.concat(1))
 					Transforms.insertNodes(editor, b, { at: path.concat(1) })
 					return
 				}
 			}
 
-			// console.log('exit normalize')
 			next(entry, editor)
 		},
 		renderNode(props) {
-			// console.log('in render with ', props)
 			switch (props.element.subtype) {
 				case CITE_LINE_NODE:
 					return <Line {...props} {...props.attributes} />
@@ -281,10 +258,5 @@ const Excerpt = {
 		}
 	}
 }
-
-// const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
-
-// const CITE_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationText'
-// const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
 
 export default Excerpt

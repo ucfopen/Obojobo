@@ -12,11 +12,13 @@ class Excerpt extends React.Component {
 	render() {
 		const content = this.props.element.content
 
+		// These were added by Zach
 		// console.log('@TODO: Make sure these css class names wont bleed')
 		// console.log('@TODO: when excerpt is the last item the menu obscures the (+) button')
 		// console.log('@TODO: over time multiple cite lines are created')
 		// console.log('@TODO: glow text leaks into the caption')
 		// console.log('@TODO: hitting enter too quickly results in a crash') -> unable to reproduce
+
 		return (
 			<Node {...this.props}>
 				<div

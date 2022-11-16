@@ -91,13 +91,6 @@ describe('Excerpt Node', () => {
 			/>
 		)
 
-		// console.log(component.debug())
-
-		// component
-		// .find('button')
-		// .at(1)
-		// .simulate('click')
-
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

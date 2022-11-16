@@ -29,27 +29,6 @@ const getEdgeOptionsForBodyStyle = bodyStyle => {
 }
 
 const ExcerptContent = props => {
-	// console.log('props: ', props)
-	// const onChangeEdge = (edge, edgeType) => {
-	// 	const [parent, parentPath] = Editor.parent(
-	// 		props.editor,
-	// 		ReactEditor.findPath(props.editor, props.element)
-	// 	)
-	// 	const parentContent = parent.content
-	// 	const newContent = { ...parentContent, [edge]: edgeType }
-
-	// 	// We update both this node and the parent node, as they both maintain copies of the same
-	// 	// content - necessary to get both to re-render
-	// 	Transforms.setNodes(props.editor, { content: { ...newContent } }, { at: parentPath })
-	// 	Transforms.setNodes(
-	// 		props.editor,
-	// 		{ content: { ...newContent } },
-	// 		{ at: ReactEditor.findPath(props.editor, props.element) }
-	// 	)
-	// }
-
-	// I was moving these methods over here, and then maybe I can no longer have to duplicate
-	// properties and just use properties on this one, Excerpt Content?!
 	const onChangePreset = presetValue => {
 		// console.log('changing preset in excerpt-content to ', presetValue)
 		const [, parentPath] = Editor.parent(
@@ -70,7 +49,6 @@ const ExcerptContent = props => {
 	}
 
 	const onChangeContentValue = (contentValueName, value) => {
-		// console.log('changing content value', contentValueName,' in excerpt-content to', value)
 		const [, parentPath] = Editor.parent(
 			props.editor,
 			ReactEditor.findPath(props.editor, props.element)
@@ -86,9 +64,6 @@ const ExcerptContent = props => {
 	const edgeOptions = getEdgeOptionsForBodyStyle(props.element.content.bodyStyle)
 
 	const shouldShowEdgeControls = props.selected && Range.isCollapsed(props.editor.selection)
-
-	// console.log('selected: ', props.selected)
-	// console.log('isCollapsed: ', Range.isCollapsed(props.editor.selection))
 
 	return (
 		<div className="excerpt-content">

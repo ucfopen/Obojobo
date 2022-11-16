@@ -42,9 +42,6 @@ Object {
   ],
   "content": Object {
     "bodyStyle": "term-green",
-    "citation": Array [
-      Object {},
-    ],
     "font": "monospace",
   },
   "id": "mockKey",
@@ -104,19 +101,6 @@ Object {
   ],
   "content": Object {
     "bodyStyle": "term-green",
-    "citation": Array [
-      Object {
-        "data": Object {
-          "align": "center",
-          "hangingIndent": 0,
-          "indent": 0,
-        },
-        "text": Object {
-          "styleList": Array [],
-          "value": "Citation Text",
-        },
-      },
-    ],
     "font": "monospace",
   },
   "id": "mockKey",

@@ -235,6 +235,17 @@ describe('Excerpt editor', () => {
 
 			expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 		})
+
+		test('deals with [Backspace]', () => {
+			const event = {
+				key: 'Backspace',
+				preventDefault: jest.fn()
+			}
+
+			Excerpt.plugins.onKeyDown([{}, [0]], {}, event)
+
+			expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalled()
+		})
 	})
 
 	describe('normalizeNode', () => {

@@ -4,13 +4,7 @@ import Converter from './converter'
 import Common from 'obojobo-document-engine/src/scripts/common'
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 
-// const CODE_NODE = 'ObojoboDraft.Chunks.Code'
-// const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
-// const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-// const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
-// const LIST_NODE = 'ObojoboDraft.Chunks.List'
-// const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
 
 describe('Excerpt Converter', () => {
@@ -85,10 +79,6 @@ describe('Excerpt Converter', () => {
 			]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
-
-		// console.log(oboNode)
-
-		// expect(false).toEqual(true)
 
 		expect(oboNode).toMatchSnapshot()
 
