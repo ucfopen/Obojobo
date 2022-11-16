@@ -496,6 +496,7 @@ export default class Question extends React.Component {
 				}}
 				questionModel={questionModel}
 				questionAssessmentModel={questionAssessmentModel}
+				questionIndex={this.props.questionIndex}
 				moduleData={moduleData}
 				resultsRef={this.resultsRef}
 				assessmentComponentRef={this.assessmentComponentRef}

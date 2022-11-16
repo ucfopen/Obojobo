@@ -16,6 +16,8 @@ jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 import { downloadDocument } from '../../../../src/scripts/common/util/download-document'
 jest.mock('../../../../src/scripts/common/util/download-document')
 
+import { FULL, PARTIAL } from 'obojobo-express/server/constants'
+
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
@@ -166,13 +168,27 @@ describe('File Menu', () => {
 			title: 'mockTitle'
 		}
 
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel={FULL} />)
 
 		component
 			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('FileMenu does not call Delete if accessLevel is not "Full"', () => {
+		const model = {
+			title: 'mockTitle'
+		}
+
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel={PARTIAL} />)
+
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
+			.simulate('click')
+
+		expect(ModalUtil.show).not.toHaveBeenCalled()
 	})
 
 	test('FileMenu calls Copy LTI Link', () => {

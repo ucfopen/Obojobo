@@ -5,6 +5,7 @@ import React from 'react'
 import ContentToolbar from '../../../../src/scripts/oboeditor/components/toolbars/content-toolbar'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
 // In order to test the case where no shortcut exists we remove the shortcut from one of the marks
 // in order to hit that line of code
@@ -54,6 +55,33 @@ describe('Content Toolbar', () => {
 		const component = shallow(<ContentToolbar editor={editor} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('Toolbar node buttons are disabled if HTML chunk is selected', () => {
+		const editor = {
+			children: [
+				{
+					type: HTML_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+
+		const component = shallow(<ContentToolbar editor={editor} />)
+
+		const allButtons = component.find('button')
+
+		expect(allButtons.length).toBeGreaterThan(0)
+
+		for (let i = 0; i < allButtons.length; i++) {
+			expect(allButtons.at(i).props()['disabled']).toBeTruthy()
+		}
 	})
 
 	test('Toolbar node calls the action for a button', () => {
