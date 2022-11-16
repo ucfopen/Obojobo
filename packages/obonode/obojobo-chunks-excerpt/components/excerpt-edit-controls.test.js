@@ -58,7 +58,7 @@ describe('Excerpt Edit Controls', () => {
 	})
 
 	describe('More options', () => {
-		// Helper function that navigates to and clicks the 'Show more options' button in the excerpt dialog
+		// Helper function that navigates to and clicks the 'Advanced options...' button in the excerpt dialog
 		const openMoreOptions = component => {
 			component
 				.find('Button')
