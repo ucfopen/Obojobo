@@ -273,6 +273,18 @@ module.exports = app => {
 										<label for='resource_link_id'>LMS course ID:</label>
 										<input type='text' name='resource_link_id' placeholder="course_1"/>
 										<br/>
+										<label>LMS context ID:</label>
+										<input type='text' name='context_id' placeholder='S3294476'/>
+										<br/>
+										<label>LMS context label:</label>
+										<input type='text' name='context_label' placeholder='OBO4321'/>
+										<br/>
+										<label>LMS context title:</label>
+										<input type='text' name='context_title' placeholder='Obojobo Local Dev 101'/>
+										<br/>
+										<label>LMS resource link title:</label>
+										<input type='text' name='resource_link_title' placeholder='Embedded Assignment'/>
+										<br/>
 										<button type='submit' value='submit'>Go</button>`
 										: ''
 								}
@@ -352,9 +364,17 @@ module.exports = app => {
 				resource_link_id,
 				score_import: req.query.score_import === 'on' ? 'true' : 'false'
 			}
+			const launchContext = { ...ltiContext }
+
+			if (req.query.context_id) launchContext.context_id = req.query.context_id
+			if (req.query.context_label) launchContext.context_label = req.query.context_label
+			if (req.query.context_title) launchContext.context_title = req.query.context_title
+			if (req.query.resource_link_title) {
+				launchContext.resource_link_title = req.query.resource_link_title
+			}
 
 			renderLtiLaunch(
-				{ ...ltiContext, ...person, ...params },
+				{ ...launchContext, ...person, ...params },
 				'POST',
 				`${baseUrl(req)}/view/${draftId}`,
 				res

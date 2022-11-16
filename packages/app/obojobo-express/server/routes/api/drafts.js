@@ -1,6 +1,7 @@
 const express = require('express')
 const fs = require('fs')
 const router = express.Router()
+const CollectionModel = require('obojobo-repository/server/models/collection')
 const DraftModel = oboRequire('server/models/draft')
 const logger = oboRequire('server/logger')
 const pgp = require('pg-promise')
@@ -24,6 +25,7 @@ const isNoDataFromQueryError = e => {
 		e instanceof pgp.errors.QueryResultError && e.code === pgp.errors.queryResultErrorCode.noData
 	)
 }
+const { levelName, FULL, PARTIAL } = require('../../constants')
 
 // Get a complete Draft Document Tree (for editing)
 // optional query variable: contentId=<draftContentId>
@@ -34,14 +36,16 @@ router
 	.get(async (req, res) => {
 		try {
 			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
-			const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+			const access_level = await DraftPermissions.getUserAccessLevelToDraft(
 				req.currentUser.id,
 				req.params.draftId
 			)
 
+			const hasPerms = access_level === FULL || access_level === PARTIAL
+
 			if (!hasPerms) {
 				return res.notAuthorized(
-					'You must be the author of this draft to retrieve this information'
+					'Your access level must be "Partial" or higher to retrieve this information.'
 				)
 			}
 
@@ -53,7 +57,11 @@ router
 				// get the current version
 				draftModel = await DraftModel.fetchById(req.params.draftId)
 			}
+
+			// Get the draft document and attach the user's access level for use in editor
 			const draftDocument = draftModel.document
+			draftDocument.accessLevel = access_level
+
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument
@@ -107,9 +115,21 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res, next) => {
-		const content = req.body.content
-		const format = req.body.format
+	.post(async (req, res, next) => {
+		if (req.body.collectionId) {
+			const hasPermsToCollection = await DraftPermissions.userHasPermissionToCollection(
+				req.currentUser.id,
+				req.body.collectionId
+			)
+			if (!hasPermsToCollection) {
+				return res.notAuthorized(
+					'You must have permissions to the requested collection to add a new module to it.'
+				)
+			}
+		}
+
+		const content = req.body.moduleContent ? req.body.moduleContent.content : null
+		const format = req.body.moduleContent ? req.body.moduleContent.format : null
 
 		let draftJson = !format ? draftTemplate : null
 		let draftXml = !format ? draftTemplateXML : null
@@ -132,25 +152,53 @@ router
 			}
 		}
 
-		return DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
-			.then(draft => {
-				res.set('Obo-DraftContentId', draft.content.id)
-				res.success({ id: draft.id, contentId: draft.content.id })
+		try {
+			const newDraft = await DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
+			if (req.body.collectionId) {
+				await CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
+			}
+			res.set('Obo-DraftContentId', newDraft.content.id)
+			res.success({
+				id: newDraft.id,
+				contentId: newDraft.content.id,
+				collectionId: req.body.collectionId
 			})
-			.catch(res.unexpected)
+		} catch (error) {
+			res.unexpected(error)
+		}
 	})
+
 // Create an editable tutorial document
 // mounted as /api/drafts/tutorial
 router
 	.route('/tutorial')
 	.post(requireCanCreateDrafts)
-	.post((req, res) => {
-		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
-			.then(draft => {
-				res.set('Obo-DraftContentId', draft.content.id)
-				res.success({ id: draft.id, contentId: draft.content.id })
+	.post(async (req, res) => {
+		try {
+			if (req.body.collectionId) {
+				const hasPermsToCollection = await DraftPermissions.userHasPermissionToCollection(
+					req.currentUser.id,
+					req.body.collectionId
+				)
+				if (!hasPermsToCollection) {
+					return res.notAuthorized(
+						'You must have permissions to the requested collection to add a new module to it.'
+					)
+				}
+			}
+			const newDraft = await DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
+			if (req.body.collectionId) {
+				await CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
+			}
+			res.set('Obo-DraftContentId', newDraft.content.id)
+			res.success({
+				id: newDraft.id,
+				contentId: newDraft.content.id,
+				collectionId: req.body.collectionId
 			})
-			.catch(res.unexpected)
+		} catch (error) {
+			res.unexpected(error)
+		}
 	})
 
 // Update a Draft
@@ -217,8 +265,21 @@ router
 router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
-	.delete((req, res) => {
-		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
+	.delete(async (req, res) => {
+		const access_level = await DraftPermissions.getUserAccessLevelToDraft(
+			req.currentUser.id,
+			req.params.draftId
+		)
+
+		const hasPerms = access_level === FULL
+
+		if (!hasPerms) {
+			return res.notAuthorized(
+				'You must have "' + levelName[FULL] + '" access to this draft to delete it'
+			)
+		}
+
+		return DraftModel.deleteById(req.params.draftId)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

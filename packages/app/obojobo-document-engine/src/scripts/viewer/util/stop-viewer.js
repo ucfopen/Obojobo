@@ -16,7 +16,7 @@ export const stopViewer = () => {
 		<NoButtonModal>
 			<p>
 				This Obojobo module window has expired. Typically this is caused by opening this module in
-				more then one window.
+				more than one window.
 			</p>
 		</NoButtonModal>,
 		true
@@ -35,7 +35,6 @@ const executeHeartBeat = draftId => {
 		if (result.status !== 'ok') {
 			stopViewer()
 		}
-
 		sysend.broadcast('viewer-init', { windowId, draftId })
 	})
 }

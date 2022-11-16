@@ -216,6 +216,15 @@
 		}
 	}
 
+	.sr-response-status {
+		position: absolute;
+		left: -10000px; //stylelint-disable-line unit-disallowed-list
+		top: auto;
+		width: 1px; //stylelint-disable-line unit-disallowed-list
+		height: 1px; //stylelint-disable-line unit-disallowed-list
+		overflow: hidden;
+	}
+
 	.submit .obojobo-draft--components--button:first-child {
 		margin-right: 1em;
 	}
