@@ -325,12 +325,12 @@ describe('repository dashboard route', () => {
 		CollectionSummary.fetchByUserId = jest.fn()
 		CollectionSummary.fetchByUserId.mockResolvedValueOnce(mockCollectionSummary)
 
-		DraftSummary.fetchAllInCollection = jest.fn()
+		DraftSummary.fetchAllInCollectionForUser = jest.fn()
 		DraftSummary.fetchByUserId = jest.fn()
 		DraftSummary.fetchDeletedByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
-		DraftSummary.fetchAllInCollection.mockResolvedValueOnce(mockModuleSummary)
+		DraftSummary.fetchAllInCollectionForUser.mockResolvedValueOnce(mockModuleSummary)
 
 		const path = 'collections/mock-collection-safe-name-mockCollectionShortId'
 
@@ -356,8 +356,8 @@ describe('repository dashboard route', () => {
 				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledTimes(1)
 				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
 
-				expect(DraftSummary.fetchAllInCollection).toHaveBeenCalledTimes(1)
-				expect(DraftSummary.fetchAllInCollection).toHaveBeenCalledWith(
+				expect(DraftSummary.fetchAllInCollectionForUser).toHaveBeenCalledTimes(1)
+				expect(DraftSummary.fetchAllInCollectionForUser).toHaveBeenCalledWith(
 					mockSingleCollection.id,
 					mockCurrentUser.id
 				)
