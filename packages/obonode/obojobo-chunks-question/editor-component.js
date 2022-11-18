@@ -8,7 +8,7 @@ import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/comp
 import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
-const { Button } = Common.components
+const { Button, MoreInfoButton } = Common.components
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
@@ -184,18 +184,12 @@ class Question extends React.Component {
 		const isTypeSurvey = content.type === 'survey'
 
 		const hasSolution = this.getHasSolution()
-		let questionType
-		let partialScoring
-
 		// The question type is determined by the MCAssessment or the NumericAssessment
-		// This is either the last node or the second to last node
-		if (hasSolution) {
-			questionType = element.children[element.children.length - 2].type
-			partialScoring = element.children[element.children.length - 2].content.partialScoring || false
-		} else {
-			questionType = element.children[element.children.length - 1].type
-			partialScoring = element.children[element.children.length - 1].content.partialScoring || false
-		}
+		// This is either the last node or the second to last node depending on whether the
+		//  'explanation' area is visible
+		const questionElement = element.children[element.children.length - (hasSolution ? 2 : 1)]
+		const questionType = questionElement.type
+		const partialScoring = questionElement.content.partialScoring || false
 
 		return (
 			<Node
@@ -218,11 +212,28 @@ class Question extends React.Component {
 									<option value={MCASSESSMENT_NODE}>Multiple choice</option>
 									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
 								</select>
-								{questionType === MCASSESSMENT_NODE ? (
-									<label className="question-type scoring" contentEditable={false}>
-										<input type="checkbox" checked={partialScoring} onChange={this.onSetScoring} />
-										Partial Scoring
-									</label>
+								{questionType === MCASSESSMENT_NODE &&
+								questionElement.content.responseType === 'pick-all' ? (
+									<React.Fragment>
+										<span className="scoring-explanation">
+											<MoreInfoButton>
+												<div className="text-container">
+													<p className="text">
+														Students will earn partial credit based on how many of the correct
+														answers they select.
+													</p>
+												</div>
+											</MoreInfoButton>
+										</span>
+										<label className="question-type scoring" contentEditable={false}>
+											<input
+												type="checkbox"
+												checked={partialScoring}
+												onChange={this.onSetScoring}
+											/>
+											Partial Scoring
+										</label>
+									</React.Fragment>
 								) : null}
 								<label className="question-type" contentEditable={false}>
 									<input type="checkbox" checked={isTypeSurvey} onChange={this.onSetType} />
