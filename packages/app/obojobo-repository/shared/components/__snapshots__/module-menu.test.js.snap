@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModuleMenu ModuleMenu renders correctly with className prop 1`] = `
+exports[`ModuleMenu ModuleMenu renders correctly with "Full" access level 1`] = `
 <div
   className="repository--module-icon--menu-wrapper"
 >
   <div
-    className="repository--module-icon--menu extra-class"
+    className="repository--module-icon--menu "
   >
     <a
       className="repository--button "
@@ -40,6 +40,100 @@ exports[`ModuleMenu ModuleMenu renders correctly with className prop 1`] = `
 </div>
 `;
 
+exports[`ModuleMenu ModuleMenu renders correctly with "Minimal" access level 1`] = `
+<div
+  className="repository--module-icon--menu-wrapper"
+>
+  <div
+    className="repository--module-icon--menu "
+  >
+    <a
+      className="repository--button "
+      download={null}
+      href="/preview/mockDraftId"
+      target="_blank"
+    >
+      Preview
+    </a>
+    <hr />
+    <button
+      className="repository--button more"
+      onClick={[Function]}
+    >
+      More...
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ModuleMenu ModuleMenu renders correctly with "Partial" access level 1`] = `
+<div
+  className="repository--module-icon--menu-wrapper"
+>
+  <div
+    className="repository--module-icon--menu "
+  >
+    <a
+      className="repository--button "
+      download={null}
+      href="/preview/mockDraftId"
+      target="_blank"
+    >
+      Preview
+    </a>
+    <a
+      className="repository--button "
+      download={null}
+      href="/url/for/editor"
+      target="_blank"
+    >
+      Edit
+    </a>
+    <hr />
+    <button
+      className="repository--button more"
+      onClick={[Function]}
+    >
+      More...
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ModuleMenu ModuleMenu renders correctly with className prop 1`] = `
+<div
+  className="repository--module-icon--menu-wrapper"
+>
+  <div
+    className="repository--module-icon--menu extra-class"
+  >
+    <a
+      className="repository--button "
+      download={null}
+      href="/preview/mockDraftId"
+      target="_blank"
+    >
+      Preview
+    </a>
+    <a
+      className="repository--button "
+      download={null}
+      href="/url/for/editor"
+      target="_blank"
+    >
+      Edit
+    </a>
+    <hr />
+    <button
+      className="repository--button more"
+      onClick={[Function]}
+    >
+      More...
+    </button>
+  </div>
+</div>
+`;
+
 exports[`ModuleMenu ModuleMenu renders correctly with standard expected props 1`] = `
 <div
   className="repository--module-icon--menu-wrapper"
@@ -63,12 +157,6 @@ exports[`ModuleMenu ModuleMenu renders correctly with standard expected props 1`
     >
       Edit
     </a>
-    <button
-      className="repository--button "
-      onClick={[Function]}
-    >
-      Share
-    </button>
     <hr />
     <button
       className="repository--button more"

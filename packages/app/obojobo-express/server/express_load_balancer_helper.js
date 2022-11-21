@@ -1,7 +1,7 @@
 const resolveIP = req => {
 	// make sure the remoteAddress is set behind a load balancer
 	if (req.headers['x-forwarded-for']) {
-		req.connection.remoteAddress = req.headers['x-forwarded-for']
+		req.connection.remoteAddress = req.headers['x-forwarded-for'].split(',')[0].trim()
 	}
 }
 
