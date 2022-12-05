@@ -1,5 +1,11 @@
 @import '~styles/includes';
 
+.component[data-obo-component='true'] {
+	.obo-text {
+		display: inline;
+	}
+}
+
 .obojobo-draft--chunks--list {
 	ul,
 	ol {
