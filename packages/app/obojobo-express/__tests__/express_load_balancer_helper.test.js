@@ -44,6 +44,19 @@ describe('load balancer helper middleware', () => {
 	test('remoteAddress is updated by x-forwarded-for header', () => {
 		const { req } = mockArgs({ 'x-forwarded-for': '1.1.1.1' })
 		expect(req.connection.encrypted).toBe(false)
+		expect(req.connection.remoteAddress).toBe('1.1.1.1')
+	})
+
+	test('remoteAddress ignores an empty x-forwarded-for header', () => {
+		const { req } = mockArgs({ 'x-forwarded-for': '' })
+		expect(req.connection.encrypted).toBe(false)
+		expect(req.connection.remoteAddress).toBe('5.5.5.5')
+	})
+
+	test('remoteAddress is updated by x-forwarded-for header with proxy chain', () => {
+		const { req } = mockArgs({ 'x-forwarded-for': '1.1.1.1, 1.3.3.4' })
+		expect(req.connection.encrypted).toBe(false)
+		expect(req.connection.remoteAddress).toBe('1.1.1.1')
 	})
 
 	test('encrypted is updated by x-forwarded-proto header', () => {

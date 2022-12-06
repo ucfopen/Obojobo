@@ -78,6 +78,7 @@ const FileToolbar = props => {
 				onSave={props.onSave}
 				reload={props.reload}
 				mode={props.mode}
+				accessLevel={props.accessLevel}
 			/>
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="Edit" menu={editMenu} />

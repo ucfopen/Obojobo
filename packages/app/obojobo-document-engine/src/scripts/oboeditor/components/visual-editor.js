@@ -620,6 +620,7 @@ class VisualEditor extends React.Component {
 							<FileToolbarViewer
 								title={this.props.model.title}
 								draftId={this.props.draftId}
+								accessLevel={this.props.draft.accessLevel}
 								onSave={this.saveModule}
 								reload={this.reload}
 								switchMode={this.props.switchMode}
