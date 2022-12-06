@@ -321,6 +321,26 @@ describe('Assessment', () => {
 		)
 	})
 
+	test('onClickNext calls expected method', () => {
+		const thisValue = {
+			props: {
+				model: jest.fn(),
+				moduleData: {
+					navState: {
+						context: jest.fn()
+					}
+				}
+			}
+		}
+
+		expect(AssessmentUtil.nextQuestion).not.toHaveBeenCalled()
+		Assessment.prototype.onClickNext.bind(thisValue)()
+		expect(AssessmentUtil.nextQuestion).toHaveBeenCalledWith(
+			thisValue.props.model,
+			thisValue.props.moduleData.navState.context
+		)
+	})
+
 	test('onClickSubmit calls expected method', () => {
 		const thisValue = {
 			props: {

@@ -14,6 +14,7 @@ const {
 	INIT,
 	PROMPTING_FOR_RESUME,
 	STARTING_ATTEMPT,
+	SAVING_ATTEMPT,
 	RESUMING_ATTEMPT,
 	IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
@@ -29,19 +30,23 @@ const {
 	IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
 	FETCHING_ATTEMPT_HISTORY,
-	FETCH_HISTORY_FAILED
+	FETCH_HISTORY_FAILED,
+	PROMPTING_FOR_NEXT
 } = AssessmentMachineStates
 
 const {
 	FETCH_ATTEMPT_HISTORY,
 	START_ATTEMPT,
+	SAVE_ATTEMPT,
 	IMPORT_ATTEMPT,
 	ABANDON_IMPORT,
 	RESUME_ATTEMPT,
 	SEND_RESPONSES,
 	ACKNOWLEDGE,
 	END_ATTEMPT,
-	CONTINUE_ATTEMPT
+	CONTINUE_ATTEMPT,
+	NEXT_QUESTION,
+	TRY_NEXT_QUESTION
 } = AssessmentStateActions
 
 const updateContextWithAssessmentResponse = assign({
@@ -106,6 +111,16 @@ const clearError = assign({
 		const assessmentContext = getAssessmentContext(context)
 
 		delete assessmentContext.current.error
+
+		return context.assessmentStoreState
+	}
+})
+
+const nextQuestion = assign({
+	assessmentStoreState: context => {
+		context.assessmentStoreState.assessments[
+			context.assessmentId
+		].current.state.currentQuestion += 1
 
 		return context.assessmentStoreState
 	}
@@ -260,7 +275,13 @@ class AssessmentStateMachine {
 					},
 					[IN_ATTEMPT]: {
 						on: {
-							[SEND_RESPONSES]: SENDING_RESPONSES
+							[SEND_RESPONSES]: SENDING_RESPONSES,
+							[SAVE_ATTEMPT]: SAVING_ATTEMPT,
+							[NEXT_QUESTION]: {
+								target: SAVING_ATTEMPT,
+								actions: nextQuestion
+							},
+							[TRY_NEXT_QUESTION]: PROMPTING_FOR_NEXT
 						}
 					},
 					[START_ATTEMPT_FAILED]: {
@@ -369,6 +390,34 @@ class AssessmentStateMachine {
 									actions: clearError
 								}
 							]
+						}
+					},
+					[PROMPTING_FOR_NEXT]: {
+						on: {
+							[NEXT_QUESTION]: {
+								target: SAVING_ATTEMPT,
+								actions: nextQuestion
+							},
+							[CONTINUE_ATTEMPT]: IN_ATTEMPT
+						}
+					},
+					[SAVING_ATTEMPT]: {
+						invoke: {
+							id: 'saveAttempt',
+							src: async context => {
+								const assessmentContext = getAssessmentContext(context)
+
+								return await AssessmentStateHelpers.saveAttemptState(
+									context.assessmentId,
+									assessmentContext.current.attemptId,
+									assessmentContext.current.state
+								)
+							},
+							onDone: IN_ATTEMPT,
+							onError: {
+								target: IN_ATTEMPT,
+								actions: [logError, updateContextWithCurrentAttemptError]
+							}
 						}
 					}
 				}

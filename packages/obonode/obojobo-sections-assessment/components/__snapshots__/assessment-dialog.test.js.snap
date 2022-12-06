@@ -633,6 +633,104 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
 </div>
 `;
 
+exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachineState="promptingForNext",assessmentError="null",currentAttemptStatus="null",numAttemptsRemaining="null") renders as expected 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog "
+    style={null}
+  >
+    <div
+      aria-atomic="true"
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+      tabIndex="-1"
+    >
+      <input
+        aria-label="Start of dialog"
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <h1
+          className="heading"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Question not answered
+        </h1>
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          <p>
+            You haven't answered the current question. Are you sure you want to move onto the next one?
+          </p>
+          <p>
+            You will not be able to return to this question later.
+          </p>
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              No
+            </button>
+          </div>
+          <span
+            className="text"
+          >
+            or
+          </span>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        aria-label="End of dialog"
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachineState="promptingForResume",assessmentError="null",currentAttemptStatus="null",numAttemptsRemaining="null") renders as expected 1`] = `
 <div
   className="obojobo-draft--components--modal--simple-dialog"

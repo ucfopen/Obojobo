@@ -115,6 +115,52 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
+	test('saveAttempt calls db.none', () => {
+		AssessmentModel.saveAttempt(
+			'mock-assessment-id',
+			'mock-attempt-id',
+			'mock-user-id',
+			'mock-draft-id',
+			'mock-draft-content-id',
+			{
+				currentQuestion: 0,
+				chosen: []
+			}
+		)
+
+		expect(db.none).toHaveBeenCalledTimes(1)
+		expect(db.none.mock.calls[0][1]).toMatchInlineSnapshot(`
+		Object {
+		  "assessmentId": "mock-assessment-id",
+		  "attemptId": "mock-attempt-id",
+		  "draftContentId": "mock-draft-content-id",
+		  "draftId": "mock-draft-id",
+		  "state": Object {
+		    "chosen": Array [],
+		    "currentQuestion": 0,
+		  },
+		  "userId": "mock-user-id",
+		}
+	`)
+	})
+
+	test('sateAttek-t errors', () => {
+		db.none.mockRejectedValueOnce('mock-error')
+		return expect(
+			AssessmentModel.saveAttempt(
+				'mock-assessment-id',
+				'mock-attempt-id',
+				'mock-user-id',
+				'mock-draft-id',
+				'mock-draft-content-id',
+				{
+					currentQuestion: 0,
+					chosen: []
+				}
+			)
+		).rejects.toBe('mock-error')
+	})
+
 	test('fetchAttemptHistoryDetails calls db.manyOrNone', () => {
 		AssessmentModel.fetchAttemptHistoryDetails('mock-draft-id')
 

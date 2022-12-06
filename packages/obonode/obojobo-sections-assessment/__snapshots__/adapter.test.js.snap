@@ -3,6 +3,7 @@
 exports[`ObojoboDraft.Sections.Assessment adapter construct builds with N attempts and runs review transform function 1`] = `
 Object {
   "attempts": 6,
+  "pace": "all",
   "review": "always",
   "rubric": AssessmentRubric {
     "mods": Array [],
@@ -25,6 +26,7 @@ Object {
 exports[`ObojoboDraft.Sections.Assessment adapter construct builds with unlimited attempts 1`] = `
 Object {
   "attempts": Infinity,
+  "pace": "all",
   "review": "never",
   "rubric": AssessmentRubric {
     "mods": Array [],
@@ -47,6 +49,7 @@ Object {
 exports[`ObojoboDraft.Sections.Assessment adapter construct builds without attributes 1`] = `
 Object {
   "attempts": Infinity,
+  "pace": "all",
   "review": "never",
   "rubric": AssessmentRubric {
     "mods": Array [],
@@ -69,6 +72,7 @@ Object {
 exports[`ObojoboDraft.Sections.Assessment adapter construct floors decimal attempt integers 1`] = `
 Object {
   "attempts": 6,
+  "pace": "all",
   "review": "never",
   "rubric": AssessmentRubric {
     "mods": Array [],

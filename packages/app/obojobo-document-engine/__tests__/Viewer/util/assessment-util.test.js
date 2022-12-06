@@ -1,5 +1,10 @@
 jest.mock('../../../src/scripts/common/flux/dispatcher')
 
+jest.mock('../../../src/scripts/viewer/stores/assessment-store')
+jest.mock('../../../src/scripts/viewer/stores/question-store')
+import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
+import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
+
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
@@ -1132,5 +1137,89 @@ describe('AssessmentUtil', () => {
 		expect(AssessmentUtil.hasUnfinishedAttempt()).toBe(true)
 
 		spy.mockRestore()
+	})
+
+	test('nextQuestion fires assessment:nextQuestion if the current question has been answered', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentStore.getState.mockReturnValueOnce({
+			assessments: {
+				'mock-id': {
+					current: {
+						state: {
+							currentQuestion: 0
+						}
+					}
+				}
+			}
+		})
+
+		QuestionStore.getContextState.mockReturnValueOnce({
+			responses: {
+				q1: true
+			}
+		})
+
+		const model = {
+			get: () => 'mock-id',
+			children: {
+				at: () => ({
+					children: {
+						models: [{ get: () => 'q1' }]
+					}
+				})
+			}
+		}
+
+		AssessmentUtil.nextQuestion(model, 'mock-context')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:nextQuestion', {
+			value: { id: 'mock-id' }
+		})
+	})
+
+	test('nextQuestion fires assessment:tryNextQuestion if the current question has not been answered', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentStore.getState.mockReturnValueOnce({
+			assessments: {
+				'mock-id': {
+					current: {
+						state: {
+							currentQuestion: 0
+						}
+					}
+				}
+			}
+		})
+
+		QuestionStore.getContextState.mockReturnValueOnce({ responses: {} })
+
+		const model = {
+			get: () => 'mock-id',
+			children: {
+				at: () => ({
+					children: {
+						models: [{ get: () => 'q1' }]
+					}
+				})
+			}
+		}
+
+		AssessmentUtil.nextQuestion(model, 'mock-context')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:tryNextQuestion', {
+			value: { id: 'mock-id' }
+		})
+	})
+
+	test('acknowledgeSkipQuestion fires assessment:nextQuestion', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentUtil.acknowledgeSkipQuestion({ get: () => 'mock-id' })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:nextQuestion', {
+			value: { id: 'mock-id' }
+		})
 	})
 })

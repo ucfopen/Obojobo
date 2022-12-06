@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`QuestionBank QuestionBank component 1`] = `
+exports[`QuestionBank QuestionBank component renders, no question index, one child 1`] = `
 <div
   className="component obojobo-draft--chunks--question-bank"
   data-focussed={false}
@@ -11,13 +11,8 @@ exports[`QuestionBank QuestionBank component 1`] = `
   tabIndex={-1}
 >
   <div
-    className="component obojobo-draft--chunks--question-bank"
-    data-focussed={false}
-    data-id="child-id"
-    data-obo-component={true}
-    data-type="ObojoboDraft.Chunks.QuestionBank"
-    id="obo-child-id"
-    tabIndex={-1}
+    className="question-bank-test-chunk"
+    id="child-id"
   />
 </div>
 `;

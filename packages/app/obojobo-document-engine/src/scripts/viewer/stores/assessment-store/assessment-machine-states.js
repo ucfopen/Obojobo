@@ -11,11 +11,13 @@ export default {
 	SEND_RESPONSES_FAILED: 'sendResponsesFailed',
 	END_ATTEMPT_FAILED: 'endAttemptFailed',
 	STARTING_ATTEMPT: 'startingAttempt',
+	SAVING_ATTEMPT: 'savingAttempt',
 	RESUMING_ATTEMPT: 'resumingAttempt',
 	SENDING_RESPONSES: 'sendingResponses',
 	ENDING_ATTEMPT: 'endingAttempt',
 	END_ATTEMPT_SUCCESSFUL: 'endAttemptSuccessful',
 	IMPORTING_ATTEMPT: 'importingAttempt',
 	FETCHING_ATTEMPT_HISTORY: 'fetchingAttemptHistory',
-	FETCH_HISTORY_FAILED: 'fetchHistoryFailed'
+	FETCH_HISTORY_FAILED: 'fetchHistoryFailed',
+	PROMPTING_FOR_NEXT: 'promptingForNext'
 }

@@ -4,7 +4,6 @@ import ViewerAPI from '../util/viewer-api'
 import QuestionUtil from '../util/question-util'
 import FocusUtil from '../util/focus-util'
 
-import AssessmentStore from '../stores/assessment-store'
 import NavStore from '../stores/nav-store'
 
 import QuestionResponseSendStates from './question-store/question-response-send-states'
@@ -258,7 +257,7 @@ class QuestionStore extends Store {
 		attemptId,
 		sendResponseImmediately
 	}) {
-		if ( ! this.hasContextState(context)) return false
+		if (!this.hasContextState(context)) return false
 
 		const contextState = this.getOrCreateContextState(context)
 		contextState.responses[id] = response
@@ -278,23 +277,6 @@ class QuestionStore extends Store {
 
 		if (sendResponseImmediately) {
 			QuestionUtil.sendResponse(id, context)
-		}
-
-		if (assessmentId && attemptId) {
-			const assessmentState = AssessmentStore.getState()
-			const currentState = assessmentState.assessments[assessmentId].current.state
-
-			// No real easy way of going straight to the question we got a response for
-			// Visit them all, only update the one with a matching ID, then return false to break
-			currentState.chosen.every(obj => {
-				if (obj.id === id) {
-					obj.response = response
-
-					AssessmentStore.setState(assessmentState)
-					Dispatcher.trigger('assessment:saveAttempt', {value: {id: assessmentId}})
-				}
-				return ! (obj.id === id)
-			})
 		}
 
 		return true

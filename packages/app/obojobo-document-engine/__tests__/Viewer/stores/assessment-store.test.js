@@ -74,6 +74,8 @@ describe('AssessmentStore', () => {
 		${'assessment:acknowledgeImportAttemptFailed'}  | ${'acknowledgeImportAttemptFailed'}
 		${'assessment:resumeAttempt'}                   | ${'resumeAttempt'}
 		${'assessment:continueAttempt'}                 | ${'continueAttempt'}
+		${'assessment:nextQuestion'}                    | ${'nextQuestion'}
+		${'assessment:tryNextQuestion'}                 | ${'tryNextQuestion'}
 	`('Triggering $event calls $method and triggerChange', ({ event, method }) => {
 		// Mock triggerChange and the internal method that the dispatcher will call
 		const eventSpy = jest
@@ -620,6 +622,8 @@ describe('AssessmentStore', () => {
 		${'acknowledgeImportAttemptFailed'}  | ${'acknowledge'}
 		${'resumeAttempt'}                   | ${'resumeAttempt'}
 		${'continueAttempt'}                 | ${'continueAttempt'}
+		${'nextQuestion'}                    | ${'nextQuestion'}
+		${'tryNextQuestion'}                 | ${'tryNextQuestion'}
 		${'acknowledgeStartAttemptFailed'}   | ${'acknowledge'}
 		${'acknowledgeEndAttemptFailed'}     | ${'acknowledge'}
 	`('Calling $method calls doMachineAction(id, $action)', ({ method, action }) => {

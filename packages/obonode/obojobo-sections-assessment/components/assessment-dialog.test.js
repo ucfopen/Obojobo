@@ -25,7 +25,8 @@ const {
 	END_ATTEMPT_SUCCESSFUL,
 	PROMPTING_FOR_IMPORT,
 	IMPORT_ATTEMPT_FAILED,
-	FETCH_HISTORY_FAILED
+	FETCH_HISTORY_FAILED,
+	PROMPTING_FOR_NEXT
 } = AssessmentMachineStates
 
 const {
@@ -66,6 +67,7 @@ describe('AssessmentDialog renders as expected', () => {
 		assessmentMachineState       | assessmentError                         | currentAttemptStatus                      | numAttemptsRemaining
 		${PROMPTING_FOR_RESUME}      | ${null}                                 | ${null}                                   | ${null}
 		${PROMPTING_FOR_IMPORT}      | ${null}                                 | ${null}                                   | ${null}
+		${PROMPTING_FOR_NEXT}        | ${null}                                 | ${null}                                   | ${null}
 		${SEND_RESPONSES_FAILED}     | ${null}                                 | ${null}                                   | ${null}
 		${ENDING_ATTEMPT}            | ${null}                                 | ${null}                                   | ${null}
 		${SENDING_RESPONSES}         | ${null}                                 | ${null}                                   | ${null}
@@ -156,6 +158,36 @@ describe('AssessmentDialog renders as expected', () => {
 
 		importSpy.mockRestore()
 		abandonSpy.mockRestore()
+	})
+
+	test('PROMPTING_FOR_NEXT: onConfirm calls acknowledgeSkipQuestion and continueAttempt', () => {
+		const props = {
+			assessmentMachineState: PROMPTING_FOR_NEXT,
+			assessmentModel: jest.fn()
+		}
+		const skipQuestionSpy = jest
+			.spyOn(AssessmentUtil, 'acknowledgeSkipQuestion')
+			.mockReturnValue({})
+		const continueSpy = jest.spyOn(AssessmentUtil, 'continueAttempt').mockReturnValue({})
+
+		expect(AssessmentUtil.acknowledgeSkipQuestion).not.toHaveBeenCalled()
+		expect(AssessmentUtil.continueAttempt).not.toHaveBeenCalled()
+
+		const component = renderer.create(<AssessmentDialog {...props} />)
+		const [noButton, yesButton] = component.root.findAllByType('button')
+
+		noButton.props.onClick()
+		expect(AssessmentUtil.acknowledgeSkipQuestion).not.toHaveBeenCalled()
+		expect(AssessmentUtil.continueAttempt).toHaveBeenCalledWith(props.assessmentModel)
+		expect(AssessmentUtil.continueAttempt).toHaveBeenCalledTimes(1)
+
+		yesButton.props.onClick()
+		expect(AssessmentUtil.acknowledgeSkipQuestion).toHaveBeenCalledWith(props.assessmentModel)
+		expect(AssessmentUtil.acknowledgeSkipQuestion).toHaveBeenCalledTimes(1)
+		expect(AssessmentUtil.continueAttempt).toHaveBeenCalledTimes(1)
+
+		skipQuestionSpy.mockRestore()
+		continueSpy.mockRestore()
 	})
 
 	test('SEND_RESPONSES_FAILED: onConfirm continues the attempt', () => {

@@ -60,14 +60,7 @@ class AssessmentModel {
 	}
 
 	// Save the state of an attempt in progress
-	static saveAttempt(
-		assessmentId,
-		attemptId,
-		userId,
-		draftId,
-		draftContentId,
-		state
-	) {
+	static saveAttempt(assessmentId, attemptId, userId, draftId, draftContentId, state) {
 		return db
 			.none(
 				`
@@ -457,7 +450,7 @@ class AssessmentModel {
 		return db
 			.manyOrNone(
 				`
-				SELECT id, attempt_id, assessment_id, question_id, score, response
+				SELECT id, created_at, attempt_id, assessment_id, question_id, score, response
 				FROM attempts_question_responses
 				WHERE attempt_id IN ($[attemptIds:csv])
 				ORDER BY updated_at`,

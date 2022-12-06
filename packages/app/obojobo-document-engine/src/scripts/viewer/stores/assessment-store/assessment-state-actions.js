@@ -1,6 +1,7 @@
 export default {
 	FETCH_ATTEMPT_HISTORY: 'fetchAttemptHistory',
 	START_ATTEMPT: 'startAttempt',
+	SAVE_ATTEMPT: 'saveAttempt',
 	PROMPT_FOR_RESUME: 'promptForResume',
 	PROMPT_FOR_IMPORT: 'promptForImport',
 	IMPORT_ATTEMPT: 'importAttempt',
@@ -10,5 +11,7 @@ export default {
 	SEND_RESPONSES: 'sendResponses',
 	ACKNOWLEDGE: 'acknowledge',
 	END_ATTEMPT: 'endAttempt',
-	CONTINUE_ATTEMPT: 'continueAttempt'
+	CONTINUE_ATTEMPT: 'continueAttempt',
+	NEXT_QUESTION: 'nextQuestion', // proceed to the next question
+	TRY_NEXT_QUESTION: 'tryNextQuestion' // prompt user to proceed to the next question
 }

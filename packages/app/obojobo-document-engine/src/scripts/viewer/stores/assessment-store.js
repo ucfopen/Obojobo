@@ -68,10 +68,6 @@ class AssessmentStore extends Store {
 			this.abandonImport(payload.value.id)
 		})
 
-		Dispatcher.on('assessment:saveAttempt', payload => {
-			this.saveAttempt(payload.value.id)
-		})
-
 		Dispatcher.on('assessment:endAttempt', payload => {
 			this.endAttempt(payload.value.id)
 		})
@@ -114,6 +110,14 @@ class AssessmentStore extends Store {
 
 		Dispatcher.on('assessment:acknowledgeFetchHistoryFailed', payload => {
 			this.acknowledgeFetchHistoryFailed(payload.value.id, payload.value.retry)
+		})
+
+		Dispatcher.on('assessment:nextQuestion', payload => {
+			this.nextQuestion(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:tryNextQuestion', payload => {
+			this.tryNextQuestion(payload.value.id)
 		})
 
 		Dispatcher.on('window:closeAttempt', shouldPrompt => {
@@ -279,21 +283,6 @@ class AssessmentStore extends Store {
 		this.doMachineAction(id, AssessmentStateActions.ABANDON_IMPORT)
 	}
 
-	saveAttempt(id) {
-		return AssessmentAPI.saveAttempt({
-			...this.state.assessments[id].current,
-			visitId: NavStore.getState().visitId
-		})
-			.then(res => {
-				if (res.status === 'error') {
-					return ErrorUtil.errorResponse(res)
-				}
-			})
-			.catch(e => {
-				console.error(e) /* eslint-disable-line no-console */
-			})
-	}
-
 	endAttempt(id) {
 		this.doMachineAction(id, AssessmentStateActions.END_ATTEMPT)
 	}
@@ -335,6 +324,14 @@ class AssessmentStore extends Store {
 
 	continueAttempt(id) {
 		this.doMachineAction(id, AssessmentStateActions.CONTINUE_ATTEMPT)
+	}
+
+	nextQuestion(id) {
+		this.doMachineAction(id, AssessmentStateActions.NEXT_QUESTION)
+	}
+
+	tryNextQuestion(id) {
+		this.doMachineAction(id, AssessmentStateActions.TRY_NEXT_QUESTION)
 	}
 }
 

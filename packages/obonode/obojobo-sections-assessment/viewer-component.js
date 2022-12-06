@@ -39,6 +39,7 @@ class Assessment extends React.Component {
 		}
 		this.endAttempt = this.endAttempt.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
+		this.onClickNext = this.onClickNext.bind(this)
 
 		this.childRef = React.createRef()
 	}
@@ -113,6 +114,10 @@ class Assessment extends React.Component {
 		)
 	}
 
+	onClickNext() {
+		AssessmentUtil.nextQuestion(this.props.model, this.props.moduleData.navState.context)
+	}
+
 	endAttempt() {
 		return AssessmentUtil.endAttempt({
 			model: this.props.model,
@@ -150,6 +155,7 @@ class Assessment extends React.Component {
 						assessment={assessment}
 						model={this.props.model.children.at(1)}
 						moduleData={this.props.moduleData}
+						onClickNext={this.onClickNext}
 						onClickSubmit={this.onClickSubmit}
 						isAttemptReadyToSubmit={this.isAttemptReadyToSubmit()}
 						isAttemptSubmitting={this.isAttemptSubmitting()}

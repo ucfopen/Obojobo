@@ -18,6 +18,7 @@ jest.mock('../../../src/scripts/common/flux/dispatcher')
 const {
 	PROMPTING_FOR_RESUME,
 	STARTING_ATTEMPT,
+	SAVING_ATTEMPT,
 	RESUMING_ATTEMPT,
 	IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
@@ -32,19 +33,23 @@ const {
 	IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
 	FETCHING_ATTEMPT_HISTORY,
-	FETCH_HISTORY_FAILED
+	FETCH_HISTORY_FAILED,
+	PROMPTING_FOR_NEXT
 } = AssessmentMachineStates
 
 const {
 	FETCH_ATTEMPT_HISTORY,
 	START_ATTEMPT,
+	SAVE_ATTEMPT,
 	IMPORT_ATTEMPT,
 	ABANDON_IMPORT,
 	RESUME_ATTEMPT,
 	SEND_RESPONSES,
 	ACKNOWLEDGE,
 	END_ATTEMPT,
-	CONTINUE_ATTEMPT
+	CONTINUE_ATTEMPT,
+	NEXT_QUESTION,
+	TRY_NEXT_QUESTION
 } = AssessmentStateActions
 
 /*
@@ -66,6 +71,11 @@ Pathways to test:
 [x] PROMPTING_FOR_RESUME(RESUME_ATTEMPT) -> RESUMING_ATTEMPT -> onError -> RESUME_ATTEMPT_FAILED
 [x] IN_ATTEMPT(SEND_RESPONSES) -> SENDING_RESPONSES -> onDone -> SEND_RESPONSES_SUCCESSFUL
 [x] IN_ATTEMPT(SEND_RESPONSES) -> SENDING_RESPONSES -> onError -> SEND_RESPONSES_FAILED
+[x] IN_ATTEMPT(SAVE_ATTEMPT) -> SAVING_ATTEMPT -> onDone -> IN_ATTEMPT
+[x] IN_ATTEMPT(SAVE_ATTEMPT) -> SAVING_ATTEMPT -> onError -> IN_ATTEMPT
+[x] IN_ATTEMPT(NEXT_QUESTION) -> SAVING_ATTEMPT -> nextQuestion -> IN_ATTEMPT
+[x] IN_ATTEMPT(TRY_NEXT_QUESTION) -> PROMPTING_FOR_NEXT -> NEXT_QUESTION -> SAVING_ATTEMPT -> nextQuestion-> IN_ATTEMPT
+[x] IN_ATTEMPT(TRY_NEXT_QUESTION) -> PROMPTING_FOR_NEXT -> CONTINUE_ATTEMPT -> IN_ATTEMPT
 [x] START_ATTEMPT_FAILED(ACKNOWLEDGE) -> NOT_IN_ATTEMPT
 [x] IMPORT_ATTEMPT_FAILED(ACKNOWLEDGE) -> NOT_IN_ATTEMPT
 [x] RESUME_ATTEMPT_FAILED(ACKNOWLEDGE) -> PROMPTING_FOR_RESUME
@@ -119,6 +129,38 @@ describe('AssessmentStateMachine', () => {
 	afterEach(() => {
 		restoreConsole()
 	})
+
+	const standardAssessmentState = {
+		chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }],
+		currentQuestion: 0
+	}
+
+	const standardStartAttemptMock = () => {
+		AssessmentAPI.startAttempt.mockResolvedValue({
+			status: 'ok',
+			value: {
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId',
+				endTime: null,
+				questions: [
+					{
+						id: 'question1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'mcAssessment',
+								type: 'ObojoboDraft.Chunks.MCAssessment',
+								children: []
+							}
+						]
+					}
+				],
+				result: null,
+				startTime: 'mock-start-time',
+				state: { ...standardAssessmentState }
+			}
+		})
+	}
 
 	test('State machine does not start if already started', () => {
 		const assessmentStoreState = {
@@ -401,32 +443,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 
 		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
 		m.send(START_ATTEMPT)
@@ -799,32 +816,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		const spy = jest.spyOn(AssessmentStateHelpers, 'sendResponses').mockResolvedValue(true)
 
 		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
@@ -862,32 +854,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		const spy = jest.spyOn(AssessmentStateHelpers, 'sendResponses').mockRejectedValue(false)
 
 		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
@@ -901,6 +868,260 @@ describe('AssessmentStateMachine', () => {
 
 			setTimeout(() => {
 				expect(m.getCurrentState()).toBe(SEND_RESPONSES_FAILED)
+
+				spy.mockRestore()
+				done()
+			})
+		})
+	})
+
+	test('IN_ATTEMPT(SAVE_ATTEMPT) -> SAVING_ATTEMPT -> onDone -> IN_ATTEMPT', done => {
+		const assessmentStoreState = {
+			assessments: {
+				mockAssessmentId: {
+					id: 'mockAssessmentId',
+					attemptHistoryNetworkState: 'none'
+				}
+			},
+			assessmentSummaries: {
+				mockAssessmentId: {}
+			},
+			importableScores: {}
+		}
+
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		m.start(jest.fn())
+
+		standardStartAttemptMock()
+		const spy = jest.spyOn(AssessmentStateHelpers, 'saveAttemptState').mockResolvedValue(true)
+
+		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
+		m.send(START_ATTEMPT)
+		expect(m.getCurrentState()).toBe(STARTING_ATTEMPT)
+
+		setTimeout(() => {
+			expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+			m.send(SAVE_ATTEMPT)
+			expect(m.getCurrentState()).toBe(SAVING_ATTEMPT)
+
+			setTimeout(() => {
+				expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+				expect(AssessmentStateHelpers.saveAttemptState).toHaveBeenCalledWith(
+					'mockAssessmentId',
+					'mockAttemptId',
+					standardAssessmentState
+				)
+				expect(console.error).not.toHaveBeenCalled()
+
+				spy.mockRestore()
+				done()
+			})
+		})
+	})
+
+	test('IN_ATTEMPT(SAVE_ATTEMPT) -> SAVING_ATTEMPT -> onError -> IN_ATTEMPT', done => {
+		const assessmentStoreState = {
+			assessments: {
+				mockAssessmentId: {
+					id: 'mockAssessmentId',
+					attemptHistoryNetworkState: 'none'
+				}
+			},
+			assessmentSummaries: {
+				mockAssessmentId: {}
+			},
+			importableScores: {}
+		}
+
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		m.start(jest.fn())
+
+		standardStartAttemptMock()
+		const spy = jest
+			.spyOn(AssessmentStateHelpers, 'saveAttemptState')
+			.mockRejectedValue('mockError')
+
+		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
+		m.send(START_ATTEMPT)
+		expect(m.getCurrentState()).toBe(STARTING_ATTEMPT)
+
+		setTimeout(() => {
+			expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+			m.send(SAVE_ATTEMPT)
+			expect(m.getCurrentState()).toBe(SAVING_ATTEMPT)
+
+			setTimeout(() => {
+				expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+				expect(AssessmentStateHelpers.saveAttemptState).toHaveBeenCalledWith(
+					'mockAssessmentId',
+					'mockAttemptId',
+					standardAssessmentState
+				)
+				expect(console.error).toHaveBeenCalledWith('mockError')
+
+				spy.mockRestore()
+				done()
+			})
+		})
+	})
+
+	test('IN_ATTEMPT(NEXT_QUESTION) -> SAVING_ATTEMPT -> nextQuestion -> IN_ATTEMPT', done => {
+		const assessmentStoreState = {
+			assessments: {
+				mockAssessmentId: {
+					id: 'mockAssessmentId',
+					attemptHistoryNetworkState: 'none'
+				}
+			},
+			assessmentSummaries: {
+				mockAssessmentId: {}
+			},
+			importableScores: {}
+		}
+
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		m.start(jest.fn())
+
+		standardStartAttemptMock()
+		const spy = jest.spyOn(AssessmentStateHelpers, 'saveAttemptState').mockResolvedValue(true)
+
+		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
+		m.send(START_ATTEMPT)
+		expect(m.getCurrentState()).toBe(STARTING_ATTEMPT)
+
+		setTimeout(() => {
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.state
+					.currentQuestion
+			).toBe(0)
+			expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+			m.send(NEXT_QUESTION)
+			expect(m.getCurrentState()).toBe(SAVING_ATTEMPT)
+
+			setTimeout(() => {
+				expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+				expect(AssessmentStateHelpers.saveAttemptState).toHaveBeenCalledWith(
+					'mockAssessmentId',
+					'mockAttemptId',
+					{ ...standardAssessmentState, currentQuestion: 1 }
+				)
+				expect(
+					m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.state
+						.currentQuestion
+				).toBe(1)
+				expect(console.error).not.toHaveBeenCalled()
+
+				spy.mockRestore()
+				done()
+			})
+		})
+	})
+
+	test('IN_ATTEMPT(TRY_NEXT_QUESTION) -> PROMPTING_FOR_NEXT -> NEXT_QUESTION -> nextQuestion-> SAVING_ATTEMPT -> IN_ATTEMPT', done => {
+		const assessmentStoreState = {
+			assessments: {
+				mockAssessmentId: {
+					id: 'mockAssessmentId',
+					attemptHistoryNetworkState: 'none'
+				}
+			},
+			assessmentSummaries: {
+				mockAssessmentId: {}
+			},
+			importableScores: {}
+		}
+
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		m.start(jest.fn())
+
+		standardStartAttemptMock()
+		const spy = jest.spyOn(AssessmentStateHelpers, 'saveAttemptState').mockResolvedValue(true)
+
+		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
+		m.send(START_ATTEMPT)
+		expect(m.getCurrentState()).toBe(STARTING_ATTEMPT)
+
+		setTimeout(() => {
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.state
+					.currentQuestion
+			).toBe(0)
+			expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+			m.send(TRY_NEXT_QUESTION)
+
+			expect(m.getCurrentState()).toBe(PROMPTING_FOR_NEXT)
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.state
+					.currentQuestion
+			).toBe(0)
+
+			m.send(NEXT_QUESTION)
+			expect(m.getCurrentState()).toBe(SAVING_ATTEMPT)
+
+			setTimeout(() => {
+				expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+				expect(AssessmentStateHelpers.saveAttemptState).toHaveBeenCalledWith(
+					'mockAssessmentId',
+					'mockAttemptId',
+					{ ...standardAssessmentState, currentQuestion: 1 }
+				)
+				expect(
+					m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.state
+						.currentQuestion
+				).toBe(1)
+				expect(console.error).not.toHaveBeenCalled()
+
+				spy.mockRestore()
+				done()
+			})
+		})
+	})
+
+	test('IN_ATTEMPT(TRY_NEXT_QUESTION) -> PROMPTING_FOR_NEXT -> CONTINUE_ATTEMPT -> IN_ATTEMPT', done => {
+		const assessmentStoreState = {
+			assessments: {
+				mockAssessmentId: {
+					id: 'mockAssessmentId',
+					attemptHistoryNetworkState: 'none'
+				}
+			},
+			assessmentSummaries: {
+				mockAssessmentId: {}
+			},
+			importableScores: {}
+		}
+
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		m.start(jest.fn())
+
+		standardStartAttemptMock()
+		const spy = jest.spyOn(AssessmentStateHelpers, 'saveAttemptState').mockResolvedValue(true)
+
+		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
+		m.send(START_ATTEMPT)
+		expect(m.getCurrentState()).toBe(STARTING_ATTEMPT)
+
+		setTimeout(() => {
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.state
+					.currentQuestion
+			).toBe(0)
+			expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+			m.send(TRY_NEXT_QUESTION)
+
+			expect(m.getCurrentState()).toBe(PROMPTING_FOR_NEXT)
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.state
+					.currentQuestion
+			).toBe(0)
+
+			m.send(CONTINUE_ATTEMPT)
+			expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+
+			setTimeout(() => {
+				expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+				expect(AssessmentStateHelpers.saveAttemptState).not.toHaveBeenCalled()
+				expect(console.error).not.toHaveBeenCalled()
 
 				spy.mockRestore()
 				done()
@@ -1065,32 +1286,7 @@ describe('AssessmentStateMachine', () => {
 				message: 'Cannot resume an attempt for a different module'
 			}
 		})
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 
 		m.start(jest.fn())
 
@@ -1121,32 +1317,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		AssessmentAPI.endAttempt.mockResolvedValue({
 			status: 'ok'
 		})
@@ -1236,32 +1407,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		AssessmentAPI.endAttempt.mockResolvedValue({
 			status: 'error'
 		})
@@ -1312,32 +1458,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		const spy = jest.spyOn(AssessmentStateHelpers, 'sendResponses').mockResolvedValue(true)
 
 		m.send(START_ATTEMPT)
@@ -1373,32 +1494,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		const spy = jest.spyOn(AssessmentStateHelpers, 'sendResponses').mockRejectedValue(false)
 
 		m.send(START_ATTEMPT)
@@ -1474,32 +1570,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		AssessmentAPI.endAttempt.mockResolvedValue({
 			status: 'error',
 			value: {
@@ -1553,32 +1624,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		m.start(jest.fn())
 
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				endTime: null,
-				questions: [
-					{
-						id: 'question1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'mcAssessment',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
-								children: []
-							}
-						]
-					}
-				],
-				result: null,
-				startTime: 'mock-start-time',
-				state: {
-					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
-				}
-			}
-		})
+		standardStartAttemptMock()
 		AssessmentAPI.endAttempt.mockResolvedValue({
 			status: 'error',
 			value: {

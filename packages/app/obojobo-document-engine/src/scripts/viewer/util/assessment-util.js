@@ -2,9 +2,12 @@ import Common from 'Common'
 
 const { Dispatcher } = Common.flux
 
-import QuestionUtil from '../util/question-util'
+import QuestionUtil from './question-util'
 import QuestionResponseSendStates from '../stores/question-store/question-response-send-states'
 import CurrentAssessmentStates from './current-assessment-states'
+
+import AssessmentStore from '../stores/assessment-store'
+import QuestionStore from '../stores/question-store'
 
 const AssessmentUtil = {
 	getAssessmentForModel(state, model) {
@@ -466,6 +469,41 @@ const AssessmentUtil = {
 			case 'no-attempts-remaining':
 				return !AssessmentUtil.hasAttemptsRemaining(state, model)
 		}
+	},
+
+	// check to make sure the current question has been answered, move onto the next one if so
+	nextQuestion(model, context) {
+		const assessmentState = AssessmentStore.getState()
+		// would be nice if there was a more reliable way of getting the state of questions arbitrarily like this
+		const questionContextState = QuestionStore.getContextState(context)
+
+		const currentQuestionIndex =
+			assessmentState.assessments[model.get('id')].current.state.currentQuestion
+		const question = model.children.at(1).children.models[currentQuestionIndex]
+
+		// if the current question has a response, we're okay to move onto the next question
+		if (questionContextState.responses[question.get('id')]) {
+			return Dispatcher.trigger('assessment:nextQuestion', {
+				value: {
+					id: model.get('id')
+				}
+			})
+		} else {
+			return Dispatcher.trigger('assessment:tryNextQuestion', {
+				value: {
+					id: model.get('id')
+				}
+			})
+		}
+	},
+
+	// user has chosen to move on to the next question without answering the current question
+	acknowledgeSkipQuestion(model) {
+		return Dispatcher.trigger('assessment:nextQuestion', {
+			value: {
+				id: model.get('id')
+			}
+		})
 	}
 }
 

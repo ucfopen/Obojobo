@@ -29,7 +29,8 @@ const {
 	END_ATTEMPT_SUCCESSFUL,
 	PROMPTING_FOR_IMPORT,
 	IMPORT_ATTEMPT_FAILED,
-	FETCH_HISTORY_FAILED
+	FETCH_HISTORY_FAILED,
+	PROMPTING_FOR_NEXT
 } = AssessmentMachineStates
 
 const getReportForAttempt = (assessmentModel, allAttempts, attemptNumber) => {
@@ -76,6 +77,10 @@ const acknowledgeFetchHistoryFailed = (assessmentModel, retry) => {
 	AssessmentUtil.acknowledgeFetchHistoryFailed(assessmentModel, retry)
 }
 
+const acknowledgeSkipQuestion = assessmentModel => {
+	AssessmentUtil.acknowledgeSkipQuestion(assessmentModel)
+}
+
 const onImportChoice = (shouldImport, assessmentModel) => {
 	if (shouldImport) {
 		AssessmentUtil.importAttempt(assessmentModel)
@@ -119,6 +124,26 @@ const getDialog = (
 						onImportChoice(shouldImport, assessmentModel)
 					}}
 				/>
+			)
+
+		case PROMPTING_FOR_NEXT:
+			return (
+				<SimpleDialog
+					noOrYes
+					title="Question not answered"
+					onConfirm={() => {
+						acknowledgeSkipQuestion(assessmentModel)
+					}}
+					onCancel={() => {
+						continueAttempt(assessmentModel)
+					}}
+				>
+					<p>
+						You haven&apos;t answered the current question. Are you sure you want to move onto the
+						next one?
+					</p>
+					<p>You will not be able to return to this question later.</p>
+				</SimpleDialog>
 			)
 
 		case SEND_RESPONSES_FAILED:

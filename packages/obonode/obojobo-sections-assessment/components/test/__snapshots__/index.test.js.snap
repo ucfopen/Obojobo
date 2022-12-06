@@ -18,6 +18,12 @@ exports[`Test Test component (isAttemptReadyToSubmit) 1`] = `
             },
           ],
         },
+        "parent": Object {
+          "attributes": Object {
+            "content": Object {},
+            "id": "mockAssessmentId",
+          },
+        },
       }
     }
     moduleData={
@@ -25,6 +31,7 @@ exports[`Test Test component (isAttemptReadyToSubmit) 1`] = `
         "focusState": Object {},
       }
     }
+    questionIndex={null}
   />
   <div
     className="submit-button"
@@ -64,6 +71,12 @@ exports[`Test Test component (isAttemptSubmitting) 1`] = `
             },
           ],
         },
+        "parent": Object {
+          "attributes": Object {
+            "content": Object {},
+            "id": "mockAssessmentId",
+          },
+        },
       }
     }
     moduleData={
@@ -71,6 +84,7 @@ exports[`Test Test component (isAttemptSubmitting) 1`] = `
         "focusState": Object {},
       }
     }
+    questionIndex={null}
   />
   <div
     className="submit-button"
@@ -84,17 +98,12 @@ exports[`Test Test component (isAttemptSubmitting) 1`] = `
         className="button"
         contentEditable={false}
         disabled={true}
+        onClick={[Function]}
         type="button"
       >
         Loading ...
       </button>
     </div>
-    <span
-      aria-hidden={true}
-      className="incomplete-notice"
-    >
-      (Not all questions have been saved)
-    </span>
   </div>
 </div>
 `;
@@ -117,6 +126,12 @@ exports[`Test Test component 1`] = `
             },
           ],
         },
+        "parent": Object {
+          "attributes": Object {
+            "content": Object {},
+            "id": "mockAssessmentId",
+          },
+        },
       }
     }
     moduleData={
@@ -124,6 +139,7 @@ exports[`Test Test component 1`] = `
         "focusState": Object {},
       }
     }
+    questionIndex={null}
   />
   <div
     className="submit-button"
@@ -169,6 +185,12 @@ exports[`Test Test component fetching score 1`] = `
             },
           ],
         },
+        "parent": Object {
+          "attributes": Object {
+            "content": Object {},
+            "id": "mockAssessmentId",
+          },
+        },
       }
     }
     moduleData={
@@ -176,6 +198,7 @@ exports[`Test Test component fetching score 1`] = `
         "focusState": Object {},
       }
     }
+    questionIndex={null}
   />
   <div
     className="submit-button"
@@ -221,6 +244,12 @@ exports[`Test Test component with completeAttempt 1`] = `
             },
           ],
         },
+        "parent": Object {
+          "attributes": Object {
+            "content": Object {},
+            "id": "mockAssessmentId",
+          },
+        },
       }
     }
     moduleData={
@@ -228,6 +257,7 @@ exports[`Test Test component with completeAttempt 1`] = `
         "focusState": Object {},
       }
     }
+    questionIndex={null}
   />
   <div
     className="submit-button"

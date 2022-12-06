@@ -6,23 +6,26 @@ import Viewer from 'Viewer'
 const { OboComponent } = Viewer.components
 
 const QuestionBank = props => {
-	// here's what we have:
-	// const assessmentId = props.model.parent.attributes.id
-	// const currentAssessmentState = props.moduleData.assessments[assessmentId].current.state
-	// some complicated parsing of the above might be able to pre-answer questions as they're rendered below?
+	let questionRender = null
+	// props will only contain 'questionIndex' in single-question pace assessments
+	// default to null otherwise
+	const currentQuestionIndex = props.questionIndex || null
 
-	// the assessment model itself is tracking the question pace
-	// hopefully we can contrive some way of tracking a 'current question index'
-	// the 'Submit' button is controlled elsewhere - that'd have to be a 'Next' button for assessments
-	// running in one-question-at-a-time mode, but we'd have to control the currently displayed question
-	// here, so there needs to be communication somehow
+	if (currentQuestionIndex !== null) {
+		const questionModel = props.model.children.models[currentQuestionIndex]
+		const Component = questionModel.getComponentClass()
 
-	return <OboComponent
-		model={props.model}
-		moduleData={props.moduleData}
-		className="obojobo-draft--chunks--question-bank"
-	>
-		{props.model.children.models.map((child, index) => {
+		questionRender = (
+			<Component
+				key={currentQuestionIndex}
+				model={questionModel}
+				moduleData={props.moduleData}
+				questionIndex={currentQuestionIndex}
+				numQuestionsInBank={props.model.children.models.length}
+			/>
+		)
+	} else {
+		questionRender = props.model.children.models.map((child, index) => {
 			const Component = child.getComponentClass()
 
 			return (
@@ -34,8 +37,18 @@ const QuestionBank = props => {
 					numQuestionsInBank={props.model.children.models.length}
 				/>
 			)
-		})}
-	</OboComponent>
+		})
+	}
+
+	return (
+		<OboComponent
+			model={props.model}
+			moduleData={props.moduleData}
+			className="obojobo-draft--chunks--question-bank"
+		>
+			{questionRender}
+		</OboComponent>
+	)
 }
 
 export default QuestionBank

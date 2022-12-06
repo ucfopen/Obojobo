@@ -138,8 +138,7 @@ const getState = assessmentProperties => {
 	chosenAssessment = chosenAssessment.map(node => {
 		return {
 			id: node.id,
-			type: node.type,
-			response: {}
+			type: node.type
 		}
 	})
 

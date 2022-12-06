@@ -36,20 +36,43 @@ class AssessmentTest extends React.Component {
 		let buttonLabel
 		let buttonAriaLabel
 		let currentClickHandler
+		// ideally this would read 'Current question has not been saved' if the current question hasn't been answered
+		// double ideally the 'Next' button would be disabled if the current question hasn't been answered
+		let incompleteNotice = null
 
-		// assessment status: questions, potentially which have been answered already?
-		// we'd probably have to use AssessmentUtil or the state machine to track current question from here
-		// const assessment = this.props.assessment
-		// assessment configuration - pace is in here
-		// const assessmentConfig = this.props.model.parent.attributes.content
+		// optionally indicate a single question index
+		// this will match a 'current question', which can be passed down
+		//  to a child question bank and used here to display 'question X of Y'
+		// TODO: move this any other logic to determine if the user can proceed to the next question
+		//  into the parent component?
+		let questionIndex = null
+		const assessmentConfig = this.props.model.parent.attributes.content
+		if (assessmentConfig.pace && assessmentConfig.pace === 'single') {
+			const assessmentId = this.props.model.parent.attributes.id
+			const currentAssessmentState = this.props.moduleData.assessmentState.assessments[assessmentId]
+				.current.state
+			questionIndex = currentAssessmentState.currentQuestion
+		}
 
 		if (this.props.isAttemptSubmitting) {
 			buttonLabel = buttonAriaLabel = 'Loading ...'
 			currentClickHandler = () => {}
 		} else if (!this.props.isAttemptReadyToSubmit) {
-			buttonLabel = 'Submit'
-			buttonAriaLabel = 'Submit (Not all questions have been saved)'
-			currentClickHandler = this.props.onClickSubmit
+			if (questionIndex !== null) {
+				buttonLabel = 'Next'
+				buttonAriaLabel = 'Next Question'
+				currentClickHandler = this.props.onClickNext
+			} else {
+				buttonLabel = 'Submit'
+				buttonAriaLabel = 'Submit (Not all questions have been saved)'
+				currentClickHandler = this.props.onClickSubmit
+
+				incompleteNotice = (
+					<span aria-hidden className="incomplete-notice">
+						(Not all questions have been saved)
+					</span>
+				)
+			}
 		} else {
 			buttonLabel = buttonAriaLabel = 'Submit'
 			currentClickHandler = this.props.onClickSubmit
@@ -57,7 +80,16 @@ class AssessmentTest extends React.Component {
 
 		return (
 			<div className="test">
-				<Component model={this.props.model} moduleData={this.props.moduleData} />
+				{questionIndex !== null ? (
+					<p>
+						Question {questionIndex + 1} of {this.props.model.children.models.length}
+					</p>
+				) : null}
+				<Component
+					model={this.props.model}
+					moduleData={this.props.moduleData}
+					questionIndex={questionIndex}
+				/>
 				<div className="submit-button">
 					<Button
 						ariaLabel={buttonAriaLabel}
@@ -65,11 +97,7 @@ class AssessmentTest extends React.Component {
 						onClick={currentClickHandler}
 						value={buttonLabel}
 					/>
-					{!this.props.isAttemptReadyToSubmit ? (
-						<span aria-hidden className="incomplete-notice">
-							(Not all questions have been saved)
-						</span>
-					) : null}
+					{incompleteNotice}
 				</div>
 			</div>
 		)

@@ -35,7 +35,7 @@ describe('Resume Attempt Route', () => {
 		insertEvent.mockReset()
 	})
 
-	test('returns attempt with chosen questions', async () => {
+	test('returns attempt with chosen questions, questions do not have responses', async () => {
 		expect.hasAssertions()
 
 		const questionNode1 = {
@@ -82,6 +82,9 @@ describe('Resume Attempt Route', () => {
 		const mockCurrentUser = { id: 1 }
 		AssessmentModel.fetchAttemptById.mockResolvedValue(mockAttempt)
 
+		const mockResponses = new Map()
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValue(mockResponses)
+
 		const result = await resumeAttempt(
 			mockCurrentUser,
 			mockCurrentVisit,
@@ -98,6 +101,122 @@ describe('Resume Attempt Route', () => {
 		  "draftContentId": "mockContentId",
 		  "draftId": "mockDraftId",
 		  "number": "mockAttemptNumber",
+		  "questionResponses": Array [],
+		  "questions": Array [
+		    "mock-to-object",
+		    "mock-to-object",
+		  ],
+		  "state": Object {
+		    "chosen": Array [
+		      Object {
+		        "id": "node1",
+		        "type": "ObojoboDraft.Chunks.Question",
+		      },
+		      Object {
+		        "id": "node2",
+		        "type": "ObojoboDraft.Chunks.Question",
+		      },
+		      Object {
+		        "id": "node3",
+		        "type": "NOT_A_QUESTION_NODE_TYPE",
+		      },
+		    ],
+		  },
+		}
+	`)
+	})
+
+	test('returns attempt with chosen questions, questions have responses', async () => {
+		expect.hasAssertions()
+
+		const questionNode1 = {
+			id: 'node1',
+			type: QUESTION_NODE_TYPE
+		}
+
+		const questionNode2 = {
+			id: 'node2',
+			type: QUESTION_NODE_TYPE
+		}
+
+		const nonQuestionNode = {
+			id: 'node3',
+			type: 'NOT_A_QUESTION_NODE_TYPE'
+		}
+
+		const mockAttempt = {
+			assessmentId: 'mockAssessmentId',
+			id: 'mockAttemptId',
+			number: 'mockAttemptNumber',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
+			state: {
+				chosen: [questionNode1, questionNode2, nonQuestionNode]
+			}
+		}
+
+		const mockAssessmentNode = {
+			draftTree: {
+				// called to get question nodes by id
+				getChildNodeById: jest.fn().mockReturnValue({
+					toObject: () => 'mock-to-object'
+				})
+			}
+		}
+
+		const mockCurrentDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
+			getChildNodeById: jest.fn().mockReturnValue(mockAssessmentNode)
+		}
+		const mockCurrentVisit = { id: 'mockVisitId', is_preview: 'mockIsPreview' }
+		const mockCurrentUser = { id: 1 }
+		AssessmentModel.fetchAttemptById.mockResolvedValue(mockAttempt)
+
+		const mockResponsesMap = new Map()
+		mockResponsesMap.set(mockAttempt.id, [
+			{
+				id: 0,
+				created_at: 0,
+				attempt_id: 'mock-attempt-id',
+				assessment_id: 'mock-assessment-id',
+				question_id: 'mock-question-id',
+				score: 0,
+				response: { value: 'mock-value-1' }
+			}
+		])
+		const mockResponses = mockResponsesMap
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValue(mockResponses)
+
+		const result = await resumeAttempt(
+			mockCurrentUser,
+			mockCurrentVisit,
+			mockCurrentDocument,
+			'mockAttemptId',
+			'mockHostName',
+			'mockRemoteAddress'
+		)
+
+		expect(result).toMatchInlineSnapshot(`
+		Object {
+		  "assessmentId": "mockAssessmentId",
+		  "attemptId": "mockAttemptId",
+		  "draftContentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "number": "mockAttemptNumber",
+		  "questionResponses": Array [
+		    Object {
+		      "assessment_id": "mock-assessment-id",
+		      "attempt_id": "mock-attempt-id",
+		      "created_at": 0,
+		      "id": 0,
+		      "question_id": "mock-question-id",
+		      "response": Object {
+		        "value": "mock-value-1",
+		      },
+		      "score": 0,
+		    },
+		  ],
 		  "questions": Array [
 		    "mock-to-object",
 		    "mock-to-object",
@@ -145,6 +264,11 @@ describe('Resume Attempt Route', () => {
 		const mockCurrentUser = { id: 1 }
 		AssessmentModel.fetchAttemptById.mockResolvedValue(mockAttempt)
 
+		const mockResponsesMap = new Map()
+		mockResponsesMap.set(mockAttempt.id, [])
+		const mockResponses = mockResponsesMap
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValue(mockResponses)
+
 		await resumeAttempt(
 			mockCurrentUser,
 			mockCurrentVisit,
@@ -189,6 +313,11 @@ describe('Resume Attempt Route', () => {
 		const mockCurrentVisit = { id: 'mockVisitId', is_preview: 'mockIsPreview' }
 		const mockCurrentUser = { id: 1 }
 		AssessmentModel.fetchAttemptById.mockResolvedValue(mockAttempt)
+
+		const mockResponsesMap = new Map()
+		mockResponsesMap.set(mockAttempt.id, [])
+		const mockResponses = mockResponsesMap
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValue(mockResponses)
 		// const mockAttempt = await AssessmentModel.getAttempt()
 
 		await resumeAttempt(

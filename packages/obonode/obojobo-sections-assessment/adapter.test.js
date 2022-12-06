@@ -10,6 +10,33 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		const model = new OboModel({})
 		AssessmentAdapter.construct(model)
 		expect(model.modelState).toMatchSnapshot()
+		// make sure the default model state values are supplied
+		expect(model.modelState.attempts).toBe(Infinity)
+		expect(model.modelState.review).toBe('never')
+		expect(model.modelState.pace).toBe('all')
+		// scoreActions is a ScoreActions class object - basically a regular object but not exactly
+		expect(model.modelState.scoreActions).toEqual({ actions: [], originalActions: null })
+		// rubric is an AssessmentRubric class object - basically a regular object but not exactly
+		expect(model.modelState.rubric).toEqual({
+			mods: [],
+			originalRubric: {},
+			rubric: {
+				failedResult: 0,
+				passedResult: '$attempt_score',
+				passingAttemptScore: 0,
+				unableToPassResult: null
+			},
+			type: 'attempt'
+		})
+	})
+
+	test('construct builds with single-item pacing', () => {
+		const attrs = {
+			content: { pace: 'single' }
+		}
+		const model = new OboModel(attrs)
+		AssessmentAdapter.construct(model, attrs)
+		expect(model.modelState.pace).toBe('single')
 	})
 
 	test('construct builds with N attempts and runs review transform function', () => {
