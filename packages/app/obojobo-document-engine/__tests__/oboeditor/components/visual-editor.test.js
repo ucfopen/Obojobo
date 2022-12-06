@@ -830,7 +830,8 @@ describe('VisualEditor', () => {
 				get: jest.fn(),
 				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
-			model: { title: 'Mock Title' }
+			model: { title: 'Mock Title' },
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -862,7 +863,8 @@ describe('VisualEditor', () => {
 						description: 'mock-description2'
 					}
 				]
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -911,7 +913,8 @@ describe('VisualEditor', () => {
 						description: 'mock-description2'
 					}
 				]
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
