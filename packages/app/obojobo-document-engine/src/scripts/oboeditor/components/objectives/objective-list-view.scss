@@ -1,0 +1,35 @@
+@import '~styles/includes';
+
+.objective-list-view {
+	width: 21em;
+	display: inline-block;
+	max-height: 5.6em;
+
+	ul {
+		margin-left: 2em;
+		font-size: 0.85em;
+	}
+
+	li {
+		font-weight: normal;
+		border: none;
+		list-style-type: disc;
+		font-family: $font-monospace;
+		padding: 0em;
+
+		label {
+			min-width: 3em !important;
+		}
+
+		p {
+			width: 16em;
+			margin: 0;
+			display: inline-block;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			vertical-align: bottom;
+		}
+	}
+	overflow: auto;
+}

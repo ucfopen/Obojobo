@@ -430,10 +430,14 @@ describe('VisualEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "addObjective": [Function],
 		  "contentRect": null,
 		  "editable": false,
+		  "objectives": Array [],
+		  "removeObjective": [Function],
 		  "saveState": "saveSuccessful",
 		  "showPlaceholders": true,
+		  "updateObjective": [Function],
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -451,10 +455,14 @@ describe('VisualEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "addObjective": [Function],
 		  "contentRect": null,
 		  "editable": true,
+		  "objectives": Array [],
+		  "removeObjective": [Function],
 		  "saveState": "",
 		  "showPlaceholders": true,
+		  "updateObjective": [Function],
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -812,6 +820,130 @@ describe('VisualEditor', () => {
 		expect(eventMap.beforeunload({})).toEqual(true)
 
 		component.unmount()
+	})
+
+	test('addObjective adds new objective to state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' },
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([])
+
+		component.instance().addObjective('mock-objective')
+		expect(component.instance().state.objectives).toEqual(['mock-objective'])
+	})
+
+	test('removeObjective removes objective from state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				objectives: [
+					{
+						objectiveId: 'mock-id',
+						objectiveLabel: 'mock-label',
+						description: 'mock-description'
+					},
+					{
+						objectiveId: 'mock-id2',
+						objectiveLabel: 'mock-label2',
+						description: 'mock-description2'
+					}
+				]
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'mock-label',
+				description: 'mock-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+
+		component.instance().removeObjective('mock-id')
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+	})
+
+	test('updateObjective updates proper objective in state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				objectives: [
+					{
+						objectiveId: 'mock-id',
+						objectiveLabel: 'mock-label',
+						description: 'mock-description'
+					},
+					{
+						objectiveId: 'mock-id2',
+						objectiveLabel: 'mock-label2',
+						description: 'mock-description2'
+					}
+				]
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'mock-label',
+				description: 'mock-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+
+		component.instance().updateObjective('mock-id', 'new-label', 'new-description')
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'new-label',
+				description: 'new-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
 	})
 
 	test('saveDraft() updates state after API called successfully ', () => {
