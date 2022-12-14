@@ -9,7 +9,8 @@ const QuestionBank = props => {
 	let questionRender = null
 	// props will only contain 'questionIndex' in single-question pace assessments
 	// default to null otherwise
-	const currentQuestionIndex = props.questionIndex || null
+	let currentQuestionIndex = props.questionIndex
+	if (typeof currentQuestionIndex === 'undefined') currentQuestionIndex = null
 
 	if (currentQuestionIndex !== null) {
 		const questionModel = props.model.children.models[currentQuestionIndex]

@@ -81,7 +81,7 @@ class AssessmentTest extends React.Component {
 		return (
 			<div className="test">
 				{questionIndex !== null ? (
-					<p>
+					<p className="current-question">
 						Question {questionIndex + 1} of {this.props.model.children.models.length}
 					</p>
 				) : null}
