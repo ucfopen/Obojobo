@@ -225,6 +225,8 @@ body {
 	}
 
 	.obo-text {
+		display: block;
+
 		&.align-left {
 			text-align: left;
 		}
@@ -235,6 +237,24 @@ body {
 
 		&.align-center {
 			text-align: center;
+		}
+	}
+
+	.obojobo-draft--chunks--list {
+		.obo-text {
+			display: inline;
+
+			&.align-left {
+				text-align: left;
+			}
+
+			&.align-right {
+				text-align: right;
+			}
+
+			&.align-center {
+				text-align: center;
+			}
 		}
 	}
 }
