@@ -107,4 +107,36 @@ describe('QuestionBank', () => {
 		const expectedChild = childComponents[0]
 		expect(expectedChild.props.id).toBe('child-id2')
 	})
+
+	test('QuestionBank component renders, question index past cap, multiple children', () => {
+		const model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.QuestionBank',
+			children: [
+				{
+					id: 'child-id1',
+					type: 'Test.Chunks.QuestionBankTestChunk'
+				},
+				{
+					id: 'child-id2',
+					type: 'Test.Chunks.QuestionBankTestChunk'
+				}
+			]
+		})
+
+		const moduleData = {
+			focusState: {}
+		}
+
+		const component = renderer.create(
+			<QuestionBank model={model} moduleData={moduleData} questionIndex={2} />
+		)
+
+		const childComponents = component.root.findAllByProps({ className: TEST_COMPONENT_CLASS })
+		expect(childComponents.length).toBe(1)
+
+		// providing a question index higher than the highest possible value should constrain it to the highest possible value
+		const expectedChild = childComponents[0]
+		expect(expectedChild.props.id).toBe('child-id2')
+	})
 })

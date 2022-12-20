@@ -13,6 +13,10 @@ const QuestionBank = props => {
 	if (typeof currentQuestionIndex === 'undefined') currentQuestionIndex = null
 
 	if (currentQuestionIndex !== null) {
+		// this shouldn't happen, but to prevent weird lockouts constrain current question index to the highest possible
+		if (currentQuestionIndex >= props.model.children.models.length) {
+			currentQuestionIndex = props.model.children.models.length - 1
+		}
 		const questionModel = props.model.children.models[currentQuestionIndex]
 		const Component = questionModel.getComponentClass()
 
