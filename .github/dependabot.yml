@@ -5,6 +5,6 @@ updates:
     schedule:
       interval: "weekly"
     # Update this at new releases to target whatever the current dev branch is
-    target-branch: "dev/30-howlite"
+    target-branch: ${{secrets.TARGET_BRANCH}}
     labels:
       - "dependencies"
