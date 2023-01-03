@@ -3,6 +3,7 @@ const connect = require('react-redux').connect
 const {
 	closeModal,
 	addUserToModule,
+	changeAccessLevel,
 	loadUsersForModule,
 	deleteModulePermissions,
 	createNewCollection,
@@ -51,6 +52,7 @@ const mapActionsToProps = {
 	createNewModule,
 	closeModal,
 	addUserToModule,
+	changeAccessLevel,
 	loadUsersForModule,
 	deleteModulePermissions,
 	filterModules,
