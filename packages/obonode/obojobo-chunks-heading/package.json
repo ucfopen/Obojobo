@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-heading",
-	"version": "15.1.0-alpha.1",
+	"version": "15.1.0",
 	"license": "AGPL-3.0-only",
 	"description": "Heading content chunk for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^15.1.0-alpha.1"
+		"obojobo-lib-utils": "^15.1.0"
 	},
 	"jest": {
 		"testMatch": [
