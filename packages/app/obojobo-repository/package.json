@@ -28,7 +28,7 @@
 	"dependencies": {
 		"dayjs": "^1.10.4",
 		"debounce-promise": "^3.1.2",
-		"express": "~4.17.1",
+		"express": "~4.18.2",
 		"express-react-views-custom": "https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051",
 		"express-validator": "^6.10.0",
 		"ignore-styles": "^5.0.1",
