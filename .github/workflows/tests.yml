@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [16.19.0]
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -83,7 +83,7 @@ jobs:
     - name: NPM - Test, Build, Deploy
       uses: actions/setup-node@v1
       with:
-        node-version: 16
+        node-version: 16.19.0
         registry-url: https://registry.npmjs.org/
 
     - name: Cache Yarn Deps
