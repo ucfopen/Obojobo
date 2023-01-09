@@ -18,6 +18,7 @@ const Spinner = require('./spinner')
 const Collection = require('./collection')
 const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
 const CollectionBulkAddModulesDialog = require('./collection-bulk-add-modules-dialog')
+const BulkSuccessDialog = require('./bulk-success-dialog.jsx')
 const CollectionManageModulesDialog = require('./collection-manage-modules-dialog')
 const CollectionRenameDialog = require('./collection-rename-dialog')
 const ButtonLink = require('./button-link')
@@ -160,6 +161,11 @@ const renderModalDialog = props => {
 			dialog = renderCollectionBulkAddModulesDialog(props)
 			break
 
+		case 'bulk-add-successful':
+			title = ''
+			dialog = renderBulkSuccessDialog(props)
+			break
+
 		case 'collection-rename':
 			title = 'Rename Collection'
 			dialog = renderCollectionRenameDialog(props, extendedProps)
@@ -199,6 +205,16 @@ const renderModuleManageCollectionsDialog = (props, extension) => (
 
 const renderCollectionBulkAddModulesDialog = props => (
 	<CollectionBulkAddModulesDialog
+		title=""
+		collections={props.myCollections}
+		selectedModules={props.selectedModules}
+		bulkAddModulesToCollection={props.bulkAddModulesToCollection}
+		onClose={props.closeModal}
+	/>
+)
+
+const renderBulkSuccessDialog = props => (
+	<BulkSuccessDialog
 		title=""
 		collections={props.myCollections}
 		selectedModules={props.selectedModules}
@@ -700,7 +716,9 @@ function Dashboard(props) {
 				bulkCollectionActionButton = (
 					<Button
 						className="multi-select secondary-button"
-						onClick={() => props.showCollectionBulkAddModulesDialog(props.selectedModules)}
+						onClick={() => {
+							props.showCollectionBulkAddModulesDialog(props.selectedModules)
+						}}
 					>
 						Add All To Collection
 					</Button>

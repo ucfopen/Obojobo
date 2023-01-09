@@ -1,0 +1,12 @@
+@import '../../client/css/defaults';
+
+.bulk-success-dialog {
+	max-width: 25em;
+	text-align: center;
+	width: 50vw;
+	padding-bottom: 1em;
+
+	.success-message {
+		padding: 1em;
+	}
+}

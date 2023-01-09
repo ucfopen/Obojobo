@@ -65,6 +65,7 @@ import ModulePermissionsDialog from './module-permissions-dialog'
 import ModuleOptionsDialog from './module-options-dialog'
 import VersionHistoryDialog from './version-history-dialog'
 import AssessmentScoreDataDialog from './assessment-score-data-dialog'
+import BulkSuccessDialog from './bulk-success-dialog'
 
 const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../repository-constants')
 
@@ -1782,6 +1783,24 @@ describe('Dashboard', () => {
 
 		expectDialogToBeRendered(component, CollectionBulkAddModulesDialog, '')
 		const dialogComponent = component.root.findByType(CollectionBulkAddModulesDialog)
+		expect(dialogComponent.props.title).toBe('')
+
+		dialogComponent.props.onClose()
+		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)
+
+		component.unmount()
+	})
+
+	test('renders bulk success dialog and runs callbacks properly', () => {
+		dashboardProps.dialog = 'bulk-add-successful'
+
+		let component
+		act(() => {
+			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		expectDialogToBeRendered(component, BulkSuccessDialog, '')
+		const dialogComponent = component.root.findByType(BulkSuccessDialog)
 		expect(dialogComponent.props.title).toBe('')
 
 		dialogComponent.props.onClose()

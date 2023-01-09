@@ -177,7 +177,8 @@ function DashboardReducer(state, action) {
 			return {
 				...state,
 				selectedModules: [],
-				multiSelectMode: false
+				multiSelectMode: false,
+				dialog: 'bulk-add-successful'
 			}
 
 		case BULK_REMOVE_MODULES_FROM_COLLECTION:
