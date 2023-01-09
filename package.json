@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"name": "obojobo-next",
-	"version": "15.0.0",
+	"version": "15.1.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"license": "AGPL-3.0-only",
@@ -102,6 +102,6 @@
 	],
 	"engines": {
 		"yarn": "^1.15.2",
-		"node": "^14.16.0"
+		"node": "^16.19.0"
 	}
 }
