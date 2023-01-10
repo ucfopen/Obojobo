@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Figure editor plugins.decorate exits when not relevent 1`] = `Array []`;
+exports[`Figure editor plugins.decorate exits when not relevant 1`] = `Array []`;
 
-exports[`Figure editor plugins.decorate exits when not relevent 2`] = `Array []`;
+exports[`Figure editor plugins.decorate exits when not relevant 2`] = `Array []`;
 
 exports[`Figure editor plugins.decorate renders a placeholder 1`] = `
 Array [

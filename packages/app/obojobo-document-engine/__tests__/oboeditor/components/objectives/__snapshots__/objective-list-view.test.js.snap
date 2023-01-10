@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Objective List View ObjectiveListView renders correctly with given objectives 1`] = `
+<div
+  className="objective-list-view"
+>
+  <ul>
+    <li>
+      <label>
+        mock-label-1
+      </label>
+      <p />
+    </li>
+    <li>
+      <label>
+        mock-label-2
+      </label>
+      <p />
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`Objective List View ObjectiveListView renders correctly with given objectives 2`] = `
+<div
+  className="objective-list-view"
+>
+  <ul />
+</div>
+`;
+
+exports[`Objective List View ObjectiveListView renders correctly with no objectives 1`] = `null`;
+
+exports[`Objective List View ObjectiveListView renders correctly with unknown type 1`] = `
+<div
+  className="objective-list-view"
+>
+  <ul />
+</div>
+`;

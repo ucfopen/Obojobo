@@ -57,6 +57,8 @@ class Modal extends React.Component {
 				aria-labelledby="obojobo-draft--components--modal--modal--content"
 				tabIndex="-1"
 				ref={this.selfRef}
+				aria-live="polite"
+				aria-atomic="true"
 			>
 				<input
 					aria-label="Start of dialog"

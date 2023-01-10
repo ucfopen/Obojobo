@@ -10,7 +10,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -104,7 +106,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -179,7 +183,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal obojobo-draft--sections--assessment--results-modal"
     role="dialog"
     tabIndex="-1"
@@ -250,7 +256,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   style={null}
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -334,7 +342,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -422,7 +432,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -497,7 +509,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -628,7 +642,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -704,7 +720,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -778,7 +796,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -854,7 +874,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -939,7 +961,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -1024,7 +1048,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -1108,7 +1134,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -1183,7 +1211,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -1258,7 +1288,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -1334,7 +1366,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -1420,7 +1454,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -1508,7 +1544,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -1580,7 +1618,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
   style={null}
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -1665,7 +1705,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -1740,7 +1782,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -1819,7 +1863,9 @@ exports[`AssessmentDialog renders as expected AssessmentDialog(assessmentMachine
     }
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"

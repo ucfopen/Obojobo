@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Objective Item ObjectiveItem edits objective 1`] = `"<div class=\\"objective-block is-objective-label-selected\\"><div class=\\"objective-content\\" name=\\"objective-content\\"><input type=\\"checkbox\\" name=\\"objectives[]\\" id=\\"mock-id\\"><div class=\\"objective-label\\">mock-label</div><div class=\\"objective-description\\">mock-description</div></div><div class=\\"objective-options\\"><span><a class=\\"edit-link\\">Edit</a></span><span><div class=\\"close-btn\\"><div class=\\"obojobo-draft--components--delete-button\\"><button>Delete</button></div></div></span></div></div>"`;
+
+exports[`Objective Item ObjectiveItem renders correctly 1`] = `
+<div
+  className="objective-block is-objective-label-selected"
+>
+  <div
+    className="objective-content"
+    name="objective-content"
+  >
+    <input
+      checked="mock-selected"
+      id="mock-id"
+      name="objectives[]"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <div
+      className="objective-label"
+      onClick={[Function]}
+    >
+      mock-label
+    </div>
+    <div
+      className="objective-description"
+      onClick={[Function]}
+    >
+      mock-description
+    </div>
+  </div>
+  <div
+    className="objective-options"
+  >
+    <span>
+      <a
+        className="edit-link"
+        onClick={[Function]}
+      >
+        Edit
+      </a>
+    </span>
+    <span>
+      <div
+        className="close-btn"
+        onClick={[Function]}
+      >
+        <div
+          className="obojobo-draft--components--delete-button"
+        >
+          <button>
+            Delete
+          </button>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+`;
