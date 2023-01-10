@@ -22,6 +22,8 @@ const { fetchAllCollectionsForDraft } = require('../services/collections')
 const { getUserModuleCount } = require('../services/count')
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
+const { levelName, levelNumber, FULL } = require('../../../obojobo-express/server/constants')
+
 // List public drafts
 router.route('/drafts-public').get((req, res) => {
 	return Collection.fetchById(publicLibCollectionId)
@@ -241,9 +243,10 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === FULL
 			if (!canShare) {
-				res.notAuthorized('Current User has no permissions to selected draft')
+				res.notAuthorized('Current User does not have permission to share this draft')
 				return
 			}
 
@@ -253,6 +256,46 @@ router
 
 			// add permissions
 			await DraftPermissions.addOwnerToDraft(draftId, userId)
+			res.success()
+		} catch (error) {
+			res.unexpected(error)
+		}
+	})
+
+// update a user's access level
+router
+	.route('/drafts/:draftId/permission/update')
+	.post([requireCurrentUser, requireCurrentDocument])
+	.post(async (req, res) => {
+		try {
+			const userId = req.body.userId
+			const draftId = req.currentDocument.draftId
+			const targetLevel = req.body.accessLevel
+
+			// Guard against invalid access levels
+			if (!levelNumber[targetLevel]) {
+				const msg = 'Invalid access level: ' + targetLevel
+				res.status(400).send(msg)
+				return
+			}
+
+			// check if same access level
+			const currentLevel = await DraftPermissions.getUserAccessLevelToDraft(
+				req.body.userId,
+				draftId
+			)
+
+			if (levelName[currentLevel] === targetLevel) {
+				res.success()
+				return
+			}
+
+			// make sure the target userId exists
+			// fetchById will throw if not found
+			await UserModel.fetchById(userId)
+
+			// add permissions
+			await DraftPermissions.updateAccessLevel(draftId, userId, levelNumber[targetLevel])
 			res.success()
 		} catch (error) {
 			res.unexpected(error)
@@ -269,7 +312,8 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === FULL
 			if (!canShare) {
 				res.notAuthorized('Current User has no permissions to selected draft')
 				return

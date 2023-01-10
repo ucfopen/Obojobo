@@ -21,6 +21,7 @@ const slateToObo = node => {
 		children: [],
 		content: withoutUndefined({
 			triggers: node.content.triggers,
+			objectives: node.content.objectives,
 			textGroup: [labelLine],
 			align: node.content.align
 		})
