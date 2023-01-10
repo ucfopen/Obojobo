@@ -1294,7 +1294,8 @@ describe('VisualEditor', () => {
 				title: 'Mock Title',
 				flatJSON: () => ({ content: {} }),
 				children: []
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		test('onKeyDown handles ArrowUp if node above has one child', () => {
