@@ -156,7 +156,6 @@ describe('List Styles', () => {
 		const ls = new ListStyles('ordered')
 
 		expect(ls.get(0).toDescriptor()).toEqual({
-			//
 			type: 'ordered',
 			start: 1,
 			bulletStyle: 'decimal'
