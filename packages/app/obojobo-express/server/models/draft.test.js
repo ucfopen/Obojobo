@@ -299,27 +299,26 @@ describe('Draft Model', () => {
 		})
 	})
 
-	test('deleteByIdAndUser sets delete flag', () => {
+	test('deleteById sets delete flag', () => {
 		expect.hasAssertions()
 		const oboEvents = require('../obo_events')
 
 		db.none.mockResolvedValueOnce()
 
-		return DraftModel.deleteByIdAndUser('draft_id', 'user_id').then(voidResult => {
+		return DraftModel.deleteById('draft_id').then(voidResult => {
 			expect(voidResult).toBe(undefined) //eslint-disable-line no-undefined
 			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_DELETED', {
-				id: 'draft_id',
-				userId: 'user_id'
+				id: 'draft_id'
 			})
 		})
 	})
 
-	test('deleteByIdAndUser fails as expected', () => {
+	test('deleteById fails as expected', () => {
 		expect.hasAssertions()
 
 		db.none.mockRejectedValueOnce('mock-error')
 
-		return expect(DraftModel.deleteByIdAndUser('draft_id', 'user_id')).rejects.toBe('mock-error')
+		return expect(DraftModel.deleteById('draft_id')).rejects.toBe('mock-error')
 	})
 
 	test('restoreByIdAndUser reverts delete flag', () => {

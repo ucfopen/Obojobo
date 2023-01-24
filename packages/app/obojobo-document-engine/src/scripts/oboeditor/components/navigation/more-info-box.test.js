@@ -3,6 +3,7 @@ import { mount } from 'enzyme'
 import rtr from 'react-test-renderer'
 
 import MoreInfoBox from './more-info-box'
+import ObjectiveProvider from '../objectives/objective-provider'
 
 import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
 jest.mock('src/scripts/oboeditor/util/clipboard-util')
@@ -29,6 +30,26 @@ describe('MoreInfoBox', () => {
 		)
 
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('More Info Box renders with Objective Provider', () => {
+		const values = [{ objectives: [{ objectiveId: 'mock-id', objectiveLabel: 'mock-label' }] }]
+		const component = mount(
+			<ObjectiveProvider state={values}>
+				<MoreInfoBox
+					id="mock-id"
+					content={{}}
+					saveId={jest.fn()}
+					saveContent={jest.fn()}
+					markUnsaved={jest.fn()}
+					contentDescription={[]}
+				/>
+			</ObjectiveProvider>
+		)
+
+		component.find('.more-info-button').simulate('click')
+
+		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('More Info Box for assessment', () => {
@@ -506,11 +527,11 @@ describe('MoreInfoBox', () => {
 
 		component
 			.find('button')
-			.at(6)
+			.at(7)
 			.simulate('click')
 		component
 			.find('button')
-			.at(7)
+			.at(8)
 			.simulate('click')
 
 		expect(moveNode).toHaveBeenCalledTimes(2)
@@ -610,7 +631,7 @@ describe('MoreInfoBox', () => {
 		).toBe(true)
 	})
 
-	test('More Info Box opens the showTriggersModal', () => {
+	test('More Info Box opens the showObjectivesModal', () => {
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
@@ -627,6 +648,28 @@ describe('MoreInfoBox', () => {
 		component
 			.find('button')
 			.at(3)
+			.simulate('click')
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('More Info Box opens the showTriggersModal', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		component.find('.more-info-button').simulate('click')
+
+		component
+			.find('button')
+			.at(4)
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
@@ -661,6 +704,31 @@ describe('MoreInfoBox', () => {
 		expect(saveContent).toHaveBeenCalled()
 	})
 
+	test('More Info Box closes the ObjectivesModal with updates', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{ objectives: ['initial-objective'] }}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		const cmp = component.instance()
+		cmp.closeObjectiveModal({ objectives: ['mock-objective'] })
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "objectives": Array [
+		    "mock-objective",
+		  ],
+		}
+	`)
+	})
+
 	test('More Info Box closes the TriggersModal with updates', () => {
 		const component = mount(
 			<MoreInfoBox
@@ -681,6 +749,31 @@ describe('MoreInfoBox', () => {
 		Object {
 		  "triggers": Array [
 		    "mock-trigger",
+		  ],
+		}
+	`)
+	})
+
+	test('More Info Box closes the ObjectivesModal without updating', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{ objectives: ['initial-objective'] }}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		const cmp = component.instance()
+		cmp.closeObjectiveModal()
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "objectives": Array [
+		    "initial-objective",
 		  ],
 		}
 	`)

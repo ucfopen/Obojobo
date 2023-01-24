@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "14.1.0",
+	"version": "15.1.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -50,7 +50,7 @@
 		"deep-freeze": "^0.0.1",
 		"ejs": "^3.1.6",
 		"eventemitter": "^0.3.3",
-		"express": "~4.17.1",
+		"express": "~4.18.2",
 		"express-ims-lti": "https://github.com/ucfcdl/express-ims-lti.git#879f752758250b81429f75f62bb5602f1b06a564",
 		"express-session": "^1.17.1",
 		"express-validator": "^6.10.0",
@@ -64,14 +64,14 @@
 		"pg-promise": "^10.10.1",
 		"react-transition-group": "^4.4.1",
 		"serve-favicon": "~2.5.0",
-		"sharp": "^0.28.1",
+		"sharp": "^0.30.5",
 		"trianglify": "^4.1.1",
 		"uuid": "^8.3.2"
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^14.1.0",
-		"obojobo-document-xml-parser": "^14.1.0",
-		"obojobo-lib-utils": "^14.1.0"
+		"obojobo-document-engine": "^15.1.0",
+		"obojobo-document-xml-parser": "^15.1.0",
+		"obojobo-lib-utils": "^15.1.0"
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^5.5.0",
@@ -81,7 +81,7 @@
 		"css-loader": "^5.2.0",
 		"express-list-endpoints": "^5.0.0",
 		"mini-css-extract-plugin": "^1.4.0",
-		"node-sass": "^7.0.0",
+		"node-sass": "^8.0.0",
 		"oauth-signature": "^1.5.0",
 		"postcss-loader": "^5.2.0",
 		"sass-loader": "^11.0.1",

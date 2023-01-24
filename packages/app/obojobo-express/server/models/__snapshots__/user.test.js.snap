@@ -14,6 +14,7 @@ Array [
 			RETURNING id
 			",
   Object {
+    "accessLevel": undefined,
     "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
     "firstName": "Roger",
     "id": 3,
@@ -32,6 +33,7 @@ Array [
 
 exports[`user model fetchById fetches one from the database 1`] = `
 Object {
+  "accessLevel": undefined,
   "avatarUrl": "https://secure.gravatar.com/avatar/7cd5405dd878f2f032418e1bd8dfba0c?s=120&d=retro",
   "firstName": "Guest",
   "id": 5,
@@ -71,6 +73,7 @@ Array [
 			RETURNING id
 			",
   Object {
+    "accessLevel": undefined,
     "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
     "firstName": "Roger",
     "id": 10,

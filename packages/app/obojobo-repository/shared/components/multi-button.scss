@@ -2,6 +2,8 @@
 
 .repository--button.repository--multi-button {
 	$size: 2.3em;
+	$closed-width: 7.5em;
+	$open-width: 9.7em;
 
 	position: relative;
 	border: 1px solid $color-action;
@@ -9,7 +11,8 @@
 	padding-left: 3.5em;
 	padding-top: 1em;
 	padding-bottom: 1em;
-	margin-right: 0.8em;
+	width: $closed-width;
+	margin-right: $open-width - $closed-width;
 	font-size: 0.65em;
 
 	> button {
@@ -79,6 +82,8 @@
 		color: $color-action;
 		background-color: white;
 		border: 1px solid darken($color-banner-bg, 10%);
+		margin-right: 0;
+		width: $open-width;
 
 		.child-buttons {
 			display: block;

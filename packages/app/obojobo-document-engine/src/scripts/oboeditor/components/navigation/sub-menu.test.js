@@ -392,7 +392,7 @@ describe('SubMenu', () => {
 		component.instance().saveContent({}, {})
 		expect(Common.models.OboModel.models['7']).toMatchSnapshot()
 
-		component.instance().saveContent({}, { triggers: [], title: 'Mock title' })
+		component.instance().saveContent({}, { triggers: [], title: 'Mock title', objectives: [] })
 		expect(Common.models.OboModel.models['7']).toMatchSnapshot()
 	})
 

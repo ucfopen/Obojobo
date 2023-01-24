@@ -9,6 +9,7 @@ import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 import ModalStore from '../../common/stores/modal-store'
 import Dispatcher from '../../common/flux/dispatcher'
 import OboModel from 'src/scripts/common/models/obo-model'
+import { FULL } from 'obojobo-express/server/constants'
 
 import { Editor, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -41,6 +42,36 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 let restoreConsole
 
 describe('VisualEditor', () => {
+	let props
+
+	const defaultProps = {
+		page: {
+			id: 122,
+			set: jest.fn(),
+			attributes: {
+				children: [
+					{
+						type: BREAK_NODE,
+						content: {},
+						children: []
+					}
+				]
+			},
+			get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
+			toJSON: () => ({
+				children: [
+					{
+						type: BREAK_NODE,
+						content: {},
+						children: []
+					}
+				]
+			})
+		},
+		model: { title: 'Mock Title' },
+		draft: { accessLevel: FULL }
+	}
+
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
@@ -58,6 +89,17 @@ describe('VisualEditor', () => {
 			])
 		)
 		Editor.marks = jest.fn().mockReturnValue({})
+
+		props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' },
+			draft: { accessLevel: FULL }
+		}
 	})
 
 	afterEach(() => {
@@ -65,30 +107,12 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('VisualEditor component handles triple click', () => {
 		const spy = jest.spyOn(Transforms, 'move').mockReturnValueOnce(true)
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = mount(<VisualEditor {...props} />)
 
 		// Double click
@@ -118,15 +142,6 @@ describe('VisualEditor', () => {
 	test('VisualEditor component - editor is disable when modal is opened', () => {
 		ModalStore.init()
 
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = renderer.create(<VisualEditor {...props} />)
 
 		Dispatcher.trigger('modal:show', { value: 'mockValue' })
@@ -136,15 +151,6 @@ describe('VisualEditor', () => {
 	test('VisualEditor component - editor is disable when modal is closed', () => {
 		ModalStore.init()
 
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = renderer.create(<VisualEditor {...props} />)
 
 		Dispatcher.trigger('modal:hide', { value: 'mockValue' })
@@ -152,15 +158,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component with decoration', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
 			plugins: {
 				decorate: () => [
@@ -185,15 +182,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component with Elements', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
 			plugins: {
 				renderNode: () => <p>Mock Content</p> //eslint-disable-line react/display-name
@@ -224,22 +212,15 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component with no page', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: null,
-			model: { title: 'Mock Title' }
-		}
+		props.page = null
 
 		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('updating a component with no page doesnt update state', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: null,
-			model: { title: 'Mock Title' }
-		}
+		props.page = null
+
 		const thing = renderer.create(<VisualEditor {...props} />)
 
 		const instance = thing.getInstance()
@@ -251,15 +232,8 @@ describe('VisualEditor', () => {
 	})
 
 	test('updating a component from no page to a page updates state', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }], type: ASSESSMENT_NODE })
-			},
-			model: { title: 'Mock Title' }
-		}
+		props.page.toJSON = () => ({ children: [{ type: 'mockNode' }], type: ASSESSMENT_NODE })
+
 		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
 			oboToSlate: () => ({ text: '' })
 		})
@@ -276,11 +250,8 @@ describe('VisualEditor', () => {
 	})
 
 	test('updating a component from a page to no page updates state', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: null,
-			model: { title: 'Mock Title' }
-		}
+		props.page = null
+
 		const thing = renderer.create(<VisualEditor {...props} />)
 
 		const instance = thing.getInstance()
@@ -294,18 +265,14 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component changes pages', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				id: 1,
-				set: jest.fn(),
-				attributes: {
-					children: [{ type: 'mockNode' }]
-				},
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+		props.page = {
+			id: 1,
+			set: jest.fn(),
+			attributes: {
+				children: [{ type: 'mockNode' }]
 			},
-			model: { title: 'Mock Title' }
+			get: jest.fn(),
+			toJSON: () => ({ children: [{ type: 'mockNode' }] })
 		}
 
 		let thing
@@ -324,58 +291,15 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component with deleted page to another page', () => {
-		const prevProps = {
-			page: {
-				id: 122,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' }
-		}
+		const prevProps = defaultProps
 
 		const newProps = {
+			...defaultProps,
 			page: {
+				...defaultProps.page,
 				id: 123,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn(),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' }
+				get: jest.fn()
+			}
 		}
 
 		const spy = jest.spyOn(VisualEditor.prototype, 'exportToJSON').mockReturnValueOnce()
@@ -392,58 +316,15 @@ describe('VisualEditor', () => {
 
 	test('VisualEditor component with page updating to another page', () => {
 		OboModel.models = { 122: 'mock content' }
-		const prevProps = {
-			page: {
-				id: 122,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' }
-		}
+		const prevProps = defaultProps
 
 		const newProps = {
+			...defaultProps,
 			page: {
+				...defaultProps.page,
 				id: 123,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest.fn(),
-				toJSON: () => ({
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				})
-			},
-			model: { title: 'Mock Title' }
+				get: jest.fn()
+			}
 		}
 
 		const spy = jest.spyOn(VisualEditor.prototype, 'exportToJSON')
@@ -466,14 +347,7 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component refocuses on editor', () => {
-		const props = {
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
+		props.insertableItems = null
 
 		jest.spyOn(ReactEditor, 'focus').mockReturnValue(true)
 		const component = mount(<VisualEditor {...props} />)
@@ -486,15 +360,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component alters value majorly', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = mount(<VisualEditor {...props} />)
 
 		const value = [
@@ -508,15 +373,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component alters value majorly with multi-select', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
 		window.getSelection = jest.fn().mockReturnValue({
 			getRangeAt: () => ({
@@ -541,15 +397,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component alters value majorly with latex', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
 		window.getSelection = jest.fn().mockReturnValue({
 			getRangeAt: () => ({
@@ -574,15 +421,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('toggleEditable changes the state', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = mount(<VisualEditor {...props} />)
 		const inst = component.instance()
 
@@ -590,10 +428,14 @@ describe('VisualEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "addObjective": [Function],
 		  "contentRect": null,
 		  "editable": false,
+		  "objectives": Array [],
+		  "removeObjective": [Function],
 		  "saveState": "saveSuccessful",
 		  "showPlaceholders": true,
+		  "updateObjective": [Function],
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -604,15 +446,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('markUnsaved changes the state', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = mount(<VisualEditor {...props} />)
 		const inst = component.instance()
 
@@ -620,10 +453,14 @@ describe('VisualEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "addObjective": [Function],
 		  "contentRect": null,
 		  "editable": true,
+		  "objectives": Array [],
+		  "removeObjective": [Function],
 		  "saveState": "",
 		  "showPlaceholders": true,
+		  "updateObjective": [Function],
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -675,7 +512,8 @@ describe('VisualEditor', () => {
 				flatJSON: () => {
 					return { content: {}, children: [] }
 				}
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
@@ -737,7 +575,8 @@ describe('VisualEditor', () => {
 				flatJSON: () => {
 					return { content: {}, children: [] }
 				}
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
@@ -822,7 +661,8 @@ describe('VisualEditor', () => {
 				flatJSON: () => {
 					return { content: {}, children: [] }
 				}
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 		const component = mount(<VisualEditor {...props} />)
 		const plugins = component.instance().plugins
@@ -858,16 +698,6 @@ describe('VisualEditor', () => {
 				type: 'ObojoboDraft.Sections.Assessment',
 				children: [{ type: 'mock node' }]
 			})
-		}
-
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mock node' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mock node' }] })
-			},
-			model: { title: 'Mock Title' }
 		}
 
 		const value = {
@@ -919,16 +749,6 @@ describe('VisualEditor', () => {
 			toJSON: () => ({ children: [{ type: 'mock node' }] })
 		}
 
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mock node' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mock node' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
-
 		const value = ['node-one', 'node-two']
 
 		const thing = mount(<VisualEditor {...props} />)
@@ -961,15 +781,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('exportToJSON returns undefined for null page', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mock node' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mock node' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const thing = mount(<VisualEditor {...props} />)
 
 		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
@@ -994,7 +805,8 @@ describe('VisualEditor', () => {
 				get: jest.fn(),
 				toJSON: () => ({ children: [{ type: 'mock node' }] })
 			},
-			model: { title: 'Mock Title' }
+			model: { title: 'Mock Title' },
+			draft: { accessLevel: FULL }
 		}
 		const component = mount(<VisualEditor {...props} />)
 
@@ -1006,6 +818,130 @@ describe('VisualEditor', () => {
 		expect(eventMap.beforeunload({})).toEqual(true)
 
 		component.unmount()
+	})
+
+	test('addObjective adds new objective to state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' },
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([])
+
+		component.instance().addObjective('mock-objective')
+		expect(component.instance().state.objectives).toEqual(['mock-objective'])
+	})
+
+	test('removeObjective removes objective from state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				objectives: [
+					{
+						objectiveId: 'mock-id',
+						objectiveLabel: 'mock-label',
+						description: 'mock-description'
+					},
+					{
+						objectiveId: 'mock-id2',
+						objectiveLabel: 'mock-label2',
+						description: 'mock-description2'
+					}
+				]
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'mock-label',
+				description: 'mock-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+
+		component.instance().removeObjective('mock-id')
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+	})
+
+	test('updateObjective updates proper objective in state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				objectives: [
+					{
+						objectiveId: 'mock-id',
+						objectiveLabel: 'mock-label',
+						description: 'mock-description'
+					},
+					{
+						objectiveId: 'mock-id2',
+						objectiveLabel: 'mock-label2',
+						description: 'mock-description2'
+					}
+				]
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'mock-label',
+				description: 'mock-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+
+		component.instance().updateObjective('mock-id', 'new-label', 'new-description')
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'new-label',
+				description: 'new-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
 	})
 
 	test('saveDraft() updates state after API called successfully ', () => {
@@ -1025,7 +961,8 @@ describe('VisualEditor', () => {
 				title: 'Mock Title',
 				flatJSON: () => ({ content: {} }),
 				children: []
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -1056,7 +993,8 @@ describe('VisualEditor', () => {
 				title: 'Mock Title',
 				flatJSON: () => ({ content: {} }),
 				children: []
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -1107,7 +1045,8 @@ describe('VisualEditor', () => {
 				title: 'Mock Title',
 				flatJSON: () => ({ content: {} }),
 				children: []
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -1229,7 +1168,8 @@ describe('VisualEditor', () => {
 				title: 'Mock Title',
 				flatJSON: () => ({ content: {} }),
 				children: []
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -1291,7 +1231,8 @@ describe('VisualEditor', () => {
 				title: 'Mock Title',
 				flatJSON: () => ({ content: {} }),
 				children: []
-			}
+			},
+			draft: { accessLevel: FULL }
 		}
 
 		const component = mount(<VisualEditor {...props} />)
@@ -1329,16 +1270,128 @@ describe('VisualEditor', () => {
 		expect(onKeyDown).toHaveBeenCalled()
 	})
 
+	describe('moving to node above', () => {
+		const editorDefaults = {
+			children: [
+				{ type: 'mock node 1', children: [{ text: 'one' }] },
+				{ type: 'mock node 2', children: [{ text: 'one' }, { text: 'two' }] },
+				{ type: 'mock node 3', children: [{ text: 'one' }] }
+			],
+			apply: jest.fn()
+		}
+
+		const visualEditorProps = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{}] }),
+				set: jest.fn(),
+				children: []
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		test('onKeyDown handles ArrowUp if node above has one child', () => {
+			jest.spyOn(Array, 'from').mockReturnValue([])
+			const spySetSelection = jest.spyOn(Transforms, 'setSelection')
+
+			const editor = {
+				...editorDefaults,
+				selection: {
+					anchor: { path: [1], offset: 0 },
+					focus: { path: [1], offset: 0 }
+				}
+			}
+
+			const component = mount(<VisualEditor {...visualEditorProps} />)
+			const instance = component.instance()
+			instance.editor = editor
+
+			instance.onKeyDown({
+				preventDefault: jest.fn(),
+				key: 'ArrowUp',
+				defaultPrevented: false
+			})
+
+			expect(spySetSelection).toHaveBeenCalled()
+			expect(spySetSelection.mock.calls[0].length).toEqual(2)
+
+			const focusSelection = spySetSelection.mock.calls[0][1].focus.path
+			const anchorSelection = spySetSelection.mock.calls[0][1].anchor.path
+
+			expect(focusSelection).toEqual([0, 0])
+			expect(anchorSelection).toEqual([0, 0])
+		})
+
+		test('onKeyDown handles ArrowUp if node above has multiple children', () => {
+			jest.spyOn(Array, 'from').mockReturnValue([])
+			const spySetSelection = jest.spyOn(Transforms, 'setSelection')
+
+			const editor = {
+				...editorDefaults,
+				selection: {
+					anchor: { path: [2], offset: 0 },
+					focus: { path: [2], offset: 0 }
+				}
+			}
+
+			const component = mount(<VisualEditor {...visualEditorProps} />)
+			const instance = component.instance()
+			instance.editor = editor
+
+			instance.onKeyDown({
+				preventDefault: jest.fn(),
+				key: 'ArrowUp',
+				defaultPrevented: false
+			})
+
+			expect(spySetSelection).toHaveBeenCalled()
+			expect(spySetSelection.mock.calls[0].length).toEqual(2)
+
+			const focusSelection = spySetSelection.mock.calls[0][1].focus.path
+			const anchorSelection = spySetSelection.mock.calls[0][1].anchor.path
+
+			expect(focusSelection).toEqual([1, 1])
+			expect(anchorSelection).toEqual([1, 1])
+		})
+
+		test('onKeyDown handles ArrowUp if no node above', () => {
+			jest.spyOn(Array, 'from').mockReturnValue([])
+			const spySetSelection = jest.spyOn(Transforms, 'setSelection')
+
+			const editor = {
+				...editorDefaults,
+				selection: {
+					anchor: { path: [0], offset: 0 },
+					focus: { path: [0], offset: 0 }
+				}
+			}
+
+			const component = mount(<VisualEditor {...visualEditorProps} />)
+			const instance = component.instance()
+			instance.editor = editor
+
+			instance.onKeyDown({
+				preventDefault: jest.fn(),
+				key: 'ArrowUp',
+				defaultPrevented: false
+			})
+
+			expect(spySetSelection).not.toHaveBeenCalled()
+		})
+	})
+
 	test('reload disables event listener and calls location.reload', () => {
 		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
 		Object.defineProperty(window, 'location', {
 			value: { reload: jest.fn() }
 		})
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: { toJSON: () => ({ children: [{ type: 'mock node' }] }) },
-			model: { title: 'Mock Title' }
-		}
+
 		const component = renderer.create(<VisualEditor {...props} />)
 
 		component.getInstance().reload()
@@ -1348,15 +1401,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('onResized sets state.contentRect', () => {
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [{ type: 'mockNode' }] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
-			},
-			model: { title: 'Mock Title' }
-		}
 		const component = mount(<VisualEditor {...props} />)
 
 		expect(component.state().contentRect).toBe(null)
@@ -1448,5 +1492,62 @@ describe('VisualEditor', () => {
 		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
 		expect(spy).not.toHaveBeenCalled()
 		expect(instance.state.saveState).toBe('')
+	})
+
+	test('PageEditor component doesnt save if any input field is invalid', () => {
+		const props = { model: { title: '' }, draft: { accessLevel: FULL } }
+		const mockFn = jest.fn()
+		const spy = jest.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
+		const hasInvalidFieldsSpy = jest.spyOn(VisualEditor.prototype, 'hasInvalidFields')
+
+		const input = document.createElement('input')
+		input.reportValidity = jest.fn().mockReturnValue(false)
+		document.body.appendChild(input)
+
+		const component = mount(<VisualEditor {...props} />)
+		const instance = component.instance()
+
+		instance.markUnsaved()
+		instance.saveModule('mockId')
+
+		// eslint-disable-next-line no-undefined
+		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
+		expect(spy).not.toHaveBeenCalled()
+		expect(hasInvalidFieldsSpy).toHaveBeenCalled()
+		expect(instance.state.saveState).toBe('')
+
+		document.body.removeChild(input)
+	})
+
+	test('PageEditor component saves if all input fields are valid', () => {
+		const props = {
+			model: {
+				title: '',
+				flatJSON: jest.fn().mockReturnValue({ content: {} }),
+				children: []
+			},
+			saveDraft: jest.fn().mockResolvedValue(true),
+			draft: { accessLevel: FULL }
+		}
+		const spy = jest
+			.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
+			.mockImplementation(() => {})
+		const hasInvalidFieldsSpy = jest.spyOn(VisualEditor.prototype, 'hasInvalidFields')
+
+		const input = document.createElement('input')
+		input.reportValidity = jest.fn().mockReturnValue(true)
+		document.body.appendChild(input)
+
+		const component = mount(<VisualEditor {...props} />)
+		const instance = component.instance()
+
+		instance.markUnsaved()
+		instance.saveModule('mockId')
+
+		expect(hasInvalidFieldsSpy).toHaveBeenCalled()
+		expect(spy).toHaveBeenCalled()
+		expect(instance.state.saveState).toBe('saving')
+
+		document.body.removeChild(input)
 	})
 })

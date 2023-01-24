@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-code",
-	"version": "14.1.0",
+	"version": "15.1.0",
 	"license": "AGPL-3.0-only",
 	"description": "Code content chunk for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^14.1.0"
+		"obojobo-lib-utils": "^15.1.0"
 	},
 	"jest": {
 		"testMatch": [

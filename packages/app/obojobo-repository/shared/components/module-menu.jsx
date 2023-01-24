@@ -4,6 +4,7 @@ const React = require('react')
 const ButtonLink = require('./button-link')
 const Button = require('./button')
 const { urlForEditor } = require('../repository-utils')
+const { FULL, MINIMAL } = require('obojobo-express/server/constants')
 
 const ModuleMenu = props => {
 	const onShare = () => {
@@ -20,10 +21,12 @@ const ModuleMenu = props => {
 				<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
 					Preview
 				</ButtonLink>
-				<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
-					Edit
-				</ButtonLink>
-				<Button onClick={onShare}>Share</Button>
+				{props.accessLevel !== MINIMAL && (
+					<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
+						Edit
+					</ButtonLink>
+				)}
+				{props.accessLevel === FULL && <Button onClick={onShare}>Share</Button>}
 				<hr />
 				<Button onClick={onMore} className="more">
 					More...
