@@ -6,6 +6,7 @@ const ReactModal = require('react-modal')
 const Button = require('./button')
 const PeopleSearchDialog = require('./people-search-dialog-hoc')
 const PeopleListItem = require('./people-list-item')
+const { FULL, PARTIAL, MINIMAL, levelName } = require('obojobo-express/server/constants')
 
 class ModulePermissionsDialog extends React.Component {
 	constructor(props) {
@@ -15,6 +16,7 @@ class ModulePermissionsDialog extends React.Component {
 		this.closePeoplePicker = this.closePeoplePicker.bind(this)
 		this.addPerson = this.addPerson.bind(this)
 		this.removePerson = this.removePerson.bind(this)
+		this.changeAccessLevel = this.changeAccessLevel.bind(this)
 	}
 
 	componentDidMount() {
@@ -38,10 +40,16 @@ class ModulePermissionsDialog extends React.Component {
 		if (userId === this.props.currentUserId) {
 			const response = window.confirm('Remove yourself from this module?') //eslint-disable-line no-alert
 			if (!response) return
-		}
 
-		this.props.deleteModulePermissions(this.props.draftId, userId)
-		this.props.onClose()
+			this.props.deleteModulePermissions(this.props.draftId, userId)
+			this.props.onClose()
+		} else {
+			this.props.deleteModulePermissions(this.props.draftId, userId)
+		}
+	}
+
+	changeAccessLevel(userId, targetLevel) {
+		this.props.changeAccessLevel(this.props.draftId, userId, targetLevel)
 	}
 
 	renderModal() {
@@ -70,11 +78,29 @@ class ModulePermissionsDialog extends React.Component {
 		if (this.props.draftPermissions[this.props.draftId]) {
 			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
 				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
+					<div className="access-level-dropdown">
+						<span>Level:</span>
+						<select
+							onChange={event => this.changeAccessLevel(p.id, event.target.value)}
+							disabled={p.id === this.props.currentUserId}
+						>
+							<option value={levelName[FULL]} selected={p.accessLevel === FULL}>
+								Full
+							</option>
+							<option value={levelName[PARTIAL]} selected={p.accessLevel === PARTIAL}>
+								Partial
+							</option>
+							<option value={levelName[MINIMAL]} selected={p.accessLevel === MINIMAL}>
+								Minimal
+							</option>
+						</select>
+					</div>
 					<Button
 						className="close-button"
 						onClick={() => {
 							this.removePerson(p.id)
 						}}
+						disabled={p.id === this.props.currentUserId}
 					>
 						×
 					</Button>
@@ -95,7 +121,7 @@ class ModulePermissionsDialog extends React.Component {
 				</div>
 				<div className="wrapper">
 					<h1 className="title">Module Access</h1>
-					<div className="sub-title">People who can edit this module</div>
+					<div className="sub-title">People who can access this module</div>
 					<Button id="modulePermissionsDialog-addPeopleButton" onClick={this.openPeoplePicker}>
 						Add People
 					</Button>

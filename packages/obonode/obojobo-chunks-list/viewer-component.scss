@@ -35,3 +35,11 @@
 		}
 	}
 }
+
+.component[data-obo-component='true'] {
+	.obojobo-draft--chunks--list {
+		.obo-text {
+			display: inline;
+		}
+	}
+}

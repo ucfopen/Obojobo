@@ -534,6 +534,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
       </button>
     </div>
     <div
+      accessLevel={1}
       className="mockFileToolbarViewer"
       insertableItems="mock-insertable-items"
       mode="visual"
@@ -1194,6 +1195,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
       </button>
     </div>
     <div
+      accessLevel={1}
       className="mockFileToolbarViewer"
       insertableItems="mock-insertable-items"
       mode="visual"
@@ -1854,6 +1856,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
       </button>
     </div>
     <div
+      accessLevel={1}
       className="mockFileToolbarViewer"
       insertableItems="mock-insertable-items"
       mode="visual"
@@ -2560,6 +2563,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
       </button>
     </div>
     <div
+      accessLevel={1}
       className="mockFileToolbarViewer"
       insertableItems="mock-insertable-items"
       mode="visual"
@@ -3216,6 +3220,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
       </button>
     </div>
     <div
+      accessLevel={1}
       className="mockFileToolbarViewer"
       insertableItems="mock-insertable-items"
       mode="visual"

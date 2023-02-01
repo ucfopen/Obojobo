@@ -80,25 +80,23 @@ class Draft {
 		return draftNode
 	}
 
-	static deleteByIdAndUser(id, userId) {
+	static deleteById(id) {
 		return db
 			.none(
 				`
 			UPDATE drafts
 			SET deleted = TRUE
 			WHERE id = $[id]
-			AND user_id = $[userId]
 			`,
 				{
-					id,
-					userId
+					id
 				}
 			)
 			.then(() => {
-				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id, userId })
+				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id })
 			})
 			.catch(error => {
-				logger.logError('Draft deleteByIdAndUser Error', error)
+				logger.logError('Draft deleteById Error', error)
 				throw error
 			})
 	}
@@ -110,7 +108,6 @@ class Draft {
 			UPDATE drafts
 			SET deleted = FALSE
 			WHERE id = $[id]
-			AND user_id = $[userId]
 			`,
 				{
 					id,

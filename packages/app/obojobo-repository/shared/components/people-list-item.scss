@@ -4,10 +4,12 @@
 	$dimensions-avatar: 1.8em;
 	$dimensions-close-button: 1.2em;
 
-	padding: 0.3em;
+	display: flex;
 	margin: 0 auto;
 	position: relative;
 	border-radius: 0.25em;
+	text-align: left;
+	align-items: center;
 
 	&:hover {
 		background-color: lighten($color-banner-bg, 2%);
@@ -38,6 +40,7 @@
 	.user-info {
 		padding-left: 2.5em;
 		padding-right: 2.5em;
+		flex: 2;
 	}
 
 	> button {
@@ -52,9 +55,7 @@
 		min-width: $dimensions-close-button;
 		line-height: $dimensions-close-button;
 		background-color: inherit;
-		position: absolute;
-		right: 0.5em;
-		top: 50%;
 		transform: translate(0, -50%);
+		flex: 1;
 	}
 }
