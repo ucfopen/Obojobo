@@ -40,6 +40,7 @@ const Excerpt = props => {
 						<cite>
 							{modelState.citation.items.map((textItem, index) => (
 								<TextGroupEl
+									className="excerpt-citation-text"
 									parentModel={props.model}
 									textItem={textItem}
 									groupIndex={index}

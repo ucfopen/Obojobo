@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Radio Icons Node builds the expected component 1`] = `
+exports[`Radio Icons Node builds the expected component - icons are functions 1`] = `
 <div
   aria-label="sizes"
   className="radio-icons"
@@ -28,7 +28,9 @@ exports[`Radio Icons Node builds the expected component 1`] = `
       <span>
         small
       </span>
-      image
+      <svg>
+        one
+      </svg>
     </label>
     <label
       className="is-selected is-option-medium"
@@ -49,7 +51,9 @@ exports[`Radio Icons Node builds the expected component 1`] = `
       <span>
         medium
       </span>
-      image
+      <svg>
+        two
+      </svg>
     </label>
     <label
       className="is-not-selected is-option-large"
@@ -70,7 +74,91 @@ exports[`Radio Icons Node builds the expected component 1`] = `
       <span>
         large
       </span>
-      image
+      <svg>
+        three
+      </svg>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`Radio Icons Node builds the expected component - icons are strings 1`] = `
+<div
+  aria-label="sizes"
+  className="radio-icons"
+  role="radiogroup"
+>
+  <div
+    className="options"
+  >
+    <label
+      className="is-not-selected is-option-small"
+      onMouseDown={[Function]}
+      style={
+        Object {
+          "transform": "translate(0px, 0)",
+        }
+      }
+    >
+      <input
+        checked={false}
+        name="sizes"
+        onChange={[Function]}
+        type="radio"
+        value="small"
+      />
+      <span>
+        small
+      </span>
+      <img
+        src="image1"
+      />
+    </label>
+    <label
+      className="is-selected is-option-medium"
+      onMouseDown={[Function]}
+      style={
+        Object {
+          "transform": "translate(-1px, 0)",
+        }
+      }
+    >
+      <input
+        checked={true}
+        name="sizes"
+        onChange={[Function]}
+        type="radio"
+        value="medium"
+      />
+      <span>
+        medium
+      </span>
+      <img
+        src="image2"
+      />
+    </label>
+    <label
+      className="is-not-selected is-option-large"
+      onMouseDown={[Function]}
+      style={
+        Object {
+          "transform": "translate(-2px, 0)",
+        }
+      }
+    >
+      <input
+        checked={false}
+        name="sizes"
+        onChange={[Function]}
+        type="radio"
+        value="large"
+      />
+      <span>
+        large
+      </span>
+      <img
+        src="image3"
+      />
     </label>
   </div>
 </div>

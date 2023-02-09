@@ -5,7 +5,7 @@ exports[`Excerpt Content Node Node builds component when selected and collapsed 
   className="excerpt-content"
 >
   <div
-    className="attributes-box"
+    className="attributes-box "
     contentEditable={false}
     onMouseDown={[Function]}
   >

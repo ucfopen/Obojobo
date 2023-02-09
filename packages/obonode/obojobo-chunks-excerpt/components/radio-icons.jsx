@@ -35,7 +35,7 @@ const RadioIcons = ({ name, options, selectedOption, ariaLabel, onChangeOption }
 							onChange={onChange}
 						/>
 						<span>{o.label}</span>
-						{o.icon}
+						{typeof o.icon === 'function' ? o.icon() : <img src={o.icon}></img>}
 					</label>
 				))}
 			</div>

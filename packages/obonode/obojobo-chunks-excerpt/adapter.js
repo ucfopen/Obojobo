@@ -1,6 +1,5 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-// const { TextGroupAdapter } = Common.chunk.textChunk
 const { TextGroup } = Common.textGroup
 
 const Adapter = {
@@ -85,6 +84,14 @@ const Adapter = {
 
 			if (attrs.content.effect) {
 				model.modelState.effect = attrs.content.effect
+			}
+
+			if (attrs.content.topEdge) {
+				model.modelState.topEdge = attrs.content.topEdge
+			}
+
+			if (attrs.content.bottomEdge) {
+				model.modelState.bottomEdge = attrs.content.bottomEdge
 			}
 		}
 	}

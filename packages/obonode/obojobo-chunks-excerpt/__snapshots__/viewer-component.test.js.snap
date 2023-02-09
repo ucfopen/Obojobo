@@ -11,7 +11,7 @@ exports[`Excerpt Excerpt component 1`] = `
   tabIndex={-1}
 >
   <div
-    className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-undefined is-bottom-edge-type-undefined is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
+    className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-normal is-bottom-edge-type-normal is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
   >
     <blockquote
       cite="test"
@@ -128,7 +128,7 @@ exports[`Excerpt Excerpt component with citation 1`] = `
   tabIndex={-1}
 >
   <div
-    className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-undefined is-bottom-edge-type-undefined is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
+    className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-normal is-bottom-edge-type-normal is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
   >
     <blockquote
       cite="test"
@@ -259,7 +259,7 @@ exports[`Excerpt Excerpt component with effect 1`] = `
   tabIndex={-1}
 >
   <div
-    className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-undefined is-bottom-edge-type-undefined is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-showing-effect"
+    className="text-chunk obojobo-draft--chunks--excerpt pad is-body-style-type-filled-box is-top-edge-type-normal is-bottom-edge-type-normal is-width-medium is-font-sans is-font-style-undefined is-line-height-type-moderate is-font-size-smaller is-showing-effect"
   >
     <blockquote
       cite="test"
