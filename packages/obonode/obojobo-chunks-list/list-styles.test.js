@@ -291,24 +291,35 @@ describe('List Styles', () => {
 		expect(ls.toDescriptor()).toEqual(other.toDescriptor())
 	})
 
-	test('all lists dont have a start attribute as default', () => {
+	test('all lists do not have a start attribute and are unordered as default', () => {
 		const ls = new ListStyles()
 		ls.init()
-		expect(ls.type).toBe('unordered')
-		expect(ls.start).toBe(undefined)
+
+		for (const indent in ls.styles) {
+			ls.get(indent)
+			expect(ls.type).toBe('unordered')
+			expect(ls.start).toBe(undefined)
+		}
 	})
 
-	test('all unordered lists dont have a start attribute', () => {
+	test('all unordered lists do not have a start attribute', () => {
 		const ls = new ListStyles('unordered')
 		ls.init()
-		expect(ls.type).toBe('unordered')
-		expect(ls.start).toBe(undefined)
+
+		for (const indent in ls.styles) {
+			ls.get(indent)
+			expect(ls.type).toBe('unordered')
+			expect(ls.start).toBe(undefined)
+		}
 	})
 
 	test('all ordered lists do have a start attribute', () => {
 		const ls = new ListStyles('ordered')
-		ls.init()
-		expect(ls.type).toBe('ordered')
-		expect(ls.start).toBe(true)
+
+		for (const indent in ls.styles) {
+			ls.get(indent)
+			expect(ls.type).toBe('ordered')
+			expect(ls.start).toBe(true)
+		}
 	})
 })
