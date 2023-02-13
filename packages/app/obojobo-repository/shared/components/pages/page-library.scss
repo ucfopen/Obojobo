@@ -1,4 +1,14 @@
+/* stylelint-disable */
+@import '../../../client/css/defaults';
+
 // reduce a larger font-size set on an ancestor in the library page
 .repository--nav--links--search {
 	font-size: 0.9em;
+}
+
+.repository--main-content--no-filter-results-text {
+	display: block;
+	margin: 1em auto;
+	color: $color-text-placeholder;
+	text-align: center;
 }

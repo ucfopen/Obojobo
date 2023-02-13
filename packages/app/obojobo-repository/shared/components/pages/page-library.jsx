@@ -15,32 +15,45 @@ const title = 'Module Library'
 const PageLibrary = props => {
 	const [filterString, setFilterString] = React.useState('')
 
-	const filteredDisplay = props.collections.map(collection => {
-		const visibleModulesInCollection = filterModules(collection.drafts, filterString, false)
-		const modulesInCollectionRender = visibleModulesInCollection.map(draft => (
-			<Module key={draft.draftId} {...draft}></Module>
-		))
+	let filteredDisplay = props.collections
+		.map(collection => {
+			const visibleModulesInCollection = filterModules(collection.drafts, filterString, false)
+			const modulesInCollectionRender = visibleModulesInCollection.map(draft => (
+				<Module key={draft.draftId} {...draft}></Module>
+			))
 
-		if (visibleModulesInCollection.length) {
-			return (
-				<span key={collection.id}>
-					<div className="repository--main-content--title">
-						<span>{collection.title}</span>
-					</div>
-					<div className="repository--item-list--collection">
-						<div className="repository--item-list--collection--item-wrapper">
-							<div className="repository--item-list--row">
-								<div className="repository--item-list--collection--item--multi-wrapper">
-									{modulesInCollectionRender}
+			if (visibleModulesInCollection.length) {
+				return (
+					<span
+						key={collection.id}
+						className="repository--main-content--item-list--collection-wrapper"
+					>
+						<div className="repository--main-content--title">
+							<span>{collection.title}</span>
+						</div>
+						<div className="repository--item-list--collection">
+							<div className="repository--item-list--collection--item-wrapper">
+								<div className="repository--item-list--row">
+									<div className="repository--item-list--collection--item--multi-wrapper">
+										{modulesInCollectionRender}
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</span>
-			)
-		}
-		return null
-	})
+					</span>
+				)
+			}
+			return null
+		})
+		.filter(c => c !== null)
+
+	if (!filteredDisplay.length) {
+		filteredDisplay = (
+			<span className="repository--main-content--no-filter-results-text">
+				No modules found matching provided filter!
+			</span>
+		)
+	}
 
 	return (
 		<LayoutDefault

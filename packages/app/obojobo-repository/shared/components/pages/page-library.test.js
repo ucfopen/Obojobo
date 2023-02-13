@@ -18,7 +18,12 @@ describe('PageLibrary', () => {
 		const component = shallow(<PageLibrary currentUser={mockCurrentUser} />)
 
 		const mainContentChild = component.find('.repository--main-content')
-		expect(mainContentChild.find('span').length).toBe(0)
+		expect(
+			mainContentChild.find('.repository--main-content--item-list--collection-wrapper').length
+		).toBe(0)
+		expect(mainContentChild.find('.repository--main-content--no-filter-results-text').length).toBe(
+			1
+		)
 	})
 
 	test('renders correctly when collections are provided but contain no drafts', () => {
@@ -39,8 +44,15 @@ describe('PageLibrary', () => {
 			<PageLibrary currentUser={mockCurrentUser} collections={mockCollections} />
 		)
 
+		const mainContentChild = component.find('.repository--main-content')
 		const mainContentSpans = component.find('.repository--main-content > span')
-		expect(mainContentSpans.length).toBe(0)
+		expect(mainContentSpans.length).toBe(1)
+		expect(
+			mainContentChild.find('.repository--main-content--item-list--collection-wrapper').length
+		).toBe(0)
+		expect(mainContentChild.find('.repository--main-content--no-filter-results-text').length).toBe(
+			1
+		)
 	})
 
 	test('renders correctly when collections are provided and contain drafts', () => {
