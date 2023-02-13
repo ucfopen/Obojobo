@@ -96,7 +96,7 @@ describe('Excerpt Converter', () => {
 			content: {
 				font: 'monospace',
 				bodyStyle: 'term-green',
-				citation: [{}]
+				citation: 'citation text'
 			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
@@ -114,12 +114,7 @@ describe('Excerpt Converter', () => {
 			content: {
 				font: 'monospace',
 				bodyStyle: 'term-green',
-				citation: [
-					{
-						data: { align: 'center', indent: 0, hangingIndent: 0 },
-						text: { value: 'Citation Text', styleList: [] }
-					}
-				]
+				citation: 'Citation Text'
 			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)

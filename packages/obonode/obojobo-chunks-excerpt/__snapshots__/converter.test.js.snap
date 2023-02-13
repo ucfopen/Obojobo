@@ -11,9 +11,7 @@ Object {
       ],
       "content": Object {
         "bodyStyle": "term-green",
-        "citation": Array [
-          Object {},
-        ],
+        "citation": "citation text",
         "font": "monospace",
       },
       "subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
@@ -22,10 +20,14 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": undefined,
+          "children": Array [
+            Object {
+              "text": "citation text",
+            },
+          ],
           "content": Object {
-            "align": "left",
-            "hangingIndent": false,
+            "align": "center",
+            "hangingIndent": 0,
             "indent": 0,
           },
           "subtype": "ObojoboDraft.Chunks.Excerpt.CitationLine",
@@ -60,19 +62,7 @@ Object {
       ],
       "content": Object {
         "bodyStyle": "term-green",
-        "citation": Array [
-          Object {
-            "data": Object {
-              "align": "center",
-              "hangingIndent": 0,
-              "indent": 0,
-            },
-            "text": Object {
-              "styleList": Array [],
-              "value": "Citation Text",
-            },
-          },
-        ],
+        "citation": "Citation Text",
         "font": "monospace",
       },
       "subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
@@ -81,7 +71,11 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": undefined,
+          "children": Array [
+            Object {
+              "text": "Citation Text",
+            },
+          ],
           "content": Object {
             "align": "center",
             "hangingIndent": 0,
@@ -116,19 +110,7 @@ Object {
     },
   ],
   "content": Object {
-    "citation": Array [
-      Object {
-        "data": Object {
-          "align": undefined,
-          "hangingIndent": 0,
-          "indent": 0,
-        },
-        "text": Object {
-          "styleList": Array [],
-          "value": "",
-        },
-      },
-    ],
+    "citation": "Citation Line",
   },
   "id": "mockKey",
   "type": "ObojoboDraft.Chunks.Excerpt",
@@ -143,19 +125,7 @@ Object {
     },
   ],
   "content": Object {
-    "citation": Array [
-      Object {
-        "data": Object {
-          "align": undefined,
-          "hangingIndent": 0,
-          "indent": 0,
-        },
-        "text": Object {
-          "styleList": Array [],
-          "value": "",
-        },
-      },
-    ],
+    "citation": "Citation Line",
     "triggers": "mock-triggers",
   },
   "id": "mockKey",

@@ -1,11 +1,10 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
-import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
-// const EXCERPT_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptText'
-// const EXCERPT_TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptLine'
-// const CITE_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationText'
+const EXCERPT_CONTENT_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptContent'
+const CITE_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationText'
 const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
 /**
  * Generates an Obojobo Excerpt Node from a Slate node.
@@ -16,37 +15,12 @@ const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
  */
 const slateToObo = node => {
 	const excerptContent = node.children[0].children
-	const citationText = node.children[1].children
 
-	// const excerptTextGroup = excerptText.map(line => {
-	// 	const textLine = {
-	// 		text: { value: '', styleList: [] },
-	// 		data: {
-	// 			indent: line.content.indent,
-	// 			hangingIndent: line.content.hangingIndent,
-	// 			align: line.content.align
-	// 		}
-	// 	}
-
-	// 	TextUtil.slateToOboText(line, textLine)
-
-	// 	return textLine
-	// })
-
-	const citationTextGroup = citationText.map(line => {
-		const textLine = {
-			text: { value: '', styleList: [] },
-			data: {
-				indent: line.content.indent,
-				hangingIndent: line.content.hangingIndent,
-				align: line.content.align
-			}
-		}
-
-		TextUtil.slateToOboText(line, textLine)
-
-		return textLine
-	})
+	// ideally the slate-ness of the citation node would be preserved
+	// but it's only ever going to be a single line of centered text
+	// so there's really no reason to go to the trouble here
+	// this seems a bit magical, though - may be a convenience function somewhere?
+	const citationText = node.children[1].children[0].children[0].text
 
 	return {
 		id: node.id,
@@ -56,7 +30,8 @@ const slateToObo = node => {
 		),
 		content: withoutUndefined({
 			triggers: node.content.triggers,
-			citation: citationTextGroup,
+			objectives: node.content.objectives,
+			citation: citationText,
 			bodyStyle: node.content.bodyStyle,
 			topEdge: node.content.topEdge,
 			bottomEdge: node.content.bottomEdge,
@@ -80,36 +55,32 @@ const slateToObo = node => {
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 
-	slateNode.children = slateNode.children.map(child => {
-		const children = Common.Registry.getItemForType(child.type).oboToSlate(child)
+	const parsedChildren = slateNode.children.map(child => Component.helpers.oboToSlate(child))
 
-		return {
+	slateNode.children = [
+		{
 			type: EXCERPT_NODE,
-			subtype: 'ObojoboDraft.Chunks.Excerpt.ExcerptContent',
+			subtype: EXCERPT_CONTENT_NODE,
 			content: {
 				...slateNode.content
 			},
 
-			children: [children]
+			children: parsedChildren
 		}
-	})
+	]
 
 	slateNode.children.push({
-		type: 'ObojoboDraft.Chunks.Excerpt',
-		subtype: 'ObojoboDraft.Chunks.Excerpt.CitationText',
+		type: EXCERPT_NODE,
+		subtype: CITE_TEXT_NODE,
 		content: { indent: 0, hangingIndent: 0 },
-		children: node.content.citation.map(line => {
-			const indent = line.data ? line.data.indent : 0
-			const hangingIndent = line.data ? line.data.hangingIndent : false
-			const align = line.data ? line.data.align : 'left'
-
-			return {
+		children: [
+			{
 				type: EXCERPT_NODE,
 				subtype: CITE_LINE_NODE,
-				content: { indent, hangingIndent, align },
-				children: TextUtil.parseMarkings(line)
+				content: { indent: 0, hangingIndent: 0, align: 'center' },
+				children: [{ text: node.content.citation }]
 			}
-		})
+		]
 	})
 
 	delete slateNode.content.excerpt
