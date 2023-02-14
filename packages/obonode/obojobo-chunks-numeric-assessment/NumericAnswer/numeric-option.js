@@ -158,7 +158,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 				<div className="is-type-range">
 					<label className="select requirement">
 						Answer Type
-						<div style={{ display: 'inline', position: 'relative', left: 0 + 'em', top: 0 + '%' }}>
+						<div className="more-info-tooltip">
 							<NumericInputMoreInfoButton></NumericInputMoreInfoButton>
 						</div>
 						<select
@@ -205,7 +205,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 				<div className="is-type-margin">
 					<label className="select requirement">
 						Answer Type
-						<div style={{ display: 'inline', position: 'relative', left: 0 + 'em', top: 0 + '%' }}>
+						<div className="more-info-tooltip">
 							<NumericInputMoreInfoButton></NumericInputMoreInfoButton>
 						</div>
 						<select
@@ -264,7 +264,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 				<div className="is-type-exact">
 					<label className="select requirement">
 						Answer Type
-						<div style={{ display: 'inline', position: 'relative', left: 0 + 'em', top: 0 + '%' }}>
+						<div className="more-info-tooltip">
 							<NumericInputMoreInfoButton></NumericInputMoreInfoButton>
 						</div>
 						<select
