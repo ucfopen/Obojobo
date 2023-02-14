@@ -10,7 +10,9 @@ exports[`UpdatedModuleDialog UpdatedModuleDialog component 1`] = `
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"
@@ -50,7 +52,7 @@ exports[`UpdatedModuleDialog UpdatedModuleDialog component 1`] = `
           Click close dialog to review and catalog your answers.
         </p>
         <p>
-          When you're ready, click restart to start a new attempt with the updated module
+          When you're ready, click reload to view the updated module before starting a new attempt.
         </p>
       </div>
       <div

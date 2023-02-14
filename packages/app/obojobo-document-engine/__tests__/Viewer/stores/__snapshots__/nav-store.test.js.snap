@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NavStore Regisers events w/ dispatcher 1`] = `
+exports[`NavStore Registers events w/ dispatcher 1`] = `
 Object {
   "nav:close": [Function],
   "nav:goto": [Function],
@@ -385,6 +385,8 @@ Array [
 ]
 `;
 
+exports[`NavStore nav:goto does not change page when locked if ignoreLock is false 1`] = `undefined`;
+
 exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
 Array [
   Object {
@@ -454,6 +456,8 @@ Array [
 ]
 `;
 
+exports[`NavStore nav:next does not change page when locked 1`] = `undefined`;
+
 exports[`NavStore nav:next does not change to invalid page 1`] = `undefined`;
 
 exports[`NavStore nav:open event fires and updates state 1`] = `
@@ -502,6 +506,8 @@ Array [
   },
 ]
 `;
+
+exports[`NavStore nav:prev does not change page when locked 1`] = `undefined`;
 
 exports[`NavStore nav:prev does not change to invalid page 1`] = `undefined`;
 

@@ -114,6 +114,9 @@ exports.requireCanDeleteDrafts = (req, res, next) =>
 exports.requireCanPreviewDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canPreviewDrafts')
 
+exports.requireCanViewStatsPage = (req, res, next) =>
+	requireCurrentUser(req, res, next, 'canViewStatsPage')
+
 exports.requireCanViewSystemStats = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canViewSystemStats')
 

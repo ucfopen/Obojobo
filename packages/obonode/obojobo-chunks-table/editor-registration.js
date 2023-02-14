@@ -1,5 +1,5 @@
 import React from 'react'
-import { Transforms, Node, Range, Path, Editor, Element } from 'slate'
+import { Transforms, Node, Range, Editor, Element } from 'slate'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 //import ClipboardUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -41,36 +41,126 @@ const plugins = {
 	// Editable Plugins - These are used by the PageEditor component to augment React functions
 	// They affect individual nodes independently of one another
 	onKeyDown(entry, editor, event) {
+		// Calculate next path based on direction given
+		const calculateNextPath = direction => {
+			const [node, row, col] = editor.selection.anchor.path
+
+			const numCols = editor.children[node].content.numCols
+
+			let nextPath
+
+			switch (direction) {
+				case 'down':
+					nextPath = [node, row + 1, col]
+					break
+				case 'right':
+					nextPath = [node, row, col + 1]
+					break
+				case 'up':
+					nextPath = [node, row - 1, col]
+					break
+				case 'left':
+					nextPath = [node, row, col - 1]
+					break
+			}
+
+			// If next path is valid, jump to it
+			if (Node.has(editor, nextPath)) {
+				return nextPath
+			} else if (direction === 'right' && Node.has(editor, [node, row + 1, 0])) {
+				// If moving right but already at rightmost cell, move to beginning of the row below
+				return [node, row + 1, 0]
+			} else if (direction === 'left' && Node.has(editor, [node, row - 1, numCols - 1])) {
+				// If moving left but already at leftmost cell, move to end of the row above
+				return [node, row - 1, numCols - 1]
+			} else if (direction === 'up' && Node.has(editor, [node - 1])) {
+				// Move to node above table
+				return [node - 1]
+			} else if (direction === 'down' && Node.has(editor, [node + 1])) {
+				// Move to node below table
+				return [node + 1]
+			}
+
+			// If no adjacent paths, return current path
+			return editor.selection.anchor.path
+		}
+
+		// Move editor selection based on direction given
+		const moveCursor = direction => {
+			const currentPath = editor.selection.anchor.path
+			const nextPath = calculateNextPath(direction)
+
+			const isExitingTable = nextPath[0] !== currentPath[0]
+
+			if (nextPath !== currentPath) {
+				const focus = Editor.start(editor, nextPath)
+				let anchor
+
+				// If exiting table, do not select entire content of new node
+				if (isExitingTable) {
+					anchor = focus
+				} else {
+					anchor = Editor.end(editor, nextPath)
+				}
+
+				Transforms.setSelection(editor, {
+					focus,
+					anchor
+				})
+			}
+		}
+
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
 				return KeyDownUtil.deleteNodeContents(event, editor, entry, event.key === 'Delete')
 
 			case 'Enter':
+			case 'ArrowDown':
 				event.preventDefault()
-				if (Range.isCollapsed(editor.selection)) {
-					// Getting the table object.
-					const [tablePath] = Editor.nodes(editor, {
-						mode: 'lowest',
-						match: nodeMatch => Element.isElement(nodeMatch)
-					})
+				moveCursor('down')
+				break
 
-					// Getting the cell in which we last clicked on.
-					const cellPath = tablePath[1]
+			case 'Tab':
+				// If shift isn't pressed and editing text, allow tab navigation to dropdown menu
+				if (!event.shiftKey && Range.isCollapsed(editor.selection)) break
 
-					// Check if there is a row below this one
-					const siblingPath = Path.next(cellPath.slice(0, -1))
-					if (Node.has(editor, siblingPath)) {
-						// If there is, jump down to the cell
-						// below the current one
-						const focus = Editor.start(editor, siblingPath.concat(cellPath[cellPath.length - 1]))
-						const anchor = Editor.end(editor, siblingPath.concat(cellPath[cellPath.length - 1]))
-						Transforms.setSelection(editor, {
-							focus,
-							anchor
-						})
-					}
+				event.preventDefault()
+
+				// Handle Shift+Tab left navigation
+				if (event.shiftKey) {
+					moveCursor('left')
+				} else {
+					moveCursor('right')
 				}
+				break
+
+			case 'ArrowRight':
+				// If editing text, don't move to next cell
+				if (Range.isCollapsed(editor.selection)) break
+
+				// If pressing Ctrl or Command, deselect text
+				if (event.metaKey || event.ctrlKey) break
+
+				event.preventDefault()
+				moveCursor('right')
+				break
+
+			case 'ArrowLeft':
+				// If editing text, don't move to next cell
+				if (Range.isCollapsed(editor.selection)) break
+
+				// If pressing Ctrl or Command, deselect text
+				if (event.metaKey || event.ctrlKey) break
+
+				event.preventDefault()
+				moveCursor('left')
+				break
+
+			case 'ArrowUp':
+				event.preventDefault()
+				moveCursor('up')
+				break
 		}
 	},
 	renderNode(props) {

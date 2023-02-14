@@ -5,13 +5,6 @@ const {
 } = require('./insert-events')
 const mockInsertEvent = require('obojobo-express/server/insert_event')
 
-const mockCreateAssessmentAttemptSubmittedEvent = jest
-	.fn()
-	.mockReturnValue('mockSubmitCaliperPayload')
-const mockCreateAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockScoreCaliperPayload')
-const mockCreateAssessmentAttemptImportedEvent = jest
-	.fn()
-	.mockReturnValue('mockImportCaliperPayload')
 const mockGetLatestHighestAssessmentScoreRecord = jest
 	.fn()
 	.mockResolvedValue({ score: 'mockHighestAssessmentScore' })
@@ -29,13 +22,6 @@ jest.mock('obojobo-express/server/lti', () => ({
 	}
 }))
 jest.mock('obojobo-express/server/insert_event')
-jest.mock('obojobo-express/server/routes/api/events/create_caliper_event', () => {
-	return () => ({
-		createAssessmentAttemptScoredEvent: args => mockCreateAssessmentAttemptScoredEvent(args),
-		createAssessmentAttemptSubmittedEvent: args => mockCreateAssessmentAttemptSubmittedEvent(args),
-		createAssessmentAttemptImportedEvent: args => mockCreateAssessmentAttemptImportedEvent(args)
-	})
-})
 
 mockStaticDate()
 
@@ -57,30 +43,11 @@ describe('attempt-end/insert events', () => {
 			'mockRemoteAddress',
 			'mockVisitId'
 		)
-		expect(mockCreateAssessmentAttemptSubmittedEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
-		Object {
-		  "actor": Object {
-		    "id": "mockUserId",
-		    "type": "user",
-		  },
-		  "assessmentId": "mockAssessmentId",
-		  "attemptId": "mockAttemptId",
-		  "contentId": "mockContentId",
-		  "draftId": "mockDraftId",
-		  "extensions": Object {
-		    "attemptCount": "mockAttemptNumber",
-		    "imported": false,
-		    "originalAttemptId": null,
-		    "originalScoreId": null,
-		  },
-		}
-	`)
 
 		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
 		  "action": "assessment:attemptEnd",
 		  "actorTime": "2016-09-22T16:57:14.500Z",
-		  "caliperPayload": "mockSubmitCaliperPayload",
 		  "contentId": "mockContentId",
 		  "draftId": "mockDraftId",
 		  "eventVersion": "1.3.0",
@@ -115,30 +82,11 @@ describe('attempt-end/insert events', () => {
 			'mockOriginalAttemptId',
 			'mockOriginalScoreId'
 		)
-		expect(mockCreateAssessmentAttemptSubmittedEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
-		Object {
-		  "actor": Object {
-		    "id": "mockUserId",
-		    "type": "user",
-		  },
-		  "assessmentId": "mockAssessmentId",
-		  "attemptId": "mockAttemptId",
-		  "contentId": "mockContentId",
-		  "draftId": "mockDraftId",
-		  "extensions": Object {
-		    "attemptCount": "mockAttemptNumber",
-		    "imported": true,
-		    "originalAttemptId": "mockOriginalAttemptId",
-		    "originalScoreId": "mockOriginalScoreId",
-		  },
-		}
-	`)
 
 		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
 		  "action": "assessment:attemptEnd",
 		  "actorTime": "2016-09-22T16:57:14.500Z",
-		  "caliperPayload": "mockSubmitCaliperPayload",
 		  "contentId": "mockContentId",
 		  "draftId": "mockDraftId",
 		  "eventVersion": "1.3.0",
@@ -189,34 +137,10 @@ describe('attempt-end/insert events', () => {
 			'mockIsPreview'
 		)
 
-		expect(mockCreateAssessmentAttemptScoredEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
-		Object {
-		  "actor": Object {
-		    "type": "serverApp",
-		  },
-		  "assessmentId": "mockAssessmentId",
-		  "attemptId": "mockAttemptId",
-		  "attemptScore": "mockAttemptScore",
-		  "contentId": "mockContentId",
-		  "draftId": "mockDraftId",
-		  "extensions": Object {
-		    "assessmentScore": "mockAssessmentScore",
-		    "attemptCount": "mockAttemptNumber",
-		    "attemptScore": "mockAttemptScore",
-		    "highestAssessmentScore": "mockHighestAssessmentScore",
-		    "imported": false,
-		    "ltiScoreSent": "mockLtiScoreSent",
-		    "originalAttemptId": null,
-		    "originalScoreId": null,
-		  },
-		}
-	`)
-
 		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
 		  "action": "assessment:attemptScored",
 		  "actorTime": "2016-09-22T16:57:14.500Z",
-		  "caliperPayload": "mockScoreCaliperPayload",
 		  "contentId": "mockContentId",
 		  "draftId": "mockDraftId",
 		  "eventVersion": "2.2.0",
@@ -279,34 +203,10 @@ describe('attempt-end/insert events', () => {
 			'mockIsPreview'
 		)
 
-		expect(mockCreateAssessmentAttemptScoredEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
-		Object {
-		  "actor": Object {
-		    "type": "serverApp",
-		  },
-		  "assessmentId": "mockAssessmentId",
-		  "attemptId": "mockAttemptId",
-		  "attemptScore": "mockAttemptScore",
-		  "contentId": "mockContentId",
-		  "draftId": "mockDraftId",
-		  "extensions": Object {
-		    "assessmentScore": "mockAssessmentScore",
-		    "attemptCount": "mockAttemptNumber",
-		    "attemptScore": "mockAttemptScore",
-		    "highestAssessmentScore": "mockHighestAssessmentScore",
-		    "imported": true,
-		    "ltiScoreSent": "mockLtiScoreSent",
-		    "originalAttemptId": "mockOriginalAttemptId",
-		    "originalScoreId": "mockOriginalScoreId",
-		  },
-		}
-	`)
-
 		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
 		  "action": "assessment:attemptScored",
 		  "actorTime": "2016-09-22T16:57:14.500Z",
-		  "caliperPayload": "mockScoreCaliperPayload",
 		  "contentId": "mockContentId",
 		  "draftId": "mockDraftId",
 		  "eventVersion": "2.2.0",
@@ -359,8 +259,7 @@ describe('attempt-end/insert events', () => {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId',
 			eventVersion: '1.0.0',
-			isPreview: 'mockIsPreview',
-			caliperPayload: {}
+			isPreview: 'mockIsPreview'
 		})
 	})
 })

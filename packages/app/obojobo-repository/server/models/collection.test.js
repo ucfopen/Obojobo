@@ -26,10 +26,10 @@ describe('Collection Model', () => {
 	test('constructor initializes expected default properties', () => {
 		const c = new CollectionModel({})
 
-		expect(c.id).toBe(null)
+		expect(c.id).toBeNull()
 		expect(c.title).toBe('')
-		expect(c.userId).toBeUndefined()
-		expect(c.createdAt).toBe(null)
+		expect(c.userId).toBeNull()
+		expect(c.createdAt).toBeNull()
 	})
 
 	test('constructor initializes expected properties from provided object', () => {
@@ -68,7 +68,7 @@ describe('Collection Model', () => {
 		})
 	})
 
-	test('create with no title returns a collection', () => {
+	test('createWithUser with no title returns a collection and logs its creation', () => {
 		expect.hasAssertions()
 		const userId = 1
 		const mockNewRawCollection = {
@@ -80,41 +80,140 @@ describe('Collection Model', () => {
 
 		db.one.mockResolvedValueOnce(mockNewRawCollection)
 
-		const mockCallObject = {
-			user_id: userId
-		}
-
-		return CollectionModel.create(mockCallObject).then(model => {
+		return CollectionModel.createWithUser(userId).then(model => {
 			expect(model).toBeInstanceOf(CollectionModel)
 			expect(model.id).toBe('mockCollectionId')
 			expect(model.title).toBe('mockCollectionTitle')
 			expect(model.userId).toBe(userId)
 			expect(model.createdAt).toBe(mockNewRawCollection.created_at)
+			expect(logger.info).toHaveBeenCalledWith('user created collection', {
+				userId,
+				collectionId: 'mockCollectionId',
+				//this is the default if no title is provided - despite the mocked DB response
+				title: 'New Collection'
+			})
 		})
 	})
 
-	test('create calls db.one() correctly', () => {
+	test('createWithUser with title returns a collection and logs its creation', () => {
+		logger.info = jest.fn()
+
 		expect.hasAssertions()
-		const mockCallObject = {
-			title: 'mockCollectionTitle',
-			user_id: 1
+		const userId = 1
+		const mockNewRawCollection = {
+			id: 'mockCollectionId',
+			title: 'New Collection Title',
+			user_id: userId,
+			created_at: new Date().toISOString()
 		}
 
-		db.one.mockResolvedValueOnce({})
+		db.one.mockResolvedValueOnce(mockNewRawCollection)
 
-		const createQuery = `
-				INSERT INTO repository_collections
-					(title, user_id)
-				VALUES
-					($[title], $[user_id])
-				RETURNING
-					id,
-					title,
-					user_id as userId,
-					created_at as createdAt`
+		return CollectionModel.createWithUser(userId, 'New Collection Title').then(model => {
+			expect(model).toBeInstanceOf(CollectionModel)
+			expect(model.id).toBe('mockCollectionId')
+			expect(model.title).toBe('New Collection Title')
+			expect(model.userId).toBe(userId)
+			expect(model.createdAt).toBe(mockNewRawCollection.created_at)
+			expect(logger.info).toHaveBeenCalledWith('user created collection', {
+				userId,
+				collectionId: 'mockCollectionId',
+				title: model.title
+			})
+		})
+	})
 
-		return CollectionModel.create(mockCallObject).then(() => {
-			expect(db.one).toHaveBeenCalledWith(createQuery, mockCallObject)
+	test('rename returns a collection and logs user id, collection id and new title', () => {
+		logger.info = jest.fn()
+
+		expect.hasAssertions()
+
+		db.one.mockResolvedValueOnce({ ...mockRawCollection, title: 'mockCollectionTitle' })
+
+		const userId = 0
+
+		return CollectionModel.rename('mockCollectionId', 'mockCollectionTitle', userId).then(model => {
+			expect(model).toBeInstanceOf(CollectionModel)
+			expect(model.id).toBe('mockCollectionId')
+			expect(model.title).toBe('mockCollectionTitle')
+			expect(model.userId).toBe(0)
+			expect(model.createdAt).toBe(mockRawCollection.created_at)
+			expect(logger.info).toHaveBeenCalledWith('collection renamed', {
+				id: 'mockCollectionId',
+				title: 'mockCollectionTitle',
+				userId
+			})
+		})
+	})
+
+	test('addModule logs a user adding a module to a collection', () => {
+		logger.info = jest.fn()
+
+		expect.hasAssertions()
+
+		const collectionId = 'mockCollectionId'
+		const draftId = 'mockDraftId'
+		const userId = 0
+
+		const mockPayload = { collectionId, draftId, userId }
+		const mockResponse = 1
+
+		db.oneOrNone.mockResolvedValueOnce(mockResponse)
+
+		return CollectionModel.addModule(collectionId, draftId, userId).then(() => {
+			expect(logger.info).toHaveBeenCalledWith('user added module to collection', {
+				...mockPayload,
+				newMapId: mockResponse
+			})
+		})
+	})
+	test('addModule logs nothing when trying to add a module to a collection that already contains that module', () => {
+		logger.info = jest.fn()
+
+		expect.hasAssertions()
+
+		const collectionId = 'mockCollectionId'
+		const draftId = 'mockDraftId'
+		const userId = 0
+
+		db.oneOrNone.mockResolvedValueOnce(null)
+
+		return CollectionModel.addModule(collectionId, draftId, userId).then(() => {
+			expect(logger.info).not.toHaveBeenCalled()
+		})
+	})
+
+	test('removeModule logs a user removing a module from a collection', () => {
+		logger.info = jest.fn()
+
+		expect.hasAssertions()
+
+		const collectionId = 'mockCollectionId'
+		const draftId = 'mockDraftId'
+		const userId = 0
+
+		const mockPayload = { collectionId, draftId, userId }
+
+		db.none.mockResolvedValueOnce(mockPayload)
+
+		return CollectionModel.removeModule(collectionId, draftId, userId).then(() => {
+			expect(logger.info).toHaveBeenCalledWith('user removed module from collection', mockPayload)
+		})
+	})
+
+	test('delete logs a user deleting a collection', () => {
+		logger.info = jest.fn()
+
+		expect.hasAssertions()
+
+		const collectionId = 'mockCollectionId'
+		const userId = 0
+
+		return CollectionModel.delete(collectionId, userId).then(() => {
+			expect(logger.info).toHaveBeenCalledWith('collection deleted by user', {
+				id: collectionId,
+				userId
+			})
 		})
 	})
 
@@ -127,6 +226,8 @@ describe('Collection Model', () => {
 		db.one.mockResolvedValueOnce(mockRawCollection)
 		DraftSummary.fetchAndJoinWhere.mockResolvedValueOnce(mockDrafts)
 
+		const selectSQL = ''
+
 		const joinSQL = `
 			JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id
@@ -138,7 +239,7 @@ describe('Collection Model', () => {
 		return CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.then(collection => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(selectSQL, joinSQL, whereSQL, {
 					collectionId: 'mockCollectionId'
 				})
 				expect(collection.drafts).toEqual(mockDrafts)
@@ -155,6 +256,8 @@ describe('Collection Model', () => {
 		db.one.mockResolvedValueOnce(mockRawCollection)
 		DraftSummary.fetchAndJoinWhere.mockRejectedValueOnce(mockError)
 
+		const selectSQL = ''
+
 		const joinSQL = `
 			JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id
@@ -166,7 +269,7 @@ describe('Collection Model', () => {
 		return CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.catch(error => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(selectSQL, joinSQL, whereSQL, {
 					collectionId: 'mockCollectionId'
 				})
 				expect(error).toBe(mockError)
