@@ -15,6 +15,7 @@ const { focus } = Common.page
 
 // 0.4s Card "flip" time plus an extra 50ms to handle delay
 const DURATION_FLIP_TIME_MS = 450
+const DURATION_DELAY_REFOCUS_TIME = 80
 
 const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
@@ -252,7 +253,7 @@ export default class Question extends React.Component {
 	onEnterPress() {
 		setTimeout(() => {
 			this.assessmentComponentRef.current.inputRef.current.focus()
-		}, 80)
+		}, DURATION_DELAY_REFOCUS_TIME)
 	}
 
 	getMode() {
