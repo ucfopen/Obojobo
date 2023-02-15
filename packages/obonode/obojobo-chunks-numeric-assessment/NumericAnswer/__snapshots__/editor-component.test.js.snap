@@ -13,14 +13,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -88,14 +81,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -163,14 +149,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -238,14 +217,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -313,14 +285,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -388,14 +353,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -463,14 +421,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -538,14 +489,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -645,14 +589,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -752,14 +689,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -859,14 +789,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -966,14 +889,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1073,14 +989,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1180,14 +1089,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1287,14 +1189,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1394,14 +1289,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1501,14 +1389,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1608,14 +1489,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1715,14 +1589,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1822,14 +1689,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -1929,14 +1789,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -2036,14 +1889,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -2125,14 +1971,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -2214,14 +2053,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -2303,14 +2135,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -2392,14 +2217,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -2481,14 +2299,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -2570,14 +2381,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
     >
       Answer Type
       <div
-        style={
-          Object {
-            "display": "inline",
-            "left": "0em",
-            "position": "relative",
-            "top": "0%",
-          }
-        }
+        className="more-info-tooltip"
       >
         <div
           className="obojobo-draft--chunks--numeric-assessment--input-more-info"

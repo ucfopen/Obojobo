@@ -9,14 +9,7 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
   >
     Answer Type
     <div
-      style={
-        Object {
-          "display": "inline",
-          "left": "0em",
-          "position": "relative",
-          "top": "0%",
-        }
-      }
+      className="more-info-tooltip"
     >
       <div
         className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -77,14 +70,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
   >
     Answer Type
     <div
-      style={
-        Object {
-          "display": "inline",
-          "left": "0em",
-          "position": "relative",
-          "top": "0%",
-        }
-      }
+      className="more-info-tooltip"
     >
       <div
         className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -146,14 +132,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
   >
     Answer Type
     <div
-      style={
-        Object {
-          "display": "inline",
-          "left": "0em",
-          "position": "relative",
-          "top": "0%",
-        }
-      }
+      className="more-info-tooltip"
     >
       <div
         className="obojobo-draft--chunks--numeric-assessment--input-more-info"
@@ -245,14 +224,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
   >
     Answer Type
     <div
-      style={
-        Object {
-          "display": "inline",
-          "left": "0em",
-          "position": "relative",
-          "top": "0%",
-        }
-      }
+      className="more-info-tooltip"
     >
       <div
         className="obojobo-draft--chunks--numeric-assessment--input-more-info"
