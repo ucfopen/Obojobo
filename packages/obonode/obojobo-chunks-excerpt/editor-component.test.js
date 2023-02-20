@@ -1,6 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import Excerpt from './editor-component'
+import { Transforms } from 'slate'
 
 jest.mock('slate')
 jest.mock('slate-react')
@@ -94,5 +95,49 @@ describe('Excerpt Node', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('Excerpt component deletes itself', () => {
+		const content = {
+			bodyStyle: 'filled-box',
+			width: 'medium',
+			font: 'sans',
+			lineHeight: 'moderate',
+			fontSize: 'smaller',
+			topEdge: 'normal',
+			bottomEdge: 'normal',
+			effect: true
+		}
+
+		const component = renderer.create(
+			<Excerpt
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					},
+					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				element={{
+					content: content
+				}}
+				selected={true}
+			/>
+		)
+
+		// click Delete button
+		const deleteButton = component.root.findByProps({ className: 'delete-button' })
+		deleteButton.props.onClick()
+
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 })

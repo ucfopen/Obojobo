@@ -6,6 +6,19 @@ exports[`Excerpt Node Node builds component while selected with effect 1`] = `
     className="text-chunk obojobo-draft--chunks--excerpt pad is-selected is-body-style-type-filled-box is-top-edge-type-normal is-bottom-edge-type-normal is-width-medium is-font-sans is-line-height-type-moderate is-font-size-smaller is-showing-effect"
   >
     <blockquote />
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+        type="button"
+      >
+        ×
+      </button>
+    </div>
   </div>
 </div>
 `;
@@ -16,6 +29,19 @@ exports[`Excerpt Node Node builds the expected component 1`] = `
     className="text-chunk obojobo-draft--chunks--excerpt pad is-not-selected is-body-style-type-filled-box is-top-edge-type-normal is-bottom-edge-type-normal is-width-medium is-font-sans is-line-height-type-moderate is-font-size-smaller is-not-showing-effect"
   >
     <blockquote />
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+        type="button"
+      >
+        ×
+      </button>
+    </div>
   </div>
 </div>
 `;
