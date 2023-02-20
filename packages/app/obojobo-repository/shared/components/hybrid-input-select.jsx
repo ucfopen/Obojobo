@@ -9,9 +9,13 @@ const HybridInputSelect = ({ placeholder = 'Enter text', list = [], onChange }) 
 	const [dropdownOpen, setDropdownOpen] = useState(false)
 
 	const handleInputChange = event => {
-		const value = event.target.value
+		let value = event.target.value
 		setText(value)
 		setDropdownOpen(true)
+
+		// sanitize text to remove regex reserved characters
+		// ., + , *, ?, ^, $, (, ), [, ], {, }, |, \
+		value = value.replace(/[.+*,^$(){}|[\]\\]+/g, '')
 
 		if (onChange) onChange({ target: { value } })
 
