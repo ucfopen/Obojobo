@@ -1,0 +1,57 @@
+@import '../../../scss/_includes.scss';
+
+$poppin-pink: #af1b5c;
+$focus-pink: #fbdae6;
+$white: white;
+
+h1 {
+	margin: 0;
+}
+
+p {
+	display: block;
+}
+
+.notification-banner {
+	background-color: $poppin-pink;
+	padding: 1.5em;
+	color: $white;
+	border-radius: 0.5em;
+}
+
+.notification-banner:hover {
+	background-color: $focus-pink;
+	color: $poppin-pink;
+	transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;
+}
+
+.dashboard {
+	margin: 0.1em;
+	border-width: 1em;
+}
+
+.viewer--components--nav .nav-menu {
+	margin-top: 3.5em;
+	margin-left: 0.1em;
+	border-width: 0.5em;
+}
+
+.notification-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.notification-exit-button {
+	color: $poppin-pink;
+	background-color: $white;
+	border: none;
+	border-radius: 0.5em;
+}
+
+.notification-exit-button:hover {
+	color: $focus-pink;
+	background-color: $poppin-pink;
+}
