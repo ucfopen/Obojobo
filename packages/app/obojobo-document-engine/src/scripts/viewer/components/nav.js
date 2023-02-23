@@ -227,9 +227,7 @@ export default class Nav extends React.Component {
 
 	onClickExitNotification() {
 		const isNotificationEnabled = NavUtil.isNotificationEnabled(this.props.navState)
-		//console.log("is noteification enabled in nav b4: " + isNotificationEnabled)
 		NavUtil.setNotificationStatus(!isNotificationEnabled)
-		//console.log("is noteification enabled in nav after: " + isNotificationEnabled)
 	}
 
 	render() {
@@ -241,7 +239,6 @@ export default class Nav extends React.Component {
 		const isNotificationEnabled = NavUtil.isNotificationEnabled(this.props.navState)
 		const notificationTitle = NavUtil.getNotificationTitle(this.props.navState)
 		const notificationText = NavUtil.getNotificationText(this.props.navState)
-		//console.log("title: " + notificationTitle + " plus text: " + notificationText + " plus status: " + isNotificationEnabled)
 
 		const className =
 			'viewer--components--nav' +
