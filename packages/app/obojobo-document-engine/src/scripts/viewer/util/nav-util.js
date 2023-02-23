@@ -254,6 +254,26 @@ const NavUtil = {
 
 	isNavOpen(state) {
 		return state.open
+	},
+
+	isNotificationEnabled(state) {
+		return state.notification
+	},
+
+	getNotificationTitle(state) {
+		return state.title
+	},
+
+	getNotificationText(state) {
+		return state.text
+	},
+
+	setNotificationStatus(notification) {
+		return Dispatcher.trigger('nav:setNotificationStatus', {
+			value: {
+				notification
+			}
+		})
 	}
 }
 
