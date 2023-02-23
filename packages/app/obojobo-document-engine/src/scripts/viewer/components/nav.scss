@@ -408,6 +408,12 @@
 	&.is-not-open .viewer--components--logo {
 		opacity: 0;
 	}
+
+	&.is-not-notification-enabled {
+		.nav-menu {
+			display: none;
+		}
+	}
 }
 
 .is-previewing .viewer--components--nav {
