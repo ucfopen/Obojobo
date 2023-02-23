@@ -272,6 +272,14 @@ router
 			const draftId = req.currentDocument.draftId
 			const targetLevel = req.body.accessLevel
 
+			// check currentUser's permissions
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === FULL
+			if (!canShare) {
+				res.notAuthorized('Current User does not have permission to share this draft')
+				return
+			}
+
 			// Guard against invalid access levels
 			if (!levelNumber[targetLevel]) {
 				const msg = 'Invalid access level: ' + targetLevel

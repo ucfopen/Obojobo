@@ -45,7 +45,7 @@ router
 
 			if (!hasPerms) {
 				return res.notAuthorized(
-					'Your access level must be "Partial" or higher to retrieve this information.'
+					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
 			}
 
@@ -208,7 +208,21 @@ router
 	.post([requireCanCreateDrafts, requireDraftId, checkValidationRules])
 	.post((req, res) => {
 		return Promise.resolve()
-			.then(() => {
+			.then(async () => {
+				// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
+				const access_level = await DraftPermissions.getUserAccessLevelToDraft(
+					req.currentUser.id,
+					req.params.draftId
+				)
+
+				return access_level === FULL || access_level === PARTIAL
+			})
+			.then(canEdit => {
+				if (!canEdit) {
+					return res.notAuthorized(
+						'In order to edit this module you must have "Partial" or "Full" access.'
+					)
+				}
 				let xml
 				let documentInput
 
