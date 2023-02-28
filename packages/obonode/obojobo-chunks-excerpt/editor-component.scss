@@ -365,7 +365,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		width: 24em;
 		top: calc(100% + 3em);
 		transform: translateX(-50%);
-		z-index: $z-index-above-content;
+		z-index: 9;
 
 		&.attributes-box-extra-width {
 			width: 32em;
@@ -498,10 +498,11 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		width: 100%;
 	}
 
-	> .delete-button {
+	blockquote .delete-button {
 		position: absolute;
 		left: auto;
 		top: 0;
+		right: -0.5em;
 		transform: translate(50%, -50%);
 		z-index: 3;
 
@@ -520,21 +521,5 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 				color: $color-obojobo-blue;
 			}
 		}
-	}
-
-	&.is-width-tiny > .delete-button {
-		right: 11em;
-	}
-
-	&.is-width-small > .delete-button {
-		right: 8.5em;
-	}
-
-	&.is-width-medium > .delete-button {
-		right: 5.5em;
-	}
-
-	&.is-width-large > .delete-button {
-		right: 2em;
 	}
 }

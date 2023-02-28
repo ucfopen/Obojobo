@@ -22,7 +22,16 @@ const chunkJSON = {
 			id: 'id-1',
 			type: 'ObojoboDraft.Chunks.Excerpt',
 			subtype: 'ObojoboDraft.Chunks.Excerpt.ExcerptContent',
-			content: {},
+			content: {
+				bodyStyle: 'filled-box',
+				width: 'medium',
+				font: 'sans',
+				lineHeight: 'moderate',
+				fontSize: 'smaller',
+				topEdge: 'normal',
+				bottomEdge: 'normal',
+				effect: false
+			},
 			children: [
 				{
 					type: 'ObojoboDraft.Chunks.Text',
@@ -112,18 +121,37 @@ describe('Excerpt', () => {
 			...chunkJSON,
 			content: {
 				...chunkJSON.content,
-				citation: [
-					{
-						data: { align: 'center', hangingIndent: 0, indent: 0 },
-						text: { styleList: null, value: 'Placeholder text' }
-					}
-				]
+				citation: 'Placeholder text'
 			}
 		})
 
 		const component = renderer.create(<Excerpt model={model} moduleData={moduleData} />)
-		const tree = component.toJSON()
 
+		const cite = component.root.findByType('cite')
+		expect(cite.children[0]).toBe('Placeholder text')
+
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Excerpt component with no citation', () => {
+		const moduleData = {
+			focusState: {}
+		}
+		const model = OboModel.create({
+			...chunkJSON,
+			content: {
+				...chunkJSON.content,
+				citation: ''
+			}
+		})
+
+		const component = renderer.create(<Excerpt model={model} moduleData={moduleData} />)
+
+		const cite = component.root.findAllByType('cite')
+		expect(cite.length).toBe(0)
+
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 })

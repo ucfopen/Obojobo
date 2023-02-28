@@ -296,4 +296,28 @@ describe('Excerpt Content Node', () => {
 		expect(setNodesSpy).toHaveBeenCalledWith(editor, { content: { ...newContent } }, { at: [2, 1] })
 		expect(setNodesSpy).toHaveBeenCalledWith(editor, { content: { ...newContent } }, { at: [2] })
 	})
+
+	test('Delete button calls subsequent methods correctly', () => {
+		jest.spyOn(Editor, 'parent').mockImplementation(() => [0, [2]])
+		jest.spyOn(ReactEditor, 'findPath').mockImplementation(() => [2, 1])
+		const element = {
+			content
+		}
+		const component = mount(
+			<ExcerptContent element={element}>
+				<Child />
+				<Child />
+				<Child />
+			</ExcerptContent>
+		)
+
+		// click Delete button
+		component
+			.find('.delete-button')
+			.at(0)
+			.props()
+			.onClick()
+
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+	})
 })

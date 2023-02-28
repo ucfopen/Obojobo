@@ -1,10 +1,8 @@
 jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model', () => {
 	return require('obojobo-document-engine/__mocks__/obo-model-adapter-mock').default
 })
-import Common from 'obojobo-document-engine/src/scripts/common'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import ExcerptAdapter from './adapter'
-const { TextGroup } = Common.textGroup
 
 describe('Excerpt adapter', () => {
 	const defaultState = {
@@ -18,7 +16,7 @@ describe('Excerpt adapter', () => {
 
 	const defaultStateWithCitation = {
 		...defaultState,
-		citation: TextGroup.create(1, {})
+		citation: ''
 	}
 
 	test('construct builds without attributes', () => {
@@ -32,19 +30,14 @@ describe('Excerpt adapter', () => {
 	test('construct builds with citation attributes', () => {
 		const attrs = {
 			content: {
-				citation: [
-					{
-						data: { align: 'center', hangingIndent: 0, indent: 0 },
-						text: { styleList: null, value: 'Placeholder text' }
-					}
-				]
+				citation: 'Placeholder text'
 			}
 		}
 
 		const model = new OboModel(attrs)
 		const expected = {
 			...defaultStateWithCitation,
-			citation: TextGroup.fromDescriptor(attrs.content.citation, 1, {})
+			citation: 'Placeholder text'
 		}
 		ExcerptAdapter.construct(model, attrs)
 

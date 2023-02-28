@@ -8,6 +8,9 @@ import getPresetProps from '../../get-preset-props'
 import EdgeControls from '../edge-controls'
 import ExcerptEditControls from '../excerpt-edit-controls'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
+const { Button } = Common.components
+
 const getEdgeOptionsForBodyStyle = bodyStyle => {
 	switch (bodyStyle) {
 		case 'none':
@@ -61,6 +64,14 @@ const ExcerptContent = props => {
 		Transforms.setNodes(props.editor, { content: { ...newContent } }, { at: parentPath })
 	}
 
+	const deleteExcerpt = () => {
+		const [, parentPath] = Editor.parent(
+			props.editor,
+			ReactEditor.findPath(props.editor, props.element)
+		)
+		return Transforms.removeNodes(props.editor, { at: parentPath })
+	}
+
 	const edgeOptions = getEdgeOptionsForBodyStyle(props.element.content.bodyStyle)
 
 	const shouldShowEdgeControls = props.selected && Range.isCollapsed(props.editor.selection)
@@ -91,6 +102,9 @@ const ExcerptContent = props => {
 
 			<div className="wrapper">{props.children}</div>
 			<div className="overlay" />
+			<Button className="delete-button" onClick={deleteExcerpt} contentEditable={false}>
+				×
+			</Button>
 		</div>
 	)
 }

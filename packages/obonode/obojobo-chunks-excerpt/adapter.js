@@ -1,7 +1,3 @@
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-const { TextGroup } = Common.textGroup
-
 const Adapter = {
 	construct(model, attrs) {
 		model.setStateProp(
@@ -57,9 +53,9 @@ const Adapter = {
 
 		if (attrs && attrs.content) {
 			if (attrs.content.citation) {
-				model.modelState.citation = TextGroup.fromDescriptor(attrs.content.citation, 1, {})
+				model.modelState.citation = attrs.content.citation
 			} else {
-				model.modelState.citation = TextGroup.create(1, {})
+				model.modelState.citation = ''
 			}
 
 			if (attrs.content.font) {

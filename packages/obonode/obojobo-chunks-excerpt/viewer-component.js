@@ -5,7 +5,6 @@ import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 const { OboComponent } = Viewer.components
-const { TextGroupEl } = Common.chunk.textChunk
 const { TextChunk } = Common.chunk
 
 const Excerpt = props => {
@@ -36,19 +35,7 @@ const Excerpt = props => {
 						<div className="overlay" />
 					</div>
 
-					{!modelState.citation.isBlank ? (
-						<cite>
-							{modelState.citation.items.map((textItem, index) => (
-								<TextGroupEl
-									className="excerpt-citation-text"
-									parentModel={props.model}
-									textItem={textItem}
-									groupIndex={index}
-									key={index}
-								/>
-							))}
-						</cite>
-					) : null}
+					{modelState.citation ? <cite>{modelState.citation}</cite> : null}
 				</blockquote>
 			</TextChunk>
 		</OboComponent>

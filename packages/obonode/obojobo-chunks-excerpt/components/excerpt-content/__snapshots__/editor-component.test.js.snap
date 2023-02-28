@@ -301,6 +301,19 @@ exports[`Excerpt Content Node Node builds component when selected and collapsed 
   <div
     className="overlay"
   />
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ×
+    </button>
+  </div>
 </div>
 `;
 
@@ -324,6 +337,19 @@ exports[`Excerpt Content Node Node builds the expected component 1`] = `
   <div
     className="overlay"
   />
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ×
+    </button>
+  </div>
 </div>
 `;
 
@@ -347,6 +373,19 @@ exports[`Excerpt Content Node Node builds the expected component with non-null b
   <div
     className="overlay"
   />
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ×
+    </button>
+  </div>
 </div>
 `;
 
@@ -370,5 +409,18 @@ exports[`Excerpt Content Node Node builds the expected component with non-standa
   <div
     className="overlay"
   />
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      ×
+    </button>
+  </div>
 </div>
 `;
