@@ -3,6 +3,7 @@ const router = express.Router()
 const logger = oboRequire('server/logger')
 const ltiUtil = oboRequire('server/lti')
 const viewerState = oboRequire('server/viewer/viewer_state')
+const viewerNotificationState = oboRequire('server/viewer/viewer_notification_state')
 const insertEvent = oboRequire('server/insert_event')
 const {
 	checkValidationRules,
@@ -45,6 +46,20 @@ router
 		let viewState
 		let visitStartExtensions
 		let launch
+		let isNotificationEnabled
+		let notificationTitle
+		let notificationText
+		//let id
+		const id = 1
+		//let lastLogin
+		//const userId = req.currentUser.id
+		//const date = new Date()
+		//let today = date.getDate()
+
+		//lastLogin = new Date(viewerNotificationState.getLastLogin(userId))
+		//lastLogin = new Date('2023-01-19 13:38:49.67631+00')
+
+		//viewerNotificationState.setLastLogin(today);
 
 		return Promise.all([
 			viewerState.get(
@@ -90,6 +105,31 @@ router
 					eventVersion: '1.0.0',
 					visitId: req.currentVisit.id
 				})
+			}) /*
+			.then(() =>
+			viewerNotificationState.getLastLogin(userId)
+			)
+			.then(result => {
+				if (result) lastLogin = result.lastLogin
+			})
+			.then(() =>
+			viewerNotificationState.getId(lastLogin)
+			)
+			.then(result => {
+				if (result) id = result.id
+			})
+			*/
+			.then(() => viewerNotificationState.getStatus(id))
+			.then(result => {
+				if (result) isNotificationEnabled = result.status
+			})
+			.then(() => viewerNotificationState.getTitle(id))
+			.then(result => {
+				if (result) notificationTitle = result.title
+			})
+			.then(() => viewerNotificationState.getText(id))
+			.then(result => {
+				if (result) notificationText = result.text
 			})
 			.then(() => {
 				logger.log(
@@ -111,7 +151,10 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
-					extensions: visitStartExtensions
+					extensions: visitStartExtensions,
+					isNotificationEnabled,
+					notificationTitle,
+					notificationText
 				})
 			})
 			.catch(err => {

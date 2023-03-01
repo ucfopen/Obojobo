@@ -53,6 +53,7 @@ describe('api visits route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		db.one.mockReset()
+		db.oneOrNone.mockReset()
 		insertEvent.mockReset()
 		ltiUtil.retrieveLtiLaunch = jest.fn()
 		viewerState.get = jest.fn()
@@ -443,6 +444,80 @@ describe('api visits route', () => {
 					userId: 99,
 					visitId: validUUID()
 				})
+			})
+	})
+
+	test('/start gets notification status of current id from DB', () => {
+		const isNotificationEnabled = true
+		//const mockId = 1
+		//const mockLogin = '2023-01-19 13:38:49.67631+00'
+		expect.hasAssertions()
+		const originalVisitSession = {}
+		mockSession.visitSessions = originalVisitSession
+
+		mockCurrentUser = { id: 99 }
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'obojobo.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		//this solves coverage but is not satisfying
+		db.oneOrNone.mockResolvedValue({ status: isNotificationEnabled })
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(db.oneOrNone).toBeCalledTimes(3)
+				/*
+				expect(db.oneOrNone).toBeCalledWith(
+					expect.stringContaining('SELECT last_login FROM users'),
+					expect.objectContaining({
+						userId: mockCurrentUser
+					})
+				)
+				/*
+				expect(db.oneOrNone).toBeCalledWith(
+					expect.stringContaining('SELECT id FROM notification_status'),
+					expect.objectContaining({
+						lastLogin: mockLogin
+					})
+				)
+				expect(db.oneOrNone).toBeCalledWith(
+					expect.stringContaining('SELECT status FROM notification_status'),
+					expect.objectContaining({
+						id: mockId
+					})
+				)
+				expect(db.oneOrNone).toBeCalledWith(
+					expect.stringContaining('SELECT title FROM notification_status'),
+					expect.objectContaining({
+						id: mockId
+					})
+				)
+				expect(db.oneOrNone).toBeCalledWith(
+					expect.stringContaining('SELECT text FROM notification_status'),
+					expect.objectContaining({
+						id: mockId
+					})
+				)
+				/*/
+				//expect(response.statusCode).toBe(200)
+				expect(response.body.value).toHaveProperty(
+					'isNotificationEnabled',
+					isNotificationEnabled,
+					isNotificationEnabled
+				)
 			})
 	})
 })
