@@ -29,7 +29,7 @@ exports.up = function(db) {
 				defaultValue: new String('now()')
 			},
 			user_id: { type: 'bigint', notNull: true },
-			draft_id: { type: 'UUID', notNull: true },
+			draft_id: { type: 'bigint', notNull: true },
 			text: { type: 'string', notNull: true },
 			title: { type: 'string', notNull: true },
 			status: { type: 'boolean', notNull: true }

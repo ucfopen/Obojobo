@@ -212,13 +212,37 @@ class NavStore extends Store {
 					if (navItem) {
 						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 					}
+				},
+				'nav:setNotificationStatus': payload => {
+					ViewerAPI.postEvent({
+						draftId: this.state.draftId,
+						action: 'nav:setNotificationStatus',
+						eventVersion: '1.0.0',
+						visitId: this.state.visitId,
+						payload: {
+							from: this.state.notification,
+							to: payload.value.notification
+						}
+					})
+					this.state.notification = payload.value.notification
+					return this.triggerChange()
 				}
 			},
 			this
 		)
 	}
 
-	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
+	init(
+		draftId,
+		model,
+		startingId,
+		startingPath,
+		visitId,
+		viewState = {},
+		isNotificationEnabled,
+		notificationTitle,
+		notificationText
+	) {
 		this.state = {
 			isInitialized: true,
 			items: {},
@@ -237,7 +261,10 @@ class NavStore extends Store {
 					: true,
 			context: DEFAULT_CONTEXT,
 			visitId,
-			draftId
+			draftId,
+			notification: isNotificationEnabled,
+			title: notificationTitle,
+			text: notificationText
 		}
 
 		startHeartBeat(this.state.draftId)

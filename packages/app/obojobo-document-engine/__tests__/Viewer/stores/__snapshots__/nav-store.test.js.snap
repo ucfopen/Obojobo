@@ -15,6 +15,7 @@ Object {
   "nav:resetContext": [Function],
   "nav:setContext": [Function],
   "nav:setFlag": [Function],
+  "nav:setNotificationStatus": [Function],
   "nav:showChildren": [Function],
   "nav:toggle": [Function],
   "nav:unlock": [Function],
@@ -279,7 +280,10 @@ Object {
   "locked": true,
   "navTargetHistory": Array [],
   "navTargetId": null,
+  "notification": undefined,
   "open": true,
+  "text": undefined,
+  "title": undefined,
   "visitId": 11,
 }
 `;
@@ -296,7 +300,10 @@ Object {
   "locked": false,
   "navTargetHistory": Array [],
   "navTargetId": null,
+  "notification": undefined,
   "open": true,
+  "text": undefined,
+  "title": undefined,
   "visitId": 11,
 }
 `;
@@ -313,7 +320,10 @@ Object {
   "locked": false,
   "navTargetHistory": Array [],
   "navTargetId": null,
+  "notification": undefined,
   "open": true,
+  "text": undefined,
+  "title": undefined,
   "visitId": 11,
 }
 `;
@@ -523,6 +533,33 @@ Object {
     },
   },
   "navTargetId": 7,
+}
+`;
+
+exports[`NavStore nav:setNotificationStatus event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:setNotificationStatus event fires and updates state 2`] = `
+Array [
+  Object {
+    "action": "nav:setNotificationStatus",
+    "draftId": undefined,
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "from": true,
+      "to": false,
+    },
+    "visitId": undefined,
+  },
+]
+`;
+
+exports[`NavStore nav:setNotificationStatus event fires and updates state 3`] = `
+Object {
+  "notification": false,
 }
 `;
 
