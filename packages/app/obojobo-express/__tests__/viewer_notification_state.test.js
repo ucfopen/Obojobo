@@ -102,5 +102,5 @@ test('client:nav:getNotificationText', () => {
             })
         )
         
-    })*/
+    }) */
 })
