@@ -26,7 +26,7 @@ function setLastLogin(userId){
 function getLastLogin(userId) {
 	return db.oneOrNone(
 		`
-				SELECT created_at FROM users
+				SELECT last_login FROM users
 				WHERE id = $[userId]
 			`,
 		{

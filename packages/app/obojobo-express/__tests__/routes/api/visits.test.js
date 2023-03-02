@@ -478,7 +478,7 @@ describe('api visits route', () => {
 			.post('/api/start')
 			.send({ visitId: validUUID() })
 			.then(response => {
-				expect(db.oneOrNone).toBeCalledTimes(3)
+				expect(db.oneOrNone).toBeCalledTimes(5)
 				/*
 				expect(db.oneOrNone).toBeCalledWith(
 					expect.stringContaining('SELECT last_login FROM users'),
