@@ -96,7 +96,7 @@ class NavStore extends Store {
 				'nav:prev': () => {
 					oldNavTargetId = this.state.navTargetId
 					const prev = NavUtil.getPrev(this.state)
-					if (this.gotoItem(prev)) {
+					if (!this.state.locked && this.gotoItem(prev)) {
 						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:prev',
@@ -112,7 +112,7 @@ class NavStore extends Store {
 				'nav:next': () => {
 					oldNavTargetId = this.state.navTargetId
 					const next = NavUtil.getNext(this.state)
-					if (this.gotoItem(next)) {
+					if (!this.state.locked && this.gotoItem(next)) {
 						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:next',
@@ -126,6 +126,19 @@ class NavStore extends Store {
 					}
 				},
 				'nav:goto': payload => {
+					/* eslint-disable no-undefined */
+					if (
+						payload === undefined ||
+						payload.value === undefined ||
+						payload.value.id === undefined
+					) {
+						return
+					}
+					if (payload.value.ignoreLock === undefined) payload.value.ignoreLock = true
+					/* eslint-enable no-undefined */
+
+					if (this.state.locked && !payload.value.ignoreLock) return
+
 					if (!this.state.isInitialized) {
 						this.pendingTarget = {
 							type: 'goto',

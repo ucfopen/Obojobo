@@ -9,7 +9,9 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -88,7 +90,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                   Pass & Fail Rules
                 </legend>
                 <p>
-                  In this mode, you can customize passing and failing scores, what do do when students are out of attempts, and set more complex penalty and extra credit rules.
+                  In this mode, you can customize passing and failing scores, what to do when students are out of attempts, and set more complex penalty and extra credit rules.
                 </p>
                 <div
                   className="to-pass"
@@ -468,7 +470,9 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -547,7 +551,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                   Pass & Fail Rules
                 </legend>
                 <p>
-                  In this mode, you can customize passing and failing scores, what do do when students are out of attempts, and set more complex penalty and extra credit rules.
+                  In this mode, you can customize passing and failing scores, what to do when students are out of attempts, and set more complex penalty and extra credit rules.
                 </p>
                 <div
                   className="to-pass"
@@ -852,7 +856,9 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -931,7 +937,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                   Pass & Fail Rules
                 </legend>
                 <p>
-                  In this mode, you can customize passing and failing scores, what do do when students are out of attempts, and set more complex penalty and extra credit rules.
+                  In this mode, you can customize passing and failing scores, what to do when students are out of attempts, and set more complex penalty and extra credit rules.
                 </p>
                 <div
                   className="to-pass"

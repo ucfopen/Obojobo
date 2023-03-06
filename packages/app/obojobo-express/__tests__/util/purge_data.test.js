@@ -108,7 +108,7 @@ describe('Purge Data', () => {
 		config.general.demoMode.purgeMode = MODE_PURGE_HISTORY
 
 		return purgeData().then(() => {
-			expect(db.none).toHaveBeenCalledTimes(9)
+			expect(db.none).toHaveBeenCalledTimes(8)
 		})
 	})
 
@@ -118,7 +118,7 @@ describe('Purge Data', () => {
 		config.general.demoMode.purgeMode = MODE_PURGE_ALL
 
 		return purgeData().then(() => {
-			expect(db.none).toHaveBeenCalledTimes(15)
+			expect(db.none).toHaveBeenCalledTimes(14)
 		})
 	})
 

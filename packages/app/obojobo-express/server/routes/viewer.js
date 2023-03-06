@@ -2,9 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Visit = oboRequire('server/models/visit')
 const insertEvent = oboRequire('server/insert_event')
-const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
-const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
-const { getSessionIds } = oboRequire('server/routes/api/events/caliper_utils')
 const oboEvents = require('../obo_events')
 const ltiLaunch = oboRequire('server/express_lti_launch')
 const { assetForEnv, webpackAssetPath } = oboRequire('server/asset_resolver')
@@ -47,7 +44,6 @@ router
 		)
 			.then(({ visitId, deactivatedVisitId }) => {
 				createdVisitId = visitId
-				const { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
 					action: 'visit:create',
 					actorTime: new Date().toISOString(),
@@ -63,12 +59,6 @@ router
 					},
 					resourceLinkId: req.oboLti.body.resource_link_id,
 					eventVersion: '1.1.0',
-					caliperPayload: createVisitCreateEvent({
-						actor: { type: ACTOR_USER, id: req.currentUser.id },
-						sessionIds: getSessionIds(req.session),
-						visitId,
-						extensions: { deactivatedVisitId }
-					}),
 					visitId
 				})
 			})
@@ -94,7 +84,6 @@ router
 		return req.currentDocument
 			.yell('internal:sendToClient', req, res)
 			.then(() => {
-				const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
 					action: 'viewer:open',
 					actorTime: new Date().toISOString(),
@@ -109,13 +98,7 @@ router
 						isScoreImportable: req.currentDocument.score_importable
 					},
 					eventVersion: '1.2.0',
-					isPreview: req.currentDocument.is_preview,
-					caliperPayload: createViewerOpenEvent({
-						actor: { type: ACTOR_USER, id: req.currentUser.id },
-						sessionIds: getSessionIds(req.session),
-						visitId: req.params.visitId,
-						extensions: { isScoreImportable: req.currentDocument.score_importable }
-					})
+					isPreview: req.currentDocument.is_preview
 				})
 			})
 			.then(() => {

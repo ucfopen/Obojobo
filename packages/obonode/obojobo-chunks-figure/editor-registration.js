@@ -58,6 +58,14 @@ const Figure = {
 		},
 		onKeyDown(entry, editor, event) {
 			if (event.key === 'Enter') return KeyDownUtil.breakToText(event, editor, entry)
+
+			if (event.key === 'Delete') {
+				const text = entry[0].children[0].text
+
+				if (editor.selection.anchor.offset === text.length) {
+					event.preventDefault()
+				}
+			}
 		},
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />

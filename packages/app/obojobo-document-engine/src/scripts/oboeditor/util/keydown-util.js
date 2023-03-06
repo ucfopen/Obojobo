@@ -105,7 +105,7 @@ const KeyDownUtil = {
 
 		const newNode = {
 			type: TEXT_NODE,
-			content: { triggers: [] },
+			content: { triggers: [], objectives: [] },
 			children: [
 				{
 					type: TEXT_NODE,

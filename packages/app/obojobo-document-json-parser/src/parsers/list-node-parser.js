@@ -1,6 +1,7 @@
 const textGroupParser = require('../text-group-parser')
 const processAttrs = require('../process-attrs')
 const processTriggers = require('../process-triggers')
+const processObjectives = require('../process-objectives')
 
 const listNodeParser = node => {
 	const id = node.id ? ` id="${node.id}"` : ''
@@ -9,8 +10,9 @@ const listNodeParser = node => {
 	const listStyles = listStylesParser(node.content.listStyles)
 	const textGroupXML = textGroupParser(node.content.textGroup)
 	const triggersXML = processTriggers(node.content.triggers)
+	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<List${attrs}${id}>` + listStyles + textGroupXML + triggersXML + `</List>`
+	return `<List${attrs}${id}>` + listStyles + textGroupXML + triggersXML + objectivesXML + `</List>`
 }
 
 const listStylesParser = listStyles => {

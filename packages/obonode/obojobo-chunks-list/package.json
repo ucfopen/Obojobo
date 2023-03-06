@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-list",
-	"version": "13.2.1",
+	"version": "15.1.1-alpha.0",
 	"license": "AGPL-3.0-only",
 	"description": "List content chunk for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^13.2.1"
+		"obojobo-lib-utils": "^15.1.1-alpha.0"
 	},
 	"jest": {
 		"testMatch": [

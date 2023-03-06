@@ -76,6 +76,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			spacing: node.content.spacing,
 			triggers: node.content.triggers,
+			objectives: node.content.objectives,
 			listStyles: {
 				type: node.content.listStyles.type,
 				indents
