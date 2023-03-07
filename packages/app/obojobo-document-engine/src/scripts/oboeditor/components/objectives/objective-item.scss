@@ -1,7 +1,7 @@
 @import '~styles/includes';
 
 /* Display the objective css */
-//$color-close-btn: rgba(0, 0, 0, 0.3);
+$color-highlight-bg: lighten($color-action, 50%);
 
 .is-objective-label-selected {
 	background-color: $color-highlight-bg;
