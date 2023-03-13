@@ -121,7 +121,24 @@ class ModulePermissionsDialog extends React.Component {
 				</div>
 				<div className="wrapper">
 					<h1 className="title">Module Access</h1>
-					<div className="sub-title">People who can access this module</div>
+					<div className="sub-title">
+						People who can access this module. Access levels are as follows, note that each level
+						contains the previous level.
+					</div>
+					<div className="access-level-descriptions">
+						<span>
+							<label>Minimal:</label>
+							<p>Can preview, view assessment statistics, and copy the module.</p>
+						</span>
+						<span>
+							<label>Partial:</label>
+							<p>Can edit the module.</p>
+						</span>
+						<span>
+							<label>Full:</label>
+							<p>Can add or change access or delete the module.</p>
+						</span>
+					</div>
 					<Button id="modulePermissionsDialog-addPeopleButton" onClick={this.openPeoplePicker}>
 						Add People
 					</Button>

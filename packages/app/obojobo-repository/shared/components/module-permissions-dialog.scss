@@ -67,7 +67,30 @@
 
 	.sub-title {
 		font-size: 0.7em;
-		margin-bottom: 2em;
+		margin-bottom: 0.5em;
+		text-align: left;
+	}
+
+	.access-level-descriptions {
+		margin-bottom: 1em;
+
+		span {
+			display: flex;
+			flex-direction: row;
+
+			label,
+			p {
+				font-size: 0.7em;
+				display: block;
+			}
+
+			label {
+				width: 3em;
+				margin-right: 1.25em;
+				text-align: left;
+				font-weight: bold;
+			}
+		}
 	}
 
 	.access-list-wrapper {

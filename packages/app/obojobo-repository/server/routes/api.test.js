@@ -641,9 +641,50 @@ describe('repository api route', () => {
 			})
 	})
 
-	// update draft access levels
-	test('post /drafts/:draftId/permission/update does not call updateAccessLevel if target access level matches current access level', () => {
+	test('post /drafts/:draftId/permission/update fails if current user has partial access', () => {
 		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: levelName[MINIMAL], userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.updateAccessLevel).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Current User does not have permission to share this draft'
+				)
+			})
+	})
+
+	test('post /drafts/:draftId/permission/update fails if current user has minimal access', () => {
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
+
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: levelName[MINIMAL], userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.updateAccessLevel).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Current User does not have permission to share this draft'
+				)
+			})
+	})
+
+	test('post /drafts/:draftId/permission/update does not call updateAccessLevel if target access level matches current access level', () => {
+		DraftPermissions.getUserAccessLevelToDraft
+			// first call checks the current user's access level
+			.mockResolvedValueOnce(FULL)
+			// second call checks the target user's access level
+			.mockResolvedValueOnce(PARTIAL)
 
 		return request(app)
 			.post('/drafts/mockDraftId/permission/update')
