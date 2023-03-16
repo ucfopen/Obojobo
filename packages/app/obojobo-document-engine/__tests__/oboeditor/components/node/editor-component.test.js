@@ -35,7 +35,7 @@ jest.mock('Common', () => ({
 	Registry: {
 		insertableItems: [mockNode],
 		getItemForType: jest.fn().mockReturnValue({
-			canNotContain: []
+			disallowedChildren: []
 		})
 	}
 }))
@@ -383,7 +383,7 @@ describe('Component Editor Node', () => {
 		Editor.parent.mockReturnValue([mockParentNode])
 		// pretend the registry says this parent can't have 'mockType' children
 		Common.Registry.getItemForType = jest.fn().mockReturnValue({
-			canNotContain: ['mockType']
+			disallowedChildren: ['mockType']
 		})
 		ReactEditor.findPath.mockReturnValue([1])
 

@@ -33,8 +33,21 @@ const FileToolbarViewer = props => {
 
 		const registryItem = Registry.getItemForType(selectedNode?.type)
 
+		let insertItemOmissions = []
+
+		if (selectedNode) {
+			// get this node's parent for use later
+			const thisPath = ReactEditor.findPath(editor, selectedNode)
+			const nodeParent = Editor.parent(editor, thisPath)[0]
+
+			if (nodeParent?.type) {
+				insertItemOmissions = Registry.getItemForType(nodeParent.type).disallowedChildren
+			}
+		}
+
 		const insertMenuItems = insertableItems
 			.filter(item => item && item.type)
+			.filter(item => !insertItemOmissions.includes(item.type))
 			.map(item => ({
 				name: item.name,
 				disabled: !registryItem?.acceptsInserts || false,

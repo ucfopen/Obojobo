@@ -20,11 +20,11 @@ describe('Registry', () => {
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
 			  "acceptsInserts": true,
-			  "canNotContain": Array [],
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
 			  "default": false,
+			  "disallowedChildren": Array [],
 			  "getPasteNode": [Function],
 			  "icon": null,
 			  "init": [Function],
@@ -55,11 +55,11 @@ describe('Registry', () => {
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
 			  "acceptsInserts": true,
-			  "canNotContain": Array [],
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
 			  "default": false,
+			  "disallowedChildren": Array [],
 			  "getPasteNode": [Function],
 			  "icon": null,
 			  "init": [Function],
@@ -123,11 +123,11 @@ describe('Registry', () => {
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
 			  "acceptsInserts": true,
-			  "canNotContain": Array [],
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
 			  "default": false,
+			  "disallowedChildren": Array [],
 			  "getNavItem": "mockGetNavItem",
 			  "getPasteNode": [Function],
 			  "icon": "mockIcon",
@@ -173,11 +173,11 @@ describe('Registry', () => {
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
 			  "acceptsInserts": true,
-			  "canNotContain": Array [],
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
 			  "default": false,
+			  "disallowedChildren": Array [],
 			  "getNavItem": "mockGetNavItem",
 			  "getPasteNode": [Function],
 			  "icon": "mockIcon",
@@ -218,11 +218,11 @@ describe('Registry', () => {
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
 			  "acceptsInserts": true,
-			  "canNotContain": Array [],
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
 			  "default": false,
+			  "disallowedChildren": Array [],
 			  "getNavItem": "mockGetNavItem",
 			  "getPasteNode": [Function],
 			  "icon": "mockIcon",
@@ -262,11 +262,11 @@ describe('Registry', () => {
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
 			  "acceptsInserts": true,
-			  "canNotContain": Array [],
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
 			  "default": false,
+			  "disallowedChildren": Array [],
 			  "getNavItem": "mockGetNavItem",
 			  "getPasteNode": [Function],
 			  "icon": "mockIcon",
@@ -305,11 +305,11 @@ describe('Registry', () => {
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
 			Object {
 			  "acceptsInserts": true,
-			  "canNotContain": Array [],
 			  "cloneBlankNode": [Function],
 			  "commandHandler": null,
 			  "componentClass": null,
 			  "default": false,
+			  "disallowedChildren": Array [],
 			  "getNavItem": "mockGetNavItem",
 			  "getPasteNode": [Function],
 			  "icon": "mockIcon",

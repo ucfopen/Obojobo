@@ -240,7 +240,7 @@ class Node extends React.Component {
 		if (this.parent.type) {
 			dropOptions = dropOptions.filter(
 				option =>
-					!Common.Registry.getItemForType(this.parent.type).canNotContain.includes(option.type)
+					!Common.Registry.getItemForType(this.parent.type).disallowedChildren.includes(option.type)
 			)
 		}
 

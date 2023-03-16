@@ -9,7 +9,7 @@ import Converter from './converter'
 import { MC_ANSWER_NODE } from '../constants'
 import { CHOICE_NODE, FEEDBACK_NODE } from 'obojobo-chunks-abstract-assessment/constants'
 
-const canNotContain = ['ObojoboDraft.Chunks.Question', 'ObojoboDraft.Chunks.QuestionBank']
+const disallowedChildren = ['ObojoboDraft.Chunks.Question', 'ObojoboDraft.Chunks.QuestionBank']
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -18,7 +18,7 @@ const MCAnswer = {
 	menuLabel: 'Multiple Choice Answer',
 	isInsertable: false,
 	supportsChildren: true,
-	canNotContain: canNotContain,
+	disallowedChildren: disallowedChildren,
 	helpers: Converter,
 	plugins: {
 		// Editor Plugins - These get attached to the editor object and override it's default functions
