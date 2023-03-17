@@ -1,8 +1,6 @@
 @import '../../client/css/defaults';
 
 #dashboard-root {
-	$placeholder-text-color: #aaaaaa;
-
 	.repository--main-content--control-bar {
 		display: flex;
 		justify-content: space-between;
@@ -87,7 +85,7 @@
 		margin: 0 auto;
 
 		.repository--item-list--collection--empty-placeholder--text {
-			color: $placeholder-text-color;
+			color: $color-text-placeholder;
 			margin-right: 2em;
 		}
 	}

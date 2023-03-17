@@ -43,6 +43,23 @@ describe('NumericAssessment Editor Node', () => {
 		const component = renderer.create(<NumericAssessment {...props} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
+
+		expect(component.root.children[0].props.className).toEqual(
+			'component obojobo-draft--chunks--numeric-assessment is-type-mock-question-type'
+		)
+	})
+
+	test('NumericAssessment renders as expected (no questionType)', () => {
+		const props = {
+			editor: {},
+			element: {
+				children: []
+			}
+		}
+		const component = renderer.create(<NumericAssessment {...props} />)
+		expect(component.root.children[0].props.className).toEqual(
+			'component obojobo-draft--chunks--numeric-assessment is-type-default'
+		)
 	})
 
 	test('Button adds an answer choice', () => {

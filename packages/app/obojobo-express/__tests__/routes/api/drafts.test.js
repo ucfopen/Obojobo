@@ -8,6 +8,7 @@ jest.mock('obojobo-document-json-parser/json-to-xml-parser')
 jest.mock('obojobo-repository/server/models/draft_permissions')
 
 import DraftModel from '../../../server/models/draft'
+import { FULL, PARTIAL, MINIMAL } from '../../../server/constants'
 const CollectionModel = require('obojobo-repository/server/models/collection')
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
@@ -67,8 +68,7 @@ describe('api draft route', () => {
 		db.any.mockReset()
 		xml.mockReset()
 		jsonToXml.mockReset()
-		DraftPermissions.userHasPermissionToDraft.mockReset()
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValue(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockReset()
 		CollectionModel.addModule.mockReset()
 	})
 	afterEach(() => {})
@@ -81,8 +81,9 @@ describe('api draft route', () => {
 		// mock the document returned by fetchById
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: { title: 'mock-document-json' },
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		// mock the xmlDocument Getter
@@ -91,6 +92,7 @@ describe('api draft route', () => {
 		})
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -110,14 +112,18 @@ describe('api draft route', () => {
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 
+		const mockDocument = { title: 'mock-document-json' }
+
 		// mock the document returned by fetchById
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		jsonToXml.mockReturnValueOnce('mock-xml')
 
@@ -133,7 +139,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/xml')
 				expect(response.statusCode).toBe(200)
 				expect(response.text).toContain('mock-xml')
-				expect(jsonToXml).toHaveBeenCalledWith('mock-document-json')
+				expect(jsonToXml).toHaveBeenCalledWith(mockDocument)
 			})
 	})
 
@@ -144,13 +150,18 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+
+		const mockDocument = { title: 'mock-document-json' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -164,7 +175,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 				expect(jsonToXml).not.toHaveBeenCalled()
 			})
 	})
@@ -176,13 +187,17 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchDraftByVersion.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -198,7 +213,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 				expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledWith(
 					'00000000-0000-0000-0000-000000000000',
 					'00000000-0000-0000-0000-000000000001'
@@ -214,13 +229,17 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchDraftByVersion.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -250,13 +269,17 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -270,7 +293,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 				expect(jsonToXml).not.toHaveBeenCalled()
 			})
 	})
@@ -282,13 +305,17 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -302,7 +329,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 			})
 	})
 
@@ -313,13 +340,17 @@ describe('api draft route', () => {
 		const mockYell = jest.fn()
 
 		// mock the document returned by fetchById
+		const mockDocument = { title: 'mock-document' }
+
 		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
+			document: mockDocument,
+			authorId: 99,
+			accessLevel: FULL
 		}
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
@@ -333,7 +364,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('value', mockDocument)
 			})
 	})
 
@@ -358,9 +389,9 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('get full draft returns 401 if user is not the author', () => {
+	test('get full draft returns 401 if user does not have access level with editing permission', () => {
 		expect.assertions(5)
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
 		mockCurrentUser = { id: 88, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
@@ -379,14 +410,14 @@ describe('api draft route', () => {
 				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'You must be the author of this draft to retrieve this information'
+					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
 			})
 	})
 
-	test('get full draft returns 401 if user does not have canViewEditor rights AND is not the author', () => {
+	test('get full draft returns 401 if user does not have canViewEditor rights NOR access level with editing permission', () => {
 		expect.assertions(4)
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
 		mockCurrentUser = { id: 88, hasPermission: () => false } // mock current logged in user
 
 		return request(app)
@@ -402,6 +433,7 @@ describe('api draft route', () => {
 	test('get full draft returns 404 when no items found', () => {
 		expect.assertions(5)
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
+
 		// mock a failure to find the draft
 		const mockError = new pgp.errors.QueryResultError(
 			pgp.errors.queryResultErrorCode.noData,
@@ -410,6 +442,8 @@ describe('api draft route', () => {
 			'mockValues'
 		)
 		DraftModel.fetchById.mockRejectedValueOnce(mockError)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
 			.then(response => {
@@ -425,6 +459,7 @@ describe('api draft route', () => {
 		expect.assertions(5)
 		// mock a failure to find the draft
 		DraftModel.fetchById.mockRejectedValueOnce('mock-other-error')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
 			.then(response => {
@@ -497,7 +532,6 @@ describe('api draft route', () => {
 				expect(response.body.value).toHaveProperty('message', 'mock-other-error')
 			})
 	})
-
 	// new draft
 
 	test('new draft returns success', () => {
@@ -776,11 +810,12 @@ describe('api draft route', () => {
 
 	// update draft
 
-	test('updating a draft with xml returns successfully', () => {
+	test('updating a draft with xml returns successfully when user has full access', () => {
 		expect.assertions(5)
 		xml.mockReturnValueOnce({})
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
@@ -796,11 +831,77 @@ describe('api draft route', () => {
 				expect(xml).toHaveBeenCalledWith(basicXML, true)
 			})
 	})
+	test('updating a draft with xml returns successfully when user has partial access', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', {
+					id: 'mockUpdatedContentId'
+				})
+				expect(xml).toHaveBeenCalledWith(basicXML, true)
+			})
+	})
+	test('updating a draft with xml fails when user has minimal access', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'In order to edit this module you must have "Partial" or "Full" access.'
+				)
+			})
+	})
+	test('updating a draft with xml fails when user has no access', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(null)
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'In order to edit this module you must have "Partial" or "Full" access.'
+				)
+			})
+	})
 
-	test('updating a draft with json returns successfully', () => {
+	test('updating a draft with json returns successfully when user has full access', () => {
 		expect.assertions(3)
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
 		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('application/json')
@@ -813,11 +914,67 @@ describe('api draft route', () => {
 				})
 			})
 	})
+	test('updating a draft with json returns successfully when user has partial access', () => {
+		expect.assertions(3)
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('application/json')
+			.send('{"test":true}')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', {
+					id: 'mockUpdatedContentId'
+				})
+			})
+	})
+	test('updating a draft with json fails when user has minimal access', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('application/json')
+			.send('{"test":true}')
+			.then(response => {
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'In order to edit this module you must have "Partial" or "Full" access.'
+				)
+			})
+	})
+	test('updating a draft with json fails when user has no access', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(null)
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('application/json')
+			.send('{"test":true}')
+			.then(response => {
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'In order to edit this module you must have "Partial" or "Full" access.'
+				)
+			})
+	})
 
 	test('updating a draft errors when xmlToDraftObject returns invalid object', () => {
 		expect.assertions(6)
 		xml.mockImplementationOnce(null)
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
@@ -842,6 +999,7 @@ describe('api draft route', () => {
 			throw 'some-error'
 		})
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
@@ -881,6 +1039,7 @@ describe('api draft route', () => {
 		expect.assertions(5)
 		xml.mockReturnValueOnce({})
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		DraftModel.findDuplicateIds.mockReturnValueOnce('duplicate-id') // mock the findDuplicateIds method
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -903,6 +1062,7 @@ describe('api draft route', () => {
 		expect.assertions(5)
 		xml.mockReturnValueOnce({})
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canCreateDrafts' } // mock current logged in user
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		DraftModel.findDuplicateIds.mockImplementationOnce(() => {
 			throw 'oh no'
 		}) // mock the findDuplicateIds method
@@ -955,7 +1115,8 @@ describe('api draft route', () => {
 
 	test('delete draft returns successfully', () => {
 		expect.assertions(4)
-		DraftModel.deleteByIdAndUser.mockResolvedValueOnce('mock-db-result')
+		DraftModel.deleteById.mockResolvedValueOnce('mock-db-result')
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -969,7 +1130,10 @@ describe('api draft route', () => {
 
 	test('delete 500s when the database errors', () => {
 		expect.assertions(5)
-		DraftModel.deleteByIdAndUser.mockRejectedValueOnce('oh no')
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+		DraftModel.deleteById.mockRejectedValueOnce('oh no')
+
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -982,10 +1146,10 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('delete 401s when a user tries deleting a draft they do not own', () => {
+	test('delete 401s when a user tries deleting a draft they do not have Full access to', () => {
 		expect.assertions(5)
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canDeleteDrafts' } // mock current logged in user
 
 		return request(app)
@@ -997,7 +1161,7 @@ describe('api draft route', () => {
 				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'You must be the author of this draft to delete it'
+					'You must have "Full" access to this draft to delete it'
 				)
 			})
 	})
