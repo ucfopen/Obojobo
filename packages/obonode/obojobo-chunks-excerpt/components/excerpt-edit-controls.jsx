@@ -1,3 +1,5 @@
+import './excerpt-edit-controls.scss'
+
 import React, { useState } from 'react'
 
 import iconFontSizeSmall from '../images/icon-font-size-small.svg'
@@ -126,7 +128,9 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 	return (
 		<div
 			contentEditable={false}
-			className={`attributes-box ${isShowingMoreOptions ? 'attributes-box-extra-width' : ''}`}
+			className={`excerpt--excerpt-edit-controls ${
+				isShowingMoreOptions ? 'extra-width' : ''
+			}`}
 			onMouseDown={event => {
 				// prevent mouse down behavior except when coming from a dropdown or checkbox
 				switch (event.target.tagName) {
@@ -140,25 +144,23 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 			}}
 		>
 			<div className="attributes-list">
-				<div>
-					{isShowingMoreOptions ? null : (
-						<ul className="preset-list">
-							{presets.map(p => {
-								return (
-									<li
-										key={p.value}
-										className={content.preset === p.value ? 'is-selected' : 'is-not-selected'}
-									>
-										<button onClick={() => onChangePreset(p.value)}>
-											<div className={`icon icon-${p.value}`}></div>
-											<span>{p.label}</span>
-										</button>
-									</li>
-								)
-							})}
-						</ul>
-					)}
-				</div>
+				{isShowingMoreOptions ? null : (
+					<ul className="preset-list">
+						{presets.map(p => {
+							return (
+								<li
+									key={p.value}
+									className={content.preset === p.value ? 'is-selected' : 'is-not-selected'}
+								>
+									<button onClick={() => onChangePreset(p.value)}>
+										<div className={`icon icon-${p.value}`}></div>
+										<span>{p.label}</span>
+									</button>
+								</li>
+							)
+						})}
+					</ul>
+				)}
 
 				{isShowingMoreOptions ? (
 					<div className="more-options">

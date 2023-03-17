@@ -5,271 +5,269 @@ exports[`Excerpt Content Node Node builds component when selected and collapsed 
   className="excerpt-content"
 >
   <div
-    className="attributes-box "
+    className="excerpt--excerpt-edit-controls "
     contentEditable={false}
     onMouseDown={[Function]}
   >
     <div
       className="attributes-list"
     >
-      <div>
-        <ul
-          className="preset-list"
+      <ul
+        className="preset-list"
+      >
+        <li
+          className="is-not-selected"
         >
-          <li
-            className="is-not-selected"
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-minimal"
-              />
-              <span>
-                Minimal
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-minimal"
+            />
+            <span>
+              Minimal
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-excerpt"
-              />
-              <span>
-                Excerpt
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-excerpt"
+            />
+            <span>
+              Excerpt
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-simple-filled"
-              />
-              <span>
-                Simple Filled
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-simple-filled"
+            />
+            <span>
+              Simple Filled
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-simple-bordered"
-              />
-              <span>
-                Simple Bordered
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-simple-bordered"
+            />
+            <span>
+              Simple Bordered
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-card"
-              />
-              <span>
-                Card
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-card"
+            />
+            <span>
+              Card
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-fiction"
-              />
-              <span>
-                Fiction
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-fiction"
+            />
+            <span>
+              Fiction
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-non-fiction"
-              />
-              <span>
-                Non-Fiction
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-non-fiction"
+            />
+            <span>
+              Non-Fiction
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-historical"
-              />
-              <span>
-                Historical
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-historical"
+            />
+            <span>
+              Historical
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-very-historical"
-              />
-              <span>
-                Very Historical
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-very-historical"
+            />
+            <span>
+              Very Historical
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-white-paper"
-              />
-              <span>
-                White Paper
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-white-paper"
+            />
+            <span>
+              White Paper
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-instruction-manual"
-              />
-              <span>
-                Inst. Manual
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-instruction-manual"
+            />
+            <span>
+              Inst. Manual
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-typewritten"
-              />
-              <span>
-                Typewritten
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-typewritten"
+            />
+            <span>
+              Typewritten
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-receipt"
-              />
-              <span>
-                Receipt
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-receipt"
+            />
+            <span>
+              Receipt
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-modern-text-file"
-              />
-              <span>
-                Site / Doc
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-modern-text-file"
+            />
+            <span>
+              Site / Doc
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-retro-text-file"
-              />
-              <span>
-                Retro Text File
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-retro-text-file"
+            />
+            <span>
+              Retro Text File
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-computer-modern"
-              />
-              <span>
-                Command Line
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-computer-modern"
+            />
+            <span>
+              Command Line
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-computer-hacker-green"
-              />
-              <span>
-                Hacker Green
-              </span>
-            </button>
-          </li>
-          <li
-            className="is-not-selected"
+            <div
+              className="icon icon-computer-hacker-green"
+            />
+            <span>
+              Hacker Green
+            </span>
+          </button>
+        </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
           >
-            <button
-              onClick={[Function]}
-            >
-              <div
-                className="icon icon-computer-hacker-orange"
-              />
-              <span>
-                Hacker Orange
-              </span>
-            </button>
-          </li>
-        </ul>
-      </div>
+            <div
+              className="icon icon-computer-hacker-orange"
+            />
+            <span>
+              Hacker Orange
+            </span>
+          </button>
+        </li>
+      </ul>
     </div>
     <div
       className="obojobo-draft--components--button alt-action is-not-dangerous align-center"

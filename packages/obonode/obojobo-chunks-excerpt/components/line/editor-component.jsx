@@ -1,4 +1,5 @@
 import '../../viewer-component.scss'
+import './edge-controls.scss'
 
 import React from 'react'
 

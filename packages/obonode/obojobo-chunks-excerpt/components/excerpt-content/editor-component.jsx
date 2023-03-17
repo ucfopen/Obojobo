@@ -33,7 +33,6 @@ const getEdgeOptionsForBodyStyle = bodyStyle => {
 
 const ExcerptContent = props => {
 	const onChangePreset = presetValue => {
-		// console.log('changing preset in excerpt-content to ', presetValue)
 		const [, parentPath] = Editor.parent(
 			props.editor,
 			ReactEditor.findPath(props.editor, props.element)

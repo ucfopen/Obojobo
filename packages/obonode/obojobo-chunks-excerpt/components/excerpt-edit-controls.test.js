@@ -42,7 +42,7 @@ describe('Excerpt Edit Controls', () => {
 			/>
 		)
 
-		expect(component.root.children[0].props.className.trim()).toBe('attributes-box')
+		expect(component.root.children[0].props.className.trim()).toBe('excerpt--excerpt-edit-controls')
 		expect(component.root.children[0].children.length).toBe(2)
 		expect(component.root.children[0].children[0].props.className).toBe('attributes-list')
 		expect(component.root.children[0].children[1].type).toBe(Button)
@@ -103,7 +103,7 @@ describe('Excerpt Edit Controls', () => {
 					.at(0)
 					.prop('className')
 					.trim()
-			).toBe('attributes-box')
+			).toBe('excerpt--excerpt-edit-controls')
 
 			openMoreOptions(component)
 
@@ -113,7 +113,7 @@ describe('Excerpt Edit Controls', () => {
 					.at(0)
 					.prop('className')
 					.trim()
-			).toBe('attributes-box attributes-box-extra-width')
+			).toBe('excerpt--excerpt-edit-controls extra-width')
 
 			// default styling will not have an effect - this input should be disabled
 			expect(

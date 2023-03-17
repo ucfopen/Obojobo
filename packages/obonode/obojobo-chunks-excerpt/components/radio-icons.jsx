@@ -1,3 +1,5 @@
+import './radio-icons.scss'
+
 import React from 'react'
 
 const RadioIcons = ({ name, options, selectedOption, ariaLabel, onChangeOption }) => {

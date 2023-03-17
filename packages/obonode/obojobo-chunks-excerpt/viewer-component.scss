@@ -1,5 +1,11 @@
 @import '~styles/includes';
 
+/*
+there will be a lot of superfluous nesting in this file meant to placate
+prettier's opinionated indentation scheme when breaking up large lines,
+since it is not compatible with stylelint's indentation rules
+*/
+
 .obojobo-draft--chunks--excerpt {
 	$courier: 'Courier', monospace;
 	$georgia: georgia;
@@ -15,7 +21,6 @@
 	$retro-background: #d6d6d6;
 	$terminal-background: #1b1916;
 
-	// 1px 1px 2px
 	$terminal-lines: repeating-linear-gradient(
 		rgba(0, 0, 0, 0),
 		rgba(0, 0, 0, 0) 0.0625em,
@@ -23,7 +28,6 @@
 		$terminal-background 0.125em
 	);
 
-	// can't believe stylelint has a problem with just using the color name
 	$white: white;
 
 	$terminal-green: #83ff27;
@@ -40,146 +44,7 @@
 
 	position: relative;
 
-	.excerpt-content {
-		margin: 0 auto;
-		padding: 1em 0;
-		position: relative;
-		text-align: left;
-
-		> .overlay {
-			pointer-events: none;
-		}
-
-		> .component[data-obo-component='true'] {
-			padding-left: 0;
-			padding-right: 0;
-		}
-
-		> .wrapper {
-			position: relative;
-		}
-	}
-
-	&.is-font-serif .component[data-obo-component='true'] {
-		font-family: $font-text;
-	}
-
-	&.is-font-sans .component[data-obo-component='true'] {
-		font-family: $font-default;
-	}
-
-	&.is-font-monospace .component[data-obo-component='true'] {
-		font-family: $font-monospace;
-
-		> .text-chunk > h1,
-		> .text-chunk > h2,
-		> .text-chunk > h3,
-		> .text-chunk > h4,
-		> .text-chunk > h5,
-		> .text-chunk > h6 {
-			font-family: $font-monospace;
-		}
-	}
-
-	&.is-font-times-new-roman .component[data-obo-component='true'] {
-		font-family: $tnr;
-		font-size: 0.9em;
-
-		> .text-chunk > h1,
-		> .text-chunk > h2,
-		> .text-chunk > h3,
-		> .text-chunk > h4,
-		> .text-chunk > h5,
-		> .text-chunk > h6 {
-			font-family: $tnr;
-		}
-	}
-
-	&.is-font-georgia .component[data-obo-component='true'] {
-		font-family: $georgia, $tnr;
-
-		> .text-chunk > h1,
-		> .text-chunk > h2,
-		> .text-chunk > h3,
-		> .text-chunk > h4,
-		> .text-chunk > h5,
-		> .text-chunk > h6 {
-			font-family: $georgia, $tnr;
-		}
-	}
-
-	&.is-font-helvetica .component[data-obo-component='true'] {
-		font-family: $helvetica;
-
-		> .text-chunk > h1,
-		> .text-chunk > h2,
-		> .text-chunk > h3,
-		> .text-chunk > h4,
-		> .text-chunk > h5,
-		> .text-chunk > h6 {
-			font-family: $helvetica;
-		}
-	}
-
-	&.is-font-courier .component[data-obo-component='true'] {
-		font-family: $courier;
-
-		> .text-chunk > h1,
-		> .text-chunk > h2,
-		> .text-chunk > h3,
-		> .text-chunk > h4,
-		> .text-chunk > h5,
-		> .text-chunk > h6 {
-			font-family: $courier;
-		}
-	}
-
-	&.is-font-palatino .component[data-obo-component='true'] {
-		font-family: $palatino;
-
-		> .text-chunk > h1,
-		> .text-chunk > h2,
-		> .text-chunk > h3,
-		> .text-chunk > h4,
-		> .text-chunk > h5,
-		> .text-chunk > h6 {
-			font-family: $palatino;
-		}
-	}
-
-	&.is-line-height-type-compact .obo-text {
-		line-height: 1.5em;
-	}
-
-	&.is-line-height-type-moderate .obo-text {
-		line-height: 1.7em;
-	}
-
-	&.is-line-height-type-generous .obo-text {
-		line-height: 2em;
-	}
-
-	&.is-font-size-smaller {
-		.excerpt-content > .wrapper > .component[data-obo-component='true'] {
-			font-size: 0.85em;
-		}
-
-		.component-toolbar {
-			font-size: 1.1764705882em;
-		}
-	}
-
-	&.is-font-size-larger {
-		.excerpt-content > .wrapper > .component[data-obo-component='true'] {
-			font-size: 1.15em;
-		}
-
-		.component-toolbar {
-			font-size: 0.8695652174em;
-		}
-	}
-
-	blockquote {
+	> blockquote {
 		margin: 0;
 		text-align: center;
 
@@ -193,10 +58,193 @@
 			position: relative;
 			text-align: center;
 		}
+
+		> .excerpt-content {
+			margin: 0 auto;
+			padding: 1em 0;
+			position: relative;
+			text-align: left;
+
+			> .overlay {
+				pointer-events: none;
+			}
+
+			> .wrapper {
+				position: relative;
+
+				> .component[data-obo-component='true'] {
+					padding-left: 0;
+					padding-right: 0;
+				}
+			}
+		}
+	}
+
+	&.is-font-serif > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $font-text;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $font-text;
+			}
+		}
+	}
+
+	&.is-font-sans > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $font-default;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $font-default;
+			}
+		}
+	}
+
+	&.is-font-monospace > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $font-monospace;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $font-monospace;
+			}
+		}
+	}
+
+	&.is-font-times-new-roman > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-size: 0.9em;
+			font-family: $tnr;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $tnr;
+			}
+		}
+	}
+
+	&.is-font-georgia > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $georgia, $tnr;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $georgia, $tnr;
+			}
+		}
+	}
+
+	&.is-font-helvetica > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $helvetica;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $helvetica;
+			}
+		}
+	}
+
+	&.is-font-courier > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $courier;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $courier;
+			}
+		}
+	}
+
+	&.is-font-palatino > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $palatino;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $palatino;
+			}
+		}
+	}
+
+	&.is-line-height-type-compact > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			line-height: 1.5em;
+		}
+	}
+
+	&.is-line-height-type-moderate > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			line-height: 1.7em;
+		}
+	}
+
+	&.is-line-height-type-generous > blockquote > .excerpt-content > .wrapper {
+		> .component[data-obo-component='true'] > .text-chunk {
+			line-height: 2em;
+		}
+	}
+
+	&.is-font-size-smaller {
+		> blockquote > .excerpt-content > .wrapper {
+			> .component[data-obo-component='true'] > .text-chunk {
+				font-size: 0.85em;
+			}
+
+			.component-toolbar {
+				font-size: 1.1764705882em;
+			}
+		}
+	}
+
+	&.is-font-size-larger {
+		> blockquote > .excerpt-content > .wrapper {
+			> .component[data-obo-component='true'] > .text-chunk {
+				font-size: 1.15em;
+			}
+
+			.component-toolbar {
+				font-size: 0.8695652174em;
+			}
+		}
 	}
 
 	&.is-width-tiny {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			max-width: 20em;
 		}
 
@@ -207,7 +255,7 @@
 	}
 
 	&.is-width-small {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			max-width: 25em;
 		}
 
@@ -218,7 +266,7 @@
 	}
 
 	&.is-width-medium {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			max-width: 31em;
 		}
 
@@ -229,7 +277,7 @@
 	}
 
 	&.is-width-large {
-		.excerpt-content,
+		> blockquote > .excerpt-content,
 		cite {
 			margin-left: 0;
 			margin-right: 0;
@@ -241,7 +289,7 @@
 	}
 
 	&.is-body-style-type-filled-box {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			background: $filled-background;
 			color: $filled-text;
 			border-radius: 0.25em;
@@ -249,7 +297,7 @@
 	}
 
 	&.is-body-style-type-bordered-box {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			border: 1px solid rgba(0, 0, 0, 0.1);
 			border-radius: $dimension-rounded-radius;
 			border-radius: 0.25em;
@@ -257,51 +305,60 @@
 	}
 
 	&.is-body-style-type-card {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 			background: $filled-background;
 
-			.obo-text,
-			.katex {
-				color: $filled-text;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $filled-text;
+				}
 			}
 		}
 	}
 
 	&.is-body-style-type-command-line {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			border-radius: $dimension-rounded-radius;
 			border-radius: 0.25em;
 			background: $terminal-background;
 
-			.obo-text,
-			.katex {
-				color: $command-line-text;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $command-line-text;
+				}
 			}
 		}
 	}
 
 	&.is-body-style-type-none {
-		blockquote {
+		> blockquote {
 			margin-top: 0;
 			margin-bottom: 0;
 		}
 
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			padding-top: 0;
 			padding-bottom: 0;
 		}
 	}
 
 	&.is-body-style-type-modern-text-file {
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			border-radius: 0.25em;
 			background: $modern-background;
 			border: 2px solid $modern-border;
 			padding-bottom: 0;
 		}
 
-		.wrapper {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> .wrapper {
 			margin-top: 0.5em;
 			background: $white;
 			border-bottom-left-radius: 0.25em;
@@ -311,10 +368,10 @@
 			padding-bottom: 1em;
 		}
 
-		.wrapper::before {
+		> .wrapper::before {
 			content: ' ';
-			width: 6.85em; // 130px
-			height: 1.475em; // 28px
+			width: 6.85em;
+			height: 1.475em;
 			position: absolute;
 			left: 2em;
 			top: 0;
@@ -324,8 +381,8 @@
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
-				box-shadow: 0 0.5em 0.45em rgba(0, 0, 0, 0.2); // 0 10px 9px
+			> blockquote > .excerpt-content {
+				box-shadow: 0 0.5em 0.45em rgba(0, 0, 0, 0.2);
 			}
 		}
 	}
@@ -336,7 +393,7 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			border: 1px solid black;
 			background: $retro-background;
 			padding-top: 1.5em;
@@ -344,7 +401,7 @@
 			padding-right: 0.2em;
 			padding-bottom: 0.2em;
 
-			.wrapper {
+			> .wrapper {
 				background: $white;
 				border: 1px solid black;
 				padding-top: 0.5em;
@@ -360,7 +417,7 @@
 		.wrapper::before {
 			content: ' ';
 			width: 100%;
-			height: 0.84em; // 16px
+			height: 0.84em;
 			position: absolute;
 			left: 0;
 			top: -1.2em;
@@ -368,8 +425,8 @@
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
-				box-shadow: 0.1em 0.1em black; // 2px
+			> blockquote > .excerpt-content {
+				box-shadow: 0.1em 0.1em black;
 			}
 		}
 	}
@@ -380,24 +437,27 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			border-radius: $dimension-rounded-radius * 3;
 			background: linear-gradient(#383635, $terminal-background);
 
-			.obo-text,
-			.katex {
-				color: $white;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $white;
+				}
 			}
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
-				.obo-text,
-				.katex {
-					// 1px 1px 11px, 1px 1px 11px
-					//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
-					text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3),
-						0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3);
+			> blockquote > .excerpt-content {
+				> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+				> .wrapper > .component[data-obo-component='true'] > .component {
+					> .non-editable-chunk > .katex-container {
+						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3),
+							0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3);
+					}
 				}
 			}
 
@@ -421,27 +481,30 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			border-radius: $dimension-rounded-radius * 3;
 			background: linear-gradient(#383635, $terminal-background);
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $terminal-green;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $terminal-green;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
-				.obo-text,
-				.katex {
-					// 1px 1px 11px, 1px 1px 11px
-					//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
-					text-shadow: 0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3),
-						0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3);
+			> blockquote > .excerpt-content {
+				> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+				> .wrapper > .component[data-obo-component='true'] > .component {
+					> .non-editable-chunk > .katex-container {
+						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						text-shadow: 0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3),
+							0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3);
+					}
 				}
 			}
 
@@ -465,27 +528,30 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			border-radius: $dimension-rounded-radius * 3;
 			background: linear-gradient(#383635, $terminal-background);
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $terminal-orange;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $terminal-orange;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
-				.obo-text,
-				.katex {
-					// 1px 1px 11px, 1px 1px 11px
-					//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
-					text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3),
-						0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3);
+			> blockquote > .excerpt-content {
+				> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+				> .wrapper > .component[data-obo-component='true'] > .component {
+					> .non-editable-chunk > .katex-container {
+						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3),
+							0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3);
+					}
 				}
 			}
 
@@ -509,15 +575,17 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			background: #181663;
 			border: 1em solid $terminal-purple;
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $terminal-purple;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $terminal-purple;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
@@ -529,7 +597,7 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			background: #fffcf8;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 			border: 1px solid rgba(0, 0, 0, 0.03);
@@ -537,15 +605,17 @@
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $yellow-paper-text;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $yellow-paper-text;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				background-image: url('./images/test.jpg');
 				background-blend-mode: luminosity;
 			}
@@ -558,7 +628,7 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			background: #fdf5ea;
 			border-radius: 0.12em;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -566,15 +636,17 @@
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $dark-yellow-paper-text;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $dark-yellow-paper-text;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				background-image: url('./images/test.jpg');
 				background-blend-mode: luminosity;
 			}
@@ -587,28 +659,30 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			background: #fffcf8;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 			border: 1px solid rgba(0, 0, 0, 0.03);
 			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-			// allow for fallback
-			/* stylelint-disable-next-line declaration-block-no-duplicate-properties */
+			// allow for fallbacks
+			// stylelint-disable-next-line declaration-block-no-duplicate-properties
 			background: rgb(237, 220, 192);
-			/* stylelint-disable-next-line declaration-block-no-duplicate-properties */
+			// stylelint-disable-next-line declaration-block-no-duplicate-properties
 			background: radial-gradient(circle, #eddcc0 50%, #d6bb9e 100%);
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $aged-paper-text;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $aged-paper-text;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				background: radial-gradient(circle, #eddcc0 50%, #d6bb9e 100%), url('./images/test.jpg');
 				background-blend-mode: multiply;
 			}
@@ -621,7 +695,7 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			background: #fbfbfd;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 			border: 1px solid rgba(0, 0, 0, 0.03);
@@ -629,15 +703,17 @@
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $white-paper-text;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $white-paper-text;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				background-image: url('./images/test.jpg');
 				background-blend-mode: luminosity;
 			}
@@ -650,7 +726,7 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content {
+		> blockquote > .excerpt-content {
 			background: #fbfbfd;
 			background: #f9f8f7;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -659,15 +735,17 @@
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			.obo-text,
-			.katex {
-				color: $white-paper-text;
+			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
+			> .wrapper > .component[data-obo-component='true'] > .component {
+				> .non-editable-chunk > .katex-container {
+					color: $white-paper-text;
+				}
 			}
 			// stylelint-enable no-descending-specificity
 		}
 
 		&.is-showing-effect {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				background-image: url('./images/test.jpg');
 				background-blend-mode: luminosity;
 			}
@@ -675,23 +753,28 @@
 	}
 
 	&.is-top-edge-type-fade {
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			content: ' ';
-			width: calc(100% + 0.375em); // 6px
-			transform: translate(-0.1875em, 0.1875em); // -3px, 3px
+			width: calc(100% + 0.375em);
+			transform: translate(-0.1875em, 0.1875em);
 			position: absolute;
 			left: 0;
 			top: -0.25em;
-			height: 1.875em; // 30px
+			height: 1.875em;
 			background: $white;
 			background: linear-gradient(180deg, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
 		}
 
 		&.is-body-style-type-modern-text-file {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				padding-top: 0;
 			}
 
+			/*
+			stylelint complains about this rule's specificity, but fixing it would
+			require deconstructing every style hierarchy so we're ignoring it instead
+			*/
+			// stylelint-disable-next-line no-descending-specificity
 			.wrapper {
 				margin-top: 0;
 				border-top: none;
@@ -704,10 +787,15 @@
 		}
 
 		&.is-body-style-type-retro-text-file {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				padding-top: 0;
 			}
 
+			/*
+			stylelint complains about this rule's specificity, but fixing it would
+			require deconstructing every style hierarchy so we're ignoring it instead
+			*/
+			// stylelint-disable-next-line no-descending-specificity
 			.wrapper {
 				margin-top: 0;
 				border-top: none;
@@ -723,18 +811,18 @@
 		&.is-body-style-type-term-white,
 		&.is-body-style-type-term-green,
 		&.is-body-style-type-term-orange {
-			.excerpt-content::before {
+			> blockquote > .excerpt-content::before {
 				background: linear-gradient(180deg, white 50%, rgba(255, 255, 255, 0) 100%);
 			}
 
 			.overlay::before {
 				content: ' ';
-				width: calc(100% + 0.375em); // 6px
-				transform: translate(-0.1875em, 0.1875em); // -3px, 3px
+				width: calc(100% + 0.375em);
+				transform: translate(-0.1875em, 0.1875em);
 				position: absolute;
 				left: 0;
 				top: 0;
-				height: 1.875em; // 30px
+				height: 1.875em;
 				//stylelint-disable-next-line declaration-colon-newline-after
 				background: linear-gradient(
 					180deg,
@@ -745,21 +833,21 @@
 		}
 
 		&.is-body-style-type-term-c64 {
-			.excerpt-content::before {
-				width: calc(100% + 3.125em); // 50px
-				transform: translate(-1.5625em, -1.25em); // -25px, -20px
-				height: 2.8125em; // 45px
+			> blockquote > .excerpt-content::before {
+				width: calc(100% + 3.125em);
+				transform: translate(-1.5625em, -1.25em);
+				height: 2.8125em;
 				background: linear-gradient(180deg, white 50%, rgba(255, 255, 255, 0) 100%);
 			}
 		}
 	}
 
 	&.is-bottom-edge-type-fade {
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			content: ' ';
-			width: calc(100% + 0.375em); // 6px
-			transform: translate(-0.1875em, 0.1875em); // -3px, 3px
-			height: 1.875em; // 30px
+			width: calc(100% + 0.375em);
+			transform: translate(-0.1875em, 0.1875em);
+			height: 1.875em;
 			position: absolute;
 			left: 0;
 			bottom: 0;
@@ -768,23 +856,23 @@
 		}
 
 		&.is-body-style-type-card {
-			.excerpt-content::after {
+			> blockquote > .excerpt-content::after {
 				transform: translate(-3px, 13px);
 				background: linear-gradient(0deg, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
 			}
 		}
 
 		&.is-body-style-type-retro-text-file {
-			.excerpt-content::after {
-				height: 3.875em; // 62px
+			> blockquote > .excerpt-content::after {
+				height: 3.875em;
 			}
 		}
 
 		&.is-body-style-type-modern-text-file {
-			.excerpt-content::after {
-				width: calc(100% + 1.25em); // 20px
-				transform: translate(-10px, 22px); // -10px, 22px
-				height: 3.8125em; // 61px
+			> blockquote > .excerpt-content::after {
+				width: calc(100% + 1.25em);
+				transform: translate(-10px, 22px);
+				height: 3.8125em;
 				background: linear-gradient(0deg, white 50%, rgba(255, 255, 255, 0) 100%);
 			}
 		}
@@ -793,16 +881,16 @@
 		&.is-body-style-type-term-white,
 		&.is-body-style-type-term-green,
 		&.is-body-style-type-term-orange {
-			.excerpt-content::after {
+			> blockquote > .excerpt-content::after {
 				background: linear-gradient(0deg, white 50%, rgba(255, 255, 255, 0) 100%);
 			}
 		}
 
 		&.is-body-style-type-term-c64 {
-			.excerpt-content::after {
-				width: calc(100% + 3.125em); // 50px
-				transform: translate(-1.5625em, 1.25em); // -25px, 20px
-				height: 2.8125em; // 45px
+			> blockquote > .excerpt-content::after {
+				width: calc(100% + 3.125em);
+				transform: translate(-1.5625em, 1.25em);
+				height: 2.8125em;
 				background: linear-gradient(0deg, white 50%, rgba(255, 255, 255, 0) 100%);
 			}
 		}
@@ -814,7 +902,7 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			content: ' ';
 			width: 100%;
 			// this only seems to work at 10px for some reason
@@ -827,7 +915,7 @@
 		}
 
 		&.is-body-style-type-bordered-box {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				border-top-left-radius: 0;
 				border-top-right-radius: 0;
 
@@ -844,7 +932,7 @@
 		require deconstructing every style hierarchy so we're ignoring it instead
 		*/
 		// stylelint-disable-next-line no-descending-specificity
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			content: ' ';
 			width: 100%;
 			// this only seems to work at 10px for some reason
@@ -857,7 +945,7 @@
 		}
 
 		&.is-body-style-type-bordered-box {
-			.excerpt-content {
+			> blockquote > .excerpt-content {
 				border-bottom-left-radius: 0;
 				border-bottom-right-radius: 0;
 
@@ -870,74 +958,74 @@
 
 	&.is-top-edge-type-jagged.is-body-style-type-filled-box,
 	&.is-top-edge-type-jagged.is-body-style-type-card {
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			background: url(./images/jagged-edge-filled-box.svg);
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-white-paper {
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			background: url(./images/jagged-edge-white-paper.svg);
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-modern-paper {
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			background: url(./images/jagged-edge-modern-paper.svg);
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-light-yellow-paper {
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			background: url(./images/jagged-edge-light-yellow-paper.svg);
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-dark-yellow-paper {
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			background: url(./images/jagged-edge-dark-yellow-paper.svg);
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-aged-paper {
-		.excerpt-content::before {
+		> blockquote > .excerpt-content::before {
 			background: url(./images/jagged-edge-aged-paper.svg);
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-filled-box,
 	&.is-bottom-edge-type-jagged.is-body-style-type-card {
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			background: url(./images/jagged-edge-filled-box.svg);
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-white-paper {
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			background: url(./images/jagged-edge-white-paper.svg);
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-modern-paper {
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			background: url(./images/jagged-edge-modern-paper.svg);
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-light-yellow-paper {
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			background: url(./images/jagged-edge-light-yellow-paper.svg);
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-dark-yellow-paper {
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			background: url(./images/jagged-edge-dark-yellow-paper.svg);
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-aged-paper {
-		.excerpt-content::after {
+		> blockquote > .excerpt-content::after {
 			background: url(./images/jagged-edge-aged-paper.svg);
 		}
 	}
