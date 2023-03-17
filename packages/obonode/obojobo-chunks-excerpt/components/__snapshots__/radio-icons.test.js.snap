@@ -3,7 +3,7 @@
 exports[`Radio Icons Node builds the expected component - icons are functions 1`] = `
 <div
   aria-label="sizes"
-  className="radio-icons"
+  className="excerpt--radio-icons"
   role="radiogroup"
 >
   <div
@@ -85,7 +85,7 @@ exports[`Radio Icons Node builds the expected component - icons are functions 1`
 exports[`Radio Icons Node builds the expected component - icons are strings 1`] = `
 <div
   aria-label="sizes"
-  className="radio-icons"
+  className="excerpt--radio-icons"
   role="radiogroup"
 >
   <div

@@ -309,9 +309,9 @@ since it is not compatible with stylelint's indentation rules
 			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 			background: $filled-background;
 
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $filled-text;
 				}
 			}
@@ -324,9 +324,9 @@ since it is not compatible with stylelint's indentation rules
 			border-radius: 0.25em;
 			background: $terminal-background;
 
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $command-line-text;
 				}
 			}
@@ -441,9 +441,9 @@ since it is not compatible with stylelint's indentation rules
 			border-radius: $dimension-rounded-radius * 3;
 			background: linear-gradient(#383635, $terminal-background);
 
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $white;
 				}
 			}
@@ -451,9 +451,9 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-				> .wrapper > .component[data-obo-component='true'] > .component {
-					> .non-editable-chunk > .katex-container {
+				> .wrapper > .component[data-obo-component='true'] {
+					> .text-chunk,
+					> .component > .non-editable-chunk > .katex-container {
 						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
 						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3),
 							0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3);
@@ -487,9 +487,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $terminal-green;
 				}
 			}
@@ -498,9 +498,9 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-				> .wrapper > .component[data-obo-component='true'] > .component {
-					> .non-editable-chunk > .katex-container {
+				> .wrapper > .component[data-obo-component='true'] {
+					> .text-chunk,
+					> .component > .non-editable-chunk > .katex-container {
 						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
 						text-shadow: 0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3),
 							0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3);
@@ -534,9 +534,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $terminal-orange;
 				}
 			}
@@ -545,9 +545,9 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-				> .wrapper > .component[data-obo-component='true'] > .component {
-					> .non-editable-chunk > .katex-container {
+				> .wrapper > .component[data-obo-component='true'] {
+					> .text-chunk,
+					> .component > .non-editable-chunk > .katex-container {
 						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
 						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3),
 							0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3);
@@ -581,9 +581,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $terminal-purple;
 				}
 			}
@@ -605,9 +605,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $yellow-paper-text;
 				}
 			}
@@ -616,7 +616,7 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				background-image: url('./images/test.jpg');
+				background-image: url('./images/aged-paper.jpg');
 				background-blend-mode: luminosity;
 			}
 		}
@@ -636,9 +636,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $dark-yellow-paper-text;
 				}
 			}
@@ -647,7 +647,7 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				background-image: url('./images/test.jpg');
+				background-image: url('./images/aged-paper.jpg');
 				background-blend-mode: luminosity;
 			}
 		}
@@ -672,9 +672,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $aged-paper-text;
 				}
 			}
@@ -683,7 +683,9 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				background: radial-gradient(circle, #eddcc0 50%, #d6bb9e 100%), url('./images/test.jpg');
+				//stylelint-disable-next-line declaration-colon-newline-after
+				background: radial-gradient(circle, #eddcc0 50%, #d6bb9e 100%),
+					url('./images/aged-paper.jpg');
 				background-blend-mode: multiply;
 			}
 		}
@@ -703,9 +705,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $white-paper-text;
 				}
 			}
@@ -714,7 +716,7 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				background-image: url('./images/test.jpg');
+				background-image: url('./images/aged-paper.jpg');
 				background-blend-mode: luminosity;
 			}
 		}
@@ -735,9 +737,9 @@ since it is not compatible with stylelint's indentation rules
 
 			// same here
 			// stylelint-disable no-descending-specificity
-			> .wrapper > .component[data-obo-component='true'] > .text-chunk,
-			> .wrapper > .component[data-obo-component='true'] > .component {
-				> .non-editable-chunk > .katex-container {
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
 					color: $white-paper-text;
 				}
 			}
@@ -746,7 +748,7 @@ since it is not compatible with stylelint's indentation rules
 
 		&.is-showing-effect {
 			> blockquote > .excerpt-content {
-				background-image: url('./images/test.jpg');
+				background-image: url('./images/aged-paper.jpg');
 				background-blend-mode: luminosity;
 			}
 		}

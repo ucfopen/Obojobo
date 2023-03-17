@@ -279,7 +279,7 @@ describe('Excerpt Content Node', () => {
 		component
 			.find('.more-options')
 			.at(0)
-			.find('.radio-icons')
+			.find('.excerpt--radio-icons')
 			.at(0)
 			.find('input')
 			.at(0)

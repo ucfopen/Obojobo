@@ -16,7 +16,7 @@ const RadioIcons = ({ name, options, selectedOption, ariaLabel, onChangeOption }
 	}
 
 	return (
-		<div className={`radio-icons`} role="radiogroup" aria-label={ariaLabel}>
+		<div className={`excerpt--radio-icons`} role="radiogroup" aria-label={ariaLabel}>
 			<div className="options">
 				{options.map((o, i) => (
 					<label
