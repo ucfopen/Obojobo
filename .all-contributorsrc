@@ -6,14 +6,38 @@
   "commit": false,
   "contributors": [
     {
+      "login": "Viggie1",
+      "name": "Viggie Kontonotas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93793808?v=4",
+      "profile": "https://github.com/Viggie1",
+      "contributions": [
+        "code",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "RachelDau",
+      "name": "Rachel Dauns",
+      "avatar_url": "https://avatars.githubusercontent.com/u/112724541?v=4",
+      "profile": "https://github.com/RachelDau",
+      "contributions": [
+        "code",
+        "test",
+        "review"
+      ]
+    },
+    {
       "login": "deundrewilliams",
-      "name": "deundrewilliams",
+      "name": "Deundre Williams",
       "avatar_url": "https://avatars.githubusercontent.com/u/41072160?v=4",
       "profile": "https://github.com/deundrewilliams",
       "contributions": [
         "code",
         "review",
-        "test"
+        "test",
+        "a11y",
+        "bug"
       ]
     },
     {
@@ -30,7 +54,7 @@
     },
     {
       "login": "walid-i",
-      "name": "walid-i",
+      "name": "Walid Islam",
       "avatar_url": "https://avatars.githubusercontent.com/u/57739844?v=4",
       "profile": "https://github.com/walid-i",
       "contributions": [
@@ -59,7 +83,8 @@
         "code",
         "test",
         "review",
-        "bug"
+        "bug",
+        "design"
       ]
     },
     {
@@ -88,7 +113,7 @@
     },
     {
       "login": "AnthonyRodriguez726",
-      "name": "AnthonyRodriguez726",
+      "name": "Anthony Rodriguez",
       "avatar_url": "https://avatars2.githubusercontent.com/u/11856062?v=4",
       "profile": "https://github.com/AnthonyRodriguez726",
       "contributions": [
@@ -119,7 +144,7 @@
     },
     {
       "login": "SidTheEngineer",
-      "name": "Sid",
+      "name": "Sidney Packer",
       "avatar_url": "https://avatars0.githubusercontent.com/u/19176417?v=4",
       "profile": "https://github.com/SidTheEngineer",
       "contributions": [
@@ -177,7 +202,7 @@
     },
     {
       "login": "ssilverm",
-      "name": "Shea",
+      "name": "Shea Silverman",
       "avatar_url": "https://avatars3.githubusercontent.com/u/1273237?v=4",
       "profile": "http://blog.sheasilverman.com",
       "contributions": [

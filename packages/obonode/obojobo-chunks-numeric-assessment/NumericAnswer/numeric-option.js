@@ -6,7 +6,8 @@ import {
 	WITHIN_A_RANGE,
 	requirementDropdown,
 	marginDropdown,
-	simplifedToFullText
+	simplifedToFullText,
+	PERCENT
 } from '../constants'
 import NumericEntry from '../entry/numeric-entry'
 import {
@@ -95,15 +96,55 @@ const getRangeEndValidityString = (startValueString, endValueString) => {
 	}
 }
 
-const onBlurAnswer = event => {
-	event.target.setCustomValidity(getValidityString(event.target.value))
-	event.target.reportValidity()
+const getMarginOfErrorAnswerValidityString = (answer, errorType) => {
+	// Filter out leading zeroes
+	const parsedAnswer = parseInt(answer, 10)
+
+	switch (simplifedToFullText[errorType]) {
+		case PERCENT: {
+			if (parsedAnswer === 0) {
+				return 'Answer cannot be 0 while Error Type is Percent'
+			} else {
+				return ''
+			}
+		}
+		default:
+			return ''
+	}
 }
 
 const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
+	const answerRef = React.createRef()
+
+	const marginErrorTypeRef = React.createRef()
+
 	const inputStartRef = React.createRef()
 	const inputEndRef = React.createRef()
 	const { requirement, answer, start, end, margin, type } = numericChoice
+
+	// Clear out any custom validity after a field changes to ensure old errors don't show
+	const clearCustomValidity = () => {
+		if (answerRef.current) {
+			answerRef.current.setCustomValidity('')
+		}
+
+		if (inputStartRef.current) {
+			inputStartRef.current.setCustomValidity('')
+		}
+
+		if (inputEndRef.current) {
+			inputEndRef.current.setCustomValidity('')
+		}
+
+		if (marginErrorTypeRef.current) {
+			marginErrorTypeRef.current.setCustomValidity('')
+		}
+	}
+
+	const onAnswerTypeChange = event => {
+		clearCustomValidity()
+		onHandleSelectChange(event)
+	}
 
 	const onChangeNumericValue = event => {
 		// Clear out the error string and then update state
@@ -111,7 +152,24 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		onHandleInputChange(event)
 	}
 
+	const onBlurAnswer = event => {
+		clearCustomValidity()
+
+		// Get normal error validity string
+		let answerValidityString = getValidityString(event.target.value)
+
+		// Validate for margin of error
+		if (answerValidityString === '' && !isRefRelatedTarget(event, marginErrorTypeRef)) {
+			answerValidityString = getMarginOfErrorAnswerValidityString(event.target.value, type)
+		}
+
+		event.target.setCustomValidity(answerValidityString)
+		event.target.reportValidity()
+	}
+
 	const onBlurErrorValue = event => {
+		clearCustomValidity()
+
 		const errorAmount = parseFloat(event.target.value)
 
 		if (!Number.isFinite(errorAmount)) {
@@ -126,6 +184,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 	}
 
 	const onBlurStart = event => {
+		clearCustomValidity()
 		// If the user is moving to a related input then don't show range errors.
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
@@ -139,6 +198,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 	}
 
 	const onBlurEnd = event => {
+		clearCustomValidity()
 		// If the user is moving to a related input then don't show range errors.
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
@@ -151,6 +211,16 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		onBlurAnswer(event)
 	}
 
+	const onBlurMarginOfErrorType = event => {
+		clearCustomValidity()
+
+		// If not moving to related input, get validity string
+		if (!isRefRelatedTarget(event, answerRef)) {
+			event.target.setCustomValidity(getMarginOfErrorAnswerValidityString(answer, type))
+			event.target.reportValidity()
+		}
+	}
+
 	switch (simplifedToFullText[requirement]) {
 		case WITHIN_A_RANGE:
 			return (
@@ -161,7 +231,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onHandleSelectChange}
+							onChange={onAnswerTypeChange}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -205,7 +275,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onHandleSelectChange}
+							onChange={onAnswerTypeChange}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -222,6 +292,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							onBlur={onBlurAnswer}
 							contentEditable={false}
 							autoComplete="off"
+							ref={answerRef}
 						/>
 					</label>
 					<label className="select margin-type">
@@ -231,6 +302,8 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="margin-type"
 							value={simplifedToFullText[type]}
 							onChange={onHandleSelectChange}
+							ref={marginErrorTypeRef}
+							onBlur={onBlurMarginOfErrorType}
 						>
 							{marginDropdown.map(type => (
 								<option key={type}>{type}</option>

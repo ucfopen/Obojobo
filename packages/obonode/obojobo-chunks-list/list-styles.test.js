@@ -38,13 +38,12 @@ describe('List Styles', () => {
 		})
 	})
 
-	test('get retrives default values', () => {
+	test('get retrieves default values', () => {
 		const ls = new ListStyles()
 		ls.init()
 
 		expect(ls.get(0).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 	})
@@ -119,43 +118,36 @@ describe('List Styles', () => {
 
 		expect(ls.get(0).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 
 		expect(ls.get(1).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'circle'
 		})
 
 		expect(ls.get(2).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'square'
 		})
 
 		expect(ls.get(3).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 
 		expect(ls.get(4).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'circle'
 		})
 
 		expect(ls.get(5).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'square'
 		})
 
 		expect(ls.get(6).toDescriptor()).toEqual({
 			type: 'unordered',
-			start: 1,
 			bulletStyle: 'disc'
 		})
 	})
@@ -297,5 +289,37 @@ describe('List Styles', () => {
 		expect(other).toBeInstanceOf(ListStyles)
 		expect(ls).not.toBe(other)
 		expect(ls.toDescriptor()).toEqual(other.toDescriptor())
+	})
+
+	test('all lists do not have a start attribute and are unordered as default', () => {
+		const ls = new ListStyles()
+		ls.init()
+
+		for (const indent in ls.styles) {
+			ls.get(indent)
+			expect(ls.type).toBe('unordered')
+			expect(ls.start).toBe(undefined)
+		}
+	})
+
+	test('all unordered lists do not have a start attribute', () => {
+		const ls = new ListStyles('unordered')
+		ls.init()
+
+		for (const indent in ls.styles) {
+			ls.get(indent)
+			expect(ls.type).toBe('unordered')
+			expect(ls.start).toBe(undefined)
+		}
+	})
+
+	test('all ordered lists do have a start attribute', () => {
+		const ls = new ListStyles('ordered')
+
+		for (const indent in ls.styles) {
+			ls.get(indent)
+			expect(ls.type).toBe('ordered')
+			expect(ls.start).toBe(true)
+		}
 	})
 })

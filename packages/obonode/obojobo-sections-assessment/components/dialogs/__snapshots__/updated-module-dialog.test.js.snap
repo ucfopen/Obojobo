@@ -10,7 +10,9 @@ exports[`UpdatedModuleDialog UpdatedModuleDialog component 1`] = `
   }
 >
   <div
+    aria-atomic="true"
     aria-labelledby="obojobo-draft--components--modal--modal--content"
+    aria-live="polite"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
     tabIndex="-1"

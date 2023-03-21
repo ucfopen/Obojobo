@@ -9,7 +9,9 @@ exports[`NewIFrameModal NewIFrameModal component changes src 1`] = `
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -123,7 +125,9 @@ exports[`NewIFrameModal NewIFrameModal component correctly detects content type 
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -237,7 +241,9 @@ exports[`NewIFrameModal NewIFrameModal component correctly detects content type 
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -351,7 +357,9 @@ exports[`NewIFrameModal NewIFrameModal component focuses on first element 1`] = 
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -456,7 +464,7 @@ exports[`NewIFrameModal NewIFrameModal component focuses on first element 1`] = 
 </div>
 `;
 
-exports[`NewIFrameModal NewIFrameModal component mounts as expected 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">New Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"new-iframe-modal\\"><header><p>Paste either an iframe embed code or a URL to embed:</p><input type=\\"text\\" placeholder=\\"<iframe src=&quot;https://example.com&quot;/> or &quot;https://example.com&quot;\\" value=\\"\\"></header><div class=\\"preview\\"><p>Embedded preview:</p><div class=\\"no-preview\\"><span>Paste a link or embed code above to see the preview</span></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">Preview is good - Continue...</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`NewIFrameModal NewIFrameModal component mounts as expected 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\" aria-live=\\"polite\\" aria-atomic=\\"true\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">New Embedded IFrame</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"new-iframe-modal\\"><header><p>Paste either an iframe embed code or a URL to embed:</p><input type=\\"text\\" placeholder=\\"<iframe src=&quot;https://example.com&quot;/> or &quot;https://example.com&quot;\\" value=\\"\\"></header><div class=\\"preview\\"><p>Embedded preview:</p><div class=\\"no-preview\\"><span>Paste a link or embed code above to see the preview</span></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">Preview is good - Continue...</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
 exports[`NewIFrameModal NewIFrameModal component opens section explaining why the iframe preview is not working 1`] = `
 <div
@@ -467,7 +475,9 @@ exports[`NewIFrameModal NewIFrameModal component opens section explaining why th
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"
@@ -589,7 +599,9 @@ exports[`NewIFrameModal NewIFrameModal shows message after invalid src is typed 
     style={null}
   >
     <div
+      aria-atomic="true"
       aria-labelledby="obojobo-draft--components--modal--modal--content"
+      aria-live="polite"
       className="obojobo-draft--components--modal--modal"
       role="dialog"
       tabIndex="-1"

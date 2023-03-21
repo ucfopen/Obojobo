@@ -73,11 +73,7 @@ class Table extends React.Component {
 		return (
 			<div className="buttonbox-box" contentEditable={false}>
 				<div className="box-border">
-					<Button
-						className="toggle-header"
-						onClick={this.toggleHeader}
-						onKeyDown={this.returnFocusOnTab}
-					>
+					<Button className="toggle-header" onClick={this.toggleHeader}>
 						Toggle Header
 					</Button>
 					<Button

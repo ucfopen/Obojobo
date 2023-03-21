@@ -35,6 +35,8 @@ const orderedList = [
 	{ bulletStyle: 'upper-roman', display: 'I.' }
 ]
 
+const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
+
 const getIsSelected = (marks, mark) => {
 	if (!mark || !marks || mark.type === 'color' || !marks[mark.type]) {
 		return false
@@ -55,6 +57,9 @@ const getIsSelected = (marks, mark) => {
 const ContentToolbar = props => {
 	const marks = Editor.marks(props.editor)
 	const isMac = navigator.platform.indexOf('Mac') !== -1
+	const nodeType = props.editor.selection
+		? Editor.parent(props.editor, props.editor.selection.anchor)[0].type
+		: ''
 
 	return (
 		<div className={`visual-editor--content-toolbar`}>
@@ -67,6 +72,7 @@ const ContentToolbar = props => {
 				const hotKey = isMac ? '⌘+' : 'Ctrl+'
 				const shortcut = mark.shortcut ? '\n' + hotKey + mark.shortcut : ''
 				const isSelected = getIsSelected(marks, mark)
+				const allowStyleChanges = nodeType !== HTML_NODE
 				const Icon = mark.icon
 
 				return (
@@ -76,6 +82,7 @@ const ContentToolbar = props => {
 						onClick={() => mark.action(props.editor)}
 						title={mark.name + shortcut}
 						aria-label={mark.name + shortcut}
+						disabled={!allowStyleChanges}
 					>
 						<Icon editor={props.editor} />
 					</button>

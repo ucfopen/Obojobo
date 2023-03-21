@@ -10,6 +10,25 @@ class Collection {
 		this.createdAt = created_at
 	}
 
+	static fetchAllPublic() {
+		return db
+			.manyOrNone(
+				`
+			SELECT
+				id,
+				title,
+				user_id,
+				created_at
+			FROM repository_collections
+			WHERE visibility_type = 'public'
+			AND deleted = FALSE
+			`
+			)
+			.then(result => {
+				return result.map(row => new Collection(row))
+			})
+	}
+
 	static fetchById(id) {
 		return db
 			.one(
@@ -129,7 +148,7 @@ class Collection {
 
 		const whereSQL = `repository_collections.id = $[collectionId]`
 
-		return DraftSummary.fetchAndJoinWhere(joinOn, whereSQL, { collectionId: this.id })
+		return DraftSummary.fetchAndJoinWhere('', joinOn, whereSQL, { collectionId: this.id })
 			.then(draftSummaries => {
 				this.drafts = draftSummaries
 				return this

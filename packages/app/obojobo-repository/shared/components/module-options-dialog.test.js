@@ -5,6 +5,7 @@ import React from 'react'
 import { create } from 'react-test-renderer'
 
 import ModuleOptionsDialog from './module-options-dialog'
+import { FULL, PARTIAL, MINIMAL } from 'obojobo-express/server/constants'
 
 describe('ModuleOptionsDialog', () => {
 	let defaultProps
@@ -20,7 +21,8 @@ describe('ModuleOptionsDialog', () => {
 		defaultProps = {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
-			editor: 'mockEditorType'
+			editor: 'mockEditorType',
+			accessLevel: FULL
 		}
 
 		mockRepositoryUtils = require('../repository-utils')
@@ -33,6 +35,36 @@ describe('ModuleOptionsDialog', () => {
 	})
 
 	test('renders correctly with standard expected props', () => {
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Minimal access level', () => {
+		defaultProps.accessLevel = MINIMAL
+
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		expect(mockRepositoryUtils.urlForEditor).not.toHaveBeenCalled()
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Partial access level', () => {
+		defaultProps.accessLevel = PARTIAL
+
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Full access level', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)

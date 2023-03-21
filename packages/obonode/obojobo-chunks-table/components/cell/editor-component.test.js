@@ -17,6 +17,20 @@ const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 describe('Cell Editor Node', () => {
+	let tableComponent
+
+	beforeAll(() => {
+		tableComponent = mount(
+			<table>
+				<thead>
+					<tr>
+						<Cell element={{ content: { header: true } }} selected={true} />
+					</tr>
+				</thead>
+			</table>
+		)
+	})
+
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
@@ -55,15 +69,9 @@ describe('Cell Editor Node', () => {
 	})
 
 	test('Cell component handles tabbing', () => {
-		const component = mount(
-			<table>
-				<thead>
-					<tr>
-						<Cell element={{ content: { header: true } }} selected={true} />
-					</tr>
-				</thead>
-			</table>
-		)
+		const component = tableComponent
+
+		document.body.innerHTML = component.html()
 
 		component
 			.find('button')
@@ -79,22 +87,12 @@ describe('Cell Editor Node', () => {
 	})
 
 	test('Cell component opens drop down', () => {
-		const component = mount(
-			<table>
-				<thead>
-					<tr>
-						<Cell element={{ content: { header: true } }} selected={true} />
-					</tr>
-				</thead>
-			</table>
-		)
-
-		component
+		tableComponent
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		const tree = component.html()
+		const tree = tableComponent.html()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -599,6 +597,146 @@ describe('Cell Editor Node', () => {
 		Cell.prototype.showDropDownMenu.bind(thisValue)()
 
 		expect(thisValue.setState).toHaveBeenCalledWith({ isShowingDropDownMenu: true })
+	})
+
+	describe('focusing dropdown option', () => {
+		const button = {
+			classList: {
+				add: jest.fn(),
+				remove: jest.fn()
+			}
+		}
+
+		const event = {
+			target: button
+		}
+
+		beforeEach(() => {
+			jest.restoreAllMocks()
+		})
+
+		test('onFocus updates classname', () => {
+			Cell.prototype.onFocus.bind({}, event)()
+
+			expect(button.classList.add).toHaveBeenCalled()
+		})
+
+		test('onEndFocus updates classname', () => {
+			Cell.prototype.onEndFocus.bind({}, event)()
+
+			expect(button.classList.remove).toHaveBeenCalled()
+		})
+	})
+
+	describe('handling key presses on dropdown options', () => {
+		let component
+		let cellControls
+
+		beforeEach(() => {
+			component = tableComponent
+			document.body.innerHTML = component.html()
+			cellControls = Array.from(
+				document.getElementsByClassName('dropdown-cell')[0].getElementsByTagName('button')
+			)
+		})
+
+		test('selects option below when [ArrowDown] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'ArrowDown'
+			}
+
+			const focus = jest.spyOn(cellControls[2], 'focus')
+
+			Cell.prototype.onKeyDown(event)
+
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(focus).toHaveBeenCalled()
+		})
+
+		test('does nothing when [ArrowDown] is pressed with no option below', () => {
+			const event = {
+				target: cellControls[cellControls.length - 1],
+				preventDefault: jest.fn(),
+				key: 'ArrowDown'
+			}
+
+			const onFocus = jest.spyOn(Cell.prototype, 'onFocus')
+			Cell.prototype.onKeyDown(event)
+
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(onFocus).not.toHaveBeenCalled()
+		})
+
+		test('selects option above when [ArrowUp] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'ArrowUp'
+			}
+
+			const focus = jest.spyOn(cellControls[0], 'focus')
+
+			Cell.prototype.onKeyDown(event)
+
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(focus).toHaveBeenCalled()
+		})
+
+		test('does nothing when [ArrowUp] is pressed with no option above', () => {
+			const event = {
+				target: cellControls[0],
+				preventDefault: jest.fn(),
+				key: 'ArrowUp'
+			}
+
+			const onFocus = jest.spyOn(Cell.prototype, 'onFocus')
+
+			Cell.prototype.onKeyDown(event)
+
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(onFocus).not.toHaveBeenCalled()
+		})
+
+		test('executes default behavior when [Tab] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'Tab'
+			}
+
+			Cell.prototype.onKeyDown(event)
+
+			expect(event.preventDefault).not.toHaveBeenCalled()
+		})
+
+		test('closes dropdown menu when [Tab] is pressed on bottommost dropdown option', () => {
+			const event = {
+				target: cellControls[cellControls.length - 1],
+				preventDefault: jest.fn(),
+				key: 'Tab'
+			}
+
+			const click = jest.spyOn(cellControls[0], 'click')
+
+			Cell.prototype.onKeyDown(event)
+
+			expect(event.preventDefault).not.toHaveBeenCalled()
+			expect(click).toHaveBeenCalled()
+		})
+
+		test('executes default behavior when [Enter] is pressed', () => {
+			const event = {
+				target: cellControls[1],
+				preventDefault: jest.fn(),
+				key: 'Enter'
+			}
+
+			Cell.prototype.onKeyDown(event)
+
+			expect(event.preventDefault).not.toHaveBeenCalled()
+		})
 	})
 
 	test('componentDidMount does nothing when Cell is not selected', () => {
