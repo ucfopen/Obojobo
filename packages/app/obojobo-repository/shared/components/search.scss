@@ -63,7 +63,7 @@ $search-input-height: 30px;
 			position: absolute;
 			right: -0.75em;
 
-			&:after {
+			&::after {
 				content: '';
 				width: 0.6em;
 				height: 0.6em;
@@ -84,6 +84,11 @@ $search-input-height: 30px;
 	}
 
 	&.is-not-empty {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require fixing alot more errors
+		*/
+		// stylelint-disable-next-line no-descending-specificity
 		> input {
 			border-color: $color-action;
 			background-color: $color-action;
