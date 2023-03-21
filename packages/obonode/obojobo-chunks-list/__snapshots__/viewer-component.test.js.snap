@@ -142,7 +142,6 @@ exports[`List List component with ascending indents 1`] = `
                         </span>
                       </span>
                       <ul
-                        start={1}
                         style={
                           Object {
                             "color": "#000",
@@ -478,7 +477,6 @@ exports[`List List component with inverse indentation 1`] = `
                       }
                     >
                       <ul
-                        start={1}
                         style={
                           Object {
                             "color": "#000",
@@ -655,7 +653,6 @@ exports[`List List component with irregular indentation 1`] = `
                       }
                     >
                       <ul
-                        start={1}
                         style={
                           Object {
                             "color": "#000",

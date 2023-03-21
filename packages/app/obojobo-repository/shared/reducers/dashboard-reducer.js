@@ -1,7 +1,5 @@
 const { handle } = require('redux-pack')
 
-const whitespaceRegex = /\s+/g
-
 const {
 	SHOW_MODULE_PERMISSIONS,
 	CLOSE_MODAL,
@@ -43,6 +41,8 @@ const {
 	BULK_RESTORE_MODULES
 } = require('../actions/dashboard-actions')
 
+const { filterModules, filterCollections } = require('../util/filter-functions')
+
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
 	items,
 	hasFetched,
@@ -64,27 +64,6 @@ const closedDialogState = () => ({
 		items: []
 	}
 })
-
-function filterModules(modules, searchString) {
-	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
-
-	return modules.filter(m =>
-		((m.title || '') + m.draftId)
-			.replace(whitespaceRegex, '')
-			.toLowerCase()
-			.includes(searchString)
-	)
-}
-function filterCollections(collections, searchString) {
-	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
-
-	return collections.filter(c =>
-		((c.title || '') + c.id)
-			.replace(whitespaceRegex, '')
-			.toLowerCase()
-			.includes(searchString)
-	)
-}
 
 function DashboardReducer(state, action) {
 	switch (action.type) {

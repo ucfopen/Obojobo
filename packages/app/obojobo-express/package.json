@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "15.1.0",
+	"version": "15.1.1",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -69,9 +69,9 @@
 		"uuid": "^8.3.2"
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^15.1.0",
-		"obojobo-document-xml-parser": "^15.1.0",
-		"obojobo-lib-utils": "^15.1.0"
+		"obojobo-document-engine": "^15.1.1",
+		"obojobo-document-xml-parser": "^15.1.1",
+		"obojobo-lib-utils": "^15.1.1"
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^5.5.0",
