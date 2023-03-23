@@ -169,7 +169,7 @@ class RubricModal extends React.Component {
 							<fieldset className="pass-fail">
 								<legend>Pass & Fail Rules</legend>
 								<p>
-									In this mode, you can customize passing and failing scores, what do do when
+									In this mode, you can customize passing and failing scores, what to do when
 									students are out of attempts, and set more complex penalty and extra credit rules.
 								</p>
 								<div className="to-pass">

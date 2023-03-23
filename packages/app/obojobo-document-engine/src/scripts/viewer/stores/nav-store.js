@@ -126,6 +126,19 @@ class NavStore extends Store {
 					}
 				},
 				'nav:goto': payload => {
+					/* eslint-disable no-undefined */
+					if (
+						payload === undefined ||
+						payload.value === undefined ||
+						payload.value.id === undefined
+					) {
+						return
+					}
+					if (payload.value.ignoreLock === undefined) payload.value.ignoreLock = true
+					/* eslint-enable no-undefined */
+
+					if (this.state.locked && !payload.value.ignoreLock) return
+
 					if (!this.state.isInitialized) {
 						this.pendingTarget = {
 							type: 'goto',
@@ -134,8 +147,6 @@ class NavStore extends Store {
 
 						return
 					}
-
-					if (this.state.locked) return
 
 					oldNavTargetId = this.state.navTargetId
 					const navItem = this.state.itemsById[payload.value.id]

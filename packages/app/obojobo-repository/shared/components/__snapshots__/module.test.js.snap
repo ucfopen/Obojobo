@@ -11,6 +11,7 @@ exports[`Module renders with expected standard props 1`] = `
     checked={false}
     className="is-not-multi-select-mode"
     onClick={[Function]}
+    readOnly={true}
     type="checkbox"
   />
   <button
@@ -59,6 +60,7 @@ exports[`Module renders with expected standard props but hasMenu=false 1`] = `
     checked={false}
     className="is-not-multi-select-mode"
     onClick={[Function]}
+    readOnly={true}
     type="checkbox"
   />
   <a
@@ -93,6 +95,7 @@ exports[`Module renders with expected standard props but isMultiSelectMode=true 
     checked={false}
     className="is-multi-select-mode"
     onClick={[Function]}
+    readOnly={true}
     type="checkbox"
   />
   <button
@@ -127,6 +130,7 @@ exports[`Module renders with expected standard props but isNew=true 1`] = `
     checked={false}
     className="is-not-multi-select-mode"
     onClick={[Function]}
+    readOnly={true}
     type="checkbox"
   />
   <button
@@ -175,6 +179,7 @@ exports[`Module renders with expected standard props but isSelected=true 1`] = `
     checked={true}
     className="is-not-multi-select-mode"
     onClick={[Function]}
+    readOnly={true}
     type="checkbox"
   />
   <button

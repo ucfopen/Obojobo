@@ -15,6 +15,7 @@ const POSSIBLE_PERMS = [
 	'canCreateDrafts',
 	'canDeleteDrafts',
 	'canPreviewDrafts',
+	'canViewStatsPage',
 	'canViewSystemStats'
 ]
 
@@ -217,13 +218,13 @@ module.exports = app => {
 									${
 										userOptions.length
 											? `<br/>
-											<label for='permission'>Select module:</label>
+											<label for='permission'>Select permission:</label>
 											<select name='permission'>
 												${permOptions}
 											</select>
 											<br/>
 											<input type='hidden' name='add_remove' value='add'/>
-											<button type='submit' value='submit'>Go</button>`
+											<button type='submit' value='submit'>Add</button>`
 											: ''
 									}
 								</form>
@@ -236,13 +237,13 @@ module.exports = app => {
 									${
 										userOptions.length
 											? `<br/>
-											<label for='permission'>Select module:</label>
+											<label for='permission'>Select permission:</label>
 											<select name='permission'>
 												${permOptions}
 											</select>
 											<br/>
 											<input type='hidden' name='add_remove' value='remove'/>
-											<button type='submit' value='submit'>Go</button>`
+											<button type='submit' value='submit'>Remove</button>`
 											: ''
 									}
 								</form>
@@ -399,16 +400,25 @@ module.exports = app => {
 		User.fetchById(req.query.user_id).then(user => {
 			const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
 			const draftId = req.query.draft_id || '00000000-0000-0000-0000-000000000000'
+			const person = spoofLTIUser(user)
 			const params = {
 				lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 				lti_message_type: 'basic-lti-launch-request',
 				lti_version: 'LTI-1p0',
 				resource_link_id,
-				score_import: req.query.import_enabled === 'on' ? 'true' : 'false'
+				score_import: req.query.score_import === 'on' ? 'true' : 'false'
 			}
-			const person = spoofLTIUser(user)
+			const launchContext = { ...ltiContext }
+
+			if (req.query.context_id) launchContext.context_id = req.query.context_id
+			if (req.query.context_label) launchContext.context_label = req.query.context_label
+			if (req.query.context_title) launchContext.context_title = req.query.context_title
+			if (req.query.resource_link_title) {
+				launchContext.resource_link_title = req.query.resource_link_title
+			}
+
 			renderLtiLaunch(
-				{ ...ltiContext, ...person, ...params },
+				{ ...launchContext, ...person, ...params },
 				'POST',
 				`${baseUrl(req)}/view/${draftId}`,
 				res

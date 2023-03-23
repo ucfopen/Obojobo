@@ -14,7 +14,7 @@ describe('current document middleware', () => {
 	beforeEach(() => {
 		mockArgs = (() => {
 			const res = {}
-			const req = { session: {} }
+			const req = { session: {}, currentUser: {} }
 			const mockJson = jest.fn().mockImplementation(() => {
 				return true
 			})

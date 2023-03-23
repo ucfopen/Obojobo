@@ -1,16 +1,18 @@
 @import '../../client/css/defaults';
 
 .repository--module-icon {
+	$padding-module-icon: 0.8em;
+
 	position: relative;
 	font-family: $font-default;
 	width: $dimension-module-icon;
-	padding: 0.8em;
+	padding: $padding-module-icon;
 	border-radius: 0.25em;
 	background-color: none;
 	font-size: 0.75em;
 	text-align: center;
 	border: 1px solid rgba(0, 0, 0, 0);
-	animation: slide-up 0.4s ease;
+	animation: repository-module-slide-up 0.4s ease;
 	cursor: pointer;
 
 	> button {
@@ -21,6 +23,10 @@
 		cursor: pointer;
 		width: 100%;
 		word-wrap: break-word;
+	}
+
+	:focus {
+		outline-offset: $padding-module-icon;
 	}
 
 	> a {
@@ -79,7 +85,7 @@
 	}
 }
 
-@keyframes slide-up {
+@keyframes repository-module-slide-up {
 	0% {
 		opacity: 0;
 		transform: translateY(20px);

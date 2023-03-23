@@ -331,12 +331,14 @@ import '../css/module-selector.scss'
 				title = 'Personal Library'
 				apiUrl = '/api/drafts'
 				color = 'blue'
+				document.getElementById('new-module').classList.remove('hidden')
 				break
 
 			case TAB_COMMUNITY:
 				title = 'Community Collection'
 				apiUrl = '/api/drafts-public'
 				color = 'purple'
+				document.getElementById('new-module').classList.add('hidden')
 				break
 		}
 
@@ -351,7 +353,10 @@ import '../css/module-selector.scss'
 			.then(respJson => {
 				if (respJson.status !== 'ok') throw 'Failed loading modules'
 
-				data.allItems = data.items = respJson.value
+				// personal module lookup has an extra layer indicating total module count
+				data.allItems = data.items = respJson.value.modules
+					? respJson.value.modules
+					: respJson.value
 				populateSection(section, title, color)
 
 				if (searchEl.value !== '') {
@@ -536,13 +541,9 @@ import '../css/module-selector.scss'
 
 		// the same button serves two purposes - to select an unselected module or to deselect a selected module
 		// determine which by checking to see if the module this button belongs to is in the list of selected modules
-		const alreadySelected = splitRunSelected.some(
-			selected => selected.draftId === selectedItem.draftId
-		)
+		const alreadySelected = splitRunSelected.some(selected => selected.draftId === draftId)
 		if (alreadySelected) {
-			splitRunSelected = splitRunSelected.filter(
-				selected => selected.draftId !== selectedItem.draftId
-			)
+			splitRunSelected = splitRunSelected.filter(selected => selected.draftId !== draftId)
 			oboItemEl.querySelector('.button').classList.remove('deselect-button')
 		} else {
 			if (splitRunSelected.length >= MAX_SPLIT_RUN_OPTION_LENGTH) return

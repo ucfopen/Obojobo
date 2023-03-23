@@ -9,6 +9,8 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import { create, act } from 'react-test-renderer'
 
+import { FULL, PARTIAL, MINIMAL } from 'obojobo-express/server/constants'
+
 import ModulePermissionsDialog from './module-permissions-dialog'
 import PeopleSearchDialog from './people-search-dialog-hoc'
 import PeopleListItem from './people-list-item'
@@ -30,7 +32,9 @@ describe('ModulePermissionsDialog', () => {
 			loadUsersForModule: jest.fn(),
 			addUserToModule: jest.fn(),
 			deleteModulePermissions: jest.fn(),
-			onClose: jest.fn()
+			changeAccessLevel: jest.fn(),
+			onClose: jest.fn(),
+			openPeoplePicker: jest.fn()
 		}
 	})
 
@@ -46,6 +50,10 @@ describe('ModulePermissionsDialog', () => {
 	const expectPeopleSearchModalToBeRendered = (component, isRendered) => {
 		expect(component.root.findAllByType(ReactModal).length).toBe(isRendered ? 1 : 0)
 		expect(component.root.findAllByType(PeopleSearchDialog).length).toBe(isRendered ? 1 : 0)
+	}
+
+	const expectModulePermissionsModalToBeRendered = (component, isRendered) => {
+		expect(component.root.findAllByType(ReactModal).length).toBe(isRendered ? 1 : 0)
 	}
 
 	test('renders with "null" draftPermissions', () => {
@@ -75,13 +83,17 @@ describe('ModulePermissionsDialog', () => {
 		defaultProps.draftPermissions['mockDraftId'] = {
 			items: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
 		}
+
 		let component
+
 		act(() => {
 			component = create(<ModulePermissionsDialog {...defaultProps} />)
 		})
+		act(() => {
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
+		})
 
 		expectLoadUsersForModuleToBeCalledOnceWithId()
-
 		const peopleListItems = component.root.findAllByType(PeopleListItem)
 		expect(peopleListItems.length).toBe(4)
 		expect(peopleListItems[0].props.isMe).toBe(false)
@@ -105,6 +117,26 @@ describe('ModulePermissionsDialog', () => {
 		})
 
 		expectPeopleSearchModalToBeRendered(component, true)
+	})
+
+	test('clicking the "Add People" button opens the search dialog and passes it draftPermissions', () => {
+		defaultProps.draftPermissions['mockDraftId'] = {
+			items: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
+		}
+		const reusableComponent = <ModulePermissionsDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		expectModulePermissionsModalToBeRendered(component, false)
+
+		act(() => {
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expectModulePermissionsModalToBeRendered(component, true)
 	})
 
 	test('modal closes the people search modal when callback is called', () => {
@@ -209,6 +241,33 @@ describe('ModulePermissionsDialog', () => {
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledWith('mockDraftId', 1)
 	})
 
+	test('props.changeAccessLevel is called when a peopleListItem access level is changed', () => {
+		defaultProps.draftPermissions['mockDraftId'] = {
+			items: [{ id: 1, accessLevel: FULL }, { id: 99, accessLevel: MINIMAL }]
+		}
+		const reusableComponent = <ModulePermissionsDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		expectLoadUsersForModuleToBeCalledOnceWithId()
+
+		const peopleListItems = component.root.findAllByType(PeopleListItem)
+		expect(peopleListItems.length).toBe(2)
+		expect(peopleListItems[0].props.id).toBe(1)
+		expect(peopleListItems[0].props.isMe).toBe(false)
+		expect(peopleListItems[1].props.id).toBe(99)
+		expect(peopleListItems[1].props.isMe).toBe(true)
+
+		act(() => {
+			peopleListItems[0].findByType('select').props.onChange({ target: { value: PARTIAL } })
+		})
+
+		expect(defaultProps.changeAccessLevel).toHaveBeenCalledTimes(1)
+		expect(defaultProps.changeAccessLevel).toHaveBeenCalledWith('mockDraftId', 1, PARTIAL)
+	})
+
 	test('confirmation window denied when "x" button is clicked on peopleList item for current user', () => {
 		window.confirm = jest.fn()
 		window.confirm.mockReturnValue(false)
@@ -262,6 +321,8 @@ describe('ModulePermissionsDialog', () => {
 
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledTimes(1)
 		expect(defaultProps.deleteModulePermissions).toHaveBeenCalledWith('mockDraftId', 99)
+		// checks that onClose has been called when removing current user's access
+		expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
 	})
 
 	test('"close" and "done" buttons call props.onClose', () => {

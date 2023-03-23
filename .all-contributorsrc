@@ -6,13 +6,85 @@
   "commit": false,
   "contributors": [
     {
+      "login": "Viggie1",
+      "name": "Viggie Kontonotas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93793808?v=4",
+      "profile": "https://github.com/Viggie1",
+      "contributions": [
+        "code",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "RachelDau",
+      "name": "Rachel Dauns",
+      "avatar_url": "https://avatars.githubusercontent.com/u/112724541?v=4",
+      "profile": "https://github.com/RachelDau",
+      "contributions": [
+        "code",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "deundrewilliams",
+      "name": "Deundre Williams",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41072160?v=4",
+      "profile": "https://github.com/deundrewilliams",
+      "contributions": [
+        "code",
+        "review",
+        "test",
+        "a11y",
+        "bug"
+      ]
+    },
+    {
+      "login": "SJJacques",
+      "name": "Steve Jacques",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71739913?v=4",
+      "profile": "https://github.com/SJJacques",
+      "contributions": [
+        "code",
+        "test",
+        "review",
+        "bug"
+      ]
+    },
+    {
+      "login": "walid-i",
+      "name": "Walid Islam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57739844?v=4",
+      "profile": "https://github.com/walid-i",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "jpeterson976",
+      "name": "Jacob Peterson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46502440?v=4",
+      "profile": "https://github.com/jpeterson976",
+      "contributions": [
+        "code",
+        "test",
+        "review",
+        "bug"
+      ]
+    },
+    {
       "login": "maufcost",
-      "name": "Mauricio Figueiredo",
+      "name": "Mauricio Costa",
       "avatar_url": "https://avatars1.githubusercontent.com/u/39862359?v=4",
       "profile": "https://github.com/maufcost",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "review",
+        "bug",
+        "design"
       ]
     },
     {
@@ -41,7 +113,7 @@
     },
     {
       "login": "AnthonyRodriguez726",
-      "name": "AnthonyRodriguez726",
+      "name": "Anthony Rodriguez",
       "avatar_url": "https://avatars2.githubusercontent.com/u/11856062?v=4",
       "profile": "https://github.com/AnthonyRodriguez726",
       "contributions": [
@@ -72,7 +144,7 @@
     },
     {
       "login": "SidTheEngineer",
-      "name": "Sid",
+      "name": "Sidney Packer",
       "avatar_url": "https://avatars0.githubusercontent.com/u/19176417?v=4",
       "profile": "https://github.com/SidTheEngineer",
       "contributions": [
@@ -117,15 +189,20 @@
       "avatar_url": "https://avatars1.githubusercontent.com/u/1275983?v=4",
       "profile": "https://github.com/FrenjaminBanklin",
       "contributions": [
-        "code",
         "bug",
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "projectManagement",
         "test",
+        "tool",
         "review"
       ]
     },
     {
       "login": "ssilverm",
-      "name": "Shea",
+      "name": "Shea Silverman",
       "avatar_url": "https://avatars3.githubusercontent.com/u/1273237?v=4",
       "profile": "http://blog.sheasilverman.com",
       "contributions": [
@@ -182,11 +259,14 @@
       "profile": "https://ianturgeon.com",
       "contributions": [
         "code",
+        "doc",
         "test",
         "ideas",
+        "infra",
         "platform",
         "projectManagement",
         "maintenance",
+        "review",
         "tool"
       ]
     },
@@ -202,7 +282,8 @@
         "design",
         "ideas",
         "projectManagement",
-        "review"
+        "review",
+        "tool"
       ]
     }
   ],
@@ -211,5 +292,6 @@
   "projectOwner": "ucfopen",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "none"
 }

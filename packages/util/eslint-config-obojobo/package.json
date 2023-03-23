@@ -1,6 +1,6 @@
 {
 	"name": "eslint-config-obojobo",
-	"version": "14.0.0-alpha.4",
+	"version": "15.1.1",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"lint": "echo 'not implemented'",

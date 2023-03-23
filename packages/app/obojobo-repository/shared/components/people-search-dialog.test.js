@@ -15,6 +15,7 @@ describe('PeopleSearchDialog', () => {
 		defaultProps = {
 			currentUserId: 99,
 			people: [],
+			draftPermissions: null,
 			clearPeopleSearchResults: jest.fn(),
 			onSearchChange: jest.fn(),
 			onSelectPerson: jest.fn(),
@@ -36,7 +37,29 @@ describe('PeopleSearchDialog', () => {
 	})
 
 	test('renders with people', () => {
-		defaultProps.people = [{ id: 1 }, { id: 2 }, { id: 99 }]
+		defaultProps.people = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
+		let component
+		act(() => {
+			component = create(<PeopleSearchDialog {...defaultProps} />)
+		})
+
+		expect(defaultProps.clearPeopleSearchResults).toHaveBeenCalledTimes(1)
+
+		const peopleListItems = component.root.findAllByType(PeopleListItem)
+		expect(peopleListItems.length).toBe(4)
+		// PeopleListItems have an 'isMe' prop which should only be true if the id
+		//  provided is the same as the current user's id
+		expect(peopleListItems[0].props.isMe).toBe(false)
+		expect(peopleListItems[1].props.isMe).toBe(false)
+		expect(peopleListItems[2].props.isMe).toBe(false)
+		expect(peopleListItems[3].props.isMe).toBe(true)
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders with people and exludes people with draft permission', () => {
+		defaultProps.people = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
+		defaultProps.draftPermissions = [{ id: 1 }]
 		let component
 		act(() => {
 			component = create(<PeopleSearchDialog {...defaultProps} />)
@@ -46,8 +69,7 @@ describe('PeopleSearchDialog', () => {
 
 		const peopleListItems = component.root.findAllByType(PeopleListItem)
 		expect(peopleListItems.length).toBe(3)
-		// PeopleListItems have an 'isMe' prop which should only be true if the id
-		//  provided is the same as the current user's id
+
 		expect(peopleListItems[0].props.isMe).toBe(false)
 		expect(peopleListItems[1].props.isMe).toBe(false)
 		expect(peopleListItems[2].props.isMe).toBe(true)
@@ -69,6 +91,28 @@ describe('PeopleSearchDialog', () => {
 
 	test('clicking a PeopleListItem "Select" button should call onSelectPerson and onClose', () => {
 		defaultProps.people = [{ id: 1 }]
+		defaultProps.draftPermissions = []
+
+		let component
+		act(() => {
+			component = create(<PeopleSearchDialog {...defaultProps} />)
+		})
+
+		expect(defaultProps.clearPeopleSearchResults).toHaveBeenCalledTimes(1)
+
+		component.root
+			.findByType(PeopleListItem)
+			.findByProps({ className: 'select-button' })
+			.props.onClick()
+		expect(defaultProps.onSelectPerson).toBeCalledTimes(1)
+		expect(defaultProps.onSelectPerson).toBeCalledWith({ id: 1 })
+
+		expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+	})
+
+	test('clicking a PeopleListItem "Select" button should call onSelectPerson and onClose if draftPermission is null', () => {
+		defaultProps.people = [{ id: 1 }]
+
 		let component
 		act(() => {
 			component = create(<PeopleSearchDialog {...defaultProps} />)

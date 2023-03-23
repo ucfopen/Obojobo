@@ -92,6 +92,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="requirement"
+      onChange={[Function]}
       value="Margin of error"
     >
       <option>
@@ -126,6 +127,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="margin-type"
+      onBlur={[Function]}
     >
       <option>
         Percent
@@ -163,6 +165,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
     <select
       className="select-item"
       name="requirement"
+      onChange={[Function]}
       value="Within a range"
     >
       <option>

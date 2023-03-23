@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-sections-assessment",
-	"version": "14.0.0-alpha.4",
+	"version": "15.1.1",
 	"license": "AGPL-3.0-only",
 	"description": "Assessment section for Obojobo",
 	"scripts": {
@@ -27,8 +27,8 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^14.0.0-alpha.4",
-		"obojobo-lib-utils": "^14.0.0-alpha.4"
+		"obojobo-document-engine": "^15.1.1",
+		"obojobo-lib-utils": "^15.1.1"
 	},
 	"jest": {
 		"testMatch": [
