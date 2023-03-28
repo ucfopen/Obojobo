@@ -16,31 +16,33 @@ const FileToolbarViewer = props => {
 	const { insertableItems, ...filteredProps } = props
 	const editor = useEditor()
 	const sel = editor.selection
+
 	const hasSelection = sel && Range.isCollapsed(sel)
 	const selectionKey = sel ? sel.anchor.path.join() + '-' + sel.focus.path.join() : 0
+
 	const insertMenu = useMemo(() => {
 		// If the selected area spans across multiple blocks, the selection is deleted before
 		// inserting, colapsing it down to the type of the first block
-		const selectedNode = (() => {
+		// we will need the node object itself as well as the path to it for a future lookup
+		const selectedNodeData = (() => {
 			if (!hasSelection) return null
 
 			return Editor.nodes(editor, {
 				at: Editor.path(editor, sel, { edge: 'start' }),
 				mode: 'lowest',
 				match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-			}).next().value?.[0]
+			}).next().value
 		})()
 
+		const selectedNode = selectedNodeData?.[0] ?? null
 		const registryItem = Registry.getItemForType(selectedNode?.type)
 
 		let insertItemOmissions = []
 
 		if (selectedNode) {
-			// get this node's parent for use later
-			const thisPath = ReactEditor.findPath(editor, selectedNode)
-			const nodeParent = Editor.parent(editor, thisPath)[0]
+			const nodeParent = Editor.parent(editor, selectedNodeData[1])[0]
 
-			if (nodeParent?.type) {
+			if (nodeParent.type) {
 				insertItemOmissions = Registry.getItemForType(nodeParent.type).disallowedChildren
 			}
 		}
