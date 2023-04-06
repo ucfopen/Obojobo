@@ -42,6 +42,8 @@ since it is not compatible with stylelint's indentation rules
 	$filled-background: #f9f9f9;
 	$filled-text: #333333;
 
+	$callout-blue: rgb(29, 119, 252);
+
 	position: relative;
 
 	> blockquote {
@@ -293,6 +295,67 @@ since it is not compatible with stylelint's indentation rules
 			background: $filled-background;
 			color: $filled-text;
 			border-radius: 0.25em;
+		}
+	}
+
+	&.is-body-style-type-bordered-box,
+	&.is-body-style-type-callout-try-it,
+	&.is-body-style-type-callout-practice,
+	&.is-body-style-type-callout-do-this,
+	&.is-body-style-type-callout-example,
+	&.is-body-style-type-callout-hint {
+		> blockquote > .excerpt-content {
+			border: 1px solid rgb(221, 233, 255);
+			position: relative;
+
+			&::before {
+				display: block;
+				padding: 0 2.5em;
+				color: $callout-blue;
+			}
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0.75em;
+				transform: translateX(-50%);
+				display: block;
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 1.1em 0 1.1em 1.75em;
+				border-color: $color-transparent $color-transparent $color-transparent $callout-blue;
+			}
+		}
+	}
+
+	&.is-body-style-type-callout-try-it > blockquote > .excerpt-content {
+		&::before {
+			content: 'Try It!';
+		}
+	}
+
+	&.is-body-style-type-callout-practice > blockquote > .excerpt-content {
+		&::before {
+			content: 'Practice!';
+		}
+	}
+
+	&.is-body-style-type-callout-do-this > blockquote > .excerpt-content {
+		&::before {
+			content: 'Do This:';
+		}
+	}
+
+	&.is-body-style-type-callout-example > blockquote > .excerpt-content {
+		&::before {
+			content: 'Example';
+		}
+	}
+
+	&.is-body-style-type-callout-hint > blockquote > .excerpt-content {
+		&::before {
+			content: 'Hint';
 		}
 	}
 

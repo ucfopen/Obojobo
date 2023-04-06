@@ -195,6 +195,13 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 										<option value="term-orange">CRT Terminal (Orange)</option>
 										<option value="term-c64">Commodore 64 Screen</option>
 									</optgroup>
+									<optgroup label="Callout">
+										<option value="callout-try-it">Try It!</option>
+										<option value="callout-practice">Practice!</option>
+										<option value="callout-do-this">Do This:</option>
+										<option value="callout-example">Example</option>
+										<option value="callout-hint">Hint</option>
+									</optgroup>
 								</select>
 							</div>
 

@@ -13,6 +13,11 @@ const { Button } = Common.components
 
 const getEdgeOptionsForBodyStyle = bodyStyle => {
 	switch (bodyStyle) {
+		case 'callout-try-it':
+		case 'callout-practice':
+		case 'callout-do-this':
+		case 'callout-example':
+		case 'callout-hint':
 		case 'none':
 			return []
 

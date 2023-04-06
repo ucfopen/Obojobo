@@ -17,6 +17,8 @@ jest.mock('slate-react', () => ({
 
 import { useEditor, useSelected, ReactEditor } from 'slate-react'
 
+import EdgeControls from '../edge-controls'
+
 describe('Excerpt Content Node', () => {
 	const Child = () => <p>Child component</p>
 
@@ -319,5 +321,45 @@ describe('Excerpt Content Node', () => {
 			.onClick()
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
+	})
+
+	const assertEdgeControlsHaveOptions = (bodyStyle, expectedEdgeOptions) => {
+		const element = {
+			content: {
+				...content,
+				bodyStyle
+			}
+		}
+
+		const component = renderer.create(
+			<ExcerptContent element={element} selected={true} editor={editor}>
+				<Child />
+				<Child />
+				<Child />
+			</ExcerptContent>
+		)
+
+		const edgeControlComponent = component.root.findAllByType(EdgeControls)
+		expect(edgeControlComponent[0].props.edges).toEqual(expectedEdgeOptions)
+	}
+	test('Correct edge options are allowed based on body type', () => {
+		useSelected.mockImplementation(() => true)
+		jest.spyOn(Range, 'isCollapsed').mockImplementation(() => true)
+
+		assertEdgeControlsHaveOptions('callout-try-it', [])
+		assertEdgeControlsHaveOptions('callout-practice', [])
+		assertEdgeControlsHaveOptions('callout-do-this', [])
+		assertEdgeControlsHaveOptions('callout-example', [])
+		assertEdgeControlsHaveOptions('callout-hint', [])
+		assertEdgeControlsHaveOptions('none', [])
+		assertEdgeControlsHaveOptions('filled-box', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('bordered-box', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('card', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('white-paper', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('modern-paper', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('light-yellow-paper', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('dark-yellow-paper', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('aged-paper', ['normal', 'fade', 'jagged'])
+		assertEdgeControlsHaveOptions('', ['normal', 'fade'])
 	})
 })
