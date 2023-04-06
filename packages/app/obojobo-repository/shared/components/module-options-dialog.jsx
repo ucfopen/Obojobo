@@ -43,7 +43,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">View with preview controls.</div>
 				</div>
 
-				{props.accessLevel !== MINIMAL && (
+				{!props.readOnly && props.accessLevel !== MINIMAL && (
 					<div className="button-label-group">
 						<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
 							Edit
@@ -79,7 +79,7 @@ const ModuleOptionsDialog = props => (
 					<div className="label">View scores by student.</div>
 				</div>
 
-				{props.accessLevel !== MINIMAL && (
+				{!props.readOnly && props.accessLevel !== MINIMAL && (
 					<div className="button-label-group">
 						<Button
 							id="moduleOptionsDialog-showVersionHistoryButton"

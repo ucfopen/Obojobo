@@ -36,7 +36,8 @@ const {
 	checkModuleLock,
 	getDeletedModules,
 	getModules,
-	bulkRestoreModules
+	bulkRestoreModules,
+	syncModuleUpdates
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
@@ -75,7 +76,8 @@ const mapActionsToProps = {
 	checkModuleLock,
 	getDeletedModules,
 	getModules,
-	bulkRestoreModules
+	bulkRestoreModules,
+	syncModuleUpdates
 }
 module.exports = connect(
 	mapStoreStateToProps,

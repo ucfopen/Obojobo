@@ -18,6 +18,8 @@ const {
 	SELECT_MODULES,
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
+	SHOW_MODULE_SYNC,
+	SYNC_MODULE_UPDATES,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
 	LOAD_MODULE_COLLECTIONS,
@@ -114,9 +116,10 @@ function DashboardReducer(state, action) {
 				})
 			})
 
+		case SYNC_MODULE_UPDATES:
 		case DELETE_MODULE:
 			return handle(state, action, {
-				// close the dialog containing the delete button
+				// close the dialog
 				start: () => ({ ...state, ...closedDialogState() }),
 				// update myModules and re-apply the filter if one exists
 				success: prevState => {
@@ -179,6 +182,24 @@ function DashboardReducer(state, action) {
 				dialog: 'module-more',
 				selectedModule: action.module
 			}
+
+		case SHOW_MODULE_SYNC:
+			return handle(state, action, {
+				// open the dialog while the fetch is in progress
+				start: () => ({
+					...state,
+					dialog: 'module-sync',
+					selectedModule: action.meta.module,
+					newest: false
+				}),
+				// update myModules and re-apply the filter if one exists
+				success: prevState => {
+					return {
+						...prevState,
+						newest: action.payload.value
+					}
+				}
+			})
 
 		case SHOW_MODULE_PERMISSIONS:
 			return {
