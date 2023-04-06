@@ -698,6 +698,47 @@ describe('Question', () => {
 		expect(component.state()).toEqual({ isFlipping: false })
 	})
 
+	test('onEnterPress refocuses the input component', () => {
+		jest.useFakeTimers()
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		const spy = jest.spyOn(QuestionUtil, 'setResponse')
+
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} isReview={true} />
+		)
+
+		component.getInstance().assessmentComponentRef = {
+			current: {
+				inputRef: {
+					current: {
+						focus: jest.fn()
+					}
+				}
+			}
+		}
+		component.getInstance().onEnterPress()
+
+		expect(
+			component.getInstance().assessmentComponentRef.current.inputRef.current.focus
+		).not.toHaveBeenCalled()
+		expect(spy).not.toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).not.toBeDefined()
+
+		jest.runAllTimers()
+		expect(
+			component.getInstance().assessmentComponentRef.current.inputRef.current.focus
+		).toHaveBeenCalledTimes(1)
+
+		spy.mockRestore()
+	})
+
 	test('focusOnContent focuses on the first child component (when question is being shown)', () => {
 		const mockFirstChildEl = jest.fn()
 		const mockOpts = { preventScroll: true }
