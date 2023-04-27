@@ -114,7 +114,7 @@ class User {
 				first_name = $[firstName],
 				last_name = $[lastName],
 				roles = $[roles]
-			RETURNING id
+			RETURNING id, created_at
 			`,
 				this
 			)
@@ -125,6 +125,8 @@ class User {
 					// populate my id from the result
 					this.id = insertUserResult.id
 				}
+				// populate createdAt time from the result
+				this.createdAt = insertUserResult.created_at
 				oboEvents.emit(eventName, this)
 				return this
 			})
