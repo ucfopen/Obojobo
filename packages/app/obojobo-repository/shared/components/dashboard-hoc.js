@@ -37,6 +37,7 @@ const {
 	getDeletedModules,
 	getModules,
 	bulkRestoreModules,
+	showModuleSync,
 	syncModuleUpdates
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
@@ -77,6 +78,7 @@ const mapActionsToProps = {
 	getDeletedModules,
 	getModules,
 	bulkRestoreModules,
+	showModuleSync,
 	syncModuleUpdates
 }
 module.exports = connect(

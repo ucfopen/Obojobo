@@ -40,6 +40,7 @@ const renderOptionsDialog = (props, extension) => (
 		startLoadingAnimation={props.startLoadingAnimation}
 		stopLoadingAnimation={props.stopLoadingAnimation}
 		showModuleManageCollections={props.showModuleManageCollections}
+		showModuleSync={props.showModuleSync}
 	/>
 )
 

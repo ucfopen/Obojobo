@@ -51,6 +51,19 @@ const ModuleOptionsDialog = props => (
 						<div className="label">Write, edit, and update.</div>
 					</div>
 				)}
+				{props.readOnly && props.accessLevel !== MINIMAL && (
+					<div className="button-label-group">
+						<Button
+							id="moduleOptionsDialog-synchronizeButton"
+							onClick={() => {
+								props.showModuleSync(props)
+							}}
+						>
+							Synchronize
+						</Button>
+						<div className="label">Update this module with changes to the original.</div>
+					</div>
+				)}
 
 				{props.accessLevel === FULL && (
 					<div className="button-label-group">

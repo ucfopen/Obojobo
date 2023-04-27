@@ -60,6 +60,7 @@ describe('Dashboard HOC', () => {
 			changeAccessLevel: DashboardActions.changeAccessLevel,
 			getDeletedModules: DashboardActions.getDeletedModules,
 			getModules: DashboardActions.getModules,
+			showModuleSync: DashboardActions.showModuleSync,
 			syncModuleUpdates: DashboardActions.syncModuleUpdates
 		})
 
