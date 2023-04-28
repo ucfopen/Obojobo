@@ -152,7 +152,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 				ideally we could use CSS or SVGs here instead of a png
 				*/
 				// stylelint-disable-next-line unit-disallowed-list
-				background-size: 927px 39px;
+				background-size: 979px 39px;
 				background-repeat: no-repeat;
 
 				@function pos-x($i) {
@@ -230,6 +230,10 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 
 				&.icon-excerpt {
 					background-position-x: pos-x(17);
+				}
+
+				&.icon-callout {
+					background-position-x: pos-x(18);
 				}
 			}
 

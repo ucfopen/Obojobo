@@ -259,6 +259,19 @@ const getPresetProps = presetName => {
 				effect: false
 			}
 		}
+
+		case 'callout': {
+			return {
+				bodyStyle: 'callout-try-it',
+				width: 'medium',
+				font: 'sans',
+				lineHeight: 'moderate',
+				fontSize: 'smaller',
+				topEdge: 'normal',
+				bottomEdge: 'normal',
+				effect: false
+			}
+		}
 	}
 }
 

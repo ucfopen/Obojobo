@@ -300,4 +300,19 @@ describe('Get Preset Props', () => {
 
 		expect(getPresetProps('computer-c64')).toEqual(expected)
 	})
+
+	test('callout', () => {
+		const expected = {
+			bodyStyle: 'callout-try-it',
+			width: 'medium',
+			font: 'sans',
+			lineHeight: 'moderate',
+			fontSize: 'smaller',
+			topEdge: 'normal',
+			bottomEdge: 'normal',
+			effect: false
+		}
+
+		expect(getPresetProps('callout')).toEqual(expected)
+	})
 })

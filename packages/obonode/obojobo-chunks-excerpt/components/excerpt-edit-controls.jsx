@@ -90,6 +90,10 @@ const presets = [
 	{
 		label: 'Hacker Orange',
 		value: 'computer-hacker-orange'
+	},
+	{
+		label: 'Callout',
+		value: 'callout'
 	}
 ]
 

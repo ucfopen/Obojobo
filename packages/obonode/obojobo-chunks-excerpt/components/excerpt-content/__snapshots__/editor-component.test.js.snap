@@ -267,6 +267,20 @@ exports[`Excerpt Content Node Node builds component when selected and collapsed 
             </span>
           </button>
         </li>
+        <li
+          className="is-not-selected"
+        >
+          <button
+            onClick={[Function]}
+          >
+            <div
+              className="icon icon-callout"
+            />
+            <span>
+              Callout
+            </span>
+          </button>
+        </li>
       </ul>
     </div>
     <div
