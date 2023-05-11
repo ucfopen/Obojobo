@@ -2,12 +2,22 @@
 
 .obojobo-draft--chunks--question--wrapper {
 	z-index: 1;
+	position: relative;
 }
 
 .obojobo-draft--chunks--question {
 	> .flipper {
 		&.question-editor {
 			background: $color-bg;
+		}
+	}
+
+	&.is-collapsed {
+		> .flipper {
+			padding-left: 1em;
+			padding-top: 0.5em;
+			height: 2em;
+			background-color: $color-bg2;
 		}
 	}
 
@@ -79,12 +89,11 @@
 		}
 	}
 
-	> .delete-button {
+	> .button-parent {
+		display: flex;
 		position: absolute;
-		right: 3.7em;
-		left: auto;
 		top: 0.7em;
-		transform: translate(50%, -50%);
+		right: 3.7em;
 		z-index: 3;
 
 		.button {
@@ -102,6 +111,10 @@
 				color: $color-obojobo-blue;
 			}
 		}
+	}
+
+	&.is-not-collapsed > .button-parent > .collapse-button {
+		transform: translateY(-0.1em);
 	}
 
 	&.is-type-survey {

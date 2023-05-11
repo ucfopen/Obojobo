@@ -31,6 +31,9 @@ jest.mock(
 
 jest.useFakeTimers()
 
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
+
 describe('QuestionBank editor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
@@ -59,6 +62,45 @@ describe('QuestionBank editor', () => {
 
 		const component = renderer.create(<QuestionBank {...props} />)
 		const tree = component.toJSON()
+
+		const collapseButton = component.root.findByProps({ className: 'collapse-button' })
+		expect(collapseButton.props.children).toBe('-')
+
+		const collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		expect(collapsedSummary.length).toBe(0)
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('QuestionBank builds the expected component (collapsed)', () => {
+		const props = {
+			node: {
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			element: { content: { collapsed: true } }
+		}
+
+		const component = renderer.create(<QuestionBank {...props} />)
+		const tree = component.toJSON()
+
+		const collapseButton = component.root.findByProps({ className: 'collapse-button' })
+		expect(collapseButton.props.children).toBe('+')
+
+		const collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		expect(collapsedSummary.length).toBe(1)
+
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -390,5 +432,225 @@ describe('QuestionBank editor', () => {
 
 		component.instance().displayImportQuestionModal()
 		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('QuestionBank toggles collapsed status', () => {
+		// intentionally leaving 'collapsed' undefined in element.content to simulate backwards compatibility
+		const mockElement = {
+			content: {},
+			children: []
+		}
+
+		const props = {
+			element: mockElement,
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			editor: {}
+		}
+		ReactEditor.findPath.mockReset()
+
+		ReactEditor.findPath.mockReturnValue(['mock-path'])
+		const component = renderer.create(<QuestionBank {...props} />)
+
+		renderer.act(() => {
+			component.root.findByProps({ className: 'collapse-button' }).props.onClick()
+		})
+		// when undefined, next state should be true
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { collapsed: true } },
+			{ at: ['mock-path'] }
+		)
+		Transforms.setNodes.mockClear()
+		// ordinarily this would be updated by the Slate code - here we do it manually
+		// doing this without re-mounting/re-rendering works because it's passed by reference, not by value I guess
+		mockElement.content.collapsed = true
+
+		renderer.act(() => {
+			component.root.findByProps({ className: 'collapse-button' }).props.onClick()
+		})
+		// when true, next state should be false
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { collapsed: false } },
+			{ at: ['mock-path'] }
+		)
+		Transforms.setNodes.mockClear()
+		mockElement.content.collapsed = false
+
+		renderer.act(() => {
+			component.root.findByProps({ className: 'collapse-button' }).props.onClick()
+		})
+		// when false, next state should be true
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { collapsed: true } },
+			{ at: ['mock-path'] }
+		)
+		Transforms.setNodes.mockClear()
+	})
+
+	test('QuestionBank indicates minimized children correctly when collapsed', () => {
+		const mockElement = {
+			content: { collapsed: true },
+			children: []
+		}
+
+		const props = {
+			element: mockElement,
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			editor: {}
+		}
+		let component = renderer.create(<QuestionBank {...props} />)
+
+		// first case - no children
+		// shouldn't be possible but also shouldn't crash and burn if it happens
+		let collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		expect(collapsedSummary.length).toBe(1)
+		// could clean up the render but leaving the falses in there is fine
+		expect(collapsedSummary[0].props.children).toEqual([false, false, '(Minimized)'])
+
+		// second case - single question
+		renderer.act(() => {
+			mockElement.children.push({ type: QUESTION_NODE })
+			component = renderer.create(<QuestionBank {...props} />)
+		})
+
+		collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		// could also clean up the line break but leaving it there is fine
+		expect(collapsedSummary[0].props.children).toEqual(['1 Question<br/>', false, '(Minimized)'])
+
+		// third case - multiple questions
+		renderer.act(() => {
+			mockElement.children.push({ type: QUESTION_NODE })
+			component = renderer.create(<QuestionBank {...props} />)
+		})
+		collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		expect(collapsedSummary[0].props.children).toEqual(['2 Questions<br/>', false, '(Minimized)'])
+
+		// fourth case - multiple questions, single question bank
+		renderer.act(() => {
+			mockElement.children.push({ type: QUESTION_BANK_NODE })
+			component = renderer.create(<QuestionBank {...props} />)
+		})
+		collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		expect(collapsedSummary[0].props.children).toEqual([
+			'2 Questions<br/>',
+			'1 Question Bank<br/>',
+			'(Minimized)'
+		])
+
+		// fifth case - multiple questions, multiple question banks
+		renderer.act(() => {
+			mockElement.children.push({ type: QUESTION_BANK_NODE })
+			component = renderer.create(<QuestionBank {...props} />)
+		})
+		collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		expect(collapsedSummary[0].props.children).toEqual([
+			'2 Questions<br/>',
+			'2 Question Banks<br/>',
+			'(Minimized)'
+		])
+
+		// sixth case - no questions, single question bank
+		renderer.act(() => {
+			mockElement.children = [{ type: QUESTION_BANK_NODE }]
+			component = renderer.create(<QuestionBank {...props} />)
+		})
+		collapsedSummary = component.root.findAllByProps({ className: 'collapsed-summary' })
+		expect(collapsedSummary[0].props.children).toEqual([
+			false,
+			'1 Question Bank<br/>',
+			'(Minimized)'
+		])
+	})
+
+	test('QuestionBank sets collapsed to true for all children', () => {
+		const mockEditor = {}
+		const props = {
+			element: {
+				content: { collapsed: true },
+				children: [
+					{ content: { mockProp: 'mockVal1' } },
+					{ content: { mockProp: 'mockVal2' } },
+					{ content: { mockProp: 'mockVal3' } }
+				]
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			editor: mockEditor
+		}
+		const component = renderer.create(<QuestionBank {...props} />)
+		const targetButtonParent = component.root.findByProps({
+			className: 'button-parent child-buttons'
+		})
+		const collapseAllButton = targetButtonParent.children[0]
+		const expandAllButton = targetButtonParent.children[1]
+
+		// checking each call is a bit overkill, but may as well be thorough
+		collapseAllButton.props.onClick()
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(3)
+		expect(Transforms.setNodes.mock.calls[0]).toEqual([
+			mockEditor,
+			{ content: { mockProp: 'mockVal1', collapsed: true } },
+			{ at: 'mock-path' } // this is a bit magical: it's set up in the beforeEach
+		])
+		expect(Transforms.setNodes.mock.calls[1]).toEqual([
+			mockEditor,
+			{ content: { mockProp: 'mockVal2', collapsed: true } },
+			{ at: 'mock-path' } // this is a bit magical: it's set up in the beforeEach
+		])
+		expect(Transforms.setNodes.mock.calls[2]).toEqual([
+			mockEditor,
+			{ content: { mockProp: 'mockVal3', collapsed: true } },
+			{ at: 'mock-path' } // this is a bit magical: it's set up in the beforeEach
+		])
+		Transforms.setNodes.mockClear()
+
+		expandAllButton.props.onClick()
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(3)
+		expect(Transforms.setNodes.mock.calls[0]).toEqual([
+			mockEditor,
+			{ content: { mockProp: 'mockVal1', collapsed: false } },
+			{ at: 'mock-path' } // this is a bit magical: it's set up in the beforeEach
+		])
+		expect(Transforms.setNodes.mock.calls[1]).toEqual([
+			mockEditor,
+			{ content: { mockProp: 'mockVal2', collapsed: false } },
+			{ at: 'mock-path' } // this is a bit magical: it's set up in the beforeEach
+		])
+		expect(Transforms.setNodes.mock.calls[2]).toEqual([
+			mockEditor,
+			{ content: { mockProp: 'mockVal3', collapsed: false } },
+			{ at: 'mock-path' } // this is a bit magical: it's set up in the beforeEach
+		])
 	})
 })
