@@ -41,6 +41,27 @@ describe('Collection Model', () => {
 		expect(c.createdAt).toBe(mockRawCollection.created_at)
 	})
 
+	test('fetchAllPublic retrieves all public collections from the database', () => {
+		expect.hasAssertions()
+
+		const mockDbResponse = [
+			{ ...mockRawCollection },
+			{ ...mockRawCollection, id: 'mockCollectionId2', title: 'mockCollectionTitle2' }
+		]
+		db.manyOrNone.mockResolvedValueOnce(mockDbResponse)
+
+		return CollectionModel.fetchAllPublic().then(collections => {
+			expect(collections.length).toBe(2)
+			for (let c = 0; c < collections.length; c++) {
+				expect(collections[c]).toBeInstanceOf(CollectionModel)
+				expect(collections[c].id).toBe(mockDbResponse[c].id)
+				expect(collections[c].title).toBe(mockDbResponse[c].title)
+				expect(collections[c].userId).toBe(mockDbResponse[c].user_id)
+				expect(collections[c].createdAt).toBe(mockDbResponse[c].created_at)
+			}
+		})
+	})
+
 	test('fetchById retrieves a Collection from the database', () => {
 		expect.hasAssertions()
 

@@ -111,6 +111,9 @@ router
 	.route('/library')
 	.get(getCurrentUser)
 	.get((req, res) => {
+		// when allowing for multiple public collections, replace this
+		//  with a call to 'Collection.fetchAllPublic' followed by
+		//  Promise.all() using collections.map(c => (c.loadRelatedDrafts()))
 		return Collection.fetchById(publicLibCollectionId)
 			.then(collection => {
 				return collection.loadRelatedDrafts()
@@ -122,9 +125,10 @@ router
 					pageCount: 1,
 					currentUser: req.currentUser,
 					// must use webpackAssetPath for all webpack assets to work in dev and production!
-					appCSSUrl: webpackAssetPath('repository.css')
+					appCSSUrl: webpackAssetPath('repository.css'),
+					appJsUrl: webpackAssetPath('page-library.js')
 				}
-				res.render('pages/page-library.jsx', props)
+				res.render('pages/page-library-server.jsx', props)
 			})
 			.catch(res.unexpected)
 	})

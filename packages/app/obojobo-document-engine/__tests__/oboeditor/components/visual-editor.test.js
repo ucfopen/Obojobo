@@ -430,10 +430,14 @@ describe('VisualEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "addObjective": [Function],
 		  "contentRect": null,
 		  "editable": false,
+		  "objectives": Array [],
+		  "removeObjective": [Function],
 		  "saveState": "saveSuccessful",
 		  "showPlaceholders": true,
+		  "updateObjective": [Function],
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -451,10 +455,14 @@ describe('VisualEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "addObjective": [Function],
 		  "contentRect": null,
 		  "editable": true,
+		  "objectives": Array [],
+		  "removeObjective": [Function],
 		  "saveState": "",
 		  "showPlaceholders": true,
+		  "updateObjective": [Function],
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -814,6 +822,130 @@ describe('VisualEditor', () => {
 		component.unmount()
 	})
 
+	test('addObjective adds new objective to state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' },
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([])
+
+		component.instance().addObjective('mock-objective')
+		expect(component.instance().state.objectives).toEqual(['mock-objective'])
+	})
+
+	test('removeObjective removes objective from state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				objectives: [
+					{
+						objectiveId: 'mock-id',
+						objectiveLabel: 'mock-label',
+						description: 'mock-description'
+					},
+					{
+						objectiveId: 'mock-id2',
+						objectiveLabel: 'mock-label2',
+						description: 'mock-description2'
+					}
+				]
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'mock-label',
+				description: 'mock-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+
+		component.instance().removeObjective('mock-id')
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+	})
+
+	test('updateObjective updates proper objective in state', () => {
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				objectives: [
+					{
+						objectiveId: 'mock-id',
+						objectiveLabel: 'mock-label',
+						description: 'mock-description'
+					},
+					{
+						objectiveId: 'mock-id2',
+						objectiveLabel: 'mock-label2',
+						description: 'mock-description2'
+					}
+				]
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'mock-label',
+				description: 'mock-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+
+		component.instance().updateObjective('mock-id', 'new-label', 'new-description')
+		expect(component.instance().state.objectives).toEqual([
+			{
+				objectiveId: 'mock-id',
+				objectiveLabel: 'new-label',
+				description: 'new-description'
+			},
+			{
+				objectiveId: 'mock-id2',
+				objectiveLabel: 'mock-label2',
+				description: 'mock-description2'
+			}
+		])
+	})
+
 	test('saveDraft() updates state after API called successfully ', () => {
 		const props = {
 			saveDraft: jest.fn().mockResolvedValue(true),
@@ -1138,6 +1270,122 @@ describe('VisualEditor', () => {
 		instance.onKeyDown(event)
 
 		expect(onKeyDown).toHaveBeenCalled()
+	})
+
+	describe('moving to node above', () => {
+		const editorDefaults = {
+			children: [
+				{ type: 'mock node 1', children: [{ text: 'one' }] },
+				{ type: 'mock node 2', children: [{ text: 'one' }, { text: 'two' }] },
+				{ type: 'mock node 3', children: [{ text: 'one' }] }
+			],
+			apply: jest.fn()
+		}
+
+		const visualEditorProps = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{}] }),
+				set: jest.fn(),
+				children: []
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			},
+			draft: { accessLevel: FULL }
+		}
+
+		test('onKeyDown handles ArrowUp if node above has one child', () => {
+			jest.spyOn(Array, 'from').mockReturnValue([])
+			const spySetSelection = jest.spyOn(Transforms, 'setSelection')
+
+			const editor = {
+				...editorDefaults,
+				selection: {
+					anchor: { path: [1], offset: 0 },
+					focus: { path: [1], offset: 0 }
+				}
+			}
+
+			const component = mount(<VisualEditor {...visualEditorProps} />)
+			const instance = component.instance()
+			instance.editor = editor
+
+			instance.onKeyDown({
+				preventDefault: jest.fn(),
+				key: 'ArrowUp',
+				defaultPrevented: false
+			})
+
+			expect(spySetSelection).toHaveBeenCalled()
+			expect(spySetSelection.mock.calls[0].length).toEqual(2)
+
+			const focusSelection = spySetSelection.mock.calls[0][1].focus.path
+			const anchorSelection = spySetSelection.mock.calls[0][1].anchor.path
+
+			expect(focusSelection).toEqual([0, 0])
+			expect(anchorSelection).toEqual([0, 0])
+		})
+
+		test('onKeyDown handles ArrowUp if node above has multiple children', () => {
+			jest.spyOn(Array, 'from').mockReturnValue([])
+			const spySetSelection = jest.spyOn(Transforms, 'setSelection')
+
+			const editor = {
+				...editorDefaults,
+				selection: {
+					anchor: { path: [2], offset: 0 },
+					focus: { path: [2], offset: 0 }
+				}
+			}
+
+			const component = mount(<VisualEditor {...visualEditorProps} />)
+			const instance = component.instance()
+			instance.editor = editor
+
+			instance.onKeyDown({
+				preventDefault: jest.fn(),
+				key: 'ArrowUp',
+				defaultPrevented: false
+			})
+
+			expect(spySetSelection).toHaveBeenCalled()
+			expect(spySetSelection.mock.calls[0].length).toEqual(2)
+
+			const focusSelection = spySetSelection.mock.calls[0][1].focus.path
+			const anchorSelection = spySetSelection.mock.calls[0][1].anchor.path
+
+			expect(focusSelection).toEqual([1, 1])
+			expect(anchorSelection).toEqual([1, 1])
+		})
+
+		test('onKeyDown handles ArrowUp if no node above', () => {
+			jest.spyOn(Array, 'from').mockReturnValue([])
+			const spySetSelection = jest.spyOn(Transforms, 'setSelection')
+
+			const editor = {
+				...editorDefaults,
+				selection: {
+					anchor: { path: [0], offset: 0 },
+					focus: { path: [0], offset: 0 }
+				}
+			}
+
+			const component = mount(<VisualEditor {...visualEditorProps} />)
+			const instance = component.instance()
+			instance.editor = editor
+
+			instance.onKeyDown({
+				preventDefault: jest.fn(),
+				key: 'ArrowUp',
+				defaultPrevented: false
+			})
+
+			expect(spySetSelection).not.toHaveBeenCalled()
+		})
 	})
 
 	test('reload disables event listener and calls location.reload', () => {

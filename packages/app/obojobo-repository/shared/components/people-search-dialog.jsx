@@ -18,6 +18,24 @@ const PeopleSearchDialog = props => {
 		props.onClose()
 	}
 
+	const renderListItem = p => (
+		<PeopleListItem key={p.id} isMe={p.id === props.currentUserId} {...p}>
+			<Button className="select-button" onClick={() => onSelectPerson(p)}>
+				Select
+			</Button>
+		</PeopleListItem>
+	)
+
+	const renderValidListItems = p => {
+		if (props.draftPermissions) {
+			if (props.draftPermissions.every(d => d.id !== p.id)) {
+				return renderListItem(p)
+			}
+		} else {
+			return renderListItem(p)
+		}
+	}
+
 	return (
 		<div className="people-search-dialog">
 			<div className="wrapper">
@@ -34,15 +52,7 @@ const PeopleSearchDialog = props => {
 				/>
 			</div>
 			<div className="access-list-wrapper">
-				<ul className="access-list">
-					{props.people.map(p => (
-						<PeopleListItem key={p.id} isMe={p.id === props.currentUserId} {...p}>
-							<Button className="select-button" onClick={() => onSelectPerson(p)}>
-								Select
-							</Button>
-						</PeopleListItem>
-					))}
-				</ul>
+				<ul className="access-list">{props.people.map(renderValidListItems)}</ul>
 			</div>
 		</div>
 	)
