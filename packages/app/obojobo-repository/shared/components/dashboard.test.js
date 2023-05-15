@@ -1,3 +1,11 @@
+jest.mock('react', () => {
+	const ActualReact = jest.requireActual('react')
+	return {
+		...ActualReact,
+		useRef: jest.fn()
+	}
+})
+
 jest.mock('short-uuid')
 
 // mock all of these components so we can check that they're rendered and
@@ -230,6 +238,8 @@ describe('Dashboard', () => {
 		short.mockReturnValue({
 			fromUUID: mockShortFromUUID
 		})
+
+		React.useRef.mockReset()
 	})
 
 	afterEach(() => {
@@ -1060,6 +1070,75 @@ describe('Dashboard', () => {
 		component.unmount()
 	})
 
+	test('updates selected module count properly when all modules are deselected', () => {
+		dashboardProps.myModules = [...standardMyModules]
+		dashboardProps.multiSelectMode = true
+		dashboardProps.selectModules = jest.fn()
+		dashboardProps.selectedModules = [
+			standardMyModules[0],
+			standardMyModules[3],
+			standardMyModules[4]
+		]
+		dashboardProps.numFullSelected = 1
+		dashboardProps.numPartialSelected = 1
+		dashboardProps.numMinimalSelected = 1
+		dashboardProps.deselectModules = jest.fn()
+		dashboardProps.clearSelection = jest.fn()
+
+		let component
+		act(() => {
+			component = create(<Dashboard {...dashboardProps} />)
+		})
+
+		const expectedControlBarClasses = 'repository--main-content--control-bar is-multi-select-mode'
+		let controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+
+		// Begin with one of each access level selected
+		expect(controlBar.children[0].children[0]).toEqual(
+			'3 Modules Selected (1 Full, 1 Partial, 1 Minimal):'
+		)
+
+		const moduleComponents = component.root.findAllByType(Module)
+		//This is not ideal but it's good for now
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[4].props.onSelect(mockClickEvent)
+		})
+
+		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+		expect(controlBar.children[0].children[0]).toEqual(
+			'2 Modules Selected (1 Full, 1 Partial, 0 Minimal):'
+		)
+
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[1].props.onSelect(mockClickEvent)
+		})
+
+		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+		expect(controlBar.children[0].children[0]).toEqual(
+			'1 Module Selected (1 Full, 0 Partial, 0 Minimal):'
+		)
+
+		act(() => {
+			const mockClickEvent = {
+				shiftKey: false
+			}
+			moduleComponents[3].props.onSelect(mockClickEvent)
+		})
+
+		controlBar = component.root.findByProps({ className: expectedControlBarClasses })
+		expect(controlBar.children[0].children[0]).toEqual(
+			'0 Modules Selected (0 Full, 0 Partial, 0 Minimal):'
+		)
+
+		component.unmount()
+	})
+
 	// Module filter only appears in 'all' and 'collection' modes - reusable function so we can check both
 	const expectModuleFiltrationWorks = () => {
 		dashboardProps.myModules = [...standardMyModules]
@@ -1147,9 +1226,26 @@ describe('Dashboard', () => {
 
 		dashboardProps.mode = MODE_RECENT
 		dashboardProps.createNewCollection = jest.fn()
+		dashboardProps.createNewCollection.mockResolvedValue()
 		dashboardProps.createNewModule = jest.fn()
 		dashboardProps.importModuleFile = jest.fn()
-		const component = create(<Dashboard {...dashboardProps} />)
+
+		const mockScrollIntoView = jest.fn()
+
+		const mockNewCollectionRef = {
+			scrollIntoView: mockScrollIntoView
+		}
+
+		React.useRef.mockReturnValue({
+			current: mockNewCollectionRef
+		})
+		const component = create(<Dashboard {...dashboardProps} />, {
+			createNodeMock: () => {
+				return {
+					scrollIntoView: mockScrollIntoView
+				}
+			}
+		})
 		// four buttons under the 'New Module +' MultiButton component
 		const multiButton = component.root.findByType(MultiButton).children[0]
 
@@ -1160,7 +1256,7 @@ describe('Dashboard', () => {
 		})
 		expect(dashboardProps.createNewCollection).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.createNewCollection).toHaveBeenCalledWith()
-		dashboardProps.createNewCollection.mockReset()
+		dashboardProps.createNewCollection.mockClear()
 
 		// 'New Module' buttons will also pass extra arguments depending on dashboard mode
 		//  in the case of MODE_RECENT, this extra argument will just be an object with 'mode'
@@ -1263,6 +1359,7 @@ describe('Dashboard', () => {
 		dashboardProps.multiSelectMode = true
 		dashboardProps.selectedModules = mockSelectedModules
 		dashboardProps.deselectModules = jest.fn()
+		dashboardProps.clearSelection = jest.fn()
 
 		dashboardProps.mode = MODE_COLLECTION
 		dashboardProps.collection = {
@@ -1310,6 +1407,7 @@ describe('Dashboard', () => {
 		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[1]]
 		dashboardProps.multiSelectMode = true
 		dashboardProps.deselectModules = jest.fn()
+		dashboardProps.clearSelection = jest.fn()
 		const reusableComponent = <Dashboard {...dashboardProps} />
 		let component
 		act(() => {
@@ -1456,6 +1554,7 @@ describe('Dashboard', () => {
 	test('shift-clicking a module with no other modules selected or preselected selects that module', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.selectModules = jest.fn()
+		dashboardProps.deselectModules = jest.fn()
 		let component
 		act(() => {
 			component = create(<Dashboard {...dashboardProps} />)
@@ -1480,6 +1579,7 @@ describe('Dashboard', () => {
 	test('shift-clicking a module after preselecting another module selects both modules plus any in between', () => {
 		dashboardProps.myModules = [...standardMyModules]
 		dashboardProps.selectModules = jest.fn()
+		dashboardProps.deselectModules = jest.fn()
 		let component
 		act(() => {
 			component = create(<Dashboard {...dashboardProps} />)
@@ -1911,6 +2011,7 @@ describe('Dashboard', () => {
 
 	test('renders collection multi-module add dialog and runs callbacks properly', () => {
 		dashboardProps.dialog = 'collection-bulk-add-modules'
+		dashboardProps.deselectModules = jest.fn()
 
 		let component
 		act(() => {
@@ -2095,6 +2196,7 @@ describe('Dashboard', () => {
 	test('restoreModules function gets called as expected', async () => {
 		const originalAlert = global.alert
 		global.alert = jest.fn()
+		dashboardProps.clearSelection = jest.fn()
 
 		const mockSelectedModules = [standardMyModules[0], standardMyModules[1]]
 
