@@ -3,7 +3,7 @@
 exports[`Nav renders all list item types (locked=false) 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -27,22 +27,6 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={true}
     tabIndex="-1"
@@ -140,7 +124,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
 exports[`Nav renders all list item types (locked=true) 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-not-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -164,22 +148,6 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={true}
     tabIndex="-1"
@@ -298,7 +266,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
 exports[`Nav renders assessment information with score 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -321,22 +289,6 @@ exports[`Nav renders assessment information with score 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={false}
     tabIndex="-1"
@@ -370,7 +322,7 @@ exports[`Nav renders assessment information with score 1`] = `
 exports[`Nav renders assessment information with singular attempt 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -393,22 +345,6 @@ exports[`Nav renders assessment information with singular attempt 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={false}
     tabIndex="-1"
@@ -442,7 +378,7 @@ exports[`Nav renders assessment information with singular attempt 1`] = `
 exports[`Nav renders assessment information with unlimited attempts 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -465,22 +401,6 @@ exports[`Nav renders assessment information with unlimited attempts 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={false}
     tabIndex="-1"
@@ -514,7 +434,7 @@ exports[`Nav renders assessment information with unlimited attempts 1`] = `
 exports[`Nav renders assessment information without score 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -537,22 +457,6 @@ exports[`Nav renders assessment information without score 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={false}
     tabIndex="-1"
@@ -586,7 +490,7 @@ exports[`Nav renders assessment information without score 1`] = `
 exports[`Nav renders blank title 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -610,22 +514,6 @@ exports[`Nav renders blank title 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={true}
     tabIndex="-1"
@@ -648,7 +536,7 @@ exports[`Nav renders blank title 1`] = `
 exports[`Nav renders closed 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-locked is-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -671,22 +559,6 @@ exports[`Nav renders closed 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={false}
     tabIndex="-1"
@@ -700,284 +572,10 @@ exports[`Nav renders closed 1`] = `
 </nav>
 `;
 
-exports[`Nav renders notification appropriately (isNotificationEnabled=false) 1`] = `
-<nav
-  aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-notification-enabled"
-  role="navigation"
-  tabIndex="-1"
->
-  <div
-    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
-    contentEditable={false}
-  >
-    <button
-      className="button"
-      contentEditable={false}
-      disabled={true}
-      onClick={[Function]}
-      type="button"
-    >
-      Skip Navigation
-    </button>
-  </div>
-  <button
-    className="toggle-button"
-    onClick={[MockFunction]}
-  >
-    Toggle Navigation Menu
-  </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
-  <ul
-    aria-hidden={true}
-    tabIndex="-1"
-  >
-    <li
-      className="heading is-not-selected"
-    >
-      label4
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to label5"
-      >
-        label5
-      </button>
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to Mock Content Type label300"
-      >
-        label300
-      </button>
-    </li>
-    <li
-      className="sub-link is-not-selected is-not-correct is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Jump to label301 inside Parent Label"
-      >
-        label301
-      </button>
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to mockMe"
-      >
-        mockMe
-      </button>
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to "
-      />
-    </li>
-    <li
-      className="link is-not-selected is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to label56"
-      >
-        label56
-      </button>
-    </li>
-    <li
-      className="sub-link is-not-selected is-not-correct is-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Jump to label6"
-      >
-        label6
-      </button>
-    </li>
-  </ul>
-  <div
-    className="viewer--components--logo is-not-inverted"
-    onClick={[Function]}
-  >
-    Obojobo
-  </div>
-</nav>
-`;
-
-exports[`Nav renders notification appropriately (isNotificationEnabled=true) 1`] = `
-<nav
-  aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled is-notification-enabled"
-  role="navigation"
-  tabIndex="-1"
->
-  <div
-    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
-    contentEditable={false}
-  >
-    <button
-      className="button"
-      contentEditable={false}
-      disabled={true}
-      onClick={[Function]}
-      type="button"
-    >
-      Skip Navigation
-    </button>
-  </div>
-  <button
-    className="toggle-button"
-    onClick={[MockFunction]}
-  >
-    Toggle Navigation Menu
-  </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
-  <ul
-    aria-hidden={true}
-    tabIndex="-1"
-  >
-    <li
-      className="heading is-not-selected"
-    >
-      label4
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to label5"
-      >
-        label5
-      </button>
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to Mock Content Type label300"
-      >
-        label300
-      </button>
-    </li>
-    <li
-      className="sub-link is-not-selected is-not-correct is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Jump to label301 inside Parent Label"
-      >
-        label301
-      </button>
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to mockMe"
-      >
-        mockMe
-      </button>
-    </li>
-    <li
-      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to "
-      />
-    </li>
-    <li
-      className="link is-not-selected is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Go to label56"
-      >
-        label56
-      </button>
-    </li>
-    <li
-      className="sub-link is-not-selected is-not-correct is-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-disabled={true}
-        aria-label="Jump to label6"
-      >
-        label6
-      </button>
-    </li>
-  </ul>
-  <div
-    className="viewer--components--logo is-not-inverted"
-    onClick={[Function]}
-  >
-    Obojobo
-  </div>
-</nav>
-`;
-
 exports[`Nav renders opened 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-not-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -1001,22 +599,6 @@ exports[`Nav renders opened 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={true}
     tabIndex="-1"
@@ -1033,7 +615,7 @@ exports[`Nav renders opened 1`] = `
 exports[`Nav renders unlocked 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-notification-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
   role="navigation"
   tabIndex="-1"
 >
@@ -1057,22 +639,6 @@ exports[`Nav renders unlocked 1`] = `
   >
     Toggle Navigation Menu
   </button>
-  <div
-    className="notification-banner nav-menu"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1 />
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p />
-  </div>
   <ul
     aria-hidden={true}
     tabIndex="-1"

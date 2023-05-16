@@ -16,40 +16,20 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db
-		.createTable('notification_status', {
-			id: {
-				type: 'bigserial',
-				primaryKey: true,
-				notNull: true
-			},
-			created_at: {
-				type: 'timestamp WITH TIME ZONE',
-				notNull: true,
-				defaultValue: new String('now()')
-			},
-			user_id: { type: 'bigint', notNull: true },
-			draft_id: { type: 'bigint', notNull: true },
-			text: { type: 'string', notNull: true },
-			title: { type: 'string', notNull: true },
-			status: { type: 'boolean', notNull: true }
-		})
-
-		.then(result => {
-			return db.addIndex('notification_status', 'note_user_id_index', ['user_id'])
-		})
-		.then(result => {
-			return db.addIndex('notification_status', 'note_draft_id_index', ['draft_id'])
-		})
-		.then(() =>
-			db.addIndex(
-				'notification_status',
-				'user_draft_unique_user',
-				['user_id', 'draft_id'],
-
-				true
-			)
-		)
+	return db.createTable('notification_status', {
+		id: {
+			type: 'bigserial',
+			primaryKey: true,
+			notNull: true
+		},
+		created_at: {
+			type: 'timestamp WITH TIME ZONE',
+			notNull: true,
+			defaultValue: new String('now()')
+		},
+		text: { type: 'string', notNull: true },
+		title: { type: 'string', notNull: true }
+	})
 }
 
 exports.down = function(db) {

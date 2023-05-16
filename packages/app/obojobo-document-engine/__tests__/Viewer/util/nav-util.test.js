@@ -531,40 +531,4 @@ describe('NavUtil', () => {
 		NavUtil.resetContext()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:resetContext')
 	})
-
-	test('isNotificationEnabled returns the notification status from a state object', () => {
-		const notification = true
-		const navState = {
-			notification
-		}
-		const isNotificationEnabled = NavUtil.isNotificationEnabled(navState)
-		expect(isNotificationEnabled).toBe(notification)
-	})
-
-	test('getNotificationTitle returns the notification title from a state object', () => {
-		const title = 'example'
-		const navState = {
-			title
-		}
-		const getNotificationTitle = NavUtil.getNotificationTitle(navState)
-		expect(getNotificationTitle).toBe(title)
-	})
-
-	test('getNotificationText returns the notification text from a state object', () => {
-		const text = true
-		const navState = {
-			text
-		}
-		const getNotificationText = NavUtil.getNotificationText(navState)
-		expect(getNotificationText).toBe(text)
-	})
-
-	test('setNotificationStatus calls Dispatcher.trigger', () => {
-		const notification = true
-		NavUtil.setNotificationStatus(notification)
-
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:setNotificationStatus', {
-			value: { notification }
-		})
-	})
 })

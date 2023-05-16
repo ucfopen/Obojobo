@@ -280,10 +280,7 @@ Object {
   "locked": true,
   "navTargetHistory": Array [],
   "navTargetId": null,
-  "notification": undefined,
   "open": true,
-  "text": undefined,
-  "title": undefined,
   "visitId": 11,
 }
 `;
@@ -300,10 +297,7 @@ Object {
   "locked": false,
   "navTargetHistory": Array [],
   "navTargetId": null,
-  "notification": undefined,
   "open": true,
-  "text": undefined,
-  "title": undefined,
   "visitId": 11,
 }
 `;
@@ -320,10 +314,7 @@ Object {
   "locked": false,
   "navTargetHistory": Array [],
   "navTargetId": null,
-  "notification": undefined,
   "open": true,
-  "text": undefined,
-  "title": undefined,
   "visitId": 11,
 }
 `;

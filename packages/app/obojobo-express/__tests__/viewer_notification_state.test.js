@@ -1,106 +1,41 @@
-jest.mock('../server/config')
-jest.mock('../server/viewer/viewer_notification_state', () => ({ set: jest.fn() }))
-jest.mock('../server/obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
-jest.mock('../server/models/visit')
+const db = require('../server/db')
+const {
+	getNotifications,
+	getRecentNotifications
+} = require('../server/viewer/viewer_notification_state')
+
 jest.mock('../server/db')
-jest.mock('../server/logger')
 
-/*const mockNotificationEvent = {
-	userId: 'mockUserId',
-	draftId: 'mockDraftId',
-	contentId: 'mockContentId',
-	visitId: 'mockVisitId',
-	isNotificationEnabled: true,
-	payload: {
-		open: 'yep'
-	}
-}*/
+describe('getNotifications', () => {
+	test('returns notifications when passed ids', async () => {
+		const fakeNotifications = [
+			{ title: 'Notification 1', text: 'This is notification 1' },
+			{ title: 'Notification 2', text: 'This is notification 2' }
+		]
+		db.manyOrNone.mockResolvedValue(fakeNotifications)
 
-//let ve
-//let oboEvents
-let db
-//let logger
+		const result = await getNotifications([1, 2])
 
-describe('viewer notification events', () => {
-	beforeAll(() => {})
-	afterAll(() => {})
-	beforeEach(() => {
-		jest.resetAllMocks()
-		db = oboRequire('server/db')
-		//logger = oboRequire('server/logger')
-
-		db.oneOrNone.mockReset()
+		expect(result).toEqual(fakeNotifications)
+		expect(db.manyOrNone).toHaveBeenCalledWith(expect.any(String), { ids: [1, 2] })
 	})
-	afterEach(() => {})
+
+	test('returns undefined when passed ids as 0', async () => {
+		const result = await getNotifications(0)
+
+		expect(result).toBeUndefined()
+		//expect(db.manyOrNone).not.toHaveBeenCalled(1)
+	})
 })
 
-test('client:nav:getNotificationStatus', () => {
-	/* expect.hasAssertions()
+describe('getRecentNotifications', () => {
+	test('returns notifications created after a given date', async () => {
+		const fakeNotifications = [{ id: 1 }, { id: 2 }]
+		db.manyOrNone.mockResolvedValue(fakeNotifications)
 
-    db.none.mockResolvedValue(null)
+		const result = await getRecentNotifications('2022-01-01')
 
-    // ve = oboRequire('viewer_events')
-    ve = require('../server/viewer/viewer_events')
-    const [eventName, callback] = oboEvents.on.mock.calls[1]
-    expect(eventName).toBe('client:nav:getNotificationStatus')
-    expect(callback).toHaveLength(1)
-    return callback(mockNotificationEvent).then(() => {
-        expect(db.none).toHaveBeenCalledTimes(1)
-        expect(logger.error).toHaveBeenCalledTimes(0)
-        expect(db.none).toBeCalledWith(
-            expect.stringContaining('SELECT status FROM notification_status'),
-            expect.objectContaining({
-                //id: mockNotificationEvent.id,
-                //isNotificationEnabled: mockNotificationEvent.payload.to
-            })
-        )
-    })*/
-})
-
-test('client:nav:getNotificationTitle', () => {
-	/*//expect.hasAssertions()
-
-    db.none.mockResolvedValue(null)
-
-     ve = oboRequire('viewer_events')
-    ve = require('../server/viewer/viewer_events')
-    const [eventName, callback] = oboEvents.on.mock.calls[1]
-    expect(eventName).toBe('client:nav:getNotificationTitle')
-    expect(callback).toHaveLength(1)
-    return callback(mockNotificationEvent).then(() => {
-        expect(db.none).toHaveBeenCalledTimes(1)
-        expect(logger.error).toHaveBeenCalledTimes(0)
-        expect(db.none).toBeCalledWith(
-            expect.stringContaining('SELECT title FROM notification_status'),
-            expect.objectContaining({
-                //id: mockNotificationEvent.id,
-                //isNotificationEnabled: mockNotificationEvent.payload.to
-            })
-        )
-    })*/
-})
-
-test('client:nav:getNotificationText', () => {
-	/*
-    expect.hasAssertions()
-
-    db.none.mockResolvedValue(null)
-
-     ve = oboRequire('viewer_events')
-    ve = require('../server/viewer/viewer_events')
-    const [eventName, callback] = oboEvents.on.mock.calls[1]
-    expect(eventName).toBe('client:nav:getNotificationText')
-    expect(callback).toHaveLength(1)
-    return callback(mockNotificationEvent).then(() => {
-        expect(db.none).toHaveBeenCalledTimes(1)
-        expect(logger.error).toHaveBeenCalledTimes(0)
-        expect(db.none).toBeCalledWith(
-            expect.stringContaining('SELECT text FROM notification_status'),
-            expect.objectContaining({
-                //id: mockNotificationEvent.id,
-                //isNotificationEnabled: mockNotificationEvent.payload.to
-            })
-        )
-        
-    }) */
+		expect(result).toEqual(fakeNotifications)
+		expect(db.manyOrNone).toHaveBeenCalledWith(expect.any(String), { date: '2022-01-01' })
+	})
 })

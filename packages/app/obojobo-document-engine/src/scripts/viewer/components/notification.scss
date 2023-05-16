@@ -14,9 +14,11 @@ p {
 
 .notification-banner {
 	background-color: $poppin-pink;
-	padding: 1.5em;
+	padding: 1em;
 	color: $white;
 	border-radius: 0.5em;
+	margin: 0.1em;
+	border-width: 0.5em;
 }
 
 .notification-banner:hover {
@@ -29,12 +31,6 @@ p {
 .dashboard {
 	margin: 0.1em;
 	border-width: 1em;
-}
-
-.viewer--components--nav .nav-menu {
-	margin-top: 3.5em;
-	margin-left: 0.1em;
-	border-width: 0.5em;
 }
 
 .notification-header {

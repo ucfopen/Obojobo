@@ -3,8 +3,6 @@ const router = express.Router()
 const logger = oboRequire('server/logger')
 const ltiUtil = oboRequire('server/lti')
 const viewerState = oboRequire('server/viewer/viewer_state')
-const viewerNotificationState = oboRequire('server/viewer/viewer_notification_state')
-const viewerUsersState = oboRequire('server/viewer/viewer_users_state')
 const insertEvent = oboRequire('server/insert_event')
 const {
 	checkValidationRules,
@@ -47,12 +45,6 @@ router
 		let viewState
 		let visitStartExtensions
 		let launch
-		let isNotificationEnabled
-		let notificationTitle
-		let notificationText
-		let id
-		let lastLogin
-		const userId = req.currentUser.id
 
 		return Promise.all([
 			viewerState.get(
@@ -99,31 +91,12 @@ router
 					visitId: req.currentVisit.id
 				})
 			})
-			.then(() => viewerUsersState.getLastLogin(userId))
-			.then(result => {
-				if (result) lastLogin = result.last_login
-			})
-			.then(() => viewerNotificationState.getId(lastLogin))
-			.then(result => {
-				if (result) id = result.id
-			})
-			.then(() => viewerNotificationState.getStatus(id))
-			.then(result => {
-				if (result) isNotificationEnabled = result.status
-			})
-			.then(() => viewerNotificationState.getTitle(id))
-			.then(result => {
-				if (result) notificationTitle = result.title
-			})
-			.then(() => viewerNotificationState.getText(id))
-			.then(result => {
-				if (result) notificationText = result.text
-			})
+			.then(req.getNotifications())
+
 			.then(() => {
 				logger.log(
 					`VISIT: Start visit success for visitId="${req.currentVisit.id}", draftId="${req.currentDocument.draftId}", userId="${req.currentUser.id}"`
 				)
-
 				// Build lti data for return
 				const lti = { lis_outcome_service_url: null }
 				if (req.currentVisit.is_preview === false) {
@@ -139,10 +112,7 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
-					extensions: visitStartExtensions,
-					isNotificationEnabled,
-					notificationTitle,
-					notificationText
+					extensions: visitStartExtensions
 				})
 			})
 			.catch(err => {

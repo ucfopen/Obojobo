@@ -7,7 +7,6 @@ import Logo from './logo'
 import NavUtil from '../util/nav-util'
 import AssessmentUtil from '../util/assessment-util'
 import React from 'react'
-import Notification from './notification.js'
 
 const { Button } = Common.components
 const { StyleableText } = Common.text
@@ -28,7 +27,6 @@ export default class Nav extends React.Component {
 		this.selfRef = React.createRef()
 		this.hideOrShowOnResize = this.hideOrShowOnResize.bind(this)
 		this.closeNavOnMobile = this.closeNavOnMobile.bind(this)
-		this.onClickExitNotification = this.onClickExitNotification.bind(this)
 	}
 
 	isMobileSize() {
@@ -225,27 +223,17 @@ export default class Nav extends React.Component {
 		}
 	}
 
-	onClickExitNotification() {
-		const isNotificationEnabled = NavUtil.isNotificationEnabled(this.props.navState)
-		NavUtil.setNotificationStatus(!isNotificationEnabled)
-	}
-
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
 		const lockEl = this.getLockEl(navState.locked)
 		const isNavInaccessible = navState.disabled || !navState.open
 
-		const isNotificationEnabled = NavUtil.isNotificationEnabled(this.props.navState)
-		const notificationTitle = NavUtil.getNotificationTitle(this.props.navState)
-		const notificationText = NavUtil.getNotificationText(this.props.navState)
-
 		const className =
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(!navState.disabled, 'enabled') +
-			isOrNot(isNotificationEnabled, 'notification-enabled')
+			isOrNot(!navState.disabled, 'enabled')
 
 		return (
 			<nav
@@ -267,11 +255,6 @@ export default class Nav extends React.Component {
 				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>
-				<Notification
-					title={notificationTitle}
-					text={notificationText}
-					onClick={this.onClickExitNotification}
-				/>
 				<ul aria-hidden={isNavInaccessible} tabIndex="-1">
 					{list.map((item, index) => {
 						switch (item.type) {
@@ -300,7 +283,6 @@ export default class Nav extends React.Component {
 						return null
 					})}
 				</ul>
-
 				<Logo />
 			</nav>
 		)

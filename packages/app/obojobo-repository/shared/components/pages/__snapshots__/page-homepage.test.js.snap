@@ -36,6 +36,14 @@ exports[`PageHomepage renders when given props 1`] = `
     <div
       className="layout--wrapper"
     >
+      <span
+        data-react-props="{}"
+        id="repository-notifications"
+      >
+        <div
+          className="notification-wrapper"
+        />
+      </span>
       <div
         className="layout--content"
       >

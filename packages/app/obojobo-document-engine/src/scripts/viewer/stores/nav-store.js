@@ -232,17 +232,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(
-		draftId,
-		model,
-		startingId,
-		startingPath,
-		visitId,
-		viewState = {},
-		isNotificationEnabled,
-		notificationTitle,
-		notificationText
-	) {
+	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
 		this.state = {
 			isInitialized: true,
 			items: {},
@@ -261,10 +251,7 @@ class NavStore extends Store {
 					: true,
 			context: DEFAULT_CONTEXT,
 			visitId,
-			draftId,
-			notification: isNotificationEnabled,
-			title: notificationTitle,
-			text: notificationText
+			draftId
 		}
 
 		startHeartBeat(this.state.draftId)

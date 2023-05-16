@@ -61,11 +61,7 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	getOrderedList: jest.fn(),
 	getNavTarget: jest.fn(),
 	close: jest.fn(),
-	open: jest.fn(),
-	isNotificationEnabled: jest.fn(),
-	setNotificationStatus: jest.fn(),
-	getNotificationTitle: jest.fn(),
-	getNotificationText: jest.fn()
+	open: jest.fn()
 }))
 
 // NavStore
@@ -702,58 +698,5 @@ describe('Nav', () => {
 		}
 		component.instance().closeNavOnMobile({ target: true })
 		expect(NavUtil.close).toHaveBeenCalled()
-	})
-
-	test('renders notification appropriately (isNotificationEnabled=true)', () => {
-		const notification = true
-		NavUtil.getOrderedList.mockReturnValueOnce(navItems)
-		NavUtil.isNotificationEnabled.mockReturnValueOnce(notification)
-		const props = {
-			navState: {
-				notification
-			}
-		}
-
-		const component = renderer.create(<Nav {...props} />)
-		const tree = component.toJSON()
-		expect(tree.props.className).toEqual(expect.stringContaining('is-notification-enabled'))
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('renders notification appropriately (isNotificationEnabled=false)', () => {
-		const notification = false
-		NavUtil.getOrderedList.mockReturnValueOnce(navItems)
-		NavUtil.isNotificationEnabled.mockReturnValueOnce(notification)
-		const props = {
-			navState: {
-				notification
-			}
-		}
-
-		const component = renderer.create(<Nav {...props} />)
-		const tree = component.toJSON()
-		expect(tree.props.className).toEqual(expect.stringContaining('is-not-notification-enabled'))
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('onClickExitNotification exits out the notification', () => {
-		const notification = true
-		NavUtil.getOrderedList.mockReturnValueOnce(navItems)
-		NavUtil.isNotificationEnabled.mockReturnValueOnce(notification)
-		const props = {
-			navState: {
-				notification
-			}
-		}
-
-		const component = mount(<Nav {...props} />)
-		component.instance().selfRef = {
-			current: {
-				contains: () => false
-			}
-		}
-		component.instance().onClickExitNotification()
-		expect(NavUtil.isNotificationEnabled).toHaveBeenCalled()
-		expect(NavUtil.setNotificationStatus).toHaveBeenCalledWith(notification)
 	})
 })

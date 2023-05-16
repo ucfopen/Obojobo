@@ -1,6 +1,8 @@
 const User = oboRequire('server/models/user')
 const GuestUser = oboRequire('server/models/guest_user')
 const logger = oboRequire('server/logger')
+const viewerNotificationState = oboRequire('server/viewer/viewer_notification_state')
+const viewerState = oboRequire('server/viewer/viewer_state')
 
 const setCurrentUser = (req, user) => {
 	if (!(user instanceof User)) throw new Error('Invalid User for Current user')
@@ -56,11 +58,42 @@ const saveSessionPromise = req => {
 	})
 }
 
+const getNotifications = (req, res) => {
+	return Promise.all([viewerState.get(req.currentUser.id)])
+		.then(() => viewerNotificationState.getRecentNotifications(req.currentUser.lastLogin))
+		.then(result => {
+			if (result) {
+				return result.map(notifications => notifications.id)
+			}
+			return 0
+		})
+		.then(ids => viewerNotificationState.getNotifications(ids))
+		.then(result => {
+			if (result) {
+				const parsedNotifications = result.map(notifications => ({
+					title: notifications.title,
+					text: notifications.text
+				}))
+				res.cookie('notifications', JSON.stringify(parsedNotifications))
+			}
+		})
+	//reset last login not working rn
+	/*
+		.then(() => {
+			const today = new Date()
+			//console.log(today)
+			req.currentUser.lastLogin = today
+			viewerNotificationState.setLastLogin(req.currentUser.id, today)
+		})
+		*/
+}
+
 module.exports = (req, res, next) => {
 	req.setCurrentUser = setCurrentUser.bind(this, req)
 	req.getCurrentUser = getCurrentUser.bind(this, req)
 	req.requireCurrentUser = requireCurrentUser.bind(this, req)
 	req.resetCurrentUser = resetCurrentUser.bind(this, req)
 	req.saveSessionPromise = saveSessionPromise.bind(this, req)
+	req.getNotifications = getNotifications.bind(this, req, res)
 	next()
 }
