@@ -15,6 +15,7 @@ const { focus } = Common.page
 
 // 0.4s Card "flip" time plus an extra 50ms to handle delay
 const DURATION_FLIP_TIME_MS = 450
+const DURATION_DELAY_REFOCUS_TIME = 80
 
 const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
@@ -42,6 +43,7 @@ export default class Question extends React.Component {
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		this.getInstructions = this.getInstructions.bind(this)
+		this.onEnterPress = this.onEnterPress.bind(this)
 	}
 
 	componentDidMount() {
@@ -105,6 +107,11 @@ export default class Question extends React.Component {
 		event.preventDefault()
 
 		if (this.getMode() !== 'practice') {
+			QuestionUtil.sendResponse(
+				this.props.model.get('id'),
+				NavUtil.getContext(this.props.moduleData.navState)
+			)
+			this.onEnterPress()
 			return
 		}
 
@@ -241,6 +248,12 @@ export default class Question extends React.Component {
 	applyFlipCSS() {
 		this.setState({ isFlipping: true })
 		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
+	}
+	//delays refocus on input to account for saved text rendering causing a visual loss of focus
+	onEnterPress() {
+		setTimeout(() => {
+			this.assessmentComponentRef.current.inputRef.current.focus()
+		}, DURATION_DELAY_REFOCUS_TIME)
 	}
 
 	getMode() {
@@ -523,6 +536,7 @@ export default class Question extends React.Component {
 				onClickShowExplanation={this.onClickShowExplanation}
 				onClickHideExplanation={this.onClickHideExplanation}
 				onClickBlocker={this.onClickBlocker}
+				onEnterPress={this.onEnterPress}
 			/>
 		)
 	}

@@ -7,7 +7,17 @@ const getStyleWithDefaults = function(indent, defaultType, style = null) {
 	const styleWithDefaults = new ListStyle()
 
 	styleWithDefaults.type = style && style.type ? style.type : defaultType
-	styleWithDefaults.start = style && style.start !== null ? style.start : 1
+
+	if (style) {
+		if (style.type === 'ordered') {
+			styleWithDefaults.start = style && style.start !== null ? style.start : 1
+		} else {
+			styleWithDefaults.start = style.start
+		}
+	} else {
+		styleWithDefaults.start = 1
+	}
+
 	styleWithDefaults.bulletStyle =
 		style && style.bulletStyle
 			? style.bulletStyle
@@ -19,15 +29,24 @@ const getStyleWithDefaults = function(indent, defaultType, style = null) {
 class ListStyle {
 	constructor(opts = {}) {
 		this.type = opts.type || null
-		this.start = opts.start || null
+		if (this.type !== 'unordered') {
+			this.start = opts.start || null
+		}
 		this.bulletStyle = opts.bulletStyle || null
 	}
 
 	toDescriptor() {
-		return {
-			type: this.type || null,
-			start: this.start || null,
-			bulletStyle: this.bulletStyle || null
+		if (this.type !== 'unordered') {
+			return {
+				type: this.type || null,
+				start: this.start || null,
+				bulletStyle: this.bulletStyle || null
+			}
+		} else {
+			return {
+				type: this.type,
+				bulletStyle: this.bulletStyle
+			}
 		}
 	}
 

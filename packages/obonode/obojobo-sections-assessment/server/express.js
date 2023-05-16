@@ -214,9 +214,9 @@ router
 	.get((req, res) => {
 		let currentUserHasPermissionToDraft
 
-		return DraftPermissions.userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
+		return DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, req.params.draftId)
 			.then(result => {
-				currentUserHasPermissionToDraft = result
+				currentUserHasPermissionToDraft = result !== null
 
 				// Users must either have some level of permissions to this draft, or have
 				// the canViewSystemStats permission

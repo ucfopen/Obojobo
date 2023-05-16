@@ -178,7 +178,7 @@ describe('repository library route', () => {
 
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
-				expectPageTitleToBe(response, 'Module Library')
+				expectPageTitleToBe(response, 'Obojobo Module Library')
 			})
 	})
 

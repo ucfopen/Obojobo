@@ -42,6 +42,15 @@ const apiAddPermissionsToModule = (draftId, userId) => {
 	return fetch(`/api/drafts/${draftId}/permission`, options).then(res => res.json())
 }
 
+const apiUpdatePermissionsForModule = (draftId, userId, accessLevel) => {
+	const options = {
+		...defaultOptions(),
+		method: 'POST',
+		body: `{"userId":${userId}, "accessLevel":"${accessLevel}"}`
+	}
+	return fetch(`/api/drafts/${draftId}/permission/update`, options).then(res => res.json())
+}
+
 const apiGetPermissionsForModule = draftId => {
 	return fetch(`/api/drafts/${draftId}/permission`, defaultOptions()).then(res => res.json())
 }
@@ -262,6 +271,14 @@ const addUserToModule = (draftId, userId) => ({
 	)
 })
 
+const CHANGE_ACCESS_LEVEL = 'CHANGE_ACCESS_LEVEL'
+const changeAccessLevel = (draftId, userId, accessLevel) => ({
+	type: CHANGE_ACCESS_LEVEL,
+	promise: apiUpdatePermissionsForModule(draftId, userId, accessLevel).then(() => {
+		apiGetPermissionsForModule(draftId)
+	})
+})
+
 const DELETE_MODULE_PERMISSIONS = 'DELETE_MODULE_PERMISSIONS'
 const deleteModulePermissions = (draftId, userId, options = { ...defaultModuleModeOptions }) => {
 	let apiModuleGetCall
@@ -340,11 +357,11 @@ const bulkDeleteModules = draftIds => ({
 })
 
 const BULK_ADD_MODULES_TO_COLLECTIONS = 'BULK_ADD_MODULES_TO_COLLECTIONS'
-const bulkAddModulesToCollection = (draftIds, collectionIds) => {
+const bulkAddModulesToCollection = (drafts, collectionIds) => {
 	const allPromises = []
-	draftIds.forEach(draftId => {
+	drafts.forEach(draft => {
 		collectionIds.forEach(collectionId => {
-			allPromises.push(apiAddModuleToCollection(draftId, collectionId))
+			allPromises.push(apiAddModuleToCollection(draft.draftId, collectionId))
 		})
 	})
 
@@ -613,6 +630,7 @@ module.exports = {
 	LOAD_USER_SEARCH,
 	CLOSE_MODAL,
 	ADD_USER_TO_MODULE,
+	CHANGE_ACCESS_LEVEL,
 	LOAD_USERS_FOR_MODULE,
 	CREATE_NEW_MODULE,
 	CLEAR_PEOPLE_SEARCH_RESULTS,
@@ -661,6 +679,7 @@ module.exports = {
 	deleteModulePermissions,
 	searchForUser,
 	addUserToModule,
+	changeAccessLevel,
 	createNewCollection,
 	createNewModule,
 	showModulePermissions,
