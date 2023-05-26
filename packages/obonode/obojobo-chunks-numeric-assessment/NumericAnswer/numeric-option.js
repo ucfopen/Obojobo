@@ -19,6 +19,7 @@ import {
 } from '../entry/numeric-entry-statuses'
 import NumericEntryRange from '../range/numeric-entry-range'
 import isRefRelatedTarget from './is-ref-related-target'
+import NumericInputMoreInfoButton from '../numeric-input-more-info-button'
 
 const RANGE_ERROR_SINGULAR = 'singular'
 const RANGE_ERROR_INVERTED = 'inverted'
@@ -227,6 +228,9 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 				<div className="is-type-range">
 					<label className="select requirement">
 						Answer Type
+						<div className="more-info-tooltip">
+							<NumericInputMoreInfoButton></NumericInputMoreInfoButton>
+						</div>
 						<select
 							className="select-item"
 							name="requirement"
@@ -271,6 +275,9 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 				<div className="is-type-margin">
 					<label className="select requirement">
 						Answer Type
+						<div className="more-info-tooltip">
+							<NumericInputMoreInfoButton></NumericInputMoreInfoButton>
+						</div>
 						<select
 							className="select-item"
 							name="requirement"
@@ -330,6 +337,9 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 				<div className="is-type-exact">
 					<label className="select requirement">
 						Answer Type
+						<div className="more-info-tooltip">
+							<NumericInputMoreInfoButton></NumericInputMoreInfoButton>
+						</div>
 						<select
 							className="select-item"
 							name="requirement"
