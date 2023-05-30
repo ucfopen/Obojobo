@@ -8,6 +8,27 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
     className="select requirement"
   >
     Answer Type
+    <div
+      className="more-info-tooltip"
+    >
+      <div
+        className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+      >
+        <div
+          className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+        >
+          <button
+            aria-label="Click for some examples of how to input your answer"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="button"
+          >
+            ?
+          </button>
+        </div>
+      </div>
+    </div>
     <select
       className="select-item"
       name="requirement"
@@ -48,6 +69,27 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
     className="select requirement"
   >
     Answer Type
+    <div
+      className="more-info-tooltip"
+    >
+      <div
+        className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+      >
+        <div
+          className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+        >
+          <button
+            aria-label="Click for some examples of how to input your answer"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="button"
+          >
+            ?
+          </button>
+        </div>
+      </div>
+    </div>
     <select
       className="select-item"
       name="requirement"
@@ -89,6 +131,27 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     className="select requirement"
   >
     Answer Type
+    <div
+      className="more-info-tooltip"
+    >
+      <div
+        className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+      >
+        <div
+          className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+        >
+          <button
+            aria-label="Click for some examples of how to input your answer"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="button"
+          >
+            ?
+          </button>
+        </div>
+      </div>
+    </div>
     <select
       className="select-item"
       name="requirement"
@@ -162,6 +225,27 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
     className="select requirement"
   >
     Answer Type
+    <div
+      className="more-info-tooltip"
+    >
+      <div
+        className="obojobo-draft--chunks--numeric-assessment--input-more-info"
+      >
+        <div
+          className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+        >
+          <button
+            aria-label="Click for some examples of how to input your answer"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="button"
+          >
+            ?
+          </button>
+        </div>
+      </div>
+    </div>
     <select
       className="select-item"
       name="requirement"

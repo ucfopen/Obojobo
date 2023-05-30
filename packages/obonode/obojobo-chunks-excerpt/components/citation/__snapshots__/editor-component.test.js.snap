@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Citation Node Node builds the expected component 1`] = `
+<cite>
+  <div>
+    Child component
+  </div>
+  <div>
+    Child component
+  </div>
+  <div>
+    Child component
+  </div>
+</cite>
+`;

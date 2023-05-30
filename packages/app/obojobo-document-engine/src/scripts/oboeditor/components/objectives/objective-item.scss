@@ -1,5 +1,6 @@
 @import '~styles/includes';
 
+/* Display the objective css */
 $color-highlight-bg: lighten($color-action, 50%);
 
 .is-objective-label-selected {
@@ -18,7 +19,6 @@ $color-highlight-bg: lighten($color-action, 50%);
 	}
 }
 
-/* Display the objective css */
 .objective-block {
 	text-align: left;
 	width: 35rem;
