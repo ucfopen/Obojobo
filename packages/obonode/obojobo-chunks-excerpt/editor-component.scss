@@ -1,0 +1,51 @@
+@import '~styles/includes';
+
+$selected-gray: #ebebeb;
+$lighter-blue: lighten($color-obojobo-blue, 60%);
+
+.obojobo-draft--chunks--excerpt {
+	> .obojobo-draft--chunks--excerpt--edge-controls {
+		opacity: 0;
+
+		.edges {
+			opacity: 0;
+		}
+	}
+
+	&.is-selected {
+		> .obojobo-draft--chunks--excerpt--edge-controls {
+			opacity: 1;
+
+			&:hover {
+				.edges {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	> blockquote .delete-button {
+		position: absolute;
+		left: auto;
+		top: 0;
+		right: -0.5em;
+		transform: translate(50%, -50%);
+		z-index: 3;
+
+		.button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
+			border: none;
+			background: none;
+			font-weight: bold;
+			color: $color-shadow;
+
+			&:hover {
+				background: none;
+				color: $color-obojobo-blue;
+			}
+		}
+	}
+}
