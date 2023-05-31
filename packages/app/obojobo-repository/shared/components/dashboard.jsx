@@ -18,7 +18,7 @@ const Spinner = require('./spinner')
 const Collection = require('./collection')
 const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
 const CollectionBulkAddModulesDialog = require('./collection-bulk-add-modules-dialog')
-const BulkSuccessDialog = require('./bulk-success-dialog.jsx')
+const MessageDialog = require('./message-dialog.jsx')
 const CollectionManageModulesDialog = require('./collection-manage-modules-dialog')
 const CollectionRenameDialog = require('./collection-rename-dialog')
 const ButtonLink = require('./button-link')
@@ -220,13 +220,7 @@ const renderCollectionBulkAddModulesDialog = (props, extension) => (
 )
 
 const renderBulkSuccessDialog = props => (
-	<BulkSuccessDialog
-		title=""
-		collections={props.myCollections}
-		selectedModules={props.selectedModules}
-		bulkAddModulesToCollection={props.bulkAddModulesToCollection}
-		onClose={props.closeModal}
-	/>
+	<MessageDialog title="" message="Modules Added Successfully!" onClose={props.closeModal} />
 )
 
 const renderCollectionManageModulesDialog = (props, extension) => (

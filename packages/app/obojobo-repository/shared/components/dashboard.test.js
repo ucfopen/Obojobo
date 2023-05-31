@@ -73,7 +73,7 @@ import ModulePermissionsDialog from './module-permissions-dialog'
 import ModuleOptionsDialog from './module-options-dialog'
 import VersionHistoryDialog from './version-history-dialog'
 import AssessmentScoreDataDialog from './assessment-score-data-dialog'
-import BulkSuccessDialog from './bulk-success-dialog'
+import MessageDialog from './message-dialog'
 
 const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../repository-constants')
 const { FULL, PARTIAL, MINIMAL } = require('obojobo-express/server/constants')
@@ -1099,11 +1099,13 @@ describe('Dashboard', () => {
 		)
 
 		const moduleComponents = component.root.findAllByType(Module)
-		//This is not ideal but it's good for now
+		// This is not ideal but it's good for now
+		// Couldn't figure out how to select all levels at once without manually selecting each one respectively, so that's what's happening here
 		act(() => {
 			const mockClickEvent = {
 				shiftKey: false
 			}
+			// Selected this module component as it was the last one created in the beginning
 			moduleComponents[4].props.onSelect(mockClickEvent)
 		})
 
@@ -1116,6 +1118,7 @@ describe('Dashboard', () => {
 			const mockClickEvent = {
 				shiftKey: false
 			}
+			// Selected this module as it was the second to last one created in the beginning
 			moduleComponents[1].props.onSelect(mockClickEvent)
 		})
 
@@ -2036,8 +2039,8 @@ describe('Dashboard', () => {
 			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
 		})
 
-		expectDialogToBeRendered(component, BulkSuccessDialog, '')
-		const dialogComponent = component.root.findByType(BulkSuccessDialog)
+		expectDialogToBeRendered(component, MessageDialog, '')
+		const dialogComponent = component.root.findByType(MessageDialog)
 		expect(dialogComponent.props.title).toBe('')
 
 		dialogComponent.props.onClose()
