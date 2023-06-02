@@ -5,8 +5,8 @@ const Button = require('./button')
 
 const MessageDialog = props => {
 	return (
-		<div className="bulk-success-dialog">
-			<div className="success-message">{props.message}</div>
+		<div className="message-dialog">
+			<div className="message">{props.message}</div>
 			<div className="wrapper">
 				<Button className="done-button secondary-button" onClick={props.onClose}>
 					OK
