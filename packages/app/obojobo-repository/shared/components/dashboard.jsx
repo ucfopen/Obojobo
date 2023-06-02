@@ -2,7 +2,7 @@ require('./modal.scss')
 require('./dashboard.scss')
 
 const React = require('react')
-const { useState, useEffect } = require('react')
+const { useState, useEffect, useRef } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
@@ -18,6 +18,7 @@ const Spinner = require('./spinner')
 const Collection = require('./collection')
 const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
 const CollectionBulkAddModulesDialog = require('./collection-bulk-add-modules-dialog')
+const MessageDialog = require('./message-dialog.jsx')
 const CollectionManageModulesDialog = require('./collection-manage-modules-dialog')
 const CollectionRenameDialog = require('./collection-rename-dialog')
 const ButtonLink = require('./button-link')
@@ -124,6 +125,10 @@ const renderModalDialog = props => {
 			extendedProps.deleteModulePermissions = (draftId, userId) => {
 				props.deleteModulePermissions(draftId, userId, extendedOptions)
 			}
+			extendedProps.onClose = () => {
+				props.clearSelection()
+				props.closeModal()
+			}
 	}
 
 	switch (props.dialog) {
@@ -159,7 +164,12 @@ const renderModalDialog = props => {
 
 		case 'collection-bulk-add-modules':
 			title = ''
-			dialog = renderCollectionBulkAddModulesDialog(props)
+			dialog = renderCollectionBulkAddModulesDialog(props, extendedProps)
+			break
+
+		case 'bulk-add-successful':
+			title = ''
+			dialog = renderBulkSuccessDialog(props)
 			break
 
 		case 'collection-rename':
@@ -199,14 +209,18 @@ const renderModuleManageCollectionsDialog = (props, extension) => (
 	/>
 )
 
-const renderCollectionBulkAddModulesDialog = props => (
+const renderCollectionBulkAddModulesDialog = (props, extension) => (
 	<CollectionBulkAddModulesDialog
 		title=""
 		collections={props.myCollections}
 		selectedModules={props.selectedModules}
 		bulkAddModulesToCollection={props.bulkAddModulesToCollection}
-		onClose={props.closeModal}
+		onClose={extension.onClose}
 	/>
+)
+
+const renderBulkSuccessDialog = props => (
+	<MessageDialog title="" message="Modules Added Successfully!" onClose={props.closeModal} />
 )
 
 const renderCollectionManageModulesDialog = (props, extension) => (
@@ -340,13 +354,14 @@ function Dashboard(props) {
 	const onKeyUp = e => {
 		if (e.key === 'Escape' && props.multiSelectMode && props.deselectModules) {
 			setLastPreselectedIndex(null)
-			props.deselectModules(props.selectedModules)
+			clearSelection()
 		}
 	}
 
 	const modalProps = Object.assign({}, props)
 	modalProps.startLoadingAnimation = () => setIsLoading(true)
 	modalProps.stopLoadingAnimation = () => setIsLoading(false)
+	modalProps.clearSelection = () => clearSelection()
 
 	const handleSelectModule = (event, draftId, index) => {
 		let originIndex = lastSelectedIndex
@@ -357,6 +372,7 @@ function Dashboard(props) {
 			if (!props.selectedModules.length) {
 				// If shift-clicking a module without having first clicked another module, only select the one that was clicked
 				originIndex = lastPreselectedIndex !== null ? lastPreselectedIndex : index
+				clearSelection()
 			}
 
 			// Accommodates for group selecting backwards in the list and prevents duplicate selections
@@ -551,9 +567,14 @@ function Dashboard(props) {
 		}
 	}, [onKeyUp])
 
-	const newCollectionButtonRender = (
-		<Button onClick={props.createNewCollection}>New Collection</Button>
-	)
+	const newCollection = useRef(null)
+	const onNewCollectionClick = () => {
+		props.createNewCollection().then(() => {
+			newCollection.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+		})
+	}
+
+	const newCollectionButtonRender = <Button onClick={onNewCollectionClick}>New Collection</Button>
 
 	// Elements to render in the 'My Collections' part of the page
 	// Will only appear when dashboard is in 'recent' mode
@@ -647,7 +668,10 @@ function Dashboard(props) {
 				<div className="repository--item-list--collection">
 					<div className="repository--item-list--collection--item-wrapper">
 						<div className="repository--item-list--row">
-							<div className="repository--item-list--collection--item--multi-wrapper">
+							<div
+								className="repository--item-list--collection--item--multi-wrapper"
+								ref={newCollection}
+							>
 								{renderCollections(
 									props.filteredCollections ? props.filteredCollections : props.myCollections,
 									collectionSortOrder,
@@ -779,7 +803,9 @@ function Dashboard(props) {
 				bulkCollectionActionButton = (
 					<Button
 						className="multi-select secondary-button"
-						onClick={() => props.showCollectionBulkAddModulesDialog(props.selectedModules)}
+						onClick={() => {
+							props.showCollectionBulkAddModulesDialog(props.selectedModules)
+						}}
 					>
 						Add All To Collection
 					</Button>
