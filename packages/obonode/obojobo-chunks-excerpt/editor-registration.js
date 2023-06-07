@@ -20,12 +20,19 @@ const EXCERPT_TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptLine'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
+const disallowedChildren = [
+	'ObojoboDraft.Chunks.Question',
+	'ObojoboDraft.Chunks.QuestionBank',
+	EXCERPT_NODE
+]
+
 const Excerpt = {
 	name: EXCERPT_NODE,
 	icon: Icon,
 	menuLabel: 'Box / Excerpt',
 	isInsertable: true,
 	isContent: true,
+	disallowedChildren: disallowedChildren,
 	helpers: Converter,
 	json: {
 		emptyNode
