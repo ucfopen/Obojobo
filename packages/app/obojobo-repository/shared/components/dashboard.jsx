@@ -125,6 +125,9 @@ const renderModalDialog = props => {
 			extendedProps.deleteModulePermissions = (draftId, userId) => {
 				props.deleteModulePermissions(draftId, userId, extendedOptions)
 			}
+			extendedProps.onClear = () => {
+				props.clearSelection()
+			}
 			extendedProps.onClose = () => {
 				props.clearSelection()
 				props.closeModal()
@@ -216,6 +219,7 @@ const renderCollectionBulkAddModulesDialog = (props, extension) => (
 		selectedModules={props.selectedModules}
 		bulkAddModulesToCollection={props.bulkAddModulesToCollection}
 		onClose={extension.onClose}
+		onClear={extension.onClear}
 	/>
 )
 

@@ -1083,7 +1083,6 @@ describe('Dashboard', () => {
 		dashboardProps.numPartialSelected = 1
 		dashboardProps.numMinimalSelected = 1
 		dashboardProps.deselectModules = jest.fn()
-		dashboardProps.clearSelection = jest.fn()
 
 		let component
 		act(() => {
@@ -1362,7 +1361,6 @@ describe('Dashboard', () => {
 		dashboardProps.multiSelectMode = true
 		dashboardProps.selectedModules = mockSelectedModules
 		dashboardProps.deselectModules = jest.fn()
-		dashboardProps.clearSelection = jest.fn()
 
 		dashboardProps.mode = MODE_COLLECTION
 		dashboardProps.collection = {
@@ -1410,7 +1408,6 @@ describe('Dashboard', () => {
 		dashboardProps.selectedModules = [standardMyModules[0], standardMyModules[1]]
 		dashboardProps.multiSelectMode = true
 		dashboardProps.deselectModules = jest.fn()
-		dashboardProps.clearSelection = jest.fn()
 		const reusableComponent = <Dashboard {...dashboardProps} />
 		let component
 		act(() => {
@@ -2031,6 +2028,24 @@ describe('Dashboard', () => {
 		component.unmount()
 	})
 
+	test('multi-module add dialog clears data but does not close when adding', () => {
+		dashboardProps.dialog = 'collection-bulk-add-modules'
+		dashboardProps.deselectModules = jest.fn()
+
+		let component
+		act(() => {
+			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		expectDialogToBeRendered(component, CollectionBulkAddModulesDialog, '')
+		const dialogComponent = component.root.findByType(CollectionBulkAddModulesDialog)
+		dialogComponent.children[0].props.onClear()
+		expect(dashboardProps.deselectModules).toHaveBeenCalledTimes(1)
+		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(0)
+
+		component.unmount()
+	})
+
 	test('renders bulk success dialog and runs callbacks properly', () => {
 		dashboardProps.dialog = 'bulk-add-successful'
 
@@ -2199,7 +2214,6 @@ describe('Dashboard', () => {
 	test('restoreModules function gets called as expected', async () => {
 		const originalAlert = global.alert
 		global.alert = jest.fn()
-		dashboardProps.clearSelection = jest.fn()
 
 		const mockSelectedModules = [standardMyModules[0], standardMyModules[1]]
 
