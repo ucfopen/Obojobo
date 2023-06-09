@@ -35,7 +35,7 @@ module.exports =
 				watchOptions: {
 					ignored: '/node_modules/'
 				},
-				stats: { children: false, modules: false },
+				stats: { children: false, modules: false }
 			},
 			entry: entriesFromObojoboModules,
 			output: {
