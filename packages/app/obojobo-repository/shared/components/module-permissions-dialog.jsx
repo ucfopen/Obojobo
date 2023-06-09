@@ -58,6 +58,7 @@ class ModulePermissionsDialog extends React.Component {
 
 			if (
 				this.props.draftPermissions[this.props.draftId] !== null &&
+				// eslint-disable-next-line no-undefined
 				this.props.draftPermissions[this.props.draftId] !== undefined
 			) {
 				draftPermissions = this.props.draftPermissions[this.props.draftId].items

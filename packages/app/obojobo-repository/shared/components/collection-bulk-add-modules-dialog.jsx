@@ -14,7 +14,7 @@ const CollectionBulkAddModulesDialog = props => {
 
 	const handleAddClick = () => {
 		props.bulkAddModulesToCollection(props.selectedModules, selectedCollections)
-		props.onClose()
+		props.onClear()
 	}
 
 	const filterCollections = collection => {
@@ -58,7 +58,12 @@ const CollectionBulkAddModulesDialog = props => {
 	return (
 		<div className="collections-bulk-add-modules-dialog">
 			<div className="top-bar">
-				<div className="module-count">{props.selectedModules.length} Modules Selected</div>
+				<div className="module-count">
+					{props.selectedModules.length +
+						' Module' +
+						(props.selectedModules.length !== 1 ? 's' : '') +
+						' Selected'}
+				</div>
 				<Button ariaLabel="Close" className="close-button" onClick={props.onClose}>
 					×
 				</Button>
