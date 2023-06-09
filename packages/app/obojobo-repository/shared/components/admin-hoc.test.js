@@ -24,8 +24,10 @@ describe('admin HOC', () => {
 
 		expect(ReactRedux.connect).toHaveBeenCalledTimes(1)
 		expect(ReactRedux.connect).toHaveBeenCalledWith(expect.any(Function), {
-			loadUserModuleList: AdminActions.loadUserModuleList,
-			loadModuleAssessmentDetails: AdminActions.loadModuleAssessmentDetails
+			addUserPermission: AdminActions.addUserPermission,
+			clearPeopleSearchResults: AdminActions.clearPeopleSearchResults,
+			removeUserPermission: AdminActions.removeUserPermission,
+			searchForUser: AdminActions.searchForUser
 		})
 
 		expect(mockReduxConnectReturn).toHaveBeenCalledTimes(1)

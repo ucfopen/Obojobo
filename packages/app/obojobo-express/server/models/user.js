@@ -102,22 +102,6 @@ class User {
 			})
 	}
 
-	static getAll() {
-		return db
-			.manyOrNone(
-				`SELECT
-					*
-				FROM users
-				ORDER BY first_name, last_name
-				LIMIT 25`
-			)
-			.then(results => results.map(r => User.dbResultToModel(r)))
-			.catch(error => {
-				logger.logError('Error getAll', error)
-				throw Error('Error fetching all users.')
-			})
-	}
-
 	saveOrCreate() {
 		return db
 			.one(

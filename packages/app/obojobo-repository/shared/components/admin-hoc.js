@@ -1,17 +1,17 @@
 const Admin = require('./admin')
 const connect = require('react-redux').connect
 const {
-	loadModuleList,
-	loadUserList,
 	addUserPermission,
-	removeUserPermission
+	removeUserPermission,
+	searchForUser,
+	clearPeopleSearchResults
 } = require('../actions/admin-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
-	loadModuleList,
-	loadUserList,
 	addUserPermission,
-	removeUserPermission
+	removeUserPermission,
+	searchForUser,
+	clearPeopleSearchResults
 }
 module.exports = connect(
 	mapStoreStateToProps,

@@ -1,67 +1,183 @@
-describe('AdminInterface Model', () => {
-    jest.mock('obojobo-express/server/db')
-	jest.mock('obojobo-express/server/logger')
-	let db
-	let logger
-	let AdminInterface
+jest.mock('obojobo-express/server/db')
+jest.mock('obojobo-express/server/logger')
+jest.mock('obojobo-express/server/models/user')
+jest.mock('../../shared/util/implicit-perms', () => ({
+	PERMS_PER_ROLE: {
+		mockRole: ['mockExistingPermission']
+	}
+}))
 
-    beforeEach(() => {
+const db = require('obojobo-express/server/db')
+const logger = require('obojobo-express/server/logger')
+
+const User = require('obojobo-express/server/models/user')
+
+const AdminInterface = require('./admin_interface')
+
+describe('AdminInterface Model', () => {
+	let expectedResponseUser
+
+	beforeEach(() => {
 		jest.resetModules()
 		jest.resetAllMocks()
-		db = require('obojobo-express/server/db')
-		logger = require('obojobo-express/server/logger')
 
-		AdminInterface = require('./admin_interface')
+		expectedResponseUser = {
+			perms: [],
+			roles: []
+		}
+
+		// provide this by defualt, override in individual tests if necessary
+		// if every test ends up overriding this, just remove this one
+		User.fetchById = jest.fn().mockResolvedValueOnce(expectedResponseUser)
 	})
-	afterEach(() => {})
 
-    test('addPermission correctly fetches id and adds new permission (if any)', () => {
-        db.one.mockResolvedValueOnce({
-			id: 5,
-			created_at: 'mocked-date',
-			email: 'guest@obojobo.ucf.edu',
-			first_name: 'Guest',
-			last_name: 'Guest',
-			roles: [],
-			username: 'guest'
+	test('addPermission does nothing if trying to add a permission the given user already has', () => {
+		expect.assertions(2)
+
+		// set the user's permissions such that they already have the one we're trying to give them
+		// ideally we could check implicit and explicit perms separately, but they're added to a single
+		//  array inside the User model so our only option is to check the one location
+		expectedResponseUser.perms = ['someExistingPermission']
+		User.fetchById = jest.fn().mockResolvedValueOnce(expectedResponseUser)
+
+		return AdminInterface.addPermission(5, 'someExistingPermission').then(u => {
+			expect(u).toEqual(expectedResponseUser)
+			expect(db.oneOrNone).not.toHaveBeenCalled()
 		})
+	})
 
-        db.oneOrNone.mockResolvedValueOnce({})
-        
-        return AdminInterface.addPermission(5, 'canViewAdminPage')
-        .then(ret => expect(ret).toBe(5))
-    })
+	test('addPermission only saves explicitly granted permissions', () => {
+		expect.assertions(3)
 
-    test('addPermission catches error when fetching user with invalid id', () => {
-        logger.logError = jest.fn()
+		db.oneOrNone.mockResolvedValueOnce(5)
 
-        db.one.mockRejectedValueOnce('mock-error')
+		// 'mockRole' will account for the 'mockExistingPermission' perm below
+		expectedResponseUser.roles = ['mockRole']
+		expectedResponseUser.perms = ['someExistingPermission', 'mockExistingPermission']
+		User.fetchById = jest.fn().mockResolvedValueOnce(expectedResponseUser)
 
-        return AdminInterface.addPermission(123456, 'canViewAdminPage')
-        .then(ret => {
-            console.log("ret:")
-            console.log(ret)
-        })
-        .catch(() => {
-            console.log("here")
-            expect(logger.logError).toHaveBeenCalledWith('AdminInterface error finding user with id 123456')
-        })
-    })
-
-    test('removePermission correctly fetches id and removes permission', () => {
-        db.one.mockResolvedValueOnce({
-			id: 5,
-			created_at: 'mocked-date',
-			email: 'guest@obojobo.ucf.edu',
-			first_name: 'Guest',
-			last_name: 'Guest',
-			perms: ['canViewAdminPage'],
-			username: 'guest'
+		return AdminInterface.addPermission(5, 'someNewPermission').then(u => {
+			expect(u).toEqual({
+				...expectedResponseUser,
+				perms: ['someExistingPermission', 'mockExistingPermission', 'someNewPermission']
+			})
+			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+			// first argument to db function is the query string, no need to check that
+			expect(db.oneOrNone.mock.calls[0][1]).toEqual({
+				userId: 5,
+				// since 'mockExistingPermission' is a perm-based/implicit perm,
+				//  it should not have been saved explicitly
+				perms: ['someExistingPermission', 'someNewPermission']
+			})
 		})
+	})
 
-        db.oneOrNone.mockResolvedValueOnce({})
-        
-        return AdminInterface.removePermission(5, 'canViewAdminPage')
-        .then(ret => expect(ret).toBe(5))
-    })
+	test('addPermission catches error when fetching user with invalid id', () => {
+		User.fetchById = jest.fn().mockRejectedValueOnce('mock-error')
+
+		expect.hasAssertions()
+
+		return AdminInterface.addPermission(123456, 'someNewPermission').catch(() => {
+			expect(logger.logError).toHaveBeenCalledWith(
+				'AdminInterface error finding user with id 123456'
+			)
+		})
+	})
+
+	test('addPermission catches error when updating user perms', () => {
+		expect.hasAssertions()
+
+		db.oneOrNone.mockRejectedValueOnce('mock-error')
+
+		return AdminInterface.addPermission(5, 'someNewPermission').catch(() => {
+			expect(logger.logError).toHaveBeenCalledTimes(2)
+			expect(logger.logError).toHaveBeenCalledWith(
+				'AdminInterface _updateUserPerms error',
+				'mock-error'
+			)
+			expect(logger.logError).toHaveBeenCalledWith('AdminInterface error adding permission')
+		})
+	})
+
+	test('removePermission does nothing if trying to remove a permission the given user does not have', () => {
+		expect.assertions(2)
+
+		// set the user's permissions such that they already have the one we're trying to give them
+		// ideally we could check implicit and explicit perms separately, but they're added to a single
+		//  array inside the User model so our only option is to check the one location
+		expectedResponseUser.perms = ['someOtherPermission']
+		User.fetchById = jest.fn().mockResolvedValueOnce(expectedResponseUser)
+
+		return AdminInterface.removePermission(5, 'someExistingPermission').then(u => {
+			expect(u).toEqual(expectedResponseUser)
+			expect(db.oneOrNone).not.toHaveBeenCalled()
+		})
+	})
+
+	test('removePermission does nothing if trying to remove a permission the given user has implicitly', () => {
+		expect.assertions(2)
+
+		expectedResponseUser.roles = ['mockRole']
+		expectedResponseUser.perms = ['someExistingPermission', 'mockExistingPermission']
+		User.fetchById = jest.fn().mockResolvedValueOnce(expectedResponseUser)
+
+		return AdminInterface.removePermission(5, 'mockExistingPermission').then(u => {
+			expect(u).toEqual(expectedResponseUser)
+			expect(db.oneOrNone).not.toHaveBeenCalled()
+		})
+	})
+
+	test('removePermission saves explicit permissions after removing one from the given user', () => {
+		db.oneOrNone.mockResolvedValueOnce(5)
+
+		// 'mockRole' will account for the 'mockExistingPermission' perm below
+		expectedResponseUser.roles = ['mockRole']
+		expectedResponseUser.perms = [
+			'someExistingPermission',
+			'someOtherExistingPermission',
+			'mockExistingPermission'
+		]
+		User.fetchById = jest.fn().mockResolvedValueOnce(expectedResponseUser)
+
+		return AdminInterface.removePermission(5, 'someOtherExistingPermission').then(u => {
+			expect(u).toEqual({
+				...expectedResponseUser,
+				perms: ['mockExistingPermission', 'someExistingPermission']
+			})
+			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+			expect(db.oneOrNone.mock.calls[0][1]).toEqual({
+				userId: 5,
+				perms: ['someExistingPermission']
+			})
+		})
+	})
+
+	test('removePermission catches error when fetching user with invalid id', () => {
+		User.fetchById = jest.fn().mockRejectedValueOnce('mock-error')
+
+		expect.hasAssertions()
+
+		return AdminInterface.removePermission(123456, 'someExistingPermission').catch(() => {
+			expect(logger.logError).toHaveBeenCalledWith(
+				'AdminInterface error finding user with id 123456'
+			)
+		})
+	})
+
+	test('removePermission catches error when updating user perms', () => {
+		expect.hasAssertions()
+
+		db.oneOrNone.mockRejectedValueOnce('mock-error')
+
+		expectedResponseUser.perms = ['someExistingPermission']
+
+		return AdminInterface.removePermission(5, 'someExistingPermission').catch(() => {
+			expect(logger.logError).toHaveBeenCalledTimes(2)
+			expect(logger.logError).toHaveBeenCalledWith(
+				'AdminInterface _updateUserPerms error',
+				'mock-error'
+			)
+			expect(logger.logError).toHaveBeenCalledWith('AdminInterface error removing permission')
+		})
+	})
 })

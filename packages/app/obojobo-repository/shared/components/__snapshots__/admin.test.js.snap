@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Admin Renders "tools loaded" state correctly 1`] = `
+exports[`Admin renders default view correctly 1`] = `
 <span
   id="admin-root"
 >
@@ -100,9 +100,23 @@ exports[`Admin Renders "tools loaded" state correctly 1`] = `
     <section
       className="repository--main-content"
     >
-      <p>
-        Loading...
-      </p>
+      <div
+        className="wrapper"
+      >
+        <p
+          className="title"
+        >
+          Find Users to Manage
+        </p>
+        <mock-Search />
+      </div>
+      <div
+        className="user-list-wrapper"
+      >
+        <ul
+          className="user-list"
+        />
+      </div>
     </section>
   </div>
 </span>
