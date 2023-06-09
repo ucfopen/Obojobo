@@ -6,13 +6,26 @@
 	overflow: visible;
 	margin-left: 3em;
 	margin-right: 3em;
-	padding: 1.5em;
+	padding: 2.25em 1.5em 1.5em;
 
 	// Remove padding for nested questionbanks
 	.obojobo-draft--chunks--question-bank {
 		margin-left: 0;
 		margin-right: 0;
 		font-size: 0.9em;
+	}
+
+	.flipper {
+		margin-top: -0.75em;
+
+		&:hover {
+			cursor: pointer;
+
+			.clickable-label {
+				color: $color-obojobo-blue;
+				cursor: pointer;
+			}
+		}
 	}
 
 	.qb-settings {
@@ -93,9 +106,13 @@
 		z-index: 3;
 
 		&.child-buttons {
-			top: 0.25em;
+			top: 0.7em;
 			left: 0.7em;
 			right: auto;
+
+			button {
+				border-radius: 0;
+			}
 		}
 
 		&.bank-buttons {

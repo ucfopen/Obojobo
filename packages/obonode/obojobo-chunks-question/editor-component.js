@@ -188,8 +188,8 @@ const Question = props => {
 		>
 			<div className={className}>
 				{content.collapsed ? (
-					<div className="flipper" contentEditable={false}>
-						<label>Question (Minimized)</label>
+					<div className="flipper" contentEditable={false} onClick={toggleCollapsed}>
+						<label className="clickable-label">Question (Click to Expand)</label>
 					</div>
 				) : (
 					<div className="flipper question-editor">

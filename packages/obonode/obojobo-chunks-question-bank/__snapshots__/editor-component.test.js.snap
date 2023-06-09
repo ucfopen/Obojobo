@@ -5,36 +5,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component (collaps
   <div
     className="obojobo-draft--chunks--question-bank editor-bankis-collapsed"
   >
-    <div
-      className="button-parent child-buttons"
-    >
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-        contentEditable={false}
-      >
-        <button
-          className="button"
-          contentEditable={false}
-          onClick={[Function]}
-          type="button"
-        >
-          Collapse All
-        </button>
-      </div>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-        contentEditable={false}
-      >
-        <button
-          className="button"
-          contentEditable={false}
-          onClick={[Function]}
-          type="button"
-        >
-          Expand All
-        </button>
-      </div>
-    </div>
+    
     <div
       className="button-parent bank-buttons"
     >
@@ -68,11 +39,13 @@ exports[`QuestionBank editor QuestionBank builds the expected component (collaps
     <div
       className="flipper"
       contentEditable={false}
+      onClick={[Function]}
     >
       <label
-        className="collapsed-summary"
+        className="clickable-label collapsed-summary"
       >
-        (Minimized)
+        
+        \xa0(Click to Expand)
       </label>
     </div>
   </div>

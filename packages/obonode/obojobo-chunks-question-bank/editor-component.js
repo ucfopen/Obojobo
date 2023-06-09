@@ -245,10 +245,14 @@ class QuestionBank extends React.Component {
 		return (
 			<Node {...this.props} contentDescription={contentDescription}>
 				<div className={className}>
-					<div className="button-parent child-buttons">
-						<Button onClick={this.collapseAll}>Collapse All</Button>
-						<Button onClick={this.expandAll}>Expand All</Button>
-					</div>
+					{element.content.collapsed ? (
+						''
+					) : (
+						<div className="button-parent child-buttons">
+							<Button onClick={this.collapseAll}>Collapse All</Button>
+							<Button onClick={this.expandAll}>Expand All</Button>
+						</div>
+					)}
 					<div className="button-parent bank-buttons">
 						<Button
 							className="collapse-button"
@@ -262,11 +266,12 @@ class QuestionBank extends React.Component {
 						</Button>
 					</div>
 					{element.content.collapsed ? (
-						<div className="flipper" contentEditable={false}>
-							<label className="collapsed-summary">
-								{numQs > 0 && `${numQs} Question${numQs > 1 ? 's' : ''}<br/>`}
-								{numQBs > 0 && `${numQBs} Question Bank${numQBs > 1 ? 's' : ''}<br/>`}
-								(Minimized)
+						<div className="flipper" contentEditable={false} onClick={this.toggleCollapsed}>
+							<label className="clickable-label collapsed-summary">
+								{numQs > 0 && `${numQs} Question${numQs > 1 ? 's ' : ' '}`}
+								{numQs > 0 && numQBs > 0 ? 'and ' : ''}
+								{numQBs > 0 && `${numQBs} Question Bank${numQBs > 1 ? 's ' : ' '}`}
+								&nbsp;(Click to Expand)
 							</label>
 						</div>
 					) : (
