@@ -99,7 +99,7 @@ describe('QuestionBank editor', () => {
 		expect(collapseButton.props.children).toBe('+')
 
 		const collapsedSummary = component.root.findAllByProps({
-			className: 'clickable-label collapsed-summary'
+			className: 'collapsed-summary'
 		})
 		expect(collapsedSummary.length).toBe(1)
 
@@ -527,7 +527,7 @@ describe('QuestionBank editor', () => {
 		// first case - no children
 		// shouldn't be possible but also shouldn't crash and burn if it happens
 		let collapsedSummary = component.root.findAllByProps({
-			className: 'clickable-label collapsed-summary'
+			className: 'collapsed-summary'
 		})
 		expect(collapsedSummary.length).toBe(1)
 		// could clean up the render but leaving the falses in there is fine
@@ -540,7 +540,7 @@ describe('QuestionBank editor', () => {
 		})
 
 		collapsedSummary = component.root.findAllByProps({
-			className: 'clickable-label collapsed-summary'
+			className: 'collapsed-summary'
 		})
 		// could also clean up the line break but leaving it there is fine
 		expect(collapsedSummary[0].props.children).toEqual([
@@ -556,7 +556,7 @@ describe('QuestionBank editor', () => {
 			component = renderer.create(<QuestionBank {...props} />)
 		})
 		collapsedSummary = component.root.findAllByProps({
-			className: 'clickable-label collapsed-summary'
+			className: 'collapsed-summary'
 		})
 		expect(collapsedSummary[0].props.children).toEqual([
 			'2 Questions ',
@@ -571,7 +571,7 @@ describe('QuestionBank editor', () => {
 			component = renderer.create(<QuestionBank {...props} />)
 		})
 		collapsedSummary = component.root.findAllByProps({
-			className: 'clickable-label collapsed-summary'
+			className: 'collapsed-summary'
 		})
 		expect(collapsedSummary[0].props.children).toEqual([
 			'2 Questions ',
@@ -586,7 +586,7 @@ describe('QuestionBank editor', () => {
 			component = renderer.create(<QuestionBank {...props} />)
 		})
 		collapsedSummary = component.root.findAllByProps({
-			className: 'clickable-label collapsed-summary'
+			className: 'collapsed-summary'
 		})
 		expect(collapsedSummary[0].props.children).toEqual([
 			'2 Questions ',
@@ -601,7 +601,7 @@ describe('QuestionBank editor', () => {
 			component = renderer.create(<QuestionBank {...props} />)
 		})
 		collapsedSummary = component.root.findAllByProps({
-			className: 'clickable-label collapsed-summary'
+			className: 'collapsed-summary'
 		})
 		expect(collapsedSummary[0].props.children).toEqual([
 			false,

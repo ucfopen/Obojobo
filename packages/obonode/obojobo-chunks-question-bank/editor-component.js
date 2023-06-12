@@ -231,7 +231,7 @@ class QuestionBank extends React.Component {
 		]
 		const className =
 			'obojobo-draft--chunks--question-bank editor-bank' +
-			`is-${element.content.collapsed ? 'collapsed' : 'not-collapsed'}`
+			` is-${element.content.collapsed ? 'collapsed' : 'not-collapsed'}`
 
 		let numQs = 0
 		let numQBs = 0
@@ -266,8 +266,12 @@ class QuestionBank extends React.Component {
 						</Button>
 					</div>
 					{element.content.collapsed ? (
-						<div className="flipper" contentEditable={false} onClick={this.toggleCollapsed}>
-							<label className="clickable-label collapsed-summary">
+						<div
+							className="flipper clickable-label"
+							contentEditable={false}
+							onClick={this.toggleCollapsed}
+						>
+							<label className="collapsed-summary">
 								{numQs > 0 && `${numQs} Question${numQs > 1 ? 's ' : ' '}`}
 								{numQs > 0 && numQBs > 0 ? 'and ' : ''}
 								{numQBs > 0 && `${numQBs} Question Bank${numQBs > 1 ? 's ' : ' '}`}

@@ -14,10 +14,15 @@
 
 	&.is-collapsed {
 		> .flipper {
-			padding-left: 1em;
-			padding-top: 0.5em;
-			height: 2em;
+			padding: 0.5em 5em 0.5em 1em;
 			background-color: $color-bg2;
+			width: 100%;
+			box-sizing: border-box;
+
+			label.question-summary:hover {
+				color: $color-obojobo-blue;
+				cursor: pointer;
+			}
 		}
 	}
 
