@@ -1,15 +1,17 @@
 {
 	"id": "9c7e4d32-2e5b-432e-83dc-dbbb923df3b8",
-	"rev": "5feef0c9-59e7-4691-9b70-c31eab37996b",
+	"rev": "77732465-30eb-46aa-815a-f820f54ce039",
 	"type": "ObojoboDraft.Modules.Module",
 	"index": 0,
 	"content": {
 		"start": null,
-		"title": "Obojobo Visual Editor Tutorial"
+		"title": "Obojobo Visual Editor Tutorial",
+		"objectives": []
 	},
-	"draftId": "2cc50a1e-1e89-4c24-9f47-872facac9e58",
+	"draftId": "110459e5-6931-4262-8d45-8fc247655c53",
 	"metadata": {},
-	"contentId": "5feef0c9-59e7-4691-9b70-c31eab37996b",
+	"contentId": "77732465-30eb-46aa-815a-f820f54ce039",
+	"accessLevel": 1,
 	"children": [
 		{
 			"id": "40a16682-bcd9-44f0-aeb6-23d4cb143676",
@@ -1593,7 +1595,7 @@
 										},
 										"text": {
 											"value": "Headings",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1613,7 +1615,7 @@
 										},
 										"text": {
 											"value": "In addition to text nodes, you can also insert Heading nodes. These can be used to separate sections or to designate quick links.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -1632,7 +1634,7 @@
 										},
 										"text": {
 											"value": "Headings can have one of 6 different levels. To toggle the heading level, click on the dropdown menu in the toolbar select the new heading style.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -1648,7 +1650,7 @@
 										"data": {},
 										"text": {
 											"value": "Level One Heading",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1667,7 +1669,7 @@
 										},
 										"text": {
 											"value": "Level one headings are usually used only once on a page, as the title of the whole page. If they are not the first node on the page, they will show up as links in the navigation bar when a student views an Obojobo module.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -1683,7 +1685,7 @@
 										"data": {},
 										"text": {
 											"value": "Level Two Heading",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1702,7 +1704,7 @@
 										},
 										"text": {
 											"value": "Level two headings usually denote the major subsections of a page. They also show up as links in the navigation bar when a student views an Obojobo module.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -1720,7 +1722,7 @@
 										},
 										"text": {
 											"value": "Level Three Heading",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1737,7 +1739,7 @@
 										"data": {},
 										"text": {
 											"value": "Level Four Heading",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1756,7 +1758,7 @@
 										},
 										"text": {
 											"value": "Level Five Heading",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1773,7 +1775,7 @@
 										"data": {},
 										"text": {
 											"value": "Level Six Heading",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -1792,7 +1794,7 @@
 										},
 										"text": {
 											"value": "Level three, four, five, and six headings usually denote subcategories within each subsection. These do not show up as links in the navigation bar.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -2673,7 +2675,7 @@
 										},
 										"text": {
 											"value": "Breaks",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -2693,7 +2695,7 @@
 										},
 										"text": {
 											"value": "A Break node provides a logical and visual division on the page.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -2771,7 +2773,7 @@
 										},
 										"text": {
 											"value": "Figures",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -2791,7 +2793,7 @@
 										},
 										"text": {
 											"value": "Figure nodes allow you to display images within the Obojobo Module.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -2807,7 +2809,7 @@
 										"data": {},
 										"text": {
 											"value": "Figure Properties",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -2827,7 +2829,7 @@
 										},
 										"text": {
 											"value": "When a Figure is inserted, it has no display image, and all of its properties are set to default values. To change these properties, click on the Figure and then click the Image Properties button; this will open up an Image Properties dialog. Inside the dialog, clicking Cancel will close the dialog without changing any of the properties of the Figure, and clicking OK will close the dialog and change the properties of the Figure.",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -2865,7 +2867,7 @@
 										"data": null,
 										"text": {
 											"value": "",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -2882,7 +2884,7 @@
 										"data": {},
 										"text": {
 											"value": "URL",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -2901,7 +2903,7 @@
 										},
 										"text": {
 											"value": "When the properties box is first opened, it will ask you to upload a new image, or enter the URL of an image that has already been uploaded to the internet. It will also show you a list of your recently uploaded images, and you can select any of them to upload into the module.",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -2938,7 +2940,7 @@
 										"data": null,
 										"text": {
 											"value": "",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -2955,7 +2957,7 @@
 										"data": {},
 										"text": {
 											"value": "Alt Text",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -2972,7 +2974,7 @@
 										"data": {},
 										"text": {
 											"value": "Once an image has been selected, other properties will be displayed in the Image Properties dialog.  The first of these is the alt text. The alt text will not be seen by most users, but it is displayed when the image does not load or when assistive technology such as text-to-speech devices are used. Therefore, even though it is not required, adding alt text makes your Obojobo module more accessible. Images without alt text will display a warning above them, so it is easy to see which images still need alt text.",
-											"styleList": []
+											"styleList": null
 										}
 									},
 									{
@@ -3007,7 +3009,7 @@
 										"data": null,
 										"text": {
 											"value": "",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3157,7 +3159,7 @@
 										"data": {},
 										"text": {
 											"value": "Figure Sizes",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3196,7 +3198,7 @@
 													"start": 139
 												},
 												{
-													"end": 156,
+													"end": 155,
 													"data": {},
 													"type": "monospace",
 													"start": 149
@@ -3222,7 +3224,7 @@
 										"data": null,
 										"text": {
 											"value": "A small image",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3242,7 +3244,7 @@
 										"data": null,
 										"text": {
 											"value": "The same image, in a medium size",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3264,7 +3266,7 @@
 										"data": null,
 										"text": {
 											"value": "The same image, in a large size",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3284,18 +3286,6 @@
 										"text": {
 											"value": "Figures that have a custom size have a height and width property. The best practice for custom image sizes is to assign either a custom width or a custom height, but not both. A Figure with either a custom width or a custom height will be scaled appropriately, but a Figure with both a custom width and a custom height will be squished or stretched to fit the custom size.",
 											"styleList": [
-												{
-													"end": 26,
-													"data": {},
-													"type": "monospace",
-													"start": 20
-												},
-												{
-													"end": 94,
-													"data": {},
-													"type": "monospace",
-													"start": 88
-												},
 												{
 													"end": 127,
 													"data": {},
@@ -3319,6 +3309,18 @@
 													"data": {},
 													"type": "i",
 													"start": 212
+												},
+												{
+													"end": 26,
+													"data": {},
+													"type": "monospace",
+													"start": 20
+												},
+												{
+													"end": 94,
+													"data": {},
+													"type": "monospace",
+													"start": 88
 												}
 											]
 										}
@@ -3341,7 +3343,7 @@
 										"data": null,
 										"text": {
 											"value": "An image with a custom width",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3363,7 +3365,7 @@
 										"data": null,
 										"text": {
 											"value": "An image with a custom height",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3385,7 +3387,7 @@
 										"data": null,
 										"text": {
 											"value": "An image with a custom width and height",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3427,7 +3429,7 @@
 										"data": {},
 										"text": {
 											"value": "Captions",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
@@ -3446,7 +3448,7 @@
 										},
 										"text": {
 											"value": "Every Figure has a caption that sits below the image. This caption is optional, but can provide more information about the image.  You can edit the caption by clicking directly beneath any image.",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								]
@@ -3467,13 +3469,999 @@
 										"data": null,
 										"text": {
 											"value": "The caption could contain a detailed image description, attribution information, or further context",
-											"styleList": []
+											"styleList": null
 										}
 									}
 								],
 								"captionWidth": "image-width"
 							},
 							"children": []
+						}
+					]
+				},
+				{
+					"id": "889429ed-f7ee-4a61-940a-4d4b6d8089e7",
+					"type": "ObojoboDraft.Pages.Page",
+					"content": {
+						"title": "Box/Excerpt"
+					},
+					"children": [
+						{
+							"id": "c6076489-8358-49a1-a52e-4cf1a0cf2673",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left"
+										},
+										"text": {
+											"value": "Excerpts",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 1
+							},
+							"children": []
+						},
+						{
+							"id": "fa6ef32d-3e6f-4bfd-a32a-00c0c46dd117",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Excerpts provide a way to visually distinguish certain parts of your content from others, and offer a variety of visual styles to do so. Excerpts can contain most other node types and can optionally be given a citation, and all of the presets can be further customized.",
+											"styleList": null
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "110aaa61-2c9b-40da-bb57-9ce519e582c3",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left"
+										},
+										"text": {
+											"value": "Presets",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "80f8d515-9892-4953-a490-db5fbc4851e4",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Excerpts come with a number of presets for convenience, any of which can be additionally customized. Below are just a few examples:",
+											"styleList": null
+										}
+									}
+								],
+								"objectives": []
+							},
+							"children": []
+						},
+						{
+							"id": "460a7e52-caeb-44a7-aa42-f26f31b2212d",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "sans",
+								"width": "medium",
+								"effect": false,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "filled-box",
+								"bottomEdge": "normal",
+								"lineHeight": "moderate"
+							},
+							"children": [
+								{
+									"id": "cf3f99fb-2feb-4fcb-9aef-093bc425fa37",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Simple Filled",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "4fa5f3b2-e7ea-4f6e-ad3e-9f7caab2485a",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "palatino",
+								"width": "medium",
+								"effect": true,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "dark-yellow-paper",
+								"bottomEdge": "normal",
+								"lineHeight": "generous"
+							},
+							"children": [
+								{
+									"id": "d7aa3386-b3df-464d-9552-a5208add4f54",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Historical",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "2286d32d-2d30-4e92-b227-4ffd5513f366",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "monospace",
+								"width": "tiny",
+								"effect": false,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "white-paper",
+								"bottomEdge": "jagged",
+								"lineHeight": "moderate"
+							},
+							"children": [
+								{
+									"id": "68063a33-6802-41fb-ad8b-7fd455bf3535",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Receipt",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "c6263c01-a03c-46d2-b4c1-c727266650cb",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "monospace",
+								"width": "medium",
+								"effect": true,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "term-green",
+								"bottomEdge": "normal",
+								"lineHeight": "moderate"
+							},
+							"children": [
+								{
+									"id": "92526bb3-21a2-47eb-9705-393204b4207d",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Hacker Green",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "6e1e5536-612f-4051-bb72-076c1085dda4",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Customizing",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "84e54b8a-cf99-4925-a3a0-17b244e8115c",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "All presets can be further customized in a number of ways. The top and bottom borders of most excerpts can be changed depending on the selected excerpt type, and all aspects of an excerpt can be controlled in the Advanced options... menu visible when an excerpt is selected.",
+											"styleList": [
+												{
+													"end": 232,
+													"data": {},
+													"type": "b",
+													"start": 213
+												},
+												{
+													"end": 232,
+													"data": {},
+													"type": "i",
+													"start": 213
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Click into the excerpt node below and click the Advanced options... button to see more ways you can customize it. Each option that can be customized will be further explained below.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												},
+												{
+													"end": 76,
+													"data": {},
+													"type": "b",
+													"start": 56
+												},
+												{
+													"end": 76,
+													"data": {},
+													"type": "i",
+													"start": 56
+												}
+											]
+										}
+									}
+								],
+								"objectives": []
+							},
+							"children": []
+						},
+						{
+							"id": "9d4f3c4a-5259-458b-bc4b-e48e637e00ff",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "sans",
+								"width": "medium",
+								"effect": false,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "filled-box",
+								"bottomEdge": "normal",
+								"lineHeight": "moderate"
+							},
+							"children": [
+								{
+									"id": "0c91e76f-dc9e-47f2-94b5-5cc8d1bcb282",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Customize me!",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "660a3415-6b46-498d-81fa-cb0700b021b8",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Style",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "a0606688-14b3-4208-a44b-b97e1e6389ef",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "The style of an excerpt determines its basic appearance, options broken down into several categories:",
+											"styleList": null
+										}
+									}
+								],
+								"objectives": []
+							},
+							"children": []
+						},
+						{
+							"id": "b0a493ba-8e0f-495f-a7f5-e300548c74ee",
+							"type": "ObojoboDraft.Chunks.List",
+							"content": {
+								"spacing": "compact",
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Simple: Basic excerpt options, boxes with either a simple background color, simple border, or drop shadow.",
+											"styleList": null
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Paper: Various paper-like backgrounds in different colors, with an optional paper-like texture effect.",
+											"styleList": null
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Computer: Excerpts themed to look like a terminal input or a CRT monitor screen in several colors, with scan lines and an optional glowing effect. Themed appearances based on classic operating systems or web browsers can also be selected.",
+											"styleList": null
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Callout: Several options for callout boxes with static header text and an icon on the lefthand side.",
+											"styleList": null
+										}
+									}
+								],
+								"listStyles": {
+									"type": "unordered",
+									"indents": {
+										"0": {
+											"type": "unordered",
+											"bulletStyle": "disc"
+										}
+									}
+								}
+							},
+							"children": []
+						},
+						{
+							"id": "688f1b6f-588c-4174-ac85-5361a1b4c308",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Font",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "d48b10a0-6af9-4824-8fe4-9a46245157e3",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Several web-safe font choices are available for use in any excerpt style and can be freely selected regardless of the chosen style.",
+											"styleList": null
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "9d9f1e96-b663-4ec6-84d5-8983724ea196",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Effect",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "7218c616-afb3-494f-b5d1-2a0da8f8df66",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Depending on the style of the excerpt, and in some cases even the specific type of excerpt, an optional effect may be applied. This effect may be a drop shadow, a paper-like texture, or a text glow depending on the selected excerpt style.",
+											"styleList": null
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "0564d7cf-d95a-4ae4-9dba-782e9fb0938f",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Width",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "5dd9698b-682c-4c5f-a50a-568128e86eb6",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "An excerpt can be configured to take 100%, 75%, 50% or 25% of the available width in a document.",
+											"styleList": null
+										}
+									}
+								],
+								"objectives": []
+							},
+							"children": []
+						},
+						{
+							"id": "7f59a487-b6e1-420d-9357-2151330ddb2d",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Font Size",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "9f1fe2f2-daf4-4fad-b239-b23594f05c3a",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "All text within an excerpt will be scaled up or down based on the selected option: smaller, normal, or larger.",
+											"styleList": [
+												{
+													"end": 90,
+													"data": {},
+													"type": "b",
+													"start": 83
+												},
+												{
+													"end": 98,
+													"data": {},
+													"type": "b",
+													"start": 92
+												},
+												{
+													"end": 109,
+													"data": {},
+													"type": "b",
+													"start": 103
+												}
+											]
+										}
+									}
+								],
+								"objectives": []
+							},
+							"children": []
+						},
+						{
+							"id": "fe6c5284-5312-4c3d-b09b-275a53f8795d",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Line Height",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "6f261168-7dc4-4bb6-8145-7df6c8b3301c",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "The amount of padding around each line of text in an excerpt will be added based on the selected option: less, standard, or more.",
+											"styleList": [
+												{
+													"end": 109,
+													"data": {},
+													"type": "b",
+													"start": 105
+												},
+												{
+													"end": 119,
+													"data": {},
+													"type": "b",
+													"start": 111
+												},
+												{
+													"end": 128,
+													"data": {},
+													"type": "b",
+													"start": 124
+												}
+											]
+										}
+									}
+								],
+								"objectives": []
+							},
+							"children": []
+						},
+						{
+							"id": "ce5ad8f5-a7bf-430a-a21c-04e1cca37f6c",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Examples",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "4449fc1b-3966-4168-85ee-1ae24e4d3aa8",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Quoting a literary work:",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "e7d6e6e5-d165-4b20-91b7-66c99553972a",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "palatino",
+								"width": "medium",
+								"effect": true,
+								"topEdge": "normal",
+								"citation": "Excerpt from Dune, by Frank Herbert",
+								"fontSize": "smaller",
+								"bodyStyle": "dark-yellow-paper",
+								"bottomEdge": "normal",
+								"lineHeight": "generous"
+							},
+							"children": [
+								{
+									"id": "ee793797-e0a9-445e-975b-71a2e5222dc8",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"align": "left",
+													"indent": 0
+												},
+												"text": {
+													"value": "I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration. I will face my fear. I will permit it to pass over me and through me. And when it has gone past I will turn the inner eye to see its path. Where the fear has gone there will be nothing. Only I will remain.",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "1f92cf43-04e7-4a4c-8e4b-16b7714f2ef9",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Visually distinguishing an idea:",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "d2f55487-f657-44db-b0e2-78dd79e91c37",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "sans",
+								"width": "medium",
+								"effect": false,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "card",
+								"bottomEdge": "normal",
+								"lineHeight": "moderate"
+							},
+							"children": [
+								{
+									"id": "d0b7694b-e28b-46d5-accc-8b652b8f1a1b",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"align": "left",
+													"indent": 0
+												},
+												"text": {
+													"value": "Saying that a thing is like another thing, is a simile, but saying that a thing is a different thing is a metaphor.",
+													"styleList": [
+														{
+															"end": 41,
+															"data": {},
+															"type": "b",
+															"start": 12
+														},
+														{
+															"end": 100,
+															"data": {},
+															"type": "b",
+															"start": 72
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "480263c4-947a-4594-a4f6-a7d13c27d7e5",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Prompting with a practice problem:",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "916edb46-55f1-4998-bd60-6f119fbcef10",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "sans",
+								"width": "medium",
+								"effect": false,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "callout-practice",
+								"bottomEdge": "normal",
+								"lineHeight": "moderate"
+							},
+							"children": [
+								{
+									"id": "0cab1ce0-c0b4-428f-a00d-9bf9fdeed3c5",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "Find the solution for the following equation where a = 4, b = 5, and c = 6",
+													"styleList": [
+														{
+															"end": 56,
+															"data": {},
+															"type": "b",
+															"start": 51
+														},
+														{
+															"end": 63,
+															"data": {},
+															"type": "b",
+															"start": 58
+														},
+														{
+															"end": 74,
+															"data": {},
+															"type": "b",
+															"start": 69
+														}
+													]
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "8c8e9722-5bcf-459e-bfb4-97dece33a1f4",
+									"type": "ObojoboDraft.Chunks.MathEquation",
+									"content": {
+										"alt": "quadratic polynomial",
+										"size": 0.9,
+										"align": "",
+										"label": "",
+										"latex": "ax^2+bx+c=0"
+									},
+									"children": []
+								}
+							]
+						},
+						{
+							"id": "b765a0b6-d8f9-4333-9ef8-a779a80f433f",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Just for fun:",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "55b95bb2-0f1f-4e49-8035-63ec36302cb1",
+							"type": "ObojoboDraft.Chunks.Excerpt",
+							"content": {
+								"font": "monospace",
+								"width": "tiny",
+								"effect": false,
+								"topEdge": "normal",
+								"citation": "",
+								"fontSize": "smaller",
+								"bodyStyle": "white-paper",
+								"bottomEdge": "jagged",
+								"lineHeight": "moderate"
+							},
+							"children": [
+								{
+									"id": "2be7650b-d7da-4fe7-84e8-3572c35687b4",
+									"type": "ObojoboDraft.Chunks.Heading",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"align": "center"
+												},
+												"text": {
+													"value": "Some Store",
+													"styleList": null
+												}
+											}
+										],
+										"headingLevel": 1
+									},
+									"children": []
+								},
+								{
+									"id": "771e5857-43d4-44bb-a646-350a6019d6a8",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "1 Unsalted Butter........1.00",
+													"styleList": null
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "4 Apple..................4.75",
+													"styleList": null
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "3 Raisin Bran...........12.00",
+													"styleList": null
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "8 Banana................10.00",
+													"styleList": null
+												}
+											},
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "1 Loaf Bread.............8.00",
+													"styleList": null
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
 						}
 					]
 				},
