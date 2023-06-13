@@ -413,33 +413,33 @@ since it is not compatible with stylelint's indentation rules
 			background: $modern-background;
 			border: 2px solid $modern-border;
 			padding-bottom: 0;
-		}
 
-		/*
-		stylelint complains about this rule's specificity, but fixing it would
-		require deconstructing every style hierarchy so we're ignoring it instead
-		*/
-		// stylelint-disable-next-line no-descending-specificity
-		> .wrapper {
-			margin-top: 0.5em;
-			background: $white;
-			border-bottom-left-radius: 0.25em;
-			border-bottom-right-radius: 0.25em;
-			border-top: 2px solid $modern-border;
-			padding-top: 1em;
-			padding-bottom: 1em;
-		}
+			/*
+			stylelint complains about this rule's specificity, but fixing it would
+			require deconstructing every style hierarchy so we're ignoring it instead
+			*/
+			// stylelint-disable-next-line no-descending-specificity
+			> .wrapper {
+				margin-top: 0.5em;
+				background: $white;
+				border-bottom-left-radius: 0.25em;
+				border-bottom-right-radius: 0.25em;
+				border-top: 2px solid $modern-border;
+				padding-top: 1em;
+				padding-bottom: 1em;
+			}
 
-		> .wrapper::before {
-			content: ' ';
-			width: 6.85em;
-			height: 1.475em;
-			position: absolute;
-			left: 2em;
-			top: 0;
-			transform: translate(0, -100%);
-			background: url(./images/tab.svg);
-			background-size: cover;
+			> .wrapper::before {
+				content: ' ';
+				width: 6.85em;
+				height: 1.475em;
+				position: absolute;
+				left: 2em;
+				top: 0;
+				transform: translate(0, -100%);
+				background: url(./images/tab.svg);
+				background-size: cover;
+			}
 		}
 
 		&.is-showing-effect {
@@ -476,6 +476,12 @@ since it is not compatible with stylelint's indentation rules
 			}
 		}
 
+		/*
+		stylelint complains about this rule's specificity, but cites a totally
+		different rule than this one in the error
+		ignoring here rather than trying to solve some weird circular problem
+		*/
+		// stylelint-disable-next-line no-descending-specificity
 		.wrapper::before {
 			content: ' ';
 			width: 100%;
@@ -832,20 +838,20 @@ since it is not compatible with stylelint's indentation rules
 		&.is-body-style-type-modern-text-file {
 			> blockquote > .excerpt-content {
 				padding-top: 0;
-			}
 
-			/*
-			stylelint complains about this rule's specificity, but fixing it would
-			require deconstructing every style hierarchy so we're ignoring it instead
-			*/
-			// stylelint-disable-next-line no-descending-specificity
-			.wrapper {
-				margin-top: 0;
-				border-top: none;
-				padding-top: 0;
+				/*
+				stylelint complains about this rule's specificity, but fixing it would
+				require deconstructing every style hierarchy so we're ignoring it instead
+				*/
+				// stylelint-disable-next-line no-descending-specificity
+				.wrapper {
+					margin-top: 0;
+					border-top: none;
+					padding-top: 0;
 
-				&::before {
-					display: none;
+					&::before {
+						display: none;
+					}
 				}
 			}
 		}
@@ -865,6 +871,12 @@ since it is not compatible with stylelint's indentation rules
 				border-top: none;
 				padding-top: 0;
 
+				/*
+				stylelint complains about this rule's specificity, but cites a totally
+				different rule than this one in the error
+				ignoring here rather than trying to solve some weird circular problem
+				*/
+				// stylelint-disable-next-line no-descending-specificity
 				&::before {
 					display: none;
 				}
