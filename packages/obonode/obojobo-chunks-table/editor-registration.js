@@ -41,9 +41,23 @@ const plugins = {
 	// Editable Plugins - These are used by the PageEditor component to augment React functions
 	// They affect individual nodes independently of one another
 	onKeyDown(entry, editor, event) {
+		const computeModifiedPath = (node, row, col) => {
+			// eslint-disable-next-line prefer-const
+			let newPath = [...editor.selection.anchor.path]
+			newPath[newPath.length - 4] = node
+			newPath[newPath.length - 3] = row
+			newPath[newPath.length - 2] = col
+			return newPath
+		}
 		// Calculate next path based on direction given
 		const calculateNextPath = direction => {
-			const [node, row, col] = editor.selection.anchor.path
+			const currentPath = editor.selection.anchor.path
+			if (currentPath.length < 4) {
+				return currentPath
+			}
+			const col = currentPath[currentPath.length - 2]
+			const row = currentPath[currentPath.length - 3]
+			const node = currentPath[currentPath.length - 4]
 
 			const numCols = editor.children[node].content.numCols
 
@@ -51,63 +65,51 @@ const plugins = {
 
 			switch (direction) {
 				case 'down':
-					nextPath = [node, row + 1, col]
+					nextPath = computeModifiedPath(node, row + 1, col)
 					break
 				case 'right':
-					nextPath = [node, row, col + 1]
+					nextPath = computeModifiedPath(node, row, col + 1)
 					break
 				case 'up':
-					nextPath = [node, row - 1, col]
+					nextPath = computeModifiedPath(node, row - 1, col)
 					break
 				case 'left':
-					nextPath = [node, row, col - 1]
+					nextPath = computeModifiedPath(node, row, col - 1)
 					break
 			}
 
 			// If next path is valid, jump to it
 			if (Node.has(editor, nextPath)) {
 				return nextPath
-			} else if (direction === 'right' && Node.has(editor, [node, row + 1, 0])) {
+			} else if (direction === 'right' && Node.has(editor, computeModifiedPath(node, row + 1, 0))) {
 				// If moving right but already at rightmost cell, move to beginning of the row below
-				return [node, row + 1, 0]
-			} else if (direction === 'left' && Node.has(editor, [node, row - 1, numCols - 1])) {
+				return computeModifiedPath(node, row + 1, 0)
+			} else if (
+				direction === 'left' &&
+				Node.has(editor, computeModifiedPath(node, row - 1, numCols - 1))
+			) {
 				// If moving left but already at leftmost cell, move to end of the row above
-				return [node, row - 1, numCols - 1]
-			} else if (direction === 'up' && Node.has(editor, [node - 1])) {
-				// Move to node above table
-				return [node - 1]
-			} else if (direction === 'down' && Node.has(editor, [node + 1])) {
-				// Move to node below table
-				return [node + 1]
+				return computeModifiedPath(node, row - 1, numCols - 1)
 			}
-
-			// If no adjacent paths, return current path
-			return editor.selection.anchor.path
+			// If no valid paths, fail gracefully
+			return false
 		}
 
 		// Move editor selection based on direction given
 		const moveCursor = direction => {
-			const currentPath = editor.selection.anchor.path
 			const nextPath = calculateNextPath(direction)
-
-			const isExitingTable = nextPath[0] !== currentPath[0]
-
-			if (nextPath !== currentPath) {
-				const focus = Editor.start(editor, nextPath)
-				let anchor
-
-				// If exiting table, do not select entire content of new node
-				if (isExitingTable) {
-					anchor = focus
-				} else {
-					anchor = Editor.end(editor, nextPath)
-				}
-
-				Transforms.setSelection(editor, {
-					focus,
-					anchor
-				})
+			if (!nextPath) {
+				event.referredFromTable = true
+				return
 			}
+
+			const focus = Editor.start(editor, nextPath)
+			const anchor = Editor.end(editor, nextPath)
+			Transforms.setSelection(editor, {
+				focus,
+				anchor
+			})
+			event.preventDefault()
 		}
 
 		switch (event.key) {
@@ -117,15 +119,12 @@ const plugins = {
 
 			case 'Enter':
 			case 'ArrowDown':
-				event.preventDefault()
 				moveCursor('down')
 				break
 
 			case 'Tab':
 				// If shift isn't pressed and editing text, allow tab navigation to dropdown menu
 				if (!event.shiftKey && Range.isCollapsed(editor.selection)) break
-
-				event.preventDefault()
 
 				// Handle Shift+Tab left navigation
 				if (event.shiftKey) {
@@ -142,7 +141,6 @@ const plugins = {
 				// If pressing Ctrl or Command, deselect text
 				if (event.metaKey || event.ctrlKey) break
 
-				event.preventDefault()
 				moveCursor('right')
 				break
 
@@ -153,12 +151,10 @@ const plugins = {
 				// If pressing Ctrl or Command, deselect text
 				if (event.metaKey || event.ctrlKey) break
 
-				event.preventDefault()
 				moveCursor('left')
 				break
 
 			case 'ArrowUp':
-				event.preventDefault()
 				moveCursor('up')
 				break
 		}
