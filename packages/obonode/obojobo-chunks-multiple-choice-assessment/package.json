@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-multiple-choice-assessment",
-	"version": "16.0.0-alpha.0",
+	"version": "16.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "MCAssessment chunk for Obojobo",
 	"scripts": {
@@ -27,8 +27,8 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-chunks-question": "^16.0.0-alpha.0",
-		"obojobo-lib-utils": "^16.0.0-alpha.0"
+		"obojobo-chunks-question": "^16.0.0",
+		"obojobo-lib-utils": "^16.0.0"
 	},
 	"jest": {
 		"testMatch": [

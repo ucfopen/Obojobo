@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-excerpt",
-	"version": "16.0.0-alpha.0",
+	"version": "16.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "Excerpt content chunk for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^16.0.0-alpha.0"
+		"obojobo-lib-utils": "^16.0.0"
 	},
 	"jest": {
 		"testMatch": [
