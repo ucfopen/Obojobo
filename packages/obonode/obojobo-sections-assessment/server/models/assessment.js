@@ -113,6 +113,43 @@ class AssessmentModel {
 			}))
 	}
 
+	static fetchCoursesByDraft(draftId) {
+		return db.manyOrNone(
+			`
+				SELECT
+					DISTINCT(A.resource_link_id),
+					A.last_accessed,
+					A.user_count,
+					N.data ->> 'context_id' AS context_id,
+					N.data ->> 'context_title' AS context_title,
+					N.data ->> 'context_label' AS context_label
+				
+				FROM (
+					SELECT
+						COUNT(DISTINCT(user_id)) AS user_count,
+						MAX(completed_at) AS last_accessed,
+						resource_link_id
+					FROM
+						attempts
+					WHERE
+						draft_id = $[draftId]
+					GROUP BY resource_link_id
+					) A
+					
+				LEFT JOIN
+					launches N
+				ON
+					N.data ->> 'resource_link_id' = A.resource_link_id
+				
+				ORDER BY
+					A.last_accessed DESC
+				`,
+			{
+				draftId
+			}
+		)
+	}
+
 	static fetchAttemptHistoryDetails(draftId) {
 		return db.manyOrNone(
 			`

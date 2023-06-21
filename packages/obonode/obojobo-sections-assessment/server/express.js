@@ -209,6 +209,48 @@ router
 	})
 
 router
+	.route('/api/courses/:draftId')
+	.get([requireCurrentUser])
+	.get((req, res) => {
+		let currentUserHasPermissionToDraft
+
+		return DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, req.params.draftId)
+			.then(result => {
+				currentUserHasPermissionToDraft = result !== null
+
+				// Users must either have some level of permissions to this draft, or have
+				// the canViewSystemStats permission
+				if (
+					!currentUserHasPermissionToDraft &&
+					!req.currentUser.hasPermission('canViewSystemStats')
+				) {
+					throw Error(ERROR_NO_PERMISSIONS_TO_DATA)
+				}
+
+				return AssessmentModel.fetchCoursesByDraft(req.params.draftId)
+			})
+			.then(courseList => {
+				// TODO: At this point, filter the list of courses the current user can view
+				// by which courses they have Canvas permissions to.
+				return res.success(courseList)
+			})
+			.catch(error => {
+				switch (error.message) {
+					case ERROR_NO_PERMISSIONS_TO_DATA:
+						return res.notAuthorized()
+
+					default:
+						logAndRespondToUnexpected(
+							'Unexpected error fetching course details',
+							res,
+							req,
+							error
+						)
+				}
+			})
+		})
+
+router
 	.route('/api/assessments/:draftId/details')
 	.get([requireCurrentUser])
 	.get((req, res) => {

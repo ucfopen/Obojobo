@@ -36,6 +36,7 @@ const {
 	SHOW_VERSION_HISTORY,
 	RESTORE_VERSION,
 	SHOW_ASSESSMENT_SCORE_DATA,
+	SHOW_COURSE_SCORE_DATA,
 	GET_DELETED_MODULES,
 	GET_MODULES,
 	BULK_RESTORE_MODULES
@@ -369,6 +370,28 @@ function DashboardReducer(state, action) {
 				success: prevState => ({
 					...prevState,
 					attempts: {
+						isFetching: false,
+						hasFetched: true,
+						items: action.payload
+					}
+				})
+			})
+
+		case SHOW_COURSE_SCORE_DATA:
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					dialog: 'module-course-score-data',
+					selectedModule: action.meta.module,
+					courses: {
+						isFetching: true,
+						hasFetched: false,
+						items: []
+					}
+				}),
+				success: prevState => ({
+					...prevState,
+					courses: {
 						isFetching: false,
 						hasFetched: true,
 						items: action.payload

@@ -23,4 +23,18 @@ router
 		res.render('pages/page-stats-server.jsx', props)
 	})
 
+router
+	.route('/statsCourses')
+	.get([requireCurrentUser, requireCanViewStatsPage])
+	.get((req, res) => {
+		const props = {
+			title: 'Stats',
+			currentUser: req.currentUser,
+			// must use webpackAssetPath for all webpack assets to work in dev and production!
+			appCSSUrl: webpackAssetPath('stats.css'),
+			appJsUrl: webpackAssetPath('stats.js')
+		}
+		res.render('pages/page-stats-server.jsx', props)
+	})
+
 module.exports = router

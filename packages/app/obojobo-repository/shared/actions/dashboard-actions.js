@@ -2,7 +2,7 @@ const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-consta
 const debouncePromise = require('debounce-promise')
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
-const { apiGetAssessmentDetailsForDraft } = require('./shared-api-methods')
+const { apiGetAssessmentDetailsForDraft, apiGetCourseDetailsForDraft } = require('./shared-api-methods')
 
 dayjs.extend(advancedFormat)
 // =================== API =======================
@@ -230,6 +230,13 @@ const showAssessmentScoreData = module => ({
 	type: SHOW_ASSESSMENT_SCORE_DATA,
 	meta: { module },
 	promise: apiGetAssessmentDetailsForDraft(module.draftId)
+})
+
+const SHOW_COURSE_SCORE_DATA = 'SHOW_COURSE_SCORE_DATA'
+const showCourseScoreData = module => ({
+	type: SHOW_COURSE_SCORE_DATA,
+	meta: { module },
+	promise: apiGetCourseDetailsForDraft(module.draftId)
 })
 
 const RESTORE_VERSION = 'RESTORE_VERSION'
@@ -664,6 +671,7 @@ module.exports = {
 	IMPORT_MODULE_FILE,
 	CHECK_MODULE_LOCK,
 	SHOW_ASSESSMENT_SCORE_DATA,
+	SHOW_COURSE_SCORE_DATA,
 	GET_DELETED_MODULES,
 	GET_MODULES,
 	BULK_RESTORE_MODULES,
@@ -705,6 +713,7 @@ module.exports = {
 	importModuleFile,
 	checkModuleLock,
 	showAssessmentScoreData,
+	showCourseScoreData,
 	getDeletedModules,
 	getModules,
 	bulkRestoreModules
