@@ -94,6 +94,8 @@ class VisualEditor extends React.Component {
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.onKeyDownGlobal = this.onKeyDownGlobal.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.globalPluginsOverrideKeypress = this.globalPluginsOverrideKeypress.bind(this)
+		this.localPluginsOverrideKeypress = this.localPluginsOverrideKeypress.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
 		this.renameModule = this.renameModule.bind(this)
@@ -337,7 +339,6 @@ class VisualEditor extends React.Component {
 		// Save the previous selection in case the editor is unfocused
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
-
 		this.setState({ value })
 		this.markUnsaved()
 	}
@@ -514,13 +515,15 @@ class VisualEditor extends React.Component {
 		}
 	}
 
-	// All the 'plugin' methods that allow the obonodes to extend the default functionality
-	onKeyDown(event) {
+	globalPluginsOverrideKeypress(event) {
 		for (const plugin of this.globalPlugins) {
 			if (plugin.onKeyDown) plugin.onKeyDown(event, this.editor)
-			if (event.defaultPrevented) return
+			if (event.defaultPrevented) return true
 		}
+		return false
+	}
 
+	localPluginsOverrideKeypress(event) {
 		// If none of the global plugins caught the key event,
 		// Get each component (non-subtype) node that is selected,
 		// and run keydown on each
@@ -541,38 +544,166 @@ class VisualEditor extends React.Component {
 			}
 		}
 
-		// This fix breaks the default behavior when moving up inside an element. Needs to be reevaluated.
-		/*****
-		// Handle ArrowUp from a node - this is default behavior
-		// in Chrome and Safari but not Firefox
-		if (event.key === 'ArrowUp' && !event.defaultPrevented) {
-			event.preventDefault()
+		return event.defaultPrevented
+	}
 
-			const currentNode = this.editor.selection.anchor.path[0]
+	// All the 'plugin' methods that allow the obonodes to extend the default functionality
+	onKeyDown(event) {
+		if (this.globalPluginsOverrideKeypress(event)) return
+		if (this.localPluginsOverrideKeypress(event)) return
 
-			// Break out if already at top node
-			if (currentNode === 0) return
+		const getElementByPath = possiblePath => {
+			let slateElement = this.editor
+			for (let i = 0; i < possiblePath.length; i++) {
+				if (slateElement.children && slateElement.children[possiblePath[i]]) {
+					slateElement = slateElement.children[possiblePath[i]]
+				} else {
+					return false
+				}
+			}
+			return JSON.parse(JSON.stringify(slateElement))
+		}
 
-			const aboveNode = currentNode - 1
-			const numChildrenAbove = this.editor.children[aboveNode].children.length
-
-			let abovePath = [aboveNode]
-
-			// If entering a node with multiple children (a table),
-			// go to the last child (bottom row)
-			if (numChildrenAbove > 1) {
-				abovePath = [aboveNode, numChildrenAbove - 1]
+		// Given a known starting path, this function finds the last child of the last child of the last child...
+		// of that starting path. This is so navigating with the up arrow doesn't skip over child elements.
+		const getLastChild = startingPath => {
+			if (startingPath.length === 0) {
+				return [0]
 			}
 
-			const focus = Editor.start(this.editor, abovePath)
-			const anchor = Editor.start(this.editor, abovePath)
+			let slateElement = getElementByPath(startingPath)
 
-			Transforms.setSelection(this.editor, {
-				focus,
-				anchor
-			})
+			// eslint-disable-next-line prefer-const
+			let lengthenedPath = [...startingPath]
+			while (slateElement.children && slateElement.children.length > 0) {
+				lengthenedPath.push(slateElement.children.length - 1)
+				slateElement = slateElement.children[slateElement.children.length - 1]
+			}
+			return lengthenedPath
 		}
-		*****/
+
+		// There are several built-in functions for SlateJS Paths (like Path.next or Path.previous), but with the
+		// odd ordering of objects (for instance, in Excerpts and Lists), it was far more effective to build our own
+		// functions to compute previous and next paths given a current path.
+		const getPreviousPath = currentPath => {
+			const depth = currentPath.length - 2
+			if (depth < 0) {
+				return false
+			}
+
+			// eslint-disable-next-line prefer-const
+			let nextPath = [...currentPath]
+
+			// Case 1: Going directly to a sibling of the same depth: [12, 0, 2, 4, 0] => [12, 0, 2, 3, 0]
+			if (currentPath[depth] !== 0) {
+				nextPath[depth]--
+				nextPath.pop()
+				return getLastChild(nextPath)
+			}
+
+			// Case 2: Going from a child with one or more additional indents: [12, 0, 2, 0, 0] => [12, 0, 1, 0]
+			// With multiple indents, there could be LOTS of trailing zeroes: [12, 0, 2, 0, 0, 0, 0, 0, 0]
+			while (nextPath[nextPath.length - 1] === 0) {
+				nextPath.pop()
+			}
+			nextPath[nextPath.length - 1]--
+			return getLastChild(nextPath)
+		}
+
+		const getNextPath = currentPath => {
+			let depth
+			let nextPath
+			let extendedPath
+			// eslint-disable-next-line prefer-const
+			let initialPath = [...currentPath]
+
+			while (initialPath.length > 1) {
+				depth = initialPath.length - 2
+
+				// Check to see if there is a valid path for a direct sibling
+				nextPath = [...initialPath]
+				nextPath[depth]++
+				nextPath[depth + 1] = 0
+
+				// Dig deeper into the sibling node: [12, 0, 1, 0] => [12, 0, 2, 0, 0, 0]  (This handles excerpts and lists)
+				extendedPath = [...nextPath]
+				for (let i = 0; i < 5; i++) {
+					extendedPath.push(0)
+					if (getElementByPath(extendedPath)) {
+						nextPath = [...extendedPath]
+					}
+				}
+
+				if (getElementByPath(nextPath)) {
+					return nextPath
+				}
+
+				// If there is no sibling on this level, go up to the parent level.
+				initialPath.pop()
+			}
+			return false
+		}
+
+		// The following code checks to see if the editor should switch focus.
+		if (event.key === 'ArrowUp') {
+			/*	The editor's path is an array that says where in the editor you are.
+			 *  [2, 1] = Third element, 2nd sub-element (like a row in a text box)
+			 *  [4, 2, 3] = Fifth element, 3rd sub-element (row), 4th sub-sub-element (column)
+			 *
+			 * A major issue is excerpts, which contain standard "root" element types (text, tables,
+			 * lists, etc) that are all one layer deeper than expected since the excerpt itself is at
+			 * index 0.
+			 */
+			// eslint-disable-next-line prefer-const
+			let currentPath = [...this.editor?.selection?.focus?.path]
+
+			// Tables' paths have unexpected numbers of layers to account for their rows and columns.
+			// In order to leave the element properly, we need to pop off those layers.
+			if (event.referredFromTable) {
+				event.referredFromTable = false
+				currentPath.pop()
+				currentPath.pop()
+			}
+
+			const newPath = getPreviousPath(currentPath)
+			if (!newPath) {
+				return
+			}
+
+			const newPoint = Editor.start(this.editor, newPath)
+			const newRange = {
+				focus: newPoint,
+				anchor: newPoint
+			}
+			Transforms.setSelection(this.editor, newRange)
+
+			event.preventDefault()
+		}
+
+		// The following code checks to see if the editor should switch focus.
+		if (event.key === 'ArrowDown') {
+			// eslint-disable-next-line prefer-const
+			let currentPath = [...this.editor?.selection?.focus?.path]
+			if (event.referredFromTable) {
+				event.referredFromTable = false
+				currentPath.pop()
+				currentPath.pop()
+			}
+
+			const newPath = getNextPath(currentPath)
+			if (!newPath) {
+				return
+			}
+
+			const newPoint = Editor.start(this.editor, newPath)
+			const newRange = {
+				focus: newPoint,
+				anchor: newPoint
+			}
+			Transforms.setSelection(this.editor, newRange)
+
+			event.preventDefault()
+		}
 	}
 
 	// Generates any necessary decorations, such as place holders

@@ -13,7 +13,6 @@ import { FULL } from 'obojobo-express/server/constants'
 
 import { Editor, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
-// jest.mock('slate')
 jest.mock('src/scripts/viewer/util/editor-api')
 jest.mock('src/scripts/common/util/modal-util')
 jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
@@ -1435,5 +1434,291 @@ describe('VisualEditor', () => {
 		expect(instance.state.saveState).toBe('saving')
 
 		document.body.removeChild(input)
+	})
+
+	describe('keyboard navigation', () => {
+		const editorChildren = JSON.stringify([
+			{ children: [{ text: 'Header [0,0]' }] },
+			{ children: [{ children: [{ text: 'Text before excerpt [1,0,0]' }] }] },
+			{
+				children: [
+					{
+						children: [
+							{ children: [{ text: 'Excerpt Header [2,0,0,0]' }] },
+							{ children: [{ children: [{ text: 'Initial Excerpt Text [2,0,1,0,0]' }] }] },
+							{
+								content: { numCols: 2, numRows: 2 },
+								children: [
+									{
+										content: { numCols: 2 },
+										children: [
+											{ children: [{ text: 'Table Header A [2,0,2,0,0,0]' }] },
+											{ children: [{ text: 'Table Header B [2,0,2,0,1,0]' }] }
+										]
+									},
+									{
+										content: { numCols: 2 },
+										children: [
+											{ children: [{ text: 'Cell A [2,0,2,1,0,0]' }] },
+											{ children: [{ text: 'Cell B [2,0,2,1,1,0]' }] }
+										]
+									}
+								]
+							}
+						]
+					},
+					{ children: [{ children: [{ text: 'Excerpt Caption [2,1,0,0]' }] }] }
+				]
+			},
+			{ children: [{ children: [{ text: 'Text after the excerpt [3,0,0]' }] }] }
+		])
+
+		const pathToSelection = path => {
+			return { anchor: { path: path, offset: 0 }, focus: { path: path, offset: 0 } }
+		}
+
+		let component
+		let instance
+		// eslint-disable-next-line prefer-const
+		let keyDownEvent = {
+			preventDefault: jest.fn(),
+			defaultPrevented: false,
+			referredFromTable: false
+		}
+
+		jest.spyOn(VisualEditor.prototype, 'globalPluginsOverrideKeypress').mockReturnValue(false)
+		jest.spyOn(VisualEditor.prototype, 'localPluginsOverrideKeypress').mockReturnValue(false)
+		jest.spyOn(Transforms, 'setSelection').mockImplementation((editor, range) => {
+			editor.prevSelection = JSON.parse(JSON.stringify(editor.selection || {}))
+			editor.selection = JSON.parse(JSON.stringify(range))
+		})
+
+		test('Up arrow: from the top node should not change the selection location', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([0, 0])
+		})
+
+		test('Down arrow: from the bottom node should not change the selection location', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [3, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowDown'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([3, 0, 0])
+		})
+
+		test('Up arrow: from one node to a sibling node of the same depth', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [1, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([0, 0])
+		})
+
+		test('Down arrow: from one node to a sibling node of the same depth', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowDown'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([1, 0, 0])
+		})
+
+		test('Up arrow: from one node inside an excerpt to a node outside the excerpt', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 0, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([1, 0, 0])
+		})
+
+		test('Down arrow: from one node outside an excerpt to a node inside the excerpt', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [1, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowDown'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 0, 0, 0])
+		})
+
+		test('Up arrow: from one node inside an excerpt to a sibling node inside the excerpt', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 0, 1, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 0, 0, 0])
+		})
+
+		test('Down arrow: from one node inside an excerpt to a sibling node inside the excerpt', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 0, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowDown'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 0, 1, 0, 0])
+		})
+
+		test('Up arrow: from the first node below an excerpt to the bottom node inside', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [3, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 1, 0, 0])
+		})
+
+		test('Down arrow: from the bottom node inside an excerpt to the first below', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 1, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowDown'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([3, 0, 0])
+		})
+
+		test('Up arrow: from the first node below a table to the last cell inside', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 1, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 0, 2, 1, 1, 0])
+		})
+
+		test('Down arrow: from the last node above a table to the first cell inside', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 0, 1, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowDown'
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 0, 2, 0, 0, 0])
+		})
+
+		test('Up arrow: from the first row of a table to the last node above', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 0, 2, 0, 1, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			keyDownEvent.referredFromTable = true
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 0, 1, 0, 0])
+		})
+
+		test('Down arrow: from the last row of a table to the first node below', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [2, 0, 2, 1, 0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowDown'
+			keyDownEvent.referredFromTable = true
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([2, 1, 0, 0])
+		})
+
+		test('Up arrow: invalid starting path (too short)', () => {
+			component = mount(<VisualEditor {...props} />)
+			instance = component.instance()
+			instance.editor.children = JSON.parse(editorChildren)
+
+			const startingPath = [0, 0]
+			const startingSelection = pathToSelection(startingPath)
+			Transforms.setSelection(instance.editor, startingSelection)
+
+			keyDownEvent.key = 'ArrowUp'
+			keyDownEvent.referredFromTable = true // This is pop some of the length off of the initial path inappropriately
+			instance.onKeyDown(keyDownEvent)
+
+			expect(instance.editor.selection.anchor.path).toEqual([0, 0])
+		})
 	})
 })
