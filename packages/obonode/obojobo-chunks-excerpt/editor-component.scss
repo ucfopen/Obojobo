@@ -24,7 +24,13 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		}
 	}
 
-	> blockquote .delete-button {
+	// this is a bit of a hack to force the placeholder to do what we want
+	// but it's easier than fixing it 'properly'
+	> blockquote > cite span::before {
+		transform: translateX(-50%);
+	}
+
+	> blockquote > .excerpt-content > .delete-button {
 		position: absolute;
 		left: auto;
 		top: 0;

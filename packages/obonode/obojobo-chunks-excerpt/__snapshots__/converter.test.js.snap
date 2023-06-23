@@ -20,24 +20,10 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": Array [
-            Object {
-              "text": "citation text",
-            },
-          ],
-          "content": Object {
-            "align": "center",
-            "hangingIndent": 0,
-            "indent": 0,
-          },
-          "subtype": "ObojoboDraft.Chunks.Excerpt.CitationLine",
-          "type": "ObojoboDraft.Chunks.Excerpt",
+          "text": "citation text",
         },
       ],
-      "content": Object {
-        "hangingIndent": 0,
-        "indent": 0,
-      },
+      "content": Object {},
       "subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
       "type": "ObojoboDraft.Chunks.Excerpt",
     },
@@ -71,24 +57,10 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": Array [
-            Object {
-              "text": "Citation Text",
-            },
-          ],
-          "content": Object {
-            "align": "center",
-            "hangingIndent": 0,
-            "indent": 0,
-          },
-          "subtype": "ObojoboDraft.Chunks.Excerpt.CitationLine",
-          "type": "ObojoboDraft.Chunks.Excerpt",
+          "text": "Citation Text",
         },
       ],
-      "content": Object {
-        "hangingIndent": 0,
-        "indent": 0,
-      },
+      "content": Object {},
       "subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
       "type": "ObojoboDraft.Chunks.Excerpt",
     },
@@ -109,9 +81,7 @@ Object {
       "type": "OboNode",
     },
   ],
-  "content": Object {
-    "citation": "Citation Line",
-  },
+  "content": Object {},
   "id": "mockKey",
   "type": "ObojoboDraft.Chunks.Excerpt",
 }
@@ -125,7 +95,6 @@ Object {
     },
   ],
   "content": Object {
-    "citation": "Citation Line",
     "triggers": "mock-triggers",
   },
   "id": "mockKey",

@@ -73,11 +73,11 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		}
 
 		&.is-edge-fade::after {
-			background-image: url('../../images/icon-fade-edge.png');
+			background-image: url('../images/icon-fade-edge.png');
 		}
 
 		&.is-edge-jagged::after {
-			background-image: url('../../images/icon-jagged-edge.png');
+			background-image: url('../images/icon-jagged-edge.png');
 		}
 	}
 

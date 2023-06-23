@@ -42,15 +42,8 @@
 		{
 			"type": "ObojoboDraft.Chunks.Excerpt",
 			"subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
-			"content": { "indent": 0, "hangingIndent": 0 },
-			"children": [
-				{
-					"type": "ObojoboDraft.Chunks.Excerpt",
-					"subtype": "ObojoboDraft.Chunks.Excerpt.CitationLine",
-					"content": { "indent": 0, "hangingIndent": 0, "align": "center" },
-					"children": [{ "text": "" }]
-				}
-			]
+			"content": {},
+			"children": [{ "text": "" }]
 		}
 	]
 }

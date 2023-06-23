@@ -1,3 +1,5 @@
+import './edge-controls.scss'
+
 import React from 'react'
 
 const EdgeControls = ({ position, edges, selectedEdge, onChangeEdge }) => {
