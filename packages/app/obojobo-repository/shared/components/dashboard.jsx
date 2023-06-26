@@ -93,6 +93,7 @@ const renderCourseScoreDataDialog = props => {
 			title={`Assessment Scores by Course`}
 			onClose={props.closeModal}
 			isCoursesLoading={props.courses.isFetching}
+			hasCoursesLoaded={false}
 			courses={props.courses.items}
 		/>
 	)

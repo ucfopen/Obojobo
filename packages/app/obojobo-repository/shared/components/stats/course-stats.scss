@@ -1,12 +1,16 @@
 @import '../../../client/css/defaults';
 
 .repository--course-stats {
+	$color-nav-bg: #fbfbfb;
+	$color-nav-highlight: $color-obojobo-blue;
+	$color-nav-hover: darken($color-highlight, 25%);
+
 	background: $color-bg;
 	height: 100%;
 	border-radius: $dimension-rounded-radius;
-	padding: 1em;
 	box-sizing: border-box;
 	display: flex;
+	border: 1px solid rgba(0, 0, 0, 0.3);
 
 	hr {
 		width: 100%;
@@ -23,11 +27,76 @@
 		}
 		
 	}
-	.settings {
+
+	.settings-sidebar {
+		padding: 1em;
+		border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
+		border-right: 1px solid rgba(0, 0, 0, 0.2);
+		background: $color-nav-bg;
+		width: 325px;
+		min-width: 325px;
+		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
-		font-size: 0.8em;
-		line-height: 1.7em;
+		justify-content: space-between;
+
+		.course-selection-label {
+			text-align: center;
+			font-size: .9em;
+			font-weight: 600;
+			padding-bottom: 0.75em;
+		}
+
+		.course-button {
+			border-top: 1px solid rgba(0, 0, 0, 0.2);
+			color: $color-text-minor;
+			cursor: pointer;
+			padding: 5px 5px;
+
+			&:last-child {
+				border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+				margin-bottom: .75em;
+			}
+
+			&:hover {
+				background-color: lighten($color-nav-highlight, 58%);
+
+				.course-button-title {
+					color: $color-nav-hover;
+				}
+			}
+
+			.course-button-title {
+				font-size: 0.9em;
+			}
+
+			.course-button-info-container {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				font-size: 0.7em;
+			}
+		}
+
+		.settings {
+			display: flex;
+			flex-direction: column;
+			font-size: 0.8em;
+			line-height: 1.7em;
+			overflow: hidden;
+			transition: height 300ms;
+			height: auto;
+
+			&.closed {
+				height: 20px
+			}
+			
+			.toggle-filter {
+				padding-bottom: 5px;
+			}
+		}
+
+		
 	}
 
 	.view-mode {

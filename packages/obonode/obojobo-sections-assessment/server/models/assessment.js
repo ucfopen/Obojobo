@@ -113,6 +113,7 @@ class AssessmentModel {
 			}))
 	}
 
+	// Fetches a list of unique [Canvas] courses that have used the draft (as determined by launches)
 	static fetchCoursesByDraft(draftId) {
 		return db.manyOrNone(
 			`
@@ -150,7 +151,7 @@ class AssessmentModel {
 		)
 	}
 
-	static fetchAttemptHistoryDetails(draftId) {
+	static fetchAttemptHistoryDetails(draftId, contextId = null) {
 		return db.manyOrNone(
 			`
 				SELECT
@@ -221,6 +222,7 @@ class AssessmentModel {
 					A.draft_content_id = C.id
 				WHERE
 					S.draft_id = $[draftId]
+					${contextId !== null ? "AND N.data ->> 'context_id' = '" + contextId + "'" : ""}
 				ORDER BY
 					A.created_at
 				`,
