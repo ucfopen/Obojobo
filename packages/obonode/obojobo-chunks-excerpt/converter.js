@@ -5,7 +5,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
 const EXCERPT_CONTENT_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptContent'
 const CITE_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationText'
-const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
+
 /**
  * Generates an Obojobo Excerpt Node from a Slate node.
  * Copies the id, type, triggers, and condenses ExcerptLine children and their
@@ -20,7 +20,7 @@ const slateToObo = node => {
 	// but it's only ever going to be a single line of centered text
 	// so there's really no reason to go to the trouble here
 	// this seems a bit magical, though - may be a convenience function somewhere?
-	const citationText = node.children[1].children[0].children[0].text
+	const citationText = node.children[1].children[0].text
 
 	return {
 		id: node.id,
@@ -72,15 +72,8 @@ const oboToSlate = node => {
 	slateNode.children.push({
 		type: EXCERPT_NODE,
 		subtype: CITE_TEXT_NODE,
-		content: { indent: 0, hangingIndent: 0 },
-		children: [
-			{
-				type: EXCERPT_NODE,
-				subtype: CITE_LINE_NODE,
-				content: { indent: 0, hangingIndent: 0, align: 'center' },
-				children: [{ text: node.content.citation }]
-			}
-		]
+		content: {},
+		children: [{ text: node.content.citation }]
 	})
 
 	delete slateNode.content.excerpt
