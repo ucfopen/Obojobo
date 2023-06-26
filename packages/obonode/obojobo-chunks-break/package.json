@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-break",
-	"version": "16.0.1-alpha.0",
+	"version": "16.0.1",
 	"license": "AGPL-3.0-only",
 	"description": "Break content chunk for Obojobo",
 	"scripts": {
@@ -21,7 +21,7 @@
 		]
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^16.0.1-alpha.0"
+		"obojobo-lib-utils": "^16.0.1"
 	},
 	"jest": {
 		"testMatch": [
