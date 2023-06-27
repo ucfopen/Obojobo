@@ -1,10 +1,13 @@
 const Stats = require('./stats')
 const connect = require('react-redux').connect
-const { loadUserModuleList, loadModuleAssessmentDetails } = require('../actions/stats-actions')
+const { loadUserModuleList,
+		loadModuleAssessmentDetails,
+		loadCourseAssessmentData } = require('../actions/stats-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
 	loadUserModuleList,
-	loadModuleAssessmentDetails
+	loadModuleAssessmentDetails,
+	loadCourseAssessmentData
 }
 module.exports = connect(
 	mapStoreStateToProps,

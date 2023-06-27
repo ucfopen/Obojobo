@@ -1,14 +1,7 @@
 const React = require('react')
 
+// This component is the clickable list item for the "Course Stats" dialog. Each instance is a different available course.
 const CourseScoreDataListItem = ({
-	// isSelected,
-	// onClick,
-	// index,
-	// createdAtDisplay,
-	// username,
-	// isLatestVersion,
-	// versionNumber,
-
 	courseTitle,
 	courseLabel,
 	courseUserCount,

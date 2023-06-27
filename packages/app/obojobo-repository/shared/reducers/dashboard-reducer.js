@@ -36,7 +36,7 @@ const {
 	SHOW_VERSION_HISTORY,
 	RESTORE_VERSION,
 	SHOW_ASSESSMENT_SCORE_DATA,
-	SHOW_COURSE_SCORE_DATA,
+	SHOW_COURSES_BY_DRAFT,
 	GET_DELETED_MODULES,
 	GET_MODULES,
 	BULK_RESTORE_MODULES
@@ -377,7 +377,7 @@ function DashboardReducer(state, action) {
 				})
 			})
 
-		case SHOW_COURSE_SCORE_DATA:
+		case SHOW_COURSES_BY_DRAFT:
 			return handle(state, action, {
 				start: prevState => ({
 					...prevState,

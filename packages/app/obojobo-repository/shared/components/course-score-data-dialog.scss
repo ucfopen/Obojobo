@@ -294,12 +294,12 @@ $color-nav-hover: darken($color-highlight, 25%);
 
 	span {
 		font-weight: bold;
-		margin-bottom: 0.5em;
 	}
 
 	small {
 		display: block;
 		color: $color-text-minor;
+		margin-top: 0.5em;
 		font-size: 0.7em;
 	}
 }

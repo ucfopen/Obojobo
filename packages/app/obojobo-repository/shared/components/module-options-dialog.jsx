@@ -83,7 +83,7 @@ const ModuleOptionsDialog = props => (
 					<Button
 						id="moduleOptionsDialog-courseScoreData"
 						onClick={() => {
-							props.showCourseScoreData(props)
+							props.showCoursesByDraft(props)
 						}}
 					>
 						Course Stats

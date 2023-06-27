@@ -38,7 +38,8 @@ const renderOptionsDialog = (props, extension) => (
 		onClose={props.closeModal}
 		showVersionHistory={props.showVersionHistory}
 		showAssessmentScoreData={props.showAssessmentScoreData}
-		showCourseScoreData={props.showCourseScoreData}
+		showCoursesByDraft={props.showCoursesByDraft}
+		showCourseAssessmentData={props.showCourseAssessmentData}
 		startLoadingAnimation={props.startLoadingAnimation}
 		stopLoadingAnimation={props.stopLoadingAnimation}
 		showModuleManageCollections={props.showModuleManageCollections}
@@ -89,11 +90,11 @@ const renderAssessmentScoreDataDialog = props => {
 const renderCourseScoreDataDialog = props => {
 	return (
 		<CourseScoreDataDialog
-			{...props.selectedModule}
+			draftId={props.selectedModule.draftId}
 			title={`Assessment Scores by Course`}
 			onClose={props.closeModal}
 			isCoursesLoading={props.courses.isFetching}
-			hasCoursesLoaded={false}
+			hasCoursesLoaded={props.courses.hasFetched}
 			courses={props.courses.items}
 		/>
 	)
