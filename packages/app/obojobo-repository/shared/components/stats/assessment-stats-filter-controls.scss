@@ -1,7 +1,8 @@
 @import '../../../client/css/defaults';
 
 .repository--assessment-stats-filter-controls {
-	width: 100%;
+	display: flex;
+	flex-direction: row;
 
 	hr {
 		margin-top: 1em;
@@ -9,9 +10,9 @@
 	}
 
 	.container {
+		font-size: .75em;
 		display: flex;
-		flex-direction: column;
-		width: 100%;
+		flex-direction: row;
 
 		input {
 			margin-right: 0.5em;
@@ -19,6 +20,7 @@
 		}
 
 		label {
+			margin-left: 1em;
 			cursor: pointer;
 			display: flex;
 			align-items: center;

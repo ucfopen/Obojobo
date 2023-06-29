@@ -33,6 +33,11 @@ $color-reward-text: #947d00;
 $color-obojobo-blue: #0d4fa7;
 $color-preview: #af1b5c;
 
+$color-nav-highlight: $color-obojobo-blue;
+$color-nav-hover: darken($color-highlight, 25%);
+$color-nav-bg-selected: lighten($color-obojobo-blue, 62%);
+$color-nav-bg-hover: lighten($color-obojobo-blue, 58%);
+
 $size-spacing-vertical-big: 40px;
 $size-spacing-vertical-half: $size-spacing-vertical-big / 2;
 $size-spacing-vertical-internal: $size-spacing-vertical-half / 2;

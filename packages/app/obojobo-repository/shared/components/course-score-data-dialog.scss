@@ -3,8 +3,6 @@
 $border-color: rgba(0, 0, 0, 0.1);
 $border: 1px solid $border-color;
 $menu-transition-time: 0.25s;
-$color-nav-highlight: $color-obojobo-blue;
-$color-nav-hover: darken($color-highlight, 25%);
 
 .course-score-data-dialog {
 	font-family: $font-default;
@@ -61,11 +59,18 @@ $color-nav-hover: darken($color-highlight, 25%);
 	background-color: #f2f2f2;
 	display: flex;
 	height: calc(95vh - 3em);
+	width: 100%;
+	max-width: 100%;
 
 	span {
 		display: block;
-		background-color: white;
 	}
+}
+
+.text-loader {
+	width: 100%;
+	text-align: center;
+	padding: 24px;
 }
 
 .course-score-data-list {
@@ -147,105 +152,96 @@ $color-nav-hover: darken($color-highlight, 25%);
 		min-width: $closed-width;
 		max-width: $closed-width;
 	}
-}
 
-.course-score-data-list--title {
-	white-space: nowrap; // prevent wrapping during animation
-	padding: 0.9em 0 0.9em 1.5em;
-	font-weight: bold;
-	font-size: 0.8em;
-	width: 100%;
-	box-sizing: border-box;
-	background-color: white;
-	position: sticky;
-	top: 0;
-	border-bottom: $border;
-
-	.desc {
-		font-weight: 300;
-		font-size: 0.8em;
-		font-style: italic;
-		color: #6f6e6e;
-	}
-}
-
-.course-score-data-list--item {
-	border-bottom: $border;
-	padding: 1em 1.5em;
-	background-color: white;
-	font-size: 0.75em;
-	min-width: 14em;
-	cursor: pointer;
-
-	.courseTitle {
-		margin-bottom: 0.4em;
+	.course-score-data-list--title {
+		white-space: nowrap; // prevent wrapping during animation
+		padding: 0.9em 0 0.9em 1.5em;
 		font-weight: bold;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-	}
-
-	.userCount {
-		color: $color-text-minor;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-		margin-bottom: 0.2em;
-	}
-
-	.accessed {
-		color: #0d4fa7;
-		margin-top: 0.4em;
 		font-size: 0.8em;
-		white-space: nowrap;
+		width: 100%;
+		box-sizing: border-box;
+		background-color: white;
+		position: sticky;
+		top: 0;
+		border-bottom: $border;
 
-		.timestamp {
-			display: inline;
-			background-color: lighten($color-nav-highlight, 55%);
-			color: $color-nav-highlight;
-			text-align: center;
-			border-radius: 5em;
-			margin-top: 0.6em;
-			padding: 0.2em 0.75em;
+		.desc {
+			font-weight: 300;
+			font-size: 0.8em;
+			font-style: italic;
+			color: #6f6e6e;
+		}
+
+		.course-search {
+			padding-right: 1.5em;
+			padding-top: 0.5em;
+			font-size: 1.25em;
 		}
 	}
 
-	.version.restored {
-		background-color: $color-action;
-		color: white;
-		font-size: 0.8em;
-		width: 8.5em;
-		text-align: center;
-		border-radius: 5em;
-		margin-top: 0.6em;
-		padding: 0.2em 0.5em;
-		margin-left: 0.8em;
-	}
-
-	span {
-		background: transparent;
-	}
-
-	&.is-selected {
-		background-image: url('./hex_transparent.svg');
-		background-repeat: no-repeat;
-		background-origin: content-box;
-		background-position-x: 100%;
-		background-color: lighten($color-nav-highlight, 62%);
+	.course-score-data-list--item {
+		border-bottom: $border;
+		padding: 1em 1.5em;
+		background-color: white;
+		font-size: 0.75em;
+		min-width: 14em;
+		cursor: pointer;
 
 		.courseTitle {
-			color: $color-nav-highlight;
+			margin-bottom: 0.4em;
+			font-weight: bold;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
 		}
-	}
 
-	&:hover {
-		background-color: lighten($color-nav-highlight, 58%);
+		.userCount {
+			color: $color-text-minor;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			margin-bottom: 0.2em;
+		}
 
-		.courseTitle {
-			color: $color-nav-hover;
+		.accessed {
+			color: #0d4fa7;
+			margin-top: 0.4em;
+			font-size: 0.8em;
+			white-space: nowrap;
+
+			.timestamp {
+				display: inline;
+				background-color: lighten($color-nav-highlight, 55%);
+				color: $color-nav-highlight;
+				text-align: center;
+				border-radius: 5em;
+				margin-top: 0.6em;
+				padding: 0.2em 0.75em;
+			}
+		}
+
+		&.is-selected {
+			background-image: url('./hex_transparent.svg');
+			background-repeat: no-repeat;
+			background-origin: content-box;
+			background-position-x: 100%;
+			background-color: $color-nav-bg-selected;
+
+			.courseTitle {
+				color: $color-nav-highlight;
+			}
+		}
+
+		&:hover {
+			background-color: $color-nav-bg-hover;
+
+			.courseTitle {
+				color: $color-nav-hover;
+			}
 		}
 	}
 }
+
 
 .data-viewer {
 	flex: 4;
@@ -253,88 +249,64 @@ $color-nav-hover: darken($color-highlight, 25%);
 	justify-content: center;
 	align-items: center;
 	background-color: #f2f2f2;
+	overflow-x: auto;
 
-	iframe {
-		border: 2px solid $color-action;
-		border-bottom-right-radius: 0.4em;
-		border-bottom-left-radius: 0.4em;
-		width: 100%;
-		height: calc(100% - 4em);
-		box-sizing: border-box;
-	}
-
-	.preview-button {
-		margin-right: 1em;
-
-		&.disabled {
-			cursor: default;
-			pointer-events: none;
-			opacity: 0.4;
-		}
-	}
-
-	.restore-button,
-	.toggle-nav-button,
-	.preview-button {
-		float: right;
-	}
-
-	.restore-button:disabled {
-		// Prevents the restore button from adjusting
-		// its size when it's disabled
-		border: 0;
-	}
-}
-
-.data-viewer--header {
-	padding: 0.8em;
-	border: $border;
-	border-bottom: none;
-	background-color: white;
-
-	span {
-		font-weight: bold;
-	}
-
-	small {
-		display: block;
-		color: $color-text-minor;
-		margin-top: 0.5em;
-		font-size: 0.7em;
-	}
-}
-
-.restore-confirm-dialog {
-	padding: 1.5em 3em;
-	max-width: 23em;
-
-	.dialog-title {
-		font-weight: bold;
-		font-size: 1.25em;
-		text-align: center;
-		margin: 0 0 1em 0;
-	}
-
-	.dialog-content {
-		margin-bottom: 1.5em;
-		text-align: center;
-
-		small {
-			display: block;
-			margin-top: 1.5em;
-			color: $color-text-minor;
-			font-size: 0.7em;
-		}
-	}
-
-	.dialog-controls {
+	.data-viewer--header {
+		padding: 0.8em;
+		border: $border;
+		background-color: $color-nav-bg-selected;
 		display: flex;
-		justify-content: center;
-		align-items: center;
+		flex-direction: row;
+		justify-content: space-between;
+		height: 104px;
+		box-sizing: border-box;
+		overflow-y: hidden;
+	
+		.data-viewer--header--title-container {
+			display: flex;
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-direction: column;
+			justify-content: space-between;
+	
+			.data-viewer--header--title {
+				font-weight: bold;
+			}
+		
+			small {
+				display: block;
+				color: $color-text-minor;
+				margin-top: 0.5em;
+				font-size: 0.7em;
+			}
+		}
+	
+		.data-viewer--header--filter-container {
+			font-size: .75em;
+		}
+		
+	}
 
-		.repository--button {
-			margin: 0 0.5em;
-			font-size: 0.75em;
+	.data-viewer--filter-controls {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 0.5em 16px;
+		box-sizing: border-box;
+		background-color: white;
+		border: 1px solid $border-color;
+		border-top: none;
+		height: 46px;
+		max-height: 46px;
+
+		.view-mode {
+			font-size: .8em;
+
+			select {
+				font-size: 1.25em;
+				margin-left: 0.5em;
+			}
 		}
 	}
 }

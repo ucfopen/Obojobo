@@ -20,7 +20,7 @@ const CourseScoreDataListItem = ({
 	const userCount = ( <div className="userCount">{courseUserCount} Learner{courseUserCount === 1 ? '' : 's'}</div>)
 	const accessed = ( <div className="accessed">Last Accessed &nbsp; <span className="timestamp">{courseLastAccessed}</span></div> )
 	return (
-		<div className={className} onClick={onClickHandler}>
+		<div className={className} onClick={!isSelected ? onClickHandler : () => {}}>
 			{titleAndLabel}
 			{userCount}
 			{accessed}

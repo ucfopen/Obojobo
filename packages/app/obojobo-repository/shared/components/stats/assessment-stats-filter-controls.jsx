@@ -36,7 +36,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 						checked={filterSettings.showIncompleteAttempts}
 						onChange={onChangeShowIncompleteAttempts}
 					/>
-					<span>Include incomplete attempt data</span>
+					<span>Incomplete attempts</span>
 				</label>
 				<label>
 					<input
@@ -45,9 +45,8 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 						checked={filterSettings.showPreviewAttempts}
 						onChange={onChangeShowPreviewAttempts}
 					/>
-					<span>Include preview attempt data</span>
+					<span>Preview attempts</span>
 				</label>
-				<hr />
 				<label>
 					<input
 						className="show-advanced-fields"
@@ -55,7 +54,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 						checked={filterSettings.showAdvancedFields}
 						onChange={onChangeShowAdvancedFields}
 					/>
-					<span>Include advanced fields</span>
+					<span>Advanced fields</span>
 				</label>
 			</div>
 		</div>
