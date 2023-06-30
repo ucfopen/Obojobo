@@ -1,6 +1,8 @@
 const {
 	apiGetAssessmentDetailsForMultipleDrafts,
-	apiGetAssessmentDetailsForDraft
+	apiGetAssessmentDetailsForDraft,
+	apiGetCoursesForDraft,
+	apiGetAssessmentDetailsForCourse
 } = require('./shared-api-methods')
 
 describe('sharedAPIMethods', () => {
@@ -120,6 +122,42 @@ describe('sharedAPIMethods', () => {
 				assessmentScore: null,
 				attemptNumber: 2,
 				unmoddedAssessmentScore: null
+			}
+		])
+	})
+
+	test('apiGetCoursesForDraft returns expected object', async () => {
+		const result = await apiGetCoursesForDraft('draft-id-1')
+
+		expect(global.fetch).toHaveBeenCalledTimes(1)
+		expect(result).toEqual([
+			{
+				attemptId: 'mock-attempt-1',
+				draftId: 'draft-id-1',
+				userRoles: ['A']
+			},
+			{
+				attemptId: 'mock-attempt-2',
+				draftId: 'draft-id-1',
+				userRoles: ['A']	
+			}
+		])
+	})
+
+	test('apiGetAssessmentDetailsForCourse returns expected object', async () => {
+		const result = await apiGetAssessmentDetailsForCourse({ draftId: 'draft-id-1', contextId: 'context-id-1' })
+
+		expect(global.fetch).toHaveBeenCalledTimes(1)
+		expect(result).toEqual([
+			{
+				attemptId: 'mock-attempt-1',
+				draftId: 'draft-id-1',
+				userRoles: ['A']
+			},
+			{
+				attemptId: 'mock-attempt-2',
+				draftId: 'draft-id-1',
+				userRoles: ['A']	
 			}
 		])
 	})

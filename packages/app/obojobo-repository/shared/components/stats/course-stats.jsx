@@ -1,10 +1,7 @@
-require('./assessment-stats.scss')
+require('./course-stats.scss')
 
-const { useState, useEffect } = require('react')
 const DataGridAttempts = require('./data-grid-attempts')
 const DataGridAssessments = require('./data-grid-assessments')
-const AssessmentStatsFilterControls = require('./assessment-stats-filter-controls')
-const AssessmentStatsSearchControls = require('./assessment-stats-search-controls')
 
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
 const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
@@ -53,11 +50,10 @@ const filterAttempts = (attempts, { showIncompleteAttempts, showPreviewAttempts 
 }
 
 const CourseStats = ({ attempts, viewMode, searchSettings, searchContent, filterSettings }) => {
-
 	const filteredAttempts = filterAttempts(attempts, filterSettings)
 
 	return (
-		<div className="repository--assessment-stats">
+		<div className="repository--course-stats">
 			{renderDataGrid(viewMode, filteredAttempts, filterSettings, searchSettings, searchContent)}
 		</div>
 	)

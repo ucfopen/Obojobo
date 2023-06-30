@@ -73,6 +73,11 @@ $menu-transition-time: 0.25s;
 	padding: 24px;
 }
 
+.no-courses-text {
+	text-align: center;
+	padding: 24px;
+}
+
 .course-score-data-list {
 	$open-width-max: 20em;
 	$open-width-min: 15em;
@@ -80,6 +85,7 @@ $menu-transition-time: 0.25s;
 
 	max-width: $open-width-max;
 	min-width: $open-width-min;
+	background-color: white;
 	border-right: $border;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -242,7 +248,6 @@ $menu-transition-time: 0.25s;
 	}
 }
 
-
 .data-viewer {
 	flex: 4;
 	padding: 1em;
@@ -261,18 +266,18 @@ $menu-transition-time: 0.25s;
 		height: 104px;
 		box-sizing: border-box;
 		overflow-y: hidden;
-	
+
 		.data-viewer--header--title-container {
 			display: flex;
 			flex-grow: 1;
 			flex-shrink: 1;
 			flex-direction: column;
 			justify-content: space-between;
-	
+
 			.data-viewer--header--title {
 				font-weight: bold;
 			}
-		
+
 			small {
 				display: block;
 				color: $color-text-minor;
@@ -280,11 +285,10 @@ $menu-transition-time: 0.25s;
 				font-size: 0.7em;
 			}
 		}
-	
+
 		.data-viewer--header--filter-container {
-			font-size: .75em;
+			font-size: 0.75em;
 		}
-		
 	}
 
 	.data-viewer--filter-controls {
@@ -301,7 +305,7 @@ $menu-transition-time: 0.25s;
 		max-height: 46px;
 
 		.view-mode {
-			font-size: .8em;
+			font-size: 0.8em;
 
 			select {
 				font-size: 1.25em;

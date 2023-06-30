@@ -28,7 +28,7 @@ router
 	.get([requireCurrentUser, requireCanViewStatsPage])
 	.get((req, res) => {
 		const props = {
-			title: 'Stats',
+			title: 'StatsCourses',
 			currentUser: req.currentUser,
 			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('stats.css'),

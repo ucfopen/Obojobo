@@ -1,12 +1,10 @@
 @import '../../../client/css/defaults';
 
-$border-color: rgba(0, 0, 0, 0.1);
-$border: 1px solid $border-color;
-
 .repository--assessment-stats {
 	background: $color-bg;
-	height: calc(100% - 150px);
+	height: 100%;
 	border-radius: $dimension-rounded-radius;
+	padding: 1em;
 	box-sizing: border-box;
 	display: flex;
 	gap: 1em;
@@ -61,11 +59,9 @@ $border: 1px solid $border-color;
 	.repository--data-grid-scores {
 		display: flex;
 		flex-direction: column;
-		height: 100%;
-		box-sizing: border-box;
-		border: $border;
-		border-top: none;
-		border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
+		height: calc(100% - 2px);
+		border: 1px solid $color-shadow;
+		border-radius: $dimension-rounded-radius;
 
 		.repository--button {
 			display: inline-block;
@@ -74,15 +70,15 @@ $border: 1px solid $border-color;
 		}
 
 		.data-grid {
-			width: 100%;
+			width: calc(100% - 1px);
 			height: calc(100% - 5em);
 			flex-grow: 1;
 			display: flex;
 			flex-direction: column;
 
 			// Tweaks to the react-data-table-component
-			> .rdt_TableHeader {
-				display: none;
+			> div:first-child {
+				flex-grow: 0;
 			}
 
 			> div:nth-child(2) {
@@ -90,19 +86,12 @@ $border: 1px solid $border-color;
 				flex-grow: 1;
 			}
 
-			nav {
-				border-bottom: 1px solid $border-color;
+			> div:last-child {
+				border-bottom: 1px solid $color-shadow;
 			}
 
-			.rdt_TableHead {
-				position: sticky;
-				top: 0px;
-				z-index: 1;
-			}
-
-			.rdt_TableHeadRow {
-				background-color: $color-action-bg;
-				padding: 0.25em 0;
+			.rdt_TableHeader {
+				background: transparent;
 			}
 		}
 	}

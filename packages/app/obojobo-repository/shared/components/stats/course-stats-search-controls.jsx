@@ -1,4 +1,4 @@
-require('./assessment-stats-search-controls.scss')
+require('./course-stats-search-controls.scss')
 
 const { useDebouncedCallback } = require('use-debounce')
 const React = require('react')
@@ -6,7 +6,7 @@ const Button = require('../button')
 
 const SEARCH_INPUT_DEBOUNCE_MS = 500
 
-const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchContent }) => {
+const CourseStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchContent }) => {
 	const [param, setParam] = React.useState('')
 	const [textInput, setTextInput] = React.useState('')
 	const [startDate, setStartDate] = React.useState('')
@@ -38,6 +38,12 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 		}
 	}
 
+	const clearFilter = () => {
+		setTextInput('')
+		debouncedOnChangeSearchContent('')
+		debouncedOnChangeSearchContent.flush()
+	}
+
 	const onChangeStartDate = newDate => {
 		setStartDate(newDate)
 		onChangeSearchContent({
@@ -61,24 +67,27 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 		.map(word => word.charAt(0).toUpperCase() + word.substring(1))
 		.join(' ')
 
+	const searchFilterActive = showTextInput && textInput !== ''
+
 	return (
-		<div className="repository--assessment-stats-search-controls">
+		<div className="repository--course-stats-search-controls">
 			<div className="search-by-text">
-				<label htmlFor="repository--assessment-stats-search-controls--search-by">Search by: </label>
+				<label htmlFor="repository--course-stats-search-controls--search-by">Filter by: </label>
 				<div className="controls">
 					<select
-						id="repository--assessment-stats-search-controls--search-by"
+						id="repository--course-stats-search-controls--search-by"
 						onChange={handleSearchSettingsChange}
+						className={searchFilterActive ? 'filter-active' : ''}
 					>
 						<option value="">Select one...</option>
-						<option value="course-title">Course title</option>
+						{/* <option value="course-title">Course title</option> */}
 						<option value="resource-link-title">Resource link title</option>
 						<option value="user-first-name">First name</option>
 						<option value="user-last-name">Last name</option>
 					</select>
 					{showTextInput && (
 						<input
-							className="text-input"
+							className={'text-input' + (searchFilterActive ? ' filter-active' : '')}
 							type="text"
 							value={textInput}
 							onChange={handleSearchContentChange}
@@ -86,10 +95,19 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 						/>
 					)}
 				</div>
+				<div className="clear-button-container">
+					<Button
+						alt="Clear Filter"
+						title="Clear Filter"
+						disabled={!searchFilterActive}
+						onClick={() => clearFilter()}
+						className="clear-button"
+					>
+						&times;
+					</Button>
+				</div>
 			</div>
-			<hr />
 			<div className="search-by-date">
-				<span className="label">Filter attempts by date range:</span>
 				<label>
 					<span>From:</span>
 					<div className="date-range">
@@ -98,12 +116,15 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 							type="date"
 							onChange={event => onChangeStartDate(event.target.value)}
 						/>
+					</div>
+					<div className="clear-button-container">
 						<Button
+							alt="Clear Start Date"
 							disabled={startDate === ''}
 							onClick={() => onChangeStartDate('')}
-							className="secondary-button"
+							className="clear-button"
 						>
-							&times; Clear
+							&times;
 						</Button>
 					</div>
 				</label>
@@ -116,12 +137,15 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 							type="date"
 							onChange={event => onChangeEndDate(event.target.value)}
 						/>
+					</div>
+					<div className="clear-button-container">
 						<Button
+							alt="Clear End Date"
 							disabled={endDate === ''}
 							onClick={() => onChangeEndDate('')}
-							className="secondary-button"
+							className="clear-button"
 						>
-							&times; Clear
+							&times;
 						</Button>
 					</div>
 				</label>
@@ -130,4 +154,4 @@ const AssessmentStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchC
 	)
 }
 
-module.exports = AssessmentStatsSearchControls
+module.exports = CourseStatsSearchControls

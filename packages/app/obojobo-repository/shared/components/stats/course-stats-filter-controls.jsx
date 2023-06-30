@@ -1,7 +1,7 @@
-require('./assessment-stats-filter-controls.scss')
+require('./course-stats-filter-controls.scss')
 const React = require('react')
 
-function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings }) {
+function CourseStatsFilterControls({ filterSettings, onChangeFilterSettings }) {
 	const onChangeShowIncompleteAttempts = event => {
 		onChangeFilterSettings({
 			showPreviewAttempts: filterSettings.showPreviewAttempts,
@@ -27,7 +27,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 	}
 
 	return (
-		<div className="repository--assessment-stats-filter-controls">
+		<div className="repository--course-stats-filter-controls">
 			<div className="container">
 				<label>
 					<input
@@ -36,7 +36,7 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 						checked={filterSettings.showIncompleteAttempts}
 						onChange={onChangeShowIncompleteAttempts}
 					/>
-					<span>Include incomplete attempt data</span>
+					<span>Incomplete attempts</span>
 				</label>
 				<label>
 					<input
@@ -45,9 +45,8 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 						checked={filterSettings.showPreviewAttempts}
 						onChange={onChangeShowPreviewAttempts}
 					/>
-					<span>Include preview attempt data</span>
+					<span>Preview attempts</span>
 				</label>
-				<hr />
 				<label>
 					<input
 						className="show-advanced-fields"
@@ -55,11 +54,11 @@ function AssessmentStatsFilterControls({ filterSettings, onChangeFilterSettings 
 						checked={filterSettings.showAdvancedFields}
 						onChange={onChangeShowAdvancedFields}
 					/>
-					<span>Include advanced fields</span>
+					<span>Advanced fields</span>
 				</label>
 			</div>
 		</div>
 	)
 }
 
-module.exports = AssessmentStatsFilterControls
+module.exports = CourseStatsFilterControls

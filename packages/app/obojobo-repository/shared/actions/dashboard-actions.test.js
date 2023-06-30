@@ -2,7 +2,9 @@ const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
 
 jest.mock('./shared-api-methods', () => ({
-	apiGetAssessmentDetailsForDraft: () => Promise.resolve()
+	apiGetAssessmentDetailsForDraft: () => Promise.resolve(),
+	apiGetCoursesForDraft: () => Promise.resolve(),
+	apiGetAssessmentDetailsForCourse: () => Promise.resolve()
 }))
 
 dayjs.extend(advancedFormat)
@@ -1760,6 +1762,30 @@ describe('Dashboard Actions', () => {
 
 		expect(result).toEqual({
 			type: 'SHOW_ASSESSMENT_SCORE_DATA',
+			meta: {
+				module: ['draft-id-1', 'draft-id-2']
+			},
+			promise: expect.any(Promise)
+		})
+	})
+
+	test('showCourseByDraft returns expected object', async () => {
+		const result = await DashboardActions.showCoursesByDraft(['draft-id-1', 'draft-id-2'])
+
+		expect(result).toEqual({
+			type: 'SHOW_COURSES_BY_DRAFT',
+			meta: {
+				module: ['draft-id-1', 'draft-id-2']
+			},
+			promise: expect.any(Promise)
+		})
+	})
+
+	test('showCourseAssessmentData returns expected object', async () => {
+		const result = await DashboardActions.showCourseAssessmentData(['draft-id-1', 'draft-id-2'])
+
+		expect(result).toEqual({
+			type: 'SHOW_ASSESSMENTS_BY_COURSE',
 			meta: {
 				module: ['draft-id-1', 'draft-id-2']
 			},
