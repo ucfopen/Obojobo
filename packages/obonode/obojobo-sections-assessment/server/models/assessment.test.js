@@ -137,6 +137,13 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
+	test('fetchAttemptHistoryDetails runs distinct call when contextId is included', () => {
+		AssessmentModel.fetchAttemptHistoryDetails('mock-draft-id', 'mock-context-id')
+
+		expect(db.manyOrNone).toHaveBeenCalledTimes(1)
+		expect(JSON.stringify(db.manyOrNone.mock.calls).includes('mock-context-id')).toBe(true)
+	})
+
 	test('fetchAttemptsForUserDraftAndResourceLinkId returns an array AssessmentModel', async () => {
 		db.manyOrNone.mockResolvedValueOnce([makeMockAttempt()])
 

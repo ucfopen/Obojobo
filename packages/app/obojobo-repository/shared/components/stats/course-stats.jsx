@@ -1,5 +1,6 @@
 require('./course-stats.scss')
 
+const React = require('react')
 const DataGridAttempts = require('./data-grid-attempts')
 const DataGridAssessments = require('./data-grid-assessments')
 

@@ -1,51 +1,73 @@
 require('./course-stats-search-controls.scss')
 
-const { useDebouncedCallback } = require('use-debounce')
 const React = require('react')
 const Button = require('../button')
 
 const SEARCH_INPUT_DEBOUNCE_MS = 500
 
-const CourseStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchContent }) => {
-	const [param, setParam] = React.useState('')
+const CourseStatsSearchControls = ({
+	searchSettings,
+	onChangeSearchSettings,
+	onChangeSearchContent,
+	debounceSearch = true
+}) => {
 	const [textInput, setTextInput] = React.useState('')
 	const [startDate, setStartDate] = React.useState('')
 	const [endDate, setEndDate] = React.useState('')
+	const [timerId, setTimerId] = React.useState(null)
 
-	const debouncedOnChangeSearchContent = useDebouncedCallback(searchTerm => {
-		onChangeSearchContent({
-			text: searchTerm,
-			date: { start: startDate, end: endDate }
-		})
-	}, SEARCH_INPUT_DEBOUNCE_MS)
+	// The oldTimerId is just the timerId, but I have to pass it for the unit tests to work properly
+	const clearOldTimer = oldTimerId => {
+		clearTimeout(oldTimerId)
+		setTimerId(null)
+	}
+
+	const debouncedOnChangeSearchContent = (searchTerm, timerId) => {
+		clearOldTimer(timerId)
+		const newTimerId = setTimeout(
+			() =>
+				onChangeSearchContent({
+					text: searchTerm,
+					date: { start: startDate, end: endDate }
+				}),
+			SEARCH_INPUT_DEBOUNCE_MS
+		)
+		setTimerId(newTimerId)
+	}
 
 	const handleSearchSettingsChange = event => {
 		const value = event.target.value
-
-		setParam(value)
 		onChangeSearchSettings(value)
 	}
 
 	const handleSearchContentChange = event => {
-		const value = event.target.value
-
+		const value = event.target.value.trim()
 		setTextInput(value)
-		debouncedOnChangeSearchContent(value)
 
-		// If the user clears out the input go ahead and update the search without a delay
-		if (value.length === 0) {
-			debouncedOnChangeSearchContent.flush()
+		// If the user clears out the input (length == 0) go ahead and update the search without a delay
+		if (!debounceSearch || value.length == 0) {
+			clearOldTimer(timerId)
+			onChangeSearchContent({
+				text: value,
+				date: { start: startDate, end: endDate }
+			})
+		} else {
+			debouncedOnChangeSearchContent(value, timerId)
 		}
 	}
 
 	const clearFilter = () => {
 		setTextInput('')
-		debouncedOnChangeSearchContent('')
-		debouncedOnChangeSearchContent.flush()
+		clearOldTimer(timerId)
+		onChangeSearchContent({
+			text: '',
+			date: { start: startDate, end: endDate }
+		})
 	}
 
 	const onChangeStartDate = newDate => {
 		setStartDate(newDate)
+		clearOldTimer(timerId)
 		onChangeSearchContent({
 			text: textInput,
 			date: { start: newDate, end: endDate }
@@ -54,15 +76,16 @@ const CourseStatsSearchControls = ({ onChangeSearchSettings, onChangeSearchConte
 
 	const onChangeEndDate = newDate => {
 		setEndDate(newDate)
+		clearOldTimer(timerId)
 		onChangeSearchContent({
 			text: textInput,
 			date: { start: startDate, end: newDate }
 		})
 	}
 
-	const showTextInput = param !== ''
+	const showTextInput = searchSettings !== ''
 
-	const textPlaceholder = param
+	const textPlaceholder = searchSettings
 		.split('-')
 		.map(word => word.charAt(0).toUpperCase() + word.substring(1))
 		.join(' ')

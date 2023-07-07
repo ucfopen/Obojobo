@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseScoreDataListItem renders correctly when selected 1`] = `
+<div
+  className="course-score-data-list--item is-selected"
+  onClick={[Function]}
+>
+  <div
+    className="courseTitle"
+  >
+    Mock Course Title
+     (
+    MCT-101
+    )
+  </div>
+  <div
+    className="userCount"
+  >
+    10
+     Learner
+    s
+  </div>
+  <div
+    className="accessed"
+  >
+    Last Accessed   
+    <span
+      className="timestamp"
+    >
+      Apr 1st 2020 - 9:15 AM
+    </span>
+  </div>
+</div>
+`;
+
+exports[`CourseScoreDataListItem renders with standard expected props 1`] = `
+<div
+  className="course-score-data-list--item"
+  onClick={[Function]}
+>
+  <div
+    className="courseTitle"
+  >
+    Mock Course Title
+     (
+    MCT-101
+    )
+  </div>
+  <div
+    className="userCount"
+  >
+    10
+     Learner
+    s
+  </div>
+  <div
+    className="accessed"
+  >
+    Last Accessed   
+    <span
+      className="timestamp"
+    >
+      Apr 1st 2020 - 9:15 AM
+    </span>
+  </div>
+</div>
+`;
+
+exports[`CourseScoreDataListItem user count displays properly without the "s" for 1 learner 1`] = `
+<div
+  className="course-score-data-list--item"
+  onClick={[Function]}
+>
+  <div
+    className="courseTitle"
+  >
+    Mock Course Title
+     (
+    MCT-101
+    )
+  </div>
+  <div
+    className="userCount"
+  >
+    1
+     Learner
+    
+  </div>
+  <div
+    className="accessed"
+  >
+    Last Accessed   
+    <span
+      className="timestamp"
+    >
+      Apr 1st 2020 - 9:15 AM
+    </span>
+  </div>
+</div>
+`;

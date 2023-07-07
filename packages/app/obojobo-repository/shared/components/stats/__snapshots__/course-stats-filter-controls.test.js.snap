@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseStatsFilterControls filter controls element renders properly 1`] = `
+<div
+  className="repository--course-stats-filter-controls"
+>
+  <div
+    className="container"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Incomplete attempts
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Preview attempts
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;

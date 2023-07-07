@@ -1,7 +1,7 @@
 require('./course-score-data-dialog.scss')
 
 const { CSSTransition } = require('react-transition-group')
-const { useState, useEffect, createRef } = require('react')
+const React = require('react')
 const ModuleImage = require('./module-image')
 const Button = require('./button')
 const Loading = require('./loading')
@@ -9,55 +9,34 @@ const ReactModal = require('react-modal')
 const dayjs = require('dayjs')
 const CourseStats = require('./stats/course-stats')
 const CourseScoreDataListItem = require('./course-score-data-list-item')
+const CourseStatsTypeSelect = require('./stats/course-stats-type-select')
 const CourseStatsFilterControls = require('./stats/course-stats-filter-controls')
 const CourseStatsSearchControls = require('./stats/course-stats-search-controls')
 const Search = require('./search')
 
 const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
-const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
-const CourseScoreDataDialog = ({
-	draftId,
-	title,
-	onClose,
-	isCoursesLoading,
-	hasCoursesLoaded,
-	courses
-}) => {
-	const [fetchUrl, setFetchUrl] = useState(null)
-	const [selectedIndex, setSelectedIndex] = useState(null)
-	const [selectedCourse, setSelectedCourse] = useState(null)
-	const [courseIsLoading, setCourseIsLoading] = useState(false)
-	const [courseHasLoaded, setCourseHasLoaded] = useState(false)
-	const [courseData, setCourseData] = useState(null)
-	const [isMenuOpen, setIsMenuOpen] = useState(true)
-	const [courseSearch, setCourseSearch] = useState('')
+const CourseScoreDataDialog = ({ draftId, title, onClose, isCoursesLoading, courses }) => {
+	// const [fetchUrl, setFetchUrl] = React.useState(null)
+	const [selectedIndex, setSelectedIndex] = React.useState(null)
+	const [selectedCourse, setSelectedCourse] = React.useState(null)
+	const [courseIsLoading, setCourseIsLoading] = React.useState(false)
+	const [courseHasLoaded, setCourseHasLoaded] = React.useState(false)
+	const [courseData, setCourseData] = React.useState(null)
+	const [isMenuOpen, setIsMenuOpen] = React.useState(true)
+	const [courseSearch, setCourseSearch] = React.useState('')
 
-	const [searchViewMode, setSearchViewMode] = useState(VIEW_MODE_FINAL_ASSESSMENT_SCORE)
-	const [searchSettings, setSearchSettings] = useState('')
-	const [searchContent, setSearchContent] = useState('')
-	const [searchFilterSettings, setSearchFilterSettings] = useState({
+	const [searchViewMode, setSearchViewMode] = React.useState(VIEW_MODE_FINAL_ASSESSMENT_SCORE)
+	const [searchSettings, setSearchSettings] = React.useState('')
+	const [searchContent, setSearchContent] = React.useState('')
+	const [searchFilterSettings, setSearchFilterSettings] = React.useState({
 		showIncompleteAttempts: false,
 		showPreviewAttempts: false,
 		showAdvancedFields: false
 	})
 
 	const baseUrl = `/api/assessments/${draftId}`
-	const menuRef = createRef()
-
-	// When the fetchUrl changes, fetch the data from that URL and save it to courseData.
-	useEffect(() => {
-		if (!fetchUrl) {
-			return
-		}
-		fetch(fetchUrl, {})
-			.then(res => res.json())
-			.then(res => {
-				setCourseData(res.value)
-				setCourseIsLoading(false)
-				setCourseHasLoaded(true)
-			})
-	}, [fetchUrl])
+	const menuRef = React.createRef()
 
 	const filterCourses = courses => {
 		if (courseSearch.trim().length == 0) {
@@ -72,7 +51,7 @@ const CourseScoreDataDialog = ({
 			const haystack = course.contextTitle.toLowerCase() + course.contextLabel.toLowerCase()
 
 			// If each word in the search can be found in the course title and label, return true
-			containsAll = true
+			let containsAll = true
 			lowerCaseArray.forEach(word => {
 				if (!haystack.includes(word)) {
 					containsAll = false
@@ -84,7 +63,10 @@ const CourseScoreDataDialog = ({
 
 	const filteredCourses = filterCourses(courses)
 
-	const selectCourse = contextId => {
+	const selectCourse = async contextId => {
+		if (selectedCourse == contextId) {
+			return
+		}
 		setCourseData(null)
 		setCourseIsLoading(true)
 		setCourseHasLoaded(false)
@@ -96,7 +78,20 @@ const CourseScoreDataDialog = ({
 
 		const newFetchUrl = `${baseUrl}/course/${contextId}/details`
 		setSelectedIndex(contextId)
-		setFetchUrl(newFetchUrl)
+		const courseData = await runFetch(newFetchUrl)
+		loadCourseData(courseData)
+	}
+
+	const runFetch = fetchUrl => {
+		return fetch(fetchUrl, {})
+			.then(res => res.json())
+			.then(res => res.value)
+	}
+
+	const loadCourseData = courseData => {
+		setCourseData(courseData)
+		setCourseIsLoading(false)
+		setCourseHasLoaded(true)
 	}
 
 	const toggleMenu = () => {
@@ -122,7 +117,7 @@ const CourseScoreDataDialog = ({
 							<div className="course-search">
 								<Search
 									onChange={setCourseSearch}
-									focusOnMount={true}
+									focusOnMount={false}
 									placeholder="Search..."
 									value={courseSearch}
 								/>
@@ -140,9 +135,10 @@ const CourseScoreDataDialog = ({
 								courseLabel={course.contextLabel}
 								courseUserCount={parseInt(course.userCount)}
 								courseLastAccessed={dayjs(course.lastAccessed).format('MMM Do YYYY - h:mm A')}
-								onClick={selectCourse}
+								courseClick={selectCourse}
 								isSelected={selectedIndex === course.contextId}
 								index={course.contextId}
+								key={course.contextId}
 							/>
 						))}
 					</div>
@@ -152,20 +148,8 @@ const CourseScoreDataDialog = ({
 		)
 	}
 
-	const onChangeViewMode = event => {
-		setSearchViewMode(event.target.value)
-	}
-
-	const renderModeSelection = () => {
-		return (
-			<label className="view-mode">
-				Show:
-				<select onChange={onChangeViewMode} value={searchViewMode}>
-					<option value={VIEW_MODE_FINAL_ASSESSMENT_SCORE}>Final Assessment Scores</option>
-					<option value={VIEW_MODE_ALL_ATTEMPTS}>All Attempt Scores</option>
-				</select>
-			</label>
-		)
+	const changeViewMode = mode => {
+		setSearchViewMode(mode)
 	}
 
 	const validCourseSelected = selectedIndex !== null
@@ -196,21 +180,21 @@ const CourseScoreDataDialog = ({
 							<div className="data-viewer--header">
 								<div className="data-viewer--header--title-container">
 									<div className="data-viewer--header--title">{currentCourseTitle}</div>
-									{validCourseSelected ? <small>{currentCourseAccessed}</small> : ''}
+									<small>{currentCourseAccessed}</small>
 								</div>
-								{validCourseSelected ? (
-									<div className="data-viewer--header--filter-container">
-										<CourseStatsSearchControls
-											onChangeSearchSettings={setSearchSettings}
-											onChangeSearchContent={setSearchContent}
-										/>
-									</div>
-								) : (
-									''
-								)}
+								<div className="data-viewer--header--filter-container">
+									<CourseStatsSearchControls
+										searchSettings={searchSettings}
+										onChangeSearchSettings={setSearchSettings}
+										onChangeSearchContent={setSearchContent}
+									/>
+								</div>
 							</div>
 							<div className="data-viewer--filter-controls">
-								{renderModeSelection()}
+								<CourseStatsTypeSelect
+									viewMode={searchViewMode}
+									onChangeViewMode={changeViewMode}
+								/>
 								<CourseStatsFilterControls
 									filterSettings={searchFilterSettings}
 									onChangeFilterSettings={setSearchFilterSettings}

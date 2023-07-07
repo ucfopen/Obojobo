@@ -1,6 +1,9 @@
 import React from 'react'
-import { create, act } from 'react-test-renderer'
+import { create } from 'react-test-renderer'
 import CourseStats from './course-stats'
+
+const VIEW_MODE_FINAL_ASSESSMENT_SCORE = 'final-assessment-scores'
+const VIEW_MODE_ALL_ATTEMPTS = 'all-attempts'
 
 jest.mock('react-data-table-component', () => ({
 	default: props => (
@@ -54,7 +57,7 @@ describe('CourseStats', () => {
 				isPreview: false
 			}
 		],
-		viewMode: 'final-assessment-scores',
+		viewMode: VIEW_MODE_FINAL_ASSESSMENT_SCORE,
 		searchSettings: '',
 		searchContent: '',
 		filterSettings: {
@@ -64,148 +67,78 @@ describe('CourseStats', () => {
 		}
 	})
 
-	test('CourseStats renders correctly', () => {
+	test('CourseStats renders final assessment scores', () => {
 		const component = create(<CourseStats {...getTestProps()} />)
 
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
-
-		// Change the select to view attempts instead of final assessment score:
-		act(() => {
-			component.root
-				.findAllByType('select')[0]
-				.props.onChange({ target: { value: 'all-attempts' } })
-		})
-
-		const tree2 = component.toJSON()
-		expect(tree2).toMatchSnapshot()
-
-		expect(tree).not.toEqual(tree2)
+		const DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
+		expect(DataGrid.props.data.length).toEqual(1)
 	})
 
-	test('CourseStats renders expected number of rows', () => {
-		const component = create(<CourseStats {...getTestProps()} />)
-		let DataGrid
+	test('CourseStats renders all attempts scores', () => {
+		const component = create(<CourseStats {...getTestProps()} viewMode={VIEW_MODE_ALL_ATTEMPTS} />)
 
-		// Highest assessment scores should only be showing one row, with the proper highest score
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
-		expect(DataGrid.props.data.length).toEqual(1)
-		expect(DataGrid.props.data[0].highestAssessmentScore).toEqual(0)
-
-		// Change the filter controls to allow for incomplete attempts
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-incomplete-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: false } })
-		})
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
-		expect(DataGrid.props.data.length).toEqual(1)
-		expect(DataGrid.props.data[0].highestAssessmentScore).toEqual(100)
-
-		// Remove incomplete attempts but enable preview attempts
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-incomplete-attempts' })
-				.props.onChange({ target: { checked: false } })
-		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
-		expect(DataGrid.props.data.length).toEqual(1)
-		expect(DataGrid.props.data[0].highestAssessmentScore).toEqual(10)
-
-		// Both incomplete and preview attempts
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-incomplete-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
-		expect(DataGrid.props.data.length).toEqual(1)
-		expect(DataGrid.props.data[0].highestAssessmentScore).toEqual(100)
-
-		// Reset filters, select to view attempts instead of final assessment score:
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-incomplete-attempts' })
-				.props.onChange({ target: { checked: false } })
-		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: false } })
-			component.root
-				.findAllByType('select')[0]
-				.props.onChange({ target: { value: 'all-attempts' } })
-		})
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+		const DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
 		expect(DataGrid.props.data.length).toEqual(2)
-		expect(DataGrid.props.data[0].assessmentScore).toEqual(null)
-		expect(DataGrid.props.data[1].assessmentScore).toEqual(0)
+	})
 
-		// Change the filter controls to allow for incomplete attempts
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-incomplete-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: false } })
-		})
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
+	test('CourseStats renders preview scores', () => {
+		const component = create(
+			<CourseStats
+				{...getTestProps()}
+				viewMode={VIEW_MODE_ALL_ATTEMPTS}
+				filterSettings={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: true,
+					showAdvancedFields: false
+				}}
+			/>
+		)
+
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+		const DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
 		expect(DataGrid.props.data.length).toEqual(3)
-		expect(DataGrid.props.data[0].assessmentScore).toEqual(null)
-		expect(DataGrid.props.data[1].assessmentScore).toEqual(0)
-		expect(DataGrid.props.data[2].assessmentScore).toEqual(100)
+	})
 
-		// Remove incomplete attempts but enable preview attempts
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-incomplete-attempts' })
-				.props.onChange({ target: { checked: false } })
-		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
+	test('CourseStats renders assessment scores', () => {
+		const component = create(
+			<CourseStats
+				{...getTestProps()}
+				viewMode={VIEW_MODE_ALL_ATTEMPTS}
+				filterSettings={{
+					showIncompleteAttempts: true,
+					showPreviewAttempts: false,
+					showAdvancedFields: false
+				}}
+			/>
+		)
+
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+		const DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
 		expect(DataGrid.props.data.length).toEqual(3)
-		expect(DataGrid.props.data[0].assessmentScore).toEqual(null)
-		expect(DataGrid.props.data[1].assessmentScore).toEqual(10)
-		expect(DataGrid.props.data[2].assessmentScore).toEqual(0)
+	})
 
-		// Both incomplete and preview attempts
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-incomplete-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		act(() => {
-			component.root
-				.findByProps({ className: 'show-preview-attempts' })
-				.props.onChange({ target: { checked: true } })
-		})
-		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
+	test('CourseStats renders unfiltered scores', () => {
+		const component = create(
+			<CourseStats
+				{...getTestProps()}
+				viewMode={VIEW_MODE_ALL_ATTEMPTS}
+				filterSettings={{
+					showIncompleteAttempts: true,
+					showPreviewAttempts: true,
+					showAdvancedFields: true
+				}}
+			/>
+		)
+
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+		const DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
 		expect(DataGrid.props.data.length).toEqual(4)
-		expect(DataGrid.props.data[0].assessmentScore).toEqual(null)
-		expect(DataGrid.props.data[1].assessmentScore).toEqual(10)
-		expect(DataGrid.props.data[2].assessmentScore).toEqual(0)
-		expect(DataGrid.props.data[3].assessmentScore).toEqual(100)
 	})
 })

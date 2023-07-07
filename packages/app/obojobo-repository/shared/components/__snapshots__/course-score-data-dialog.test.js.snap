@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly when history is loading 1`] = `
+exports[`CourseScoreDataDialog CourseMenu Menu renders correctly with courses 1`] = `
 <div
-  className="assessment-score-data-dialog"
+  className="course-score-data-dialog"
 >
   <div
-    className="assessment-score-data-dialog--header"
+    className="course-score-data-dialog--header"
   >
     <div
       className="repository--module-icon--image"
@@ -30,277 +30,187 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
     </button>
   </div>
   <div
-    className="assessment-score-data-dialog--body"
+    className="course-score-data-dialog--body"
   >
-    <div
-      className="repository--assessment-stats"
+    <mock-CSSTransition
+      in={true}
+      timeout={250}
     >
       <div
-        className="settings"
+        className="course-score-data-list"
       >
-        <label
-          className="view-mode"
-        >
-          <span>
-            Showing:
-          </span>
-          <select
-            onChange={[Function]}
-            value="final-assessment-scores"
-          >
-            <option
-              value="final-assessment-scores"
-            >
-              Final Assessment Scores
-            </option>
-            <option
-              value="all-attempts"
-            >
-              All Attempt Scores
-            </option>
-          </select>
-        </label>
-        <hr />
         <div
-          className="filters"
+          className="menu-expanded"
         >
           <div
-            className="repository--assessment-stats-search-controls"
+            className="course-score-data-list--title"
           >
+            <div>
+              Available Courses
+            </div>
             <div
-              className="search-by-text"
+              className="desc"
             >
-              <label
-                htmlFor="repository--assessment-stats-search-controls--search-by"
-              >
-                Search by: 
-              </label>
+              Recently Accessed First
+            </div>
+            <div
+              className="course-search"
+            >
               <div
-                className="controls"
+                className="repository--nav--links--search is-empty"
               >
-                <select
-                  id="repository--assessment-stats-search-controls--search-by"
-                  onChange={[Function]}
-                >
-                  <option
+                <form>
+                  <input
+                    name="search"
+                    onChange={[Function]}
+                    placeholder="Search..."
+                    type="search"
                     value=""
+                  />
+                  
+                </form>
+                <div
+                  className="repository--nav--links--search--icon"
+                >
+                  <svg
+                    viewBox="0 0 250.313 250.313"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Select one...
-                  </option>
-                  <option
-                    value="course-title"
-                  >
-                    Course title
-                  </option>
-                  <option
-                    value="resource-link-title"
-                  >
-                    Resource link title
-                  </option>
-                  <option
-                    value="user-first-name"
-                  >
-                    First name
-                  </option>
-                  <option
-                    value="user-last-name"
-                  >
-                    Last name
-                  </option>
-                </select>
+                    <path
+                      clipRule="evenodd"
+                      d="m244.19 214.6l-54.379-54.378c-0.289-0.289-0.628-0.491-0.93-0.76 10.7-16.231 16.945-35.66 16.945-56.554 0-56.837-46.075-102.91-102.91-102.91s-102.91 46.075-102.91 102.91c0 56.835 46.074 102.91 102.91 102.91 20.895 0 40.323-6.245 56.554-16.945 0.269 0.301 0.47 0.64 0.759 0.929l54.38 54.38c8.169 8.168 21.413 8.168 29.583 0 8.168-8.169 8.168-21.413 0-29.582zm-141.28-44.458c-37.134 0-67.236-30.102-67.236-67.235 0-37.134 30.103-67.236 67.236-67.236 37.132 0 67.235 30.103 67.235 67.236s-30.103 67.235-67.235 67.235z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-            <hr />
-            <div
-              className="search-by-date"
+            <button
+              className="toggle-button"
+              onClick={[Function]}
             >
+              Toggle Navigation Menu
+            </button>
+          </div>
+          
+          <div
+            className="course-score-data-list--item"
+            onClick={[Function]}
+          >
+            <div
+              className="courseTitle"
+            >
+              Mock Course 1
+               (
+              mock-course-1
+              )
+            </div>
+            <div
+              className="userCount"
+            >
+              10
+               Learner
+              s
+            </div>
+            <div
+              className="accessed"
+            >
+              Last Accessed   
               <span
-                className="label"
+                className="timestamp"
               >
-                Filter attempts by date range:
+                Jun 21o 2023 - 9:33 AM
               </span>
-              <label>
-                <span>
-                  From:
-                </span>
-                <div
-                  className="date-range"
-                >
-                  <input
-                    onChange={[Function]}
-                    type="date"
-                    value=""
-                  />
-                  <button
-                    className="repository--button secondary-button"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    × Clear
-                  </button>
-                </div>
-              </label>
-              <label>
-                <span>
-                  To:
-                </span>
-                <div
-                  className="date-range"
-                >
-                  <input
-                    onChange={[Function]}
-                    type="date"
-                    value=""
-                  />
-                  <button
-                    className="repository--button secondary-button"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    × Clear
-                  </button>
-                </div>
-              </label>
             </div>
           </div>
-          <hr />
           <div
-            className="repository--assessment-stats-filter-controls"
+            className="course-score-data-list--item"
+            onClick={[Function]}
           >
             <div
-              className="container"
+              className="courseTitle"
             >
-              <label>
-                <input
-                  checked={false}
-                  className="show-incomplete-attempts"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include incomplete attempt data
-                </span>
-              </label>
-              <label>
-                <input
-                  checked={false}
-                  className="show-preview-attempts"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include preview attempt data
-                </span>
-              </label>
-              <hr />
-              <label>
-                <input
-                  checked={false}
-                  className="show-advanced-fields"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include advanced fields
-                </span>
-              </label>
+              Mock Course 2
+               (
+              mock-course-2
+              )
+            </div>
+            <div
+              className="userCount"
+            >
+              200
+               Learner
+              s
+            </div>
+            <div
+              className="accessed"
+            >
+              Last Accessed   
+              <span
+                className="timestamp"
+              >
+                Jun 22o 2023 - 10:33 AM
+              </span>
+            </div>
+          </div>
+          <div
+            className="course-score-data-list--item"
+            onClick={[Function]}
+          >
+            <div
+              className="courseTitle"
+            >
+              Mock Course 3
+               (
+              mock-course-3
+              )
+            </div>
+            <div
+              className="userCount"
+            >
+              3000
+               Learner
+              s
+            </div>
+            <div
+              className="accessed"
+            >
+              Last Accessed   
+              <span
+                className="timestamp"
+              >
+                Jun 23o 2023 - 11:33 AM
+              </span>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        className="repository--data-grid-assessments"
-      >
         <div
-          className="repository--data-grid-scores"
+          className="menu-collapsed"
         >
-          <div
-            className="data-grid"
+          <button
+            className="toggle-button"
+            onClick={[Function]}
           >
-            <div
-              className="react-data-table-component"
-              columns={
-                Array [
-                  Object {
-                    "advanced": false,
-                    "name": "First Name",
-                    "selector": "userFirstName",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Last Name",
-                    "selector": "userLastName",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Course Title",
-                    "selector": "courseTitle",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Resource Link Title",
-                    "selector": "resourceLinkTitle",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "URL",
-                    "selector": "launchPresentationReturnUrl",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "Final Assessment Score",
-                    "selector": "highestAssessmentScore",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "Preview Mode",
-                    "selector": "isPreview",
-                    "sortable": true,
-                  },
-                ]
-              }
-              data={Array []}
-              dense={true}
-              pagination={true}
-              paginationComponentOptions={
-                Object {
-                  "noRowsPerPage": true,
-                }
-              }
-              paginationPerPage={250}
-              paginationRowsPerPageOptions={
-                Array [
-                  250,
-                ]
-              }
-              striped={true}
-              title="Final Assessment Scores"
-            >
-              react-data-table-component
-            </div>
-          </div>
+            Toggle Navigation Menu
+          </button>
         </div>
       </div>
+    </mock-CSSTransition>
+    <div
+      className="text-loader"
+    >
+      Select a Course to View Assessment Data
     </div>
   </div>
 </div>
 `;
 
-exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly when no attempt data 1`] = `
+exports[`CourseScoreDataDialog Modal renders correctly when history is loading 1`] = `
 <div
-  className="assessment-score-data-dialog"
+  className="course-score-data-dialog"
 >
   <div
-    className="assessment-score-data-dialog--header"
+    className="course-score-data-dialog--header"
   >
     <div
       className="repository--module-icon--image"
@@ -325,277 +235,23 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
     </button>
   </div>
   <div
-    className="assessment-score-data-dialog--body"
+    className="course-score-data-dialog--body"
   >
     <div
-      className="repository--assessment-stats"
+      className="loading--container"
     >
-      <div
-        className="settings"
-      >
-        <label
-          className="view-mode"
-        >
-          <span>
-            Showing:
-          </span>
-          <select
-            onChange={[Function]}
-            value="final-assessment-scores"
-          >
-            <option
-              value="final-assessment-scores"
-            >
-              Final Assessment Scores
-            </option>
-            <option
-              value="all-attempts"
-            >
-              All Attempt Scores
-            </option>
-          </select>
-        </label>
-        <hr />
-        <div
-          className="filters"
-        >
-          <div
-            className="repository--assessment-stats-search-controls"
-          >
-            <div
-              className="search-by-text"
-            >
-              <label
-                htmlFor="repository--assessment-stats-search-controls--search-by"
-              >
-                Search by: 
-              </label>
-              <div
-                className="controls"
-              >
-                <select
-                  id="repository--assessment-stats-search-controls--search-by"
-                  onChange={[Function]}
-                >
-                  <option
-                    value=""
-                  >
-                    Select one...
-                  </option>
-                  <option
-                    value="course-title"
-                  >
-                    Course title
-                  </option>
-                  <option
-                    value="resource-link-title"
-                  >
-                    Resource link title
-                  </option>
-                  <option
-                    value="user-first-name"
-                  >
-                    First name
-                  </option>
-                  <option
-                    value="user-last-name"
-                  >
-                    Last name
-                  </option>
-                </select>
-              </div>
-            </div>
-            <hr />
-            <div
-              className="search-by-date"
-            >
-              <span
-                className="label"
-              >
-                Filter attempts by date range:
-              </span>
-              <label>
-                <span>
-                  From:
-                </span>
-                <div
-                  className="date-range"
-                >
-                  <input
-                    onChange={[Function]}
-                    type="date"
-                    value=""
-                  />
-                  <button
-                    className="repository--button secondary-button"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    × Clear
-                  </button>
-                </div>
-              </label>
-              <label>
-                <span>
-                  To:
-                </span>
-                <div
-                  className="date-range"
-                >
-                  <input
-                    onChange={[Function]}
-                    type="date"
-                    value=""
-                  />
-                  <button
-                    className="repository--button secondary-button"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    × Clear
-                  </button>
-                </div>
-              </label>
-            </div>
-          </div>
-          <hr />
-          <div
-            className="repository--assessment-stats-filter-controls"
-          >
-            <div
-              className="container"
-            >
-              <label>
-                <input
-                  checked={false}
-                  className="show-incomplete-attempts"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include incomplete attempt data
-                </span>
-              </label>
-              <label>
-                <input
-                  checked={false}
-                  className="show-preview-attempts"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include preview attempt data
-                </span>
-              </label>
-              <hr />
-              <label>
-                <input
-                  checked={false}
-                  className="show-advanced-fields"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include advanced fields
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="repository--data-grid-assessments"
-      >
-        <div
-          className="repository--data-grid-scores"
-        >
-          <div
-            className="data-grid"
-          >
-            <div
-              className="react-data-table-component"
-              columns={
-                Array [
-                  Object {
-                    "advanced": false,
-                    "name": "First Name",
-                    "selector": "userFirstName",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Last Name",
-                    "selector": "userLastName",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Course Title",
-                    "selector": "courseTitle",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Resource Link Title",
-                    "selector": "resourceLinkTitle",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "URL",
-                    "selector": "launchPresentationReturnUrl",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "Final Assessment Score",
-                    "selector": "highestAssessmentScore",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "Preview Mode",
-                    "selector": "isPreview",
-                    "sortable": true,
-                  },
-                ]
-              }
-              data={Array []}
-              dense={true}
-              pagination={true}
-              paginationComponentOptions={
-                Object {
-                  "noRowsPerPage": true,
-                }
-              }
-              paginationPerPage={250}
-              paginationRowsPerPageOptions={
-                Array [
-                  250,
-                ]
-              }
-              striped={true}
-              title="Final Assessment Scores"
-            >
-              react-data-table-component
-            </div>
-          </div>
-        </div>
-      </div>
+      Loading courses...
     </div>
   </div>
 </div>
 `;
 
-exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly with attempts 1`] = `
+exports[`CourseScoreDataDialog Modal renders correctly when no course data 1`] = `
 <div
-  className="assessment-score-data-dialog"
+  className="course-score-data-dialog"
 >
   <div
-    className="assessment-score-data-dialog--header"
+    className="course-score-data-dialog--header"
   >
     <div
       className="repository--module-icon--image"
@@ -620,301 +276,295 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
     </button>
   </div>
   <div
-    className="assessment-score-data-dialog--body"
+    className="course-score-data-dialog--body"
   >
-    <div
-      className="repository--assessment-stats"
+    <mock-CSSTransition
+      in={true}
+      timeout={250}
     >
       <div
-        className="settings"
+        className="course-score-data-list"
       >
-        <label
-          className="view-mode"
-        >
-          <span>
-            Showing:
-          </span>
-          <select
-            onChange={[Function]}
-            value="final-assessment-scores"
-          >
-            <option
-              value="final-assessment-scores"
-            >
-              Final Assessment Scores
-            </option>
-            <option
-              value="all-attempts"
-            >
-              All Attempt Scores
-            </option>
-          </select>
-        </label>
-        <hr />
         <div
-          className="filters"
+          className="menu-expanded"
         >
           <div
-            className="repository--assessment-stats-search-controls"
+            className="course-score-data-list--title"
           >
+            <div>
+              Available Courses
+            </div>
             <div
-              className="search-by-text"
+              className="desc"
             >
-              <label
-                htmlFor="repository--assessment-stats-search-controls--search-by"
-              >
-                Search by: 
-              </label>
+              Recently Accessed First
+            </div>
+            <div
+              className="course-search"
+            >
               <div
-                className="controls"
+                className="repository--nav--links--search is-empty"
               >
-                <select
-                  id="repository--assessment-stats-search-controls--search-by"
-                  onChange={[Function]}
-                >
-                  <option
+                <form>
+                  <input
+                    name="search"
+                    onChange={[Function]}
+                    placeholder="Search..."
+                    type="search"
                     value=""
+                  />
+                  
+                </form>
+                <div
+                  className="repository--nav--links--search--icon"
+                >
+                  <svg
+                    viewBox="0 0 250.313 250.313"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Select one...
-                  </option>
-                  <option
-                    value="course-title"
-                  >
-                    Course title
-                  </option>
-                  <option
-                    value="resource-link-title"
-                  >
-                    Resource link title
-                  </option>
-                  <option
-                    value="user-first-name"
-                  >
-                    First name
-                  </option>
-                  <option
-                    value="user-last-name"
-                  >
-                    Last name
-                  </option>
-                </select>
+                    <path
+                      clipRule="evenodd"
+                      d="m244.19 214.6l-54.379-54.378c-0.289-0.289-0.628-0.491-0.93-0.76 10.7-16.231 16.945-35.66 16.945-56.554 0-56.837-46.075-102.91-102.91-102.91s-102.91 46.075-102.91 102.91c0 56.835 46.074 102.91 102.91 102.91 20.895 0 40.323-6.245 56.554-16.945 0.269 0.301 0.47 0.64 0.759 0.929l54.38 54.38c8.169 8.168 21.413 8.168 29.583 0 8.168-8.169 8.168-21.413 0-29.582zm-141.28-44.458c-37.134 0-67.236-30.102-67.236-67.235 0-37.134 30.103-67.236 67.236-67.236 37.132 0 67.235 30.103 67.235 67.236s-30.103 67.235-67.235 67.235z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-            <hr />
-            <div
-              className="search-by-date"
+            <button
+              className="toggle-button"
+              onClick={[Function]}
             >
-              <span
-                className="label"
-              >
-                Filter attempts by date range:
-              </span>
-              <label>
-                <span>
-                  From:
-                </span>
-                <div
-                  className="date-range"
-                >
-                  <input
-                    onChange={[Function]}
-                    type="date"
-                    value=""
-                  />
-                  <button
-                    className="repository--button secondary-button"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    × Clear
-                  </button>
-                </div>
-              </label>
-              <label>
-                <span>
-                  To:
-                </span>
-                <div
-                  className="date-range"
-                >
-                  <input
-                    onChange={[Function]}
-                    type="date"
-                    value=""
-                  />
-                  <button
-                    className="repository--button secondary-button"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    × Clear
-                  </button>
-                </div>
-              </label>
-            </div>
+              Toggle Navigation Menu
+            </button>
           </div>
-          <hr />
           <div
-            className="repository--assessment-stats-filter-controls"
+            className="no-courses-text"
           >
-            <div
-              className="container"
-            >
-              <label>
-                <input
-                  checked={false}
-                  className="show-incomplete-attempts"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include incomplete attempt data
-                </span>
-              </label>
-              <label>
-                <input
-                  checked={false}
-                  className="show-preview-attempts"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include preview attempt data
-                </span>
-              </label>
-              <hr />
-              <label>
-                <input
-                  checked={false}
-                  className="show-advanced-fields"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <span>
-                  Include advanced fields
-                </span>
-              </label>
-            </div>
+            No Courses Found
           </div>
         </div>
+        <div
+          className="menu-collapsed"
+        >
+          <button
+            className="toggle-button"
+            onClick={[Function]}
+          >
+            Toggle Navigation Menu
+          </button>
+        </div>
       </div>
+    </mock-CSSTransition>
+    <div
+      className="text-loader"
+    >
+      Select a Course to View Assessment Data
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CourseScoreDataDialog Modal renders correctly with courses 1`] = `
+<div
+  className="course-score-data-dialog"
+>
+  <div
+    className="course-score-data-dialog--header"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <img
+        height="100%"
+        src="/library/module-icon/mock-draft-id"
+        width="100%"
+      />
+    </div>
+    <div
+      className="title"
+    >
+      mock-title
+    </div>
+    <button
+      aria-label="Close dialog"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="course-score-data-dialog--body"
+  >
+    <mock-CSSTransition
+      in={true}
+      timeout={250}
+    >
       <div
-        className="repository--data-grid-assessments"
+        className="course-score-data-list"
       >
         <div
-          className="repository--data-grid-scores"
+          className="menu-expanded"
         >
           <div
-            className="data-grid"
+            className="course-score-data-list--title"
+          >
+            <div>
+              Available Courses
+            </div>
+            <div
+              className="desc"
+            >
+              Recently Accessed First
+            </div>
+            <div
+              className="course-search"
+            >
+              <div
+                className="repository--nav--links--search is-empty"
+              >
+                <form>
+                  <input
+                    name="search"
+                    onChange={[Function]}
+                    placeholder="Search..."
+                    type="search"
+                    value=""
+                  />
+                  
+                </form>
+                <div
+                  className="repository--nav--links--search--icon"
+                >
+                  <svg
+                    viewBox="0 0 250.313 250.313"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="m244.19 214.6l-54.379-54.378c-0.289-0.289-0.628-0.491-0.93-0.76 10.7-16.231 16.945-35.66 16.945-56.554 0-56.837-46.075-102.91-102.91-102.91s-102.91 46.075-102.91 102.91c0 56.835 46.074 102.91 102.91 102.91 20.895 0 40.323-6.245 56.554-16.945 0.269 0.301 0.47 0.64 0.759 0.929l54.38 54.38c8.169 8.168 21.413 8.168 29.583 0 8.168-8.169 8.168-21.413 0-29.582zm-141.28-44.458c-37.134 0-67.236-30.102-67.236-67.235 0-37.134 30.103-67.236 67.236-67.236 37.132 0 67.235 30.103 67.235 67.236s-30.103 67.235-67.235 67.235z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <button
+              className="toggle-button"
+              onClick={[Function]}
+            >
+              Toggle Navigation Menu
+            </button>
+          </div>
+          
+          <div
+            className="course-score-data-list--item"
+            onClick={[Function]}
           >
             <div
-              className="react-data-table-component"
-              columns={
-                Array [
-                  Object {
-                    "advanced": false,
-                    "name": "First Name",
-                    "selector": "userFirstName",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Last Name",
-                    "selector": "userLastName",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Course Title",
-                    "selector": "courseTitle",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "name": "Resource Link Title",
-                    "selector": "resourceLinkTitle",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "URL",
-                    "selector": "launchPresentationReturnUrl",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "Final Assessment Score",
-                    "selector": "highestAssessmentScore",
-                    "sortable": true,
-                  },
-                  Object {
-                    "advanced": false,
-                    "cell": [Function],
-                    "name": "Preview Mode",
-                    "selector": "isPreview",
-                    "sortable": true,
-                  },
-                ]
-              }
-              data={
-                Array [
-                  Object {
-                    "assessmentId": undefined,
-                    "completedAt": null,
-                    "contextId": undefined,
-                    "courseTitle": undefined,
-                    "draftContentId": undefined,
-                    "draftId": undefined,
-                    "highestAssessmentScore": undefined,
-                    "isPreview": undefined,
-                    "launchPresentationReturnUrl": undefined,
-                    "moduleTitle": undefined,
-                    "resourceLinkId": undefined,
-                    "resourceLinkTitle": undefined,
-                    "userFirstName": undefined,
-                    "userId": undefined,
-                    "userLastName": undefined,
-                    "userRoles": undefined,
-                    "username": undefined,
-                  },
-                ]
-              }
-              dense={true}
-              pagination={true}
-              paginationComponentOptions={
-                Object {
-                  "noRowsPerPage": true,
-                }
-              }
-              paginationPerPage={250}
-              paginationRowsPerPageOptions={
-                Array [
-                  250,
-                ]
-              }
-              striped={true}
-              title="Final Assessment Scores"
+              className="courseTitle"
             >
-              react-data-table-component
+              Mock Course 1
+               (
+              mock-course-1
+              )
+            </div>
+            <div
+              className="userCount"
+            >
+              10
+               Learner
+              s
+            </div>
+            <div
+              className="accessed"
+            >
+              Last Accessed   
+              <span
+                className="timestamp"
+              >
+                Jun 21o 2023 - 9:33 AM
+              </span>
             </div>
           </div>
-          <a
-            className="repository--button "
-            download="final-assessment-scores__"
-            href="data:text/csv;charset=utf-8,%22First%20Name%22%2C%22Last%20Name%22%2C%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22%22"
+          <div
+            className="course-score-data-list--item"
+            onClick={[Function]}
           >
-            ⬇️   Download 
-            
-             Table as CSV File (
-            1
-             row
-            
-            )
-          </a>
+            <div
+              className="courseTitle"
+            >
+              Mock Course 2
+               (
+              mock-course-2
+              )
+            </div>
+            <div
+              className="userCount"
+            >
+              200
+               Learner
+              s
+            </div>
+            <div
+              className="accessed"
+            >
+              Last Accessed   
+              <span
+                className="timestamp"
+              >
+                Jun 22o 2023 - 10:33 AM
+              </span>
+            </div>
+          </div>
+          <div
+            className="course-score-data-list--item"
+            onClick={[Function]}
+          >
+            <div
+              className="courseTitle"
+            >
+              Mock Course 3
+               (
+              mock-course-3
+              )
+            </div>
+            <div
+              className="userCount"
+            >
+              3000
+               Learner
+              s
+            </div>
+            <div
+              className="accessed"
+            >
+              Last Accessed   
+              <span
+                className="timestamp"
+              >
+                Jun 23o 2023 - 11:33 AM
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="menu-collapsed"
+        >
+          <button
+            className="toggle-button"
+            onClick={[Function]}
+          >
+            Toggle Navigation Menu
+          </button>
         </div>
       </div>
+    </mock-CSSTransition>
+    <div
+      className="text-loader"
+    >
+      Select a Course to View Assessment Data
     </div>
   </div>
 </div>
