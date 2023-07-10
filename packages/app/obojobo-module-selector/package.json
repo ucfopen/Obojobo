@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-module-selector",
 	"license": "AGPL-3.0-only",
-	"version": "15.1.1",
+	"version": "16.0.1",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo package responsible for selecting which module you use in a course.",
@@ -29,8 +29,8 @@
 		"express": "~4.18.2"
 	},
 	"peerDependencies": {
-		"obojobo-express": "^15.1.1",
-		"obojobo-lib-utils": "^15.1.1",
-		"obojobo-repository": "^15.1.1"
+		"obojobo-express": "^16.0.1",
+		"obojobo-lib-utils": "^16.0.1",
+		"obojobo-repository": "^16.0.1"
 	}
 }

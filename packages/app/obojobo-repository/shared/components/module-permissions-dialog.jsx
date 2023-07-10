@@ -54,6 +54,15 @@ class ModulePermissionsDialog extends React.Component {
 
 	renderModal() {
 		if (this.state.peoplePickerOpen) {
+			let draftPermissions = null
+
+			if (
+				this.props.draftPermissions[this.props.draftId] !== null &&
+				// eslint-disable-next-line no-undefined
+				this.props.draftPermissions[this.props.draftId] !== undefined
+			) {
+				draftPermissions = this.props.draftPermissions[this.props.draftId].items
+			}
 			return (
 				<ReactModal
 					isOpen={true}
@@ -66,6 +75,7 @@ class ModulePermissionsDialog extends React.Component {
 						onClose={this.closePeoplePicker}
 						onSelectPerson={this.addPerson}
 						currentUserId={this.props.currentUserId}
+						draftPermissions={draftPermissions}
 					/>
 				</ReactModal>
 			)

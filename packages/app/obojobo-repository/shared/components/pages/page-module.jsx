@@ -5,6 +5,7 @@ const RepositoryNav = require('../repository-nav')
 const RepositoryBanner = require('../repository-banner')
 const ModuleImage = require('../module-image')
 const Button = require('../button')
+const ButtonLink = require('../button-link')
 const APIUtil = require('../../api-util')
 const dayjs = require('dayjs')
 const relativeTime = require('dayjs/plugin/relativeTime')
@@ -26,6 +27,10 @@ const PageModule = props => (
 		</RepositoryBanner>
 
 		<section className="repository--main-content">
+			<ButtonLink url={`/preview/${props.module.draftId}`} target="_blank">
+				Preview this module
+			</ButtonLink>
+
 			<Button
 				className="copy-button"
 				onClick={() => APIUtil.copyModule(props.module.draftId)}

@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Excerpt editor renderNode renders excerpt citation text when passed 1`] = `
+<cite
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  element={
+    Object {
+      "children": Array [
+        Object {
+          "text": "citation text",
+        },
+      ],
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    }
+  }
+/>
+`;
+
+exports[`Excerpt editor renderNode renders excerpt content when passed 1`] = `
+<SlateWrapper
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  element={
+    Object {
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    }
+  }
+/>
+`;
+
+exports[`Excerpt editor renderNode renders excerpt when passed 1`] = `
+<SlateWrapper
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  element={
+    Object {
+      "content": Object {},
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    }
+  }
+/>
+`;

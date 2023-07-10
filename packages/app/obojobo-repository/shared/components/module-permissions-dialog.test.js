@@ -33,7 +33,8 @@ describe('ModulePermissionsDialog', () => {
 			addUserToModule: jest.fn(),
 			deleteModulePermissions: jest.fn(),
 			changeAccessLevel: jest.fn(),
-			onClose: jest.fn()
+			onClose: jest.fn(),
+			openPeoplePicker: jest.fn()
 		}
 	})
 
@@ -49,6 +50,10 @@ describe('ModulePermissionsDialog', () => {
 	const expectPeopleSearchModalToBeRendered = (component, isRendered) => {
 		expect(component.root.findAllByType(ReactModal).length).toBe(isRendered ? 1 : 0)
 		expect(component.root.findAllByType(PeopleSearchDialog).length).toBe(isRendered ? 1 : 0)
+	}
+
+	const expectModulePermissionsModalToBeRendered = (component, isRendered) => {
+		expect(component.root.findAllByType(ReactModal).length).toBe(isRendered ? 1 : 0)
 	}
 
 	test('renders with "null" draftPermissions', () => {
@@ -78,13 +83,17 @@ describe('ModulePermissionsDialog', () => {
 		defaultProps.draftPermissions['mockDraftId'] = {
 			items: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
 		}
+
 		let component
+
 		act(() => {
 			component = create(<ModulePermissionsDialog {...defaultProps} />)
 		})
+		act(() => {
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
+		})
 
 		expectLoadUsersForModuleToBeCalledOnceWithId()
-
 		const peopleListItems = component.root.findAllByType(PeopleListItem)
 		expect(peopleListItems.length).toBe(4)
 		expect(peopleListItems[0].props.isMe).toBe(false)
@@ -108,6 +117,26 @@ describe('ModulePermissionsDialog', () => {
 		})
 
 		expectPeopleSearchModalToBeRendered(component, true)
+	})
+
+	test('clicking the "Add People" button opens the search dialog and passes it draftPermissions', () => {
+		defaultProps.draftPermissions['mockDraftId'] = {
+			items: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 99 }]
+		}
+		const reusableComponent = <ModulePermissionsDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		expectModulePermissionsModalToBeRendered(component, false)
+
+		act(() => {
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expectModulePermissionsModalToBeRendered(component, true)
 	})
 
 	test('modal closes the people search modal when callback is called', () => {

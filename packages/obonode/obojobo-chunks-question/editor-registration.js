@@ -17,6 +17,7 @@ const Question = {
 	isInsertable: true,
 	acceptsInserts: false,
 	supportsChildren: true,
+	disallowedChildren: ['ObojoboDraft.Chunks.Question', 'ObojoboDraft.Chunks.QuestionBank'],
 	helpers: Converter,
 	json: {
 		emptyNode

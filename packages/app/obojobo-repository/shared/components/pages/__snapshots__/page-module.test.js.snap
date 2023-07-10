@@ -107,6 +107,14 @@ exports[`PageModule renders when given props 1`] = `
   <section
     className="repository--main-content"
   >
+    <a
+      className="repository--button "
+      download={null}
+      href="/preview/mockDraftId"
+      target="_blank"
+    >
+      Preview this module
+    </a>
     <button
       className="repository--button copy-button"
       disabled={true}

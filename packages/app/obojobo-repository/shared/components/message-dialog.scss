@@ -1,0 +1,12 @@
+@import '../../client/css/defaults';
+
+.message-dialog {
+	max-width: 25em;
+	text-align: center;
+	width: 50vw;
+	padding-bottom: 1em;
+
+	.message {
+		padding: 1em;
+	}
+}

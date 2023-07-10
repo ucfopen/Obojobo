@@ -147,11 +147,13 @@
 				.objective-button {
 					position: absolute;
 					top: 0.5vh;
-					right: 0vh;
+					right: 0;
 				}
+
 				.objectives {
 					padding-right: 3.5em;
 					display: inline-block;
+
 					span {
 						padding-left: 0.5em;
 						font-weight: normal;
