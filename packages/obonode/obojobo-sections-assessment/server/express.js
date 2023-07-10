@@ -240,15 +240,10 @@ router
 						return res.notAuthorized()
 
 					default:
-						logAndRespondToUnexpected(
-							'Unexpected error fetching course details',
-							res,
-							req,
-							error
-						)
+						logAndRespondToUnexpected('Unexpected error fetching course details', res, req, error)
 				}
 			})
-		})
+	})
 
 router
 	.route('/api/assessments/:draftId/details')
@@ -368,7 +363,6 @@ router
 						)
 				}
 			})
-				
 	})
 
 // register the event listeners

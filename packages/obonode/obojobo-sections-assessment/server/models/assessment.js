@@ -222,7 +222,7 @@ class AssessmentModel {
 					A.draft_content_id = C.id
 				WHERE
 					S.draft_id = $[draftId]
-					${contextId !== null ? "AND N.data ->> 'context_id' = '" + contextId + "'" : ""}
+					${contextId !== null ? "AND N.data ->> 'context_id' = '" + contextId + "'" : ''}
 				ORDER BY
 					A.created_at
 				`,

@@ -1,6 +1,9 @@
 // =================== API =======================
 
-const { apiGetAssessmentDetailsForMultipleDrafts, apiGetAssessmentDetailsForCourse } = require('./shared-api-methods')
+const {
+	apiGetAssessmentDetailsForMultipleDrafts,
+	apiGetAssessmentDetailsForCourse
+} = require('./shared-api-methods')
 
 // ================== ACTIONS ===================
 

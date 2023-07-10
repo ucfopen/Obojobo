@@ -56,7 +56,6 @@ jest.mock('./course-score-data-dialog', () => props => {
 	return <mock-CourseScoreDataDialog {...props}></mock-CourseScoreDataDialog>
 })
 
-
 import React from 'react'
 import { create, act } from 'react-test-renderer'
 

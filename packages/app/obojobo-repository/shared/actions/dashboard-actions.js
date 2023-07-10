@@ -2,7 +2,11 @@ const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-consta
 const debouncePromise = require('debounce-promise')
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
-const { apiGetAssessmentDetailsForDraft, apiGetCoursesForDraft, apiGetAssessmentDetailsForCourse } = require('./shared-api-methods')
+const {
+	apiGetAssessmentDetailsForDraft,
+	apiGetCoursesForDraft,
+	apiGetAssessmentDetailsForCourse
+} = require('./shared-api-methods')
 
 dayjs.extend(advancedFormat)
 // =================== API =======================

@@ -28,7 +28,10 @@ const apiGetCoursesForDraft = draftId => {
 }
 
 const apiGetAssessmentDetailsForCourse = params => {
-	return fetch(`/api/assessments/${params.draftId}/course/${params.contextId}/details`, defaultOptions())
+	return fetch(
+		`/api/assessments/${params.draftId}/course/${params.contextId}/details`,
+		defaultOptions()
+	)
 		.then(res => res.json())
 		.then(res => res.value)
 }

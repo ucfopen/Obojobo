@@ -139,13 +139,16 @@ describe('sharedAPIMethods', () => {
 			{
 				attemptId: 'mock-attempt-2',
 				draftId: 'draft-id-1',
-				userRoles: ['A']	
+				userRoles: ['A']
 			}
 		])
 	})
 
 	test('apiGetAssessmentDetailsForCourse returns expected object', async () => {
-		const result = await apiGetAssessmentDetailsForCourse({ draftId: 'draft-id-1', contextId: 'context-id-1' })
+		const result = await apiGetAssessmentDetailsForCourse({
+			draftId: 'draft-id-1',
+			contextId: 'context-id-1'
+		})
 
 		expect(global.fetch).toHaveBeenCalledTimes(1)
 		expect(result).toEqual([
@@ -157,7 +160,7 @@ describe('sharedAPIMethods', () => {
 			{
 				attemptId: 'mock-attempt-2',
 				draftId: 'draft-id-1',
-				userRoles: ['A']	
+				userRoles: ['A']
 			}
 		])
 	})
