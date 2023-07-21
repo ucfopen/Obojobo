@@ -26,7 +26,8 @@ describe('CollectionBulkAddModulesDialog', () => {
 			],
 			selectedModules: ['mockDraftId1', 'mockDraftId2'],
 			bulkAddModulesToCollection: jest.fn(),
-			onClose: jest.fn()
+			onClose: jest.fn(),
+			onClear: jest.fn()
 		}
 	})
 
@@ -47,6 +48,18 @@ describe('CollectionBulkAddModulesDialog', () => {
 		})
 
 		expect(component.root.findAllByType(Checkbox).length).toBe(3)
+	})
+
+	test('renders title for single module without an s', () => {
+		defaultProps.selectedModules = ['mockDraftId1']
+
+		let component
+		act(() => {
+			component = create(<CollectionBulkAddModulesDialog {...defaultProps} />)
+		})
+
+		const titleDiv = component.root.findByProps({ className: 'module-count' })
+		expect(titleDiv.children[0]).toBe('1 Module Selected')
 	})
 
 	test('renders collections with no title', () => {
@@ -162,7 +175,8 @@ describe('CollectionBulkAddModulesDialog', () => {
 		clickAddButton(component)
 
 		expectAddCallbackCalledWith([])
-		expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+		expect(defaultProps.onClose).toHaveBeenCalledTimes(0)
+		expect(defaultProps.onClear).toHaveBeenCalledTimes(1)
 	})
 
 	test('the list of selected collections is modified appropriately when collections are clicked', () => {

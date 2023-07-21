@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-question-bank",
-	"version": "15.1.1",
+	"version": "17.0.0-alpha.0",
 	"license": "AGPL-3.0-only",
 	"description": "QuestionBank chunk for Obojobo",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"peerDependencies": {
-		"obojobo-lib-utils": "^15.1.1"
+		"obojobo-lib-utils": "^17.0.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
