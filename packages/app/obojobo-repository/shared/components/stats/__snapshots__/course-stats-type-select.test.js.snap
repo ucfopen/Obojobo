@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseStatsTypeSelect mode selection element renders properly 1`] = `
+<label
+  className="view-mode"
+>
+  Show:
+  <select
+    className="view-mode-selector"
+    onChange={[Function]}
+    value="final-assessment-scores"
+  >
+    <option
+      value="final-assessment-scores"
+    >
+      Final Assessment Scores
+    </option>
+    <option
+      value="all-attempts"
+    >
+      All Attempt Scores
+    </option>
+  </select>
+</label>
+`;

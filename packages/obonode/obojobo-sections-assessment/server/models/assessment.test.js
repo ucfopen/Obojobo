@@ -115,6 +115,17 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
+	test('fetchCoursesByDraft calls db.manyOrNone', () => {
+		AssessmentModel.fetchCoursesByDraft('mock-draft-id')
+
+		expect(db.manyOrNone).toHaveBeenCalledTimes(1)
+		expect(db.manyOrNone.mock.calls[0][1]).toMatchInlineSnapshot(`
+		Object {
+		  "draftId": "mock-draft-id",
+		}
+	`)
+	})
+
 	test('fetchAttemptHistoryDetails calls db.manyOrNone', () => {
 		AssessmentModel.fetchAttemptHistoryDetails('mock-draft-id')
 
@@ -124,6 +135,13 @@ describe('AssessmentModel', () => {
 		  "draftId": "mock-draft-id",
 		}
 	`)
+	})
+
+	test('fetchAttemptHistoryDetails runs distinct call when contextId is included', () => {
+		AssessmentModel.fetchAttemptHistoryDetails('mock-draft-id', 'mock-context-id')
+
+		expect(db.manyOrNone).toHaveBeenCalledTimes(1)
+		expect(JSON.stringify(db.manyOrNone.mock.calls).includes('mock-context-id')).toBe(true)
 	})
 
 	test('fetchAttemptsForUserDraftAndResourceLinkId returns an array AssessmentModel', async () => {

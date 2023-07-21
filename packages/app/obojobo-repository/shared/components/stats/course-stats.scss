@@ -1,0 +1,72 @@
+@import '../../../client/css/defaults';
+
+$border-color: rgba(0, 0, 0, 0.1);
+$border: 1px solid $border-color;
+
+.repository--course-stats {
+	background: $color-bg;
+	height: calc(100% - 150px);
+	border-radius: $dimension-rounded-radius;
+	box-sizing: border-box;
+	padding: 0;
+	display: flex;
+	gap: 1em;
+
+	.repository--data-grid-assessments,
+	.repository--data-grid-attempts {
+		height: 100%;
+		width: 100%;
+		overflow: scroll;
+	}
+
+	.repository--data-grid-scores {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		box-sizing: border-box;
+		border: $border;
+		border-top: none;
+		border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
+
+		.repository--button {
+			display: inline-block;
+			margin: 1em;
+			align-self: center;
+		}
+
+		.data-grid {
+			width: 100%;
+			height: calc(100% - 5em);
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			border: 2px solid $color-action;
+			box-sizing: border-box;
+
+			// Tweaks to the react-data-table-component
+			> .rdt_TableHeader {
+				display: none;
+			}
+
+			> div:nth-child(2) {
+				overflow-y: scroll;
+				flex-grow: 1;
+			}
+
+			nav {
+				border-bottom: 1px solid $border-color;
+			}
+
+			.rdt_TableHead {
+				position: sticky;
+				top: 0;
+				z-index: 1;
+			}
+
+			.rdt_TableHeadRow {
+				background-color: $color-action-bg;
+				padding: 0.25em 0;
+			}
+		}
+	}
+}

@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseStatsSearchControls search controls element renders properly 1`] = `
+<div
+  className="repository--course-stats-search-controls"
+>
+  <div
+    className="search-by-text"
+  >
+    <label
+      htmlFor="repository--course-stats-search-controls--search-by"
+    >
+      Filter by: 
+    </label>
+    <div
+      className="controls"
+    >
+      <select
+        className=""
+        id="repository--course-stats-search-controls--search-by"
+        onChange={[Function]}
+      >
+        <option
+          value=""
+        >
+          Select one...
+        </option>
+        <option
+          value="resource-link-title"
+        >
+          Resource link title
+        </option>
+        <option
+          value="user-first-name"
+        >
+          First name
+        </option>
+        <option
+          value="user-last-name"
+        >
+          Last name
+        </option>
+      </select>
+    </div>
+    <div
+      className="clear-button-container"
+    >
+      <button
+        className="repository--button clear-button"
+        disabled={true}
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+  </div>
+  <div
+    className="search-by-date"
+  >
+    <label>
+      <span>
+        From:
+      </span>
+      <div
+        className="date-range"
+      >
+        <input
+          onChange={[Function]}
+          type="date"
+          value=""
+        />
+      </div>
+      <div
+        className="clear-button-container"
+      >
+        <button
+          className="repository--button clear-button"
+          disabled={true}
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+    </label>
+    <label>
+      <span>
+        To:
+      </span>
+      <div
+        className="date-range"
+      >
+        <input
+          onChange={[Function]}
+          type="date"
+          value=""
+        />
+      </div>
+      <div
+        className="clear-button-container"
+      >
+        <button
+          className="repository--button clear-button"
+          disabled={true}
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+    </label>
+  </div>
+</div>
+`;

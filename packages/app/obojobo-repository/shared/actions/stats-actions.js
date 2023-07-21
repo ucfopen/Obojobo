@@ -1,6 +1,9 @@
 // =================== API =======================
 
-const { apiGetAssessmentDetailsForMultipleDrafts } = require('./shared-api-methods')
+const {
+	apiGetAssessmentDetailsForMultipleDrafts,
+	apiGetAssessmentDetailsForCourse
+} = require('./shared-api-methods')
 
 // ================== ACTIONS ===================
 
@@ -29,9 +32,17 @@ const loadModuleAssessmentDetails = draftIds => ({
 	promise: apiGetAssessmentDetailsForMultipleDrafts(draftIds)
 })
 
+const LOAD_COURSE_ASSESSMENT_DATA = 'LOAD_COURSE_ASSESSMENT_DATA'
+const loadCourseAssessmentData = params => ({
+	type: LOAD_COURSE_ASSESSMENT_DATA,
+	promise: apiGetAssessmentDetailsForCourse(params)
+})
+
 module.exports = {
 	LOAD_STATS_PAGE_MODULES_FOR_USER,
 	LOAD_MODULE_ASSESSMENT_DETAILS,
+	LOAD_COURSE_ASSESSMENT_DATA,
 	loadUserModuleList,
-	loadModuleAssessmentDetails
+	loadModuleAssessmentDetails,
+	loadCourseAssessmentData
 }

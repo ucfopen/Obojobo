@@ -1,0 +1,28 @@
+@import '../../../client/css/defaults';
+
+.repository--course-stats-filter-controls {
+	display: flex;
+	flex-direction: row;
+
+	.container {
+		font-size: 0.75em;
+		display: flex;
+		flex-direction: row;
+
+		input {
+			margin-right: 0.5em;
+			margin-left: 0;
+		}
+
+		label {
+			margin-left: 1em;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+
+			span {
+				white-space: nowrap;
+			}
+		}
+	}
+}

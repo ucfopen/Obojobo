@@ -52,6 +52,9 @@ jest.mock('./module-options-dialog', () => props => {
 jest.mock('./assessment-score-data-dialog', () => props => {
 	return <mock-AssessmentScoreDataDialog {...props}></mock-AssessmentScoreDataDialog>
 })
+jest.mock('./course-score-data-dialog', () => props => {
+	return <mock-CourseScoreDataDialog {...props}></mock-CourseScoreDataDialog>
+})
 
 import React from 'react'
 import { create, act } from 'react-test-renderer'
@@ -73,6 +76,7 @@ import ModulePermissionsDialog from './module-permissions-dialog'
 import ModuleOptionsDialog from './module-options-dialog'
 import VersionHistoryDialog from './version-history-dialog'
 import AssessmentScoreDataDialog from './assessment-score-data-dialog'
+import CourseScoreDataDialog from './course-score-data-dialog'
 import MessageDialog from './message-dialog'
 
 const { MODE_RECENT, MODE_ALL, MODE_COLLECTION, MODE_DELETED } = require('../repository-constants')
@@ -223,6 +227,11 @@ describe('Dashboard', () => {
 				items: []
 			},
 			attempts: {
+				isFetching: false,
+				hasFetched: false,
+				items: []
+			},
+			courses: {
 				isFetching: false,
 				hasFetched: false,
 				items: []
@@ -510,7 +519,7 @@ describe('Dashboard', () => {
 		const component = create(<Dashboard {...dashboardProps} />)
 
 		// there shouldn't ever be a case where 'mode' is missing
-		//  but the default case is equivalent to MODE_RECENT
+		// but the default case is equivalent to MODE_RECENT
 		expectModeRecentRender(component)
 
 		expect(component.toJSON()).toMatchSnapshot()
@@ -1829,6 +1838,25 @@ describe('Dashboard', () => {
 		expectDialogToBeRendered(component, AssessmentScoreDataDialog, 'Module Assessment Score Data')
 		const dialogComponent = component.root.findByType(AssessmentScoreDataDialog)
 		expect(dialogComponent.props.title).toBe('Mock Module Title - Assessment Scores')
+
+		dialogComponent.props.onClose()
+		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)
+
+		component.unmount()
+	})
+
+	test('renders "Course Scores" dialog and runs callbacks properly', () => {
+		dashboardProps.dialog = 'module-course-score-data'
+		dashboardProps.selectedModule.title = 'Mock Module Title'
+
+		let component
+		act(() => {
+			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		expectDialogToBeRendered(component, CourseScoreDataDialog, 'Module Course Score Data')
+		const dialogComponent = component.root.findByType(CourseScoreDataDialog)
+		expect(dialogComponent.props.title).toBe('Assessment Scores by Course')
 
 		dialogComponent.props.onClose()
 		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)

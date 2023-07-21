@@ -2,7 +2,8 @@ const { handle } = require('redux-pack')
 
 const {
 	LOAD_STATS_PAGE_MODULES_FOR_USER,
-	LOAD_MODULE_ASSESSMENT_DETAILS
+	LOAD_MODULE_ASSESSMENT_DETAILS,
+	LOAD_COURSE_ASSESSMENT_DATA
 } = require('../actions/stats-actions')
 
 function StatsReducer(state, action) {
@@ -28,6 +29,7 @@ function StatsReducer(state, action) {
 			})
 
 		case LOAD_MODULE_ASSESSMENT_DETAILS:
+		case LOAD_COURSE_ASSESSMENT_DATA:
 			return handle(state, action, {
 				start: prevState => ({
 					...prevState,

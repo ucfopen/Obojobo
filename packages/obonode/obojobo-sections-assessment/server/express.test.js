@@ -14,7 +14,7 @@ jest.mock('uuid', () => ({
 }))
 
 const mockCurrentUser = { id: 'mockCurrentUserId' }
-const mockCurrentDocument = { draftId: 'mockDraftId' }
+const mockCurrentDocument = { draftId: 'mockDraftId', contextId: 'mockContextId' }
 const mockCurrentVisit = {
 	id: 'mockCurrentVisitId',
 	resource_link_id: 'mockResourceLinkId',
@@ -512,6 +512,93 @@ describe('server/express', () => {
 		})
 	})
 
+	test('GET /api/assessments/:draftId/course/:contextId/details returns non-anonymized data if the current user owns the draft', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = [
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
+			}
+		]
+		requireCurrentUser.mockImplementationOnce((req, res, next) => {
+			req.currentUser = {
+				id: 'mockCurrentUserId',
+				hasPermission: () => {
+					return false
+				}
+			}
+			next()
+		})
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/assessments/mock-draft-id/course/mock-context-id/details')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith(
+			'mock-draft-id',
+			'mock-context-id'
+		)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: [
+				{
+					userUsername: 'Test',
+					userFirstName: 'First',
+					userLastName: 'Last',
+					userId: 'user-id'
+				}
+			]
+		})
+	})
+
+	test('GET /api/courses/:draftId returns non-anonymized data if the current user owns the draft', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = [
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
+			}
+		]
+		requireCurrentUser.mockImplementationOnce((req, res, next) => {
+			req.currentUser = {
+				id: 'mockCurrentUserId',
+				hasPermission: () => {
+					return false
+				}
+			}
+			next()
+		})
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+		AssessmentModel.fetchCoursesByDraft.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/courses/mock-draft-id')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchCoursesByDraft).toHaveBeenCalledWith('mock-draft-id')
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: [
+				{
+					userUsername: 'Test',
+					userFirstName: 'First',
+					userLastName: 'Last',
+					userId: 'user-id'
+				}
+			]
+		})
+	})
+
 	test('GET /api/assessments/:draftId/details returns non-anonymized data if the current user owns the draft, with canViewSystemStats', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = [
@@ -541,6 +628,93 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(200)
 		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
 		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith('mock-draft-id')
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: [
+				{
+					userUsername: 'Test',
+					userFirstName: 'First',
+					userLastName: 'Last',
+					userId: 'user-id'
+				}
+			]
+		})
+	})
+
+	test('GET /api/assessments/:draftId/course/:contextId/details returns non-anonymized data if the current user owns the draft, with canViewSystemStats', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = [
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
+			}
+		]
+		requireCurrentUser.mockImplementationOnce((req, res, next) => {
+			req.currentUser = {
+				id: 'mockCurrentUserId',
+				hasPermission: perm => {
+					return Boolean(perm === 'canViewSystemStats')
+				}
+			}
+			next()
+		})
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/assessments/mock-draft-id/course/mock-context-id/details')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith(
+			'mock-draft-id',
+			'mock-context-id'
+		)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: [
+				{
+					userUsername: 'Test',
+					userFirstName: 'First',
+					userLastName: 'Last',
+					userId: 'user-id'
+				}
+			]
+		})
+	})
+
+	test('GET /api/courses/:draftId returns non-anonymized data if the current user owns the draft, with canViewSystemStats', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = [
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
+			}
+		]
+		requireCurrentUser.mockImplementationOnce((req, res, next) => {
+			req.currentUser = {
+				id: 'mockCurrentUserId',
+				hasPermission: perm => {
+					return Boolean(perm === 'canViewSystemStats')
+				}
+			}
+			next()
+		})
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+		AssessmentModel.fetchCoursesByDraft.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/courses/mock-draft-id')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchCoursesByDraft).toHaveBeenCalledWith('mock-draft-id')
 		expect(response.body).toEqual({
 			status: 'ok',
 			value: [
@@ -626,6 +800,81 @@ describe('server/express', () => {
 		})
 	})
 
+	test('GET /api/assessments/:draftId/coures/:contextId/details returns anonymized data if the current user does not own the draft but has canViewSystemStats', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = [
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id',
+				attemptId: 'attempt-1'
+			},
+			{
+				user_username: 'Test2',
+				user_first_name: 'First2',
+				user_last_name: 'Last2',
+				userId: 'user-id2',
+				attemptId: 'attempt-2'
+			},
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id',
+				attemptId: 'attempt-3'
+			}
+		]
+		requireCurrentUser.mockImplementationOnce((req, res, next) => {
+			req.currentUser = {
+				id: 'mockCurrentUserId',
+				hasPermission: perm => {
+					return Boolean(perm === 'canViewSystemStats')
+				}
+			}
+			next()
+		})
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(null)
+		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/assessments/mock-draft-id/course/mock-context-id/details')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith(
+			'mock-draft-id',
+			'mock-context-id'
+		)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: [
+				{
+					userUsername: '(anonymized-mock-uuid)',
+					userFirstName: '(anonymized-mock-uuid)',
+					userLastName: '(anonymized-mock-uuid)',
+					userId: '(anonymized-mock-uuid)',
+					attemptId: 'attempt-1'
+				},
+				{
+					userUsername: '(anonymized-mock-uuid)',
+					userFirstName: '(anonymized-mock-uuid)',
+					userLastName: '(anonymized-mock-uuid)',
+					userId: '(anonymized-mock-uuid)',
+					attemptId: 'attempt-2'
+				},
+				{
+					userUsername: '(anonymized-mock-uuid)',
+					userFirstName: '(anonymized-mock-uuid)',
+					userLastName: '(anonymized-mock-uuid)',
+					userId: '(anonymized-mock-uuid)',
+					attemptId: 'attempt-3'
+				}
+			]
+		})
+	})
+
 	test('GET /api/assessments/:draftId/details returns a 401 if the current user does not own the draft and does not have canViewSystemStats', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = [
@@ -661,6 +910,76 @@ describe('server/express', () => {
 		})
 	})
 
+	test('GET /api/assessments/:draftId/course/:contextId/details returns a 401 if the current user does not own the draft and does not have canViewSystemStats', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = [
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
+			}
+		]
+		requireCurrentUser.mockImplementationOnce((req, res, next) => {
+			req.currentUser = {
+				id: 'mockCurrentUserId',
+				hasPermission: () => false
+			}
+			next()
+		})
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(null)
+		AssessmentModel.fetchAttemptHistoryDetails.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/assessments/mock-draft-id/course/mock-context-id/details')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(401)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledTimes(0)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				type: 'notAuthorized'
+			}
+		})
+	})
+
+	test('GET /api/courses/:draftId returns a 401 if the current user does not own the draft and does not have canViewSystemStats', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = [
+			{
+				user_username: 'Test',
+				user_first_name: 'First',
+				user_last_name: 'Last',
+				user_id: 'user-id'
+			}
+		]
+		requireCurrentUser.mockImplementationOnce((req, res, next) => {
+			req.currentUser = {
+				id: 'mockCurrentUserId',
+				hasPermission: () => false
+			}
+			next()
+		})
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(null)
+		AssessmentModel.fetchCoursesByDraft.mockResolvedValueOnce(mockReturnValue)
+
+		const response = await request(app)
+			.get('/api/courses/mock-draft-id')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(401)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchCoursesByDraft).toHaveBeenCalledTimes(0)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				type: 'notAuthorized'
+			}
+		})
+	})
+
 	test('GET /api/assessments/:draftId/details fails', async () => {
 		expect.hasAssertions()
 		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
@@ -668,6 +987,44 @@ describe('server/express', () => {
 
 		const response = await request(app)
 			.get('/api/assessments/:draftId/details')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+	})
+
+	test('GET /api/assessments/:draftId/course/:contextId/details fails', async () => {
+		expect.hasAssertions()
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+		AssessmentModel.fetchAttemptHistoryDetails.mockRejectedValueOnce(Error('Oops!'))
+
+		const response = await request(app)
+			.get('/api/assessments/:draftId/course/:contextId/details')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+	})
+
+	test('GET /api/courses/:draftId fails', async () => {
+		expect.hasAssertions()
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+		AssessmentModel.fetchCoursesByDraft.mockRejectedValueOnce(Error('Oops!'))
+
+		const response = await request(app)
+			.get('/api/courses/:draftId')
 			.type('application/json')
 
 		expect(response.statusCode).toBe(500)

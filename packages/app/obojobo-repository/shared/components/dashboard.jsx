@@ -14,6 +14,7 @@ const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
 const AssessmentScoreDataDialog = require('./assessment-score-data-dialog')
+const CourseScoreDataDialog = require('./course-score-data-dialog')
 const Spinner = require('./spinner')
 const Collection = require('./collection')
 const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
@@ -37,6 +38,8 @@ const renderOptionsDialog = (props, extension) => (
 		onClose={props.closeModal}
 		showVersionHistory={props.showVersionHistory}
 		showAssessmentScoreData={props.showAssessmentScoreData}
+		showCoursesByDraft={props.showCoursesByDraft}
+		showCourseAssessmentData={props.showCourseAssessmentData}
 		startLoadingAnimation={props.startLoadingAnimation}
 		stopLoadingAnimation={props.stopLoadingAnimation}
 		showModuleManageCollections={props.showModuleManageCollections}
@@ -80,6 +83,18 @@ const renderAssessmentScoreDataDialog = props => {
 			onClose={props.closeModal}
 			isAttemptsLoading={props.attempts.isFetching}
 			attempts={props.attempts.items}
+		/>
+	)
+}
+
+const renderCourseScoreDataDialog = props => {
+	return (
+		<CourseScoreDataDialog
+			draftId={props.selectedModule.draftId}
+			title={`Assessment Scores by Course`}
+			onClose={props.closeModal}
+			isCoursesLoading={props.courses.isFetching}
+			courses={props.courses.items}
 		/>
 	)
 }
@@ -153,6 +168,11 @@ const renderModalDialog = props => {
 		case 'module-assessment-score-data':
 			title = 'Module Assessment Score Data'
 			dialog = renderAssessmentScoreDataDialog(props)
+			break
+
+		case 'module-course-score-data':
+			title = 'Module Course Score Data'
+			dialog = renderCourseScoreDataDialog(props)
 			break
 
 		case 'module-manage-collections':

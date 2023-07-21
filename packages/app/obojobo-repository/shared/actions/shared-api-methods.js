@@ -21,7 +21,24 @@ const apiGetAssessmentDetailsForDraft = draftId => {
 const apiGetAssessmentDetailsForMultipleDrafts = draftIds =>
 	Promise.all(draftIds.map(id => apiGetAssessmentDetailsForDraft(id))).then(result => result.flat())
 
+const apiGetCoursesForDraft = draftId => {
+	return fetch(`/api/courses/${draftId}`, defaultOptions())
+		.then(res => res.json())
+		.then(res => res.value)
+}
+
+const apiGetAssessmentDetailsForCourse = params => {
+	return fetch(
+		`/api/assessments/${params.draftId}/course/${params.contextId}/details`,
+		defaultOptions()
+	)
+		.then(res => res.json())
+		.then(res => res.value)
+}
+
 module.exports = {
 	apiGetAssessmentDetailsForMultipleDrafts,
-	apiGetAssessmentDetailsForDraft
+	apiGetAssessmentDetailsForDraft,
+	apiGetCoursesForDraft,
+	apiGetAssessmentDetailsForCourse
 }

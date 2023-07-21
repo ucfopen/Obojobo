@@ -112,4 +112,33 @@ describe('repository stats route', () => {
 				expect(response.statusCode).toBe(200)
 			})
 	})
+
+	test('get /statsCourses returns a "not authorized" if the viewer does not have canViewStatsPage', () => {
+		// always return false - a.k.a. the user does not have the right perms to use this
+		mockCurrentUser.hasPermission = () => false
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/statsCourses')
+			.then(response => {
+				expect(mockStatsComponent).toHaveBeenCalledTimes(0)
+				expect(response.statusCode).toBe(401)
+			})
+	})
+
+	test('get /statsCourses sends the correct props to the Stats component when the user has canViewStatsPage', () => {
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/statsCourses')
+			.then(response => {
+				expect(mockStatsComponent).toHaveBeenCalledTimes(1)
+				expect(mockStatsComponentConstructor).toHaveBeenCalledWith({
+					title: 'StatsCourses',
+					currentUser: mockCurrentUser
+				})
+				expect(response.statusCode).toBe(200)
+			})
+	})
 })

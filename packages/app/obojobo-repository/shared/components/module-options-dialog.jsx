@@ -79,6 +79,18 @@ const ModuleOptionsDialog = props => (
 					<div className="label">View scores by student.</div>
 				</div>
 
+				<div className="button-label-group">
+					<Button
+						id="moduleOptionsDialog-courseScoreData"
+						onClick={() => {
+							props.showCoursesByDraft(props)
+						}}
+					>
+						Course Stats
+					</Button>
+					<div className="label">View scores by course.</div>
+				</div>
+
 				{props.accessLevel !== MINIMAL && (
 					<div className="button-label-group">
 						<Button

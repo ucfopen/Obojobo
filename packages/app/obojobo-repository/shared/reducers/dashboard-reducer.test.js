@@ -42,6 +42,7 @@ const {
 	DELETE_COLLECTION,
 	SHOW_VERSION_HISTORY,
 	SHOW_ASSESSMENT_SCORE_DATA,
+	SHOW_COURSES_BY_DRAFT,
 	RESTORE_VERSION,
 	GET_MODULES,
 	GET_DELETED_MODULES,
@@ -1182,6 +1183,51 @@ describe('Dashboard Reducer', () => {
 		newState = handleSuccess(handler)
 		expect(newState.attempts).not.toEqual(initialState.attempts)
 		expect(newState.attempts).toEqual({
+			isFetching: false,
+			hasFetched: true,
+			items: mockAttemptItems
+		})
+	})
+
+	test('SHOW_COURSES_BY_DRAFT action modifies state correctly', () => {
+		const initialState = {
+			assessmentStats: {
+				isFetching: false,
+				hasFetched: false,
+				items: []
+			}
+		}
+
+		const mockAttemptItems = [
+			{
+				id: 'mockCourseId1'
+			},
+			{
+				id: 'mockCourseId2'
+			}
+		]
+		const action = {
+			type: SHOW_COURSES_BY_DRAFT,
+			payload: mockAttemptItems,
+			meta: {
+				module: jest.fn()
+			}
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+		let newState
+
+		newState = handleStart(handler)
+		expect(newState.courses).toEqual({
+			isFetching: true,
+			hasFetched: false,
+			items: []
+		})
+
+		newState = handleSuccess(handler)
+		expect(newState.courses).not.toEqual(initialState.courses)
+		expect(newState.courses).toEqual({
 			isFetching: false,
 			hasFetched: true,
 			items: mockAttemptItems

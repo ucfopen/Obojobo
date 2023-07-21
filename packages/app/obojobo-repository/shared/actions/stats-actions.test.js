@@ -1,7 +1,12 @@
-const { loadUserModuleList, loadModuleAssessmentDetails } = require('./stats-actions')
+const {
+	loadUserModuleList,
+	loadModuleAssessmentDetails,
+	loadCourseAssessmentData
+} = require('./stats-actions')
 
 jest.mock('./shared-api-methods', () => ({
-	apiGetAssessmentDetailsForMultipleDrafts: () => Promise.resolve()
+	apiGetAssessmentDetailsForMultipleDrafts: () => Promise.resolve(),
+	apiGetAssessmentDetailsForCourse: () => Promise.resolve()
 }))
 
 describe('statsActions', () => {
@@ -31,6 +36,18 @@ describe('statsActions', () => {
 
 		expect(result).toEqual({
 			type: 'LOAD_MODULE_ASSESSMENT_DETAILS',
+			promise: expect.any(Promise)
+		})
+	})
+
+	test('loadCourseAssessmentData returns expected object', async () => {
+		const result = await loadCourseAssessmentData({
+			draftId: 'draft-id-1',
+			contextId: 'context-id-2'
+		})
+
+		expect(result).toEqual({
+			type: 'LOAD_COURSE_ASSESSMENT_DATA',
 			promise: expect.any(Promise)
 		})
 	})
