@@ -155,7 +155,8 @@ const renderModalDialog = props => {
 			break
 
 		case 'module-sync':
-			;(title = 'Module Sync'), (dialog = renderSyncDialog(props, extendedProps))
+			title = 'Module Sync'
+			dialog = renderSyncDialog(props, extendedProps)
 			break
 
 		case 'module-permissions':
