@@ -16,7 +16,8 @@ const POSSIBLE_PERMS = [
 	'canDeleteDrafts',
 	'canPreviewDrafts',
 	'canViewStatsPage',
-	'canViewSystemStats'
+	'canViewSystemStats',
+	'canViewAdminPage'
 ]
 
 // Normally the query running in User.saveOrCreate would auto-fill the new user's id,
