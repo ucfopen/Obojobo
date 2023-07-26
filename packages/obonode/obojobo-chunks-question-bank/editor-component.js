@@ -16,6 +16,7 @@ const { Button } = Common.components
 const { ModalUtil } = Common.util
 const { OboModel } = Common.models
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 
 const stopPropagation = event => {
 	event.stopPropagation()
@@ -42,6 +43,19 @@ class QuestionBank extends React.Component {
 		this.getQuestionList = this.getQuestionList.bind(this)
 		this.importQuestionList = this.importQuestionList.bind(this)
 		this.displayImportQuestionModal = this.displayImportQuestionModal.bind(this)
+
+		this.toggleCollapsed = this.toggleCollapsed.bind(this)
+		this.changeCollapseForAllChildren = this.changeCollapseForAllChildren.bind(this)
+		this.collapseAll = this.collapseAll.bind(this)
+		this.expandAll = this.expandAll.bind(this)
+	}
+
+	toggleCollapsed() {
+		const { editor, element } = this.props
+		const path = ReactEditor.findPath(editor, element)
+		const collapsed = !element.content.collapsed
+
+		Transforms.setNodes(editor, { content: { ...element.content, collapsed } }, { at: path })
 	}
 
 	updateNodeFromState() {
@@ -100,7 +114,7 @@ class QuestionBank extends React.Component {
 		this.updateNodeFromState()
 	}
 
-	displaySettings(editor, element) {
+	displaySettings(element) {
 		const radioGroupName = `${element.id}-choose`
 		return (
 			<div className={'qb-settings'} contentEditable={false}>
@@ -189,8 +203,24 @@ class QuestionBank extends React.Component {
 		)
 	}
 
+	changeCollapseForAllChildren(collapsed) {
+		const { editor, element } = this.props
+		element.children.forEach(c => {
+			const path = ReactEditor.findPath(editor, c)
+
+			Transforms.setNodes(editor, { content: { ...c.content, collapsed } }, { at: path })
+		})
+	}
+
+	collapseAll() {
+		this.changeCollapseForAllChildren(true)
+	}
+	expandAll() {
+		this.changeCollapseForAllChildren(false)
+	}
+
 	render() {
-		const { editor, element, children } = this.props
+		const { element, children } = this.props
 		const contentDescription = [
 			{
 				name: 'Import Questions',
@@ -199,19 +229,65 @@ class QuestionBank extends React.Component {
 				action: this.displayImportQuestionModal
 			}
 		]
+		const className =
+			'obojobo-draft--chunks--question-bank editor-bank' +
+			` is-${element.content.collapsed ? 'collapsed' : 'not-collapsed'}`
+
+		let numQs = 0
+		let numQBs = 0
+		if (element.children && element.children.length) {
+			element.children.forEach(c => {
+				if (c.type === QUESTION_NODE) numQs++
+				if (c.type === QUESTION_BANK_NODE) numQBs++
+			})
+		}
 
 		return (
 			<Node {...this.props} contentDescription={contentDescription}>
-				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-					<Button className="delete-button" onClick={this.remove}>
-						&times;
-					</Button>
-					{this.displaySettings(editor, element, element.content)}
-					{children}
-					<div className="button-bar" contentEditable={false}>
-						<Button onClick={this.addQuestion}>Add Question</Button>
-						<Button onClick={this.addQuestionBank}>Add Question Bank</Button>
+				<div className={className}>
+					{element.content.collapsed ? (
+						''
+					) : (
+						<div className="button-parent child-buttons">
+							<Button onClick={this.collapseAll}>Collapse All</Button>
+							<Button onClick={this.expandAll}>Expand All</Button>
+						</div>
+					)}
+					<div className="button-parent bank-buttons">
+						<Button
+							className="collapse-button"
+							onClick={this.toggleCollapsed}
+							contentEditable={false}
+						>
+							{element.content.collapsed ? '+' : '-'}
+						</Button>
+						<Button className="delete-button" onClick={this.remove} contentEditable={false}>
+							&times;
+						</Button>
 					</div>
+					{element.content.collapsed ? (
+						<div
+							className="flipper clickable-label"
+							contentEditable={false}
+							onClick={this.toggleCollapsed}
+						>
+							<label className="collapsed-summary">
+								{numQs > 0 && `${numQs} Question${numQs > 1 ? 's ' : ' '}`}
+								{numQs > 0 && numQBs > 0 ? 'and ' : ''}
+								{numQBs > 0 && `${numQBs} Question Bank${numQBs > 1 ? 's ' : ' '}`}
+								&nbsp;(Click to Expand)
+							</label>
+						</div>
+					) : (
+						<React.Fragment>
+							{this.displaySettings(element)}
+							{children}
+							<div className="button-bar" contentEditable={false}>
+								<Button onClick={this.addQuestion}>Add Question</Button>
+								<Button onClick={this.addQuestionBank}>Add Question Bank</Button>
+							</div>
+						</React.Fragment>
+					)}
 				</div>
 			</Node>
 		)

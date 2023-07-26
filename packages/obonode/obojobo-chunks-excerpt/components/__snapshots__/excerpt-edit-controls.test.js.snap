@@ -1,0 +1,307 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Excerpt Edit Controls More options Node builds the expected component with more options showing 1`] = `"<div contenteditable=\\"false\\" class=\\"excerpt--excerpt-edit-controls extra-width\\"><div class=\\"attributes-list\\"><div class=\\"more-options\\"><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Style</span></label><select><optgroup label=\\"Simple\\"><option value=\\"none\\">None</option><option value=\\"filled-box\\">Filled Box</option><option value=\\"bordered-box\\">Bordered Box</option><option value=\\"card\\">Card</option></optgroup><optgroup label=\\"Paper\\"><option value=\\"white-paper\\">White Paper</option><option value=\\"modern-paper\\">Gray Paper</option><option value=\\"light-yellow-paper\\">Light Yellow Paper</option><option value=\\"dark-yellow-paper\\">Dark Yellow Paper</option><option value=\\"aged-paper\\">Aged Paper</option></optgroup><optgroup label=\\"Computer\\"><option value=\\"modern-text-file\\">Browser</option><option value=\\"retro-text-file\\">Retro Text File</option><option value=\\"command-line\\">Command Line</option><option value=\\"term-white\\">CRT Terminal (White)</option><option value=\\"term-green\\">CRT Terminal (Green)</option><option value=\\"term-orange\\">CRT Terminal (Orange)</option><option value=\\"term-c64\\">Commodore 64 Screen</option></optgroup><optgroup label=\\"Callout\\"><option value=\\"callout-try-it\\">Try It!</option><option value=\\"callout-practice\\">Practice!</option><option value=\\"callout-do-this\\">Do This:</option><option value=\\"callout-example\\">Example</option><option value=\\"callout-hint\\">Hint</option></optgroup></select></div><div><label class=\\"attribute-label\\"><span>Font</span></label><select><optgroup label=\\"Obojobo Default Fonts\\"><option value=\\"serif\\">Serif</option><option value=\\"sans\\">Sans-Serif</option><option value=\\"monospace\\">Monospace</option></optgroup><optgroup label=\\"System Fonts\\"><option value=\\"times-new-roman\\">Times New Roman</option><option value=\\"georgia\\">Georgia</option><option value=\\"helvetica\\">Helvetica</option><option value=\\"courier\\">Courier</option><option value=\\"palatino\\">Palatino</option></optgroup></select></div><div><label class=\\"effect-settings is-not-enabled\\"><input disabled=\\"\\" type=\\"checkbox\\"><span>(No effect available)</span></label></div></section><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Width</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"width\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-large\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"large\\"><span>large</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-medium\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"medium\\" checked=\\"\\"><span>medium</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-small\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"small\\"><span>small</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-tiny\\" style=\\"transform: translate(-3px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"tiny\\"><span>tiny</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Font Size</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"font size\\"><div class=\\"options\\"><label class=\\"is-selected is-option-smaller\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"smaller\\" checked=\\"\\"><span>smaller</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-regular\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"regular\\"><span>regular</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-larger\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"larger\\"><span>larger</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Line Height</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"line height\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-compact\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"compact\\"><span>compact</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-moderate\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"moderate\\" checked=\\"\\"><span>moderate</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-generous\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"generous\\"><span>generous</span><img src=\\"[object Object]\\"></label></div></div></div></section></div></div><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Exit advanced options</button></div></div>"`;
+
+exports[`Excerpt Edit Controls More options Node builds the expected component with terminal bodyStyle 1`] = `"<div contenteditable=\\"false\\" class=\\"excerpt--excerpt-edit-controls extra-width\\"><div class=\\"attributes-list\\"><div class=\\"more-options\\"><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Style</span></label><select><optgroup label=\\"Simple\\"><option value=\\"none\\">None</option><option value=\\"filled-box\\">Filled Box</option><option value=\\"bordered-box\\">Bordered Box</option><option value=\\"card\\">Card</option></optgroup><optgroup label=\\"Paper\\"><option value=\\"white-paper\\">White Paper</option><option value=\\"modern-paper\\">Gray Paper</option><option value=\\"light-yellow-paper\\">Light Yellow Paper</option><option value=\\"dark-yellow-paper\\">Dark Yellow Paper</option><option value=\\"aged-paper\\">Aged Paper</option></optgroup><optgroup label=\\"Computer\\"><option value=\\"modern-text-file\\">Browser</option><option value=\\"retro-text-file\\">Retro Text File</option><option value=\\"command-line\\">Command Line</option><option value=\\"term-white\\">CRT Terminal (White)</option><option value=\\"term-green\\">CRT Terminal (Green)</option><option value=\\"term-orange\\">CRT Terminal (Orange)</option><option value=\\"term-c64\\">Commodore 64 Screen</option></optgroup><optgroup label=\\"Callout\\"><option value=\\"callout-try-it\\">Try It!</option><option value=\\"callout-practice\\">Practice!</option><option value=\\"callout-do-this\\">Do This:</option><option value=\\"callout-example\\">Example</option><option value=\\"callout-hint\\">Hint</option></optgroup></select></div><div><label class=\\"attribute-label\\"><span>Font</span></label><select><optgroup label=\\"Obojobo Default Fonts\\"><option value=\\"serif\\">Serif</option><option value=\\"sans\\">Sans-Serif</option><option value=\\"monospace\\">Monospace</option></optgroup><optgroup label=\\"System Fonts\\"><option value=\\"times-new-roman\\">Times New Roman</option><option value=\\"georgia\\">Georgia</option><option value=\\"helvetica\\">Helvetica</option><option value=\\"courier\\">Courier</option><option value=\\"palatino\\">Palatino</option></optgroup></select></div><div><label class=\\"effect-settings is-enabled\\"><input type=\\"checkbox\\"><span>Screen / glow effects</span></label></div></section><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Width</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"width\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-large\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"large\\"><span>large</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-medium\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"medium\\" checked=\\"\\"><span>medium</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-small\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"small\\"><span>small</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-tiny\\" style=\\"transform: translate(-3px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"tiny\\"><span>tiny</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Font Size</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"font size\\"><div class=\\"options\\"><label class=\\"is-selected is-option-smaller\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"smaller\\" checked=\\"\\"><span>smaller</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-regular\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"regular\\"><span>regular</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-larger\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"larger\\"><span>larger</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Line Height</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"line height\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-compact\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"compact\\"><span>compact</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-moderate\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"moderate\\" checked=\\"\\"><span>moderate</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-generous\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"generous\\"><span>generous</span><img src=\\"[object Object]\\"></label></div></div></div></section></div></div><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Exit advanced options</button></div></div>"`;
+
+exports[`Excerpt Edit Controls More options Node builds the expected component with text-file bodyStyle 1`] = `"<div contenteditable=\\"false\\" class=\\"excerpt--excerpt-edit-controls extra-width\\"><div class=\\"attributes-list\\"><div class=\\"more-options\\"><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Style</span></label><select><optgroup label=\\"Simple\\"><option value=\\"none\\">None</option><option value=\\"filled-box\\">Filled Box</option><option value=\\"bordered-box\\">Bordered Box</option><option value=\\"card\\">Card</option></optgroup><optgroup label=\\"Paper\\"><option value=\\"white-paper\\">White Paper</option><option value=\\"modern-paper\\">Gray Paper</option><option value=\\"light-yellow-paper\\">Light Yellow Paper</option><option value=\\"dark-yellow-paper\\">Dark Yellow Paper</option><option value=\\"aged-paper\\">Aged Paper</option></optgroup><optgroup label=\\"Computer\\"><option value=\\"modern-text-file\\">Browser</option><option value=\\"retro-text-file\\">Retro Text File</option><option value=\\"command-line\\">Command Line</option><option value=\\"term-white\\">CRT Terminal (White)</option><option value=\\"term-green\\">CRT Terminal (Green)</option><option value=\\"term-orange\\">CRT Terminal (Orange)</option><option value=\\"term-c64\\">Commodore 64 Screen</option></optgroup><optgroup label=\\"Callout\\"><option value=\\"callout-try-it\\">Try It!</option><option value=\\"callout-practice\\">Practice!</option><option value=\\"callout-do-this\\">Do This:</option><option value=\\"callout-example\\">Example</option><option value=\\"callout-hint\\">Hint</option></optgroup></select></div><div><label class=\\"attribute-label\\"><span>Font</span></label><select><optgroup label=\\"Obojobo Default Fonts\\"><option value=\\"serif\\">Serif</option><option value=\\"sans\\">Sans-Serif</option><option value=\\"monospace\\">Monospace</option></optgroup><optgroup label=\\"System Fonts\\"><option value=\\"times-new-roman\\">Times New Roman</option><option value=\\"georgia\\">Georgia</option><option value=\\"helvetica\\">Helvetica</option><option value=\\"courier\\">Courier</option><option value=\\"palatino\\">Palatino</option></optgroup></select></div><div><label class=\\"effect-settings is-enabled\\"><input type=\\"checkbox\\"><span>Drop shadow</span></label></div></section><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Width</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"width\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-large\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"large\\"><span>large</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-medium\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"medium\\" checked=\\"\\"><span>medium</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-small\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"small\\"><span>small</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-tiny\\" style=\\"transform: translate(-3px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"tiny\\"><span>tiny</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Font Size</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"font size\\"><div class=\\"options\\"><label class=\\"is-selected is-option-smaller\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"smaller\\" checked=\\"\\"><span>smaller</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-regular\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"regular\\"><span>regular</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-larger\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"larger\\"><span>larger</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Line Height</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"line height\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-compact\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"compact\\"><span>compact</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-moderate\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"moderate\\" checked=\\"\\"><span>moderate</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-generous\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"generous\\"><span>generous</span><img src=\\"[object Object]\\"></label></div></div></div></section></div></div><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Exit advanced options</button></div></div>"`;
+
+exports[`Excerpt Edit Controls More options Node renders selected options accordingly when choosing "white-paper" preset 1`] = `"<div contenteditable=\\"false\\" class=\\"excerpt--excerpt-edit-controls extra-width\\"><div class=\\"attributes-list\\"><div class=\\"more-options\\"><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Style</span></label><select><optgroup label=\\"Simple\\"><option value=\\"none\\">None</option><option value=\\"filled-box\\">Filled Box</option><option value=\\"bordered-box\\">Bordered Box</option><option value=\\"card\\">Card</option></optgroup><optgroup label=\\"Paper\\"><option value=\\"white-paper\\">White Paper</option><option value=\\"modern-paper\\">Gray Paper</option><option value=\\"light-yellow-paper\\">Light Yellow Paper</option><option value=\\"dark-yellow-paper\\">Dark Yellow Paper</option><option value=\\"aged-paper\\">Aged Paper</option></optgroup><optgroup label=\\"Computer\\"><option value=\\"modern-text-file\\">Browser</option><option value=\\"retro-text-file\\">Retro Text File</option><option value=\\"command-line\\">Command Line</option><option value=\\"term-white\\">CRT Terminal (White)</option><option value=\\"term-green\\">CRT Terminal (Green)</option><option value=\\"term-orange\\">CRT Terminal (Orange)</option><option value=\\"term-c64\\">Commodore 64 Screen</option></optgroup><optgroup label=\\"Callout\\"><option value=\\"callout-try-it\\">Try It!</option><option value=\\"callout-practice\\">Practice!</option><option value=\\"callout-do-this\\">Do This:</option><option value=\\"callout-example\\">Example</option><option value=\\"callout-hint\\">Hint</option></optgroup></select></div><div><label class=\\"attribute-label\\"><span>Font</span></label><select><optgroup label=\\"Obojobo Default Fonts\\"><option value=\\"serif\\">Serif</option><option value=\\"sans\\">Sans-Serif</option><option value=\\"monospace\\">Monospace</option></optgroup><optgroup label=\\"System Fonts\\"><option value=\\"times-new-roman\\">Times New Roman</option><option value=\\"georgia\\">Georgia</option><option value=\\"helvetica\\">Helvetica</option><option value=\\"courier\\">Courier</option><option value=\\"palatino\\">Palatino</option></optgroup></select></div><div><label class=\\"effect-settings is-enabled\\"><input type=\\"checkbox\\"><span>Paper background</span></label></div></section><section class=\\"more-options-group\\"><div><label class=\\"attribute-label\\"><span>Width</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"width\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-large\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"large\\"><span>large</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-medium\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"medium\\" checked=\\"\\"><span>medium</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-small\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"small\\"><span>small</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-tiny\\" style=\\"transform: translate(-3px, 0);\\"><input type=\\"radio\\" name=\\"width\\" value=\\"tiny\\"><span>tiny</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Font Size</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"font size\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-smaller\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"smaller\\"><span>smaller</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-regular\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"regular\\" checked=\\"\\"><span>regular</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-larger\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"font-size\\" value=\\"larger\\"><span>larger</span><img src=\\"[object Object]\\"></label></div></div></div><div><label class=\\"attribute-label\\"><span>Line Height</span></label><div class=\\"excerpt--radio-icons\\" role=\\"radiogroup\\" aria-label=\\"line height\\"><div class=\\"options\\"><label class=\\"is-not-selected is-option-compact\\" style=\\"transform: translate(0px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"compact\\"><span>compact</span><img src=\\"[object Object]\\"></label><label class=\\"is-selected is-option-moderate\\" style=\\"transform: translate(-1px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"moderate\\" checked=\\"\\"><span>moderate</span><img src=\\"[object Object]\\"></label><label class=\\"is-not-selected is-option-generous\\" style=\\"transform: translate(-2px, 0);\\"><input type=\\"radio\\" name=\\"line-height\\" value=\\"generous\\"><span>generous</span><img src=\\"[object Object]\\"></label></div></div></div></section></div></div><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Exit advanced options</button></div></div>"`;
+
+exports[`Excerpt Edit Controls Node builds the expected component 1`] = `
+<div
+  className="excerpt--excerpt-edit-controls "
+  contentEditable={false}
+  onMouseDown={[Function]}
+>
+  <div
+    className="attributes-list"
+  >
+    <ul
+      className="preset-list"
+    >
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-minimal"
+          />
+          <span>
+            Minimal
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-excerpt"
+          />
+          <span>
+            Excerpt
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-simple-filled"
+          />
+          <span>
+            Simple Filled
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-simple-bordered"
+          />
+          <span>
+            Simple Bordered
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-card"
+          />
+          <span>
+            Card
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-fiction"
+          />
+          <span>
+            Fiction
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-non-fiction"
+          />
+          <span>
+            Non-Fiction
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-historical"
+          />
+          <span>
+            Historical
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-very-historical"
+          />
+          <span>
+            Very Historical
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-white-paper"
+          />
+          <span>
+            White Paper
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-instruction-manual"
+          />
+          <span>
+            Inst. Manual
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-typewritten"
+          />
+          <span>
+            Typewritten
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-receipt"
+          />
+          <span>
+            Receipt
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-modern-text-file"
+          />
+          <span>
+            Site / Doc
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-retro-text-file"
+          />
+          <span>
+            Retro Text File
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-computer-modern"
+          />
+          <span>
+            Command Line
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-computer-hacker-green"
+          />
+          <span>
+            Hacker Green
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-computer-hacker-orange"
+          />
+          <span>
+            Hacker Orange
+          </span>
+        </button>
+      </li>
+      <li
+        className="is-not-selected"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="icon icon-callout"
+          />
+          <span>
+            Callout
+          </span>
+        </button>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Advanced options...
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Excerpt Edit Controls Node builds the expected component using preset and handles change 1`] = `"<div contenteditable=\\"false\\" class=\\"excerpt--excerpt-edit-controls \\"><div class=\\"attributes-list\\"><ul class=\\"preset-list\\"><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-minimal\\"></div><span>Minimal</span></button></li><li class=\\"is-selected\\"><button><div class=\\"icon icon-excerpt\\"></div><span>Excerpt</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-simple-filled\\"></div><span>Simple Filled</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-simple-bordered\\"></div><span>Simple Bordered</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-card\\"></div><span>Card</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-fiction\\"></div><span>Fiction</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-non-fiction\\"></div><span>Non-Fiction</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-historical\\"></div><span>Historical</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-very-historical\\"></div><span>Very Historical</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-white-paper\\"></div><span>White Paper</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-instruction-manual\\"></div><span>Inst. Manual</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-typewritten\\"></div><span>Typewritten</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-receipt\\"></div><span>Receipt</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-modern-text-file\\"></div><span>Site / Doc</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-retro-text-file\\"></div><span>Retro Text File</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-computer-modern\\"></div><span>Command Line</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-computer-hacker-green\\"></div><span>Hacker Green</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-computer-hacker-orange\\"></div><span>Hacker Orange</span></button></li><li class=\\"is-not-selected\\"><button><div class=\\"icon icon-callout\\"></div><span>Callout</span></button></li></ul></div><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Advanced options...</button></div></div>"`;

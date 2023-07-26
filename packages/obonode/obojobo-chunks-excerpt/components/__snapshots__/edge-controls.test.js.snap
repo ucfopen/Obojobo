@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Edge Controls Node builds the expected component 1`] = `
+<div
+  aria-label="Select the edge display for the top edge"
+  className="obojobo-draft--chunks--excerpt--edge-controls is-position-top"
+  contentEditable={false}
+  role="radiogroup"
+>
+  <div
+    className="edges"
+  >
+    <label
+      className="is-selected is-edge-normal"
+      onMouseDown={[Function]}
+    >
+      <input
+        checked={true}
+        name="top"
+        onChange={[Function]}
+        type="radio"
+        value="normal"
+      />
+      <span>
+        normal
+      </span>
+    </label>
+    <label
+      className="is-not-selected is-edge-fade"
+      onMouseDown={[Function]}
+    >
+      <input
+        checked={false}
+        name="top"
+        onChange={[Function]}
+        type="radio"
+        value="fade"
+      />
+      <span>
+        fade
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`Edge Controls Node builds the expected component with no available edge options 1`] = `null`;
