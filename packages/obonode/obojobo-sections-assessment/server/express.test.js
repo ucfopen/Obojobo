@@ -1,6 +1,7 @@
 jest.mock('./models/assessment')
 jest.mock('obojobo-express/server/lti')
 jest.mock('./attempt-start')
+jest.mock('./attempt-save')
 jest.mock('./attempt-resume')
 jest.mock('./attempt-end/attempt-end')
 jest.mock('./attempt-review')
@@ -25,6 +26,7 @@ const request = require('supertest')
 const { attemptReview } = require('./attempt-review')
 const AssessmentModel = require('./models/assessment')
 const { startAttempt } = require('./attempt-start')
+const saveAttempt = require('./attempt-save')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
 const lti = require('obojobo-express/server/lti')
@@ -162,6 +164,32 @@ describe('server/express', () => {
 		expect(requireAssessmentId).toHaveBeenCalledTimes(1)
 
 		expect(startAttempt).toHaveBeenCalledTimes(1)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
+	})
+
+	test('POST /api/assessments/attempt/mock-attempt-id/save', async () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		saveAttempt.mockImplementationOnce((req, res, next) => {
+			res.success(mockReturnValue)
+		})
+
+		const response = await request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/save')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		// verify validations ran
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireAssessmentId).toHaveBeenCalledTimes(1)
+		expect(requireAttemptId).toHaveBeenCalledTimes(1)
+
+		expect(saveAttempt).toHaveBeenCalledTimes(1)
 		expect(response.body).toEqual({
 			status: 'ok',
 			value: mockReturnValue
