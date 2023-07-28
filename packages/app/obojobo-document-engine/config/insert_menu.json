@@ -12,6 +12,7 @@
 	"ObojoboDraft.Chunks.YouTube",
 	"ObojoboDraft.Chunks.IFrame",
 	"ObojoboDraft.Chunks.Materia",
+	"ObojoboDraft.Chunks.Excerpt",
 	"|",
 	"ObojoboDraft.Chunks.Question",
 	"ObojoboDraft.Chunks.QuestionBank",

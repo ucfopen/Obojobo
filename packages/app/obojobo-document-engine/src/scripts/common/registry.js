@@ -65,6 +65,7 @@ class _Registry {
 				getPasteNode: EditorNode.getPasteNode,
 				getNavItem: EditorNode.getNavItem,
 				supportsChildren: EditorNode.supportsChildren || false,
+				disallowedChildren: EditorNode.disallowedChildren || [],
 				ignore: EditorNode.ignore || false
 			})
 		)
@@ -102,7 +103,8 @@ class _Registry {
 				switchType: {},
 				plugins: null,
 				getPasteNode: node => node,
-				supportsChildren: false
+				supportsChildren: false,
+				disallowedChildren: []
 			},
 			opts
 		)
