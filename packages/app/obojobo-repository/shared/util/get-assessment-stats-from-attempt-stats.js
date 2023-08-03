@@ -17,6 +17,7 @@ const getAssessmentStatsFromAttemptStats = attempts => {
 				username: attemptRow.userUsername,
 				userFirstName: attemptRow.userFirstName,
 				userLastName: attemptRow.userLastName,
+				studentName: `${attemptRow.userFirstName} ${attemptRow.userLastName}`,
 				userRoles: attemptRow.userRoles,
 				isPreview: attemptRow.isPreview,
 				contextId: attemptRow.contextId,

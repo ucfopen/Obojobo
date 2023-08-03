@@ -79,6 +79,12 @@ exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
             },
             Object {
               "advanced": false,
+              "name": "Student Name",
+              "selector": "studentName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
               "cell": [Function],
               "name": "Final Assessment Score",
               "selector": "highestAssessmentScore",
@@ -108,6 +114,7 @@ exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
               "moduleTitle": undefined,
               "resourceLinkId": undefined,
               "resourceLinkTitle": undefined,
+              "studentName": "undefined undefined",
               "userFirstName": undefined,
               "userId": undefined,
               "userLastName": undefined,
@@ -127,6 +134,7 @@ exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
               "moduleTitle": undefined,
               "resourceLinkId": undefined,
               "resourceLinkTitle": undefined,
+              "studentName": "undefined undefined",
               "userFirstName": undefined,
               "userId": undefined,
               "userLastName": undefined,
@@ -149,7 +157,15 @@ exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
           ]
         }
         striped={true}
-        title="Final Assessment Scores"
+        title={
+          <div
+            className="data-table-header Final Assessment Scores"
+          >
+            <p>
+              Final Assessment Scores
+            </p>
+          </div>
+        }
       >
         react-data-table-component
       </div>
@@ -157,7 +173,7 @@ exports[`DataGridAssessments DataGridAssessments renders correctly 1`] = `
     <a
       className="repository--button "
       download="final-assessment-scores__mock-draft-id_mock-draft-id2"
-      href="data:text/csv;charset=utf-8,%22First%20Name%22%2C%22Last%20Name%22%2C%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22false%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22true%22"
+      href="data:text/csv;charset=utf-8,%22First%20Name%22%2C%22Last%20Name%22%2C%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Student%20Name%22%2C%22Final%20Assessment%20Score%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22undefined%20undefined%22%2C%22%22%2C%22false%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22undefined%20undefined%22%2C%22%22%2C%22true%22"
     >
       ⬇️   Download 
       
@@ -218,6 +234,12 @@ exports[`DataGridAssessments DataGridAssessments renders without attempts 1`] = 
             },
             Object {
               "advanced": false,
+              "name": "Student Name",
+              "selector": "studentName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
               "cell": [Function],
               "name": "Final Assessment Score",
               "selector": "highestAssessmentScore",
@@ -247,7 +269,15 @@ exports[`DataGridAssessments DataGridAssessments renders without attempts 1`] = 
           ]
         }
         striped={true}
-        title="Final Assessment Scores"
+        title={
+          <div
+            className="data-table-header Final Assessment Scores"
+          >
+            <p>
+              Final Assessment Scores
+            </p>
+          </div>
+        }
       >
         react-data-table-component
       </div>
