@@ -541,6 +541,8 @@ class VisualEditor extends React.Component {
 			}
 		}
 
+		// This fix breaks the default behavior when moving up inside an element. Needs to be reevaluated.
+		/*****
 		// Handle ArrowUp from a node - this is default behavior
 		// in Chrome and Safari but not Firefox
 		if (event.key === 'ArrowUp' && !event.defaultPrevented) {
@@ -570,6 +572,7 @@ class VisualEditor extends React.Component {
 				anchor
 			})
 		}
+		*****/
 	}
 
 	// Generates any necessary decorations, such as place holders

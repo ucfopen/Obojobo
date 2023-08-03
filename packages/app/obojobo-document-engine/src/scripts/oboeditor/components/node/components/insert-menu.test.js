@@ -34,6 +34,20 @@ describe('InsertMenu', () => {
 			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
+		const allChildren = component.root.children[0].children
+
+		// number of elements we define plus the 'open' icon
+		expect(allChildren.length).toBe(testOptions.length + 1)
+
+		// non-separator components
+		const buttons = component.root.findAllByProps({ className: 'insert-button' })
+		expect(buttons.length).toBe(2)
+
+		// make sure they're in the right order
+		expect(allChildren[1]).toBe(buttons[0])
+		expect(allChildren[2].props.className).toBe('separator')
+		expect(allChildren[3]).toBe(buttons[1])
+
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
@@ -156,5 +170,40 @@ describe('InsertMenu', () => {
 		const html = component.simulate('focus').html()
 
 		expect(html).toMatchSnapshot()
+	})
+
+	test('InsertMenu component does not render more than one separator in a row', () => {
+		const thisTestOptions = [
+			{
+				isInsertable: false,
+				name: 'dummyItem1',
+				components: {}
+			},
+			{ separator: true },
+			{ separator: true },
+			{
+				isInsertable: false,
+				name: 'dummyItem2',
+				components: {}
+			}
+		]
+		const component = renderer.create(
+			<InsertMenu dropOptions={thisTestOptions} icon="+" masterOnClick={jest.fn()} />
+		)
+
+		const allChildren = component.root.children[0].children
+
+		// number of elements we define plus the 'open' icon
+		// minus one, since the second separator should be ignored
+		expect(allChildren.length).toBe(thisTestOptions.length)
+
+		// non-separator components
+		const buttons = component.root.findAllByProps({ className: 'insert-button' })
+		expect(buttons.length).toBe(2)
+
+		// make sure they're in the right order
+		expect(allChildren[1]).toBe(buttons[0])
+		expect(allChildren[2].props.className).toBe('separator')
+		expect(allChildren[3]).toBe(buttons[1])
 	})
 })

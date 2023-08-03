@@ -118,6 +118,7 @@ describe('Excerpt Converter', () => {
 			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
+		expect(slateNode.children[1].children).toEqual([{ text: 'Citation Text' }])
 
 		expect(slateNode).toMatchSnapshot()
 	})

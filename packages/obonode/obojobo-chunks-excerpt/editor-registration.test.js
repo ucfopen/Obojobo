@@ -14,10 +14,10 @@ import Excerpt from './editor-registration'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
 const EXCERPT_NODE = 'ObojoboDraft.Chunks.Excerpt'
-const EXCERPT_TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.ExcerptLine'
 const EXCERPT_CONTENT = 'ObojoboDraft.Chunks.Excerpt.ExcerptContent'
 const CITE_TEXT_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationText'
-const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 describe('Excerpt editor', () => {
 	describe('insertData', () => {
@@ -47,26 +47,26 @@ describe('Excerpt editor', () => {
 			expect(next).toHaveBeenCalled()
 		})
 
-		test('inserts all lines as ExcerptTextLines if pasting into Code', () => {
+		test('inserts all lines as TextLines if pasting into Code', () => {
 			const data = {
 				types: ['application/html'],
 				getData: () => 'line1 \n line2'
 			}
 			const next = jest.fn()
-			Editor.nodes.mockReturnValueOnce([[{ type: EXCERPT_NODE }]])
+			Editor.nodes.mockReturnValueOnce([[{ type: TEXT_NODE }]])
 
 			Excerpt.plugins.insertData(data, {}, next)
 
 			expect(Transforms.insertFragment).toHaveBeenCalledWith({}, [
 				{
-					type: EXCERPT_NODE,
-					subtype: EXCERPT_TEXT_LINE_NODE,
+					type: TEXT_NODE,
+					subtype: TEXT_LINE_NODE,
 					content: { indent: 0, hangingIndent: false },
 					children: [{ text: 'line1 ' }]
 				},
 				{
-					type: EXCERPT_NODE,
-					subtype: EXCERPT_TEXT_LINE_NODE,
+					type: TEXT_NODE,
+					subtype: TEXT_LINE_NODE,
 					content: { indent: 0, hangingIndent: false },
 					children: [{ text: ' line2' }]
 				}
@@ -100,29 +100,16 @@ describe('Excerpt editor', () => {
 			expect(Excerpt.plugins.renderNode(props)).toMatchSnapshot()
 		})
 
-		test('renders excerpt citation line when passed', () => {
-			const props = {
-				attributes: { dummy: 'dummyData' },
-				element: {
-					type: EXCERPT_NODE,
-					subtype: CITE_LINE_NODE,
-					content: {}
-				}
-			}
-
-			expect(Excerpt.plugins.renderNode(props)).toMatchSnapshot()
-		})
-
 		test('renders excerpt citation text when passed', () => {
 			const props = {
 				attributes: { dummy: 'dummyData' },
 				element: {
 					type: EXCERPT_NODE,
 					subtype: CITE_TEXT_NODE,
-					content: {}
+					content: {},
+					children: [{ text: 'citation text' }]
 				}
 			}
-
 			expect(Excerpt.plugins.renderNode(props)).toMatchSnapshot()
 		})
 	})
@@ -134,40 +121,14 @@ describe('Excerpt editor', () => {
 			expect(placeholders).toEqual([])
 		})
 
-		test('renders a placeholder for excerpt', () => {
+		test('renders placeholder citation text', () => {
 			const editor = {
 				children: [{ children: [{ text: '' }] }]
 			}
 
 			const node = {
-				subtype: EXCERPT_TEXT_LINE_NODE,
-				children: [{ text: '' }]
-			}
-
-			const point = { key: 'pointKey' }
-
-			Element.isElement.mockReturnValue(true)
-			Node.string.mockReturnValue('')
-			Editor.start.mockReturnValue(point)
-
-			const actualPlaceholders = Excerpt.plugins.decorate([node, [0]], editor)
-
-			expect(actualPlaceholders).toEqual([
-				{
-					placeholder: 'Type your excerpt here',
-					anchor: point,
-					focus: point
-				}
-			])
-		})
-
-		test('renders a placeholder for excerpt', () => {
-			const editor = {
-				children: [{ children: [{ text: '' }] }]
-			}
-
-			const node = {
-				subtype: CITE_LINE_NODE,
+				type: EXCERPT_NODE,
+				subtype: CITE_TEXT_NODE,
 				children: [{ text: '' }]
 			}
 
@@ -233,7 +194,48 @@ describe('Excerpt editor', () => {
 
 			Excerpt.plugins.onKeyDown([{}, [0]], {}, event)
 
-			expect(KeyDownUtil.breakToText).toHaveBeenCalled()
+			expect(event.preventDefault).toHaveBeenCalled()
+			expect(KeyDownUtil.breakToText).not.toHaveBeenCalled()
+		})
+
+		test('deals with [Delete]', () => {
+			const editor = {
+				selection: {
+					anchor: {
+						path: [0, 0],
+						offset: 0
+					}
+				},
+				children: []
+			}
+
+			const event = {
+				key: 'Delete',
+				preventDefault: jest.fn()
+			}
+			// entry is the whole excerpt
+			let mockEntry = {
+				children: [
+					// the first child is the ExcerptContent - we don't care about that here
+					{},
+					// the second child is the citation text
+					{ children: [{ text: 'mockText' }] }
+				]
+			}
+
+			Excerpt.plugins.onKeyDown([mockEntry, [0]], editor, event)
+			expect(event.preventDefault).not.toHaveBeenCalled()
+			expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalled()
+
+			KeyDownUtil.deleteEmptyParent.mockReset()
+
+			mockEntry = {
+				children: [{}, { children: [{ text: '' }] }]
+			}
+
+			Excerpt.plugins.onKeyDown([mockEntry, [0]], editor, event)
+			expect(event.preventDefault).toHaveBeenCalledTimes(1)
+			expect(KeyDownUtil.deleteEmptyParent).not.toHaveBeenCalled()
 		})
 
 		test('deals with [Backspace]', () => {
@@ -242,9 +244,41 @@ describe('Excerpt editor', () => {
 				preventDefault: jest.fn()
 			}
 
-			Excerpt.plugins.onKeyDown([{}, [0]], {}, event)
+			// entry is the whole excerpt
+			const mockEntry = {
+				children: [
+					// the first child is the ExcerptContent - we don't care about that here
+					{},
+					// the second child is the citation text
+					{ children: [{ text: 'mockText' }] }
+				]
+			}
 
-			expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalled()
+			let editor = {
+				selection: {
+					focus: {
+						path: [0, 0],
+						offset: 1
+					}
+				},
+				children: []
+			}
+
+			Excerpt.plugins.onKeyDown([mockEntry, [0]], editor, event)
+			expect(event.preventDefault).not.toHaveBeenCalled()
+
+			editor = {
+				selection: {
+					focus: {
+						path: [0, 0],
+						offset: 0
+					}
+				},
+				children: []
+			}
+
+			Excerpt.plugins.onKeyDown([mockEntry, [0]], editor, event)
+			expect(event.preventDefault).toHaveBeenCalledTimes(1)
 		})
 	})
 
@@ -316,87 +350,6 @@ describe('Excerpt editor', () => {
 			expect(wrapNodesSpy).not.toHaveBeenCalled()
 		})
 
-		test('removes extra citation line nodes', () => {
-			const childPaths = [[0], [1], [2]]
-			const children = [{ subtype: CITE_LINE_NODE }, { subtype: CITE_LINE_NODE }, { subtype: '' }]
-
-			Node.children.mockReturnValue([
-				[children[0], childPaths[0]],
-				[children[1], childPaths[1]],
-				[children[2], childPaths[2]]
-			])
-
-			Excerpt.plugins.normalizeNode(
-				[
-					{
-						type: EXCERPT_NODE,
-						subtype: CITE_TEXT_NODE
-					},
-					[0]
-				],
-				editor,
-				jest.fn()
-			)
-
-			expect(removeNodesSpy).toHaveBeenCalledTimes(2)
-
-			expect(removeNodesSpy).not.toHaveBeenCalledWith(editor, { at: childPaths[0] })
-			expect(removeNodesSpy).toHaveBeenCalledWith(editor, { at: childPaths[1] })
-			expect(removeNodesSpy).toHaveBeenCalledWith(editor, { at: childPaths[2] })
-		})
-
-		test('does not remove citation line node if there is only one', () => {
-			const childPaths = [[0]]
-			const children = [{ subtype: CITE_LINE_NODE }]
-
-			Node.children.mockReturnValue([[children[0], childPaths[0]]])
-
-			Excerpt.plugins.normalizeNode(
-				[
-					{
-						type: EXCERPT_NODE,
-						subtype: CITE_TEXT_NODE
-					},
-					[0]
-				],
-				editor,
-				jest.fn()
-			)
-
-			expect(removeNodesSpy).not.toHaveBeenCalled()
-		})
-
-		test('adds an empty citation line node if there are not any', () => {
-			Node.children.mockReturnValue([])
-
-			Excerpt.plugins.normalizeNode(
-				[
-					{
-						type: EXCERPT_NODE,
-						subtype: CITE_TEXT_NODE
-					},
-					[0]
-				],
-				editor,
-				jest.fn()
-			)
-
-			expect(insertNodesSpy).toHaveBeenCalled()
-
-			expect(insertNodesSpy).toHaveBeenCalledWith(
-				editor,
-				[
-					{
-						type: EXCERPT_NODE,
-						subtype: CITE_LINE_NODE,
-						content: { indent: 0, hangingIndent: 0, align: 'center' },
-						children: [{ text: '' }]
-					}
-				],
-				{ at: [0] }
-			)
-		})
-
 		test('removes children if more than 1 excerpt content or cite text node', () => {
 			const excerptChildren = [
 				[{ subtype: EXCERPT_CONTENT }, [0]],
@@ -428,6 +381,33 @@ describe('Excerpt editor', () => {
 			)
 
 			expect(removeNodesSpy).toHaveBeenCalledTimes(3)
+		})
+
+		test('removes non-text children from citation text node', () => {
+			Node.children.mockReturnValue([
+				[{ text: 'citation text' }, [0]],
+				[{ subtype: 'OtherType' }, [1]],
+				[{ subtype: 'OtherType' }, [2]]
+			])
+
+			Text.isText
+				.mockReturnValueOnce(true)
+				.mockReturnValueOnce(false)
+				.mockReturnValueOnce(false)
+
+			Excerpt.plugins.normalizeNode(
+				[
+					{
+						type: EXCERPT_NODE,
+						subtype: CITE_TEXT_NODE
+					},
+					[0]
+				],
+				editor,
+				jest.fn()
+			)
+
+			expect(removeNodesSpy).toHaveBeenCalledTimes(2)
 		})
 
 		test('adds content node if one does not exist', () => {

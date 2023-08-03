@@ -15,6 +15,7 @@ const mockNode = {
 	name: 'mockItem',
 	templateObject: 'mockNode',
 	insertJSON: { type: 'mockType' },
+	type: 'mockType',
 	cloneBlankNode: () => ({ type: 'mockNode' })
 }
 
@@ -30,7 +31,10 @@ jest.mock('Common', () => ({
 		OboModel: {}
 	},
 	Registry: {
-		insertableItems: [mockNode]
+		insertableItems: [mockNode],
+		getItemForType: jest.fn().mockReturnValue({
+			disallowedChildren: []
+		})
 	}
 }))
 
@@ -64,6 +68,13 @@ describe('Component Editor Node', () => {
 		}
 
 		Common.models.OboModel.create = jest.fn().mockReturnValue({ setId: () => true })
+		// otherwise Common.Registry.insertableItems returns an array with a single undefined in it
+		Object.defineProperty(Common.Registry, 'insertableItems', {
+			get: () => [mockNode]
+		})
+
+		// always return some value - clear this mock and override for specific test cases
+		Editor.parent.mockReturnValue([{ children: [1], type: 'ObojoboDraft.Pages.Page' }])
 	})
 
 	test('Node builds the expected component with no classname', () => {
@@ -82,6 +93,7 @@ describe('Component Editor Node', () => {
 	test('Node builds the expected component when not selected null contentDescription', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1] }
+		Editor.parent.mockClear()
 		Editor.parent.mockReturnValue([mockParentNode])
 		ReactEditor.findPath.mockReturnValue([0])
 
@@ -94,6 +106,7 @@ describe('Component Editor Node', () => {
 	test('Node builds the expected component when selected', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1] }
+		Editor.parent.mockClear()
 		Editor.parent.mockReturnValue([mockParentNode])
 		ReactEditor.findPath.mockReturnValue([0])
 
@@ -101,6 +114,11 @@ describe('Component Editor Node', () => {
 
 		// render
 		const component = rtr.create(<Node {...testProps} />)
+
+		const insertMenuComponents = component.root.findAllByType(InsertMenu)
+		insertMenuComponents.forEach(i => {
+			expect(i.props.dropOptions).toEqual([mockNode])
+		})
 
 		// verify
 		const tree = component.toJSON()
@@ -110,6 +128,7 @@ describe('Component Editor Node', () => {
 	test('Node builds the expected component when selected when parent is a question node', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1, 2, 3], type: 'ObojoboDraft.Chunks.Question' }
+		Editor.parent.mockClear()
 		Editor.parent.mockReturnValue([mockParentNode])
 		ReactEditor.findPath.mockReturnValue([1])
 
@@ -131,6 +150,7 @@ describe('Component Editor Node', () => {
 			children: [1, 2, { type: 'ObojoboDraft.Chunks.Question' }],
 			type: 'ObojoboDraft.Chunks.Question'
 		}
+		Editor.parent.mockClear()
 		Editor.parent.mockReturnValue([mockParentNode])
 		ReactEditor.findPath.mockReturnValue([0])
 
@@ -150,6 +170,7 @@ describe('Component Editor Node', () => {
 	test('Node builds the expected component when selected when parent is an assessment', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1, 2, 3], type: 'ObojoboDraft.Sections.Assessment' }
+		Editor.parent.mockClear()
 		Editor.parent.mockReturnValue([mockParentNode])
 		ReactEditor.findPath.mockReturnValue([1])
 
@@ -169,6 +190,7 @@ describe('Component Editor Node', () => {
 	test('Node component inserts node above', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1] }
+		Editor.parent.mockClear()
 		Editor.parent.mockReturnValue([mockParentNode])
 		Editor.start.mockReturnValue('mock-start-return')
 		ReactEditor.findPath.mockReturnValue([0])
@@ -197,6 +219,7 @@ describe('Component Editor Node', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1] }
 		Path.next.mockReturnValue('mock-next-return')
+		Editor.parent.mockClear()
 		Editor.parent.mockReturnValue([mockParentNode])
 		ReactEditor.findPath.mockReturnValue([0])
 
@@ -350,5 +373,30 @@ describe('Component Editor Node', () => {
 		jest.runAllTimers()
 
 		expect(editor.toggleEditable).toHaveBeenCalledTimes(4)
+	})
+
+	test('child InsertMenu components are given correct dropOptions based on parent node', () => {
+		const mockParentNode = { children: [1], type: 'ObojoboDraft.Chunk.Question' }
+		Editor.parent.mockClear()
+		Editor.parent.mockReturnValue([mockParentNode])
+		// pretend the registry says this parent can't have 'mockType' children
+		Common.Registry.getItemForType = jest.fn().mockReturnValue({
+			disallowedChildren: ['mockType']
+		})
+		ReactEditor.findPath.mockReturnValue([1])
+
+		const testProps = { ...mockProps, selected: true }
+
+		// render
+		const component = rtr.create(<Node {...testProps} />)
+
+		expect(Common.Registry.getItemForType).toHaveBeenCalledWith('ObojoboDraft.Chunk.Question')
+
+		// the InsertMenu items otherwise receive an array with the mockNode object in dropOptions
+		// make sure they're given an empty array instead
+		const insertMenuComponents = component.root.findAllByType(InsertMenu)
+		insertMenuComponents.forEach(i => {
+			expect(i.props.dropOptions).toEqual([])
+		})
 	})
 })
