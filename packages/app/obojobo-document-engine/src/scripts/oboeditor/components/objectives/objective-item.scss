@@ -1,0 +1,91 @@
+@import '~styles/includes';
+
+/* Display the objective css */
+$color-highlight-bg: lighten($color-action, 50%);
+
+.is-objective-label-selected {
+	background-color: $color-highlight-bg;
+
+	.objective-options button {
+		background-color: $color-highlight-bg;
+	}
+}
+
+.is-not-objective-label-selected {
+	background-color: $color-bg;
+
+	.objective-options button {
+		background-color: $color-bg;
+	}
+}
+
+.objective-block {
+	text-align: left;
+	width: 35rem;
+	border: 1px solid lighten($color-unchosen-correct, 25%);
+	padding: 0.8em;
+	margin: 0.5em;
+	display: flex;
+	align-items: center;
+	border-radius: $dimension-rounded-radius;
+
+	.close-btn {
+		font-size: 1em;
+		font-weight: bold;
+		background: none;
+		color: $color-shadow;
+	}
+
+	.close-btn .obojobo-draft--components--delete-button {
+		position: static !important;
+	}
+
+	.objective-options {
+		margin-left: 0.5em;
+		width: 5em;
+		display: flex;
+		justify-content: space-between;
+
+		button:hover {
+			background-color: $color-action;
+		}
+	}
+
+	.edit-link {
+		background: transparent;
+		cursor: pointer;
+		border: 0;
+		font-size: 0.75em;
+		font-family: $font-default;
+		color: $color-action;
+		text-decoration: underline;
+	}
+
+	.objective-content {
+		font-size: 0.85em;
+		width: 30em;
+		display: flex;
+		align-items: center;
+		cursor: default;
+
+		input {
+			width: 2em;
+			margin: 0;
+			margin-right: 1em;
+		}
+
+		.objective-label {
+			width: 2em;
+			font-family: $font-monospace;
+		}
+
+		.objective-description {
+			width: 24.84em;
+			max-width: 30em;
+			margin-left: 1em;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+}

@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import Question from './editor-component'
 
-import { Transforms } from 'slate'
+import { Editor, Transforms } from 'slate'
 jest.mock('slate', () => ({
 	Editor: {
 		levels: () => [[{ type: 'ObojoboDraft.Sections.Assessment' }]],
@@ -70,9 +70,38 @@ describe('Question Editor Node', () => {
 			}
 		}
 		const component = renderer.create(<Question {...props} />)
+		const mainComponent = component.root.findByProps({
+			className: 'obojobo-draft--chunks--question--wrapper'
+		}).children[0].children[0]
+		expect(mainComponent.props.className).toBe(
+			'component obojobo-draft--chunks--question is-viewed pad is-type-default is-not-collapsed'
+		)
+
+		const collapseButton = component.root.findByProps({ className: 'collapse-button' })
+		expect(collapseButton.children[0].children[0]).toBe('-')
+
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('Question builds the expected component (collapsed)', () => {
+		const props = {
+			element: {
+				content: { type: 'default', collapsed: true },
+				children: [{}, { subtype: SOLUTION_NODE }]
+			}
+		}
+		const component = renderer.create(<Question {...props} />)
+		const mainComponent = component.root.findByProps({
+			className: 'obojobo-draft--chunks--question--wrapper'
+		}).children[0].children[0]
+		expect(mainComponent.props.className).toBe(
+			'component obojobo-draft--chunks--question is-viewed pad is-type-default is-collapsed'
+		)
+
+		const collapseButton = component.root.findByProps({ className: 'collapse-button' })
+		expect(collapseButton.children[0].children[0]).toBe('+')
 	})
 
 	test('Question builds the expected component (not in assessment)', () => {
@@ -82,13 +111,15 @@ describe('Question Editor Node', () => {
 				children: [{ content: {} }, { subtype: SOLUTION_NODE }]
 			}
 		}
-		const spy = jest.spyOn(Question.prototype, 'getIsInAssessment').mockReturnValue(false)
+
+		const previousMock = Editor.levels
+		Editor.levels = () => [[{ type: 'MockType' }]]
+
 		const component = renderer.create(<Question {...props} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-
-		spy.mockRestore()
+		Editor.levels = previousMock
 	})
 
 	test('Survey Question builds the expected component', () => {
@@ -468,5 +499,74 @@ describe('Question Editor Node', () => {
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('Question toggles collapsed status', () => {
+		const mockElement = {
+			content: { type: 'default' },
+			children: [
+				{ type: BREAK_NODE },
+				{
+					id: 'mock-mca-id',
+					type: MCASSESSMENT_NODE,
+					content: { partialScoring: false }
+				}
+			]
+		}
+		// intentionally leaving 'collapsed' undefined in element.content to simulate backwards compatibility
+		const props = {
+			editor: {},
+			element: mockElement
+		}
+
+		const component = mount(<Question {...props} />)
+		const path = [9, 2]
+		ReactEditor.findPath.mockReturnValue(path)
+
+		component
+			.find('.collapse-button')
+			.at(0)
+			.simulate('click')
+		component.update()
+
+		// when undefined, next state should be true
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { type: 'default', collapsed: true } },
+			{ at: path }
+		)
+		Transforms.setNodes.mockClear()
+		// ordinarily this would be updated by the Slate code - here we do it manually
+		// doing this without re-mounting/re-rendering works because it's passed by reference, not by value I guess
+		mockElement.content.collapsed = true
+
+		component
+			.find('.collapse-button')
+			.at(0)
+			.simulate('click')
+		component.update()
+
+		// when true, next state should be false
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { type: 'default', collapsed: false } },
+			{ at: path }
+		)
+		Transforms.setNodes.mockClear()
+
+		mockElement.content.collapsed = false
+
+		component
+			.find('.collapse-button')
+			.at(0)
+			.simulate('click')
+		component.update()
+
+		// when false, next state should be true
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { type: 'default', collapsed: true } },
+			{ at: path }
+		)
 	})
 })

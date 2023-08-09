@@ -1,6 +1,7 @@
 {
 	"private": true,
 	"name": "obojobo-next",
+	"version": "16.0.1",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"license": "AGPL-3.0-only",
@@ -78,6 +79,7 @@
 		"packages/obonode/obojobo-chunks-break",
 		"packages/obonode/obojobo-chunks-code",
 		"packages/obonode/obojobo-chunks-figure",
+		"packages/obonode/obojobo-chunks-excerpt",
 		"packages/obonode/obojobo-chunks-heading",
 		"packages/obonode/obojobo-chunks-html",
 		"packages/obonode/obojobo-chunks-iframe",
@@ -101,7 +103,6 @@
 	],
 	"engines": {
 		"yarn": "^1.15.2",
-		"node": "^14.16.0"
-	},
-	"version": "12.1.0-alpha.0"
+		"node": "^18.16.0"
+	}
 }

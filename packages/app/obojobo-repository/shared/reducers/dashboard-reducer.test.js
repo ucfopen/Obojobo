@@ -1205,8 +1205,7 @@ describe('Dashboard Reducer', () => {
 					title: 'C Mock Module'
 				}
 			],
-			selectedModules: [],
-			showDeletedModules: true
+			selectedModules: []
 		}
 
 		const undeletedModules = [
@@ -1223,15 +1222,13 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: GET_MODULES,
 			payload: {
-				value: undeletedModules,
-				showDeletedModules: false
+				value: undeletedModules
 			}
 		}
 
 		const handler = dashboardReducer(initialState, action)
 		const newState = handleSuccess(handler)
 		expect(newState.myModules).toEqual(undeletedModules)
-		expect(newState.showDeletedModules).toBe(false)
 	})
 
 	test('GET_DELETED_MODULES action modifies state correctly', () => {
@@ -1251,8 +1248,7 @@ describe('Dashboard Reducer', () => {
 					title: 'C Mock Module'
 				}
 			],
-			selectedModules: [],
-			showDeletedModules: true
+			selectedModules: []
 		}
 
 		const deletedModules = [
@@ -1269,15 +1265,13 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: GET_DELETED_MODULES,
 			payload: {
-				value: deletedModules,
-				showDeletedModules: true
+				value: deletedModules
 			}
 		}
 
 		const handler = dashboardReducer(initialState, action)
 		const newState = handleSuccess(handler)
 		expect(newState.myModules).toEqual(deletedModules)
-		expect(newState.showDeletedModules).toBe(true)
 	})
 
 	test('BULK_RESTORE_MODULES action modifies state correctly', () => {
@@ -1298,7 +1292,6 @@ describe('Dashboard Reducer', () => {
 
 		const initialState = {
 			multiSelectMode: true,
-			showDeletedModules: true,
 			selectedModules: ['mockDraftId'],
 			myModules: [
 				{
@@ -1322,7 +1315,6 @@ describe('Dashboard Reducer', () => {
 		expect(newState.myModules).toEqual(mockModuleList)
 		expect(newState.selectedModules).toEqual([])
 		expect(newState.multiSelectMode).toBe(false)
-		expect(newState.showDeletedModules).toBe(false)
 	})
 
 	test('unrecognized action types just return the current state', () => {

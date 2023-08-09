@@ -1,7 +1,5 @@
 const { handle } = require('redux-pack')
 
-const whitespaceRegex = /\s+/g
-
 const {
 	SHOW_MODULE_PERMISSIONS,
 	CLOSE_MODAL,
@@ -43,6 +41,8 @@ const {
 	BULK_RESTORE_MODULES
 } = require('../actions/dashboard-actions')
 
+const { filterModules, filterCollections } = require('../util/filter-functions')
+
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
 	items,
 	hasFetched,
@@ -64,27 +64,6 @@ const closedDialogState = () => ({
 		items: []
 	}
 })
-
-function filterModules(modules, searchString) {
-	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
-
-	return modules.filter(m =>
-		((m.title || '') + m.draftId)
-			.replace(whitespaceRegex, '')
-			.toLowerCase()
-			.includes(searchString)
-	)
-}
-function filterCollections(collections, searchString) {
-	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
-
-	return collections.filter(c =>
-		((c.title || '') + c.id)
-			.replace(whitespaceRegex, '')
-			.toLowerCase()
-			.includes(searchString)
-	)
-}
 
 function DashboardReducer(state, action) {
 	switch (action.type) {
@@ -168,8 +147,7 @@ function DashboardReducer(state, action) {
 						moduleCount: action.payload.value.allCount,
 						filteredModules,
 						selectedModules: [],
-						multiSelectMode: false,
-						showDeletedModules: false
+						multiSelectMode: false
 					}
 				}
 			})
@@ -178,7 +156,8 @@ function DashboardReducer(state, action) {
 			return {
 				...state,
 				selectedModules: [],
-				multiSelectMode: false
+				multiSelectMode: false,
+				dialog: 'bulk-add-successful'
 			}
 
 		case BULK_REMOVE_MODULES_FROM_COLLECTION:
@@ -421,28 +400,24 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => ({
 					...prevState,
-					myModules: action.payload.value,
-					showDeletedModules: false
+					myModules: action.payload.value
 				})
 			})
 
 		case GET_DELETED_MODULES:
 			return handle(state, action, {
 				success: prevState => ({
-					selectedModules: prevState.selectedModules,
-					currentUser: prevState.currentUser,
-					myModules: action.payload.value,
-					showDeletedModules: true
+					...prevState,
+					myModules: action.payload.value
 				})
 			})
 
 		case BULK_RESTORE_MODULES:
 			return handle(state, action, {
 				success: prevState => ({
+					...prevState,
 					selectedModules: [],
-					currentUser: prevState.currentUser,
 					myModules: action.payload.value,
-					showDeletedModules: false,
 					multiSelectMode: false
 				})
 			})

@@ -9,6 +9,7 @@ exports[`Cell Editor Node Cell component as selected header 1`] = `
   <div
     className="dropdown-cell"
     contentEditable={false}
+    onKeyDown={[Function]}
   >
     <button
       className=" is-not-open"
@@ -21,6 +22,8 @@ exports[`Cell Editor Node Cell component as selected header 1`] = `
     </button>
     <div
       className="drop-content-cell  is-not-open"
+      onBlur={[Function]}
+      onFocus={[Function]}
     >
       <button
         onClick={[Function]}
@@ -66,6 +69,7 @@ exports[`Cell Editor Node Cell component selected 1`] = `
   <div
     className="dropdown-cell"
     contentEditable={false}
+    onKeyDown={[Function]}
   >
     <button
       className=" is-not-open"
@@ -78,6 +82,8 @@ exports[`Cell Editor Node Cell component selected 1`] = `
     </button>
     <div
       className="drop-content-cell  is-not-open"
+      onBlur={[Function]}
+      onFocus={[Function]}
     >
       <button
         onClick={[Function]}

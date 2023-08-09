@@ -25,6 +25,7 @@ const isNoDataFromQueryError = e => {
 		e instanceof pgp.errors.QueryResultError && e.code === pgp.errors.queryResultErrorCode.noData
 	)
 }
+const { levelName, FULL, PARTIAL } = require('../../constants')
 
 // Get a complete Draft Document Tree (for editing)
 // optional query variable: contentId=<draftContentId>
@@ -35,14 +36,16 @@ router
 	.get(async (req, res) => {
 		try {
 			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
-			const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+			const access_level = await DraftPermissions.getUserAccessLevelToDraft(
 				req.currentUser.id,
 				req.params.draftId
 			)
 
+			const hasPerms = access_level === FULL || access_level === PARTIAL
+
 			if (!hasPerms) {
 				return res.notAuthorized(
-					'You must be the author of this draft to retrieve this information'
+					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
 			}
 
@@ -54,7 +57,11 @@ router
 				// get the current version
 				draftModel = await DraftModel.fetchById(req.params.draftId)
 			}
+
+			// Get the draft document and attach the user's access level for use in editor
 			const draftDocument = draftModel.document
+			draftDocument.accessLevel = access_level
+
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument
@@ -201,7 +208,21 @@ router
 	.post([requireCanCreateDrafts, requireDraftId, checkValidationRules])
 	.post((req, res) => {
 		return Promise.resolve()
-			.then(() => {
+			.then(async () => {
+				// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
+				const access_level = await DraftPermissions.getUserAccessLevelToDraft(
+					req.currentUser.id,
+					req.params.draftId
+				)
+
+				return access_level === FULL || access_level === PARTIAL
+			})
+			.then(canEdit => {
+				if (!canEdit) {
+					return res.notAuthorized(
+						'In order to edit this module you must have "Partial" or "Full" access.'
+					)
+				}
 				let xml
 				let documentInput
 
@@ -259,16 +280,20 @@ router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
 	.delete(async (req, res) => {
-		const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+		const access_level = await DraftPermissions.getUserAccessLevelToDraft(
 			req.currentUser.id,
 			req.params.draftId
 		)
 
+		const hasPerms = access_level === FULL
+
 		if (!hasPerms) {
-			return res.notAuthorized('You must be the author of this draft to delete it')
+			return res.notAuthorized(
+				'You must have "' + levelName[FULL] + '" access to this draft to delete it'
+			)
 		}
 
-		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
+		return DraftModel.deleteById(req.params.draftId)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

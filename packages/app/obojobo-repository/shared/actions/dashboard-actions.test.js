@@ -219,6 +219,36 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
+	test('changeAccessLevel returns the expected output and calls other functions correctly', () => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+
+		const actionReply = DashboardActions.changeAccessLevel('mockDraftId', 99, 'Partial')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId/permission/update', {
+			...defaultFetchOptions,
+			method: 'POST',
+			body: '{"userId":99, "accessLevel":"Partial"}'
+		})
+		global.fetch.mockReset()
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.CHANGE_ACCESS_LEVEL,
+			promise: expect.any(Object)
+		})
+
+		// should get draft permissions after changing them
+		return actionReply.promise.then(() => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(global.fetch).toHaveBeenCalledWith(
+				'/api/drafts/mockDraftId/permission',
+				defaultFetchOptions
+			)
+		})
+	})
+
 	// three (plus one default) ways of calling deleteModulePermissions
 	const assertDeleteModulePermissionsRunsWithOptions = (secondaryLookupUrl, options) => {
 		global.fetch.mockResolvedValueOnce(standardFetchResponse)
@@ -429,10 +459,14 @@ describe('Dashboard Actions', () => {
 	test('bulkAddModulesToCollection calls other functions', () => {
 		global.fetch.mockResolvedValue(standardFetchResponse)
 
-		const mockDraftIds = ['draft-id-1', 'draft-id-2', 'draft-id-3']
+		const mockDrafts = [
+			{ draftId: 'draft-id-1' },
+			{ draftId: 'draft-id-2' },
+			{ draftId: 'draft-id-3' }
+		]
 		const mockCollectionIds = ['collection-id-1', 'collection-id-2']
 
-		const actionReply = DashboardActions.bulkAddModulesToCollection(mockDraftIds, mockCollectionIds)
+		const actionReply = DashboardActions.bulkAddModulesToCollection(mockDrafts, mockCollectionIds)
 
 		expect(actionReply).toEqual({
 			type: DashboardActions.BULK_ADD_MODULES_TO_COLLECTIONS,
@@ -440,11 +474,11 @@ describe('Dashboard Actions', () => {
 		})
 
 		actionReply.promise.then(() => {
-			const expectedNumberOfCalls = mockDraftIds.length * mockCollectionIds.length
+			const expectedNumberOfCalls = mockDrafts.length * mockCollectionIds.length
 			expect(global.fetch).toHaveBeenCalledTimes(expectedNumberOfCalls)
 
 			let callIndex = 0
-			mockDraftIds.forEach(draftId => {
+			mockDrafts.forEach(draft => {
 				mockCollectionIds.forEach(collectionId => {
 					const expectedCall = global.fetch.mock.calls[callIndex++]
 					const expectedApiUrl = `/api/collections/${collectionId}/modules/add`
@@ -452,7 +486,7 @@ describe('Dashboard Actions', () => {
 					expect(expectedCall[1]).toEqual({
 						...defaultFetchOptions,
 						method: 'POST',
-						body: `{"draftId":"${draftId}"}`
+						body: `{"draftId":"${draft.draftId}"}`
 					})
 				})
 			})
@@ -1890,7 +1924,7 @@ describe('Dashboard Actions', () => {
 		})
 	}
 	test('bulkRestoreModules returns expected output and calls other functions', () => {
-		return assertBulkRestoreModulesRunsWithOptions('/api/drafts')
+		return assertBulkRestoreModulesRunsWithOptions('/api/drafts-deleted')
 	})
 
 	const assertGetMyDeletedModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {

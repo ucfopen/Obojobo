@@ -41,6 +41,27 @@ describe('Collection Model', () => {
 		expect(c.createdAt).toBe(mockRawCollection.created_at)
 	})
 
+	test('fetchAllPublic retrieves all public collections from the database', () => {
+		expect.hasAssertions()
+
+		const mockDbResponse = [
+			{ ...mockRawCollection },
+			{ ...mockRawCollection, id: 'mockCollectionId2', title: 'mockCollectionTitle2' }
+		]
+		db.manyOrNone.mockResolvedValueOnce(mockDbResponse)
+
+		return CollectionModel.fetchAllPublic().then(collections => {
+			expect(collections.length).toBe(2)
+			for (let c = 0; c < collections.length; c++) {
+				expect(collections[c]).toBeInstanceOf(CollectionModel)
+				expect(collections[c].id).toBe(mockDbResponse[c].id)
+				expect(collections[c].title).toBe(mockDbResponse[c].title)
+				expect(collections[c].userId).toBe(mockDbResponse[c].user_id)
+				expect(collections[c].createdAt).toBe(mockDbResponse[c].created_at)
+			}
+		})
+	})
+
 	test('fetchById retrieves a Collection from the database', () => {
 		expect.hasAssertions()
 
@@ -226,6 +247,8 @@ describe('Collection Model', () => {
 		db.one.mockResolvedValueOnce(mockRawCollection)
 		DraftSummary.fetchAndJoinWhere.mockResolvedValueOnce(mockDrafts)
 
+		const selectSQL = ''
+
 		const joinSQL = `
 			JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id
@@ -237,7 +260,7 @@ describe('Collection Model', () => {
 		return CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.then(collection => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(selectSQL, joinSQL, whereSQL, {
 					collectionId: 'mockCollectionId'
 				})
 				expect(collection.drafts).toEqual(mockDrafts)
@@ -254,6 +277,8 @@ describe('Collection Model', () => {
 		db.one.mockResolvedValueOnce(mockRawCollection)
 		DraftSummary.fetchAndJoinWhere.mockRejectedValueOnce(mockError)
 
+		const selectSQL = ''
+
 		const joinSQL = `
 			JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id
@@ -265,7 +290,7 @@ describe('Collection Model', () => {
 		return CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.catch(error => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(selectSQL, joinSQL, whereSQL, {
 					collectionId: 'mockCollectionId'
 				})
 				expect(error).toBe(mockError)

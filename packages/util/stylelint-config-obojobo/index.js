@@ -6,7 +6,7 @@ module.exports = {
 		"at-rule-no-unknown": [
 			true,
 			{
-				"ignoreAtRules": ["include", "mixin"]
+				"ignoreAtRules": ["include", "mixin", "function", "return"]
 			}
 		],
 		"unit-disallowed-list": [

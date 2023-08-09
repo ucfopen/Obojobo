@@ -13,6 +13,10 @@ jest.mock('obojobo-express/server/insert_event')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 
+jest.mock('uuid', () => ({
+	v4: jest.fn()
+}))
+
 let CollectionSummary
 let Collection
 let DraftSummary
@@ -59,6 +63,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 
+const uuid = require('uuid').v4
+
 // register express-react-views template engine if not already registered
 app.engine('jsx', require('express-react-views-custom').createEngine())
 
@@ -77,6 +83,8 @@ app.use(require('obojobo-express/server/express_current_document'))
 
 app.use('/', require('obojobo-express/server/express_response_decorator'))
 app.use('/', require('obojobo-repository/server/routes/api'))
+
+import { FULL, PARTIAL, MINIMAL, levelName } from '../../../obojobo-express/server/constants'
 
 describe('repository api route', () => {
 	beforeEach(() => {
@@ -587,6 +595,98 @@ describe('repository api route', () => {
 			})
 	})
 
+	test('post /drafts/:draftId/copy refreshes all node IDs in a document', () => {
+		expect.hasAssertions()
+
+		// have a bit of a document just to make sure substitutions work everywhere
+		// actual details such as type, etc. don't matter too much here
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			},
+			children: [
+				{
+					id: 'do-not-change-me',
+					children: [
+						{ id: '4baa2860-5219-404f-9d99-616ca8f81e41' },
+						{
+							id: 'adcc55b7-e412-4f44-b64f-6c317021f812',
+							reference: {
+								id: '4baa2860-5219-404f-9d99-616ca8f81e41'
+							}
+						},
+						{ id: '9d992860-3540-5219-8b4a-1e41616ca8f8' }
+					]
+				}
+			]
+		}
+
+		// this is admittedly sort of magical - we happen to know how many times
+		//  this should run based on the document structure we made above
+		// potentially find a more elegant way of doing this
+		uuid
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000001')
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000002')
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000003')
+
+		// this is also a bit brute force, but it does the job
+		const expectedNewDraftDocument = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'New Draft Title'
+			},
+			children: [
+				{
+					id: 'do-not-change-me',
+					children: [
+						{ id: '00000000-0000-0000-0000-000000000001' },
+						{
+							id: '00000000-0000-0000-0000-000000000002',
+							reference: {
+								id: '00000000-0000-0000-0000-000000000001'
+							}
+						},
+						{ id: '00000000-0000-0000-0000-000000000003' }
+					]
+				}
+			]
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			},
+			// this would be handled by the Draft model, but we're mocking that so
+			//  we have to do this ourselves
+			nodesById: new Map([
+				['do-not-change-me', {}],
+				['4baa2860-5219-404f-9d99-616ca8f81e41', {}],
+				['adcc55b7-e412-4f44-b64f-6c317021f812', {}],
+				['9d992860-3540-5219-8b4a-1e41616ca8f8', {}]
+			])
+		}
+
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
+
+		Draft.fetchById = jest.fn()
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+
+		return request(app)
+			.post('/drafts/mockDraftId/copy')
+			.send({ visitId: 'mockVisitId', title: 'New Draft Title' })
+			.then(() => {
+				expect(uuid).toHaveBeenCalledTimes(3)
+				// 99 = mock user id
+				expect(Draft.createWithContent).toHaveBeenCalledWith(99, expectedNewDraftDocument)
+			})
+	})
+
 	test('post /drafts/:draftId/copy returns the expected response when user can not copy draft', () => {
 		expect.hasAssertions()
 
@@ -639,10 +739,115 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('post /drafts/:draftId/permission runs correctly when current user has perms to draft', () => {
+	test('post /drafts/:draftId/permission/update fails if current user has partial access', () => {
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: levelName[MINIMAL], userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.updateAccessLevel).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Current User does not have permission to share this draft'
+				)
+			})
+	})
+
+	test('post /drafts/:draftId/permission/update fails if current user has minimal access', () => {
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
+
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: levelName[MINIMAL], userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.updateAccessLevel).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Current User does not have permission to share this draft'
+				)
+			})
+	})
+
+	test('post /drafts/:draftId/permission/update does not call updateAccessLevel if target access level matches current access level', () => {
+		DraftPermissions.getUserAccessLevelToDraft
+			// first call checks the current user's access level
+			.mockResolvedValueOnce(FULL)
+			// second call checks the target user's access level
+			.mockResolvedValueOnce(PARTIAL)
+
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: levelName[PARTIAL], userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.updateAccessLevel).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('post /drafts/:draftId/permission/update correctly sets new access level ', () => {
+		DraftPermissions.getUserAccessLevelToDraft
+			.mockResolvedValueOnce(FULL)
+			.mockResolvedValueOnce(PARTIAL)
+
+		UserModel.fetchById = jest.fn()
+		UserModel.fetchById.mockResolvedValueOnce(true)
+
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: levelName[MINIMAL], userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.updateAccessLevel).toHaveBeenCalled()
+				expect(DraftPermissions.updateAccessLevel).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					99,
+					MINIMAL
+				)
+				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('post /drafts/:draftId/permission/update handles unknown access level', () => {
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
+
+		UserModel.fetchById = jest.fn()
+		UserModel.fetchById.mockResolvedValueOnce(true)
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: 'Unknown', userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.updateAccessLevel).toHaveBeenCalledTimes(0)
+				expect(response.statusCode).toBe(400)
+				expect(response.text).toBe('Invalid access level: Unknown')
+			})
+	})
+
+	test('post /drafts/:draftId/permission/update handles thrown errors', () => {
 		expect.hasAssertions()
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockRejectedValueOnce('database error')
+
+		return request(app)
+			.post('/drafts/mockDraftId/permission/update')
+			.send({ accessLevel: levelName[PARTIAL], userId: 99 })
+			.then(response => {
+				expect(DraftPermissions.getUserAccessLevelToDraft).toHaveBeenCalledTimes(1)
+				expect(response.statusCode).toBe(500)
+			})
+	})
+
+	test('post /drafts/:draftId/permission runs correctly when current user has "Full" access level to draft', () => {
+		expect.hasAssertions()
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		DraftPermissions.addOwnerToDraft.mockResolvedValueOnce()
 
 		UserModel.fetchById = jest.fn()
@@ -652,7 +857,7 @@ describe('repository api route', () => {
 			.post('/drafts/mockDraftId/permission')
 			.send({ userId: 1 })
 			.then(response => {
-				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.getUserAccessLevelToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -665,17 +870,17 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('post /drafts/:draftId/permission runs correctly when current user does not have perms to draft', () => {
+	test('post /drafts/:draftId/permission runs correctly when current user does not have "Full" access level to draft', () => {
 		expect.hasAssertions()
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
 		UserModel.fetchById = jest.fn()
 
 		return request(app)
 			.post('/drafts/mockDraftId/permission')
 			.send({ userId: 1 })
 			.then(response => {
-				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.getUserAccessLevelToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -688,7 +893,7 @@ describe('repository api route', () => {
 	test('post /drafts/:draftId/permission catches unexpected errors correctly', () => {
 		expect.hasAssertions()
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce(true)
 		DraftPermissions.addOwnerToDraft.mockRejectedValueOnce('database error')
@@ -697,7 +902,7 @@ describe('repository api route', () => {
 			.post('/drafts/mockDraftId/permission')
 			.send({ userId: 1 })
 			.then(response => {
-				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.getUserAccessLevelToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -713,10 +918,10 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('delete /drafts/:draftId/permission/:userId runs correctly when current user has perms to draft', () => {
+	test('delete /drafts/:draftId/permission/:userId runs correctly when current user has "Full" access level to draft', () => {
 		expect.hasAssertions()
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce({ id: 1 })
 		DraftPermissions.removeOwnerFromDraft.mockResolvedValueOnce(true)
@@ -724,7 +929,7 @@ describe('repository api route', () => {
 		return request(app)
 			.delete('/drafts/mockDraftId/permission/1')
 			.then(response => {
-				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.getUserAccessLevelToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -737,16 +942,16 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('delete /drafts/:draftId/permission/:userId runs correctly when current user does not have perms to draft', () => {
+	test('delete /drafts/:draftId/permission/:userId runs correctly when current user does not have "Full" access level to draft', () => {
 		expect.hasAssertions()
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
 		UserModel.fetchById = jest.fn()
 
 		return request(app)
 			.delete('/drafts/mockDraftId/permission/1')
 			.then(response => {
-				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.getUserAccessLevelToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -759,7 +964,7 @@ describe('repository api route', () => {
 	test('delete /drafts/:draftId/permission/:userId catches unexpected errors correctly', () => {
 		expect.hasAssertions()
 
-		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(FULL)
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce({ id: 1 })
 		DraftPermissions.removeOwnerFromDraft.mockRejectedValueOnce('database error')
@@ -767,7 +972,7 @@ describe('repository api route', () => {
 		return request(app)
 			.delete('/drafts/mockDraftId/permission/1')
 			.then(response => {
-				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.getUserAccessLevelToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
