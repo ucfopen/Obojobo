@@ -1,0 +1,204 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModuleSyncDialog ModuleSyncDialog renders with default props 1`] = `
+<div
+  className="module-sync-dialog"
+>
+  <div
+    className="top-bar"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <img
+        height="100%"
+        src="/library/module-icon/mockDraftId"
+        width="100%"
+      />
+    </div>
+    <div
+      className="module-title"
+      title="Mock Draft Title"
+    >
+      Mock Draft Title
+    </div>
+    <button
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="wrapper"
+  >
+    <h1
+      className="title"
+    >
+      Synchronize Updates
+    </h1>
+    <div
+      className="sub-title"
+    >
+      This dialog will indicate if any changes have been made to the module this copy was created from.
+      <br />
+      If there have been any changes, you will be given the option to automatically update this copy to match.
+      <br />
+      Please note that synchronizing changes may also change this copy's title.
+    </div>
+    <div
+      className="sync-info-wrapper"
+    >
+      <p
+        className="sync-info-text-only"
+      >
+        Checking for updates to this module's original...
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModuleSyncDialog ModuleSyncDialog renders with provided newest as null 1`] = `
+<div
+  className="module-sync-dialog"
+>
+  <div
+    className="top-bar"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <img
+        height="100%"
+        src="/library/module-icon/mockDraftId"
+        width="100%"
+      />
+    </div>
+    <div
+      className="module-title"
+      title="Mock Draft Title"
+    >
+      Mock Draft Title
+    </div>
+    <button
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="wrapper"
+  >
+    <h1
+      className="title"
+    >
+      Synchronize Updates
+    </h1>
+    <div
+      className="sub-title"
+    >
+      This dialog will indicate if any changes have been made to the module this copy was created from.
+      <br />
+      If there have been any changes, you will be given the option to automatically update this copy to match.
+      <br />
+      Please note that synchronizing changes may also change this copy's title.
+    </div>
+    <div
+      className="sync-info-wrapper"
+    >
+      <p
+        className="sync-info-text-only"
+      >
+        No changes found, copy is up-to-date.
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModuleSyncDialog ModuleSyncDialog renders with provided newest module 1`] = `
+<div
+  className="module-sync-dialog"
+>
+  <div
+    className="top-bar"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <img
+        height="100%"
+        src="/library/module-icon/mockDraftId"
+        width="100%"
+      />
+    </div>
+    <div
+      className="module-title"
+      title="Mock Draft Title"
+    >
+      Mock Draft Title
+    </div>
+    <button
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="wrapper"
+  >
+    <h1
+      className="title"
+    >
+      Synchronize Updates
+    </h1>
+    <div
+      className="sub-title"
+    >
+      This dialog will indicate if any changes have been made to the module this copy was created from.
+      <br />
+      If there have been any changes, you will be given the option to automatically update this copy to match.
+      <br />
+      Please note that synchronizing changes may also change this copy's title.
+    </div>
+    <div
+      className="sync-info-wrapper"
+    >
+      <div
+        className="sync-info"
+      >
+        <div
+          className="repository--module-icon--image"
+        >
+          <img
+            height="100%"
+            src="/library/module-icon/mockOriginalDraftId"
+            width="100%"
+          />
+        </div>
+        <div
+          className="module-title"
+        >
+          Original Mock Draft Title
+          <br />
+          <span
+            className="last-update-time"
+          >
+            Last updated: 
+            1999-01-01 1:01 AM
+          </span>
+        </div>
+        <button
+          className="repository--button sync-button"
+          onClick={[Function]}
+        >
+          Synchronize
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

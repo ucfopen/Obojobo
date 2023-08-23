@@ -95,14 +95,28 @@ class DraftPermissions {
 	}
 
 	// returns a boolean
-	static async userHasPermissionToCopy(userId, draftId) {
+	static async userHasPermissionToPreview(user, draftId) {
 		try {
 			const results = await Promise.all([
 				DraftPermissions.draftIsPublic(draftId),
-				DraftPermissions.getUserAccessLevelToDraft(userId, draftId)
+				DraftPermissions.getUserAccessLevelToDraft(user.id, draftId)
 			])
 
-			return results[0] === true || results[1] !== null
+			return user.perms.includes('canPreviewDrafts') && (results[0] === true || results[1] !== null)
+		} catch (error) {
+			throw logger.logError('Error userHasPermissionToPreview', error)
+		}
+	}
+
+	// returns a boolean
+	static async userHasPermissionToCopy(user, draftId) {
+		try {
+			const results = await Promise.all([
+				DraftPermissions.draftIsPublic(draftId),
+				DraftPermissions.getUserAccessLevelToDraft(user.id, draftId)
+			])
+
+			return user.perms.includes('canCreateDrafts') && (results[0] === true || results[1] !== null)
 		} catch (error) {
 			throw logger.logError('Error userHasPermissionToCopy', error)
 		}
