@@ -19,7 +19,8 @@ describe('ModuleMenu HOC', () => {
 		expect(ReactRedux.connect).toHaveBeenCalledWith(null, {
 			showModulePermissions: DashboardActions.showModulePermissions,
 			deleteModule: DashboardActions.deleteModule,
-			showModuleMore: DashboardActions.showModuleMore
+			showModuleMore: DashboardActions.showModuleMore,
+			showModuleSync: DashboardActions.showModuleSync
 		})
 
 		expect(mockReduxConnectReturn).toHaveBeenCalledTimes(1)

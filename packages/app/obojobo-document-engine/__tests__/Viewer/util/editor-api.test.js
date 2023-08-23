@@ -115,10 +115,33 @@ describe('EditorAPI', () => {
 		expect(res).toBe(mockJsonResult)
 	})
 
-	test('copyDraft fetches with the correct args', async () => {
+	test('copyDraft fetches with the correct args - allow default readOnly', async () => {
 		const res = await EditorAPI.copyDraft('draft-id', 'new-title')
 
-		expect(post).toHaveBeenCalledWith('/api/drafts/draft-id/copy', { title: 'new-title' })
+		expect(post).toHaveBeenCalledWith('/api/drafts/draft-id/copy', {
+			title: 'new-title',
+			readOnly: false
+		})
+		expect(res).toBe(mockJsonResult)
+	})
+
+	test('copyDraft fetches with the correct args - readOnly true', async () => {
+		const res = await EditorAPI.copyDraft('draft-id', 'new-title', true)
+
+		expect(post).toHaveBeenCalledWith('/api/drafts/draft-id/copy', {
+			title: 'new-title',
+			readOnly: true
+		})
+		expect(res).toBe(mockJsonResult)
+	})
+
+	test('copyDraft fetches with the correct args - readOnly false', async () => {
+		const res = await EditorAPI.copyDraft('draft-id', 'new-title', false)
+
+		expect(post).toHaveBeenCalledWith('/api/drafts/draft-id/copy', {
+			title: 'new-title',
+			readOnly: false
+		})
 		expect(res).toBe(mockJsonResult)
 	})
 
@@ -147,7 +170,10 @@ describe('EditorAPI', () => {
 		expect.hasAssertions()
 
 		return EditorAPI.copyDraft('mock-draft-id', 'new title').then(result => {
-			expect(post).toHaveBeenCalledWith('/api/drafts/mock-draft-id/copy', { title: 'new title' })
+			expect(post).toHaveBeenCalledWith('/api/drafts/mock-draft-id/copy', {
+				title: 'new title',
+				readOnly: false
+			})
 			expect(result).toEqual(mockJsonResult)
 		})
 	})

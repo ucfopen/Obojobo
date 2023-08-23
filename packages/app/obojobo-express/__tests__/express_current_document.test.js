@@ -3,8 +3,10 @@ const documentFunctions = ['setCurrentDocument', 'requireCurrentDocument', 'rese
 
 jest.mock('test_node')
 jest.mock('../server/models/draft')
+jest.mock('obojobo-repository/server/models/drafts_metadata')
 
 const DraftDocument = oboRequire('server/models/draft')
+const DraftsMetadata = require('obojobo-repository/server/models/drafts_metadata')
 
 describe('current document middleware', () => {
 	beforeAll(() => {})
@@ -32,6 +34,7 @@ describe('current document middleware', () => {
 		mockNext.mockClear()
 		mockStatus.mockClear()
 		mockJson.mockClear()
+		DraftsMetadata.getByDraftIdAndKey.mockClear()
 	})
 
 	test('calls next', () => {
@@ -167,5 +170,59 @@ describe('current document middleware', () => {
 				expect(err.message).toBe('DraftDocument Required')
 				done()
 			})
+	})
+
+	test('requireDraftWritable rejects when no draftId is available', done => {
+		expect.assertions(1)
+
+		return mockArgs.req
+			.requireDraftWritable()
+			.then(() => {
+				expect(false).toBe('never_called')
+				done()
+			})
+			.catch(err => {
+				expect(err.message).toBe('DraftDocument Required')
+				done()
+			})
+	})
+
+	test('requireDraftWritable rejects when corresponding draft is read-only', done => {
+		expect.assertions(3)
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValue(true)
+
+		const { req } = mockArgs
+		req.params = {
+			draftId: 1
+		}
+
+		return req
+			.requireDraftWritable()
+			.then(() => {
+				expect(false).toBe('never_called')
+				done()
+			})
+			.catch(err => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledTimes(1)
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith(1, 'read_only')
+				expect(err.message).toBe('Requested document is read-only')
+				done()
+			})
+	})
+
+	test('requireDraftWritable resolves when corresponding draft is not read-only', done => {
+		expect.assertions(2)
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValue(false)
+
+		const { req } = mockArgs
+		req.params = {
+			draftId: 1
+		}
+
+		return req.requireDraftWritable().then(() => {
+			expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledTimes(1)
+			expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith(1, 'read_only')
+			done()
+		})
 	})
 })

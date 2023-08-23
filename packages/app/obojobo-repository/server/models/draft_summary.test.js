@@ -102,11 +102,17 @@ describe('DraftSummary Model', () => {
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
+			drafts_metadata.value AS read_only,
 			${selectSQL}
 			'visual' AS editor
 		FROM drafts
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
+		LEFT JOIN drafts_metadata
+			ON (
+				drafts_metadata.draft_id = drafts.id
+				AND drafts_metadata."key" = 'read_only'
+			)
 		${joinSQL}
 		WHERE drafts.deleted = ${deleted}
 		AND ${whereSQL}
@@ -210,6 +216,58 @@ describe('DraftSummary Model', () => {
 
 		return DraftSummary.fetchById('mockDraftId').catch(err => {
 			expect(logger.logError).toHaveBeenCalledWith('DraftSummary fetchById Error', mockError)
+			expect(err).toBe(mockError)
+		})
+	})
+
+	test('fetchByIdMoreRecentThan generates the correct query and returns DraftSummary objects correctly', () => {
+		db.oneOrNone = jest.fn()
+		db.oneOrNone.mockResolvedValueOnce(mockRawDraftSummaries)
+
+		const mockTargetTime = '1999-01-01 01:00:00.000000+00'
+
+		return DraftSummary.fetchByIdMoreRecentThan('mockDraftId', mockTargetTime).then(summaries => {
+			const query = queryBuilder(`drafts.id = $[id]
+			AND drafts_content.created_at > $[targetTime]`)
+			const [actualQuery, options] = db.oneOrNone.mock.calls[0]
+			expectQueryToMatch(query, actualQuery)
+			expect(options).toEqual({ id: 'mockDraftId', targetTime: '1999-01-01 01:00:00.000000+00' })
+			expect(summaries.length).toBe(2)
+			expectIsMockSummary(summaries[0])
+			expectIsMockSummary(summaries[1])
+		})
+	})
+
+	test('fetchByIdMoreRecentThan generates the correct query and returns for zero results correctly', () => {
+		db.oneOrNone = jest.fn()
+		db.oneOrNone.mockResolvedValueOnce()
+
+		const mockTargetTime = '1999-01-01 01:00:00.000000+00'
+
+		return DraftSummary.fetchByIdMoreRecentThan('mockDraftId', mockTargetTime).then(summaries => {
+			const query = queryBuilder(`drafts.id = $[id]
+			AND drafts_content.created_at > $[targetTime]`)
+			const [actualQuery, options] = db.oneOrNone.mock.calls[0]
+			expectQueryToMatch(query, actualQuery)
+			expect(options).toEqual({ id: 'mockDraftId', targetTime: '1999-01-01 01:00:00.000000+00' })
+			expect(summaries).toBe(null)
+		})
+	})
+
+	test('fetchByIdMoreRecentThan logs database errors', () => {
+		expect.hasAssertions()
+		const mockError = new Error('database error')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.oneOrNone.mockRejectedValueOnce(mockError)
+
+		return DraftSummary.fetchByIdMoreRecentThan(
+			'mockDraftId',
+			'1999-01-01 01:00:00.000000+00'
+		).catch(err => {
+			expect(logger.logError).toHaveBeenCalledWith(
+				'DraftSummary fetchByIdMoreRecentThan Error',
+				mockError
+			)
 			expect(err).toBe(mockError)
 		})
 	})

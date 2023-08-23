@@ -210,6 +210,16 @@ const apiGetModuleLock = async draftId => {
 	return data.value
 }
 
+const apiGetModuleSyncStatus = draftId => {
+	const options = { ...defaultOptions() }
+	return fetch(`/api/drafts/${draftId}/sync`, options).then(res => res.json())
+}
+
+const apiSyncModuleUpdates = draftId => {
+	const options = { ...defaultOptions(), method: 'PATCH' }
+	return fetch(`/api/drafts/${draftId}/sync`, options).then(res => res.json())
+}
+
 // ================== ACTIONS ===================
 
 const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
@@ -445,6 +455,38 @@ const showModuleMore = module => ({
 	module
 })
 
+const SHOW_MODULE_SYNC = 'SHOW_MODULE_SYNC'
+const showModuleSync = module => ({
+	type: SHOW_MODULE_SYNC,
+	meta: { module },
+	promise: apiGetModuleSyncStatus(module.draftId)
+})
+
+const SYNC_MODULE_UPDATES = 'SYNC_MODULE_UPDATES'
+const syncModuleUpdates = (draftId, options = { ...defaultModuleModeOptions }) => {
+	let apiModuleGetCall
+
+	switch (options.mode) {
+		case MODE_COLLECTION:
+			apiModuleGetCall = () => {
+				return apiGetModulesForCollection(options.collectionId)
+			}
+			break
+		case MODE_RECENT:
+			apiModuleGetCall = apiGetMyRecentModules
+			break
+		case MODE_ALL:
+		default:
+			apiModuleGetCall = apiGetMyModules
+			break
+	}
+
+	return {
+		type: SYNC_MODULE_UPDATES,
+		promise: apiSyncModuleUpdates(draftId).then(apiModuleGetCall)
+	}
+}
+
 const SHOW_MODULE_MANAGE_COLLECTIONS = 'SHOW_MODULE_MANAGE_COLLECTIONS'
 const showModuleManageCollections = module => ({
 	type: SHOW_MODULE_MANAGE_COLLECTIONS,
@@ -644,6 +686,8 @@ module.exports = {
 	SELECT_MODULES,
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
+	SHOW_MODULE_SYNC,
+	SYNC_MODULE_UPDATES,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
 	LOAD_MODULE_COLLECTIONS,
@@ -686,6 +730,8 @@ module.exports = {
 	loadUsersForModule,
 	clearPeopleSearchResults,
 	showModuleMore,
+	showModuleSync,
+	syncModuleUpdates,
 	showCollectionManageModules,
 	loadCollectionModules,
 	collectionAddModule,

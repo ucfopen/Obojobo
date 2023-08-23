@@ -8,6 +8,7 @@ const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
+const ModuleSyncDialog = require('./module-sync-dialog')
 const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
@@ -40,6 +41,17 @@ const renderOptionsDialog = (props, extension) => (
 		startLoadingAnimation={props.startLoadingAnimation}
 		stopLoadingAnimation={props.stopLoadingAnimation}
 		showModuleManageCollections={props.showModuleManageCollections}
+		showModuleSync={props.showModuleSync}
+	/>
+)
+
+const renderSyncDialog = (props, extension) => (
+	<ModuleSyncDialog
+		title=""
+		{...props.selectedModule}
+		onClose={props.closeModal}
+		newest={props.newest}
+		syncModuleUpdates={extension.syncModuleUpdates}
 	/>
 )
 
@@ -118,6 +130,7 @@ const renderModalDialog = props => {
 			extendedProps.deleteModulePermissions = (draftId, userId) => {
 				props.deleteModulePermissions(draftId, userId, extendedOptions)
 			}
+			extendedProps.syncModuleUpdates = draftId => props.syncModuleUpdates(draftId, extendedOptions)
 			break
 
 		default:
@@ -125,6 +138,7 @@ const renderModalDialog = props => {
 			extendedProps.deleteModulePermissions = (draftId, userId) => {
 				props.deleteModulePermissions(draftId, userId, extendedOptions)
 			}
+			extendedProps.syncModuleUpdates = draftId => props.syncModuleUpdates(draftId, extendedOptions)
 			extendedProps.onClear = () => {
 				props.clearSelection()
 			}
@@ -138,6 +152,11 @@ const renderModalDialog = props => {
 		case 'module-more':
 			title = 'Module Options'
 			dialog = renderOptionsDialog(props, extendedProps)
+			break
+
+		case 'module-sync':
+			title = 'Module Sync'
+			dialog = renderSyncDialog(props, extendedProps)
 			break
 
 		case 'module-permissions':

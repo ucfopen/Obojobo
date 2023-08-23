@@ -531,12 +531,13 @@ describe('repository api route', () => {
 			.send({ visitId: 'mockVisitId' })
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					mockCurrentDocument.draftId
 				)
 				expect(Draft.fetchById).toHaveBeenCalledWith(mockCurrentDocument.draftId)
 				expect(mockDraftObject.content.title).toEqual('mockDraftTitle Copy')
 				expect(Draft.createWithContent).toHaveBeenCalledWith(mockCurrentUser.id, mockDraftObject)
+				expect(DraftsMetadata).toHaveBeenCalledTimes(1)
 				expect(DraftsMetadata).toHaveBeenCalledWith({
 					draft_id: 'mockNewDraftId',
 					key: 'copied',
@@ -592,6 +593,54 @@ describe('repository api route', () => {
 			.then(() => {
 				expect(mockDraftObject.content.title).toEqual('New Draft Title')
 				// everything else is unchanged from above
+			})
+	})
+
+	test('post /drafts/:draftId/copy makes the copy read-only if specified', () => {
+		expect.hasAssertions()
+
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			}
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			}
+		}
+
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
+
+		Draft.fetchById = jest.fn()
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+		Draft.createWithContent.mockResolvedValueOnce(mockDraftObject)
+
+		return request(app)
+			.post('/drafts/mockDraftId/copy')
+			.send({ visitId: 'mockVisitId', title: 'New Draft Title', readOnly: true })
+			.then(() => {
+				expect(mockDraftObject.content.title).toEqual('New Draft Title')
+				// everything else is unchanged from above
+				expect(DraftsMetadata).toHaveBeenCalledTimes(2)
+				expect(DraftsMetadata).toHaveBeenCalledWith({
+					draft_id: 'mockNewDraftId',
+					key: 'copied',
+					value: mockCurrentDocument.draftId
+				})
+				expect({
+					draft_id: 'mockNewDraftId',
+					key: 'read_only',
+					value: true
+				})
+				expect(DraftsMetadata.mock.instances[0].saveOrCreate).toHaveBeenCalledTimes(1)
+				expect(DraftsMetadata.mock.instances[1].saveOrCreate).toHaveBeenCalledTimes(1)
 			})
 	})
 
@@ -697,7 +746,7 @@ describe('repository api route', () => {
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					mockCurrentDocument.draftId
 				)
 				expect(response.statusCode).toBe(401)
@@ -714,11 +763,165 @@ describe('repository api route', () => {
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					mockCurrentDocument.draftId
 				)
 				expect(response.statusCode).toBe(500)
 				expect(response.error).toHaveProperty('text', 'Server Error: database error')
+			})
+	})
+
+	test('get /drafts/:draftId/sync calls the correct functions and returns the expected response', () => {
+		expect.hasAssertions()
+
+		const mockMetadataResponse = {
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00'
+		}
+
+		const mockDraftResponse = {
+			draftId: 'originalDraftId'
+		}
+
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce(mockMetadataResponse)
+		DraftSummary.fetchByIdMoreRecentThan.mockResolvedValueOnce(mockDraftResponse)
+
+		return request(app)
+			.get('/drafts/mockDraftId/sync')
+			.then(response => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					'copied'
+				)
+				expect(DraftSummary.fetchByIdMoreRecentThan).toHaveBeenCalledWith(
+					mockMetadataResponse.value,
+					mockMetadataResponse.updatedAt
+				)
+				expect(response.body).toEqual(mockDraftResponse)
+				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('get /drafts/:draftId/sync returns unexpected when encountering an error', () => {
+		expect.hasAssertions()
+
+		const mockError = new Error('not found in db')
+		DraftsMetadata.getByDraftIdAndKey.mockRejectedValue(mockError)
+
+		return request(app)
+			.get('/drafts/mockDraftId/sync')
+			.then(response => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					'copied'
+				)
+				expect(DraftSummary.fetchByIdMoreRecentThan).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(500)
+			})
+	})
+
+	test('patch /drafts/:draftId/sync returns notAuthorized for users with minimal access to the draft', () => {
+		expect.hasAssertions()
+
+		const mockMetaSaveOrCreate = jest.fn()
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00',
+			saveOrCreate: mockMetaSaveOrCreate
+		})
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
+
+		return request(app)
+			.patch('/drafts/mockDraftId/sync')
+			.then(() => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith('mockDraftId', 'copied')
+				expect(Draft.fetchById).not.toHaveBeenCalled()
+				expect(Draft.updateContent).not.toHaveBeenCalled()
+				expect(mockMetaSaveOrCreate).not.toHaveBeenCalled()
+			})
+	})
+
+	test('patch /drafts/:draftId/sync returns and calls functions correctly for users with partial access to the draft, no optional title', () => {
+		expect.hasAssertions()
+
+		const mockMetaSaveOrCreate = jest.fn()
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00',
+			saveOrCreate: mockMetaSaveOrCreate
+		})
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			}
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			}
+		}
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+
+		return request(app)
+			.patch('/drafts/mockDraftId/sync')
+			.then(() => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith('mockDraftId', 'copied')
+				expect(Draft.fetchById).toHaveBeenCalledWith('mockOriginalDraftId')
+				expect(mockDraftObject.content.title).toEqual('mockDraftTitle Copy')
+				expect(Draft.updateContent).toHaveBeenCalled()
+				expect(mockMetaSaveOrCreate).toHaveBeenCalled()
+			})
+	})
+
+	test('patch /drafts/:draftId/sync returns and calls functions correctly for users with partial access to the draft, optional title', () => {
+		expect.hasAssertions()
+
+		const mockMetaSaveOrCreate = jest.fn()
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00',
+			saveOrCreate: mockMetaSaveOrCreate
+		})
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			}
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			}
+		}
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+
+		return request(app)
+			.patch('/drafts/mockDraftId/sync')
+			.send({ title: 'specified title' })
+			.then(() => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith('mockDraftId', 'copied')
+				expect(Draft.fetchById).toHaveBeenCalledWith('mockOriginalDraftId')
+				expect(mockDraftObject.content.title).toEqual('specified title')
+				expect(Draft.updateContent).toHaveBeenCalled()
+				expect(mockMetaSaveOrCreate).toHaveBeenCalled()
 			})
 	})
 

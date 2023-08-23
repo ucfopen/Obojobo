@@ -72,6 +72,7 @@ const Module = props => {
 					editor={props.editor}
 					title={props.title}
 					accessLevel={props.accessLevel}
+					readOnly={props.readOnly}
 				/>
 			) : null}
 			{props.children}

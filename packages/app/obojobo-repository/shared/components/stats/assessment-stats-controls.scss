@@ -5,6 +5,31 @@
 		margin-bottom: 1em;
 	}
 
+	.filter-controls {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		hr {
+			margin-top: 1em;
+		}
+
+		input {
+			margin-right: 0.5em;
+			margin-left: 0;
+		}
+
+		label {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+
+			span {
+				white-space: nowrap;
+			}
+		}
+	}
+
 	.search-controls {
 		select {
 			@include select-input();
@@ -88,31 +113,6 @@
 
 		input {
 			font-family: $font-monospace;
-		}
-	}
-
-	.filter-controls {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-
-		hr {
-			margin-top: 1em;
-		}
-
-		input {
-			margin-right: 0.5em;
-			margin-left: 0;
-		}
-
-		label {
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-
-			span {
-				white-space: nowrap;
-			}
 		}
 	}
 }

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PageModule renders when given props 1`] = `
+exports[`PageModule renders when given props - current user can copy and preview 1`] = `
 <div>
   <div
     className="repository--section-wrapper repository--stick-to-top"
@@ -107,6 +107,21 @@ exports[`PageModule renders when given props 1`] = `
   <section
     className="repository--main-content"
   >
+    <span
+      className="exposition-text"
+    >
+      Click the "Preview this module" button below to view the module as a learner would!
+    </span>
+    <span
+      className="exposition-text"
+    >
+      Click one of the buttons below to create a copy of this module (or to cancel the copy process).
+    </span>
+    <span
+      className="exposition-text"
+    >
+      Note: A read-only copy will not be editable, and can be synchronized with the original from the dashboard.
+    </span>
     <a
       className="repository--button "
       download={null}
@@ -115,13 +130,286 @@ exports[`PageModule renders when given props 1`] = `
     >
       Preview this module
     </a>
-    <button
-      className="repository--button copy-button"
-      disabled={true}
-      onClick={[Function]}
+    <div
+      className="copy-button-container"
     >
-      Copy this module
-    </button>
+      <button
+        className="repository--button copy-button"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Copy this module
+      </button>
+    </div>
+    <div>
+      Module created by
+       
+      <b>
+        firstName
+         
+        lastName
+      </b>
+       
+      on 
+      <b>
+        Jan 1, 1970
+      </b>
+       and updated
+       
+      A long time ago
+      .
+    </div>
+    <h2>
+      Use this Module in your Canvas Course
+    </h2>
+    <p>
+      This module can be used inside your course as an 
+      <b>
+        assignment
+      </b>
+       or 
+      <b>
+        module
+      </b>
+      .
+    </p>
+    <figure>
+      <img
+        alt="Animated gif showing how to create an Obojobo Assignment in canvas"
+        src="/images/obojobo-assignment.gif"
+      />
+      <figcaption>
+        Creating an Assignment in Canvas
+      </figcaption>
+    </figure>
+    <h3>
+      Create an Assignment in Canvas
+    </h3>
+    <ol>
+      <li>
+        Click Assignments in your course's menu.
+      </li>
+      <li>
+        Create a new Assignment
+      </li>
+      <li>
+        Set the:
+        <ul>
+          <li>
+            Assignment Name
+          </li>
+          <li>
+            Points (do not use 0)
+          </li>
+          <li>
+            any other relevant settings
+          </li>
+        </ul>
+      </li>
+      <li>
+        Set Submission Type to "External Tool"
+      </li>
+      <li>
+        Follow the 
+        <a
+          href="#selecting-this-module"
+        >
+          Choosing a Obojobo Module
+        </a>
+         instructions below
+      </li>
+      <li>
+        Click Select
+      </li>
+      <li>
+        Save & Publish
+      </li>
+    </ol>
+    <h3>
+      Create an Ungraded Module in Canvas
+    </h3>
+    <ol>
+      <li>
+        Click Modules in your course's menu.
+      </li>
+      <li>
+        Click the "+" in a module
+      </li>
+      <li>
+        Type an Assignment Name
+      </li>
+      <li>
+        Change the top drop down from "Assignment" to "External Tool".
+      </li>
+      <li>
+        Follow the 
+        <a
+          href="#selecting-this-module"
+        >
+          Choosing a Obojobo Module
+        </a>
+         instructions below
+      </li>
+      <li>
+        Click Add Item
+      </li>
+      <li>
+        You new module will be named "
+        mockDraftTitle
+         (doesn't send scores to grade book)"
+      </li>
+      <li>
+        Be sure to 
+        <b>
+          Publish
+        </b>
+         within Canvas when ready
+      </li>
+    </ol>
+    <h3
+      id="selecting-this-module"
+    >
+      Choosing a Obojobo Module
+    </h3>
+    <ol>
+      <li>
+        Follow one of the sets of instructions above.
+      </li>
+      <li>
+        Click "FIND" next to the input labeled "Enter or find an External Tool URL"
+      </li>
+      <li>
+        In the popup that appears, scroll down and select "ObojoboNext Module (gradebook synced)"
+      </li>
+      <li>
+        Choose Community Collection
+      </li>
+      <li>
+        Search for the module by its title (
+        <code>
+          mockDraftTitle
+        </code>
+        ) or its id (
+        <code>
+          mockDraftId
+        </code>
+        )
+      </li>
+      <li>
+        Click Embed next to your chosen module
+      </li>
+    </ol>
+  </section>
+</div>
+`;
+
+exports[`PageModule renders when given props - current user can not copy or preview 1`] = `
+<div>
+  <div
+    className="repository--section-wrapper repository--stick-to-top"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <nav
+      className="repository--nav"
+    >
+      <a
+        href="/"
+      >
+        <div
+          className="repository--nav--logo"
+        >
+          Obojobo
+        </div>
+      </a>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/library"
+        >
+          Module Library
+        </a>
+      </div>
+      <div
+        className="repository--nav--links--link"
+      >
+        <a
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </div>
+      <div
+        className="repository--nav--current-user"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <div
+            className="repository--nav--current-user--name"
+          >
+            firstName lastName
+          </div>
+          <div
+            className="avatar repository--nav--current-user--avatar"
+          >
+            <div
+              className="avatar--image"
+            >
+              <img
+                alt=""
+                src="/path/to/avatar/img"
+              />
+            </div>
+          </div>
+        </button>
+        <div
+          className="repository--nav--current-user--menu is-not-open"
+        >
+          <div
+            className="repository--nav--current-user--link"
+          >
+            <a
+              href="/profile/logout"
+            >
+              Log Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey "
+  >
+    <div
+      className="repository--section-wrapper--full-width-bg"
+    />
+    <section
+      className="repository--title-banner repository--info-banner"
+    >
+      <div
+        className="repository--module-icon--image"
+      >
+        <img
+          height="100%"
+          src="/library/module-icon/mockDraftId"
+          width="100%"
+        />
+      </div>
+      <h1
+        className="repository--title-banner--title"
+        data-title="mockDraftTitle"
+      >
+        mockDraftTitle
+      </h1>
+    </section>
+  </div>
+  <section
+    className="repository--main-content"
+  >
     <div>
       Module created by
        

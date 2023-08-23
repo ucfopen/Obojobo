@@ -10,6 +10,66 @@ class DraftsMetadata {
 		this.value = value
 	}
 
+	static getByDraftId(draftId) {
+		return db
+			.manyOrNone(
+				`
+			SELECT *
+			FROM drafts_metadata
+			WHERE draft_id = $[draftId]
+			`,
+				{ draftId }
+			)
+			.then(res => {
+				if (res) return res.map(r => new DraftsMetadata(r))
+				return null
+			})
+			.catch(error => {
+				logger.logError('DraftMetadata getByDraftId error', error)
+				throw error
+			})
+	}
+
+	static getByDraftIdAndKey(draftId, key) {
+		return db
+			.oneOrNone(
+				`
+			SELECT *
+			FROM drafts_metadata
+			WHERE draft_id = $[draftId] AND key = $[key]
+			`,
+				{ draftId, key }
+			)
+			.then(res => {
+				if (res) return new DraftsMetadata(res)
+				return null
+			})
+			.catch(error => {
+				logger.logError('DraftMetadata getByDraftIdAndKey error', error)
+				throw error
+			})
+	}
+
+	static getByKeyAndValue(key, value) {
+		return db
+			.manyOrNone(
+				`
+			SELECT *
+			FROM drafts_metadata
+			WHERE key = $[key] AND value = $[value]
+			`,
+				{ key, value }
+			)
+			.then(res => {
+				if (res) return res.map(r => new DraftsMetadata(r))
+				return null
+			})
+			.catch(error => {
+				logger.logError('DraftMetadata getByKeyAndValue error', error)
+				throw error
+			})
+	}
+
 	saveOrCreate() {
 		return db
 			.none(
