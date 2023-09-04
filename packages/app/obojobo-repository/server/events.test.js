@@ -3,6 +3,7 @@ describe('Server Events', () => {
 	jest.mock('obojobo-express/server/obo_events')
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/models/draft')
+	jest.mock('./models/draft_summary')
 	jest.mock('../../obojobo-express/server/public/compiled/manifest.json', () => ({}), {
 		virtual: true
 	})
@@ -25,7 +26,7 @@ describe('Server Events', () => {
 
 		require('./events')
 
-		expect(oboEvents.on).toHaveBeenCalledTimes(4)
+		expect(oboEvents.on).toHaveBeenCalledTimes(5)
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_NOT_AUTHORIZED', expect.any(Function))
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_NOT_FOUND', expect.any(Function))
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_UNEXPECTED', expect.any(Function))
@@ -34,6 +35,7 @@ describe('Server Events', () => {
 			expect.any(Function)
 		)
 		expect(oboEvents.on).toHaveBeenCalledWith(DraftModel.EVENT_DRAFT_DELETED, expect.any(Function))
+		expect(oboEvents.on).toHaveBeenCalledWith('SPLIT_RUN_PREVIEW', expect.any(Function))
 	})
 
 	test("maps a user to a module when it's created", () => {
@@ -110,6 +112,39 @@ describe('Server Events', () => {
 
 		// call the callback
 		return unexpectedListener({ req: mockReq, res: mockRes, next: jest.fn() }).then(() => {
+			expect(mockReq).toHaveProperty('responseHandled', true)
+			expect(mockRes.render).toHaveBeenCalled()
+		})
+	})
+
+	test('SPLIT_RUN_PREVIEW events call subsequent functions and render a page', () => {
+		const DraftSummary = require('./models/draft_summary')
+
+		// verify we have the right callback
+		const [eventName, splitRunPreviewListener] = oboEvents.on.mock.calls[4]
+		expect(eventName).toBe('SPLIT_RUN_PREVIEW')
+
+		expect(splitRunPreviewListener.length).toBe(1)
+
+		const mockReq = {
+			getCurrentUser: jest.fn().mockResolvedValue(),
+			currentUser: {}
+		}
+
+		const mockRes = {
+			render: jest.fn()
+		}
+
+		const mockModuleOptionIds = ['mockModule1', 'mockModule2']
+
+		// call the callback
+		return splitRunPreviewListener({
+			req: mockReq,
+			res: mockRes,
+			next: jest.fn(),
+			moduleOptionIds: mockModuleOptionIds
+		}).then(() => {
+			expect(DraftSummary.fetchMultipleById).toHaveBeenCalledWith(mockModuleOptionIds)
 			expect(mockReq).toHaveProperty('responseHandled', true)
 			expect(mockRes.render).toHaveBeenCalled()
 		})

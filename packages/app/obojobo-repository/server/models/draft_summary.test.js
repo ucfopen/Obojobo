@@ -86,6 +86,11 @@ describe('DraftSummary Model', () => {
 		db = require('obojobo-express/server/db')
 		logger = require('obojobo-express/server/logger')
 
+		db.one = jest.fn()
+		db.many = jest.fn()
+		db.manyOrNone = jest.fn()
+		db.any = jest.fn()
+
 		DraftSummary = require('./draft_summary')
 	})
 	afterEach(() => {})
@@ -164,7 +169,6 @@ describe('DraftSummary Model', () => {
 	}
 
 	test('fetchAll generates the correct query and returns a DraftSummary object', () => {
-		db.manyOrNone = jest.fn()
 		db.manyOrNone.mockResolvedValueOnce(mockRawDraftSummaries)
 
 		const query = queryBuilder('TRUE')
@@ -190,7 +194,6 @@ describe('DraftSummary Model', () => {
 	})
 
 	test('fetchById generates the correct query and returns a DraftSummary object', () => {
-		db.one = jest.fn()
 		db.one.mockResolvedValueOnce(mockRawDraftSummary)
 
 		return DraftSummary.fetchById('mockDraftId').then(summary => {
@@ -214,10 +217,54 @@ describe('DraftSummary Model', () => {
 		})
 	})
 
+	test('fetchMultipleById generates the correct query and returns an array of DraftSummary objects - one id', () => {
+		db.many.mockResolvedValueOnce([mockRawDraftSummary])
+
+		const query = queryBuilder('drafts.id IN ($[ids:csv])')
+
+		const args = ['mockDraftId']
+
+		return DraftSummary.fetchMultipleById(args).then(summary => {
+			expect(db.many).toHaveBeenCalledWith(query, { ids: args })
+			expect(Array.isArray(summary)).toBe(true)
+			expect(summary.length).toBe(1)
+			expectIsMockSummary(summary[0])
+		})
+	})
+
+	test('fetchMultipleById generates the correct query and returns an array of DraftSummary objects - multiple ids', () => {
+		db.many.mockResolvedValueOnce(mockRawDraftSummaries)
+
+		const query = queryBuilder('drafts.id IN ($[ids:csv])')
+
+		const args = ['mockDraftId1', 'mockDraftId2']
+
+		return DraftSummary.fetchMultipleById(args).then(summary => {
+			expect(db.many).toHaveBeenCalledWith(query, { ids: args })
+			expect(Array.isArray(summary)).toBe(true)
+			expect(summary.length).toBe(mockRawDraftSummaries.length)
+			summary.forEach(summaryObj => expectIsMockSummary(summaryObj))
+		})
+	})
+
+	test('fetchMultipleById returns error when no matches are found in the database', () => {
+		expect.hasAssertions()
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.many.mockRejectedValueOnce(mockError)
+
+		return DraftSummary.fetchMultipleById(['mockDraftId1', 'mockDraftId1']).catch(err => {
+			expect(logger.logError).toHaveBeenCalledWith(
+				'DraftSummary fetchMultipleById Error',
+				mockError
+			)
+			expect(err).toBe(mockError)
+		})
+	})
+
 	test('fetchByUserId generates the correct query and returns a DraftSummary object', () => {
 		expect.hasAssertions()
 
-		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawDraftSummary)
 
 		const whereSQL = 'repository_map_user_to_draft.user_id = $[userId]'
@@ -398,7 +445,6 @@ describe('DraftSummary Model', () => {
 	test('fetchAllDraftRevisions returns all versions of a draft when afterVersionId is null or missing', () => {
 		expect.hasAssertions()
 
-		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
@@ -436,7 +482,6 @@ describe('DraftSummary Model', () => {
 	test('fetchAllDraftRevisions returns revisions created later than a provided afterVersionId', () => {
 		expect.hasAssertions()
 
-		db.any = jest.fn()
 		db.any.mockResolvedValueOnce([
 			{ ...mockRawRevisionHistory[1] },
 			{ ...mockRawRevisionHistory[2] }
@@ -498,7 +543,6 @@ describe('DraftSummary Model', () => {
 			})
 		}
 
-		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockDbReturn)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
@@ -518,7 +562,6 @@ describe('DraftSummary Model', () => {
 	test('fetchAllDraftRevisions constrains the result count to a minimum', () => {
 		expect.hasAssertions()
 
-		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1).then(() => {
@@ -535,7 +578,6 @@ describe('DraftSummary Model', () => {
 	test('fetchAllDraftRevisions constrains the result count to a maximum', () => {
 		expect.hasAssertions()
 
-		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1000).then(() => {
@@ -570,7 +612,6 @@ describe('DraftSummary Model', () => {
 
 		const mockCreationDate = new Date().toISOString()
 
-		db.one = jest.fn()
 		db.one.mockResolvedValueOnce({
 			id: 'mockRevisionId',
 			draft_id: 'mockDraftId',
@@ -658,7 +699,6 @@ describe('DraftSummary Model', () => {
 	test('fetchDeletedByUserId generates correct query and retrieves deleted drafts', () => {
 		expect.hasAssertions()
 
-		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawDraftSummary)
 
 		const whereSQL = `repository_map_user_to_draft.user_id = $[userId] AND access_level = ${FULL}`

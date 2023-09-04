@@ -37,6 +37,10 @@
 
 			<div class="option-list">
 				<div class="option">
+					<div id='split-run-import-clarification' class='is-hidden'>
+						Students will be taken to one of the two modules you selected.
+						If a student has already completed the assessment in the module they are taken to, you can allow them to import their current score for that module with the option below.
+					</div>
 					<div class="small-label">Allow importing previous scores for the same module?</div>
 					<input id="import-on" type="radio" name="allow_import" value="1" <%= allowImportDefault ? 'checked' : '' %>>
 					<label for="import-on">Yes<%= allowImportDefault ? ' (default)' : '' %></label>
@@ -51,7 +55,7 @@
 			</div>
 		</section>
 
-		<section id="section-module-selection">
+		<section id="section-embed-type-selection">
 			<header>
 				<div class="heading-container">
 					<h1>
@@ -59,6 +63,42 @@
 					</h1>
 				</div>
 				<div class="flourish-line"></div>
+			</header>
+
+			<p>Choose between:</p>
+
+			<div class="choose-library-wrapper">
+				<a role="button" id="single-module-button" class="wizard-button-container ">
+					<div href="#" class="wizard-button">
+						Single Module
+					</div>
+					<p>
+						Students will always access a single selected module.
+					</p>
+				</a>
+
+				<a role="button" id="split-run-button" class="wizard-button-container">
+					<div href="#" class="wizard-button">
+						Split-Run
+					</div>
+					<p>
+						Students will access one of two selected modules.
+					</p>
+				</a>
+			</div>
+
+		</section>
+
+		<section id="section-module-selection">
+			<header>
+				<div class="heading-container">
+					<h1>
+						<span class="remaining-tagline">Embed an Obojobo&reg; Next Module</span>
+					</h1>
+					<div id='embed-type-indicator'></div>
+				</div>
+				<div class="flourish-line"></div>
+				<a href="#" role="button" id="type-back-button" class="back-button">Back</a>
 			</header>
 
 			<p>Choose between:</p>
@@ -83,6 +123,17 @@
 				</a>
 			</div>
 
+			<div id="split-run-selected" class="is-hidden">
+				<h2>Selected Modules:</h2>
+				<ul id='split-run-selected-modules-list'>
+				</ul>
+
+				<div id="split-run-category-embed-button" class="button split-run-embed-button is-hidden">
+					Finish
+				</div>
+
+			</div>
+
 		</section>
 
 		<section id="section-select-object">
@@ -96,11 +147,17 @@
 						<a id="refresh" role="button" href="#">Refresh</a>
 					</div>
 					<div class="flourish-line"></div>
-					<a href="#" role="button" id="back-button">Back</a>
+					<a href="#" role="button" id="module-back-button" class="back-button">Back</a>
 				</div>
 			</div>
 
 			<div id="list-container">
+				<div id="select-more-indicator" class="is-hidden">
+					Select <span id="select-more-count"></span> more
+				</div>
+				<div id="split-run-list-embed-button-wrapper" class="is-hidden">
+					<span id="split-run-list-embed-button" class="button split-run-embed-button">Finish</span>
+				</div>
 
 				<ul class="template">
 					<li class="template obo-item">
