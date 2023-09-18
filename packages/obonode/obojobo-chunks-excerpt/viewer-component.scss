@@ -44,6 +44,10 @@ since it is not compatible with stylelint's indentation rules
 
 	$callout-blue: rgb(29, 119, 252);
 
+	$bookmark-border-white: white white white white;
+	$bookmark-border-yellow: white white white #fffcf8;
+	$bookmark-border-aged: white white white rgb(237, 220, 192);
+
 	position: relative;
 
 	> blockquote {
@@ -1103,6 +1107,137 @@ since it is not compatible with stylelint's indentation rules
 	&.is-bottom-edge-type-jagged.is-body-style-type-aged-paper {
 		> blockquote > .excerpt-content::after {
 			background: url(./images/jagged-edge-aged-paper.svg);
+		}
+	}
+
+	&.is-top-edge-type-bookmark {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content::before {
+			content: ' ';
+			width: 100%;
+			// this only seems to work at 10px for some reason
+			// stylelint-disable-next-line unit-disallowed-list
+			height: 10px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			outline: none;
+		}
+
+		&.is-body-style-type-bordered-box {
+			> blockquote > .excerpt-content {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+
+				&::before {
+					width: 0;
+					height: 0;
+					border-style: solid;
+					border-width: 1.25em 0 0 1.25em;
+					border-color: $bookmark-border-white;
+					position: absolute;
+					top: -0.12em;
+					left: -0.12em;
+					filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+					transform: rotate(-0.25turn);
+				}
+			}
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-filled-box,
+	&.is-top-edge-type-bookmark.is-body-style-type-card {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-white-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-modern-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-light-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-yellow;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-dark-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-yellow;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-aged-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			outline: none;
+			border-color: $bookmark-border-aged;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
 		}
 	}
 }
