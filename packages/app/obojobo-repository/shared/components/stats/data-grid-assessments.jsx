@@ -96,6 +96,18 @@ const columns = [
 		advanced: true
 	},
 	{
+		name: 'Student Name',
+		selector: 'studentName',
+		sortable: true,
+		advanced: false
+	},
+	{
+		name: 'User Roles',
+		selector: 'userRoles',
+		sortable: true,
+		advanced: true
+	},
+	{
 		name: 'Final Assessment Score',
 		sortable: true,
 		advanced: false,
@@ -111,7 +123,13 @@ const columns = [
 	}
 ]
 
-function DataGridAssessments({ attempts = [], filterSettings, searchSettings, searchContent }) {
+function DataGridAssessments({
+	attempts = [],
+	controls,
+	filteredRows,
+	setFilteredRows,
+	isDebouncing
+}) {
 	const assessmentScores = getAssessmentStatsFromAttemptStats(attempts)
 
 	return (
@@ -121,9 +139,10 @@ function DataGridAssessments({ attempts = [], filterSettings, searchSettings, se
 				csvFileName="final-assessment-scores"
 				columns={columns}
 				rows={assessmentScores}
-				filterSettings={filterSettings}
-				searchSettings={searchSettings}
-				searchContent={searchContent}
+				controls={controls}
+				filteredRows={filteredRows}
+				setFilteredRows={setFilteredRows}
+				isDebouncing={isDebouncing}
 			/>
 		</div>
 	)

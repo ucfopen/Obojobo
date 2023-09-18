@@ -369,7 +369,7 @@ describe('api visits route', () => {
 				expect(response.body.value).toHaveProperty('type', 'reject')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					"Cannot read property 'lis_outcome_service_url' of undefined"
+					"Cannot read properties of undefined (reading 'lis_outcome_service_url')"
 				)
 			})
 	})

@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Excerpt Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "type": "SlateNode",
+        },
+      ],
+      "content": Object {
+        "bodyStyle": "term-green",
+        "citation": "citation text",
+        "font": "monospace",
+      },
+      "subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "text": "citation text",
+        },
+      ],
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+  ],
+  "content": Object {
+    "bodyStyle": "term-green",
+    "font": "monospace",
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
+
+exports[`Excerpt Converter oboToSlate converts an OboNode to a Slate node with citation line 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "type": "SlateNode",
+        },
+      ],
+      "content": Object {
+        "bodyStyle": "term-green",
+        "citation": "Citation Text",
+        "font": "monospace",
+      },
+      "subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "text": "Citation Text",
+        },
+      ],
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
+      "type": "ObojoboDraft.Chunks.Excerpt",
+    },
+  ],
+  "content": Object {
+    "bodyStyle": "term-green",
+    "font": "monospace",
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
+
+exports[`Excerpt Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "type": "OboNode",
+    },
+  ],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
+
+exports[`Excerpt Converter slateToObo converts a Slate node to an OboNode with triggers 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "type": "OboNode",
+    },
+  ],
+  "content": Object {
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.Excerpt",
+}
+`;
