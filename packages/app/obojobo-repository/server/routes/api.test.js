@@ -13,6 +13,10 @@ jest.mock('obojobo-express/server/insert_event')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 
+jest.mock('uuid', () => ({
+	v4: jest.fn()
+}))
+
 let CollectionSummary
 let Collection
 let DraftSummary
@@ -58,6 +62,8 @@ const request = require('supertest')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+
+const uuid = require('uuid').v4
 
 // register express-react-views template engine if not already registered
 app.engine('jsx', require('express-react-views-custom').createEngine())
@@ -525,12 +531,13 @@ describe('repository api route', () => {
 			.send({ visitId: 'mockVisitId' })
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					mockCurrentDocument.draftId
 				)
 				expect(Draft.fetchById).toHaveBeenCalledWith(mockCurrentDocument.draftId)
 				expect(mockDraftObject.content.title).toEqual('mockDraftTitle Copy')
 				expect(Draft.createWithContent).toHaveBeenCalledWith(mockCurrentUser.id, mockDraftObject)
+				expect(DraftsMetadata).toHaveBeenCalledTimes(1)
 				expect(DraftsMetadata).toHaveBeenCalledWith({
 					draft_id: 'mockNewDraftId',
 					key: 'copied',
@@ -589,6 +596,146 @@ describe('repository api route', () => {
 			})
 	})
 
+	test('post /drafts/:draftId/copy makes the copy read-only if specified', () => {
+		expect.hasAssertions()
+
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			}
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			}
+		}
+
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
+
+		Draft.fetchById = jest.fn()
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+		Draft.createWithContent.mockResolvedValueOnce(mockDraftObject)
+
+		return request(app)
+			.post('/drafts/mockDraftId/copy')
+			.send({ visitId: 'mockVisitId', title: 'New Draft Title', readOnly: true })
+			.then(() => {
+				expect(mockDraftObject.content.title).toEqual('New Draft Title')
+				// everything else is unchanged from above
+				expect(DraftsMetadata).toHaveBeenCalledTimes(2)
+				expect(DraftsMetadata).toHaveBeenCalledWith({
+					draft_id: 'mockNewDraftId',
+					key: 'copied',
+					value: mockCurrentDocument.draftId
+				})
+				expect({
+					draft_id: 'mockNewDraftId',
+					key: 'read_only',
+					value: true
+				})
+				expect(DraftsMetadata.mock.instances[0].saveOrCreate).toHaveBeenCalledTimes(1)
+				expect(DraftsMetadata.mock.instances[1].saveOrCreate).toHaveBeenCalledTimes(1)
+			})
+	})
+
+	test('post /drafts/:draftId/copy refreshes all node IDs in a document', () => {
+		expect.hasAssertions()
+
+		// have a bit of a document just to make sure substitutions work everywhere
+		// actual details such as type, etc. don't matter too much here
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			},
+			children: [
+				{
+					id: 'do-not-change-me',
+					children: [
+						{ id: '4baa2860-5219-404f-9d99-616ca8f81e41' },
+						{
+							id: 'adcc55b7-e412-4f44-b64f-6c317021f812',
+							reference: {
+								id: '4baa2860-5219-404f-9d99-616ca8f81e41'
+							}
+						},
+						{ id: '9d992860-3540-5219-8b4a-1e41616ca8f8' }
+					]
+				}
+			]
+		}
+
+		// this is admittedly sort of magical - we happen to know how many times
+		//  this should run based on the document structure we made above
+		// potentially find a more elegant way of doing this
+		uuid
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000001')
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000002')
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000003')
+
+		// this is also a bit brute force, but it does the job
+		const expectedNewDraftDocument = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'New Draft Title'
+			},
+			children: [
+				{
+					id: 'do-not-change-me',
+					children: [
+						{ id: '00000000-0000-0000-0000-000000000001' },
+						{
+							id: '00000000-0000-0000-0000-000000000002',
+							reference: {
+								id: '00000000-0000-0000-0000-000000000001'
+							}
+						},
+						{ id: '00000000-0000-0000-0000-000000000003' }
+					]
+				}
+			]
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			},
+			// this would be handled by the Draft model, but we're mocking that so
+			//  we have to do this ourselves
+			nodesById: new Map([
+				['do-not-change-me', {}],
+				['4baa2860-5219-404f-9d99-616ca8f81e41', {}],
+				['adcc55b7-e412-4f44-b64f-6c317021f812', {}],
+				['9d992860-3540-5219-8b4a-1e41616ca8f8', {}]
+			])
+		}
+
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
+
+		Draft.fetchById = jest.fn()
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+
+		return request(app)
+			.post('/drafts/mockDraftId/copy')
+			.send({ visitId: 'mockVisitId', title: 'New Draft Title' })
+			.then(() => {
+				expect(uuid).toHaveBeenCalledTimes(3)
+				// 99 = mock user id
+				expect(Draft.createWithContent).toHaveBeenCalledWith(99, expectedNewDraftDocument)
+			})
+	})
+
 	test('post /drafts/:draftId/copy returns the expected response when user can not copy draft', () => {
 		expect.hasAssertions()
 
@@ -599,7 +746,7 @@ describe('repository api route', () => {
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					mockCurrentDocument.draftId
 				)
 				expect(response.statusCode).toBe(401)
@@ -616,11 +763,165 @@ describe('repository api route', () => {
 			.then(response => {
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					mockCurrentDocument.draftId
 				)
 				expect(response.statusCode).toBe(500)
 				expect(response.error).toHaveProperty('text', 'Server Error: database error')
+			})
+	})
+
+	test('get /drafts/:draftId/sync calls the correct functions and returns the expected response', () => {
+		expect.hasAssertions()
+
+		const mockMetadataResponse = {
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00'
+		}
+
+		const mockDraftResponse = {
+			draftId: 'originalDraftId'
+		}
+
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce(mockMetadataResponse)
+		DraftSummary.fetchByIdMoreRecentThan.mockResolvedValueOnce(mockDraftResponse)
+
+		return request(app)
+			.get('/drafts/mockDraftId/sync')
+			.then(response => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					'copied'
+				)
+				expect(DraftSummary.fetchByIdMoreRecentThan).toHaveBeenCalledWith(
+					mockMetadataResponse.value,
+					mockMetadataResponse.updatedAt
+				)
+				expect(response.body).toEqual(mockDraftResponse)
+				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('get /drafts/:draftId/sync returns unexpected when encountering an error', () => {
+		expect.hasAssertions()
+
+		const mockError = new Error('not found in db')
+		DraftsMetadata.getByDraftIdAndKey.mockRejectedValue(mockError)
+
+		return request(app)
+			.get('/drafts/mockDraftId/sync')
+			.then(response => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					'copied'
+				)
+				expect(DraftSummary.fetchByIdMoreRecentThan).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(500)
+			})
+	})
+
+	test('patch /drafts/:draftId/sync returns notAuthorized for users with minimal access to the draft', () => {
+		expect.hasAssertions()
+
+		const mockMetaSaveOrCreate = jest.fn()
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00',
+			saveOrCreate: mockMetaSaveOrCreate
+		})
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(MINIMAL)
+
+		return request(app)
+			.patch('/drafts/mockDraftId/sync')
+			.then(() => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith('mockDraftId', 'copied')
+				expect(Draft.fetchById).not.toHaveBeenCalled()
+				expect(Draft.updateContent).not.toHaveBeenCalled()
+				expect(mockMetaSaveOrCreate).not.toHaveBeenCalled()
+			})
+	})
+
+	test('patch /drafts/:draftId/sync returns and calls functions correctly for users with partial access to the draft, no optional title', () => {
+		expect.hasAssertions()
+
+		const mockMetaSaveOrCreate = jest.fn()
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00',
+			saveOrCreate: mockMetaSaveOrCreate
+		})
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			}
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			}
+		}
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+
+		return request(app)
+			.patch('/drafts/mockDraftId/sync')
+			.then(() => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith('mockDraftId', 'copied')
+				expect(Draft.fetchById).toHaveBeenCalledWith('mockOriginalDraftId')
+				expect(mockDraftObject.content.title).toEqual('mockDraftTitle Copy')
+				expect(Draft.updateContent).toHaveBeenCalled()
+				expect(mockMetaSaveOrCreate).toHaveBeenCalled()
+			})
+	})
+
+	test('patch /drafts/:draftId/sync returns and calls functions correctly for users with partial access to the draft, optional title', () => {
+		expect.hasAssertions()
+
+		const mockMetaSaveOrCreate = jest.fn()
+		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
+			value: 'mockOriginalDraftId',
+			updatedAt: '1999-01-01 01:00:00.000000+00',
+			saveOrCreate: mockMetaSaveOrCreate
+		})
+
+		DraftPermissions.getUserAccessLevelToDraft.mockResolvedValueOnce(PARTIAL)
+
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			}
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			}
+		}
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+
+		return request(app)
+			.patch('/drafts/mockDraftId/sync')
+			.send({ title: 'specified title' })
+			.then(() => {
+				expect(DraftsMetadata.getByDraftIdAndKey).toHaveBeenCalledWith('mockDraftId', 'copied')
+				expect(Draft.fetchById).toHaveBeenCalledWith('mockOriginalDraftId')
+				expect(mockDraftObject.content.title).toEqual('specified title')
+				expect(Draft.updateContent).toHaveBeenCalled()
+				expect(mockMetaSaveOrCreate).toHaveBeenCalled()
 			})
 	})
 

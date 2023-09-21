@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-repository",
 	"license": "AGPL-3.0-only",
-	"version": "16.0.1",
+	"version": "17.0.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -15,7 +15,7 @@
 		"precommit": "lint-staged"
 	},
 	"engines": {
-		"node": "^14.16.0"
+		"node": "^18.16.0"
 	},
 	"lint-staged": {
 		"**/*.scss": [
@@ -46,8 +46,8 @@
 		"use-debounce": "^7.0.0"
 	},
 	"peerDependencies": {
-		"obojobo-express": "^16.0.1",
-		"obojobo-lib-utils": "^16.0.1"
+		"obojobo-express": "^17.0.0",
+		"obojobo-lib-utils": "^17.0.0"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [
