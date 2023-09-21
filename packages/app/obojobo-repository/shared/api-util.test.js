@@ -39,7 +39,7 @@ describe('repository apiutil', () => {
 		API.post.mockResolvedValueOnce({ status: 200 })
 
 		return APIUtil.copyModule('mockDraftId').then(() => {
-			expect(API.post).toHaveBeenCalledWith('/api/drafts/mockDraftId/copy')
+			expect(API.post).toHaveBeenCalledWith('/api/drafts/mockDraftId/copy', { readOnly: false })
 			expect(global.location.assign).toHaveBeenCalledWith('/dashboard')
 		})
 	})
@@ -50,7 +50,7 @@ describe('repository apiutil', () => {
 		API.post.mockResolvedValueOnce({ status: 401 })
 
 		return APIUtil.copyModule('mockDraftId').then(() => {
-			expect(API.post).toHaveBeenCalledWith('/api/drafts/mockDraftId/copy')
+			expect(API.post).toHaveBeenCalledWith('/api/drafts/mockDraftId/copy', { readOnly: false })
 			expect(global.location.assign).not.toHaveBeenCalled()
 			expect(global.alert).toHaveBeenCalledTimes(1)
 			expect(global.alert).toHaveBeenCalledWith('You are not authorized to copy this module')
@@ -63,7 +63,7 @@ describe('repository apiutil', () => {
 		API.post.mockResolvedValueOnce({ status: 500 })
 
 		return APIUtil.copyModule('mockDraftId').then(() => {
-			expect(API.post).toHaveBeenCalledWith('/api/drafts/mockDraftId/copy')
+			expect(API.post).toHaveBeenCalledWith('/api/drafts/mockDraftId/copy', { readOnly: false })
 			expect(global.location.assign).not.toHaveBeenCalled()
 			expect(global.alert).toHaveBeenCalledTimes(1)
 			expect(global.alert).toHaveBeenCalledWith('Something went wrong while copying')

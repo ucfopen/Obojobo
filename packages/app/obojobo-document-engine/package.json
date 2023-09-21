@@ -1,10 +1,10 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "16.0.1",
+	"version": "17.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
-		"node": "^14.16.0"
+		"node": "^18.16.0"
 	},
 	"main": "index.js",
 	"scripts": {

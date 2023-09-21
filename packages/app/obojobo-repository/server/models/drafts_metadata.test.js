@@ -11,12 +11,26 @@ describe('DraftsMetadata Model', () => {
 		value: 'value'
 	}
 
-	const expectMatchesRawMock = draftMetadata => {
-		expect(draftMetadata.draftId).toBe('mockDraftId')
+	const mockRawDraftMetadataMultiple = [
+		{
+			draft_id: 'mockDraftId1',
+			key: 'key',
+			value: 'value1'
+		},
+		{
+			draft_id: 'mockDraftId2',
+			key: 'key',
+			value: 'value2'
+		}
+	]
+
+	const expectMatchesRawMock = (draftMetadata, number = '') => {
+		expect(draftMetadata.draftId).toBe(`mockDraftId${number}`)
+		// these would have dates from the database, but it doesn't really matter here
 		expect(draftMetadata.createdAt).toBeUndefined()
 		expect(draftMetadata.updatedAt).toBeUndefined()
 		expect(draftMetadata.key).toBe('key')
-		expect(draftMetadata.value).toBe('value')
+		expect(draftMetadata.value).toBe(`value${number}`)
 	}
 
 	beforeEach(() => {
@@ -74,6 +88,173 @@ describe('DraftsMetadata Model', () => {
 		return draftMetadata.saveOrCreate().catch(err => {
 			expect(logger.error).toHaveBeenCalledWith('saveOrCreate Error', 'insert failed')
 			expect(err).toBe('Error loading DraftsMetadata by query')
+		})
+	})
+
+	// getByDraftId tests
+
+	test('getByDraftId generates the correct query and returns DraftsMetadata objects', () => {
+		expect.hasAssertions()
+
+		db.manyOrNone = jest.fn()
+		db.manyOrNone.mockResolvedValueOnce(mockRawDraftMetadataMultiple)
+
+		// Trying to match whitespace with the query that's actually running
+		const query = `
+			SELECT *
+			FROM drafts_metadata
+			WHERE draft_id = $[draftId]
+			`
+
+		return DraftsMetadata.getByDraftId('mockDraftId').then(res => {
+			expect(db.manyOrNone).toHaveBeenCalledWith(query, { draftId: 'mockDraftId' })
+			expect(res.length).toBe(2)
+			expectMatchesRawMock(res[0], 1)
+			expectMatchesRawMock(res[1], 2)
+		})
+	})
+
+	test('getByDraftId generates the correct query and returns for zero results correctly', () => {
+		expect.hasAssertions()
+
+		db.manyOrNone = jest.fn()
+		db.manyOrNone.mockResolvedValueOnce()
+
+		// Trying to match whitespace with the query that's actually running
+		const query = `
+			SELECT *
+			FROM drafts_metadata
+			WHERE draft_id = $[draftId]
+			`
+
+		return DraftsMetadata.getByDraftId('mockDraftId').then(res => {
+			expect(db.manyOrNone).toHaveBeenCalledWith(query, { draftId: 'mockDraftId' })
+			expect(res).toBe(null)
+		})
+	})
+
+	test('getByDraftId logs database errors', () => {
+		expect.hasAssertions()
+		const mockError = new Error('database error')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.manyOrNone.mockRejectedValueOnce(mockError)
+
+		return DraftsMetadata.getByDraftId('metaKey', 'metaValue').catch(err => {
+			expect(logger.logError).toHaveBeenCalledWith('DraftMetadata getByDraftId error', mockError)
+			expect(err).toBe(mockError)
+		})
+	})
+
+	// getByDraftIdAndKey tests
+
+	test('getByDraftIdAndKey generates the correct query and returns a DraftsMetadata object', () => {
+		expect.hasAssertions()
+
+		db.oneOrNone = jest.fn()
+		db.oneOrNone.mockResolvedValueOnce(mockRawDraftsMetadata)
+
+		// Trying to match whitespace with the query that's actually running
+		const query = `
+			SELECT *
+			FROM drafts_metadata
+			WHERE draft_id = $[draftId] AND key = $[key]
+			`
+
+		return DraftsMetadata.getByDraftIdAndKey('draftId', 'metaKey').then(res => {
+			expect(db.oneOrNone).toHaveBeenCalledWith(query, { draftId: 'draftId', key: 'metaKey' })
+			expect(res).toBeInstanceOf(DraftsMetadata)
+			expectMatchesRawMock(res)
+		})
+	})
+
+	test('getByDraftIdAndKey generates the correct query and returns for zero results correctly', () => {
+		expect.hasAssertions()
+
+		db.oneOrNone = jest.fn()
+		db.oneOrNone.mockResolvedValueOnce()
+
+		// Trying to match whitespace with the query that's actually running
+		const query = `
+			SELECT *
+			FROM drafts_metadata
+			WHERE draft_id = $[draftId] AND key = $[key]
+			`
+
+		return DraftsMetadata.getByDraftIdAndKey('draftId', 'metaKey').then(res => {
+			expect(db.oneOrNone).toHaveBeenCalledWith(query, { draftId: 'draftId', key: 'metaKey' })
+			expect(res).toBe(null)
+		})
+	})
+
+	test('getByDraftIdAndKey logs database errors', () => {
+		expect.hasAssertions()
+		const mockError = new Error('database error')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.oneOrNone.mockRejectedValueOnce(mockError)
+
+		return DraftsMetadata.getByDraftIdAndKey('draftId', 'metaKey').catch(err => {
+			expect(logger.logError).toHaveBeenCalledWith(
+				'DraftMetadata getByDraftIdAndKey error',
+				mockError
+			)
+			expect(err).toBe(mockError)
+		})
+	})
+
+	// getByKeyAndValue tests
+
+	test('getByKeyAndValue generates the correct query and returns DraftsMetadata objects', () => {
+		expect.hasAssertions()
+
+		db.manyOrNone = jest.fn()
+		db.manyOrNone.mockResolvedValueOnce(mockRawDraftMetadataMultiple)
+
+		// Trying to match whitespace with the query that's actually running
+		const query = `
+			SELECT *
+			FROM drafts_metadata
+			WHERE key = $[key] AND value = $[value]
+			`
+
+		return DraftsMetadata.getByKeyAndValue('metaKey', 'metaValue').then(res => {
+			expect(db.manyOrNone).toHaveBeenCalledWith(query, { key: 'metaKey', value: 'metaValue' })
+			expect(res.length).toBe(2)
+			expectMatchesRawMock(res[0], 1)
+			expectMatchesRawMock(res[1], 2)
+		})
+	})
+
+	test('getByKeyAndValue generates the correct query and returns for zero results correctly', () => {
+		expect.hasAssertions()
+
+		db.manyOrNone = jest.fn()
+		db.manyOrNone.mockResolvedValueOnce()
+
+		// Trying to match whitespace with the query that's actually running
+		const query = `
+			SELECT *
+			FROM drafts_metadata
+			WHERE key = $[key] AND value = $[value]
+			`
+
+		return DraftsMetadata.getByKeyAndValue('metaKey', 'metaValue').then(res => {
+			expect(db.manyOrNone).toHaveBeenCalledWith(query, { key: 'metaKey', value: 'metaValue' })
+			expect(res).toBe(null)
+		})
+	})
+
+	test('getByKeyAndValue logs database errors', () => {
+		expect.hasAssertions()
+		const mockError = new Error('database error')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.manyOrNone.mockRejectedValueOnce(mockError)
+
+		return DraftsMetadata.getByKeyAndValue('metaKey', 'metaValue').catch(err => {
+			expect(logger.logError).toHaveBeenCalledWith(
+				'DraftMetadata getByKeyAndValue error',
+				mockError
+			)
+			expect(err).toBe(mockError)
 		})
 	})
 })

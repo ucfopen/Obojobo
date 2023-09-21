@@ -1886,23 +1886,18 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
-	const assertBulkRestoreModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+	test('bulkRestoreModules returns expected output and calls other functions', () => {
 		global.fetch.mockResolvedValue(standardFetchResponse)
-		const actionReply = DashboardActions.bulkRestoreModules(
-			['mockDraftId1', 'mockDraftId2'],
-			options
-		)
+		const actionReply = DashboardActions.bulkRestoreModules(['mockDraftId1', 'mockDraftId2'])
 
 		expect(global.fetch).toHaveBeenCalledTimes(2)
 		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/restore/mockDraftId1', {
 			...defaultFetchOptions,
-			method: 'PUT',
-			body: fetchBody
+			method: 'PUT'
 		})
 		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/restore/mockDraftId2', {
 			...defaultFetchOptions,
-			method: 'PUT',
-			body: fetchBody
+			method: 'PUT'
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
@@ -1916,26 +1911,22 @@ describe('Dashboard Actions', () => {
 
 		return actionReply.promise.then(finalResponse => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
+			expect(global.fetch).toHaveBeenCalledWith('/api/drafts-deleted', defaultFetchOptions)
 
 			expect(finalResponse).toEqual({
 				value: 'mockSecondaryResponse'
 			})
 		})
-	}
-	test('bulkRestoreModules returns expected output and calls other functions', () => {
-		return assertBulkRestoreModulesRunsWithOptions('/api/drafts-deleted')
 	})
 
-	const assertGetMyDeletedModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+	test('apiGetMyDeletedModules returns the expected output', () => {
 		global.fetch.mockResolvedValue(standardFetchResponse)
-		const actionReply = DashboardActions.getDeletedModules(options)
+		const actionReply = DashboardActions.getDeletedModules()
 
 		expect(global.fetch).toHaveBeenCalledTimes(1)
 		expect(global.fetch).toHaveBeenCalledWith('/api/drafts-deleted', {
 			...defaultFetchOptions,
-			method: 'GET',
-			body: fetchBody
+			method: 'GET'
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
@@ -1952,20 +1943,16 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).not.toHaveBeenCalled()
 			expect(finalResponse).toEqual({ value: 'mockVal' })
 		})
-	}
-	test('apiGetMyDeletedModules returns the expected output', () => {
-		return assertGetMyDeletedModulesRunsWithOptions('/api/drafts-deleted')
 	})
 
-	const assertGetMyModulesRunsWithOptions = (secondaryLookupUrl, fetchBody, options) => {
+	test('apiGetMyModules returns the expected output', () => {
 		global.fetch.mockResolvedValue(standardFetchResponse)
-		const actionReply = DashboardActions.getModules(options)
+		const actionReply = DashboardActions.getModules()
 
 		expect(global.fetch).toHaveBeenCalledTimes(1)
 		expect(global.fetch).toHaveBeenCalledWith('/api/drafts', {
 			...defaultFetchOptions,
-			method: 'GET',
-			body: fetchBody
+			method: 'GET'
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
@@ -1982,8 +1969,74 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).not.toHaveBeenCalled()
 			expect(finalResponse).toEqual({ value: 'mockVal' })
 		})
+	})
+
+	test('showModuleSync returns the expected output', () => {
+		global.fetch.mockResolvedValue(standardFetchResponse)
+
+		const mockModule = { draftId: 'mockDraftId' }
+		const actionReply = DashboardActions.showModuleSync(mockModule)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId/sync', defaultFetchOptions)
+		expect(actionReply).toEqual({
+			type: DashboardActions.SHOW_MODULE_SYNC,
+			meta: {
+				module: mockModule
+			},
+			promise: expect.any(Object)
+		})
+	})
+
+	// three (plus one default) ways of calling syncModuleUpdates
+	const assertSyncModuleUpdatesRunsWithOptions = (secondaryLookupUrl, options) => {
+		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+		const actionReply = DashboardActions.syncModuleUpdates('mockDraftId', options)
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/drafts/mockDraftId/sync', {
+			...defaultFetchOptions,
+			method: 'PATCH'
+		})
+		global.fetch.mockReset()
+		// two additional API calls are made following the first
+		global.fetch.mockResolvedValueOnce({
+			json: () => ({ value: 'mockSecondVal1' })
+		})
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.SYNC_MODULE_UPDATES,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(finalResponse => {
+			expect(standardFetchResponse.json).toHaveBeenCalled()
+			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
+
+			expect(finalResponse).toEqual({
+				value: 'mockSecondVal1'
+			})
+		})
 	}
-	test('apiGetMyModules returns the expected output', () => {
-		return assertGetMyModulesRunsWithOptions('/api/drafts')
+	//options will contain mode: MODE_COLLECTION and collectionId
+	test('syncModuleUpdates returns expected output and calls other functions, mode MODE_COLLECTION', () => {
+		const options = {
+			mode: MODE_COLLECTION,
+			collectionId: 'mockCollectionId'
+		}
+		return assertSyncModuleUpdatesRunsWithOptions(
+			'/api/collections/mockCollectionId/modules',
+			options
+		)
+	})
+	//options will contain mode: MODE_RECENT
+	test('syncModuleUpdates returns expected output and calls other functions, mode MODE_RECENT', () => {
+		return assertSyncModuleUpdatesRunsWithOptions('/api/recent/drafts', { mode: MODE_RECENT })
+	})
+	//options will contain mode: MODE_ALL
+	test('syncModuleUpdates returns expected output and calls other functions, mode MODE_ALL', () => {
+		return assertSyncModuleUpdatesRunsWithOptions('/api/drafts', { mode: MODE_ALL })
+	})
+	// no options, default should be equivalent to MODE_ALL
+	test('syncModuleUpdates returns expected output and calls other functions, default', () => {
+		return assertSyncModuleUpdatesRunsWithOptions('/api/drafts')
 	})
 })
