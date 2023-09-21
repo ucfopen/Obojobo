@@ -44,9 +44,9 @@ since it is not compatible with stylelint's indentation rules
 
 	$callout-blue: rgb(29, 119, 252);
 
-	$bookmark-border-white: white white white white;
-	$bookmark-border-yellow: white white white #fffcf8;
-	$bookmark-border-aged: white white white rgb(237, 220, 192);
+	$bookmark-border-white: white white white #efefef;
+	$bookmark-border-yellow: white white white #f9f6f2;
+	$bookmark-border-aged: white white white #cdb7a1;
 
 	position: relative;
 
@@ -441,7 +441,7 @@ since it is not compatible with stylelint's indentation rules
 				left: 2em;
 				top: 0;
 				transform: translate(0, -100%);
-				background: url(./images/tab.svg);
+				background: url('./images/tab.svg');
 				background-size: cover;
 			}
 		}
@@ -493,7 +493,7 @@ since it is not compatible with stylelint's indentation rules
 			position: absolute;
 			left: 0;
 			top: -1.2em;
-			background: url(./images/retro-document-top.svg);
+			background: url('./images/retro-document-top.svg');
 		}
 
 		&.is-showing-effect {
@@ -801,7 +801,6 @@ since it is not compatible with stylelint's indentation rules
 		*/
 		// stylelint-disable-next-line no-descending-specificity
 		> blockquote > .excerpt-content {
-			background: #fbfbfd;
 			background: #f9f8f7;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 			border: 1px solid rgba(0, 0, 0, 0.03);
@@ -1000,7 +999,7 @@ since it is not compatible with stylelint's indentation rules
 				border-top-right-radius: 0;
 
 				&::before {
-					background: url(./images/jagged-edge-bordered-box.svg);
+					background: url('./images/jagged-edge-bordered-box.svg');
 				}
 			}
 		}
@@ -1030,7 +1029,7 @@ since it is not compatible with stylelint's indentation rules
 				border-bottom-right-radius: 0;
 
 				&::after {
-					background: url(./images/jagged-edge-bordered-box.svg);
+					background: url('./images/jagged-edge-bordered-box.svg');
 				}
 			}
 		}
@@ -1039,74 +1038,74 @@ since it is not compatible with stylelint's indentation rules
 	&.is-top-edge-type-jagged.is-body-style-type-filled-box,
 	&.is-top-edge-type-jagged.is-body-style-type-card {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-filled-box.svg);
+			background: url('./images/jagged-edge-filled-box.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-white-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-white-paper.svg);
+			background: url('./images/jagged-edge-white-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-modern-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-modern-paper.svg);
+			background: url('./images/jagged-edge-modern-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-light-yellow-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-light-yellow-paper.svg);
+			background: url('./images/jagged-edge-light-yellow-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-dark-yellow-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-dark-yellow-paper.svg);
+			background: url('./images/jagged-edge-dark-yellow-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-aged-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-aged-paper.svg);
+			background: url('./images/jagged-edge-aged-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-filled-box,
 	&.is-bottom-edge-type-jagged.is-body-style-type-card {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-filled-box.svg);
+			background: url('./images/jagged-edge-filled-box.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-white-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-white-paper.svg);
+			background: url('./images/jagged-edge-white-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-modern-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-modern-paper.svg);
+			background: url('./images/jagged-edge-modern-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-light-yellow-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-light-yellow-paper.svg);
+			background: url('./images/jagged-edge-light-yellow-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-dark-yellow-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-dark-yellow-paper.svg);
+			background: url('./images/jagged-edge-dark-yellow-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-aged-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-aged-paper.svg);
+			background: url('./images/jagged-edge-aged-paper.svg');
 		}
 	}
 
