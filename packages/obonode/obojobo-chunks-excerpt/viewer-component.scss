@@ -44,6 +44,10 @@ since it is not compatible with stylelint's indentation rules
 
 	$callout-blue: rgb(29, 119, 252);
 
+	$bookmark-border-white: white white white #efefef;
+	$bookmark-border-yellow: white white white #f9f6f2;
+	$bookmark-border-aged: white white white #cdb7a1;
+
 	position: relative;
 
 	> blockquote {
@@ -437,7 +441,7 @@ since it is not compatible with stylelint's indentation rules
 				left: 2em;
 				top: 0;
 				transform: translate(0, -100%);
-				background: url(./images/tab.svg);
+				background: url('./images/tab.svg');
 				background-size: cover;
 			}
 		}
@@ -489,7 +493,7 @@ since it is not compatible with stylelint's indentation rules
 			position: absolute;
 			left: 0;
 			top: -1.2em;
-			background: url(./images/retro-document-top.svg);
+			background: url('./images/retro-document-top.svg');
 		}
 
 		&.is-showing-effect {
@@ -797,7 +801,6 @@ since it is not compatible with stylelint's indentation rules
 		*/
 		// stylelint-disable-next-line no-descending-specificity
 		> blockquote > .excerpt-content {
-			background: #fbfbfd;
 			background: #f9f8f7;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 			border: 1px solid rgba(0, 0, 0, 0.03);
@@ -996,7 +999,7 @@ since it is not compatible with stylelint's indentation rules
 				border-top-right-radius: 0;
 
 				&::before {
-					background: url(./images/jagged-edge-bordered-box.svg);
+					background: url('./images/jagged-edge-bordered-box.svg');
 				}
 			}
 		}
@@ -1026,7 +1029,7 @@ since it is not compatible with stylelint's indentation rules
 				border-bottom-right-radius: 0;
 
 				&::after {
-					background: url(./images/jagged-edge-bordered-box.svg);
+					background: url('./images/jagged-edge-bordered-box.svg');
 				}
 			}
 		}
@@ -1035,74 +1038,205 @@ since it is not compatible with stylelint's indentation rules
 	&.is-top-edge-type-jagged.is-body-style-type-filled-box,
 	&.is-top-edge-type-jagged.is-body-style-type-card {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-filled-box.svg);
+			background: url('./images/jagged-edge-filled-box.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-white-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-white-paper.svg);
+			background: url('./images/jagged-edge-white-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-modern-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-modern-paper.svg);
+			background: url('./images/jagged-edge-modern-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-light-yellow-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-light-yellow-paper.svg);
+			background: url('./images/jagged-edge-light-yellow-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-dark-yellow-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-dark-yellow-paper.svg);
+			background: url('./images/jagged-edge-dark-yellow-paper.svg');
 		}
 	}
 
 	&.is-top-edge-type-jagged.is-body-style-type-aged-paper {
 		> blockquote > .excerpt-content::before {
-			background: url(./images/jagged-edge-aged-paper.svg);
+			background: url('./images/jagged-edge-aged-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-filled-box,
 	&.is-bottom-edge-type-jagged.is-body-style-type-card {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-filled-box.svg);
+			background: url('./images/jagged-edge-filled-box.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-white-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-white-paper.svg);
+			background: url('./images/jagged-edge-white-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-modern-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-modern-paper.svg);
+			background: url('./images/jagged-edge-modern-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-light-yellow-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-light-yellow-paper.svg);
+			background: url('./images/jagged-edge-light-yellow-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-dark-yellow-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-dark-yellow-paper.svg);
+			background: url('./images/jagged-edge-dark-yellow-paper.svg');
 		}
 	}
 
 	&.is-bottom-edge-type-jagged.is-body-style-type-aged-paper {
 		> blockquote > .excerpt-content::after {
-			background: url(./images/jagged-edge-aged-paper.svg);
+			background: url('./images/jagged-edge-aged-paper.svg');
+		}
+	}
+
+	&.is-top-edge-type-bookmark {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content::before {
+			content: ' ';
+			width: 100%;
+			// this only seems to work at 10px for some reason
+			// stylelint-disable-next-line unit-disallowed-list
+			height: 10px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			outline: none;
+		}
+
+		&.is-body-style-type-bordered-box {
+			> blockquote > .excerpt-content {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+
+				&::before {
+					width: 0;
+					height: 0;
+					border-style: solid;
+					border-width: 1.25em 0 0 1.25em;
+					border-color: $bookmark-border-white;
+					position: absolute;
+					top: -0.12em;
+					left: -0.12em;
+					filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+					transform: rotate(-0.25turn);
+				}
+			}
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-filled-box,
+	&.is-top-edge-type-bookmark.is-body-style-type-card {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-white-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-modern-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-light-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-yellow;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-dark-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-yellow;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-aged-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			outline: none;
+			border-color: $bookmark-border-aged;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
 		}
 	}
 }
