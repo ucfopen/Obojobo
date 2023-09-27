@@ -40,8 +40,10 @@ const EditorAPI = {
 		return API.delete(`/api/drafts/${draftId}`).then(API.processJsonResults)
 	},
 
-	copyDraft(draftId, newTitle) {
-		return API.post(`/api/drafts/${draftId}/copy`, { title: newTitle }).then(API.processJsonResults)
+	copyDraft(draftId, newTitle, readOnly = false) {
+		return API.post(`/api/drafts/${draftId}/copy`, { title: newTitle, readOnly }).then(
+			API.processJsonResults
+		)
 	},
 
 	requestEditLock(draftId, contentId) {

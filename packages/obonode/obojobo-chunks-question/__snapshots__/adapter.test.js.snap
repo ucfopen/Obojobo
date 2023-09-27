@@ -2,6 +2,7 @@
 
 exports[`Question adapter construct builds with attributes 1`] = `
 Object {
+  "collapsed": false,
   "correctLabels": Array [
     "a",
     "b",
@@ -58,6 +59,7 @@ Object {
 
 exports[`Question adapter construct builds with bad solution property 1`] = `
 Object {
+  "collapsed": false,
   "correctLabels": null,
   "dirty": false,
   "editing": false,
@@ -72,6 +74,7 @@ Object {
 
 exports[`Question adapter construct builds without attributes 1`] = `
 Object {
+  "collapsed": false,
   "correctLabels": null,
   "dirty": false,
   "editing": false,
@@ -87,6 +90,7 @@ Object {
 exports[`Question adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
+    "collapsed": false,
     "correctLabels": "a|b|c",
     "incorrectLabels": "d|e|f",
     "partialLabels": null,
@@ -130,6 +134,7 @@ Object {
 exports[`Question adapter toJSON builds a JSON representation with correct/incorrect labels or a solution 1`] = `
 Object {
   "content": Object {
+    "collapsed": false,
     "correctLabels": null,
     "incorrectLabels": null,
     "partialLabels": null,

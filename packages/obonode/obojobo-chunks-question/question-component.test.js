@@ -196,6 +196,50 @@ describe('Question', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('Screen reader text matches when answer is saved', () => {
+		const props = getDefaultProps({
+			questionType: 'default',
+			mode: 'assessment',
+			viewState: 'active',
+			response: null,
+			shouldShowRevealAnswerButton: false,
+			isAnswerRevealed: false,
+			isShowingExplanation: false,
+			isShowingExplanationButton: false,
+			score: null
+		})
+
+		props.responseSendState = 'recorded'
+
+		const component = renderer.create(<QuestionComponent {...props} />)
+
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Screen reader text matches when error sending answer', () => {
+		const props = getDefaultProps({
+			questionType: 'default',
+			mode: 'assessment',
+			viewState: 'active',
+			response: null,
+			shouldShowRevealAnswerButton: false,
+			isAnswerRevealed: false,
+			isShowingExplanation: false,
+			isShowingExplanationButton: false,
+			score: null
+		})
+
+		props.responseSendState = 'error'
+
+		const component = renderer.create(<QuestionComponent {...props} />)
+
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('Does not render a QuestionFooter in practice mode if the assessment has the appropriate setting', () => {
 		const props = getDefaultProps({
 			questionType: 'default',

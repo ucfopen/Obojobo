@@ -4,8 +4,8 @@
 	margin-bottom: 10rem;
 
 	span::selection {
-		background-color: highlight; /* stylelint-disable-line sh-waqar/declaration-use-variable */
-		color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+		background-color: highlight; /* stylelint-disable-line scale-unlimited/declaration-strict-value */
+		color: inherit; /* stylelint-disable-line scale-unlimited/declaration-strict-value */
 	}
 
 	.draft-toolbars {

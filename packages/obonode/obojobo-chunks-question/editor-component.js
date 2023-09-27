@@ -19,20 +19,11 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
-class Question extends React.Component {
-	constructor(props) {
-		super(props)
-		this.addSolution = this.addSolution.bind(this)
-		this.delete = this.delete.bind(this)
-		this.onSetType = this.onSetType.bind(this)
-		this.onSetAssessmentType = this.onSetAssessmentType.bind(this)
-		this.isInAssessment = this.getIsInAssessment()
-	}
-
-	getIsInAssessment() {
+const Question = props => {
+	function getIsInAssessment() {
 		return [
-			...Editor.levels(this.props.editor, {
-				at: ReactEditor.findPath(this.props.editor, this.props.element),
+			...Editor.levels(props.editor, {
+				at: ReactEditor.findPath(props.editor, props.element),
 				reverse: true
 			})
 		].some(([node]) => {
@@ -40,68 +31,77 @@ class Question extends React.Component {
 		})
 	}
 
-	onSetType(event) {
+	const toggleCollapsed = () => {
+		const path = ReactEditor.findPath(props.editor, props.element)
+		const collapsed = !props.element.content.collapsed
+
+		Transforms.setNodes(
+			props.editor,
+			{ content: { ...props.element.content, collapsed } },
+			{ at: path }
+		)
+	}
+
+	function onSetType(event) {
 		const type = event.target.checked ? 'survey' : 'default'
 
 		// update this element's content.type
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(
-			this.props.editor,
-			{ content: { ...this.props.element.content, type } },
-			{ at: path }
-		)
+		const path = ReactEditor.findPath(props.editor, props.element)
+
+		Transforms.setNodes(props.editor, { content: { ...props.element.content, type } }, { at: path })
 
 		// The Question Assessment item should be the last child
-		const lastChildIndex = this.getHasSolution()
-			? this.props.element.children.length - 2
-			: this.props.element.children.length - 1
+		const lastChildIndex = getHasSolution()
+			? props.element.children.length - 2
+			: props.element.children.length - 1
 		return Transforms.setNodes(
-			this.props.editor,
+			props.editor,
 			{ questionType: type },
 			{ at: path.concat(lastChildIndex) }
 		)
 	}
 
-	getHasSolution() {
-		return (
-			this.props.element.children[this.props.element.children.length - 1].subtype === SOLUTION_NODE
-		)
+	function getHasSolution() {
+		return props.element.children[props.element.children.length - 1].subtype === SOLUTION_NODE
 	}
 
-	onSetAssessmentType(event) {
+	function onSetAssessmentType(event) {
 		const type = event.target.value
 
 		const item = Common.Registry.getItemForType(type)
 
 		const newBlock = item.cloneBlankNode()
 
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		const hasSolution = this.getHasSolution()
-		const assessmentLocation = hasSolution
-			? this.props.element.children.length - 2
-			: this.props.element.children.length - 1
+		// preserve whether this question is a survey or not
+		newBlock.questionType = props.element.content.type
 
-		Editor.withoutNormalizing(this.props.editor, () => {
+		const path = ReactEditor.findPath(props.editor, props.element)
+		const hasSolution = getHasSolution()
+		const assessmentLocation = hasSolution
+			? props.element.children.length - 2
+			: props.element.children.length - 1
+
+		Editor.withoutNormalizing(props.editor, () => {
 			// Remove the old assessment
-			Transforms.removeNodes(this.props.editor, {
+			Transforms.removeNodes(props.editor, {
 				at: path.concat(assessmentLocation)
 			})
 			// Insert the new assessment
-			Transforms.insertNodes(this.props.editor, newBlock, {
+			Transforms.insertNodes(props.editor, newBlock, {
 				at: path.concat(assessmentLocation)
 			})
 		})
 	}
 
-	delete() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		return Transforms.removeNodes(this.props.editor, { at: path })
+	function deleteNode() {
+		const path = ReactEditor.findPath(props.editor, props.element)
+		return Transforms.removeNodes(props.editor, { at: path })
 	}
 
-	addSolution() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+	function addSolution() {
+		const path = ReactEditor.findPath(props.editor, props.element)
 		return Transforms.insertNodes(
-			this.props.editor,
+			props.editor,
 			{
 				type: QUESTION_NODE,
 				subtype: SOLUTION_NODE,
@@ -127,11 +127,11 @@ class Question extends React.Component {
 					}
 				]
 			},
-			{ at: path.concat(this.props.element.children.length) }
+			{ at: path.concat(props.element.children.length) }
 		)
 	}
 
-	getContentDescription(isTypeSurvey, isInAssessment) {
+	function getContentDescription(isTypeSurvey, isInAssessment) {
 		if (isTypeSurvey || isInAssessment) {
 			return []
 		}
@@ -160,67 +160,96 @@ class Question extends React.Component {
 		]
 	}
 
-	render() {
-		const element = this.props.element
-		const content = element.content
+	const element = props.element
+	const content = element.content
 
-		const isTypeSurvey = content.type === 'survey'
+	const isTypeSurvey = content.type === 'survey'
 
-		const hasSolution = this.getHasSolution()
-		let questionType
+	const hasSolution = getHasSolution()
+	const isInAssessment = getIsInAssessment()
+	let questionType
 
-		// The question type is determined by the MCAssessment or the NumericAssessement
-		// This is either the last node or the second to last node
-		if (hasSolution) {
-			questionType = element.children[element.children.length - 2].type
-		} else {
-			questionType = element.children[element.children.length - 1].type
-		}
+	// The question type is determined by the MCAssessment or the NumericAssessement
+	// This is either the last node or the second to last node
+	if (hasSolution) {
+		questionType = element.children[element.children.length - 2].type
+	} else {
+		questionType = element.children[element.children.length - 1].type
+	}
 
-		return (
-			<Node
-				{...this.props}
-				className="obojobo-draft--chunks--question--wrapper"
-				contentDescription={this.getContentDescription(isTypeSurvey, this.isInAssessment)}
-			>
-				<div
-					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
-				>
+	const className =
+		'component obojobo-draft--chunks--question is-viewed pad' +
+		` is-type-${content.type}` +
+		` is-${content.collapsed ? 'collapsed' : 'not-collapsed'}`
+
+	const questionTypeOptions = [
+		<option key={MCASSESSMENT_NODE} value={MCASSESSMENT_NODE}>
+			Multiple choice
+		</option>,
+		<option key={NUMERIC_ASSESSMENT_NODE} value={NUMERIC_ASSESSMENT_NODE}>
+			Input a number
+		</option>
+	]
+
+	// only add the Materia widget option if the Materia assessment node has been registered
+	if (Common.Registry.contentTypes.includes(MATERIA_ASSESSMENT_NODE)) {
+		questionTypeOptions.push(
+			<option key={MATERIA_ASSESSMENT_NODE} value={MATERIA_ASSESSMENT_NODE}>
+				Materia widget
+			</option>
+		)
+	}
+
+	return (
+		<Node
+			{...props}
+			className="obojobo-draft--chunks--question--wrapper"
+			contentDescription={getContentDescription(isTypeSurvey, isInAssessment)}
+		>
+			<div className={className}>
+				{content.collapsed ? (
+					<div
+						className="flipper clickable-label"
+						contentEditable={false}
+						onClick={toggleCollapsed}
+					>
+						<label className="question-summary">Question (Click to Expand)</label>
+					</div>
+				) : (
 					<div className="flipper question-editor">
 						<div className="content-back">
 							<div className="question-settings" contentEditable={false}>
 								<label>Question Type</label>
-								<select
-									contentEditable={false}
-									value={questionType}
-									onChange={this.onSetAssessmentType}
-								>
-									<option value={MCASSESSMENT_NODE}>Multiple choice</option>
-									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
-									<option value={MATERIA_ASSESSMENT_NODE}>Materia widget</option>
+								<select contentEditable={false} value={questionType} onChange={onSetAssessmentType}>
+									{questionTypeOptions}
 								</select>
 								<label className="question-type" contentEditable={false}>
-									<input type="checkbox" checked={isTypeSurvey} onChange={this.onSetType} />
+									<input type="checkbox" checked={isTypeSurvey} onChange={onSetType} />
 									Survey Only
 								</label>
 							</div>
-							{this.props.children}
+							{props.children}
 							{hasSolution ? null : (
 								<div className="add-solution-container" contentEditable={false}>
-									<Button className="add-solution" onClick={this.addSolution}>
+									<Button className="add-solution" onClick={addSolution}>
 										Add Explanation
 									</Button>
 								</div>
 							)}
 						</div>
 					</div>
-					<Button className="delete-button" onClick={() => this.delete()} contentEditable={false}>
+				)}
+				<div className="button-parent">
+					<Button className="collapse-button" onClick={toggleCollapsed} contentEditable={false}>
+						{content.collapsed ? '+' : '-'}
+					</Button>
+					<Button className="delete-button" onClick={deleteNode} contentEditable={false}>
 						×
 					</Button>
 				</div>
-			</Node>
-		)
-	}
+			</div>
+		</Node>
+	)
 }
 
 export default withSlateWrapper(Question)

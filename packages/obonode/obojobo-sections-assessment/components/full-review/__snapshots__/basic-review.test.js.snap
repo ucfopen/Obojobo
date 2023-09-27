@@ -171,6 +171,7 @@ exports[`BasicReview Basic component correct 1`] = `
           },
         ],
         "content": Object {
+          "collapsed": false,
           "correctLabels": null,
           "incorrectLabels": null,
           "partialLabels": null,
@@ -396,6 +397,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
           },
         ],
         "content": Object {
+          "collapsed": false,
           "correctLabels": null,
           "incorrectLabels": null,
           "partialLabels": null,
@@ -621,6 +623,7 @@ exports[`BasicReview Basic component survey 1`] = `
           },
         ],
         "content": Object {
+          "collapsed": false,
           "correctLabels": null,
           "incorrectLabels": null,
           "partialLabels": null,

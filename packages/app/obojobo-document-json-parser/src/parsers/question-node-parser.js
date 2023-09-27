@@ -1,5 +1,6 @@
-const processAttrs = require('../process-attrs')
 const processTriggers = require('../process-triggers')
+const processAttrs = require('../process-attrs')
+const processObjectives = require('../process-objectives')
 
 const questionNodeParser = (node, childrenParser) => {
 	const id = node.id ? ` id="${node.id}"` : ''
@@ -12,12 +13,14 @@ const questionNodeParser = (node, childrenParser) => {
 	}
 
 	const triggersXML = processTriggers(node.content.triggers)
+	const objectivesXML = processObjectives(node.content.objectives)
 
 	return (
 		`<Question${attrs}${id}>` +
 		solutionXML +
 		childrenParser(node.children) +
 		triggersXML +
+		objectivesXML +
 		`</Question>`
 	)
 }

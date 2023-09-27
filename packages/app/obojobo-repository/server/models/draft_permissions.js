@@ -18,6 +18,20 @@ class DraftPermissions {
 			})
 	}
 
+	static updateAccessLevel(draftId, userId, accessLevel) {
+		return db
+			.none(
+				`UPDATE repository_map_user_to_draft
+				SET access_level = $[accessLevel]
+				WHERE draft_id = $[draftId]
+				AND user_id = $[userId]`,
+				{ accessLevel, userId, draftId }
+			)
+			.catch(error => {
+				throw logger.logError('Error updateAccessLevel', error)
+			})
+	}
+
 	static removeOwnerFromDraft(draftId, userId) {
 		return db
 			.none(
@@ -42,7 +56,8 @@ class DraftPermissions {
 				users.email,
 				users.username,
 				users.created_at,
-				users.roles
+				users.roles,
+				access_level
 			FROM repository_map_user_to_draft
 			JOIN users
 				ON users.id = user_id
@@ -51,40 +66,57 @@ class DraftPermissions {
 				{ draftId }
 			)
 			.then(results => {
-				return results.map(r => User.dbResultToModel(r))
+				return results.map(r => {
+					const u = User.dbResultToModel(r)
+					u.accessLevel = r.access_level
+					return u
+				})
 			})
 			.catch(error => {
 				throw logger.logError('Error getDraftOwners', error)
 			})
 	}
 
-	// returns a boolean
-	static async userHasPermissionToDraft(userId, draftId) {
+	// returns an int (or null)
+	static async getUserAccessLevelToDraft(userId, draftId) {
 		try {
 			const result = await db.oneOrNone(
-				`SELECT user_id
+				`SELECT access_level
 				FROM repository_map_user_to_draft
 				WHERE draft_id = $[draftId]
 				AND user_id = $[userId]`,
 				{ userId, draftId }
 			)
 
-			// oneOrNone returns null when there are no results
-			return result !== null
+			return result ? result.access_level : null
 		} catch (error) {
-			throw logger.logError('Error userHasPermissionToDraft', error)
+			throw logger.logError('Error getUserAccessLevelToDraft', error)
 		}
 	}
 
 	// returns a boolean
-	static async userHasPermissionToCopy(userId, draftId) {
+	static async userHasPermissionToPreview(user, draftId) {
 		try {
 			const results = await Promise.all([
 				DraftPermissions.draftIsPublic(draftId),
-				DraftPermissions.userHasPermissionToDraft(userId, draftId)
+				DraftPermissions.getUserAccessLevelToDraft(user.id, draftId)
 			])
 
-			return results[0] === true || results[1] === true
+			return user.perms.includes('canPreviewDrafts') && (results[0] === true || results[1] !== null)
+		} catch (error) {
+			throw logger.logError('Error userHasPermissionToPreview', error)
+		}
+	}
+
+	// returns a boolean
+	static async userHasPermissionToCopy(user, draftId) {
+		try {
+			const results = await Promise.all([
+				DraftPermissions.draftIsPublic(draftId),
+				DraftPermissions.getUserAccessLevelToDraft(user.id, draftId)
+			])
+
+			return user.perms.includes('canCreateDrafts') && (results[0] === true || results[1] !== null)
 		} catch (error) {
 			throw logger.logError('Error userHasPermissionToCopy', error)
 		}
@@ -105,6 +137,23 @@ class DraftPermissions {
 			return result !== null
 		} catch (error) {
 			throw logger.logError('Error draftIsPublic', error)
+		}
+	}
+
+	// returns a boolean
+	static async userHasPermissionToCollection(userId, collectionId) {
+		try {
+			const result = await db.oneOrNone(
+				`SELECT user_id
+				FROM repository_collections
+				WHERE id = $[collectionId]
+				AND user_id = $[userId]`,
+				{ userId, collectionId }
+			)
+
+			return result !== null
+		} catch (error) {
+			throw logger.logError('Error userHasPermissionToCollection', error)
 		}
 	}
 }

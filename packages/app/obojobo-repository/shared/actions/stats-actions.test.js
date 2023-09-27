@@ -1,10 +1,31 @@
-const { loadModuleAssessmentDetails } = require('./stats-actions')
+const { loadUserModuleList, loadModuleAssessmentDetails } = require('./stats-actions')
 
 jest.mock('./shared-api-methods', () => ({
 	apiGetAssessmentDetailsForMultipleDrafts: () => Promise.resolve()
 }))
 
 describe('statsActions', () => {
+	test('loadUserModuleList returns expected object', async () => {
+		const apiGetStatsPageModulesJson = jest.fn()
+		const originalFetch = global.fetch
+		global.fetch = jest.fn()
+		global.fetch.mockImplementation(() => {
+			return Promise.resolve({
+				json: apiGetStatsPageModulesJson
+			})
+		})
+
+		const result = await loadUserModuleList()
+
+		expect(result).toEqual({
+			type: 'LOAD_STATS_PAGE_MODULES_FOR_USER',
+			promise: expect.any(Promise)
+		})
+		expect(apiGetStatsPageModulesJson).toHaveBeenCalledTimes(1)
+
+		global.fetch = originalFetch
+	})
+
 	test('loadModuleAssessmentDetails returns expected object', async () => {
 		const result = await loadModuleAssessmentDetails(['draft-id-1', 'draft-id-2'])
 

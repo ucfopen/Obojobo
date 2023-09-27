@@ -1,0 +1,1242 @@
+@import '~styles/includes';
+
+/*
+there will be a lot of superfluous nesting in this file meant to placate
+prettier's opinionated indentation scheme when breaking up large lines,
+since it is not compatible with stylelint's indentation rules
+*/
+
+.obojobo-draft--chunks--excerpt {
+	$courier: 'Courier', monospace;
+	$georgia: georgia;
+	$helvetica: helvetica, arial, sans-serif;
+	$tnr: 'Times New Roman', times, serif;
+	$palatino: 'Palatino', $georgia, $tnr;
+
+	$command-line-text: #d8d8d8;
+
+	$modern-background: #f4f4f4;
+	$modern-border: #cccccc;
+
+	$retro-background: #d6d6d6;
+	$terminal-background: #1b1916;
+
+	$terminal-lines: repeating-linear-gradient(
+		rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0) 0.0625em,
+		$terminal-background 0.0625em,
+		$terminal-background 0.125em
+	);
+
+	$white: white;
+
+	$terminal-green: #83ff27;
+	$terminal-orange: #ffaa27;
+	$terminal-purple: #a6a2ef;
+
+	$yellow-paper-text: #443b35;
+	$dark-yellow-paper-text: #565655;
+	$aged-paper-text: #423120;
+	$white-paper-text: #242425;
+
+	$filled-background: #f9f9f9;
+	$filled-text: #333333;
+
+	$callout-blue: rgb(29, 119, 252);
+
+	$bookmark-border-white: white white white #efefef;
+	$bookmark-border-yellow: white white white #f9f6f2;
+	$bookmark-border-aged: white white white #cdb7a1;
+
+	position: relative;
+
+	> blockquote {
+		margin: 0;
+		text-align: center;
+
+		> cite {
+			margin-top: 0.5em;
+			display: inline-block;
+			font-style: normal;
+			font-family: $font-default;
+			color: $color-text-minor;
+			font-size: 0.7em;
+			position: relative;
+			text-align: center;
+		}
+
+		> .excerpt-content {
+			margin: 0 auto;
+			padding: 1em 0;
+			position: relative;
+			text-align: left;
+
+			> .overlay {
+				pointer-events: none;
+			}
+
+			> .wrapper {
+				position: relative;
+
+				> .component[data-obo-component='true'] {
+					padding-left: 0;
+					padding-right: 0;
+				}
+			}
+		}
+	}
+
+	&.is-font-serif > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $font-text;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $font-text;
+			}
+		}
+	}
+
+	&.is-font-sans > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $font-default;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $font-default;
+			}
+		}
+	}
+
+	&.is-font-monospace > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $font-monospace;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $font-monospace;
+			}
+		}
+	}
+
+	&.is-font-times-new-roman > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-size: 0.9em;
+			font-family: $tnr;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $tnr;
+			}
+		}
+	}
+
+	&.is-font-georgia > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $georgia, $tnr;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $georgia, $tnr;
+			}
+		}
+	}
+
+	&.is-font-helvetica > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $helvetica;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $helvetica;
+			}
+		}
+	}
+
+	&.is-font-courier > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $courier;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $courier;
+			}
+		}
+	}
+
+	&.is-font-palatino > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			font-family: $palatino;
+
+			> h1,
+			> h2,
+			> h3,
+			> h4,
+			> h5,
+			> h6 {
+				font-family: $palatino;
+			}
+		}
+	}
+
+	&.is-line-height-type-compact > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			line-height: 1.5em;
+		}
+	}
+
+	&.is-line-height-type-moderate > blockquote > .excerpt-content {
+		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
+			line-height: 1.7em;
+		}
+	}
+
+	&.is-line-height-type-generous > blockquote > .excerpt-content > .wrapper {
+		> .component[data-obo-component='true'] > .text-chunk {
+			line-height: 2em;
+		}
+	}
+
+	&.is-font-size-smaller {
+		> blockquote > .excerpt-content > .wrapper {
+			> .component[data-obo-component='true'] > .text-chunk {
+				font-size: 0.85em;
+			}
+
+			.component-toolbar {
+				font-size: 1.1764705882em;
+			}
+		}
+	}
+
+	&.is-font-size-larger {
+		> blockquote > .excerpt-content > .wrapper {
+			> .component[data-obo-component='true'] > .text-chunk {
+				font-size: 1.15em;
+			}
+
+			.component-toolbar {
+				font-size: 0.8695652174em;
+			}
+		}
+	}
+
+	&.is-width-tiny {
+		> blockquote > .excerpt-content {
+			max-width: 20em;
+		}
+
+		cite {
+			width: 100%;
+			max-width: 28.57em;
+		}
+	}
+
+	&.is-width-small {
+		> blockquote > .excerpt-content {
+			max-width: 25em;
+		}
+
+		cite {
+			width: 100%;
+			max-width: 35.71em;
+		}
+	}
+
+	&.is-width-medium {
+		> blockquote > .excerpt-content {
+			max-width: 31em;
+		}
+
+		cite {
+			width: 100%;
+			max-width: 44.29em;
+		}
+	}
+
+	&.is-width-large {
+		> blockquote > .excerpt-content,
+		cite {
+			margin-left: 0;
+			margin-right: 0;
+		}
+
+		cite {
+			width: 100%;
+		}
+	}
+
+	&.is-body-style-type-filled-box {
+		> blockquote > .excerpt-content {
+			background: $filled-background;
+			color: $filled-text;
+			border-radius: 0.25em;
+		}
+	}
+
+	&.is-body-style-type-callout-try-it,
+	&.is-body-style-type-callout-practice,
+	&.is-body-style-type-callout-do-this,
+	&.is-body-style-type-callout-example,
+	&.is-body-style-type-callout-hint {
+		> blockquote > .excerpt-content {
+			border: 1px solid rgb(221, 233, 255);
+			position: relative;
+
+			&::before {
+				display: block;
+				padding: 0 2.5em;
+				color: $callout-blue;
+			}
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0.75em;
+				transform: translateX(-50%);
+				display: block;
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 1.1em 0 1.1em 1.75em;
+				border-color: $color-transparent $color-transparent $color-transparent $callout-blue;
+			}
+		}
+	}
+
+	&.is-body-style-type-callout-try-it > blockquote > .excerpt-content {
+		&::before {
+			content: 'Try It!';
+		}
+	}
+
+	&.is-body-style-type-callout-practice > blockquote > .excerpt-content {
+		&::before {
+			content: 'Practice!';
+		}
+	}
+
+	&.is-body-style-type-callout-do-this > blockquote > .excerpt-content {
+		&::before {
+			content: 'Do This:';
+		}
+	}
+
+	&.is-body-style-type-callout-example > blockquote > .excerpt-content {
+		&::before {
+			content: 'Example';
+		}
+	}
+
+	&.is-body-style-type-callout-hint > blockquote > .excerpt-content {
+		&::before {
+			content: 'Hint';
+		}
+	}
+
+	&.is-body-style-type-bordered-box {
+		> blockquote > .excerpt-content {
+			border: 1px solid rgba(0, 0, 0, 0.1);
+			border-radius: $dimension-rounded-radius;
+			border-radius: 0.25em;
+		}
+	}
+
+	&.is-body-style-type-card {
+		> blockquote > .excerpt-content {
+			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+			background: $filled-background;
+
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $filled-text;
+				}
+			}
+		}
+	}
+
+	&.is-body-style-type-command-line {
+		> blockquote > .excerpt-content {
+			border-radius: $dimension-rounded-radius;
+			border-radius: 0.25em;
+			background: $terminal-background;
+
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $command-line-text;
+				}
+			}
+		}
+	}
+
+	&.is-body-style-type-none {
+		> blockquote {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		> blockquote > .excerpt-content {
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+	}
+
+	&.is-body-style-type-modern-text-file {
+		> blockquote > .excerpt-content {
+			border-radius: 0.25em;
+			background: $modern-background;
+			border: 2px solid $modern-border;
+			padding-bottom: 0;
+
+			/*
+			stylelint complains about this rule's specificity, but fixing it would
+			require deconstructing every style hierarchy so we're ignoring it instead
+			*/
+			// stylelint-disable-next-line no-descending-specificity
+			> .wrapper {
+				margin-top: 0.5em;
+				background: $white;
+				border-bottom-left-radius: 0.25em;
+				border-bottom-right-radius: 0.25em;
+				border-top: 2px solid $modern-border;
+				padding-top: 1em;
+				padding-bottom: 1em;
+			}
+
+			> .wrapper::before {
+				content: ' ';
+				width: 6.85em;
+				height: 1.475em;
+				position: absolute;
+				left: 2em;
+				top: 0;
+				transform: translate(0, -100%);
+				background: url('./images/tab.svg');
+				background-size: cover;
+			}
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				box-shadow: 0 0.5em 0.45em rgba(0, 0, 0, 0.2);
+			}
+		}
+	}
+
+	&.is-body-style-type-retro-text-file {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			border: 1px solid black;
+			background: $retro-background;
+			padding-top: 1.5em;
+			padding-left: 0.2em;
+			padding-right: 0.2em;
+			padding-bottom: 0.2em;
+
+			> .wrapper {
+				background: $white;
+				border: 1px solid black;
+				padding-top: 0.5em;
+				padding-bottom: 1em;
+			}
+
+			.pad {
+				padding-left: 2em;
+				padding-right: 2em;
+			}
+		}
+
+		/*
+		stylelint complains about this rule's specificity, but cites a totally
+		different rule than this one in the error
+		ignoring here rather than trying to solve some weird circular problem
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		.wrapper::before {
+			content: ' ';
+			width: 100%;
+			height: 0.84em;
+			position: absolute;
+			left: 0;
+			top: -1.2em;
+			background: url('./images/retro-document-top.svg');
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				box-shadow: 0.1em 0.1em black;
+			}
+		}
+	}
+
+	&.is-body-style-type-term-white {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			border-radius: $dimension-rounded-radius * 3;
+			background: linear-gradient(#383635, $terminal-background);
+
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $white;
+				}
+			}
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				> .wrapper > .component[data-obo-component='true'] {
+					> .text-chunk,
+					> .component > .non-editable-chunk > .katex-container {
+						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3),
+							0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3);
+					}
+				}
+			}
+
+			.overlay {
+				border-radius: $dimension-rounded-radius * 3;
+				width: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: $terminal-lines;
+				opacity: 0.2;
+			}
+		}
+	}
+
+	&.is-body-style-type-term-green {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			border-radius: $dimension-rounded-radius * 3;
+			background: linear-gradient(#383635, $terminal-background);
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $terminal-green;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				> .wrapper > .component[data-obo-component='true'] {
+					> .text-chunk,
+					> .component > .non-editable-chunk > .katex-container {
+						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						text-shadow: 0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3),
+							0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3);
+					}
+				}
+			}
+
+			.overlay {
+				border-radius: $dimension-rounded-radius * 3;
+				width: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: $terminal-lines;
+				opacity: 0.2;
+			}
+		}
+	}
+
+	&.is-body-style-type-term-orange {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			border-radius: $dimension-rounded-radius * 3;
+			background: linear-gradient(#383635, $terminal-background);
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $terminal-orange;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				> .wrapper > .component[data-obo-component='true'] {
+					> .text-chunk,
+					> .component > .non-editable-chunk > .katex-container {
+						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3),
+							0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3);
+					}
+				}
+			}
+
+			.overlay {
+				border-radius: $dimension-rounded-radius * 3;
+				width: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: $terminal-lines;
+				opacity: 0.2;
+			}
+		}
+	}
+
+	&.is-body-style-type-term-c64 {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			background: #181663;
+			border: 1em solid $terminal-purple;
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $terminal-purple;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+	}
+
+	&.is-body-style-type-light-yellow-paper {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			background: #fffcf8;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			border: 1px solid rgba(0, 0, 0, 0.03);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $yellow-paper-text;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				background-image: url('./images/aged-paper.jpg');
+				background-blend-mode: luminosity;
+			}
+		}
+	}
+
+	&.is-body-style-type-dark-yellow-paper {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			background: #fdf5ea;
+			border-radius: 0.12em;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			border-bottom: 1px solid rgb(220, 217, 212);
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $dark-yellow-paper-text;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				background-image: url('./images/aged-paper.jpg');
+				background-blend-mode: luminosity;
+			}
+		}
+	}
+
+	&.is-body-style-type-aged-paper {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			background: #fffcf8;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			border: 1px solid rgba(0, 0, 0, 0.03);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			// allow for fallbacks
+			// stylelint-disable-next-line declaration-block-no-duplicate-properties
+			background: rgb(237, 220, 192);
+			// stylelint-disable-next-line declaration-block-no-duplicate-properties
+			background: radial-gradient(circle, #eddcc0 50%, #d6bb9e 100%);
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $aged-paper-text;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				//stylelint-disable-next-line declaration-colon-newline-after
+				background: radial-gradient(circle, #eddcc0 50%, #d6bb9e 100%),
+					url('./images/aged-paper.jpg');
+				background-blend-mode: multiply;
+			}
+		}
+	}
+
+	&.is-body-style-type-white-paper {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			background: #fbfbfd;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			border: 1px solid rgba(0, 0, 0, 0.03);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $white-paper-text;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				background-image: url('./images/aged-paper.jpg');
+				background-blend-mode: luminosity;
+			}
+		}
+	}
+
+	&.is-body-style-type-modern-paper {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content {
+			background: #f9f8f7;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			border: 1px solid rgba(0, 0, 0, 0.03);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+			// same here
+			// stylelint-disable no-descending-specificity
+			> .wrapper > .component[data-obo-component='true'] {
+				> .text-chunk,
+				> .component > .non-editable-chunk > .katex-container {
+					color: $white-paper-text;
+				}
+			}
+			// stylelint-enable no-descending-specificity
+		}
+
+		&.is-showing-effect {
+			> blockquote > .excerpt-content {
+				background-image: url('./images/aged-paper.jpg');
+				background-blend-mode: luminosity;
+			}
+		}
+	}
+
+	&.is-top-edge-type-fade {
+		> blockquote > .excerpt-content::before {
+			content: ' ';
+			width: calc(100% + 0.375em);
+			transform: translate(-0.1875em, 0.1875em);
+			position: absolute;
+			left: 0;
+			top: -0.25em;
+			height: 1.875em;
+			background: $white;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
+		}
+
+		&.is-body-style-type-modern-text-file {
+			> blockquote > .excerpt-content {
+				padding-top: 0;
+
+				/*
+				stylelint complains about this rule's specificity, but fixing it would
+				require deconstructing every style hierarchy so we're ignoring it instead
+				*/
+				// stylelint-disable-next-line no-descending-specificity
+				.wrapper {
+					margin-top: 0;
+					border-top: none;
+					padding-top: 0;
+
+					&::before {
+						display: none;
+					}
+				}
+			}
+		}
+
+		&.is-body-style-type-retro-text-file {
+			> blockquote > .excerpt-content {
+				padding-top: 0;
+			}
+
+			/*
+			stylelint complains about this rule's specificity, but fixing it would
+			require deconstructing every style hierarchy so we're ignoring it instead
+			*/
+			// stylelint-disable-next-line no-descending-specificity
+			.wrapper {
+				margin-top: 0;
+				border-top: none;
+				padding-top: 0;
+
+				/*
+				stylelint complains about this rule's specificity, but cites a totally
+				different rule than this one in the error
+				ignoring here rather than trying to solve some weird circular problem
+				*/
+				// stylelint-disable-next-line no-descending-specificity
+				&::before {
+					display: none;
+				}
+			}
+		}
+
+		&.is-body-style-type-command-line,
+		&.is-body-style-type-term-white,
+		&.is-body-style-type-term-green,
+		&.is-body-style-type-term-orange {
+			> blockquote > .excerpt-content::before {
+				background: linear-gradient(180deg, white 50%, rgba(255, 255, 255, 0) 100%);
+			}
+
+			.overlay::before {
+				content: ' ';
+				width: calc(100% + 0.375em);
+				transform: translate(-0.1875em, 0.1875em);
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 1.875em;
+				//stylelint-disable-next-line declaration-colon-newline-after
+				background: linear-gradient(
+					180deg,
+					rgba(255, 255, 255, 1) 50%,
+					rgba(255, 255, 255, 0) 100%
+				);
+			}
+		}
+
+		&.is-body-style-type-term-c64 {
+			> blockquote > .excerpt-content::before {
+				width: calc(100% + 3.125em);
+				transform: translate(-1.5625em, -1.25em);
+				height: 2.8125em;
+				background: linear-gradient(180deg, white 50%, rgba(255, 255, 255, 0) 100%);
+			}
+		}
+	}
+
+	&.is-bottom-edge-type-fade {
+		> blockquote > .excerpt-content::after {
+			content: ' ';
+			width: calc(100% + 0.375em);
+			transform: translate(-0.1875em, 0.1875em);
+			height: 1.875em;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			background: rgb(255, 255, 255);
+			background: linear-gradient(0deg, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
+		}
+
+		&.is-body-style-type-card {
+			> blockquote > .excerpt-content::after {
+				transform: translate(-3px, 13px);
+				background: linear-gradient(0deg, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+			}
+		}
+
+		&.is-body-style-type-retro-text-file {
+			> blockquote > .excerpt-content::after {
+				height: 3.875em;
+			}
+		}
+
+		&.is-body-style-type-modern-text-file {
+			> blockquote > .excerpt-content::after {
+				width: calc(100% + 1.25em);
+				transform: translate(-10px, 22px);
+				height: 3.8125em;
+				background: linear-gradient(0deg, white 50%, rgba(255, 255, 255, 0) 100%);
+			}
+		}
+
+		&.is-body-style-type-command-line,
+		&.is-body-style-type-term-white,
+		&.is-body-style-type-term-green,
+		&.is-body-style-type-term-orange {
+			> blockquote > .excerpt-content::after {
+				background: linear-gradient(0deg, white 50%, rgba(255, 255, 255, 0) 100%);
+			}
+		}
+
+		&.is-body-style-type-term-c64 {
+			> blockquote > .excerpt-content::after {
+				width: calc(100% + 3.125em);
+				transform: translate(-1.5625em, 1.25em);
+				height: 2.8125em;
+				background: linear-gradient(0deg, white 50%, rgba(255, 255, 255, 0) 100%);
+			}
+		}
+	}
+
+	&.is-top-edge-type-jagged {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content::before {
+			content: ' ';
+			width: 100%;
+			// this only seems to work at 10px for some reason
+			// stylelint-disable-next-line unit-disallowed-list
+			height: 10px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			transform: rotate(180deg) translate(0, 10px);
+		}
+
+		&.is-body-style-type-bordered-box {
+			> blockquote > .excerpt-content {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+
+				&::before {
+					background: url('./images/jagged-edge-bordered-box.svg');
+				}
+			}
+		}
+	}
+
+	&.is-bottom-edge-type-jagged {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content::after {
+			content: ' ';
+			width: 100%;
+			// this only seems to work at 10px for some reason
+			// stylelint-disable-next-line unit-disallowed-list
+			height: 10px;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			transform: translate(0, 10px);
+		}
+
+		&.is-body-style-type-bordered-box {
+			> blockquote > .excerpt-content {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+
+				&::after {
+					background: url('./images/jagged-edge-bordered-box.svg');
+				}
+			}
+		}
+	}
+
+	&.is-top-edge-type-jagged.is-body-style-type-filled-box,
+	&.is-top-edge-type-jagged.is-body-style-type-card {
+		> blockquote > .excerpt-content::before {
+			background: url('./images/jagged-edge-filled-box.svg');
+		}
+	}
+
+	&.is-top-edge-type-jagged.is-body-style-type-white-paper {
+		> blockquote > .excerpt-content::before {
+			background: url('./images/jagged-edge-white-paper.svg');
+		}
+	}
+
+	&.is-top-edge-type-jagged.is-body-style-type-modern-paper {
+		> blockquote > .excerpt-content::before {
+			background: url('./images/jagged-edge-modern-paper.svg');
+		}
+	}
+
+	&.is-top-edge-type-jagged.is-body-style-type-light-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			background: url('./images/jagged-edge-light-yellow-paper.svg');
+		}
+	}
+
+	&.is-top-edge-type-jagged.is-body-style-type-dark-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			background: url('./images/jagged-edge-dark-yellow-paper.svg');
+		}
+	}
+
+	&.is-top-edge-type-jagged.is-body-style-type-aged-paper {
+		> blockquote > .excerpt-content::before {
+			background: url('./images/jagged-edge-aged-paper.svg');
+		}
+	}
+
+	&.is-bottom-edge-type-jagged.is-body-style-type-filled-box,
+	&.is-bottom-edge-type-jagged.is-body-style-type-card {
+		> blockquote > .excerpt-content::after {
+			background: url('./images/jagged-edge-filled-box.svg');
+		}
+	}
+
+	&.is-bottom-edge-type-jagged.is-body-style-type-white-paper {
+		> blockquote > .excerpt-content::after {
+			background: url('./images/jagged-edge-white-paper.svg');
+		}
+	}
+
+	&.is-bottom-edge-type-jagged.is-body-style-type-modern-paper {
+		> blockquote > .excerpt-content::after {
+			background: url('./images/jagged-edge-modern-paper.svg');
+		}
+	}
+
+	&.is-bottom-edge-type-jagged.is-body-style-type-light-yellow-paper {
+		> blockquote > .excerpt-content::after {
+			background: url('./images/jagged-edge-light-yellow-paper.svg');
+		}
+	}
+
+	&.is-bottom-edge-type-jagged.is-body-style-type-dark-yellow-paper {
+		> blockquote > .excerpt-content::after {
+			background: url('./images/jagged-edge-dark-yellow-paper.svg');
+		}
+	}
+
+	&.is-bottom-edge-type-jagged.is-body-style-type-aged-paper {
+		> blockquote > .excerpt-content::after {
+			background: url('./images/jagged-edge-aged-paper.svg');
+		}
+	}
+
+	&.is-top-edge-type-bookmark {
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require deconstructing every style hierarchy so we're ignoring it instead
+		*/
+		// stylelint-disable-next-line no-descending-specificity
+		> blockquote > .excerpt-content::before {
+			content: ' ';
+			width: 100%;
+			// this only seems to work at 10px for some reason
+			// stylelint-disable-next-line unit-disallowed-list
+			height: 10px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			outline: none;
+		}
+
+		&.is-body-style-type-bordered-box {
+			> blockquote > .excerpt-content {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+
+				&::before {
+					width: 0;
+					height: 0;
+					border-style: solid;
+					border-width: 1.25em 0 0 1.25em;
+					border-color: $bookmark-border-white;
+					position: absolute;
+					top: -0.12em;
+					left: -0.12em;
+					filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+					transform: rotate(-0.25turn);
+				}
+			}
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-filled-box,
+	&.is-top-edge-type-bookmark.is-body-style-type-card {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-white-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-modern-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-white;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-light-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-yellow;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-dark-yellow-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			border-color: $bookmark-border-yellow;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+
+	&.is-top-edge-type-bookmark.is-body-style-type-aged-paper {
+		> blockquote > .excerpt-content::before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 1.25em 0 0 1.25em;
+			outline: none;
+			border-color: $bookmark-border-aged;
+			position: absolute;
+			top: -0.12em;
+			left: -0.12em;
+			filter: drop-shadow(-0.125em 0.125em 0.063em rgba(0, 0, 0, 0.25));
+			transform: rotate(-0.25turn);
+		}
+	}
+}

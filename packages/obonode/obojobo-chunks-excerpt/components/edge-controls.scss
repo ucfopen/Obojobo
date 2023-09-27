@@ -1,0 +1,139 @@
+@import '~styles/includes';
+
+$lighter-blue: lighten($color-obojobo-blue, 60%);
+
+.obojobo-draft--chunks--excerpt--edge-controls {
+	z-index: 1;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 1em;
+	border: 2px dotted transparentize(lighten($color-obojobo-blue, 40%), 0.5);
+	transform: translate(-50%, -50%);
+	left: 50%;
+	width: 100%;
+
+	label {
+		position: relative;
+		width: 1em;
+		height: 1em;
+		display: inline-block;
+		border: 2px solid lighten($color-obojobo-blue, 40%);
+		background-color: $color-bg;
+
+		&::after {
+			content: ' ';
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 1em;
+			height: 1em;
+			pointer-events: none;
+			background-size: 100% 100%;
+			opacity: 0.2;
+		}
+
+		&:nth-child(2) {
+			transform: translate(-2px);
+		}
+
+		&:nth-child(3) {
+			transform: translate(-4px);
+		}
+
+		&:nth-child(4) {
+			transform: translate(-6px);
+		}
+
+		&.is-selected {
+			background-color: $lighter-blue;
+			border: 2px solid $color-obojobo-blue;
+			z-index: 1;
+
+			&::after {
+				opacity: 0.5;
+				filter: grayscale(0%);
+			}
+		}
+
+		&.is-not-selected {
+			cursor: pointer;
+		}
+
+		&:hover.is-not-selected {
+			background-color: $lighter-blue;
+
+			&::after {
+				opacity: 0.5;
+				filter: grayscale(0%);
+			}
+		}
+
+		&.is-edge-normal::after {
+			width: 100%;
+			height: 50%;
+			border-bottom: 0.5em solid #1451a4;
+		}
+
+		&.is-edge-fade::after {
+			background-image: url('../images/icon-fade-edge.png');
+		}
+
+		&.is-edge-jagged::after {
+			background-image: url('../images/icon-jagged-edge.png');
+		}
+
+		&.is-edge-bookmark::after {
+			background-image: url('../images/icon-bookmark.png');
+
+			&.is-bottom-edge-type- {
+				display: none;
+			}
+		}
+	}
+
+	span {
+		width: 0;
+		overflow: hidden;
+		display: inline-block;
+		height: 0;
+	}
+
+	.wrapper {
+		background: red;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	&:hover {
+		opacity: 1;
+	}
+
+	&.is-position-top {
+		top: 0;
+	}
+
+	&.is-position-bottom {
+		bottom: 0;
+		transform: translate(-50%, 50%);
+
+		label::after {
+			transform: rotate(180deg);
+		}
+	}
+
+	.edges {
+		height: 1em;
+		transform: translate(0, -2px);
+	}
+
+	input {
+		opacity: 0;
+		position: fixed;
+		width: 0;
+	}
+}

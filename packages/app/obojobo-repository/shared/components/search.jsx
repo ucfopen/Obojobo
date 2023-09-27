@@ -8,22 +8,31 @@ const Search = props => {
 	const handleChange = e => {
 		if (props.onChange) props.onChange(e.target.value)
 	}
+
 	useEffect(() => {
 		if (props.focusOnMount === true) inputEl.current.focus()
 	}, [])
+
+	const handleCancelSearch = e => {
+		e.preventDefault()
+		props.onChange('')
+	}
 
 	return (
 		<div
 			className={'repository--nav--links--search ' + (props.value ? 'is-not-empty' : 'is-empty')}
 		>
-			<input
-				ref={inputEl}
-				onChange={handleChange}
-				type="search"
-				name="search"
-				value={props.value}
-				placeholder={props.placeholder}
-			/>
+			<form>
+				<input
+					ref={inputEl}
+					onChange={handleChange}
+					type="search"
+					name="search"
+					value={props.value}
+					placeholder={props.placeholder}
+				/>
+				{props.value && <button onClick={handleCancelSearch}></button>}
+			</form>
 			<div className="repository--nav--links--search--icon">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250.313 250.313">
 					<path

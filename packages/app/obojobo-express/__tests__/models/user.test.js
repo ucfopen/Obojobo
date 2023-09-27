@@ -255,6 +255,7 @@ describe('user model', () => {
 		expect(users).toMatchInlineSnapshot(`
 		Array [
 		  Object {
+		    "accessLevel": undefined,
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
 		    "firstName": "Roger",
 		    "id": null,
@@ -264,6 +265,7 @@ describe('user model', () => {
 		    "username": "someusername",
 		  },
 		  Object {
+		    "accessLevel": undefined,
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
 		    "firstName": "Roger",
 		    "id": null,
@@ -291,6 +293,7 @@ describe('user model', () => {
 		expect(users).toMatchInlineSnapshot(`
 		Array [
 		  Object {
+		    "accessLevel": undefined,
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
 		    "firstName": "Roger",
 		    "id": null,
@@ -300,6 +303,7 @@ describe('user model', () => {
 		    "username": "someusername",
 		  },
 		  Object {
+		    "accessLevel": undefined,
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
 		    "firstName": "Roger",
 		    "id": null,
@@ -390,6 +394,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
@@ -407,6 +412,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
@@ -424,6 +430,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 
@@ -441,6 +448,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDeleteDrafts')).toBe(true)
 		expect(u.hasPermission('canCreateDrafts')).toBe(true)
 		expect(u.hasPermission('canPreviewDrafts')).toBe(true)
+		expect(u.hasPermission('canViewStatsPage')).toBe(false)
 		expect(u.hasPermission('canViewSystemStats')).toBe(false)
 	})
 

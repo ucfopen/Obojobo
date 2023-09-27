@@ -19,6 +19,11 @@ jest.mock(
 )
 
 describe('Table Editor Node', () => {
+	beforeEach(() => {
+		jest.restoreAllMocks()
+		jest.resetAllMocks()
+	})
+
 	test('Table component', () => {
 		const component = renderer.create(<Table element={{ content: { display: 'fixed' } }} />)
 		const tree = component.toJSON()
@@ -159,5 +164,73 @@ describe('Table Editor Node', () => {
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('returnFocusOnTab calls focus', () => {
+		const props = {
+			// mock slate element
+			element: {
+				content: {},
+				children: [{ text: 'mock caption' }]
+			},
+			// mock oboNode
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			},
+			// mock slate editor
+			editor: {
+				toggleEditable: jest.fn()
+			}
+		}
+
+		const component = mount(<Table {...props} />)
+
+		const event = { key: 'Tab', shiftKey: false, preventDefault: jest.fn() }
+		component.instance().returnFocusOnTab(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(ReactEditor.focus).toHaveBeenCalledWith(props.editor)
+	})
+
+	test('returnFocusOnTab ignores other keys', () => {
+		const props = {
+			// mock slate element
+			element: {
+				content: {},
+				children: [{ text: 'mock caption' }]
+			},
+			// mock oboNode
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			},
+			// mock slate editor
+			editor: {
+				toggleEditable: jest.fn()
+			}
+		}
+
+		const component = mount(<Table {...props} />)
+
+		const event = { key: 'f', shiftKey: false, preventDefault: jest.fn() }
+		component.instance().returnFocusOnTab(event)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+		expect(ReactEditor.focus).not.toHaveBeenCalled()
 	})
 })

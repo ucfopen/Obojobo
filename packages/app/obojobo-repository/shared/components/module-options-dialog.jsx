@@ -1,4 +1,4 @@
-require('./module-permissions-dialog.scss')
+require('./module-options-dialog.scss')
 
 const React = require('react')
 const ModuleImage = require('./module-image')
@@ -8,6 +8,7 @@ const { urlForEditor } = require('../repository-utils')
 const {
 	downloadDocument
 } = require('obojobo-document-engine/src/scripts/common/util/download-document')
+const { FULL, MINIMAL, levelName } = require('obojobo-express/server/constants')
 
 const deleteModule = (
 	title,
@@ -23,7 +24,7 @@ const deleteModule = (
 }
 
 const ModuleOptionsDialog = props => (
-	<div className="module-permissions-dialog">
+	<div className="module-options-dialog">
 		<div className="top-bar">
 			<ModuleImage id={props.draftId} />
 			<div className="module-title">{props.title}</div>
@@ -33,86 +34,147 @@ const ModuleOptionsDialog = props => (
 		</div>
 		<div className="wrapper">
 			<h1 className="title">Module Options</h1>
+			<p>Your Access Level: {levelName[props.accessLevel]}</p>
 			<div className="buttons-with-labels">
-				<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
-					Preview
-				</ButtonLink>
-				<div className="label">View with preview controls.</div>
+				<div className="button-label-group">
+					<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
+						Preview
+					</ButtonLink>
+					<div className="label">View with preview controls.</div>
+				</div>
 
-				<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
-					Edit
-				</ButtonLink>
-				<div className="label">Write, edit, and update.</div>
+				{!props.readOnly && props.accessLevel !== MINIMAL && (
+					<div className="button-label-group">
+						<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
+							Edit
+						</ButtonLink>
+						<div className="label">Write, edit, and update.</div>
+					</div>
+				)}
+				{props.readOnly && props.accessLevel !== MINIMAL && (
+					<div className="button-label-group">
+						<Button
+							id="moduleOptionsDialog-synchronizeButton"
+							onClick={() => {
+								props.showModuleSync(props)
+							}}
+						>
+							Synchronize
+						</Button>
+						<div className="label">Update this module with changes to the original.</div>
+					</div>
+				)}
 
-				<Button
-					id="moduleOptionsDialog-shareButton"
-					onClick={() => {
-						props.showModulePermissions(props)
-					}}
-				>
-					Share
-				</Button>
-				<div className="label">Add or remove collaborators.</div>
+				{props.accessLevel === FULL && (
+					<div className="button-label-group">
+						<Button
+							id="moduleOptionsDialog-shareButton"
+							onClick={() => {
+								props.showModulePermissions(props)
+							}}
+							disabled={props.accessLevel !== FULL}
+						>
+							Share
+						</Button>
+						<div className="label">Add or remove collaborators.</div>
+					</div>
+				)}
 
-				<Button
-					id="moduleOptionsDialog-assessmentScoreData"
-					onClick={() => {
-						props.showAssessmentScoreData(props)
-					}}
-				>
-					Assessment Stats
-				</Button>
-				<div className="label">View scores by student.</div>
+				<div className="button-label-group">
+					<Button
+						id="moduleOptionsDialog-assessmentScoreData"
+						onClick={() => {
+							props.showAssessmentScoreData(props)
+						}}
+					>
+						Assessment Stats
+					</Button>
+					<div className="label">View scores by student.</div>
+				</div>
 
-				<Button
-					id="moduleOptionsDialog-showVersionHistoryButton"
-					onClick={() => props.showVersionHistory(props)}
-				>
-					Version History
-				</Button>
-				<div className="label">View and restore previous versions.</div>
+				{!props.readOnly && props.accessLevel !== MINIMAL && (
+					<div className="button-label-group">
+						<Button
+							id="moduleOptionsDialog-showVersionHistoryButton"
+							onClick={() => props.showVersionHistory(props)}
+							disabled={props.accessLevel === MINIMAL}
+						>
+							Version History
+						</Button>
+						<div className="label">View and restore previous versions.</div>
+					</div>
+				)}
 
-				<Button
-					id="moduleOptionsDialog-downloadJSONButton"
-					onClick={() => {
-						downloadDocument(props.draftId, 'json')
-					}}
-				>
-					Download JSON
-				</Button>
-				<div className="label">Download a copy in JSON format.</div>
+				<div className="button-label-group">
+					<Button
+						id="moduleOptionsDialog-manageCollectionsButton"
+						onClick={() => {
+							props.showModuleManageCollections(props)
+						}}
+					>
+						Manage Collections
+					</Button>
+					<div className="label">Add to or remove from private collections.</div>
+				</div>
 
-				<Button
-					id="moduleOptionsDialog-downloadXMLButton"
-					onClick={() => {
-						downloadDocument(props.draftId, 'xml')
-					}}
-				>
-					Download XML
-				</Button>
-				<div className="label">Download a copy in XML format.</div>
+				{props.accessLevel !== MINIMAL && (
+					<div className="button-label-group">
+						<Button
+							id="moduleOptionsDialog-downloadJSONButton"
+							onClick={() => {
+								downloadDocument(props.draftId, 'json')
+							}}
+							disabled={props.accessLevel === MINIMAL}
+						>
+							Download JSON
+						</Button>
+						<div className="label">Download a copy in JSON format.</div>
+					</div>
+				)}
 
-				<ButtonLink url={`/library/${props.draftId}`} target="_blank">
-					Public Page
-				</ButtonLink>
-				<div className="label">Visit this modules public page.</div>
+				{props.accessLevel !== MINIMAL && (
+					<div className="button-label-group">
+						<Button
+							id="moduleOptionsDialog-downloadXMLButton"
+							onClick={() => {
+								downloadDocument(props.draftId, 'xml')
+							}}
+							disabled={props.accessLevel === MINIMAL}
+						>
+							Download XML
+						</Button>
+						<div className="label">Download a copy in XML format.</div>
+					</div>
+				)}
 
-				<Button
-					id="moduleOptionsDialog-deleteButton"
-					className="dangerous-button delete-button"
-					onClick={() => {
-						deleteModule(
-							props.title,
-							props.draftId,
-							props.deleteModule,
-							props.startLoadingAnimation,
-							props.stopLoadingAnimation
-						)
-					}}
-				>
-					Delete
-				</Button>
-				<div className="label delete-label">Say farewell.</div>
+				<div className="button-label-group">
+					<ButtonLink url={`/library/${props.draftId}`} target="_blank">
+						Public Page
+					</ButtonLink>
+					<div className="label">Visit this modules public page.</div>
+				</div>
+
+				{props.accessLevel === FULL && (
+					<div className="button-label-group">
+						<Button
+							id="moduleOptionsDialog-deleteButton"
+							className="dangerous-button delete-button"
+							onClick={() => {
+								deleteModule(
+									props.title,
+									props.draftId,
+									props.deleteModule,
+									props.startLoadingAnimation,
+									props.stopLoadingAnimation
+								)
+							}}
+							disabled={props.accessLevel !== FULL}
+						>
+							Delete
+						</Button>
+						<div className="label delete-label">Say farewell.</div>
+					</div>
+				)}
 			</div>
 			<Button className="done-button secondary-button" onClick={props.onClose}>
 				Close

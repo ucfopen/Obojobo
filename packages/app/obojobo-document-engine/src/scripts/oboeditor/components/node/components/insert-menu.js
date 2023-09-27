@@ -104,6 +104,9 @@ class InsertMenu extends React.PureComponent {
 
 	renderItem(item, index) {
 		if (item.separator) {
+			// don't display two separators in a row - if the last item was a separator, ignore this one
+			if (index > 0 && this.props.dropOptions[index - 1].separator) return
+
 			return <div key={index} className="separator"></div>
 		}
 

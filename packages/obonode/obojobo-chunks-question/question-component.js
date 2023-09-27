@@ -20,6 +20,7 @@ const ANIMATION_TRANSITION_TIME_MS = 800
 const QuestionComponent = ({
 	questionModel,
 	questionAssessmentModel,
+	questionIndex,
 	moduleData,
 	resultsRef,
 	assessmentComponentRef,
@@ -164,6 +165,7 @@ const QuestionComponent = ({
 				<QuestionResponseStatus
 					responseSendState={responseSendState}
 					timeout={ANIMATION_TRANSITION_TIME_MS}
+					questionIndex={questionIndex}
 				/>
 			) : null}
 		</OboComponent>

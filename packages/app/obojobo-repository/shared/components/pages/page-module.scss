@@ -1,7 +1,17 @@
 @import '../layouts/default.scss';
 @import '../layouts/footer.scss';
 
-.copy-button {
+.exposition-text {
 	display: block;
-	margin: 2.5em 0;
+	font-size: 0.8em;
+}
+
+.copy-button-container {
+	display: inline-block;
+	margin: 0 0.5em;
+
+	.copy-button {
+		display: inline-block;
+		margin: 0 0.5em;
+	}
 }

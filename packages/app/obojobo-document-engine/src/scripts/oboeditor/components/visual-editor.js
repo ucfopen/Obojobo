@@ -36,6 +36,7 @@ import { withHistory } from 'slate-history'
 // This file overwrites some Slate methods to fix weird bugs in the Slate system
 // It should be deleted when the Slate bugs are remedied
 import '../overwrite-bug-fixes'
+import ObjectiveProvider from './objectives/objective-provider'
 
 class VisualEditor extends React.Component {
 	constructor(props) {
@@ -44,12 +45,41 @@ class VisualEditor extends React.Component {
 
 		const json = this.importFromJSON()
 
+		this.addObjective = objective => {
+			this.setState({ objectives: this.state.objectives.concat(objective) })
+		}
+
+		this.removeObjective = objectiveId => {
+			this.setState({
+				objectives: this.state.objectives.filter(o => o.objectiveId !== objectiveId)
+			})
+		}
+
+		this.updateObjective = (objectiveId, objectiveLabel, description) => {
+			this.setState({
+				objectives: this.state.objectives.map(objective => {
+					if (objective.objectiveId === objectiveId) {
+						return {
+							...objective,
+							objectiveLabel,
+							description
+						}
+					}
+					return objective
+				})
+			})
+		}
+
 		this.state = {
 			value: json,
 			saveState: 'saveSuccessful',
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
-			contentRect: null
+			contentRect: null,
+			objectives: this.props.model?.objectives ?? [],
+			addObjective: this.addObjective,
+			removeObjective: this.removeObjective,
+			updateObjective: this.updateObjective
 		}
 
 		this.pageEditorContainerRef = React.createRef()
@@ -71,6 +101,7 @@ class VisualEditor extends React.Component {
 		this.renderElement = this.renderElement.bind(this)
 		this.setEditorFocus = this.setEditorFocus.bind(this)
 		this.onClick = this.onClick.bind(this)
+		this.hasInvalidFields = this.hasInvalidFields.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -195,10 +226,17 @@ class VisualEditor extends React.Component {
 			//eslint-disable-next-line
 			return undefined // Returning undefined will allow browser to close normally
 		}
+
+		if (this.hasInvalidFields()) {
+			//eslint-disable-next-line
+			return undefined
+		}
+
 		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
+
 		//eslint-disable-next-line
 		return undefined
 	}
@@ -355,14 +393,36 @@ class VisualEditor extends React.Component {
 		this.saveModule(this.props.draftId)
 	}
 
+	// Checks all input and select fields to see if any have false validity
+	hasInvalidFields() {
+		const inputFields = document.querySelectorAll('input,select')
+
+		for (const field of Array.from(inputFields)) {
+			field.blur()
+			if (field.reportValidity() === false) {
+				return true
+			}
+		}
+
+		return false
+	}
+
 	saveModule(draftId) {
 		if (this.props.readOnly) {
+			return
+		}
+
+		// Check validity of all input and select elements
+		if (this.hasInvalidFields()) {
+			const message = 'Cannot save this module while errors are present'
+			window.alert(message) //eslint-disable-line no-alert
 			return
 		}
 
 		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
 		json.content.start = EditorStore.state.startingId
+		json.content.objectives = this.state.objectives
 
 		// deal with content
 		this.props.model.children.forEach(child => {
@@ -480,6 +540,39 @@ class VisualEditor extends React.Component {
 				item.plugins.onKeyDown(entry, this.editor, event)
 			}
 		}
+
+		// This fix breaks the default behavior when moving up inside an element. Needs to be reevaluated.
+		/*****
+		// Handle ArrowUp from a node - this is default behavior
+		// in Chrome and Safari but not Firefox
+		if (event.key === 'ArrowUp' && !event.defaultPrevented) {
+			event.preventDefault()
+
+			const currentNode = this.editor.selection.anchor.path[0]
+
+			// Break out if already at top node
+			if (currentNode === 0) return
+
+			const aboveNode = currentNode - 1
+			const numChildrenAbove = this.editor.children[aboveNode].children.length
+
+			let abovePath = [aboveNode]
+
+			// If entering a node with multiple children (a table),
+			// go to the last child (bottom row)
+			if (numChildrenAbove > 1) {
+				abovePath = [aboveNode, numChildrenAbove - 1]
+			}
+
+			const focus = Editor.start(this.editor, abovePath)
+			const anchor = Editor.start(this.editor, abovePath)
+
+			Transforms.setSelection(this.editor, {
+				focus,
+				anchor
+			})
+		}
+		*****/
 	}
 
 	// Generates any necessary decorations, such as place holders
@@ -560,6 +653,7 @@ class VisualEditor extends React.Component {
 							<FileToolbarViewer
 								title={this.props.model.title}
 								draftId={this.props.draftId}
+								accessLevel={this.props.draft.accessLevel}
 								onSave={this.saveModule}
 								reload={this.reload}
 								switchMode={this.props.switchMode}
@@ -572,28 +666,30 @@ class VisualEditor extends React.Component {
 							<ContentToolbar editor={this.editor} value={this.state.value} />
 						</div>
 					)}
-					<EditorNav
-						navState={this.props.navState}
-						model={this.props.model}
-						draftId={this.props.draftId}
-						savePage={this.exportCurrentToJSON}
-						markUnsaved={this.markUnsaved}
-					/>
+					<ObjectiveProvider state={this.state}>
+						<EditorNav
+							navState={this.props.navState}
+							model={this.props.model}
+							draftId={this.props.draftId}
+							savePage={this.exportCurrentToJSON}
+							markUnsaved={this.markUnsaved}
+						/>
 
-					<div className="component obojobo-draft--modules--module" role="main">
-						<VisualEditorErrorBoundry editorRef={this.editor}>
-							<Editable
-								className="obojobo-draft--pages--page"
-								renderElement={this.renderElement}
-								renderLeaf={this.renderLeaf}
-								decorate={this.decorate}
-								readOnly={!this.state.editable || this.props.readOnly}
-								onKeyDown={this.onKeyDown}
-								onCut={this.onCut}
-								onClick={this.onClick}
-							/>
-						</VisualEditorErrorBoundry>
-					</div>
+						<div className="component obojobo-draft--modules--module" role="main">
+							<VisualEditorErrorBoundry editorRef={this.editor}>
+								<Editable
+									className="obojobo-draft--pages--page"
+									renderElement={this.renderElement}
+									renderLeaf={this.renderLeaf}
+									decorate={this.decorate}
+									readOnly={!this.state.editable || this.props.readOnly}
+									onKeyDown={this.onKeyDown}
+									onCut={this.onCut}
+									onClick={this.onClick}
+								/>
+							</VisualEditorErrorBoundry>
+						</div>
+					</ObjectiveProvider>
 				</Slate>
 			</div>
 		)

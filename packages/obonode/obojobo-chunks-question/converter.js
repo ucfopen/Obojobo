@@ -21,8 +21,10 @@ const slateToObo = node => {
 	const children = []
 	const content = {
 		triggers: node.content.triggers,
+		objectives: node.content.objectives,
 		type: node.content.type,
-		revealAnswer: node.content.revealAnswer
+		revealAnswer: node.content.revealAnswer,
+		collapsed: node.content.collapsed
 	}
 
 	node.children.forEach(child => {

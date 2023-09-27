@@ -28,6 +28,7 @@ mockRouter.all = jest.fn().mockReturnValue(mockRouter)
 mockRouter.get = jest.fn().mockReturnValue(mockRouter)
 mockRouter.post = jest.fn().mockReturnValue(mockRouter)
 mockRouter.delete = jest.fn().mockReturnValue(mockRouter)
+mockRouter.put = jest.fn().mockReturnValue(mockRouter)
 
 const mockExpress = (mockOn = false, mockStatic = false) => {
 	jest.mock(
@@ -39,6 +40,7 @@ const mockExpress = (mockOn = false, mockStatic = false) => {
 				get: mockRouter.get,
 				post: mockRouter.post,
 				delete: mockRouter.delete,
+				put: mockRouter.put,
 				static: mockStatic ? mockStatic : jest.fn()
 			})
 			module.Router = () => mockRouter

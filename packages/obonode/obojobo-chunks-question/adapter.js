@@ -12,6 +12,7 @@ const Adapter = {
 			'always',
 			'when-incorrect'
 		])
+		model.setStateProp('collapsed', false)
 
 		// Older versions of the document put correctLabels and incorrectLabels
 		// on MCAssessment. For compatibility we'll use those if they exist
@@ -50,6 +51,7 @@ const Adapter = {
 			: null
 		clone.modelState.solution = null
 		clone.modelState.revealAnswer = model.modelState.revealAnswer
+		clone.modelState.collapsed = model.modelState.collapsed
 
 		if (model.modelState.solution) {
 			clone.modelState.solution = Object.assign({}, model.modelState.solution)
@@ -69,6 +71,7 @@ const Adapter = {
 			: null
 		json.content.solution = null
 		json.content.revealAnswer = model.modelState.revealAnswer
+		json.content.collapsed = model.modelState.collapsed
 
 		if (model.modelState.solution) {
 			json.content.solution = model.modelState.solution.toJSON()

@@ -41,6 +41,17 @@ exports.requireCurrentVisit = (req, res, next) =>
 	requireAndValidateReqMethod(req, res, next, 'getCurrentVisitFromRequest', 'currentVisit')
 exports.requireCurrentDocument = (req, res, next) =>
 	requireAndValidateReqMethod(req, res, next, 'requireCurrentDocument', 'currentDocument')
+exports.requireDraftWritable = (req, res, next) => {
+	return req
+		.requireDraftWritable()
+		.then(() => {
+			next()
+		})
+		.catch(() => {
+			logger.error('User tried editing read-only module')
+			res.missing()
+		})
+}
 
 exports.getCurrentUser = (req, res, next) => {
 	return req.getCurrentUser().then(user => {
@@ -113,6 +124,9 @@ exports.requireCanDeleteDrafts = (req, res, next) =>
 
 exports.requireCanPreviewDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canPreviewDrafts')
+
+exports.requireCanViewStatsPage = (req, res, next) =>
+	requireCurrentUser(req, res, next, 'canViewStatsPage')
 
 exports.requireCanViewSystemStats = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canViewSystemStats')

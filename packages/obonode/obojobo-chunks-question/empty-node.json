@@ -2,7 +2,8 @@
 	"type": "ObojoboDraft.Chunks.Question",
 	"content": {
 		"type": "default",
-		"revealAnswer": "default"
+		"revealAnswer": "default",
+		"collapsed": false
 	},
 	"children": [
 		{

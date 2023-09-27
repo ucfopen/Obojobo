@@ -35,6 +35,10 @@ class Node extends React.Component {
 		this.onOpen = this.onOpen.bind(this)
 		this.moveNode = this.moveNode.bind(this)
 		this.onBlur = this.onBlur.bind(this)
+
+		// get this node's parent for use later
+		const thisPath = ReactEditor.findPath(props.editor, props.element)
+		this.parent = Editor.parent(props.editor, thisPath)[0]
 	}
 
 	insertBlockAt(where, item) {
@@ -229,12 +233,23 @@ class Node extends React.Component {
 		const className = `oboeditor-component component ${isOrNot(selected, 'selected')} ${this.props
 			.className || ''}`
 
+		// the types of nodes that can be inserted adjacent to this one depend on this node's parent
+		// check the parent's registry item for node types it can not contain, remove them from the list
+		let dropOptions = Common.Registry.insertableItems
+
+		if (this.parent.type) {
+			dropOptions = dropOptions.filter(
+				option =>
+					!Common.Registry.getItemForType(this.parent.type).disallowedChildren.includes(option.type)
+			)
+		}
+
 		return (
 			<div className={className} data-obo-component="true">
 				{this.props.selected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu
-							dropOptions={Common.Registry.insertableItems}
+							dropOptions={dropOptions}
 							className={'align-left top'}
 							icon="+"
 							open={this.props.element.open === 'top'}
@@ -243,7 +258,7 @@ class Node extends React.Component {
 							menu="top"
 						/>
 						<InsertMenu
-							dropOptions={Common.Registry.insertableItems}
+							dropOptions={dropOptions}
 							className={'align-left bottom'}
 							icon="+"
 							open={this.props.element.open === 'bottom'}

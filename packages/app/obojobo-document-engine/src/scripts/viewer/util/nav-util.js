@@ -60,10 +60,13 @@ const NavUtil = {
 		return Dispatcher.trigger('nav:next')
 	},
 
-	goto(id) {
+	goto(id, ignoreLock) {
+		// eslint-disable-next-line no-undefined
+		if (ignoreLock === undefined) ignoreLock = true
 		return Dispatcher.trigger('nav:goto', {
 			value: {
-				id
+				id,
+				ignoreLock
 			}
 		})
 	},

@@ -1,0 +1,118 @@
+@import '../../../client/css/defaults';
+
+.repository--assessment-stats-controls {
+	hr {
+		margin-bottom: 1em;
+	}
+
+	.filter-controls {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		hr {
+			margin-top: 1em;
+		}
+
+		input {
+			margin-right: 0.5em;
+			margin-left: 0;
+		}
+
+		label {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+
+			span {
+				white-space: nowrap;
+			}
+		}
+	}
+
+	.search-controls {
+		select {
+			@include select-input();
+
+			border: 1px solid $color-shadow;
+			font-size: 0.8em;
+			width: 11em;
+		}
+
+		.search-by-text {
+			margin-top: 1em;
+			margin-bottom: 1em;
+			display: flex;
+			align-items: baseline;
+
+			label {
+				width: 5.5em;
+			}
+
+			select {
+				width: 100%;
+			}
+
+			.controls {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5em;
+				flex-grow: 1;
+			}
+		}
+
+		.search-by-date {
+			margin-top: 1em;
+			margin-bottom: 1em;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5em;
+
+			label {
+				display: flex;
+				align-items: baseline;
+
+				> span {
+					width: 5.5em;
+				}
+			}
+
+			.date-range {
+				display: flex;
+				flex-direction: column;
+				gap: 0.1em;
+				flex-grow: 1;
+
+				button {
+					border: none;
+					padding: 0;
+					width: 4em;
+
+					&:disabled {
+						visibility: hidden;
+					}
+				}
+
+				input[type='date'] {
+					border-radius: $dimension-rounded-radius;
+					padding: 0.5em;
+					font-size: 0.8em;
+					border: 0.1em solid $color-shadow;
+
+					&[value=''] {
+						color: $color-text-minor;
+					}
+
+					&:not([value='']) {
+						background-color: $color-action-bg;
+						border: 1px solid $color-action;
+					}
+				}
+			}
+		}
+
+		input {
+			font-family: $font-monospace;
+		}
+	}
+}

@@ -12,7 +12,7 @@
 
 	&:hover {
 		z-index: 2;
-		// stylelint-disable-next-line sh-waqar/declaration-use-variable
+		// stylelint-disable-next-line scale-unlimited/declaration-strict-value
 		background-color: white; //$color-action;
 
 		ul {
@@ -58,7 +58,7 @@
 		font-size: 0.9em;
 		height: auto;
 		background: white;
-		// stylelint-disable-next-line sh-waqar/declaration-use-variable, font-family-no-missing-generic-family-keyword
+		// stylelint-disable-next-line scale-unlimited/declaration-strict-value, font-family-no-missing-generic-family-keyword
 		font-family: 'Noto Sans';
 		font-weight: normal;
 		list-style-type: none;
@@ -78,7 +78,7 @@
 
 			&:hover {
 				background: $color-action;
-				// stylelint-disable-next-line sh-waqar/declaration-use-variable
+				// stylelint-disable-next-line scale-unlimited/declaration-strict-value
 				color: white;
 			}
 

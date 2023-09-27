@@ -2,7 +2,7 @@ require('./modal.scss')
 require('./stats.scss')
 
 const React = require('react')
-const { useState } = require('react')
+const { useState, useEffect } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Button = require('./button')
@@ -26,9 +26,21 @@ const renderAssessmentStats = assessmentStats => {
 	return null
 }
 
-function Stats({ currentUser, title, allModules, assessmentStats, loadModuleAssessmentDetails }) {
+function Stats({
+	currentUser,
+	title,
+	availableModules,
+	assessmentStats,
+	loadUserModuleList,
+	loadModuleAssessmentDetails
+}) {
 	const [selectedDrafts, setSelectedDrafts] = useState([])
 	const [search, setSearch] = useState('')
+
+	// When the component is mounted in the browser, request the list of available modules for the current user
+	useEffect(() => {
+		loadUserModuleList()
+	}, [])
 
 	const loadStats = () => {
 		loadModuleAssessmentDetails(selectedDrafts)
@@ -40,25 +52,18 @@ function Stats({ currentUser, title, allModules, assessmentStats, loadModuleAsse
 
 	const filteredModules =
 		search.length === 0
-			? allModules
-			: allModules.filter(module => {
+			? availableModules.items
+			: availableModules.items.filter(module => {
 					const lcSearch = search.toLowerCase()
 					return (
 						module.draftId.indexOf(lcSearch) > -1 ||
 						module.title.toLowerCase().indexOf(lcSearch) > -1
 					)
-			  }) //eslint-disable-line no-mixed-spaces-and-tabs
+			  })
 
-	return (
-		<span id="stats-root">
-			<RepositoryNav
-				userId={currentUser.id}
-				userPerms={currentUser.perms}
-				avatarUrl={currentUser.avatarUrl}
-				displayName={`${currentUser.firstName} ${currentUser.lastName}`}
-				noticeCount={0}
-			/>
-			<RepositoryBanner title={title} className="default-bg" />
+	let moduleListRender = 'Loading...'
+	if (availableModules.hasFetched) {
+		moduleListRender = (
 			<div className="repository--section-wrapper">
 				<section className="repository--main-content">
 					<input
@@ -79,6 +84,20 @@ function Stats({ currentUser, title, allModules, assessmentStats, loadModuleAsse
 					<div className="stats">{renderAssessmentStats(assessmentStats)}</div>
 				</section>
 			</div>
+		)
+	}
+
+	return (
+		<span id="stats-root">
+			<RepositoryNav
+				userId={currentUser.id}
+				userPerms={currentUser.perms}
+				avatarUrl={currentUser.avatarUrl}
+				displayName={`${currentUser.firstName} ${currentUser.lastName}`}
+				noticeCount={0}
+			/>
+			<RepositoryBanner title={title} className="default-bg" />
+			{moduleListRender}
 		</span>
 	)
 }

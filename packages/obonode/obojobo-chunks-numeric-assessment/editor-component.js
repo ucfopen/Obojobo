@@ -40,7 +40,7 @@ class NumericAssessment extends React.Component {
 			<div
 				className={
 					'component obojobo-draft--chunks--numeric-assessment is-type-' +
-					this.props.element.questionType
+					(this.props.element.questionType || 'default')
 				}
 			>
 				{this.props.children}

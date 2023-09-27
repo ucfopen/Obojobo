@@ -2,7 +2,7 @@
   "extends": "stylelint-config-obojobo",
   "rules": {
     "unit-disallowed-list": "warning",
-    "sh-waqar/declaration-use-variable": "warning",
+    "scale-unlimited/declaration-strict-value": "warning",
     "no-descending-specificity": null
   }
 }

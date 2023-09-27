@@ -3,9 +3,10 @@ const connect = require('react-redux').connect
 const {
 	showModulePermissions,
 	deleteModule,
-	showModuleMore
+	showModuleMore,
+	showModuleSync
 } = require('../actions/dashboard-actions')
-const mapActionsToProps = { showModulePermissions, deleteModule, showModuleMore }
+const mapActionsToProps = { showModulePermissions, deleteModule, showModuleMore, showModuleSync }
 module.exports = connect(
 	null,
 	mapActionsToProps

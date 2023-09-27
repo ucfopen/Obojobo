@@ -30,26 +30,34 @@ describe('DataGridScores', () => {
 			{
 				draftId: 'mock-draft-id',
 				exampleId: 'mock-example-id',
-				completedAt: '2021-02-04T13:55:30.255Z'
+				completedAt: '2021-02-04T13:55:30.255Z',
+				userFirstName: 'mock-first-name',
+				userLastName: 'mock-last-name',
+				studentName: 'mock-first-name mock-last-name'
 			},
 			{
 				draftId: 'mock-draft-id2',
 				exampleId: 'mock-example-id2',
-				completedAt: '2021-06-21T15:32:30.255Z'
+				completedAt: '2021-06-21T15:32:30.255Z',
+				userFirstName: 'mock-first-name',
+				userLastName: 'mock-last-name',
+				studentName: 'mock-first-name mock-last-name'
 			}
 		],
 		tableName: 'Mock Table Name',
 		csvFileName: 'mock-csv-file-name',
-		filterSettings: {
+		controls: {
 			showIncompleteAttempts: false,
 			showPreviewAttempts: false,
-			showAdvancedFields: false
+			showAdvancedFields: false,
+			searchBy: 'draft-id',
+			searchContent: {
+				searchString: 'mock',
+				date: null
+			}
 		},
-		searchSettings: 'draft-id',
-		searchContent: {
-			text: 'mock',
-			date: null
-		}
+		setFilteredRows: () => {},
+		isDebouncing: false
 	})
 
 	test('DataGridScores renders correctly', () => {
@@ -76,7 +84,16 @@ describe('DataGridScores', () => {
 				<DataGridScores
 					{...getTestProps()}
 					csvFileName="csv"
-					filterSettings={{ showIncompleteAttempts, showPreviewAttempts, showAdvancedFields }}
+					controls={{
+						showIncompleteAttempts,
+						showPreviewAttempts,
+						showAdvancedFields,
+						searchBy: '',
+						searchContent: {
+							searchString: '',
+							date: { start: null, end: null }
+						}
+					}}
 				/>
 			)
 			expect(component.root.findByType('a').props.download).toBe(expectedCSVFileName)
@@ -95,16 +112,24 @@ describe('DataGridScores', () => {
 			const component = renderer.create(
 				<DataGridScores
 					{...getTestProps()}
-					filterSettings={{
+					controls={{
 						showIncompleteAttempts,
 						showPreviewAttempts,
-						showAdvancedFields: false
+						showAdvancedFields: false,
+						searchBy: 'draft-id',
+						searchContent: {
+							searchString: 'mock',
+							date: null
+						}
 					}}
 				/>
 			)
 
 			expect(
-				component.root.findByProps({ className: 'react-data-table-component' }).props.title
+				component.root
+					.findByProps({ className: 'react-data-table-component' })
+					.props.title.props.className.split('data-table-header')[1]
+					.trim()
 			).toBe(expectedTableName)
 		}
 	)
@@ -113,10 +138,15 @@ describe('DataGridScores', () => {
 		const component1 = renderer.create(
 			<DataGridScores
 				{...getTestProps()}
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
-					showAdvancedFields: false
+					showAdvancedFields: false,
+					searchBy: 'draft-id',
+					searchContent: {
+						searchString: 'mock',
+						date: null
+					}
 				}}
 			/>
 		)
@@ -135,10 +165,15 @@ describe('DataGridScores', () => {
 		const component2 = renderer.create(
 			<DataGridScores
 				{...getTestProps()}
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
-					showAdvancedFields: true
+					showAdvancedFields: true,
+					searchBy: 'draft-id',
+					searchContent: {
+						searchString: 'mock',
+						date: null
+					}
 				}}
 			/>
 		)
@@ -165,10 +200,15 @@ describe('DataGridScores', () => {
 		const component1 = renderer.create(
 			<DataGridScores
 				{...getTestProps()}
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
-					showAdvancedFields: false
+					showAdvancedFields: false,
+					searchBy: 'draft-id',
+					searchContent: {
+						searchString: 'mock',
+						date: null
+					}
 				}}
 			/>
 		)
@@ -178,10 +218,15 @@ describe('DataGridScores', () => {
 		const component2 = renderer.create(
 			<DataGridScores
 				{...getTestProps()}
-				filterSettings={{
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
-					showAdvancedFields: true
+					showAdvancedFields: true,
+					searchBy: 'draft-id',
+					searchContent: {
+						searchString: 'mock',
+						date: null
+					}
 				}}
 			/>
 		)
@@ -193,15 +238,16 @@ describe('DataGridScores', () => {
 		const component = renderer.create(
 			<DataGridScores
 				columns={[]}
-				filterSettings={{
+				isDebouncing={true}
+				controls={{
 					showIncompleteAttempts: false,
 					showPreviewAttempts: false,
-					showAdvancedFields: false
-				}}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: 'mock-course-title',
-					date: { start: null, end: null }
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: 'mock-course-title',
+						date: { start: null, end: null }
+					}
 				}}
 			/>
 		)
@@ -229,10 +275,15 @@ describe('DataGridScores', () => {
 		let component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: 'mock-course-title',
-					date: { start: mockStartDate, end: mockEndDate }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: 'mock-course-title',
+						date: { start: mockStartDate, end: mockEndDate }
+					}
 				}}
 			/>
 		)
@@ -245,10 +296,15 @@ describe('DataGridScores', () => {
 		component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: 'mock-course-title',
-					date: { start: mockStartDate, end: mockEndDate }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: 'mock-course-title',
+						date: { start: mockStartDate, end: mockEndDate }
+					}
 				}}
 			/>
 		)
@@ -258,10 +314,15 @@ describe('DataGridScores', () => {
 		component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: 'mock-course-title',
-					date: { start: null, end: null }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: 'mock-course-title',
+						date: { start: null, end: null }
+					}
 				}}
 			/>
 		)
@@ -271,10 +332,15 @@ describe('DataGridScores', () => {
 		component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: '',
-					date: { start: mockStartDate, end: null }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: '',
+						date: { start: mockStartDate, end: null }
+					}
 				}}
 			/>
 		)
@@ -284,10 +350,15 @@ describe('DataGridScores', () => {
 		component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: '',
-					date: { start: null, end: mockEndDate }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: '',
+						date: { start: null, end: mockEndDate }
+					}
 				}}
 			/>
 		)
@@ -297,10 +368,15 @@ describe('DataGridScores', () => {
 		component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: '',
-					date: { start: mockStartDate, end: mockEndDate }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: '',
+						date: { start: mockStartDate, end: mockEndDate }
+					}
 				}}
 			/>
 		)
@@ -310,10 +386,15 @@ describe('DataGridScores', () => {
 		component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: 'mock-course-title',
-					date: { start: mockStartDate, end: mockEndDate }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: 'mock-course-title',
+						date: { start: mockStartDate, end: mockEndDate }
+					}
 				}}
 			/>
 		)
@@ -327,10 +408,68 @@ describe('DataGridScores', () => {
 		component = renderer.create(
 			<DataGridScores
 				{...props}
-				searchSettings={'course-title'}
-				searchContent={{
-					text: 'mock-course-title',
-					date: { start: mockStartDate, end: mockEndDate }
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'course-title',
+					searchContent: {
+						searchString: 'mock-course-title',
+						date: { start: mockStartDate, end: mockEndDate }
+					}
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		// Three edge cases where, if the user wants to search by student name,
+		// obo will look for first and last name matches.
+		component = renderer.create(
+			<DataGridScores
+				{...getTestProps()}
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'student-name',
+					searchContent: {
+						searchString: 'mock-first-name mock-last-name',
+						date: { start: null, end: null }
+					}
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		component = renderer.create(
+			<DataGridScores
+				{...getTestProps()}
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'student-name',
+					searchContent: {
+						searchString: 'mock-first-name',
+						date: { start: null, end: null }
+					}
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		component = renderer.create(
+			<DataGridScores
+				{...getTestProps()}
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'student-name',
+					searchContent: {
+						searchString: 'mock-last-name',
+						date: { start: null, end: null }
+					}
 				}}
 			/>
 		)

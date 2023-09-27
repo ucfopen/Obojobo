@@ -5,6 +5,7 @@ import React from 'react'
 import { create } from 'react-test-renderer'
 
 import ModuleOptionsDialog from './module-options-dialog'
+import { FULL, PARTIAL, MINIMAL } from 'obojobo-express/server/constants'
 
 describe('ModuleOptionsDialog', () => {
 	let defaultProps
@@ -20,7 +21,8 @@ describe('ModuleOptionsDialog', () => {
 		defaultProps = {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
-			editor: 'mockEditorType'
+			editor: 'mockEditorType',
+			accessLevel: FULL
 		}
 
 		mockRepositoryUtils = require('../repository-utils')
@@ -32,11 +34,138 @@ describe('ModuleOptionsDialog', () => {
 		window.confirm = originalConfirm
 	})
 
-	test('ModuleOptionsDialog renders correctly with standard expected props', () => {
+	test('renders correctly with standard expected props', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
 		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Minimal access level', () => {
+		defaultProps.accessLevel = MINIMAL
+
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		// should only be showing the preview, assessment stats, manage collections and public page buttons
+		const expectedButtons = ['Preview', 'Assessment Stats', 'Manage Collections', 'Public Page']
+		const allButtons = component.root.findAllByProps({ className: 'button-label-group' })
+		expect(allButtons.length).toEqual(expectedButtons.length)
+		allButtons.forEach((b, i) => {
+			expect(b.children[0].props.children).toEqual(expectedButtons[i])
+		})
+
+		expect(mockRepositoryUtils.urlForEditor).not.toHaveBeenCalled()
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Partial access level - not read-only', () => {
+		defaultProps.accessLevel = PARTIAL
+
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		// should be showing minimal access buttons plus edit and download json/xml buttons
+		const expectedButtons = [
+			'Preview',
+			'Edit',
+			'Assessment Stats',
+			'Version History',
+			'Manage Collections',
+			'Download JSON',
+			'Download XML',
+			'Public Page'
+		]
+		const allButtons = component.root.findAllByProps({ className: 'button-label-group' })
+		expect(allButtons.length).toEqual(expectedButtons.length)
+		allButtons.forEach((b, i) => {
+			expect(b.children[0].props.children).toEqual(expectedButtons[i])
+		})
+
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+	test('renders correctly with Partial access level - read-only', () => {
+		defaultProps.accessLevel = PARTIAL
+		defaultProps.readOnly = true
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		// should be showing minimal access buttons plus synchronize and download json/xml buttons
+		// but no version history because read-only
+		const expectedButtons = [
+			'Preview',
+			'Synchronize',
+			'Assessment Stats',
+			'Manage Collections',
+			'Download JSON',
+			'Download XML',
+			'Public Page'
+		]
+		const allButtons = component.root.findAllByProps({ className: 'button-label-group' })
+		expect(allButtons.length).toEqual(expectedButtons.length)
+		allButtons.forEach((b, i) => {
+			expect(b.children[0].props.children).toEqual(expectedButtons[i])
+		})
+
+		expect(mockRepositoryUtils.urlForEditor).not.toHaveBeenCalled()
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders correctly with Full access level - not read-only', () => {
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		// should be showing partial access buttons plus share and delete buttons
+		const expectedButtons = [
+			'Preview',
+			'Edit',
+			'Share',
+			'Assessment Stats',
+			'Version History',
+			'Manage Collections',
+			'Download JSON',
+			'Download XML',
+			'Public Page',
+			'Delete'
+		]
+		const allButtons = component.root.findAllByProps({ className: 'button-label-group' })
+		// expect(allButtons.length).toEqual(expectedButtons.length)
+		allButtons.forEach((b, i) => {
+			expect(b.children[0].props.children).toEqual(expectedButtons[i])
+		})
+
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledTimes(1)
+		expect(mockRepositoryUtils.urlForEditor).toHaveBeenCalledWith('mockEditorType', 'mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+	test('renders correctly with Full access level - read-only', () => {
+		defaultProps.readOnly = true
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		// should be showing partial access buttons plus share and delete buttons
+		const expectedButtons = [
+			'Preview',
+			'Synchronize',
+			'Share',
+			'Assessment Stats',
+			'Manage Collections',
+			'Download JSON',
+			'Download XML',
+			'Public Page',
+			'Delete'
+		]
+		const allButtons = component.root.findAllByProps({ className: 'button-label-group' })
+		// expect(allButtons.length).toEqual(expectedButtons.length)
+		allButtons.forEach((b, i) => {
+			expect(b.children[0].props.children).toEqual(expectedButtons[i])
+			// console.log(b.children[0].props.children)
+		})
+
+		expect(mockRepositoryUtils.urlForEditor).not.toHaveBeenCalled()
 
 		expect(component.toJSON()).toMatchSnapshot()
 	})
@@ -50,6 +179,18 @@ describe('ModuleOptionsDialog', () => {
 
 		expect(defaultProps.showModulePermissions).toHaveBeenCalledTimes(1)
 		expect(defaultProps.showModulePermissions).toHaveBeenCalledWith(defaultProps)
+	})
+
+	test('"Manage Collections" button calls showModuleManageCollections', () => {
+		defaultProps.showModuleManageCollections = jest.fn()
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		component.root
+			.findByProps({ id: 'moduleOptionsDialog-manageCollectionsButton' })
+			.props.onClick()
+
+		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledTimes(1)
+		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledWith(defaultProps)
 	})
 
 	test('"Version History" button calls showVersionHistory', () => {
@@ -127,5 +268,16 @@ describe('ModuleOptionsDialog', () => {
 
 		expect(defaultProps.deleteModule).toHaveBeenCalledTimes(1)
 		expect(defaultProps.deleteModule).toHaveBeenCalledWith('mockDraftId')
+	})
+
+	test('"Synchronize" button brings up synchronize dialog', () => {
+		defaultProps.readOnly = true
+		defaultProps.showModuleSync = jest.fn(() => Promise.resolve())
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		component.root.findByProps({ id: 'moduleOptionsDialog-synchronizeButton' }).props.onClick()
+
+		expect(defaultProps.showModuleSync).toHaveBeenCalledTimes(1)
+		expect(defaultProps.showModuleSync).toHaveBeenCalledWith(defaultProps)
 	})
 })

@@ -1,4 +1,3 @@
-jest.mock('../../../server/routes/api/events/create_caliper_event')
 jest.mock('../../../server/models/visit')
 jest.mock('../../../server/insert_event')
 jest.mock('../../../server/db')
@@ -44,7 +43,6 @@ describe('api visits route', () => {
 	const bodyParser = require('body-parser')
 	const VisitModel = oboRequire('server/models/visit')
 	const insertEvent = oboRequire('server/insert_event')
-	const caliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
 	const viewerState = oboRequire('server/viewer/viewer_state')
 	const db = oboRequire('server/db')
 	const ltiUtil = oboRequire('server/lti')
@@ -56,7 +54,6 @@ describe('api visits route', () => {
 	beforeEach(() => {
 		db.one.mockReset()
 		insertEvent.mockReset()
-		caliperEvent().createViewerSessionLoggedInEvent.mockReset()
 		ltiUtil.retrieveLtiLaunch = jest.fn()
 		viewerState.get = jest.fn()
 		mockSaveSessionSuccess = true
@@ -371,7 +368,7 @@ describe('api visits route', () => {
 				expect(response.body.value).toHaveProperty('type', 'reject')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					"Cannot read property 'lis_outcome_service_url' of undefined"
+					"Cannot read properties of undefined (reading 'lis_outcome_service_url')"
 				)
 			})
 	})
@@ -406,8 +403,8 @@ describe('api visits route', () => {
 			})
 	})
 
-	test('visit:start event and createViewerSessionLoggedInEvent created', () => {
-		expect.assertions(4)
+	test('visit:start event created', () => {
+		expect.assertions(3)
 		// resolve ltiLaunch lookup
 		const launch = {
 			reqVars: {
@@ -436,7 +433,6 @@ describe('api visits route', () => {
 				expect(insertEvent).toBeCalledWith({
 					action: 'visit:start',
 					actorTime: '2016-09-22T16:57:14.500Z',
-					caliperPayload: undefined,
 					draftId: validUUID(),
 					contentId: validUUID(),
 					eventVersion: '1.0.0',
@@ -446,13 +442,6 @@ describe('api visits route', () => {
 					payload: { visitId: validUUID() },
 					userId: 99,
 					visitId: validUUID()
-				})
-				expect(caliperEvent().createViewerSessionLoggedInEvent).toBeCalledWith({
-					actor: { id: 99, type: 'user' },
-					draftId: validUUID(),
-					contentId: validUUID(),
-					isPreviewMode: undefined,
-					sessionIds: { launchId: undefined, sessionId: undefined }
 				})
 			})
 	})

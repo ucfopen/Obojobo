@@ -32,6 +32,9 @@ jest.mock('../../server/express_current_document', () => (req, res, next) => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
 	}
+	req.requireDraftWritable = () => {
+		return Promise.resolve(true)
+	}
 	next()
 })
 

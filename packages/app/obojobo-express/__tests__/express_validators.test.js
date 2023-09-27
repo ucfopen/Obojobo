@@ -2,6 +2,7 @@
 
 jest.mock('test_node')
 jest.mock('../server/models/user')
+jest.mock('../server/logger')
 
 let mockRes
 let mockReq
@@ -10,11 +11,14 @@ let mockUser
 let mockDocument
 
 const Validators = oboRequire('server/express_validators')
+const logger = oboRequire('server/logger')
 
 describe('current user middleware', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
+		logger.error.mockClear()
+
 		mockUser = {
 			id: 1,
 			username: 'mock-user',
@@ -159,6 +163,33 @@ describe('current user middleware', () => {
 		expect.assertions(1)
 		mockReq.requireCurrentDocument = jest.fn().mockRejectedValue('mock-error')
 		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
+			expect(mockRes.missing).toHaveBeenCalled()
+		})
+	})
+
+	// requireDraftWritable tests
+
+	test('requireDraftWritable resolves', () => {
+		mockReq.requireDraftWritable = jest.fn().mockResolvedValue()
+
+		return expect(
+			Validators.requireDraftWritable(mockReq, mockRes, mockNext)
+		).resolves.toBeUndefined()
+	})
+
+	test('requireDraftWritable calls next when valid', () => {
+		mockReq.requireDraftWritable = jest.fn().mockResolvedValue()
+
+		return Validators.requireDraftWritable(mockReq, mockRes, mockNext).then(() => {
+			expect(mockNext).toHaveBeenCalled()
+		})
+	})
+
+	test('requireDraftWritable calls missing when invalid', () => {
+		mockReq.requireDraftWritable = jest.fn().mockRejectedValue()
+
+		return Validators.requireDraftWritable(mockReq, mockRes, mockNext).then(() => {
+			expect(logger.error).toHaveBeenCalledWith('User tried editing read-only module')
 			expect(mockRes.missing).toHaveBeenCalled()
 		})
 	})
@@ -469,6 +500,28 @@ describe('current user middleware', () => {
 		mockUser.hasPermission = () => false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
 		return Validators.requireCanPreviewDrafts(mockReq, mockRes, mockNext).then(() => {
+			expect(mockNext).toHaveBeenCalledTimes(0)
+			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(1)
+			expect(mockReq._validationErrors).toBeUndefined()
+		})
+	})
+
+	// requireCanViewStatsPage
+
+	test('requireCanViewStatsPage calls next and has no validation errors', () => {
+		mockUser.hasPermission = perm => perm === 'canViewStatsPage'
+		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
+		return Validators.requireCanViewStatsPage(mockReq, mockRes, mockNext).then(() => {
+			expect(mockNext).toHaveBeenCalledTimes(1)
+			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(0)
+			expect(mockReq._validationErrors).toBeUndefined()
+		})
+	})
+
+	test('requireCanViewStatsPage doesnt call next and has errors', () => {
+		mockUser.hasPermission = () => false
+		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
+		return Validators.requireCanViewStatsPage(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(0)
 			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(1)
 			expect(mockReq._validationErrors).toBeUndefined()

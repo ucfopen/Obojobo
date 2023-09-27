@@ -4,7 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import ClipboardUtil from '../../util/clipboard-util'
 import EditorAPI from 'obojobo-document-engine/src/scripts/viewer/util/editor-api'
 import { downloadDocument } from '../../../common/util/download-document'
-
+import { FULL } from 'obojobo-express/server/constants'
 import DropDownMenu from './drop-down-menu'
 
 const { Prompt } = Common.components.modal
@@ -15,6 +15,7 @@ class FileMenu extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.copyModule = this.copyModule.bind(this)
+		this.copyModuleReadOnly = this.copyModuleReadOnly.bind(this)
 		this.deleteModule = this.deleteModule.bind(this)
 		this.buildFileSelector = this.buildFileSelector.bind(this)
 	}
@@ -27,11 +28,35 @@ class FileMenu extends React.PureComponent {
 		})
 	}
 
-	copyModule(newTitle) {
+	copyModule(newTitle, readOnly = false) {
 		ModalUtil.hide()
-		return EditorAPI.copyDraft(this.props.draftId, newTitle).then(result => {
-			window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
+		return EditorAPI.copyDraft(this.props.draftId, newTitle, readOnly).then(result => {
+			if (readOnly) {
+				const buttons = [
+					{
+						value: 'OK',
+						onClick: ModalUtil.hide,
+						default: true
+					}
+				]
+				ModalUtil.show(
+					<Dialog buttons={buttons} title="Read-Only Copy Created">
+						A read-only copy of this module has been created.
+						<br />
+						Read-only copies can not be edited directly.
+						<br />
+						View the read-only copy in the dashboard to optionally synchronize any edits made to
+						this module.
+					</Dialog>
+				)
+			} else {
+				window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
+			}
 		})
+	}
+
+	copyModuleReadOnly(newTitle) {
+		return this.copyModule(newTitle, true)
 	}
 
 	processFileContent(id, content, type) {
@@ -102,6 +127,19 @@ class FileMenu extends React.PureComponent {
 					)
 			},
 			{
+				name: 'Make a read-only copy...',
+				type: 'action',
+				action: () =>
+					ModalUtil.show(
+						<Prompt
+							title="Copy Module (Read-Only)"
+							message="Enter the title for the copied module:"
+							value={this.props.title + ' - Copy'}
+							onConfirm={this.copyModuleReadOnly}
+						/>
+					)
+			},
+			{
 				name: 'Download',
 				type: 'sub-menu',
 				menu: [
@@ -143,6 +181,7 @@ class FileMenu extends React.PureComponent {
 			{
 				name: 'Delete Module...',
 				type: 'action',
+				disabled: this.props.accessLevel !== FULL,
 				action: () => {
 					const buttons = [
 						{
