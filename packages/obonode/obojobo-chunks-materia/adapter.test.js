@@ -44,6 +44,12 @@ describe('Materia adapter', () => {
 		expect(model.modelState.widgetEngine).toBe('')
 	})
 
+	test('adapter sets noFooter to true', () => {
+		model = new MockOboModel({})
+		MateriaAdapter.construct(model)
+		expect(model.modelState.noFooter).toBe(true)
+	})
+
 	test('adapter sets modelState.icon to a number if specified and null otherwise', () => {
 		model = new MockOboModel({})
 		MateriaAdapter.construct(model)

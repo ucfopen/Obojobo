@@ -34,6 +34,7 @@ const Adapter = {
 		}
 
 		model.setStateProp('correctLabels', null, p => p.split('|'))
+		model.setStateProp('partialLabels', null, p => p.split('|'))
 		model.setStateProp('incorrectLabels', null, p => p.split('|'))
 	},
 
@@ -41,6 +42,9 @@ const Adapter = {
 		clone.modelState.type = model.modelState.type
 		clone.modelState.correctLabels = model.modelState.correctLabels
 			? model.modelState.correctLabels.slice(0)
+			: null
+		clone.modelState.partialLabels = model.modelState.partialLabels
+			? model.modelState.partialLabels.slice(0)
 			: null
 		clone.modelState.incorrectLabels = model.modelState.incorrectLabels
 			? model.modelState.incorrectLabels.slice(0)
@@ -58,6 +62,9 @@ const Adapter = {
 		json.content.type = model.modelState.type
 		json.content.correctLabels = model.modelState.correctLabels
 			? model.modelState.correctLabels.join('|')
+			: null
+		json.content.partialLabels = model.modelState.partialLabels
+			? model.modelState.partialLabels.join('|')
 			: null
 		json.content.incorrectLabels = model.modelState.incorrectLabels
 			? model.modelState.incorrectLabels.join('|')

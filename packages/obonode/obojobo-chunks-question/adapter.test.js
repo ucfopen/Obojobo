@@ -32,6 +32,7 @@ describe('Question adapter', () => {
 			content: {
 				type: 'default',
 				correctLabels: 'a|b|c',
+				partialLabels: 'l|m|n',
 				incorrectLabels: 'x|y|z',
 				revealAnswer: 'when-incorrect',
 				solution: {
@@ -72,6 +73,7 @@ describe('Question adapter', () => {
 		const attrs = {
 			content: {
 				correctLabels: 'a|b|c',
+				partialLabels: 'l|m|n',
 				incorrectLabels: 'd|e|f'
 			}
 		}
@@ -180,6 +182,19 @@ describe('Question adapter', () => {
 		expect(json).toMatchSnapshot()
 	})
 
+	test('toJSON builds a JSON representation with partial labels', () => {
+		const json = { content: {} }
+		const attrs = {
+			content: {
+				partialLabels: 'l|m|n'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		QuestionAdapter.construct(model, attrs)
+		QuestionAdapter.toJSON(model, json)
+	})
+
 	test('Adapter grabs correctLabels and incorrectLabels from child components', () => {
 		const attrs = {
 			id: 'question',
@@ -192,6 +207,7 @@ describe('Question adapter', () => {
 					type: 'ObojoboDraft.Chunks.MCAssessment',
 					content: {
 						correctLabels: 'd|e|f',
+						partialLabels: 'l|m|n',
 						incorrectLabels: 'x|y|z'
 					},
 					children: []
@@ -211,5 +227,48 @@ describe('Question adapter', () => {
 		expect(model.modelState.incorrectLabels).toEqual(['x', 'y', 'z'])
 
 		spy.mockRestore()
+	})
+
+	test('modelState uses correctLabels from content if MCAssessment child does not have any set', () => {
+		const attrs = {
+			id: 'question',
+			content: {
+				correctLabels: 'a|b|c'
+			},
+			children: [
+				{
+					id: 'mcassessment',
+					type: 'ObojoboDraft.Chunks.MCAssessment',
+					children: []
+				}
+			]
+		}
+
+		const model = new OboModel(attrs)
+		QuestionAdapter.construct(model, attrs)
+
+		expect(model.modelState.correctLabels).toEqual(['a', 'b', 'c'])
+	})
+
+	test('modelState uses correctLabels from MCAssessment child if content does not have any set', () => {
+		const attrs = {
+			id: 'question',
+			content: {},
+			children: [
+				{
+					id: 'mcassessment',
+					type: 'ObojoboDraft.Chunks.MCAssessment',
+					content: {
+						correctLabels: 'd|e|f'
+					},
+					children: []
+				}
+			]
+		}
+
+		const model = new OboModel(attrs)
+		QuestionAdapter.construct(model, attrs)
+
+		expect(model.modelState.correctLabels).toEqual(['d', 'e', 'f'])
 	})
 })
