@@ -37,6 +37,28 @@ describe('assessment-api', () => {
 		})
 	})
 
+	test('saveAttempt calls fetch', () => {
+		expect.hasAssertions()
+
+		const mockAttemptId = 'mockAttemptId'
+
+		const args = {
+			draftId: 'mockDraftId',
+			draftContentId: 'mockDraftContentId',
+			assessmentId: 'mockAssessmentId',
+			attemptId: mockAttemptId,
+			state: {},
+			visitId: 'mockVisitId'
+		}
+		return AssessmentAPI.saveAttempt(args).then(result => {
+			// this is passed as a query parameter, not in the post body
+			delete args.attemptId
+			expect(API.post).toHaveBeenCalledWith(`/api/assessments/attempt/${mockAttemptId}/save`, args)
+			expect(API.processJsonResults).toHaveBeenCalled()
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
 	test('resumeAttempt calls fetch', () => {
 		expect.hasAssertions()
 		const args = { attemptId: 999 }

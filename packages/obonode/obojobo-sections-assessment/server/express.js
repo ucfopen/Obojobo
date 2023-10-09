@@ -4,6 +4,7 @@ const AssessmentModel = require('./models/assessment')
 const lti = require('obojobo-express/server/lti')
 const logger = require('obojobo-express/server/logger')
 const { startAttempt } = require('./attempt-start')
+const saveAttempt = require('./attempt-save')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
 const { attemptReview } = require('./attempt-review')
@@ -77,6 +78,18 @@ router
 		checkValidationRules
 	])
 	.post(startAttempt)
+
+router
+	.route('/api/assessments/attempt/:attemptId/save')
+	.post([
+		requireCurrentUser,
+		requireCurrentVisit,
+		requireCurrentDocument,
+		requireAttemptId,
+		requireAssessmentId,
+		checkValidationRules
+	])
+	.post(saveAttempt)
 
 router
 	.route('/api/assessments/attempt/:attemptId/resume')
