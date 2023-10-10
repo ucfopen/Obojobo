@@ -104,7 +104,8 @@
 				font-family: $font-default;
 				font-size: 0.8em;
 
-				&:hover {
+				&:hover,
+				&.focused {
 					background-color: $color-action-low-opacity;
 					color: $color-action;
 				}

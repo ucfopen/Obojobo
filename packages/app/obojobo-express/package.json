@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "15.0.0",
+	"version": "17.0.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -28,7 +28,7 @@
 		"precommit": "lint-staged"
 	},
 	"engines": {
-		"node": "^14.16.0"
+		"node": "^18.16.0"
 	},
 	"lint-staged": {
 		"**/*.scss": [
@@ -50,7 +50,7 @@
 		"deep-freeze": "^0.0.1",
 		"ejs": "^3.1.6",
 		"eventemitter": "^0.3.3",
-		"express": "~4.17.1",
+		"express": "~4.18.2",
 		"express-ims-lti": "https://github.com/ucfcdl/express-ims-lti.git#879f752758250b81429f75f62bb5602f1b06a564",
 		"express-session": "^1.17.1",
 		"express-validator": "^6.10.0",
@@ -69,21 +69,22 @@
 		"uuid": "^8.3.2"
 	},
 	"peerDependencies": {
-		"obojobo-document-engine": "^15.0.0",
-		"obojobo-document-xml-parser": "^15.0.0",
-		"obojobo-lib-utils": "^15.0.0"
+		"obojobo-document-engine": "^17.0.0",
+		"obojobo-document-xml-parser": "^17.0.0",
+		"obojobo-lib-utils": "^17.0.0"
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^5.5.0",
+		"autoprefixer": "^10.4.14",
 		"babel-loader": "^8.2.2",
 		"babel-polyfill": "^6.26.0",
 		"bluebird": "^3.7.2",
 		"css-loader": "^5.2.0",
 		"express-list-endpoints": "^5.0.0",
 		"mini-css-extract-plugin": "^1.4.0",
-		"node-sass": "^7.0.0",
+		"node-sass": "^8.0.0",
 		"oauth-signature": "^1.5.0",
-		"postcss-loader": "^5.2.0",
+		"postcss-loader": "^7.3.3",
 		"sass-loader": "^11.0.1",
 		"style-loader": "^2.0.0",
 		"supertest": "^6.1.3",

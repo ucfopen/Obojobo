@@ -1,0 +1,101 @@
+@import '../../client/css/defaults';
+
+.module-options-dialog {
+	max-width: 26em;
+	text-align: center;
+	width: 80vw;
+	padding-bottom: 1em;
+
+	.top-bar {
+		text-align: left;
+		position: relative;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		box-sizing: border-box;
+		height: 3em;
+
+		.repository--module-icon--image {
+			width: 1.5em;
+			height: 1.75em;
+			display: inline-block;
+			vertical-align: middle;
+			position: absolute;
+			left: 0.75em;
+			top: 50%;
+			transform: translate(0, -50%);
+		}
+
+		.module-title {
+			display: inline-block;
+			font-size: 0.625em;
+			font-weight: bold;
+			color: black;
+			margin: 0;
+			max-width: calc(100% - 8.5em);
+			vertical-align: middle;
+			position: absolute;
+			left: 4.5em;
+			top: 50%;
+			transform: translate(0, -50%);
+			max-height: 1.2em;
+			overflow: hidden;
+			word-break: break-word;
+		}
+
+		.close-button {
+			position: absolute;
+			right: 0.5em;
+			top: 50%;
+			transform: translate(0, -50%);
+		}
+	}
+
+	.wrapper {
+		padding-left: 1.25em;
+		padding-right: 1.25em;
+
+		p {
+			font-size: 0.8em;
+			margin: 0;
+		}
+	}
+
+	.title {
+		font-weight: 700;
+		font-size: 1.3em;
+		margin-bottom: 0.2em;
+	}
+
+	.sub-title {
+		font-size: 0.7em;
+		margin-bottom: 2em;
+	}
+
+	.buttons-with-labels {
+		text-align: left;
+		margin: 1em 0;
+		grid-gap: 0.6em;
+		align-items: center;
+		max-height: 20em;
+		height: auto;
+		overflow-y: auto;
+
+		.label {
+			font-size: 0.8em;
+			margin-left: 0.6em;
+		}
+
+		.repository--button {
+			min-width: 10.5em;
+			display: inline-block;
+			text-align: center;
+			margin-right: 1em;
+		}
+	}
+
+	.button-label-group {
+		display: grid;
+		grid-template-columns: 8em auto;
+		margin: 0.6em;
+		align-items: center;
+	}
+}

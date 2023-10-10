@@ -75,6 +75,9 @@ describe('FileToolbarViewer', () => {
 			changeToType: jest.fn()
 		}
 		useEditor.mockReturnValue(editor)
+
+		// always return some value - clear this mock and override for specific test cases
+		Editor.parent.mockReturnValue([{ children: [1] }])
 	})
 
 	test('FileToolbarViewer passes expectd props to FileToolbar', () => {
@@ -150,6 +153,11 @@ describe('FileToolbarViewer', () => {
 				},
 				{
 					separator: true
+				},
+				{
+					name: 'mock-2',
+					type: 'some-type2',
+					cloneBlankNode: jest.fn()
 				}
 			]
 		}
@@ -162,6 +170,9 @@ describe('FileToolbarViewer', () => {
 
 		const toolBarProps = component.find(FileToolbar).props()
 
+		expect(Registry.getItemForType).toHaveBeenCalledTimes(1)
+		expect(Registry.getItemForType).toHaveBeenCalledWith('mock-type')
+
 		expect(toolBarProps.insertMenu).toEqual(
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu
@@ -171,6 +182,68 @@ describe('FileToolbarViewer', () => {
 							action: expect.any(Function),
 							disabled: false, // <- important bit
 							name: 'mock-1'
+						},
+						{
+							action: expect.any(Function),
+							disabled: false, // <- important bit
+							name: 'mock-2'
+						}
+					]}
+				/>
+			</div>
+		)
+	})
+
+	test('FileToolbarViewer insert menu item correctly omits options', () => {
+		const mockParentNode = { children: [1], type: 'ObojoboDraft.Chunk.Question' }
+		Editor.parent.mockClear()
+		Editor.parent.mockReturnValue([mockParentNode])
+
+		const props = {
+			mode: 'visual',
+			saved: 'true',
+			isDeletable: null,
+			insertableItems: [
+				{
+					name: 'mock-1',
+					type: 'some-type',
+					cloneBlankNode: jest.fn()
+				},
+				{
+					separator: true
+				},
+				{
+					name: 'mock-2',
+					type: 'some-type2',
+					cloneBlankNode: jest.fn()
+				}
+			]
+		}
+
+		Registry.getItemForType.mockReturnValueOnce({ acceptsInserts: true }).mockReturnValueOnce({
+			// pretend the registry says this parent can't have 'mockType' children
+			disallowedChildren: ['some-type']
+		})
+
+		Range.isCollapsed.mockReturnValueOnce(true)
+
+		const component = shallow(<FileToolbarViewer {...props} />)
+
+		const toolBarProps = component.find(FileToolbar).props()
+
+		expect(Registry.getItemForType).toHaveBeenCalledTimes(2)
+		expect(Registry.getItemForType).toHaveBeenCalledWith('mock-type')
+		expect(Registry.getItemForType).toHaveBeenCalledWith('ObojoboDraft.Chunk.Question')
+
+		expect(toolBarProps.insertMenu).toEqual(
+			<div className="visual-editor--drop-down-menu">
+				<DropDownMenu
+					name="Insert"
+					menu={[
+						{
+							action: expect.any(Function),
+							disabled: false, // <- important bit
+							name: 'mock-2'
 						}
 					]}
 				/>

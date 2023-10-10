@@ -1,7 +1,5 @@
 const { handle } = require('redux-pack')
 
-const whitespaceRegex = /\s+/g
-
 const {
 	SHOW_MODULE_PERMISSIONS,
 	CLOSE_MODAL,
@@ -20,6 +18,8 @@ const {
 	SELECT_MODULES,
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
+	SHOW_MODULE_SYNC,
+	SYNC_MODULE_UPDATES,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
 	LOAD_MODULE_COLLECTIONS,
@@ -43,6 +43,8 @@ const {
 	BULK_RESTORE_MODULES
 } = require('../actions/dashboard-actions')
 
+const { filterModules, filterCollections } = require('../util/filter-functions')
+
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
 	items,
 	hasFetched,
@@ -64,27 +66,6 @@ const closedDialogState = () => ({
 		items: []
 	}
 })
-
-function filterModules(modules, searchString) {
-	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
-
-	return modules.filter(m =>
-		((m.title || '') + m.draftId)
-			.replace(whitespaceRegex, '')
-			.toLowerCase()
-			.includes(searchString)
-	)
-}
-function filterCollections(collections, searchString) {
-	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
-
-	return collections.filter(c =>
-		((c.title || '') + c.id)
-			.replace(whitespaceRegex, '')
-			.toLowerCase()
-			.includes(searchString)
-	)
-}
 
 function DashboardReducer(state, action) {
 	switch (action.type) {
@@ -135,9 +116,10 @@ function DashboardReducer(state, action) {
 				})
 			})
 
+		case SYNC_MODULE_UPDATES:
 		case DELETE_MODULE:
 			return handle(state, action, {
-				// close the dialog containing the delete button
+				// close the dialog
 				start: () => ({ ...state, ...closedDialogState() }),
 				// update myModules and re-apply the filter if one exists
 				success: prevState => {
@@ -177,7 +159,8 @@ function DashboardReducer(state, action) {
 			return {
 				...state,
 				selectedModules: [],
-				multiSelectMode: false
+				multiSelectMode: false,
+				dialog: 'bulk-add-successful'
 			}
 
 		case BULK_REMOVE_MODULES_FROM_COLLECTION:
@@ -200,6 +183,24 @@ function DashboardReducer(state, action) {
 				dialog: 'module-more',
 				selectedModule: action.module
 			}
+
+		case SHOW_MODULE_SYNC:
+			return handle(state, action, {
+				// open the dialog while the fetch is in progress
+				start: () => ({
+					...state,
+					dialog: 'module-sync',
+					selectedModule: action.meta.module,
+					newest: false
+				}),
+				// update myModules and re-apply the filter if one exists
+				success: prevState => {
+					return {
+						...prevState,
+						newest: action.payload.value
+					}
+				}
+			})
 
 		case SHOW_MODULE_PERMISSIONS:
 			return {

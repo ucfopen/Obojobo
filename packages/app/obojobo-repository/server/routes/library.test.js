@@ -178,7 +178,7 @@ describe('repository library route', () => {
 
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
-				expectPageTitleToBe(response, 'Module Library')
+				expectPageTitleToBe(response, 'Obojobo Module Library')
 			})
 	})
 
@@ -214,7 +214,7 @@ describe('repository library route', () => {
 				expect(UserModel.fetchById).toHaveBeenCalledWith(99)
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					'mockDraftId'
 				)
 				expect(response.header['content-type']).toContain('text/html')
@@ -301,7 +301,7 @@ describe('repository library route', () => {
 				expect(DraftSummary.fetchById).toHaveBeenCalledWith(publicLibCollectionId)
 				expect(UserModel.fetchById).not.toHaveBeenCalled()
 				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
-					mockCurrentUser.id,
+					mockCurrentUser,
 					'mockDraftId'
 				)
 				expect(response.header['content-type']).toContain('text/html')

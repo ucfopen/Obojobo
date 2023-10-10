@@ -42,8 +42,10 @@ const slateToObo = node => {
 		children,
 		content: withoutUndefined({
 			triggers: node.content.triggers,
+			objectives: node.content.objectives,
 			choose: getChooseValue(node.content.chooseAll, node.content.choose),
-			select: node.content.select
+			select: node.content.select,
+			collapsed: node.content.collapsed
 		})
 	}
 }

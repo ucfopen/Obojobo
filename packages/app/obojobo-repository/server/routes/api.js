@@ -22,6 +22,15 @@ const { fetchAllCollectionsForDraft } = require('../services/collections')
 const { getUserModuleCount } = require('../services/count')
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
+const {
+	levelName,
+	levelNumber,
+	FULL,
+	PARTIAL
+} = require('../../../obojobo-express/server/constants')
+
+const uuid = require('uuid').v4
+
 // List public drafts
 router.route('/drafts-public').get((req, res) => {
 	return Collection.fetchById(publicLibCollectionId)
@@ -177,26 +186,68 @@ router
 			const userId = req.currentUser.id
 			const draftId = req.currentDocument.draftId
 
-			const canCopy = await DraftPermissions.userHasPermissionToCopy(userId, draftId)
+			const readOnly = req.body.readOnly
+
+			const canCopy = await DraftPermissions.userHasPermissionToCopy(req.currentUser, draftId)
 			if (!canCopy) {
 				res.notAuthorized('Current user has no permissions to copy this draft')
 				return
 			}
 
 			const oldDraft = await Draft.fetchById(draftId)
+
+			// gather all of the node IDs in the document and determine a new ID to replace each with
+			const idsForChange = {}
+
+			// this should never not exist, but just in case
+			if (oldDraft.nodesById) {
+				// only generate a replacement for ids that are UUIDs, not custom
+				const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+				oldDraft.nodesById.forEach((node, key) => {
+					if (key && uuidRegex.test(key)) idsForChange[key] = uuid()
+				})
+			}
+
+			// now convert the updated document to an object for use
 			const draftObject = oldDraft.root.toObject()
+
 			const newTitle = req.body.title ? req.body.title : draftObject.content.title + ' Copy'
 			draftObject.content.title = newTitle
-			const newDraft = await Draft.createWithContent(userId, draftObject)
 
-			const draftMetadata = new DraftsMetadata({
+			// convert the object to a JSON string so we can swap out all the old IDs with the new ones
+			let draftString = JSON.stringify(draftObject)
+
+			// globally replace each old ID with the equivalent new ID
+			// this should replace node IDs as well as action trigger references to those node IDs
+			for (const [oldId, newId] of Object.entries(idsForChange)) {
+				// this works, but there may be a more efficient way of doing it
+				draftString = draftString.replace(new RegExp(oldId, 'g'), newId)
+			}
+
+			const newDraftObject = JSON.parse(draftString)
+
+			// const newDraft = await Draft.createWithContent(userId, draftObject)
+			const newDraft = await Draft.createWithContent(userId, newDraftObject)
+
+			const copiedDraftMetadata = new DraftsMetadata({
 				draft_id: newDraft.id,
 				key: 'copied',
 				value: draftId
 			})
 
+			let readOnlyDraftMetadata = null
+
+			if (readOnly) {
+				readOnlyDraftMetadata = new DraftsMetadata({
+					draft_id: newDraft.id,
+					key: 'read_only',
+					value: true
+				})
+			}
+
 			await Promise.all([
-				draftMetadata.saveOrCreate(),
+				copiedDraftMetadata.saveOrCreate(),
+				readOnlyDraftMetadata ? readOnlyDraftMetadata.saveOrCreate() : Promise.resolve(),
 				insertEvent({
 					actorTime: 'now()',
 					action: 'draft:copy',
@@ -216,6 +267,59 @@ router
 		} catch (e) {
 			res.unexpected(e)
 		}
+	})
+
+// check for any changes to the draft's original
+router
+	.route('/drafts/:draftId/sync')
+	.get([requireCurrentUser, requireCurrentDocument, requireCanCreateDrafts])
+	.get((req, res) => {
+		DraftsMetadata.getByDraftIdAndKey(req.currentDocument.draftId, 'copied')
+			.then(md => {
+				return DraftSummary.fetchByIdMoreRecentThan(md.value, md.updatedAt)
+			})
+			.then(mostRecentOriginalRevision => {
+				res.success(mostRecentOriginalRevision)
+			})
+			.catch(e => {
+				res.unexpected(e)
+			})
+	})
+
+// replace a read-only draft's draft_content with its parent's most recent draft_content
+router
+	.route('/drafts/:draftId/sync')
+	.patch([requireCurrentUser, requireCurrentDocument, requireCanCreateDrafts])
+	.patch((req, res) => {
+		let copyMeta = null
+
+		DraftsMetadata.getByDraftIdAndKey(req.currentDocument.draftId, 'copied')
+			.then(async md => {
+				const userAccess = await DraftPermissions.getUserAccessLevelToDraft(
+					req.currentUser.id,
+					req.currentDocument.draftId
+				)
+
+				if (!(userAccess === FULL || userAccess === PARTIAL)) {
+					res.notAuthorized('Current User does not have permission to share this draft')
+					return
+				}
+
+				copyMeta = md
+				// use original draft ID from the copy metadata
+				const oldDraft = await Draft.fetchById(md.value)
+				const draftObject = oldDraft.root.toObject()
+				const newTitle = req.body.title ? req.body.title : draftObject.content.title + ' Copy'
+				draftObject.content.title = newTitle
+				return Draft.updateContent(req.currentDocument.draftId, req.currentUser.id, draftObject)
+			})
+			.then(() => {
+				copyMeta.saveOrCreate()
+				res.success()
+			})
+			.catch(e => {
+				res.unexpected(e)
+			})
 	})
 
 // list a draft's permissions
@@ -241,9 +345,10 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === FULL
 			if (!canShare) {
-				res.notAuthorized('Current User has no permissions to selected draft')
+				res.notAuthorized('Current User does not have permission to share this draft')
 				return
 			}
 
@@ -253,6 +358,54 @@ router
 
 			// add permissions
 			await DraftPermissions.addOwnerToDraft(draftId, userId)
+			res.success()
+		} catch (error) {
+			res.unexpected(error)
+		}
+	})
+
+// update a user's access level
+router
+	.route('/drafts/:draftId/permission/update')
+	.post([requireCurrentUser, requireCurrentDocument])
+	.post(async (req, res) => {
+		try {
+			const userId = req.body.userId
+			const draftId = req.currentDocument.draftId
+			const targetLevel = req.body.accessLevel
+
+			// check currentUser's permissions
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === FULL
+			if (!canShare) {
+				res.notAuthorized('Current User does not have permission to share this draft')
+				return
+			}
+
+			// Guard against invalid access levels
+			if (!levelNumber[targetLevel]) {
+				const msg = 'Invalid access level: ' + targetLevel
+				res.status(400).send(msg)
+				return
+			}
+
+			// check if same access level
+			const currentLevel = await DraftPermissions.getUserAccessLevelToDraft(
+				req.body.userId,
+				draftId
+			)
+
+			if (levelName[currentLevel] === targetLevel) {
+				res.success()
+				return
+			}
+
+			// make sure the target userId exists
+			// fetchById will throw if not found
+			await UserModel.fetchById(userId)
+
+			// add permissions
+			await DraftPermissions.updateAccessLevel(draftId, userId, levelNumber[targetLevel])
 			res.success()
 		} catch (error) {
 			res.unexpected(error)
@@ -269,7 +422,8 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare =
+				(await DraftPermissions.getUserAccessLevelToDraft(req.currentUser.id, draftId)) === FULL
 			if (!canShare) {
 				res.notAuthorized('Current User has no permissions to selected draft')
 				return

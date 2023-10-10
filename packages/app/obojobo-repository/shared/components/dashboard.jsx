@@ -2,12 +2,13 @@ require('./modal.scss')
 require('./dashboard.scss')
 
 const React = require('react')
-const { useState, useEffect } = require('react')
+const { useState, useEffect, useRef } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
+const ModuleSyncDialog = require('./module-sync-dialog')
 const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
@@ -18,9 +19,11 @@ const Spinner = require('./spinner')
 const Collection = require('./collection')
 const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
 const CollectionBulkAddModulesDialog = require('./collection-bulk-add-modules-dialog')
+const MessageDialog = require('./message-dialog.jsx')
 const CollectionManageModulesDialog = require('./collection-manage-modules-dialog')
 const CollectionRenameDialog = require('./collection-rename-dialog')
 const ButtonLink = require('./button-link')
+const { FULL, PARTIAL, MINIMAL } = require('obojobo-express/server/constants')
 
 const short = require('short-uuid')
 
@@ -38,6 +41,17 @@ const renderOptionsDialog = (props, extension) => (
 		startLoadingAnimation={props.startLoadingAnimation}
 		stopLoadingAnimation={props.stopLoadingAnimation}
 		showModuleManageCollections={props.showModuleManageCollections}
+		showModuleSync={props.showModuleSync}
+	/>
+)
+
+const renderSyncDialog = (props, extension) => (
+	<ModuleSyncDialog
+		title=""
+		{...props.selectedModule}
+		onClose={props.closeModal}
+		newest={props.newest}
+		syncModuleUpdates={extension.syncModuleUpdates}
 	/>
 )
 
@@ -49,6 +63,7 @@ const renderPermissionsDialog = (props, extension) => (
 		loadUsersForModule={props.loadUsersForModule}
 		onClose={props.closeModal}
 		addUserToModule={props.addUserToModule}
+		changeAccessLevel={props.changeAccessLevel}
 		draftPermissions={props.draftPermissions}
 		deleteModulePermissions={extension.deleteModulePermissions}
 		currentUserId={props.currentUser.id}
@@ -115,6 +130,7 @@ const renderModalDialog = props => {
 			extendedProps.deleteModulePermissions = (draftId, userId) => {
 				props.deleteModulePermissions(draftId, userId, extendedOptions)
 			}
+			extendedProps.syncModuleUpdates = draftId => props.syncModuleUpdates(draftId, extendedOptions)
 			break
 
 		default:
@@ -122,12 +138,25 @@ const renderModalDialog = props => {
 			extendedProps.deleteModulePermissions = (draftId, userId) => {
 				props.deleteModulePermissions(draftId, userId, extendedOptions)
 			}
+			extendedProps.syncModuleUpdates = draftId => props.syncModuleUpdates(draftId, extendedOptions)
+			extendedProps.onClear = () => {
+				props.clearSelection()
+			}
+			extendedProps.onClose = () => {
+				props.clearSelection()
+				props.closeModal()
+			}
 	}
 
 	switch (props.dialog) {
 		case 'module-more':
 			title = 'Module Options'
 			dialog = renderOptionsDialog(props, extendedProps)
+			break
+
+		case 'module-sync':
+			title = 'Module Sync'
+			dialog = renderSyncDialog(props, extendedProps)
 			break
 
 		case 'module-permissions':
@@ -157,7 +186,12 @@ const renderModalDialog = props => {
 
 		case 'collection-bulk-add-modules':
 			title = ''
-			dialog = renderCollectionBulkAddModulesDialog(props)
+			dialog = renderCollectionBulkAddModulesDialog(props, extendedProps)
+			break
+
+		case 'bulk-add-successful':
+			title = ''
+			dialog = renderBulkSuccessDialog(props)
 			break
 
 		case 'collection-rename':
@@ -197,14 +231,19 @@ const renderModuleManageCollectionsDialog = (props, extension) => (
 	/>
 )
 
-const renderCollectionBulkAddModulesDialog = props => (
+const renderCollectionBulkAddModulesDialog = (props, extension) => (
 	<CollectionBulkAddModulesDialog
 		title=""
 		collections={props.myCollections}
 		selectedModules={props.selectedModules}
 		bulkAddModulesToCollection={props.bulkAddModulesToCollection}
-		onClose={props.closeModal}
+		onClose={extension.onClose}
+		onClear={extension.onClear}
 	/>
+)
+
+const renderBulkSuccessDialog = props => (
+	<MessageDialog title="" message="Modules Added Successfully!" onClose={props.closeModal} />
 )
 
 const renderCollectionManageModulesDialog = (props, extension) => (
@@ -287,12 +326,18 @@ const extendedPropsDefault = props => ({
 	deleteModulePermissions: props.deleteModulePermissions
 })
 
-const getModuleCount = modules => {
-	if (modules.length === 1) {
-		return '1 Module Selected:'
+const getModuleCount = (numFull, numPartial, numMinimal) => {
+	let string = ''
+
+	if (numFull + numPartial + numMinimal === 1) {
+		string += '1 Module Selected'
 	} else {
-		return `${modules.length} Modules Selected:`
+		string += `${numFull + numPartial + numMinimal} Modules Selected`
 	}
+
+	string += ` (${numFull} Full, ${numPartial} Partial, ${numMinimal} Minimal):`
+
+	return string
 }
 
 const getSortMethod = sortOrder => {
@@ -322,42 +367,104 @@ function Dashboard(props) {
 	const [lastSelectedIndex, setLastSelectedIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 
+	// Keep track of access levels of selected modules
+	const [numFullSelected, setNumFullSelected] = useState(props.numFullSelected || 0)
+	const [numPartialSelected, setNumPartialSelected] = useState(props.numPartialSelected || 0)
+	const [numMinimalSelected, setNumMinimalSelected] = useState(props.numMinimalSelected || 0)
+
 	const moduleList = props.filteredModules ? props.filteredModules : props.myModules
 
 	const onKeyUp = e => {
 		if (e.key === 'Escape' && props.multiSelectMode && props.deselectModules) {
 			setLastPreselectedIndex(null)
-			props.deselectModules(props.selectedModules)
+			clearSelection()
 		}
 	}
 
 	const modalProps = Object.assign({}, props)
 	modalProps.startLoadingAnimation = () => setIsLoading(true)
 	modalProps.stopLoadingAnimation = () => setIsLoading(false)
+	modalProps.clearSelection = () => clearSelection()
 
 	const handleSelectModule = (event, draftId, index) => {
 		let originIndex = lastSelectedIndex
+		let isDeselecting
+
 		if (event.shiftKey && lastSelectedIndex !== index) {
 			// No module is 'selected' yet - set the shift-click 'origin' from the last one that was clicked
 			if (!props.selectedModules.length) {
 				// If shift-clicking a module without having first clicked another module, only select the one that was clicked
 				originIndex = lastPreselectedIndex !== null ? lastPreselectedIndex : index
+				clearSelection()
 			}
 
 			// Accommodates for group selecting backwards in the list and prevents duplicate selections
 			const [startIdx, endIdx] =
 				originIndex < index ? [originIndex, index + 1] : [index, originIndex + 1]
-			const idList = moduleList.map(m => m.draftId)
-			props.selectModules(
-				idList.slice(startIdx, endIdx).filter(id => !props.selectedModules.includes(id))
+
+			// Get newly selected modules
+			const currentSelection = moduleList.slice(startIdx, endIdx)
+			const newlySelected = currentSelection.filter(
+				currentModule =>
+					!props.selectedModules.some(oldModule => oldModule.draftId === currentModule.draftId)
 			)
+
+			const updated = newlySelected.map(module => ({ module: module, action: 'select' }))
+			updateAccessLevelCounts(updated)
+
+			props.selectModules(newlySelected)
 		} else {
-			props.selectedModules.includes(draftId)
-				? props.deselectModules([draftId])
-				: props.selectModules([draftId])
+			const selectedModule = moduleList.filter(draft => draft.draftId === draftId)[0]
+
+			if (props.selectedModules.some(module => module.draftId === draftId)) {
+				props.deselectModules([selectedModule])
+
+				isDeselecting = true
+			} else {
+				props.selectModules([selectedModule])
+
+				isDeselecting = false
+			}
+
+			updateAccessLevelCounts([
+				{ module: selectedModule, action: isDeselecting ? 'deselect' : 'select' }
+			])
 		}
 
 		setLastSelectedIndex(index)
+	}
+
+	const updateAccessLevelCounts = selection => {
+		// Create and update non-state variables to avoid asynchronous state updates
+		let totalFull = numFullSelected
+		let totalPartial = numPartialSelected
+		let totalMinimal = numMinimalSelected
+
+		selection.forEach(({ module, action }) => {
+			switch (module.accessLevel) {
+				case FULL:
+					action === 'select' ? (totalFull += 1) : (totalFull -= 1)
+					break
+				case PARTIAL:
+					action === 'select' ? (totalPartial += 1) : (totalPartial -= 1)
+					break
+				case MINIMAL:
+					action === 'select' ? (totalMinimal += 1) : (totalMinimal -= 1)
+					break
+			}
+		})
+
+		setNumFullSelected(totalFull)
+		setNumPartialSelected(totalPartial)
+		setNumMinimalSelected(totalMinimal)
+	}
+
+	const clearSelection = () => {
+		setNumFullSelected(0)
+		setNumMinimalSelected(0)
+		setNumPartialSelected(0)
+
+		props.deselectModules(props.selectedModules)
 	}
 
 	const renderModules = (modules, sortOrder, newModuleId, newModuleButton) => {
@@ -381,7 +488,7 @@ function Dashboard(props) {
 			>
 				<Module
 					isNew={draft.draftId === newModuleId}
-					isSelected={props.selectedModules.includes(draft.draftId)}
+					isSelected={props.selectedModules.some(module => module.draftId === draft.draftId)}
 					isMultiSelectMode={props.multiSelectMode}
 					onSelect={e => handleSelectModule(e, draft.draftId, index)}
 					hasMenu={true}
@@ -392,35 +499,44 @@ function Dashboard(props) {
 		))
 	}
 
-	const removeModulesFromCollection = draftIds => {
+	const removeModulesFromCollection = drafts => {
 		setIsLoading(true)
 		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
-			`Are you sure you want to remove these ${draftIds.length} selected modules from this collection? Type 'REMOVE' to confirm.`
+			`Are you sure you want to remove these ${drafts.length} selected modules from this collection? Type 'REMOVE' to confirm.`
 		)
 		if (response !== 'REMOVE') return setIsLoading(false)
+		const draftIds = drafts.map(draft => draft.draftId)
 		props
 			.bulkRemoveModulesFromCollection(draftIds, props.collection.id)
 			.then(() => setIsLoading(false))
+		clearSelection()
 	}
 
-	const deleteModules = draftIds => {
+	const deleteModules = drafts => {
 		setIsLoading(true)
 		// eslint-disable-next-line no-alert, no-undef
 		const response = prompt(
-			`Are you sure you want to DELETE these ${draftIds.length} selected modules? Type 'DELETE' to confirm.`
+			`Are you sure you want to DELETE these ${drafts.length} selected modules? Type 'DELETE' to confirm.`
 		)
 		if (response !== 'DELETE') return setIsLoading(false)
+		const draftIds = drafts.map(draft => draft.draftId)
+
 		props.bulkDeleteModules(draftIds).then(() => setIsLoading(false))
+
+		clearSelection()
 	}
 
-	const restoreModules = draftIds => {
+	const restoreModules = drafts => {
+		const draftIds = drafts.map(draft => draft.draftId)
+
 		setIsLoading(true)
 		props.bulkRestoreModules(draftIds).then(() => {
 			setIsLoading(false)
 			// eslint-disable-next-line no-alert
 			window.alert('The selected modules were successfully restored.')
 		})
+		clearSelection()
 	}
 
 	// Set a cookie when moduleSortOrder changes on the client
@@ -474,9 +590,14 @@ function Dashboard(props) {
 		}
 	}, [onKeyUp])
 
-	const newCollectionButtonRender = (
-		<Button onClick={props.createNewCollection}>New Collection</Button>
-	)
+	const newCollection = useRef(null)
+	const onNewCollectionClick = () => {
+		props.createNewCollection().then(() => {
+			newCollection.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+		})
+	}
+
+	const newCollectionButtonRender = <Button onClick={onNewCollectionClick}>New Collection</Button>
 
 	// Elements to render in the 'My Collections' part of the page
 	// Will only appear when dashboard is in 'recent' mode
@@ -540,6 +661,7 @@ function Dashboard(props) {
 		)
 
 		let collectionFilterRender = null
+
 		if (props.myCollections.length > 0) {
 			collectionFilterRender = (
 				<Search
@@ -569,7 +691,10 @@ function Dashboard(props) {
 				<div className="repository--item-list--collection">
 					<div className="repository--item-list--collection--item-wrapper">
 						<div className="repository--item-list--row">
-							<div className="repository--item-list--collection--item--multi-wrapper">
+							<div
+								className="repository--item-list--collection--item--multi-wrapper"
+								ref={newCollection}
+							>
 								{renderCollections(
 									props.filteredCollections ? props.filteredCollections : props.myCollections,
 									collectionSortOrder,
@@ -669,6 +794,7 @@ function Dashboard(props) {
 			<Button
 				className="multi-select secondary-button dangerous-button"
 				onClick={() => deleteModules(props.selectedModules)}
+				disabled={numMinimalSelected > 0 || numPartialSelected > 0}
 			>
 				Delete All
 			</Button>
@@ -700,7 +826,9 @@ function Dashboard(props) {
 				bulkCollectionActionButton = (
 					<Button
 						className="multi-select secondary-button"
-						onClick={() => props.showCollectionBulkAddModulesDialog(props.selectedModules)}
+						onClick={() => {
+							props.showCollectionBulkAddModulesDialog(props.selectedModules)
+						}}
 					>
 						Add All To Collection
 					</Button>
@@ -710,13 +838,12 @@ function Dashboard(props) {
 
 		mainControlBarRender = (
 			<div className="repository--main-content--control-bar is-multi-select-mode">
-				<span className="module-count">{getModuleCount(props.selectedModules)}</span>
+				<span className="module-count">
+					{getModuleCount(numFullSelected, numPartialSelected, numMinimalSelected)}
+				</span>
 				{bulkCollectionActionButton}
 				{bulkActionButton}
-				<Button
-					className="close-button"
-					onClick={() => props.deselectModules(props.selectedModules)}
-				>
+				<Button className="close-button" onClick={clearSelection}>
 					×
 				</Button>
 			</div>

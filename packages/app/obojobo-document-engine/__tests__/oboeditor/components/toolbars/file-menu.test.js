@@ -16,6 +16,8 @@ jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 import { downloadDocument } from '../../../../src/scripts/common/util/download-document'
 jest.mock('../../../../src/scripts/common/util/download-document')
 
+import { FULL, PARTIAL } from 'obojobo-express/server/constants'
+
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
@@ -117,6 +119,20 @@ describe('File Menu', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
+	test('FileMenu calls Copy (Read-Only)', () => {
+		const model = {
+			title: 'mockTitle'
+		}
+
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
+
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Make a read-only copy...'))
+			.simulate('click')
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
 	test('FileMenu calls Download', done => {
 		// setup
 		const model = {
@@ -166,13 +182,27 @@ describe('File Menu', () => {
 			title: 'mockTitle'
 		}
 
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel={FULL} />)
 
 		component
 			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('FileMenu does not call Delete if accessLevel is not "Full"', () => {
+		const model = {
+			title: 'mockTitle'
+		}
+
+		const component = mount(<FileMenu draftId="mockDraft" model={model} accessLevel={PARTIAL} />)
+
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
+			.simulate('click')
+
+		expect(ModalUtil.show).not.toHaveBeenCalled()
 	})
 
 	test('FileMenu calls Copy LTI Link', () => {
@@ -227,7 +257,49 @@ describe('File Menu', () => {
 			.instance()
 			.copyModule('new title')
 			.then(() => {
-				expect(EditorAPI.copyDraft).toHaveBeenCalledWith('mockDraftId', 'new title')
+				expect(EditorAPI.copyDraft).toHaveBeenCalledWith('mockDraftId', 'new title', false)
+			})
+	})
+
+	test('copyModuleReadOnly calls copyDraft api', () => {
+		expect.hasAssertions()
+		const model = {
+			flatJSON: () => ({ children: [] }),
+			children: [
+				{
+					get: () => CONTENT_NODE,
+					flatJSON: () => ({ children: [] }),
+					children: { models: [{ get: () => 'mockValue' }] }
+				},
+				{
+					get: () => ASSESSMENT_NODE
+				}
+			]
+		}
+
+		const exportToJSON = jest.fn()
+
+		const component = mount(
+			<FileMenu
+				draftId="mockDraftId"
+				model={model}
+				exportToJSON={exportToJSON}
+				onSave={jest.fn()}
+			/>
+		)
+
+		EditorAPI.copyDraft.mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				draftId: 'new-copy-draft-id'
+			}
+		})
+
+		return component
+			.instance()
+			.copyModuleReadOnly('new title')
+			.then(() => {
+				expect(EditorAPI.copyDraft).toHaveBeenCalledWith('mockDraftId', 'new title', true)
 			})
 	})
 

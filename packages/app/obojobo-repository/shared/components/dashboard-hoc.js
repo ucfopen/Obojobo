@@ -3,6 +3,7 @@ const connect = require('react-redux').connect
 const {
 	closeModal,
 	addUserToModule,
+	changeAccessLevel,
 	loadUsersForModule,
 	deleteModulePermissions,
 	createNewCollection,
@@ -35,7 +36,9 @@ const {
 	checkModuleLock,
 	getDeletedModules,
 	getModules,
-	bulkRestoreModules
+	bulkRestoreModules,
+	showModuleSync,
+	syncModuleUpdates
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
@@ -51,6 +54,7 @@ const mapActionsToProps = {
 	createNewModule,
 	closeModal,
 	addUserToModule,
+	changeAccessLevel,
 	loadUsersForModule,
 	deleteModulePermissions,
 	filterModules,
@@ -73,7 +77,9 @@ const mapActionsToProps = {
 	checkModuleLock,
 	getDeletedModules,
 	getModules,
-	bulkRestoreModules
+	bulkRestoreModules,
+	showModuleSync,
+	syncModuleUpdates
 }
 module.exports = connect(
 	mapStoreStateToProps,

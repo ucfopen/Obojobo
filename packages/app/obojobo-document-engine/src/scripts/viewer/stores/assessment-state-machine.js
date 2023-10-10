@@ -14,6 +14,7 @@ const {
 	INIT,
 	PROMPTING_FOR_RESUME,
 	STARTING_ATTEMPT,
+	SAVING_ATTEMPT,
 	RESUMING_ATTEMPT,
 	IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
@@ -35,6 +36,7 @@ const {
 const {
 	FETCH_ATTEMPT_HISTORY,
 	START_ATTEMPT,
+	SAVE_ATTEMPT,
 	IMPORT_ATTEMPT,
 	ABANDON_IMPORT,
 	RESUME_ATTEMPT,
@@ -260,7 +262,8 @@ class AssessmentStateMachine {
 					},
 					[IN_ATTEMPT]: {
 						on: {
-							[SEND_RESPONSES]: SENDING_RESPONSES
+							[SEND_RESPONSES]: SENDING_RESPONSES,
+							[SAVE_ATTEMPT]: SAVING_ATTEMPT
 						}
 					},
 					[START_ATTEMPT_FAILED]: {
@@ -369,6 +372,25 @@ class AssessmentStateMachine {
 									actions: clearError
 								}
 							]
+						}
+					},
+					[SAVING_ATTEMPT]: {
+						invoke: {
+							id: 'saveAttempt',
+							src: async context => {
+								const assessmentContext = getAssessmentContext(context)
+
+								return await AssessmentStateHelpers.saveAttemptState(
+									context.assessmentId,
+									assessmentContext.current.attemptId,
+									assessmentContext.current.state
+								)
+							},
+							onDone: IN_ATTEMPT,
+							onError: {
+								target: IN_ATTEMPT,
+								actions: [logError, updateContextWithCurrentAttemptError]
+							}
 						}
 					}
 				}

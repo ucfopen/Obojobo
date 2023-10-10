@@ -1,13 +1,10 @@
 import React from 'react'
 import Spinner from './spinner'
-import { create, act } from 'react-test-renderer'
+import { create } from 'react-test-renderer'
 
 describe('Spinner', () => {
 	test('Spinner component', async () => {
-		let component
-		await act(async () => {
-			component = create(<Spinner />)
-		})
+		const component = create(<Spinner />)
 
 		const tree = component.toJSON()
 

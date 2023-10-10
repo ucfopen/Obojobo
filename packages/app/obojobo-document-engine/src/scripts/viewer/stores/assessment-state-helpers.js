@@ -6,6 +6,7 @@ import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
 import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
+import QuestionResponseSendStates from './question-store/question-response-send-states'
 import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
 import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
@@ -24,6 +25,19 @@ class AssessmentAPIHelpers {
 			draftId: model.getRoot().get('draftId'),
 			assessmentId: model.get('id'),
 			visitId: NavStore.getState().visitId
+		})
+	}
+
+	static sendSaveAttemptRequest(assessmentId, attemptId, state) {
+		const model = OboModel.models[assessmentId]
+
+		return AssessmentAPI.saveAttempt({
+			draftId: model.getRoot().get('draftId'),
+			draftContentId: model.getRoot().get('contentId'),
+			assessmentId: model.get('id'),
+			attemptId,
+			visitId: NavStore.getState().visitId,
+			state
 		})
 	}
 
@@ -85,6 +99,16 @@ class AssessmentStateHelpers {
 		return this.onAttemptStarted(res)
 	}
 
+	static async saveAttemptState(assessmentId, attemptId, state) {
+		const res = await AssessmentAPIHelpers.sendSaveAttemptRequest(assessmentId, attemptId, state)
+
+		if (res.status !== 'ok') {
+			throw getErrorFromResponse(res)
+		}
+
+		return true
+	}
+
 	static async resumeAttempt(assessmentId, attemptId) {
 		const res = await AssessmentAPIHelpers.sendResumeAttemptRequest(assessmentId, attemptId)
 
@@ -97,10 +121,10 @@ class AssessmentStateHelpers {
 		return this.onAttemptStarted(res)
 	}
 
-	static async endAttempt(assessmentId, attemptId) {
+	static async endAttempt(assessmentId, attemptId, state) {
 		const model = OboModel.models[assessmentId]
 
-		const res = await AssessmentAPIHelpers.sendEndAttemptRequest(assessmentId, attemptId)
+		const res = await AssessmentAPIHelpers.sendEndAttemptRequest(assessmentId, attemptId, state)
 
 		if (res.status !== 'ok') {
 			throw getErrorFromResponse(res)
@@ -176,6 +200,44 @@ class AssessmentStateHelpers {
 		const assessment = res.value
 		const assessmentId = assessment.assessmentId
 		const assessmentModel = OboModel.models[assessmentId]
+
+		if (assessment.questionResponses && assessment.questionResponses.length > 0) {
+			const context = `assessment:${assessmentId}:${assessment.attemptId}`
+
+			const contextState = QuestionStore.getOrCreateContextState(context)
+
+			assessment.questionResponses.forEach(resp => {
+				// targetId is null for numeric questions but the most recently selected answer for MC questions
+				// we can't tell which answer was most recently chosen, just go with the last one in the responses
+				let targetId = null
+				if (resp.response.ids) {
+					targetId = resp.response.ids[resp.response.ids.length - 1]
+				}
+
+				contextState.responseMetadata[resp.questionId] = {
+					// consider replacing this with the current timestamp?
+					time: resp.created_at,
+					// consider replacing this with a new state to indicate it was set when the assessment was resumed?
+					sendState: QuestionResponseSendStates.RECORDED,
+					details: {
+						questionId: resp.questionId,
+						response: resp.response,
+						// this is null for numeric questions but the id of the MCChoice component(s) for MC questions?
+						// does this even matter?
+						targetId,
+						context,
+						assessmentId,
+						attemptId: assessment.attemptId,
+						sendResponseImmediately: false
+					}
+				}
+				// set existing responses and also that those questions have been viewed
+				contextState.responses[resp.questionId] = resp.response
+				// this will skip the 'click to reveal' state for questions already answered
+				contextState.viewedQuestions[resp.questionId] = true
+			})
+			QuestionStore.updateStateByContext(contextState, context)
+		}
 
 		this.setAssessmentQuestionBank(assessmentModel, assessment.questions)
 		this.updateNavContextAndMenu(assessmentModel, assessment.attemptId)

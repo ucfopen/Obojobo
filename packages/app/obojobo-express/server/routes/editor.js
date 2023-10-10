@@ -9,9 +9,13 @@ const {
 	dbLockDurationMinutes
 } = generalConfig.editLocks
 const { assetForEnv, webpackAssetPath } = oboRequire('server/asset_resolver')
-const { check, requireCanViewEditor, requireCurrentDocument, checkValidationRules } = oboRequire(
-	'server/express_validators'
-)
+const {
+	check,
+	requireCanViewEditor,
+	requireCurrentDocument,
+	checkValidationRules,
+	requireDraftWritable
+} = oboRequire('server/express_validators')
 const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
 	.split('|')
 	.map(i => `.${i}`)
@@ -23,6 +27,7 @@ router
 	.route('/visual/:draftId/:page?')
 	.get([
 		requireCanViewEditor,
+		requireDraftWritable,
 		requireCurrentDocument,
 		check('revision_id')
 			.optional()

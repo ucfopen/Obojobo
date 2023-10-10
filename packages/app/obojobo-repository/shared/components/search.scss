@@ -84,8 +84,11 @@ $search-input-height: 30px;
 	}
 
 	&.is-not-empty {
-		/* not sure why it keeps complaining about this, no quick and easy fix though - maybe later */
-		/* stylelint-disable no-descending-specificity */
+		/*
+		stylelint complains about this rule's specificity, but fixing it would
+		require fixing alot more errors
+		*/
+		// stylelint-disable-next-line no-descending-specificity
 		> input {
 			border-color: $color-action;
 			background-color: $color-action;

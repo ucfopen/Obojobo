@@ -8,6 +8,9 @@ import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 import VariableListModal from '../variables/variable-list-modal'
 import FeatureFlags from '../../../common/util/feature-flags'
+import ObjectiveListModal from '../objectives/objective-list-modal'
+import ObjectiveListView from '../objectives/objective-list-view'
+import objectivesContext from '../objectives/objective-context'
 
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
@@ -49,9 +52,11 @@ class MoreInfoBox extends React.Component {
 		this.handleIdChange = this.handleIdChange.bind(this)
 		this.onSave = this.onSave.bind(this)
 
+		this.showObjectiveModal = this.showObjectiveModal.bind(this)
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.showVariablesModal = this.showVariablesModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
+		this.closeObjectiveModal = this.closeObjectiveModal.bind(this)
 
 		this.domRef = React.createRef()
 		this.idInput = React.createRef()
@@ -180,6 +185,29 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 
+	showObjectiveModal(value) {
+		ModalUtil.show(
+			<ObjectiveListModal
+				objectiveContext={value}
+				content={this.state.content}
+				onClose={this.closeObjectiveModal}
+			/>
+		)
+		this.setState({ modalOpen: true })
+	}
+
+	closeObjectiveModal(modalState) {
+		ModalUtil.hide()
+
+		if (!modalState) return // do not save changes
+
+		this.setState(prevState => ({
+			content: { ...prevState.content, objectives: modalState.objectives },
+			needsUpdate: true,
+			modalOpen: false
+		}))
+	}
+
 	showTriggersModal() {
 		// Prevent info box from closing when modal is opened
 		ModalUtil.show(<TriggerListModal content={this.state.content} onClose={this.closeModal} />)
@@ -280,7 +308,7 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 	renderInfoBox() {
-		const { triggers, variables } = this.state.content
+		const { triggers, objectives, variables } = this.state.content
 
 		return (
 			<div className="more-info-box">
@@ -323,6 +351,26 @@ class MoreInfoBox extends React.Component {
 								</div>
 								{this.props.contentDescription.map(description => this.renderItem(description))}
 							</div>
+							<objectivesContext.Consumer>
+								{value => (
+									<div>
+										<span className="objectives">
+											Objectives:
+											<ObjectiveListView
+												objectives={objectives}
+												globalObjectives={typeof value === 'undefined' ? [] : value.objectives}
+											/>
+										</span>
+										<Button
+											altAction
+											className="objective-button"
+											onClick={() => this.showObjectiveModal(value)}
+										>
+											✎ Edit
+										</Button>
+									</div>
+								)}
+							</objectivesContext.Consumer>
 							<div>
 								<span className="triggers">
 									Triggers:

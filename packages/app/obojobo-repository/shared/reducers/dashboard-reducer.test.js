@@ -25,6 +25,8 @@ const {
 	SELECT_MODULES,
 	DESELECT_MODULES,
 	SHOW_MODULE_MORE,
+	SHOW_MODULE_SYNC,
+	SYNC_MODULE_UPDATES,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
 	LOAD_MODULE_COLLECTIONS,
@@ -181,8 +183,9 @@ describe('Dashboard Reducer', () => {
 		expect(newState.collection.title).toEqual(expectedCollectionTitle)
 	}
 
-	const runCreateOrDeleteModuleActionTest = testAction => {
-		const isDeleteModuleTest = testAction === DELETE_MODULE
+	const runCreateOrSyncUpdatesOrDeleteModuleActionTest = testAction => {
+		const isSyncOrDeleteModuleTest =
+			testAction === DELETE_MODULE || testAction === SYNC_MODULE_UPDATES
 		const mockModuleList = [
 			{
 				draftId: 'mockDraftId',
@@ -196,7 +199,7 @@ describe('Dashboard Reducer', () => {
 
 		const initialState = {
 			dialog: 'module-options',
-			moduleSearchString: isDeleteModuleTest ? 'B' : '',
+			moduleSearchString: isSyncOrDeleteModuleTest ? 'B' : '',
 			myModules: [
 				{
 					draftId: 'oldMockDraftId',
@@ -226,7 +229,7 @@ describe('Dashboard Reducer', () => {
 
 		// DELETE_MODULE changes state on start AND success, CREATE_MODULE just on success
 		let newState
-		if (isDeleteModuleTest) {
+		if (isSyncOrDeleteModuleTest) {
 			newState = handleStart(handler)
 			expect(newState.dialog).toBe(null)
 			// no module list changes should have happened yet
@@ -237,7 +240,7 @@ describe('Dashboard Reducer', () => {
 		newState = handleSuccess(handler)
 		expect(newState.myModules).not.toEqual(initialState.myModules)
 		expect(newState.myModules).toEqual(mockModuleList)
-		if (isDeleteModuleTest) {
+		if (isSyncOrDeleteModuleTest) {
 			expect(newState.filteredModules).not.toEqual(initialState.filteredModules)
 			expect(newState.moduleSearchString).toEqual(initialState.moduleSearchString)
 			expect(newState.filteredModules).toEqual([{ ...mockModuleList[1] }])
@@ -436,12 +439,16 @@ describe('Dashboard Reducer', () => {
 	})
 
 	test('CREATE_NEW_MODULE action modifies state correctly', () => {
-		runCreateOrDeleteModuleActionTest(CREATE_NEW_MODULE)
+		runCreateOrSyncUpdatesOrDeleteModuleActionTest(CREATE_NEW_MODULE)
 	})
 
 	//DELETE_MODULE is more or less the same as CREATE_MODULE, but will auto-filter new modules
 	test('DELETE_MODULE action modifies state correctly', () => {
-		runCreateOrDeleteModuleActionTest(DELETE_MODULE)
+		runCreateOrSyncUpdatesOrDeleteModuleActionTest(DELETE_MODULE)
+	})
+	//SYNC_MODULE_UPDATES should be identical to DELETE_MODULE
+	test('SYNC_MODULE_UPDATE action modifies state correctly', () => {
+		runCreateOrSyncUpdatesOrDeleteModuleActionTest(SYNC_MODULE_UPDATES)
 	})
 
 	test('BULK_DELETE_MODULES action modifies state correctly', () => {
@@ -584,6 +591,43 @@ describe('Dashboard Reducer', () => {
 		expect(newState.dialog).toBe('module-more')
 		expect(newState.selectedModule).not.toEqual(initialState.selectedModule)
 		expect(newState.selectedModule).toEqual(mockSelectedModule)
+	})
+
+	test('SHOW_MODULE_SYNC action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			selectedModule: {
+				draftId: 'someMockDraftId',
+				title: 'Some Mock Module Title'
+			}
+		}
+
+		const mockModule = {
+			draftId: 'originalMockDraftId',
+			title: 'Some New Mock Module Title'
+		}
+		const action = {
+			type: SHOW_MODULE_SYNC,
+			meta: {
+				module: {
+					draftId: 'originalMockDraftId',
+					title: 'Some New Mock Module Title'
+				}
+			},
+			payload: {
+				value: mockModule
+			}
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+		let newState
+
+		newState = handleStart(handler)
+		expect(newState.newest).toEqual(false)
+
+		newState = handleSuccess(handler)
+		expect(newState.newest).toEqual(mockModule)
 	})
 
 	test('SHOW_MODULE_PERMISSIONS action modifies state correctly', () => {

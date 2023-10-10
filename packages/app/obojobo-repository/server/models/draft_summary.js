@@ -1,7 +1,14 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
+const { FULL } = require('obojobo-express/server/constants')
 
-const buildQueryWhere = (whereSQL, joinSQL = '', deleted = 'FALSE', limitSQL = '') => {
+const buildQueryWhere = (
+	whereSQL,
+	joinSQL = '',
+	selectSQL = '',
+	deleted = 'FALSE',
+	limitSQL = ''
+) => {
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -11,10 +18,17 @@ const buildQueryWhere = (whereSQL, joinSQL = '', deleted = 'FALSE', limitSQL = '
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
+			drafts_metadata.value AS read_only,
+			${selectSQL}
 			'visual' AS editor
 		FROM drafts
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
+		LEFT JOIN drafts_metadata
+			ON (
+				drafts_metadata.draft_id = drafts.id
+				AND drafts_metadata."key" = 'read_only'
+			)
 		${joinSQL}
 		WHERE drafts.deleted = ${deleted}
 		AND ${whereSQL}
@@ -40,17 +54,21 @@ class DraftSummary {
 		content,
 		id,
 		first_name,
-		last_name
+		last_name,
+		access_level,
+		read_only
 	}) {
 		this.draftId = draft_id
 		this.title = title
 		this.userId = user_id
+		this.accessLevel = access_level
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version
 		this.editor = editor
 		this.json = content
 		this.revisionId = id
+		this.readOnly = read_only
 
 		if (first_name && last_name) this.userFullName = `${first_name} ${last_name}`
 		if (revision_count) this.revisionCount = Number(revision_count)
@@ -74,8 +92,25 @@ class DraftSummary {
 			})
 	}
 
+	static fetchByIdMoreRecentThan(id, targetTime) {
+		return db
+			.oneOrNone(
+				buildQueryWhere(`drafts.id = $[id]
+				AND drafts_content.created_at > $[targetTime]`),
+				{ id, targetTime }
+			)
+			.then(res => {
+				if (res) return DraftSummary.resultsToObjects(res)
+				return null
+			})
+			.catch(error => {
+				throw logger.logError('DraftSummary fetchByIdMoreRecentThan Error', error)
+			})
+	}
+
 	static fetchByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
@@ -85,6 +120,7 @@ class DraftSummary {
 
 	static fetchRecentByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhereLimit(
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
@@ -95,6 +131,7 @@ class DraftSummary {
 
 	static fetchAllInCollection(collectionId) {
 		return DraftSummary.fetchAndJoinWhere(
+			'',
 			`JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id`,
 			`repository_map_drafts_to_collections.collection_id = $[collectionId]`,
@@ -104,6 +141,7 @@ class DraftSummary {
 
 	static fetchAllInCollectionForUser(collectionId, userId) {
 		return DraftSummary.fetchAndJoinWhere(
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id
 			JOIN repository_map_user_to_draft
@@ -141,14 +179,15 @@ class DraftSummary {
 			})
 	}
 
-	static fetchAndJoinWhereLimit(joinSQL, whereSQL, limitSQL, queryValues) {
+	static fetchAndJoinWhereLimit(selectSQL, joinSQL, whereSQL, limitSQL, queryValues) {
 		return db
-			.any(buildQueryWhere(whereSQL, joinSQL, 'FALSE', limitSQL), queryValues)
+			.any(buildQueryWhere(whereSQL, joinSQL, selectSQL, 'FALSE', limitSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error(
 					'fetchAndJoinWhereLimit Error',
 					error.message,
+					selectSQL,
 					joinSQL,
 					whereSQL,
 					limitSQL,
@@ -160,15 +199,16 @@ class DraftSummary {
 
 	static fetchDeletedByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
+			`repository_map_user_to_draft.access_level AS access_level,`,
 			`JOIN repository_map_user_to_draft
 				ON repository_map_user_to_draft.draft_id = drafts.id`,
-			`repository_map_user_to_draft.user_id = $[userId]`,
+			`repository_map_user_to_draft.user_id = $[userId] AND access_level = ${FULL}`,
 			{ userId, deleted: 'TRUE' }
 		)
 	}
 
-	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {
-		const query = buildQueryWhere(whereSQL, joinSQL, queryValues.deleted)
+	static fetchAndJoinWhere(selectSQL, joinSQL, whereSQL, queryValues) {
+		const query = buildQueryWhere(whereSQL, joinSQL, selectSQL, queryValues.deleted)
 
 		return db
 			.any(query, queryValues)

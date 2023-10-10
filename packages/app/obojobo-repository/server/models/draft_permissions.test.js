@@ -1,3 +1,5 @@
+import { FULL, PARTIAL } from '../../../obojobo-express/server/constants'
+
 describe('DraftPermissions Model', () => {
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/logger')
@@ -33,7 +35,8 @@ describe('DraftPermissions Model', () => {
 		expect(DraftPermissions).toHaveProperty('addOwnerToDraft')
 		expect(DraftPermissions).toHaveProperty('removeOwnerFromDraft')
 		expect(DraftPermissions).toHaveProperty('getDraftOwners')
-		expect(DraftPermissions).toHaveProperty('userHasPermissionToDraft')
+		expect(DraftPermissions).toHaveProperty('getUserAccessLevelToDraft')
+		expect(DraftPermissions).toHaveProperty('updateAccessLevel')
 	})
 
 	test('addOwnerToDraft retrieves a data from the database', () => {
@@ -58,6 +61,33 @@ describe('DraftPermissions Model', () => {
 
 		return DraftPermissions.addOwnerToDraft('MDID', 'MUID').catch(error => {
 			expect(logger.logError).toHaveBeenCalledWith('Error addOwnerToDraft', mockError)
+			expect(error).toBe(mockError)
+		})
+	})
+
+	test('updateAccessLevel retrieves a data from the database', () => {
+		expect.hasAssertions()
+
+		db.none.mockResolvedValueOnce('mock-db-results')
+
+		return DraftPermissions.updateAccessLevel('MDID', 'MUID', PARTIAL).then(model => {
+			expect(model).toBe('mock-db-results')
+			const [query, options] = db.none.mock.calls[0]
+			expect(query).toContain('UPDATE repository_map_user_to_draft')
+			expect(options).toEqual({
+				userId: 'MUID',
+				draftId: 'MDID',
+				accessLevel: PARTIAL
+			})
+		})
+	})
+
+	test('updateAccessLevel throws and logs error', () => {
+		expect.hasAssertions()
+		db.none.mockRejectedValueOnce(mockError)
+
+		return DraftPermissions.updateAccessLevel('MDID', 'MUID', PARTIAL).catch(error => {
+			expect(logger.logError).toHaveBeenCalledWith('Error updateAccessLevel', mockError)
 			expect(error).toBe(mockError)
 		})
 	})
@@ -98,6 +128,7 @@ describe('DraftPermissions Model', () => {
 			expect(users).toHaveLength(1)
 			expect(users[0]).toMatchInlineSnapshot(`
 			Object {
+			  "accessLevel": undefined,
 			  "avatarUrl": "https://secure.gravatar.com/avatar/340b0dabf1ff06d15fd57dfe757bdbde?s=120&d=retro",
 			  "firstName": "Jeffrey",
 			  "id": 1,
@@ -128,13 +159,13 @@ describe('DraftPermissions Model', () => {
 		})
 	})
 
-	test('userHasPermissionToDraft retrieves a data from the database', () => {
+	test('getUserAccessLevelToDraft retrieves a data from the database', () => {
 		expect.hasAssertions()
 
-		db.oneOrNone.mockResolvedValueOnce('mock-db-results')
+		db.oneOrNone.mockResolvedValueOnce({ access_level: FULL })
 
-		return DraftPermissions.userHasPermissionToDraft('MUID', 'MDID').then(hasPermissions => {
-			expect(hasPermissions).toBe(true)
+		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').then(access_level => {
+			expect(access_level).toBe(FULL)
 			const [query, options] = db.oneOrNone.mock.calls[0]
 			expect(query).toContain('SELECT')
 			expect(query).toContain('FROM repository_map_user_to_draft')
@@ -145,13 +176,13 @@ describe('DraftPermissions Model', () => {
 		})
 	})
 
-	test('userHasPermissionToDraft retrieves a data from the database', () => {
+	test('getUserAccessLevelToDraft retrieves null data from the database', () => {
 		expect.hasAssertions()
 
 		db.oneOrNone.mockResolvedValueOnce(null)
 
-		return DraftPermissions.userHasPermissionToDraft('MUID', 'MDID').then(hasPermissions => {
-			expect(hasPermissions).toBe(false)
+		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').then(results => {
+			expect(results).toBe(null)
 			const [query, options] = db.oneOrNone.mock.calls[0]
 			expect(query).toContain('SELECT')
 			expect(query).toContain('FROM repository_map_user_to_draft')
@@ -162,12 +193,56 @@ describe('DraftPermissions Model', () => {
 		})
 	})
 
-	test('userHasPermissionToDraft throws and logs error', () => {
+	test('getUserAccessLevelToDraft throws and logs error', () => {
 		expect.hasAssertions()
 		db.oneOrNone.mockRejectedValueOnce(mockError)
 
-		return DraftPermissions.userHasPermissionToDraft('MUID', 'MDID').catch(error => {
-			expect(logger.logError).toHaveBeenCalledWith('Error userHasPermissionToDraft', mockError)
+		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').catch(error => {
+			expect(logger.logError).toHaveBeenCalledWith('Error getUserAccessLevelToDraft', mockError)
+			expect(error).toBe(mockError)
+		})
+	})
+
+	test('getUserAccessLevel retrieves a data from the database when user exists', () => {
+		expect.hasAssertions()
+
+		db.oneOrNone.mockResolvedValueOnce({ access_level: FULL })
+
+		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').then(accessLevel => {
+			expect(accessLevel).toEqual(FULL)
+			const [query, options] = db.oneOrNone.mock.calls[0]
+			expect(query).toContain('SELECT')
+			expect(query).toContain('FROM repository_map_user_to_draft')
+			expect(options).toEqual({
+				userId: 'MUID',
+				draftId: 'MDID'
+			})
+		})
+	})
+
+	test('getUserAccessLevel returns null from the database when user does not exist', () => {
+		expect.hasAssertions()
+
+		db.oneOrNone.mockResolvedValueOnce(null)
+
+		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').then(accessLevel => {
+			expect(accessLevel).toEqual(null)
+			const [query, options] = db.oneOrNone.mock.calls[0]
+			expect(query).toContain('SELECT')
+			expect(query).toContain('FROM repository_map_user_to_draft')
+			expect(options).toEqual({
+				userId: 'MUID',
+				draftId: 'MDID'
+			})
+		})
+	})
+
+	test('getUserAccessLevel throws and logs error', () => {
+		expect.hasAssertions()
+		db.oneOrNone.mockRejectedValueOnce(mockError)
+
+		return DraftPermissions.getUserAccessLevelToDraft('MUID', 'MDID').catch(error => {
+			expect(logger.logError).toHaveBeenCalledWith('Error getUserAccessLevelToDraft', mockError)
 			expect(error).toBe(mockError)
 		})
 	})
@@ -199,21 +274,32 @@ describe('DraftPermissions Model', () => {
 		})
 	})
 
+	// userHasPermissionToPreview tests
+
 	test.each`
-		draftIsPublic       | userHasPermissionToDraft | expected
-		${null}             | ${'mock-db-result'}      | ${true}
-		${'mock-db-result'} | ${null}                  | ${true}
-		${null}             | ${null}                  | ${false}
-		${'mock-db-result'} | ${'mock-db-result'}      | ${true}
+		mockUserPerms           | draftIsPublic       | getUserAccessLevelToDraft | expected
+		${['canPreviewDrafts']} | ${null}             | ${'mock-db-result'}       | ${true}
+		${['canPreviewDrafts']} | ${'mock-db-result'} | ${null}                   | ${true}
+		${['canPreviewDrafts']} | ${null}             | ${null}                   | ${false}
+		${['canPreviewDrafts']} | ${'mock-db-result'} | ${'mock-db-result'}       | ${true}
+		${[]}                   | ${null}             | ${'mock-db-result'}       | ${false}
+		${[]}                   | ${'mock-db-result'} | ${null}                   | ${false}
+		${[]}                   | ${null}             | ${null}                   | ${false}
+		${[]}                   | ${'mock-db-result'} | ${'mock-db-result'}       | ${false}
 	`(
-		'userHasPermissionToCopy returns $expected with db results $draftIsPublic and $userHasPermissionToDraft',
-		({ draftIsPublic, userHasPermissionToDraft, expected }) => {
+		'userHasPermissionToPreview returns $expected with mockUserPerms $mockUserPerms, db results $draftIsPublic and $getUserAccessLevelToDraft',
+		({ mockUserPerms, draftIsPublic, getUserAccessLevelToDraft, expected }) => {
 			expect.hasAssertions()
 
-			db.oneOrNone.mockResolvedValueOnce(draftIsPublic) // draftIsPublic call
-			db.oneOrNone.mockResolvedValueOnce(userHasPermissionToDraft) // userHasPermissionToDraft call
+			const mockUser = {
+				id: 'MUID',
+				perms: mockUserPerms
+			}
 
-			return DraftPermissions.userHasPermissionToCopy('MUID', 'MDID').then(hasPermissions => {
+			db.oneOrNone.mockResolvedValueOnce(draftIsPublic) // draftIsPublic call
+			db.oneOrNone.mockResolvedValueOnce(getUserAccessLevelToDraft) // getUserAccessLevelToDraft call
+
+			return DraftPermissions.userHasPermissionToPreview(mockUser, 'MDID').then(hasPermissions => {
 				expect(hasPermissions).toBe(expected)
 
 				const [isPublicQuery, isPublicOptions] = db.oneOrNone.mock.calls[0]
@@ -235,10 +321,79 @@ describe('DraftPermissions Model', () => {
 		}
 	)
 
-	test('userHasPermissionToCopy throws and logs error', () => {
+	test('userHasPermissionToPreview throws and logs error, getUserAccessLeveltoDraft failure', () => {
 		expect.hasAssertions()
 		db.oneOrNone.mockResolvedValueOnce('mock-db-results') // draftIsPublic call
-		db.oneOrNone.mockRejectedValueOnce(mockError) // userHasPermissionToDraft call
+		db.oneOrNone.mockRejectedValueOnce(mockError) // getUserAccessLevelToDraft call
+
+		return DraftPermissions.userHasPermissionToPreview('MUID', 'MDID').catch(error => {
+			expect(logger.logError).toHaveBeenCalledWith('Error userHasPermissionToPreview', mockError)
+			expect(error).toBe(mockError)
+		})
+	})
+
+	test('userHasPermissionToPreview throws and logs error, draftIsPublic failure', () => {
+		expect.hasAssertions()
+		db.oneOrNone.mockRejectedValueOnce(mockError) // draftIsPublic call
+		db.oneOrNone.mockResolvedValueOnce('mock-db-results') // getUserAccessLevelToDraft call
+
+		return DraftPermissions.userHasPermissionToPreview('MUID', 'MDID').catch(error => {
+			expect(logger.logError).toHaveBeenCalledWith('Error userHasPermissionToPreview', mockError)
+			expect(error).toBe(mockError)
+		})
+	})
+
+	// userHasPermissionToCopy tests
+
+	test.each`
+		mockUserPerms          | draftIsPublic       | getUserAccessLevelToDraft | expected
+		${['canCreateDrafts']} | ${null}             | ${'mock-db-result'}       | ${true}
+		${['canCreateDrafts']} | ${'mock-db-result'} | ${null}                   | ${true}
+		${['canCreateDrafts']} | ${null}             | ${null}                   | ${false}
+		${['canCreateDrafts']} | ${'mock-db-result'} | ${'mock-db-result'}       | ${true}
+		${[]}                  | ${null}             | ${'mock-db-result'}       | ${false}
+		${[]}                  | ${'mock-db-result'} | ${null}                   | ${false}
+		${[]}                  | ${null}             | ${null}                   | ${false}
+		${[]}                  | ${'mock-db-result'} | ${'mock-db-result'}       | ${false}
+	`(
+		'userHasPermissionToCopy returns $expected with mockUserPerms $mockUserPerms, db results $draftIsPublic and $getUserAccessLevelToDraft',
+		({ mockUserPerms, draftIsPublic, getUserAccessLevelToDraft, expected }) => {
+			expect.hasAssertions()
+
+			const mockUser = {
+				id: 'MUID',
+				perms: mockUserPerms
+			}
+
+			db.oneOrNone.mockResolvedValueOnce(draftIsPublic) // draftIsPublic call
+			db.oneOrNone.mockResolvedValueOnce(getUserAccessLevelToDraft) // getUserAccessLevelToDraft call
+
+			return DraftPermissions.userHasPermissionToCopy(mockUser, 'MDID').then(hasPermissions => {
+				expect(hasPermissions).toBe(expected)
+
+				const [isPublicQuery, isPublicOptions] = db.oneOrNone.mock.calls[0]
+				expect(isPublicQuery).toContain('SELECT')
+				expect(isPublicQuery).toContain('FROM repository_map_drafts_to_collections')
+				expect(isPublicOptions).toEqual({
+					draftId: 'MDID',
+					publicLibCollectionId: '00000000-0000-0000-0000-000000000000'
+				})
+
+				const [hasPermsQuery, hasPermsOptions] = db.oneOrNone.mock.calls[1]
+				expect(hasPermsQuery).toContain('SELECT')
+				expect(hasPermsQuery).toContain('FROM repository_map_user_to_draft')
+				expect(hasPermsOptions).toEqual({
+					draftId: 'MDID',
+					userId: 'MUID'
+				})
+			})
+		}
+	)
+
+	test('userHasPermissionToCopy throws and logs error, getUserAccessLeveltoDraft failure', () => {
+		expect.hasAssertions()
+		db.oneOrNone.mockResolvedValueOnce('mock-db-results') // draftIsPublic call
+		db.oneOrNone.mockRejectedValueOnce(mockError) // getUserAccessLevelToDraft call
 
 		return DraftPermissions.userHasPermissionToCopy('MUID', 'MDID').catch(error => {
 			expect(logger.logError).toHaveBeenCalledWith('Error userHasPermissionToCopy', mockError)
@@ -246,10 +401,10 @@ describe('DraftPermissions Model', () => {
 		})
 	})
 
-	test('userHasPermissionToCopy throws and logs error', () => {
+	test('userHasPermissionToCopy throws and logs error, draftIsPublic failure', () => {
 		expect.hasAssertions()
 		db.oneOrNone.mockRejectedValueOnce(mockError) // draftIsPublic call
-		db.oneOrNone.mockResolvedValueOnce('mock-db-results') // userHasPermissionToDraft call
+		db.oneOrNone.mockResolvedValueOnce('mock-db-results') // getUserAccessLevelToDraft call
 
 		return DraftPermissions.userHasPermissionToCopy('MUID', 'MDID').catch(error => {
 			expect(logger.logError).toHaveBeenCalledWith('Error userHasPermissionToCopy', mockError)

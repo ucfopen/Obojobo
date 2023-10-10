@@ -57,8 +57,11 @@ describe('Dashboard HOC', () => {
 			moduleRemoveFromCollection: DashboardActions.moduleRemoveFromCollection,
 			checkModuleLock: DashboardActions.checkModuleLock,
 			bulkRestoreModules: DashboardActions.bulkRestoreModules,
+			changeAccessLevel: DashboardActions.changeAccessLevel,
 			getDeletedModules: DashboardActions.getDeletedModules,
-			getModules: DashboardActions.getModules
+			getModules: DashboardActions.getModules,
+			showModuleSync: DashboardActions.showModuleSync,
+			syncModuleUpdates: DashboardActions.syncModuleUpdates
 		})
 
 		expect(mockReduxConnectReturn).toHaveBeenCalledTimes(1)

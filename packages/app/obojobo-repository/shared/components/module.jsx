@@ -67,7 +67,13 @@ const Module = props => {
 				</a>
 			)}
 			{isMenuOpen && !props.isDeleted ? (
-				<ModuleMenu draftId={props.draftId} editor={props.editor} title={props.title} />
+				<ModuleMenu
+					draftId={props.draftId}
+					editor={props.editor}
+					title={props.title}
+					accessLevel={props.accessLevel}
+					readOnly={props.readOnly}
+				/>
 			) : null}
 			{props.children}
 		</div>
