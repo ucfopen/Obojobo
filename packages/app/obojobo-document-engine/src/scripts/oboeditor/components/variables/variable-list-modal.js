@@ -7,7 +7,6 @@ import VariableProperty from './variable-property/variable-property'
 import NewVariable from './new-variable/new-variable'
 import VariableBlock from './variable-block'
 import { RANDOM_NUMBER, RANDOM_LIST } from './constants'
-import withoutUndefined from '../../../common/util/without-undefined'
 import { getParsedRange } from '../../../common/util/range-parsing'
 
 const { Button } = Common.components
@@ -19,7 +18,6 @@ const rangesToIndividualValues = vars => {
 	}
 
 	return vars.map(v => {
-		console.log('reading ', v)
 		switch (v.type) {
 			case 'random-list': {
 				const size = getParsedRange(v.size)
@@ -161,7 +159,6 @@ const individualValuesToRanges = vars => {
 }
 
 const VariableListModal = props => {
-	console.log('vlm', props)
 	const firstRef = useRef() // First element to fucus on when open the modal
 	const tabRef = useRef() // First element to focus on when open a variable
 
@@ -255,13 +252,16 @@ const VariableListModal = props => {
 		return firstRef.current.focus()
 	}
 
-	console.log('variables', variables)
+	const handleOnConfirm = () => {
+		const processedVariables = individualValuesToRanges(variables)
+		props.onClose({ variables: processedVariables })
+	}
 
 	return (
 		<SimpleDialog
 			ok
 			title="Variables"
-			onConfirm={() => props.onClose({ variables: individualValuesToRanges(variables) })}
+			onConfirm={handleOnConfirm}
 			focusOnFirstElement={focusOnFirstElement}
 		>
 			<div className="variable-list-modal">

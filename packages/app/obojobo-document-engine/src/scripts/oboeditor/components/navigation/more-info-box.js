@@ -146,8 +146,7 @@ class MoreInfoBox extends React.Component {
 		this.setState(prevState => ({ content: changeFn(prevState.content, enabled) }))
 	}
 
-	onSave() {
-		console.log('onSave!', this.props.content, this.state.content)
+	onSave(close=false) {
 		// Save the internal content to the editor state
 		const error =
 			this.props.saveContent(this.props.content, this.state.content) ||
@@ -155,7 +154,7 @@ class MoreInfoBox extends React.Component {
 		if (!error) {
 			this.setState({ error })
 			this.props.markUnsaved()
-			this.close()
+			if (close) this.close()
 			return
 		}
 
@@ -163,7 +162,6 @@ class MoreInfoBox extends React.Component {
 	}
 
 	toggleOpen(event) {
-		console.log('to', this.state.isOpen, this.state.needsUpdate)
 		stopPropagation(event)
 
 		if (this.state.isOpen) {
@@ -218,6 +216,7 @@ class MoreInfoBox extends React.Component {
 		// Prevent info box from closing when modal is opened
 		document.removeEventListener('mousedown', this.handleClick, false)
 		ModalUtil.show(<VariableListModal content={this.state.content} onClose={this.closeModal} />)
+		this.setState({ modalOpen: true })
 	}
 
 	// TriggerListModal.onClose is called w/ no arguments when canceled
@@ -228,13 +227,14 @@ class MoreInfoBox extends React.Component {
 
 		if (!modalState) return // do not save changes
 
-		console.log('closed', { ...this.state.content, ...modalState })
-
 		this.setState(
-			prevState => ({
-				content: { ...prevState.content, ...modalState },
-				needsUpdate: true
-			}),
+			prevState => {
+				return {
+					content: { ...prevState.content, ...modalState },
+					needsUpdate: true,
+					modalOpen: false
+				}
+			},
 			() => {
 				this.onSave()
 			}

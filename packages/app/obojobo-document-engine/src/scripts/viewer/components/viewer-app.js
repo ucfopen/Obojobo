@@ -419,7 +419,7 @@ export default class ViewerApp extends React.Component {
 
 			let value = null
 			if (variable.indexOf(':') !== -1) {
-				const [varName, ownerId] = variable.split(':')
+				const [ownerId, varName] = variable.split(':')
 
 				value = VariableUtil.getValue(
 					NavUtil.getContext(this.state.navState),
