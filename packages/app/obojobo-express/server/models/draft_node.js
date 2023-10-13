@@ -32,10 +32,19 @@ class DraftNode {
 		}
 
 		this.node.content.variables.forEach(v => {
-			variableValues.push({
-				id: this.node.id + ':' + v.name,
-				value: VariableGenerator.generateOne(v)
-			})
+			try {
+				variableValues.push({
+					id: this.node.id + ':' + v.name,
+					value: VariableGenerator.generateOne(v)
+				})
+			} catch (e) {
+				//eslint-disable-next-line no-console
+				console.error('Variable generation error: ', e)
+				variableValues.push({
+					id: this.node.id + ':' + v.name,
+					value: ''
+				})
+			}
 		})
 	}
 

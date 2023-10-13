@@ -1,3 +1,5 @@
+import './variable-block.scss'
+
 import React from 'react'
 import {
 	STATIC_VALUE,
@@ -124,6 +126,11 @@ const VariableBlock = props => {
 					}
 				})()}
 			</small>
+			{ variable.errors ?
+			<small className='error-count'>
+				<span>{Object.keys(variable.errors).length} issues</span>
+			</small>
+			: null }
 		</button>
 	)
 }

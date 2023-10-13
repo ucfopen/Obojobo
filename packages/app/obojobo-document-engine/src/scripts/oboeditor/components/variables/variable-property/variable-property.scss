@@ -17,6 +17,10 @@
 		border: solid 1px rgba(0, 0, 0, 0.1);
 		box-sizing: border-box;
 		flex: 1;
+
+		&.has-error {
+			border: solid 1px $color-dangerous;
+		}
 	}
 
 	.variable-property--checkbox-item {
@@ -44,6 +48,10 @@
 			calc(100% - 2.5em) 0.5em;
 		background-size: 0.4em 0.4em, 0.4em 0.4em, 0.1em 1.5em;
 		background-repeat: no-repeat;
+
+		&.has-error {
+			border: solid 1px $color-dangerous;
+		}
 	}
 
 	.group-item {
@@ -51,6 +59,10 @@
 		align-items: center;
 		padding: 0;
 		margin: 0.8em 0;
+
+		&.has-error input {
+			border: solid 1px $color-dangerous;
+		}
 
 		label {
 			margin: 0;

@@ -8,6 +8,7 @@ import NewVariable from './new-variable/new-variable'
 import VariableBlock from './variable-block'
 import { RANDOM_NUMBER, RANDOM_LIST } from './constants'
 import { getParsedRange } from '../../../common/util/range-parsing'
+import { changeVariableToType, validateVariableValue, validateMultipleVariables } from './variable-util'
 
 const { Button } = Common.components
 const { SimpleDialog } = Common.components.modal
@@ -164,7 +165,7 @@ const VariableListModal = props => {
 
 	const [currSelect, setCurrSelect] = useState(0)
 	const [creatingVariable, setCreatingVariable] = useState(false)
-	const [variables, setVariables] = useState(rangesToIndividualValues(props.content.variables))
+	const [variables, setVariables] = useState(validateMultipleVariables(rangesToIndividualValues(props.content.variables)))
 
 	const onClickVariable = index => {
 		setCreatingVariable(false)
@@ -172,6 +173,7 @@ const VariableListModal = props => {
 		tabRef.current.focus() // Tab focus on the first element
 	}
 
+	// manage variable property changes and validation, also add/remove variable errors
 	const onChange = event => {
 		const name = event.target.name
 		const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
@@ -179,12 +181,25 @@ const VariableListModal = props => {
 		const updatedVariables = [...variables]
 		updatedVariables[currSelect][name] = value
 
-		// Delete all properties if type is change
+		const variableErrors = updatedVariables[currSelect].errors ?? {}
+
+		// if the variable type is changed, keep any relevant attributes and remove any others
+		// this should also reset issues based on the new type
 		if (name === 'type') {
-			for (const attr in updatedVariables[currSelect]) {
-				if (attr !== 'name' && attr !== 'type') {
-					delete updatedVariables[currSelect][attr]
-				}
+			changeVariableToType(updatedVariables[currSelect], value)
+		} else {
+			// indicate any errors with the changed property - or remove any that existed if it's valid
+			const error = validateVariableValue(name, value)
+			if (error) {
+				variableErrors[name] = true
+			} else {
+				delete variableErrors[name]
+			}
+
+			if (Object.keys(variableErrors).length) {
+				updatedVariables[currSelect].errors = variableErrors
+			} else {
+				delete updatedVariables[currSelect].errors
 			}
 		}
 
@@ -203,11 +218,8 @@ const VariableListModal = props => {
 		}
 
 		const newVariable = { type, name: 'var' + (index === 1 ? '' : index) }
-		if (type === RANDOM_NUMBER || type === RANDOM_LIST) {
-			newVariable['decimalPlacesMin'] = '0'
-			newVariable['decimalPlacesMax'] = '0'
-		}
-		const updatedVariables = [...variables, newVariable]
+
+		const updatedVariables = [...variables, changeVariableToType(newVariable, type)]
 		setVariables(updatedVariables)
 		setCurrSelect(variables.length)
 		setCreatingVariable(false)
@@ -264,44 +276,51 @@ const VariableListModal = props => {
 			onConfirm={handleOnConfirm}
 			focusOnFirstElement={focusOnFirstElement}
 		>
-			<div className="variable-list-modal">
-				<nav className="variable-list" role="navigation">
-					{variables.map((variable, index) => (
-						<VariableBlock
-							key={variable.name}
-							variable={{ ...variable }}
-							currSelect={currSelect}
-							isSelected={index === currSelect}
-							creatingVariable={creatingVariable}
-							firstRef={index === 0 ? firstRef : null}
-							onClickVariable={onClickVariable}
-							index={index}
-							onClick={() => onClickVariable(index)}
-						/>
-					))}
+			<div className='variable-list-modal-parent'>
+				<span className='error-warning'>
+					<strong>Warning:</strong> Variables with errors will not be subsituted correctly in the viewer.
+					<br/>
+					Please resolve all highlighted variable errors.
+				</span>
+				<div className="variable-list-modal">
+					<nav className="variable-list" role="navigation">
+						{variables.map((variable, index) => (
+							<VariableBlock
+								key={variable.name}
+								variable={{ ...variable }}
+								currSelect={currSelect}
+								isSelected={index === currSelect}
+								creatingVariable={creatingVariable}
+								firstRef={index === 0 ? firstRef : null}
+								onClickVariable={onClickVariable}
+								index={index}
+								onClick={() => onClickVariable(index)}
+							/>
+						))}
+
+						{creatingVariable ? (
+							<div className="variable-holder">
+								<p>New Variable...</p>
+							</div>
+						) : (
+							<Button className="create-variable-button" onClick={() => setCreatingVariable(true)}>
+								+ Create Variable
+							</Button>
+						)}
+					</nav>
 
 					{creatingVariable ? (
-						<div className="variable-holder">
-							<p>New Variable...</p>
-						</div>
+						<NewVariable addVariable={addVariable} />
 					) : (
-						<Button className="create-variable-button" onClick={() => setCreatingVariable(true)}>
-							+ Create Variable
-						</Button>
+						<VariableProperty
+							variable={variables[currSelect]}
+							onChange={onChange}
+							duplicateVariable={duplicateVariable}
+							deleteVariable={deleteVariable}
+							tabRef={tabRef}
+						/>
 					)}
-				</nav>
-
-				{creatingVariable ? (
-					<NewVariable addVariable={addVariable} />
-				) : (
-					<VariableProperty
-						variable={variables[currSelect]}
-						onChange={onChange}
-						duplicateVariable={duplicateVariable}
-						deleteVariable={deleteVariable}
-						tabRef={tabRef}
-					/>
-				)}
+				</div>
 			</div>
 		</SimpleDialog>
 	)

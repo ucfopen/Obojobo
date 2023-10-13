@@ -20,7 +20,7 @@ const VariableProperty = props => {
 
 	return (
 		<div className="variable-property">
-			<label className="group-item">
+			<label className={`group-item ${variable.errors && variable.errors.name ? 'has-error' : ''}`}>
 				<label>
 					<strong>Name:</strong>
 				</label>
@@ -33,7 +33,7 @@ const VariableProperty = props => {
 				/>
 
 				<MoreInfoButton ariaLabel="Click to explain variable's name rules">
-					<p>Alphanumeric plus underscore only</p>
+					<p>Alphanumeric plus underscore only, can not start with a number</p>
 				</MoreInfoButton>
 
 				<Button

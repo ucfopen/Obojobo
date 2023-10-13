@@ -1,0 +1,39 @@
+@import '~styles/includes';
+
+$variable-selected: #285aa4;
+
+.single-variable {
+    border: none;
+    background: transparent;
+    font-family: 'Libre Franklin', Arial, sans-serif;
+    width: 100%;
+    cursor: pointer;
+    margin: 0;
+    color: inherit;
+    font-size: 1em;
+    background-color: $color-bg;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    border-right: solid 1px rgba(0, 0, 0, 0.1);
+    padding: 0.5em;
+    text-align: left;
+    padding-left: 1em;
+
+    h4 {
+        padding: 0;
+        margin: 0;
+    }
+
+    small {
+        font-size: 0.75em;
+
+        &.error-count {
+            display: block;
+            color: $color-dangerous;
+        }
+    }
+}
+
+.variable-is-selected {
+    border-right: none;
+    color: $variable-selected;
+}

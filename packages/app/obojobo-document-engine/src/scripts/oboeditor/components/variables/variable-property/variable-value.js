@@ -87,6 +87,12 @@ const VariableValues = props => {
 		}
 	}
 
+	const getInputClassForType = (type, isSelect = false) => {
+		let className = `variable-property--${isSelect ? 'select' : 'input'}-item`
+		if (variable.errors && variable.errors[type]) className += ' has-error'
+		return className
+	}
+
 	switch (variable.type) {
 		case STATIC_VALUE:
 			return (
@@ -94,7 +100,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Value: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('value')}
 							type="text"
 							name="value"
 							value={variable.value || ''}
@@ -110,7 +116,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Values: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('value')}
 							type="text"
 							name="value"
 							value={variable.value || ''}
@@ -129,7 +135,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Min Value: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('valueMin')}
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
@@ -140,7 +146,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Max Value: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('valueMax')}
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
@@ -151,7 +157,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Decimal places: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('decimalPlacesMin')}
 							type="number"
 							min="0"
 							name="decimalPlacesMin"
@@ -162,7 +168,7 @@ const VariableValues = props => {
 						/>
 						<span>to</span>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('decimalPlacesMax')}
 							type="number"
 							min="0"
 							name="decimalPlacesMax"
@@ -181,7 +187,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>List Size: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('sizeMin')}
 							type="number"
 							min="1"
 							name="sizeMin"
@@ -192,7 +198,7 @@ const VariableValues = props => {
 						/>
 						<span>to</span>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('sizeMax')}
 							type="number"
 							min="1"
 							name="sizeMax"
@@ -215,7 +221,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Min Value: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('valueMin')}
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
@@ -226,7 +232,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Max Value: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('valueMax')}
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
@@ -237,7 +243,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Decimal places: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('decimalPlacesMin')}
 							type="number"
 							min="0"
 							name="decimalPlacesMin"
@@ -248,7 +254,7 @@ const VariableValues = props => {
 						/>
 						<span>to</span>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('decimalPlacesMax')}
 							type="number"
 							min="0"
 							name="decimalPlacesMax"
@@ -267,7 +273,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>List Size: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('sizeMin')}
 							type="number"
 							min="1"
 							name="sizeMin"
@@ -278,7 +284,7 @@ const VariableValues = props => {
 						/>
 						<span>to</span>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('sizeMax')}
 							type="number"
 							min="1"
 							name="sizeMax"
@@ -292,7 +298,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>First value: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('start')}
 							type="number"
 							name="start"
 							value={variable.start || ''}
@@ -304,7 +310,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Series type: </label>
 						<select
-							className="variable-property--select-item"
+							className={getInputClassForType('seriesType', true)}
 							name="seriesType"
 							value={variable.seriesType || ''}
 							onChange={onChange}
@@ -320,7 +326,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Step by: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('step')}
 							type="number"
 							name="step"
 							value={variable.step || ''}
@@ -336,7 +342,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Values: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('value')}
 							name="value"
 							value={variable.value || ''}
 							onChange={onChange}
@@ -354,7 +360,7 @@ const VariableValues = props => {
 					<label className="variable-values--group">
 						<label>Values: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('value')}
 							name="value"
 							value={variable.value || ''}
 							onChange={onChange}
@@ -366,7 +372,7 @@ const VariableValues = props => {
 					<div className="variable-values--group">
 						<label>Choose: </label>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('chooseMin')}
 							type="number"
 							min="1"
 							name="chooseMin"
@@ -377,7 +383,7 @@ const VariableValues = props => {
 						/>
 						<span>to</span>
 						<input
-							className="variable-property--input-item"
+							className={getInputClassForType('chooseMax')}
 							type="number"
 							min="1"
 							name="chooseMax"
