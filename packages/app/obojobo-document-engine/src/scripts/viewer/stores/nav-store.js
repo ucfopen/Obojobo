@@ -351,7 +351,8 @@ class NavStore extends Store {
 				path: '',
 				showChildren: true,
 				showChildrenOnNavigation: true,
-				parent: null
+				parent: null,
+				sourceModel: model
 			},
 			navItem
 		)

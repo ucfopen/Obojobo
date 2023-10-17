@@ -6,7 +6,6 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import VariableProperty from './variable-property/variable-property'
 import NewVariable from './new-variable/new-variable'
 import VariableBlock from './variable-block'
-import { RANDOM_NUMBER, RANDOM_LIST } from './constants'
 import { getParsedRange } from '../../../common/util/range-parsing'
 import { changeVariableToType, validateVariableValue, validateMultipleVariables } from './variable-util'
 

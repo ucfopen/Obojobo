@@ -8,7 +8,8 @@ import {
 	RANDOM_LIST,
 	RANDOM_SEQUENCE,
 	PICK_ONE,
-	PICK_LIST
+	PICK_LIST,
+	SERIES_TYPE_OPTIONS
 } from '../constants'
 
 const VariableValues = props => {
@@ -91,6 +92,10 @@ const VariableValues = props => {
 		let className = `variable-property--${isSelect ? 'select' : 'input'}-item`
 		if (variable.errors && variable.errors[type]) className += ' has-error'
 		return className
+	}
+
+	const constrainSeriesTypeOption = value => {
+		return SERIES_TYPE_OPTIONS.includes(value) ? value : ''
 	}
 
 	switch (variable.type) {
@@ -312,7 +317,7 @@ const VariableValues = props => {
 						<select
 							className={getInputClassForType('seriesType', true)}
 							name="seriesType"
-							value={variable.seriesType || ''}
+							value={constrainSeriesTypeOption(variable.seriesType) || ''}
 							onChange={onChange}
 						>
 							<option disabled value="">
@@ -322,6 +327,13 @@ const VariableValues = props => {
 							<option value="geometric">Geometric (Multiply)</option>
 						</select>
 					</label>
+					{variable.errors
+					&& variable.errors.seriesType
+					&& (! SERIES_TYPE_OPTIONS.includes(variable.seriesType)) ?
+					<span className="invalid-value-warning">
+						Invalid option &quot;{variable.seriesType}&quot;
+					</span>
+					: null}
 
 					<label className="variable-values--group">
 						<label>Step by: </label>

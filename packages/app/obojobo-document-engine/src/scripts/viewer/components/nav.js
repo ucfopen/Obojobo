@@ -108,14 +108,36 @@ export default class Nav extends React.Component {
 		FocusUtil.focusOnNavTarget()
 	}
 
-	renderLabel(label) {
-		return label instanceof StyleableText ? label.value : label
+	renderLabel(label, sourceModel) {
+		return this.substituteLabelVariables((label instanceof StyleableText ? label.value : label), sourceModel)
 	}
 
-	renderLinkButton(label, ariaLabel, isDisabled, refId = null) {
+	substituteLabelVariables(label, sourceModel) {
+		// Quickly exit if the text has no double brackets, since we
+		// know there are no variables to substitue:
+		if (!sourceModel || label.indexOf('{{') === -1) {
+			return label
+		}
+
+		const varRegex = /\{\{(.+?)\}\}/g
+		const match = varRegex.exec(label)
+
+		if (match !== null) {
+			const event = { text: '', isNav: true }
+
+			// Ask the system if anything is aware of `variableText`:
+			Dispatcher.trigger('getTextForVariable', event, match[1], sourceModel)
+			if (event.text !== null) {
+				return event.text
+			}
+		}
+		return label
+	}
+
+	renderLinkButton(label, ariaLabel, isDisabled, sourceModel, refId = null) {
 		return (
 			<button ref={refId} aria-disabled={isDisabled} aria-label={ariaLabel}>
-				{this.renderLabel(label)}
+				{this.renderLabel(label, sourceModel)}
 			</button>
 		)
 	}
@@ -147,7 +169,7 @@ export default class Nav extends React.Component {
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
+				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.sourceModel, item.id)}
 				{item.flags.assessment ? (
 					<span className="assessment-info">{this.getAssessmentInfo(item)}</span>
 				) : null}
@@ -175,7 +197,7 @@ export default class Nav extends React.Component {
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled)}
+				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.sourceModel)}
 				{lockEl}
 			</li>
 		)

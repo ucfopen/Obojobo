@@ -34,6 +34,8 @@ const mapTypeToDescription = {
 	[PICK_LIST]: 'Generate a sub-list by randomly choosing from a list'
 }
 
+const SERIES_TYPE_OPTIONS = ['', 'arithmetic', 'geometric']
+
 export {
 	STATIC_VALUE,
 	RANDOM_NUMBER,
@@ -42,6 +44,7 @@ export {
 	RANDOM_SEQUENCE,
 	PICK_ONE,
 	PICK_LIST,
+	SERIES_TYPE_OPTIONS,
 	typeList,
 	mapTypeToString,
 	mapTypeToDescription
