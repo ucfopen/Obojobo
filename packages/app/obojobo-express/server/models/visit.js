@@ -103,6 +103,8 @@ class Visit {
 		for (const prop in visitProps) {
 			this[prop] = visitProps[prop]
 		}
+
+		this.updateState.bind(this)
 	}
 
 	get draftDocument() {
@@ -119,7 +121,7 @@ class Visit {
 		return db
 			.one(
 				`
-			SELECT id, user_id, is_active, is_preview, draft_id, draft_content_id, resource_link_id, score_importable
+			SELECT id, user_id, is_active, is_preview, draft_id, draft_content_id, resource_link_id, score_importable, state
 			FROM visits
 			WHERE id = $[visitId]
 			${requireIsActive ? 'AND is_active = true' : ''}
@@ -155,6 +157,21 @@ class Visit {
 			draftId,
 			resourceLinkId: 'preview',
 			isPreview: true
+		})
+	}
+
+	updateState(state) {
+		return db
+			.none(
+				`
+			UPDATE visits
+			SET state=$[state]
+			WHERE id=$[visitId]
+		`,
+			{visitId: this.id, state}
+		)
+		.then(() => {
+			this.state = state
 		})
 	}
 }

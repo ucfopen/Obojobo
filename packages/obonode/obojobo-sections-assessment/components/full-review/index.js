@@ -11,6 +11,7 @@ const { AssessmentUtil } = Viewer.util
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
 const { Button, ButtonBar, MoreInfoButton } = Common.components
+const { Dispatcher } = Common.flux
 
 class AssessmentReviewView extends React.Component {
 	componentDidMount() {
@@ -20,6 +21,19 @@ class AssessmentReviewView extends React.Component {
 		)
 
 		NavUtil.setContext(`assessmentReview:${lastAttempt.id}`)
+
+		// no real way of knowing whether this has been done before, so make sure variable contexts
+		//  exist for all attempts
+		// the variable store should prevent duplicates on its own
+		this.props.attempts.forEach(attempt => {
+			const attemptContext = `assessmentReview:${attempt.id}`
+			Dispatcher.trigger('variables:addContext', {
+				value: {
+					context: attemptContext,
+					variables: attempt.state.variables
+				}
+			})
+		})
 	}
 
 	render() {

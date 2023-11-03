@@ -22,9 +22,18 @@ const getDraftAndStartVisitProps = (req, res) => {
 
 const getVariables = (req, res) => {
 	const variableValues = []
+	if (req.currentVisit.state && req.currentVisit.state.variables) {
+		return req.currentVisit.state.variables
+	}
 	return req.currentDocument
 		.yell('internal:generateVariables', req, res, variableValues)
-		.then(() => variableValues)
+		.then(() => {
+			req.currentVisit.updateState({
+				...req.currentVisit.state,
+				variables: variableValues
+			})
+			return variableValues
+		})
 }
 
 router

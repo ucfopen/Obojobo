@@ -202,7 +202,7 @@ class AssessmentStateHelpers {
 		const assessmentModel = OboModel.models[assessmentId]
 
 		if (assessment.questionResponses && assessment.questionResponses.length > 0) {
-			const context = `assessment:${assessmentId}:${assessment.attemptId}`
+			const context = this.composeNavContextString(assessmentId, assessment.attemptId)
 
 			const contextState = QuestionStore.getOrCreateContextState(context)
 
@@ -240,6 +240,7 @@ class AssessmentStateHelpers {
 		}
 
 		this.setAssessmentQuestionBank(assessmentModel, assessment.questions)
+		this.setAssessmentAttemptVariables(assessmentModel, assessment.attemptId, assessment.state.variables)
 		this.updateNavContextAndMenu(assessmentModel, assessment.attemptId)
 		this.signalAttemptStarted(assessmentModel)
 
@@ -252,6 +253,14 @@ class AssessmentStateHelpers {
 
 		qb.children.reset()
 		Array.from(questions).forEach(child => qb.children.add(OboModel.create(child)))
+	}
+
+	static setAssessmentAttemptVariables(assessmentModel, attemptId, variables) {
+		const assessmentId = assessmentModel.get('id')
+		const context = this.composeNavContextString(assessmentId, attemptId)
+		Dispatcher.trigger('variables:addContext', {
+			value: { context, variables }
+		})
 	}
 
 	static updateNavContextAndMenu(assessmentModel, attemptId) {

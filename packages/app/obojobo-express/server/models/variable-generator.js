@@ -173,16 +173,6 @@ class VariableGenerator {
 	// }
 
 	generateOne(def) {
-		// if (def.type === 'set') {
-		// 	return this.getSet(def)
-		// }
-
-		// if (!def.name) {
-		// 	throw 'Missing required name property!'
-		// }
-
-		console.log('generateOne', def)
-
 		let value = null
 
 		switch (def.type) {
@@ -219,10 +209,6 @@ class VariableGenerator {
 				throw 'Unexpected type!'
 		}
 
-		// return {
-		// 	name: def.name,
-		// 	value
-		// }
 		return value
 	}
 

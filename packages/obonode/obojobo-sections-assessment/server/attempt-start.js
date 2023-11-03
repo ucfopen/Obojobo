@@ -30,6 +30,7 @@ const startAttempt = (req, res) => {
 				attemptHistory: null,
 				numAttemptsTaken: null,
 				questionUsesMap: null,
+				variables: req.currentVisit.state.variables ?? null,
 				resourceLinkId: req.currentVisit.resource_link_id
 			}
 
@@ -87,7 +88,8 @@ const startAttempt = (req, res) => {
 				req.currentDocument.contentId,
 				req.body.assessmentId,
 				{
-					chosen: attemptState.chosen
+					chosen: attemptState.chosen,
+					variables: attemptState.variables
 				},
 				req.currentVisit.is_preview,
 				req.currentVisit.resource_link_id
@@ -142,7 +144,8 @@ const getState = assessmentProperties => {
 	})
 
 	return {
-		chosen: chosenAssessment
+		chosen: chosenAssessment,
+		variables: assessmentProperties.variables ?? null
 	}
 }
 

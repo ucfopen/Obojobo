@@ -1,7 +1,3 @@
-import Common from 'Common'
-
-const { Dispatcher } = Common.flux
-
 const VariableUtil = {
 	getKey(ownerId, varName) {
 		return `${ownerId}:${varName}`

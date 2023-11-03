@@ -1,6 +1,5 @@
 import Common from 'Common'
 import VariableUtil from '../util/variable-util'
-// import VariableGenerator from './variable-store/variable-generator'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
@@ -15,10 +14,15 @@ const getNewContextState = () => {
 class VariableStore extends Store {
 	constructor() {
 		super('variableStore')
+
+		Dispatcher.on({
+			'variables:addContext': payload => {
+				this._addMultiple(payload.value.context, payload.value.variables)
+			}
+		})
 	}
 
 	_addMultiple(context, values) {
-		console.log('add mult', context, values, this)
 		values.forEach(({ id, value }) => {
 			const [ownerId, varName] = id.split(':')
 			this._add(context, ownerId, varName, value)
@@ -62,7 +66,6 @@ class VariableStore extends Store {
 			}
 		}
 
-		// this._addVariablesForModel('practice', variableState)
 		this._addMultiple('practice', variableValues)
 	}
 
