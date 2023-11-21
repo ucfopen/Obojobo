@@ -7,8 +7,6 @@ import FocusUtil from '../util/focus-util'
 import NavStore from '../stores/nav-store'
 
 import QuestionResponseSendStates from './question-store/question-response-send-states'
-import VariableUtil from '../util/variable-util'
-import VariableStore from './variable-store'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
@@ -274,7 +272,6 @@ class QuestionStore extends Store {
 				assessmentId,
 				attemptId,
 				sendResponseImmediately
-				// variableState: VariableUtil.getVariableStateSummary(VariableStore.getState())
 			}
 		}
 

@@ -361,7 +361,8 @@ describe('AssessmentStateHelpers', () => {
 			value: {
 				assessmentId: 'mockAssessmentId',
 				attemptId: 'mockAttemptId',
-				questions: [{ id: 'question1' }, { id: 'question2' }]
+				questions: [{ id: 'question1' }, { id: 'question2' }],
+				state: {}
 			}
 		}
 
@@ -396,7 +397,8 @@ describe('AssessmentStateHelpers', () => {
 				questionResponses: [
 					{ questionId: 'question1', response: true },
 					{ questionId: 'question2', response: { ids: ['mockNodeId1'] } }
-				]
+				],
+				state: {}
 			}
 		}
 

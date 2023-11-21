@@ -26,13 +26,16 @@ class AssessmentReviewView extends React.Component {
 		//  exist for all attempts
 		// the variable store should prevent duplicates on its own
 		this.props.attempts.forEach(attempt => {
-			const attemptContext = `assessmentReview:${attempt.id}`
-			Dispatcher.trigger('variables:addContext', {
-				value: {
-					context: attemptContext,
-					variables: attempt.state.variables
-				}
-			})
+			// attempt.state should always exist, but dodge errors just in case it doesn't
+			if (attempt.state && attempt.state.variables) {
+				const attemptContext = `assessmentReview:${attempt.id}`
+				Dispatcher.trigger('variables:addContext', {
+					value: {
+						context: attemptContext,
+						variables: attempt.state.variables
+					}
+				})
+			}
 		})
 	}
 

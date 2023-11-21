@@ -11,7 +11,7 @@ const codeNodeParser = node => {
 	const varsXML = processVars(node.content.variables)
 	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<Code${attrs}${id}>` + textGroupXML + triggersXML + objectivesXML + varsXML `</Code>`
+	return `<Code${attrs}${id}>` + textGroupXML + triggersXML + objectivesXML + varsXML + `</Code>`
 }
 
 module.exports = codeNodeParser

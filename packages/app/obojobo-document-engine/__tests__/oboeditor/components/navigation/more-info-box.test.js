@@ -5,6 +5,9 @@ import rtr from 'react-test-renderer'
 import MoreInfoBox from 'src/scripts/oboeditor/components/navigation/more-info-box'
 import ObjectiveProvider from 'src/scripts/oboeditor/components//objectives/objective-provider'
 
+import FeatureFlags from 'src/scripts/common/util/feature-flags'
+jest.mock('src/scripts/common/util/feature-flags')
+
 import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
 jest.mock('src/scripts/oboeditor/util/clipboard-util')
 import ModalUtil from 'src/scripts/common/util/modal-util'
@@ -154,7 +157,34 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('More Info Box with variables', () => {
+	test('More Info Box without variables - feature flag enabled', () => {
+		FeatureFlags.is = jest.fn().mockReturnValueOnce(true)
+
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		const targets = component.find('.triggers')
+		expect(targets.length).toBe(2)
+		expect(targets.at(0).text()).toEqual('Triggers:')
+		expect(targets.at(1).text()).toEqual('Variables:')
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box with variables - feature flag not enabled', () => {
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
@@ -172,6 +202,40 @@ describe('MoreInfoBox', () => {
 			.find('button')
 			.at(0)
 			.simulate('click')
+
+		const targets = component.find('.triggers')
+		expect(targets.length).toBe(1)
+		expect(targets.at(0).text()).toEqual('Triggers:')
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box with variables - feature flag enabled', () => {
+		FeatureFlags.is = jest.fn().mockReturnValueOnce(true)
+
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{
+					variables: [{ name: 'mockVar1' }, { name: 'mockVar2' }]
+				}}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		const targets = component.find('.triggers')
+		expect(targets.length).toBe(2)
+		expect(targets.at(0).text()).toEqual('Triggers:')
+		// we happen to know what this should be based on the mocks, but this is kind of magical
+		expect(targets.at(1).text()).toEqual('Variables:$mockVar1, $mockVar2')
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -676,6 +740,8 @@ describe('MoreInfoBox', () => {
 	})
 
 	test('More Info Box opens the showVariablesModal', () => {
+		FeatureFlags.is = jest.fn().mockReturnValueOnce(true)
+
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
@@ -694,7 +760,7 @@ describe('MoreInfoBox', () => {
 
 		component
 			.find('button')
-			.at(3)
+			.at(5)
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()

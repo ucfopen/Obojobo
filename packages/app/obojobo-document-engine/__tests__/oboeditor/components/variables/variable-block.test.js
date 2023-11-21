@@ -474,4 +474,30 @@ describe('VariableBlock', () => {
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('VariableBlock renders error count', () => {
+		const variable = {
+			name: 'g',
+			type: 'pick-list',
+			value: '33, 3, 4, 55, 23, 444',
+			ordered: 'false',
+			chooseMax: '4',
+			chooseMin: '4',
+			errors: { key1: true, key2: true }
+		}
+
+		const component = shallow(
+			<VariableBlock
+				variable={variable}
+				index={0}
+				currSelect={0}
+				creatingVariable={false}
+				onClickVarible={jest.fn()}
+			/>
+		)
+
+		const errorCount = component.find('.error-count')
+		expect(errorCount.length).toBe(1)
+		expect(errorCount.at(0).text()).toBe('2 issues')
+	})
 })

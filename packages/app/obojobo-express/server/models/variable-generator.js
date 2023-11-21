@@ -1,3 +1,16 @@
+// ideally we could import the list of constants defined in the document engine
+// unfortunately they're exported in a way Node doesn't like because JavaScript is stupid
+// revisit this when JavaScript is less stupid
+const STATIC_VALUE = 'static-value'
+const RANDOM_NUMBER = 'random-number'
+const STATIC_LIST = 'static-list'
+const RANDOM_LIST = 'random-list'
+const RANDOM_SEQUENCE = 'random-sequence'
+const PICK_ONE = 'pick-one'
+const PICK_LIST = 'pick-list'
+
+const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
+
 const getParsedRange = range => {
 	if (typeof range === 'undefined' || range === null) return null
 
@@ -15,8 +28,6 @@ const getParsedRange = range => {
 }
 
 const getParsedRangeFromSingleValue = value => {
-	if (typeof value === 'undefined' || value === null) return null
-
 	return {
 		min: value,
 		isMinInclusive: true,
@@ -25,105 +36,28 @@ const getParsedRangeFromSingleValue = value => {
 	}
 }
 
-// replaceDict is an object of possibile replacements for `value`.
-// For example, if replaceDict = { '$highest_score':100 } and `value` is '$highest_score' then
-// `value` will be replaced with 100.
-// nonParsedValueOrValues is a value or an array of values that won't be parsed by parseFloat.
-// If `value` is one of these values then `value` is not parsed and simply returned.
-// For example, if nonParsedValueOrValues is `[null, undefined]` and `value` is null
-// then null is returned.
-const tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) => {
-	let nonParsedValues
-
-	if (!(nonParsedValueOrValues instanceof Array)) {
-		nonParsedValues = [nonParsedValueOrValues]
-	} else {
-		nonParsedValues = nonParsedValueOrValues
-	}
-
-	for (const placeholder in replaceDict) {
-		if (value === placeholder) {
-			value = replaceDict[placeholder]
-			break
-		}
-	}
-
-	// If the value is an allowed non-numeric value then we don't parse it
-	// and simply return it as is
-	if (nonParsedValues.indexOf(value) > -1) return value
-
-	const parsedValue = parseFloat(value)
-
-	if (!Number.isFinite(parsedValue) && parsedValue !== Infinity && parsedValue !== -Infinity) {
-		throw new Error(`Unable to parse "${value}": Got "${parsedValue}" - Unsure how to proceed`)
-	}
-
-	return parsedValue
-}
-
-const isValueInRange = (value, range, replaceDict) => {
-	// By definition a value is not inside a null range
-	if (range === null) return false
-
-	let isMinRequirementMet, isMaxRequirementMet
-
-	const min = tryGetParsedFloat(range.min, replaceDict)
-	const max = tryGetParsedFloat(range.max, replaceDict)
-
-	if (range.isMinInclusive) {
-		isMinRequirementMet = value >= min
-	} else {
-		isMinRequirementMet = value > min
-	}
-
-	if (range.isMaxInclusive) {
-		isMaxRequirementMet = value <= max
-	} else {
-		isMaxRequirementMet = value < max
-	}
-
-	return isMinRequirementMet && isMaxRequirementMet
-}
-
-const shuffle = array => {
-	let m = array.length
-	let t
-	let i
-
-	// While there remain elements to shuffle…
-	while (m) {
-		// Pick a remaining element…
-		i = Math.floor(Math.random() * m--)
-
-		// And swap it with the current element.
-		t = array[m]
-		array[m] = array[i]
-		array[i] = t
-	}
-
-	return array
-}
-
-module.exports = shuffle
-
 const parse = s => s.split(',')
 
 const getRange = rangeString => {
 	const range = getParsedRange(rangeString)
 
-	if (!range.isMinInclusive || !range.isMaxInclusive) {
-		throw 'Range ' + rangeString + ' must be inclusive!'
+	if (!range) {
+		throw `Range '${rangeString}' is invalid!`
 	}
 
-	if (range.min > range.max) {
-		throw 'Range ' + rangeString + ' is inverted'
+	if (!range.isMinInclusive || !range.isMaxInclusive) {
+		throw `Range '${rangeString}' must be inclusive!`
 	}
 
 	const min = parseFloat(range.min)
 	const max = parseFloat(range.max)
 
 	if (!Number.isFinite(min) || !Number.isFinite(max)) {
-		throw 'Range ' + rangeString + ' has non-numeric values'
+		throw `Range '${rangeString}' has non-numeric values!`
+	}
+
+	if (min > max) {
+		throw `Range '${rangeString}' is inverted!`
 	}
 
 	return [min, max]
@@ -132,12 +66,13 @@ const getRange = rangeString => {
 const getPosIntRange = rangeString => {
 	const [min, max] = getRange(rangeString)
 
+	// max < 0 should not be reachable since getRange will throw before it gets here
 	if (min < 0 || max < 0) {
-		throw 'Range ' + rangeString + ' must be positive!'
+		throw `Range '${rangeString}' must be positive!`
 	}
 
 	if (parseInt(min, 10) !== min || parseInt(max, 10) !== max) {
-		throw 'Range ' + rangeString + ' must be int values only'
+		throw `Range '${rangeString}' must be int values only!`
 	}
 
 	return [min, max]
@@ -147,63 +82,41 @@ const getPosNonZeroIntRange = rangeString => {
 	const [min, max] = getPosIntRange(rangeString)
 
 	if (min < 1 || max < 1) {
-		throw 'Range ' + rangeString + ' values must be non-zero!'
+		throw `Range '${rangeString}' values must be non-zero!`
 	}
 
 	return [min, max]
 }
 
 class VariableGenerator {
-	// generate(defs) {
-	// 	const generated = defs.reduce(
-	// 		(acc, def) => acc.concat(this.generateOne(def)),
-	// 		[]
-	// 	)
-
-	// 	const table = {}
-	// 	generated.forEach(g => {
-	// 		if (table[g.name]) {
-	// 			throw 'Duplicate variable definition!'
-	// 		}
-
-	// 		table[g.name] = g.value
-	// 	})
-
-	// 	return table
-	// }
-
 	generateOne(def) {
 		let value = null
 
 		switch (def.type) {
-			case 'random-list':
+			case RANDOM_LIST:
 				value = this.getRandomList(def)
 				break
 
-			case 'random-sequence':
+			case RANDOM_SEQUENCE:
 				value = this.getRandomSequence(def)
 				break
 
-			case 'random-number':
+			case RANDOM_NUMBER:
 				value = this.getRandomNumber(def)
 				break
 
-			case 'pick-one':
+			case PICK_ONE:
 				value = this.getPickOne(def)
 				break
 
-			case 'pick-list':
+			case PICK_LIST:
 				value = this.getPickList(def)
 				break
 
-			case 'static-value':
-			case 'static-list':
+			case STATIC_VALUE:
+			case STATIC_LIST:
 				value = def.value
 				break
-
-			// case 'fn':
-			// 	value = parse(def)
-			// 	break
 
 			default:
 				throw 'Unexpected type!'
@@ -275,37 +188,6 @@ class VariableGenerator {
 		return this.pickMany(parse(def.value), chooseMin, chooseMax, Boolean(def.ordered))
 	}
 
-	// getSet(def) {
-	// 	const names = {}
-	// 	def.values.forEach(arr => {
-	// 		arr.forEach(childDef => {
-	// 			if (childDef.type === 'set') {
-	// 				throw 'Unable to nest sets!'
-	// 			}
-
-	// 			if (!names[childDef.name]) {
-	// 				names[childDef.name] = 0
-	// 			}
-
-	// 			names[childDef.name]++
-	// 		})
-	// 	})
-
-	// 	const nameCounts = Object.values(names)
-	// 	const expectedCount = nameCounts[0]
-	// 	nameCounts.forEach(c => {
-	// 		if (c !== expectedCount) {
-	// 			throw 'Variable mismatch inside set!'
-	// 		}
-	// 	})
-
-	// 	const chosenDefs = this.pickOne(def.values)
-
-	// 	const results = chosenDefs.map(this.generateOne)
-
-	// 	return results
-	// }
-
 	rand(min, max, decimals = 0) {
 		if (min > max) {
 			throw 'Min cannot be above max!'
@@ -315,12 +197,10 @@ class VariableGenerator {
 			throw 'Decimals must be >= 0!'
 		}
 
-		// debugger
-
 		return parseFloat((Math.random() * (max - min) + min).toFixed(decimals))
 	}
 
-	generateRandomArray(size, valueMin, valueMax, decimalsMin, decimalsMax, unique = false) {
+	generateRandomArray(size, valueMin, valueMax, decimalsMin, decimalsMax, unique) {
 		const list = []
 
 		while (list.length < size) {
@@ -338,13 +218,9 @@ class VariableGenerator {
 		return list[this.rand(0, list.length - 1)]
 	}
 
-	pickMany(list, sizeMin, sizeMax, ordered = false) {
+	pickMany(list, sizeMin, sizeMax, ordered) {
 		if (sizeMin > list.length || sizeMax > list.length) {
 			throw 'min or max cannot be larger than the size of the list!'
-		}
-
-		if (sizeMin > sizeMax) {
-			throw 'min cannot be larger than max!'
 		}
 
 		const size = this.rand(sizeMin, sizeMax)

@@ -30,7 +30,7 @@ const startAttempt = (req, res) => {
 				attemptHistory: null,
 				numAttemptsTaken: null,
 				questionUsesMap: null,
-				variables: req.currentVisit.state.variables ?? null,
+				variables: req.currentVisit.state ? req.currentVisit.state.variables ?? null : null,
 				resourceLinkId: req.currentVisit.resource_link_id
 			}
 

@@ -49,6 +49,13 @@ describe('api visits route', () => {
 	let mockSession
 	let app
 
+	const standardYellMock = () => {
+		return jest
+			.fn()
+			.mockResolvedValueOnce({ document: 'mock-document' })
+			.mockResolvedValueOnce()
+	}
+
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
@@ -61,7 +68,9 @@ describe('api visits route', () => {
 			id: validUUID(),
 			is_preview: false,
 			draft_content_id: validUUID(),
-			resource_link_id: '12345'
+			resource_link_id: '12345',
+			updateState: jest.fn(),
+			state: {}
 		}
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
 
@@ -212,7 +221,10 @@ describe('api visits route', () => {
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce(),
+			yell: jest
+				.fn()
+				.mockResolvedValueOnce()
+				.mockResolvedValueOnce(),
 			contentId: validUUID()
 		}
 		return request(app)
@@ -232,7 +244,10 @@ describe('api visits route', () => {
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce(),
+			yell: jest
+				.fn()
+				.mockResolvedValueOnce()
+				.mockResolvedValueOnce(),
 			contentId: 'some-invalid-content-id'
 		}
 
@@ -261,7 +276,7 @@ describe('api visits route', () => {
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' }
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			yell: standardYellMock(),
 			contentId: validUUID()
 		}
 		return request(app)
@@ -278,6 +293,7 @@ describe('api visits route', () => {
 			  "lti": Object {
 			    "lisOutcomeServiceUrl": null,
 			  },
+			  "variables": Array [],
 			  "visitId": "00000000-0000-0000-0000-000000000000",
 			}
 		`)
@@ -302,7 +318,7 @@ describe('api visits route', () => {
 		viewerState.get.mockResolvedValueOnce('view state')
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			yell: standardYellMock(),
 			contentId: validUUID()
 		}
 		return request(app)
@@ -333,7 +349,7 @@ describe('api visits route', () => {
 		viewerState.get.mockResolvedValueOnce('view state')
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			yell: standardYellMock(),
 			contentId: validUUID()
 		}
 		return request(app)
@@ -355,7 +371,7 @@ describe('api visits route', () => {
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			yell: standardYellMock(),
 			contentId: validUUID()
 		}
 		return request(app)
@@ -373,8 +389,8 @@ describe('api visits route', () => {
 			})
 	})
 
-	test('/start yells internal:startVisit and respond with success', () => {
-		expect.assertions(4)
+	test('/start yells internal:startVisit and internal:generateVariables and respond with success', () => {
+		expect.assertions(5)
 		// resolve ltiLaunch lookup
 		const launch = {
 			reqVars: {
@@ -389,7 +405,7 @@ describe('api visits route', () => {
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			yell: standardYellMock(),
 			contentId: validUUID()
 		}
 		return request(app)
@@ -398,12 +414,13 @@ describe('api visits route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(mockCurrentDocument.yell).toHaveBeenCalledTimes(1)
+				expect(mockCurrentDocument.yell).toHaveBeenCalledTimes(2)
 				expect(mockCurrentDocument.yell.mock.calls[0][0]).toBe('internal:startVisit')
+				expect(mockCurrentDocument.yell.mock.calls[1][0]).toBe('internal:generateVariables')
 			})
 	})
 
-	test('visit:start event created', () => {
+	test('visit:start event created, no variables', () => {
 		expect.assertions(3)
 		// resolve ltiLaunch lookup
 		const launch = {
@@ -419,7 +436,7 @@ describe('api visits route', () => {
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			yell: standardYellMock(),
 			contentId: validUUID()
 		}
 
@@ -435,11 +452,128 @@ describe('api visits route', () => {
 					actorTime: '2016-09-22T16:57:14.500Z',
 					draftId: validUUID(),
 					contentId: validUUID(),
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					ip: '::ffff:127.0.0.1',
 					isPreview: false,
 					metadata: {},
-					payload: { visitId: validUUID() },
+					payload: {
+						variables: [],
+						visitId: validUUID()
+					},
+					userId: 99,
+					visitId: validUUID()
+				})
+			})
+	})
+
+	test('visit:start event created, new variables', () => {
+		expect.assertions(5)
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'howtune.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+
+		const mockVariables = [{ key: 'val1' }, { key: 'val2' }]
+
+		mockCurrentUser = { id: 99 }
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest
+				.fn()
+				.mockResolvedValueOnce({ document: 'mock-document' })
+				.mockImplementationOnce((call, req, res, variableListRef) => {
+					variableListRef.push(...mockVariables)
+					return Promise.resolve()
+				}),
+			contentId: validUUID()
+		}
+
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+
+				expect(mockCurrentVisit.updateState).toHaveBeenCalledTimes(1)
+				expect(mockCurrentVisit.updateState).toHaveBeenCalledWith({ variables: mockVariables })
+
+				expect(insertEvent).toBeCalledWith({
+					action: 'visit:start',
+					actorTime: '2016-09-22T16:57:14.500Z',
+					draftId: validUUID(),
+					contentId: validUUID(),
+					eventVersion: '1.1.0',
+					ip: '::ffff:127.0.0.1',
+					isPreview: false,
+					metadata: {},
+					// payload: { visitId: req.currentVisit.id, variables: variableValues },
+					payload: {
+						variables: mockVariables,
+						visitId: validUUID()
+					},
+					userId: 99,
+					visitId: validUUID()
+				})
+			})
+	})
+
+	test('visit:start event created, existing variables', () => {
+		expect.assertions(4)
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'howtune.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+
+		const mockVariables = [{ key: 'val1' }, { key: 'val2' }]
+
+		mockCurrentVisit.state.variables = mockVariables
+
+		mockCurrentUser = { id: 99 }
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest
+				.fn()
+				.mockResolvedValueOnce({ document: 'mock-document' })
+				.mockResolvedValueOnce(),
+			contentId: validUUID()
+		}
+
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+
+				expect(mockCurrentVisit.updateState).toHaveBeenCalledTimes(0)
+
+				expect(insertEvent).toBeCalledWith({
+					action: 'visit:start',
+					actorTime: '2016-09-22T16:57:14.500Z',
+					draftId: validUUID(),
+					contentId: validUUID(),
+					eventVersion: '1.1.0',
+					ip: '::ffff:127.0.0.1',
+					isPreview: false,
+					metadata: {},
+					// payload: { visitId: req.currentVisit.id, variables: variableValues },
+					payload: {
+						variables: mockVariables,
+						visitId: validUUID()
+					},
 					userId: 99,
 					visitId: validUUID()
 				})

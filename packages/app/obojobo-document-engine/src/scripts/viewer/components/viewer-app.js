@@ -397,24 +397,8 @@ export default class ViewerApp extends React.Component {
 		})
 	}
 
-	markSub(model, variable, value) {
-		if (!this.subs[model.get('id')]) {
-			this.subs[model.get('id')] = {}
-		}
-		this.subs[model.get('id')][variable] = value
-
-		if (model.parent) {
-			this.markSub(model.parent, variable, value)
-		}
-	}
-
 	getTextForVariable(event, variable, textModel) {
-		if (!this.subs) {
-			this.subs = {}
-			window.__subs = this.subs
-		}
-
-		if (variable.indexOf('$') === 0) {
+		if (variable && variable.indexOf('$') === 0) {
 			variable = variable.substr(1)
 
 			let value = null
@@ -437,7 +421,6 @@ export default class ViewerApp extends React.Component {
 			}
 
 			if (value !== null) {
-				this.markSub(textModel, variable, value)
 				event.text = value
 			}
 

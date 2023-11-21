@@ -39,7 +39,7 @@ class DraftNode {
 				})
 			} catch (e) {
 				//eslint-disable-next-line no-console
-				console.error('Variable generation error: ', e)
+				console.error('Variable generation error:', e)
 				variableValues.push({
 					id: this.node.id + ':' + v.name,
 					value: ''
@@ -70,8 +70,6 @@ class DraftNode {
 
 	yell(event) {
 		let promises = []
-
-		// console.log(this.node, 'yell', this._listeners)
 
 		if (this._listeners) {
 			const eventListener = this._listeners.get(event)

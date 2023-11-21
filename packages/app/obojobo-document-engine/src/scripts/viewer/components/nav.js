@@ -109,7 +109,10 @@ export default class Nav extends React.Component {
 	}
 
 	renderLabel(label, sourceModel) {
-		return this.substituteLabelVariables((label instanceof StyleableText ? label.value : label), sourceModel)
+		return this.substituteLabelVariables(
+			label instanceof StyleableText ? label.value : label,
+			sourceModel
+		)
 	}
 
 	substituteLabelVariables(label, sourceModel) {

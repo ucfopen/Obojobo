@@ -625,8 +625,6 @@ class VisualEditor extends React.Component {
 			)
 		}
 
-		// console.log('renderLeaf', props)
-
 		if (leaf.highlight) {
 			return (
 				<span className="todo--highlight" data-var={leaf.variable} {...attributes}>

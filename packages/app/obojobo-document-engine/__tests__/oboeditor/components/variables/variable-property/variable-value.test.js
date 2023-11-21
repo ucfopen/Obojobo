@@ -12,6 +12,13 @@ describe('VariableValue', () => {
 		}
 
 		const component = shallow(<VariableValue variable={variable} onChange={jest.fn()} />)
+		// inputs should not indicate errors - static-value types are inputs, not selects
+		expect(
+			component
+				.find('.variable-values--group input')
+				.at(0)
+				.props().className
+		).toBe('variable-property--input-item')
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -184,10 +191,22 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={jest.fn()} />)
 
 		const inputs = component.find('input')
+		// inputs should not indicate errors - random-sequence types are selects, not inputs
 		expect(inputs.at(0).props().value).toEqual(variable.sizeMin)
+		expect(inputs.at(0).props().className).toBe('variable-property--input-item')
 		expect(inputs.at(1).props().value).toEqual(variable.sizeMax)
+		expect(inputs.at(1).props().className).toBe('variable-property--input-item')
 		expect(inputs.at(2).props().value).toEqual(variable.start)
+		expect(inputs.at(2).props().className).toBe('variable-property--input-item')
 		expect(inputs.at(3).props().value).toEqual(variable.step)
+		expect(inputs.at(3).props().className).toBe('variable-property--input-item')
+		expect(
+			component
+				.find('select')
+				.at(0)
+				.props().className
+		).toBe('variable-property--select-item')
+		expect(component.find('.invalid-value-warning').length).toBe(0)
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -467,5 +486,76 @@ describe('VariableValue', () => {
 		inputs.at(2).simulate('blur', { target: { name: 'chooseMax', value: '1' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '1' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '1' } })
+	})
+
+	test('renders with errors, no type match', () => {
+		const variable = {
+			name: 'e',
+			step: '1.1',
+			type: 'random-sequence',
+			sizeMin: '1',
+			sizeMax: '10',
+			start: '10',
+			seriesType: 'geometric',
+			errors: {
+				irrelevantProp: true
+			}
+		}
+
+		const component = shallow(<VariableValue variable={variable} onChange={jest.fn()} />)
+
+		const inputs = component.find('input')
+		// inputs should not indicate errors - random-sequence types are selects, not inputs
+		expect(inputs.at(0).props().value).toEqual(variable.sizeMin)
+		expect(inputs.at(0).props().className).toBe('variable-property--input-item')
+		expect(inputs.at(1).props().value).toEqual(variable.sizeMax)
+		expect(inputs.at(1).props().className).toBe('variable-property--input-item')
+		expect(inputs.at(2).props().value).toEqual(variable.start)
+		expect(inputs.at(2).props().className).toBe('variable-property--input-item')
+		expect(inputs.at(3).props().value).toEqual(variable.step)
+		expect(inputs.at(3).props().className).toBe('variable-property--input-item')
+		expect(
+			component
+				.find('select')
+				.at(0)
+				.props().className
+		).toBe('variable-property--select-item')
+	})
+
+	// bonus test here to make sure the seriesType invalid option warning appears
+	test('renders with errors, type matches', () => {
+		const variable = {
+			name: 'e',
+			step: '1.1',
+			type: 'random-sequence',
+			sizeMin: '1',
+			sizeMax: '10',
+			start: '10',
+			seriesType: 'invalid',
+			errors: {
+				sizeMin: true,
+				seriesType: true
+			}
+		}
+
+		const component = shallow(<VariableValue variable={variable} onChange={jest.fn()} />)
+
+		const inputs = component.find('input')
+		// inputs should not indicate errors - random-sequence types are selects, not inputs
+		expect(inputs.at(0).props().value).toEqual(variable.sizeMin)
+		expect(inputs.at(0).props().className).toBe('variable-property--input-item has-error')
+		expect(inputs.at(1).props().value).toEqual(variable.sizeMax)
+		expect(inputs.at(1).props().className).toBe('variable-property--input-item')
+		expect(inputs.at(2).props().value).toEqual(variable.start)
+		expect(inputs.at(2).props().className).toBe('variable-property--input-item')
+		expect(inputs.at(3).props().value).toEqual(variable.step)
+		expect(inputs.at(3).props().className).toBe('variable-property--input-item')
+		expect(
+			component
+				.find('select')
+				.at(0)
+				.props().className
+		).toBe('variable-property--select-item has-error')
+		expect(component.find('.invalid-value-warning').length).toBe(1)
 	})
 })

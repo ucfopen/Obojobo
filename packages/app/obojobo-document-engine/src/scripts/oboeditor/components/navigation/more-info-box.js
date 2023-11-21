@@ -146,7 +146,7 @@ class MoreInfoBox extends React.Component {
 		this.setState(prevState => ({ content: changeFn(prevState.content, enabled) }))
 	}
 
-	onSave(close=false) {
+	onSave() {
 		// Save the internal content to the editor state
 		const error =
 			this.props.saveContent(this.props.content, this.state.content) ||
@@ -154,7 +154,7 @@ class MoreInfoBox extends React.Component {
 		if (!error) {
 			this.setState({ error })
 			this.props.markUnsaved()
-			if (close) this.close()
+			this.close()
 			return
 		}
 

@@ -15,6 +15,16 @@ describe('Variable Properties', () => {
 		const component = shallow(
 			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
 		)
+		// no errors, shouldn't show error class
+		expect(
+			component
+				.find('.variable-property')
+				.at(0)
+				.childAt(0)
+				.props()
+				.className.trim()
+		).toEqual('group-item')
+
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -113,5 +123,55 @@ describe('Variable Properties', () => {
 
 		expect(onChange).toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('VariableProperty renders with errors, but not name', () => {
+		const variable = {
+			name: 'static_var',
+			type: 'static-value',
+			value: '3',
+			errors: {
+				prop: true
+			}
+		}
+
+		const deleteVariable = jest.fn()
+		const component = shallow(
+			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
+		)
+		// no errors, shouldn't show error class
+		expect(
+			component
+				.find('.variable-property')
+				.at(0)
+				.childAt(0)
+				.props()
+				.className.trim()
+		).toEqual('group-item')
+	})
+
+	test('VariableProperty renders with errors name error', () => {
+		const variable = {
+			name: 'static_var',
+			type: 'static-value',
+			value: '3',
+			errors: {
+				prop: true,
+				name: true
+			}
+		}
+
+		const deleteVariable = jest.fn()
+		const component = shallow(
+			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
+		)
+		// no errors, shouldn't show error class
+		expect(
+			component
+				.find('.variable-property')
+				.at(0)
+				.childAt(0)
+				.props().className
+		).toEqual('group-item has-error')
 	})
 })
