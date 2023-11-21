@@ -240,7 +240,11 @@ class AssessmentStateHelpers {
 		}
 
 		this.setAssessmentQuestionBank(assessmentModel, assessment.questions)
-		this.setAssessmentAttemptVariables(assessmentModel, assessment.attemptId, assessment.state.variables)
+		this.setAssessmentAttemptVariables(
+			assessmentModel,
+			assessment.attemptId,
+			assessment.state.variables
+		)
 		this.updateNavContextAndMenu(assessmentModel, assessment.attemptId)
 		this.signalAttemptStarted(assessmentModel)
 

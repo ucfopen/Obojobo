@@ -327,13 +327,13 @@ const VariableValues = props => {
 							<option value="geometric">Geometric (Multiply)</option>
 						</select>
 					</label>
-					{variable.errors
-					&& variable.errors.seriesType
-					&& (! SERIES_TYPE_OPTIONS.includes(variable.seriesType)) ?
-					<span className="invalid-value-warning">
-						Invalid option &quot;{variable.seriesType}&quot;
-					</span>
-					: null}
+					{variable.errors &&
+					variable.errors.seriesType &&
+					!SERIES_TYPE_OPTIONS.includes(variable.seriesType) ? (
+						<span className="invalid-value-warning">
+							Invalid option &quot;{variable.seriesType}&quot;
+						</span>
+					) : null}
 
 					<label className="variable-values--group">
 						<label>Step by: </label>

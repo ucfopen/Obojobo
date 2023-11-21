@@ -14,7 +14,15 @@ const listNodeParser = node => {
 	const varsXML = processVars(node.content.variables)
 	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<List${attrs}${id}>` + listStyles + textGroupXML + triggersXML + objectivesXML + varsXML + `</List>`
+	return (
+		`<List${attrs}${id}>` +
+		listStyles +
+		textGroupXML +
+		triggersXML +
+		objectivesXML +
+		varsXML +
+		`</List>`
+	)
 }
 
 const listStylesParser = listStyles => {

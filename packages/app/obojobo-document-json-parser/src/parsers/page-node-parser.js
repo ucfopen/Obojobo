@@ -11,7 +11,12 @@ const pageNodeParser = (node, childrenParser) => {
 	const objectivesXML = processObjectives(node.content.objectives)
 
 	return (
-		`<Page${attrs}${id}>` + childrenParser(node.children) + triggersXML + objectivesXML + varsXML + `</Page>`
+		`<Page${attrs}${id}>` +
+		childrenParser(node.children) +
+		triggersXML +
+		objectivesXML +
+		varsXML +
+		`</Page>`
 	)
 }
 

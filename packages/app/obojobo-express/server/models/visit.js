@@ -168,11 +168,11 @@ class Visit {
 			SET state=$[state]
 			WHERE id=$[visitId]
 		`,
-			{visitId: this.id, state}
-		)
-		.then(() => {
-			this.state = state
-		})
+				{ visitId: this.id, state }
+			)
+			.then(() => {
+				this.state = state
+			})
 	}
 }
 

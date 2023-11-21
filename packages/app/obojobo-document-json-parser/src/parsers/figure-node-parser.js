@@ -11,7 +11,9 @@ const figureNodeParser = node => {
 	const varsXML = processVars(node.content.variables)
 	const objectivesXML = processObjectives(node.content.objectives)
 
-	return `<Figure${attrs}${id}>` + textGroupXML + triggersXML + objectivesXML + varsXML + `</Figure>`
+	return (
+		`<Figure${attrs}${id}>` + textGroupXML + triggersXML + objectivesXML + varsXML + `</Figure>`
+	)
 }
 
 module.exports = figureNodeParser

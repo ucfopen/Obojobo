@@ -13,7 +13,12 @@ const actionButtonNodeParser = node => {
 	const objectivesXML = processObjectives(node.content.objectives)
 
 	return (
-		`<ActionButton${attrs}${id}>` + textGroupXML + triggersXML + objectivesXML + varsXML + `</ActionButton>`
+		`<ActionButton${attrs}${id}>` +
+		textGroupXML +
+		triggersXML +
+		objectivesXML +
+		varsXML +
+		`</ActionButton>`
 	)
 }
 
