@@ -1,6 +1,11 @@
 const AssessmentModel = require('./models/assessment')
 const insertEvent = require('obojobo-express/server/insert_event')
-const { logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
+const {
+	logAndRespondToUnexpected,
+	getFullQuestionsFromDraftTree,
+	getVariablesUsedInNode,
+	getVariableOwner
+} = require('./util')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -16,7 +21,9 @@ const startAttempt = (req, res) => {
 	let assessmentProperties
 	let assessmentNode
 
+	const variableValues = []
 	return Promise.resolve()
+		.then(() => req.currentDocument.yell('internal:generateVariables', req, res, variableValues))
 		.then(() => {
 			attemptState
 			assessmentProperties = {
@@ -30,7 +37,7 @@ const startAttempt = (req, res) => {
 				attemptHistory: null,
 				numAttemptsTaken: null,
 				questionUsesMap: null,
-				variables: req.currentVisit.state ? req.currentVisit.state.variables ?? null : null,
+				variables: variableValues,
 				resourceLinkId: req.currentVisit.resource_link_id
 			}
 
@@ -72,7 +79,7 @@ const startAttempt = (req, res) => {
 				throw new Error(ERROR_IMPORT_USED)
 			}
 
-			attemptState = getState(assessmentProperties)
+			attemptState = getState(req.currentDocument, assessmentProperties)
 			const toClientPromises = getSendToClientPromises(
 				assessmentProperties.oboNode,
 				attemptState,
@@ -126,21 +133,47 @@ const startAttempt = (req, res) => {
 		})
 }
 
-const getState = assessmentProperties => {
+const getState = (draftTree, assessmentProperties) => {
 	assessmentProperties.questionUsesMap = loadChildren(assessmentProperties)
 
 	let chosenAssessment = assessmentProperties.questionBank.buildAssessment(
 		assessmentProperties.questionUsesMap
 	)
 
-	// The state of an assessment can be stored using only the id and type
-	// of nodes in the assessment. The remaining data can be retrieved
-	// from the draftTree
+	// most assessment state data can be pulled from the draft tree when necessary,
+	//  but the chosen questions (and their variables, and the owners of those variables)
+	//  needs to be tracked independently
 	chosenAssessment = chosenAssessment.map(node => {
-		return {
+		const chosen = {
 			type: node.type,
 			id: node.id
 		}
+
+		// for questions, identify any variables that need substitution and
+		//  store references to the correct variables along with the type and id
+		if (node.type === QUESTION_NODE_TYPE) {
+			// since questions do not have their full ancestor history available during
+			//  assessment attempts/reviews, we need to determine their variables' owners
+			//  ahead of time to make sure they're substituted correctly
+			// start by finding all variables used in each question
+			const questionVars = getVariablesUsedInNode(node)
+
+			if (questionVars) {
+				// now find the nearest ancestor that owns each variable
+				// assuming the variables are in the shorthand format
+				// variables already in the long format or owned by the question itself
+				//  will not require references in the future, they should just work
+				const ownerReferences = questionVars
+					.map(varName => {
+						return getVariableOwner(draftTree, node, varName.slice(1))
+					})
+					.filter(e => e) // to filter out any null or undefined
+
+				if (ownerReferences.length) chosen.varRef = ownerReferences
+			}
+		}
+
+		return chosen
 	})
 
 	return {

@@ -13,6 +13,10 @@ jest.mock(
 	{ virtual: true }
 )
 
+jest.mock('./util', () => ({ getFullQuestionsFromDraftTree: jest.fn() }), { virtual: false })
+
+const { getFullQuestionsFromDraftTree } = require('./util')
+
 const resumeAttempt = require('./attempt-resume')
 const insertEvents = require('./insert-events')
 const attemptStart = require('./attempt-start')
@@ -36,6 +40,11 @@ describe('Resume Attempt Route', () => {
 	})
 
 	test('returns attempt with chosen questions, questions do not have responses', async () => {
+		// ordinarily this would return objects - doesn't matter here, we're not testing that
+		getFullQuestionsFromDraftTree.mockReturnValueOnce([
+			'mockQuestionObject1',
+			'mockQuestionObject2'
+		])
 		expect.hasAssertions()
 
 		const questionNode1 = {
@@ -67,9 +76,7 @@ describe('Resume Attempt Route', () => {
 		const mockAssessmentNode = {
 			draftTree: {
 				// called to get question nodes by id
-				getChildNodeById: jest.fn().mockReturnValue({
-					toObject: () => 'mock-to-object'
-				})
+				getChildNodeById: jest.fn()
 			}
 		}
 
@@ -94,6 +101,12 @@ describe('Resume Attempt Route', () => {
 			'mockRemoteAddress'
 		)
 
+		expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
+		expect(getFullQuestionsFromDraftTree).toHaveBeenCalledWith(
+			mockAssessmentNode.draftTree,
+			mockAttempt.state.chosen
+		)
+
 		expect(result).toMatchInlineSnapshot(`
 		Object {
 		  "assessmentId": "mockAssessmentId",
@@ -103,8 +116,8 @@ describe('Resume Attempt Route', () => {
 		  "number": "mockAttemptNumber",
 		  "questionResponses": Array [],
 		  "questions": Array [
-		    "mock-to-object",
-		    "mock-to-object",
+		    "mockQuestionObject1",
+		    "mockQuestionObject2",
 		  ],
 		  "state": Object {
 		    "chosen": Array [
@@ -127,6 +140,11 @@ describe('Resume Attempt Route', () => {
 	})
 
 	test('returns attempt with chosen questions, questions have responses', async () => {
+		// ordinarily this would return objects - doesn't matter here, we're not testing that
+		getFullQuestionsFromDraftTree.mockReturnValueOnce([
+			'mockQuestionObject1',
+			'mockQuestionObject2'
+		])
 		expect.hasAssertions()
 
 		const questionNode1 = {
@@ -218,8 +236,8 @@ describe('Resume Attempt Route', () => {
 		    },
 		  ],
 		  "questions": Array [
-		    "mock-to-object",
-		    "mock-to-object",
+		    "mockQuestionObject1",
+		    "mockQuestionObject2",
 		  ],
 		  "state": Object {
 		    "chosen": Array [
