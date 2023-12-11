@@ -11,6 +11,7 @@ export default {
 	SEND_RESPONSES_FAILED: 'sendResponsesFailed',
 	END_ATTEMPT_FAILED: 'endAttemptFailed',
 	STARTING_ATTEMPT: 'startingAttempt',
+	SAVING_ATTEMPT: 'savingAttempt',
 	RESUMING_ATTEMPT: 'resumingAttempt',
 	SENDING_RESPONSES: 'sendingResponses',
 	ENDING_ATTEMPT: 'endingAttempt',

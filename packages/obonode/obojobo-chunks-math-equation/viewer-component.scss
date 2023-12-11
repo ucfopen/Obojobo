@@ -25,12 +25,18 @@
 		left: 0;
 		top: 0;
 		font-size: 0.8em;
-		color: lighten($color-text, 30%); // stylelint-disable-line sh-waqar/declaration-use-variable
+		color: lighten(
+			$color-text,
+			30%
+		); // stylelint-disable-line scale-unlimited/declaration-strict-value
 
 		&::before {
 			content: 'Equation ';
 			font-style: italic;
-			color: lighten($color-text, 50%); // stylelint-disable-line sh-waqar/declaration-use-variable
+			color: lighten(
+				$color-text,
+				50%
+			); // stylelint-disable-line scale-unlimited/declaration-strict-value
 		}
 	}
 

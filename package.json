@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"name": "obojobo-next",
-	"version": "16.0.1",
+	"version": "17.0.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"license": "AGPL-3.0-only",

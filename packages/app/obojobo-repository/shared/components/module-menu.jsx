@@ -15,16 +15,24 @@ const ModuleMenu = props => {
 		props.showModuleMore(props)
 	}
 
+	const onSyncButtonClick = () => {
+		props.showModuleSync(props)
+	}
+
+	// accessLevel should always be set - to be safe, don't show an edit button if it isn't
 	return (
 		<div className="repository--module-icon--menu-wrapper">
 			<div className={`repository--module-icon--menu ${props.className || ''}`}>
 				<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
 					Preview
 				</ButtonLink>
-				{props.accessLevel !== MINIMAL && (
+				{!props.readOnly && props.accessLevel && props.accessLevel !== MINIMAL && (
 					<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
 						Edit
 					</ButtonLink>
+				)}
+				{props.readOnly && props.accessLevel && props.accessLevel !== MINIMAL && (
+					<Button onClick={onSyncButtonClick}>Synchronize</Button>
 				)}
 				{props.accessLevel === FULL && <Button onClick={onShare}>Share</Button>}
 				<hr />

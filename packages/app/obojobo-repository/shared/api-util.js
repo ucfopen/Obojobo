@@ -1,8 +1,8 @@
 const API = require('obojobo-document-engine/src/scripts/viewer/util/api')
 
 const ViewerAPI = {
-	copyModule(draftId) {
-		return API.post(`/api/drafts/${draftId}/copy`).then(result => {
+	copyModule(draftId, readOnly = false) {
+		return API.post(`/api/drafts/${draftId}/copy`, { readOnly }).then(result => {
 			if (result.status === 200) {
 				window.location.assign('/dashboard')
 			} else if (result.status === 401) {

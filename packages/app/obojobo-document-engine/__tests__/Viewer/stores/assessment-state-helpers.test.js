@@ -82,6 +82,44 @@ describe('AssessmentStateHelpers', () => {
 		spy.mockRestore()
 	})
 
+	test('saveAttemptState returns true when good response returns', async () => {
+		AssessmentAPI.saveAttempt.mockResolvedValue({ status: 'ok' })
+
+		const mockState = { mockProp: 'mockVal' }
+
+		const result = await AssessmentStateHelpers.saveAttemptState(
+			'mockAssessmentId',
+			'mockAttemptId',
+			mockState
+		)
+
+		expect(AssessmentAPI.saveAttempt).toHaveBeenCalledWith({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockDraftId',
+			state: mockState,
+			visitId: 'mockVisitId'
+		})
+		expect(result).toBe(true)
+	})
+
+	test('saveAttemptState throws an error when bad response returns', async () => {
+		AssessmentAPI.saveAttempt.mockResolvedValue({
+			status: 'error',
+			value: { message: 'mockErrorMessage' }
+		})
+
+		try {
+			await AssessmentStateHelpers.saveAttemptState('mockAssessmentId', 'mockAttemptId'),
+				{
+					mockProp: 'mockVal'
+				}
+		} catch (e) {
+			expect(e).toEqual(Error('mockErrorMessage'))
+		}
+	})
+
 	test('resumeAttempt calls AssessmentStateHelpers.onAttemptStarted when good response returned', async () => {
 		AssessmentAPI.resumeAttempt.mockResolvedValue({ status: 'ok', value: { questions: [] } })
 		const spy = jest.spyOn(AssessmentStateHelpers, 'onAttemptStarted').mockReturnValue(true)
@@ -318,7 +356,7 @@ describe('AssessmentStateHelpers', () => {
 		expect.assertions(1)
 	})
 
-	test('onAttemptStarted creates OboModels, updates nav context, rebuilds the nav menu, navigates to the assessment, runs the onStartAttempt trigger and fires the assessment:attemptStarted event', () => {
+	test('onAttemptStarted creates OboModels, updates nav context, rebuilds the nav menu, navigates to the assessment, runs the onStartAttempt trigger and fires the assessment:attemptStarted event (no question responses)', () => {
 		const res = {
 			value: {
 				assessmentId: 'mockAssessmentId',
@@ -340,11 +378,59 @@ describe('AssessmentStateHelpers', () => {
 		expect(navUtilSetContextSpy).toHaveBeenCalledWith('assessment:mockAssessmentId:mockAttemptId')
 		expect(navUtilRebuildMenuSpy).toHaveBeenCalled()
 		expect(navUtilGoToSpy).toHaveBeenCalledWith('mockAssessmentId')
+		expect(QuestionStore.getOrCreateContextState).not.toHaveBeenCalled()
+		expect(QuestionStore.updateStateByContext).not.toHaveBeenCalled()
 
 		navUtilSetContextSpy.mockRestore()
 		navUtilRebuildMenuSpy.mockRestore()
 		navUtilGoToSpy.mockRestore()
 		dispatcherTriggerSpy.mockRestore()
+	})
+
+	test('onAttemptStarted creates OboModels, updates nav context, rebuilds the nav menu, navigates to the assessment, runs the onStartAttempt trigger and fires the assessment:attemptStarted event (with question responses)', () => {
+		const res = {
+			value: {
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId',
+				questions: [{ id: 'question1' }, { id: 'question2' }],
+				questionResponses: [
+					{ questionId: 'question1', response: true },
+					{ questionId: 'question2', response: { ids: ['mockNodeId1'] } }
+				]
+			}
+		}
+
+		const navUtilSetContextSpy = jest.spyOn(NavUtil, 'setContext')
+		const navUtilRebuildMenuSpy = jest.spyOn(NavUtil, 'rebuildMenu')
+		const navUtilGoToSpy = jest.spyOn(NavUtil, 'goto')
+		const dispatcherTriggerSpy = jest.spyOn(Dispatcher, 'trigger')
+		const questionStoreContextStateSpy = jest
+			.spyOn(QuestionStore, 'getOrCreateContextState')
+			.mockReturnValue({
+				responseMetadata: {},
+				responses: {},
+				viewedQuestions: {}
+			})
+
+		AssessmentStateHelpers.onAttemptStarted(res)
+
+		const assessmentModel = OboModel.models.mockAssessmentId
+		expect(assessmentModel.children.at(1).children.reset).toHaveBeenCalled()
+		expect(assessmentModel.children.at(1).children.add).toHaveBeenCalledTimes(2)
+		expect(navUtilSetContextSpy).toHaveBeenCalledWith('assessment:mockAssessmentId:mockAttemptId')
+		expect(navUtilRebuildMenuSpy).toHaveBeenCalled()
+		expect(navUtilGoToSpy).toHaveBeenCalledWith('mockAssessmentId')
+		expect(QuestionStore.getOrCreateContextState).toHaveBeenCalledWith(
+			'assessment:mockAssessmentId:mockAttemptId'
+		)
+		// TODO: check the object specifically to make sure everything was carried over correctly?
+		expect(QuestionStore.updateStateByContext).toHaveBeenCalledTimes(1)
+
+		navUtilSetContextSpy.mockRestore()
+		navUtilRebuildMenuSpy.mockRestore()
+		navUtilGoToSpy.mockRestore()
+		dispatcherTriggerSpy.mockRestore()
+		questionStoreContextStateSpy.mockRestore()
 	})
 
 	test('getUpdatedAssessmentData returns the expected object', () => {

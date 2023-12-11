@@ -18,11 +18,17 @@ const buildQueryWhere = (
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
+			drafts_metadata.value AS read_only,
 			${selectSQL}
 			'visual' AS editor
 		FROM drafts
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
+		LEFT JOIN drafts_metadata
+			ON (
+				drafts_metadata.draft_id = drafts.id
+				AND drafts_metadata."key" = 'read_only'
+			)
 		${joinSQL}
 		WHERE drafts.deleted = ${deleted}
 		AND ${whereSQL}
@@ -49,7 +55,8 @@ class DraftSummary {
 		id,
 		first_name,
 		last_name,
-		access_level
+		access_level,
+		read_only
 	}) {
 		this.draftId = draft_id
 		this.title = title
@@ -61,6 +68,7 @@ class DraftSummary {
 		this.editor = editor
 		this.json = content
 		this.revisionId = id
+		this.readOnly = read_only
 
 		if (first_name && last_name) this.userFullName = `${first_name} ${last_name}`
 		if (revision_count) this.revisionCount = Number(revision_count)
@@ -81,6 +89,22 @@ class DraftSummary {
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				throw logger.logError('DraftSummary fetchById Error', error)
+			})
+	}
+
+	static fetchByIdMoreRecentThan(id, targetTime) {
+		return db
+			.oneOrNone(
+				buildQueryWhere(`drafts.id = $[id]
+				AND drafts_content.created_at > $[targetTime]`),
+				{ id, targetTime }
+			)
+			.then(res => {
+				if (res) return DraftSummary.resultsToObjects(res)
+				return null
+			})
+			.catch(error => {
+				throw logger.logError('DraftSummary fetchByIdMoreRecentThan Error', error)
 			})
 	}
 

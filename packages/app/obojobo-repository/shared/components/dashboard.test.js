@@ -49,6 +49,9 @@ jest.mock('./module-permissions-dialog', () => props => {
 jest.mock('./module-options-dialog', () => props => {
 	return <mock-ModuleOptionsDialog {...props}></mock-ModuleOptionsDialog>
 })
+jest.mock('./module-sync-dialog', () => props => {
+	return <mock-ModuleSyncDialog {...props}></mock-ModuleSyncDialog>
+})
 jest.mock('./assessment-score-data-dialog', () => props => {
 	return <mock-AssessmentScoreDataDialog {...props}></mock-AssessmentScoreDataDialog>
 })
@@ -71,6 +74,7 @@ import CollectionRenameDialog from './collection-rename-dialog'
 import ModuleManageCollectionsDialog from './module-manage-collections-dialog'
 import ModulePermissionsDialog from './module-permissions-dialog'
 import ModuleOptionsDialog from './module-options-dialog'
+import ModuleSyncDialog from './module-sync-dialog'
 import VersionHistoryDialog from './version-history-dialog'
 import AssessmentScoreDataDialog from './assessment-score-data-dialog'
 import MessageDialog from './message-dialog'
@@ -1723,6 +1727,61 @@ describe('Dashboard', () => {
 		})
 		expect(component.root.findAllByProps({ className: notLoadingClass }).length).toBe(1)
 		expect(component.root.findAllByProps({ className: isLoadingClass }).length).toBe(0)
+	})
+
+	test('renders "Module Sync" dialog and adjusts callbacks for each mode', () => {
+		dashboardProps.syncModuleUpdates = jest.fn()
+		dashboardProps.dialog = 'module-sync'
+		dashboardProps.mode = MODE_RECENT
+		let component
+		act(() => {
+			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		expectDialogToBeRendered(component, ModuleSyncDialog, 'Module Sync')
+		const dialogComponent = component.root.findByType(ModuleSyncDialog)
+
+		// ordinarily the draft ID would be provided inside the dialog
+		dialogComponent.props.syncModuleUpdates('mockDraftId')
+		expectMethodToBeCalledOnceWith(dashboardProps.syncModuleUpdates, [
+			'mockDraftId',
+			{ mode: MODE_RECENT }
+		])
+
+		dialogComponent.props.onClose()
+		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
+
+		dashboardProps.mode = MODE_ALL
+		act(() => {
+			component.update(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		dialogComponent.props.syncModuleUpdates('mockDraftId')
+		expectMethodToBeCalledOnceWith(dashboardProps.syncModuleUpdates, [
+			'mockDraftId',
+			{ mode: MODE_ALL }
+		])
+
+		dialogComponent.props.onClose()
+		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
+
+		dashboardProps.mode = MODE_COLLECTION
+		dashboardProps.collection = {
+			id: 'mockCollectionId',
+			title: 'Mock Collection Title'
+		}
+		act(() => {
+			component.update(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		dialogComponent.props.syncModuleUpdates('mockDraftId')
+		expectMethodToBeCalledOnceWith(dashboardProps.syncModuleUpdates, [
+			'mockDraftId',
+			{ collectionId: 'mockCollectionId', mode: MODE_COLLECTION }
+		])
+
+		dialogComponent.props.onClose()
+		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
 	})
 
 	test('renders "Module Access" dialog and adjusts callbacks for each mode', () => {
