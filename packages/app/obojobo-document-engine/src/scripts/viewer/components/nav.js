@@ -1,5 +1,4 @@
 import './nav.scss'
-import './notification.scss'
 
 import Common from '../../common'
 import FocusUtil from '../util/focus-util'
@@ -228,7 +227,6 @@ export default class Nav extends React.Component {
 		const list = NavUtil.getOrderedList(navState)
 		const lockEl = this.getLockEl(navState.locked)
 		const isNavInaccessible = navState.disabled || !navState.open
-
 		const className =
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
@@ -283,6 +281,7 @@ export default class Nav extends React.Component {
 						return null
 					})}
 				</ul>
+
 				<Logo />
 			</nav>
 		)
