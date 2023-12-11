@@ -95,7 +95,7 @@ router
 				logger.log(
 					`VISIT: Start visit success for visitId="${req.currentVisit.id}", draftId="${req.currentDocument.draftId}", userId="${req.currentUser.id}"`
 				)
-				
+
 				// Build lti data for return
 				const lti = { lis_outcome_service_url: null }
 				if (req.currentVisit.is_preview === false) {
