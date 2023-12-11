@@ -2,9 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import '../../../obojobo-document-engine/src/scripts/viewer/components/notification.scss'
 
-//notifications are stored through cookies
 const Notification = () => {
-	//stores array of notification objects as state variable
 	const [notifications, setNotifications] = useState([])
 	const [hiddenNotifications, setHiddenNotifications] = useState([])
 
@@ -27,10 +25,9 @@ const Notification = () => {
 		}
 	}, [])
 
-	//removes the notification by key from the list of those to be displayed and writes that list back into the cookie
+	//when user clicks exit button, remove notification from state and add to hidden notifications
 	function onClickExitNotification(key) {
 		setHiddenNotifications(prevHiddenNotifications => [...prevHiddenNotifications, key])
-
 		setNotifications(prevNotifications => prevNotifications.filter((_, index) => index !== key))
 	}
 
@@ -48,12 +45,13 @@ const Notification = () => {
 		)
 	}
 
-	if (notifications && notifications.length >= 1) {
-		//rewrite to cookie to update the list of notifications to be displayed
+	//rewrite to cookie to remove notifications that have been hidden
+	if (hiddenNotifications && hiddenNotifications.length >= 1) {
 		const jsonNotifications = JSON.stringify(notifications)
 		const cookieString = `${encodeURIComponent(jsonNotifications)};`
-		document.cookie = 'notifications= ' + cookieString
-
+		document.cookie = 'notifications=' + cookieString
+	}
+	if (notifications && notifications.length >= 1) {
 		return (
 			<div className="notification-wrapper">
 				{notifications.map((notifications, key) =>
@@ -62,7 +60,6 @@ const Notification = () => {
 			</div>
 		)
 	} else {
-		//document.cookie = 'notifications= '  //clears the cookie //how is document not defined here? //fix for exit last notification
 		return null
 	}
 }

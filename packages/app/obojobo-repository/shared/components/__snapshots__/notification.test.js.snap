@@ -132,31 +132,6 @@ exports[`Notification component loads notifications from cookies on mount 1`] = 
 
 exports[`Notification component renders null when document.cookie is null 1`] = `null`;
 
-exports[`Notification component renders null when there are no notifications but document.cookie is not null 1`] = `
-<div
-  className="notification-wrapper"
->
-  <div
-    className="notification-banner"
-  >
-    <div
-      className="notification-header"
-    >
-      <h1>
-        Test Title
-      </h1>
-      <button
-        className="notification-exit-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-    <p>
-      Test Notification
-    </p>
-  </div>
-</div>
-`;
+exports[`Notification component renders null when there are no notifications but document.cookie is not null 1`] = `null`;
 
 exports[`Notification component renders without crashing 1`] = `null`;

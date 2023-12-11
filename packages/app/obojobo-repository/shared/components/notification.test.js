@@ -26,7 +26,7 @@ describe('Notification component', () => {
 
 		expect(tree).toMatchSnapshot()
 		expect(document.cookie).toBe(
-			'notifications= %5B%7B%22key%22%3A1%2C%22text%22%3A%22Test%20Notification%22%2C%22title%22%3A%22Test%20Title%22%7D%5D;'
+			'notifications=[{"key":1,"text":"Test Notification","title":"Test Title"}]'
 		)
 	})
 
@@ -59,7 +59,7 @@ describe('Notification component', () => {
 		tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 		expect(document.cookie).toBe(
-			'notifications= %5B%7B%22key%22%3A2%2C%22text%22%3A%22Notification2%22%2C%22title%22%3A%22Title2%22%7D%5D;'
+			'notifications=%5B%7B%22key%22%3A2%2C%22text%22%3A%22Notification2%22%2C%22title%22%3A%22Title2%22%7D%5D;'
 		)
 	})
 
