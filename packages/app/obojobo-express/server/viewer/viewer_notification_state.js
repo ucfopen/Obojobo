@@ -33,10 +33,10 @@ function getRecentNotifications(date) {
 function setLastLogin(userId, today) {
 	return db.none(
 		`
-			INSERT INTO users (last_login)
-			VALUES ($[today])]
-			ON CONFLICT (last_login) DO UPDATE
-			WHERE id == $[userId]
+			INSERT INTO users (id, last_login)
+			VALUES ($[userId], $[today])
+			ON CONFLICT (id) DO UPDATE
+			SET last_login = EXCLUDED.last_login
 		`,
 		{
 			userId,

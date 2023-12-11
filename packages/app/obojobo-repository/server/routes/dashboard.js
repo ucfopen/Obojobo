@@ -43,14 +43,17 @@ const renderDashboard = (req, res, options) => {
 	let moduleCount = 0
 	let pageTitle = 'Dashboard'
 
-	return getUserModuleCount(req.currentUser.id)
+	return req
+		.getNotifications(req, res)
+		.then(() => {
+			return getUserModuleCount(req.currentUser.id)
+		})
 		.then(count => {
 			moduleCount = count
 			return CollectionSummary.fetchByUserId(req.currentUser.id)
 		})
 		.then(collections => {
 			myCollections = collections
-
 			switch (options.mode) {
 				case MODE_COLLECTION:
 					pageTitle = 'View Collection'

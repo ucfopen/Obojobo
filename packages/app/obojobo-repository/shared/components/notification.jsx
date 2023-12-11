@@ -2,48 +2,44 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import '../../../obojobo-document-engine/src/scripts/viewer/components/notification.scss'
 
+//notifications are stored through cookies
 const Notification = () => {
-	var [notification, setNotification] = useState([])
+	//stores array of notification objects as state variable
+	const [notifications, setNotifications] = useState([])
+	const [hiddenNotifications, setHiddenNotifications] = useState([])
+
 	useEffect(() => {
 		if (document && document.cookie) {
-			setNotification(getNotification(document.cookie))
+			const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
+
+			let parsedValue
+			cookiePropsRaw.forEach(c => {
+				const parts = c.trim().split('=')
+				if (parts[0] === 'notifications') {
+					parsedValue = JSON.parse(parts[1])
+				}
+			})
+
+			const parsedNotifications = parsedValue
+			setNotifications(parsedNotifications)
+		} else {
+			//there is nothing to render
 		}
 	}, [])
 
-	const getNotification = cookie => {
-		const cookiePropsRaw = decodeURIComponent(cookie).split(';')
-		let parsedValue
-		cookiePropsRaw.forEach(c => {
-			const parts = c.trim().split('=')
-			if (parts[0] === 'notifications') {
-				parsedValue = JSON.parse(parts[1])
-			}
-		})
-		//array of objects
-		return parsedValue
+	//removes the notification by key from the list of those to be displayed and writes that list back into the cookie
+	function onClickExitNotification(key) {
+		setHiddenNotifications(prevHiddenNotifications => [...prevHiddenNotifications, key])
+
+		setNotifications(prevNotifications => prevNotifications.filter((_, index) => index !== key))
 	}
 
-	function onClickExitNotification(event, key) {
-		//remove that notification from cookie... or just reset last login and reload
-		var notificationList = notification
-		if (key == 0) {
-			notificationList.splice(key, 1)
-		} else {
-			notificationList.splice(key, 1)
-		}
-		setNotification(notificationList)
-		//setCookie('notifications', notificationList);
-	}
-
-	const renderNotifications = (text, title, key) => {
+	const renderNotification = (key, text, title) => {
 		return (
-			<div className="notification-banner">
+			<div className={`notification-banner`} key={key}>
 				<div className="notification-header">
 					<h1>{title}</h1>
-					<button
-						onClick={event => onClickExitNotification(event, key)}
-						className="notification-exit-button"
-					>
+					<button onClick={() => onClickExitNotification(key)} className="notification-exit-button">
 						X
 					</button>
 				</div>
@@ -52,15 +48,21 @@ const Notification = () => {
 		)
 	}
 
-	if (notification) {
+	if (notifications && notifications.length >= 1) {
+		//rewrite to cookie to update the list of notifications to be displayed
+		const jsonNotifications = JSON.stringify(notifications)
+		const cookieString = `${encodeURIComponent(jsonNotifications)};`
+		document.cookie = 'notifications= ' + cookieString
+
 		return (
 			<div className="notification-wrapper">
-				{notification.map((notification, key) =>
-					renderNotifications(notification.text, notification.title, key)
+				{notifications.map((notifications, key) =>
+					renderNotification(key, notifications.text, notifications.title)
 				)}
 			</div>
 		)
 	} else {
+		//document.cookie = 'notifications= '  //clears the cookie //how is document not defined here? //fix for exit last notification
 		return null
 	}
 }

@@ -91,7 +91,6 @@ router
 					visitId: req.currentVisit.id
 				})
 			})
-			.then(req.getNotifications())
 
 			.then(() => {
 				logger.log(

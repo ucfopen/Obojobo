@@ -21,6 +21,10 @@ p {
 	border-width: 0.5em;
 }
 
+.notification-banner.hidden {
+	display: none;
+}
+
 .notification-banner:hover {
 	background-color: $focus-pink;
 	color: $poppin-pink;
@@ -45,6 +49,7 @@ p {
 	background-color: $white;
 	border: none;
 	border-radius: 0.5em;
+	font-size: 0.8cm;
 }
 
 .notification-exit-button:hover {

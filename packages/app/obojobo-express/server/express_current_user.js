@@ -58,16 +58,21 @@ const saveSessionPromise = req => {
 	})
 }
 
-const getNotifications = (req, res) => {
-	return Promise.all([viewerState.get(req.currentUser.id)])
+//retrieve notifications from the database and set them in the cookie
+const getNotifications = async (req, res) => {
+	return Promise.all([viewerState.get(req.currentUserId)])
 		.then(() => viewerNotificationState.getRecentNotifications(req.currentUser.lastLogin))
 		.then(result => {
 			if (result) {
 				return result.map(notifications => notifications.id)
 			}
-			return 0
+			return [0]
 		})
-		.then(ids => viewerNotificationState.getNotifications(ids))
+		.then(ids => {
+			if (ids.some(id => id !== 0)) {
+				return viewerNotificationState.getNotifications(ids.filter(id => id !== 0))
+			}
+		})
 		.then(result => {
 			if (result) {
 				const parsedNotifications = result.map(notifications => ({
@@ -76,16 +81,13 @@ const getNotifications = (req, res) => {
 				}))
 				res.cookie('notifications', JSON.stringify(parsedNotifications))
 			}
+			return 0
 		})
-	//reset last login not working rn
-	/*
 		.then(() => {
 			const today = new Date()
-			//console.log(today)
 			req.currentUser.lastLogin = today
 			viewerNotificationState.setLastLogin(req.currentUser.id, today)
 		})
-		*/
 }
 
 module.exports = (req, res, next) => {

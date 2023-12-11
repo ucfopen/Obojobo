@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notification component handles click on exit button and updates state and cookie 1`] = `
+<div
+  className="notification-wrapper"
+>
+  <div
+    className="notification-banner"
+  >
+    <div
+      className="notification-header"
+    >
+      <h1>
+        Title1
+      </h1>
+      <button
+        className="notification-exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <p>
+      Notification1
+    </p>
+  </div>
+  <div
+    className="notification-banner"
+  >
+    <div
+      className="notification-header"
+    >
+      <h1>
+        Title2
+      </h1>
+      <button
+        className="notification-exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <p>
+      Notification2
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Notification component handles click on exit button and updates state and cookie 2`] = `
+<div
+  className="notification-wrapper"
+>
+  <div
+    className="notification-banner"
+  >
+    <div
+      className="notification-header"
+    >
+      <h1>
+        Title2
+      </h1>
+      <button
+        className="notification-exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <p>
+      Notification2
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Notification component hides the notification on exit button click 1`] = `
+<div
+  className="notification-wrapper"
+>
+  <div
+    className="notification-banner"
+  >
+    <div
+      className="notification-header"
+    >
+      <h1>
+        Test Title
+      </h1>
+      <button
+        className="notification-exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <p>
+      Test Notification
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Notification component hides the notification on exit button click 2`] = `null`;
+
+exports[`Notification component loads notifications from cookies on mount 1`] = `
+<div
+  className="notification-wrapper"
+>
+  <div
+    className="notification-banner"
+  >
+    <div
+      className="notification-header"
+    >
+      <h1>
+        Test Title
+      </h1>
+      <button
+        className="notification-exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <p>
+      Test Notification
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Notification component renders null when document.cookie is null 1`] = `null`;
+
+exports[`Notification component renders null when there are no notifications but document.cookie is not null 1`] = `
+<div
+  className="notification-wrapper"
+>
+  <div
+    className="notification-banner"
+  >
+    <div
+      className="notification-header"
+    >
+      <h1>
+        Test Title
+      </h1>
+      <button
+        className="notification-exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <p>
+      Test Notification
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Notification component renders without crashing 1`] = `null`;

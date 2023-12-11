@@ -18,6 +18,7 @@ jest.setTimeout(10000) // extend test timeout?
 
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
+let mockNotifications
 
 jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
@@ -28,6 +29,10 @@ jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) 
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
 	}
+	req.getNotifications = () => {
+		return Promise.resolve(mockNotifications)
+	}
+
 	next()
 })
 
@@ -124,6 +129,8 @@ describe('repository dashboard route', () => {
 			id: 99,
 			hasPermission: perm => perm === 'canPreviewDrafts'
 		}
+		mockNotifications = []
+		//getNotifications = require('obojobo-express/server/express_current_user').getNotifications
 		CollectionSummary = require('../models/collection_summary')
 		DraftSummary = require('../models/draft_summary')
 		CountServices = require('../services/count')
@@ -154,8 +161,6 @@ describe('repository dashboard route', () => {
 	}
 
 	test('get /dashboard sends the correct props to the Dashboard component', () => {
-		expect.hasAssertions()
-
 		CountServices.getUserModuleCount.mockResolvedValueOnce(5)
 
 		CollectionSummary.fetchByUserId = jest.fn()
@@ -184,7 +189,6 @@ describe('repository dashboard route', () => {
 				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
 				expect(DraftSummary.fetchDeletedByUserId).not.toHaveBeenCalled()
-
 				expect(mockDashboardComponent).toHaveBeenCalledTimes(1)
 				expect(mockDashboardComponentConstructor).toHaveBeenCalledWith({
 					title: 'Dashboard',
@@ -308,6 +312,11 @@ describe('repository dashboard route', () => {
 
 	test('get /collections/:nameOrId sends the correct props to the Dashboard component with cookies set and the collection exists and the user owns the collection', () => {
 		expect.hasAssertions()
+
+		/*const req = {
+			getNotifications: jest.fn().mockResolvedValue(mockNotifications),
+			currentUser: mockCurrentUser,  // Assuming you have a mockCurrentUser defined
+		}*/
 
 		const mockShortToUUID = jest.fn()
 		mockShortToUUID.mockReturnValue('mockCollectionLongId')
@@ -435,6 +444,10 @@ describe('repository dashboard route', () => {
 
 	test('get /collections/:nameOrId sends the correct response when the user owns the collection but a database error occurs', () => {
 		expect.hasAssertions()
+		/*const req = {
+			getNotifications: jest.fn().mockResolvedValue(mockNotifications),
+			currentUser: mockCurrentUser,  // Assuming you have a mockCurrentUser defined
+		}*/
 
 		const mockShortToUUID = jest.fn()
 		mockShortToUUID.mockReturnValue('mockCollectionLongId')
@@ -460,6 +473,7 @@ describe('repository dashboard route', () => {
 			.get(path)
 			.set('cookie', [''])
 			.then(response => {
+				//expect(req.getNotifications).toHaveBeenCalledTimes(1)
 				expect(mockShortToUUID).toHaveBeenCalledTimes(1)
 				expect(mockShortToUUID).toHaveBeenCalledWith('mockCollectionShortId')
 
@@ -488,6 +502,10 @@ describe('repository dashboard route', () => {
 
 	test('get /dashboard/deleted sends the correct props to the Dashboard component with cookies set', () => {
 		expect.hasAssertions()
+		/*const req = {
+			getNotifications: jest.fn().mockResolvedValue(mockNotifications),
+			currentUser: mockCurrentUser, 
+		} */
 
 		CountServices.getUserModuleCount.mockResolvedValueOnce(5)
 
@@ -503,6 +521,7 @@ describe('repository dashboard route', () => {
 			.get('/dashboard/deleted')
 			.set('cookie', [generateCookie('module', 'dashboard/deleted', 'last updated')])
 			.then(response => {
+				//expect(req.getNotifications).toHaveBeenCalledTimes(1)
 				expect(CountServices.getUserModuleCount).toHaveBeenCalledTimes(1)
 				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
 

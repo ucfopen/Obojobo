@@ -39,11 +39,7 @@ exports[`PageLogin renders when given props 1`] = `
       <span
         data-react-props="{}"
         id="repository-notifications"
-      >
-        <div
-          className="notification-wrapper"
-        />
-      </span>
+      />
       <div
         className="layout--content"
       >
