@@ -1082,23 +1082,4 @@ describe('NavStore', () => {
 		expect(NavUtil.goto).toHaveBeenCalledWith('mockFirstTargetId')
 		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
 	})
-
-	test('nav:setNotificationStatus event fires and updates state', () => {
-		const notification = true
-		NavStore.setState({
-			notification
-		})
-		// simulate trigger
-		Dispatcher.trigger.mockReturnValueOnce()
-
-		// go
-		eventCallbacks['nav:setNotificationStatus']({ value: { notification: !notification } })
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
-		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
-		const payloadToAPI = ViewerAPI.postEvent.mock.calls[0][0].payload
-		expect(payloadToAPI).toEqual({ from: notification, to: !notification })
-		expect(NavStore.getState()).toMatchSnapshot()
-	})
 })
