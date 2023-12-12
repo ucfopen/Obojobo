@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import '../../../obojobo-document-engine/src/scripts/viewer/components/notification.scss'
+import './notification.scss'
 
 const Notification = () => {
 	const [notifications, setNotifications] = useState([])
@@ -37,7 +37,7 @@ const Notification = () => {
 				<div className="notification-header">
 					<h1>{title}</h1>
 					<button onClick={() => onClickExitNotification(key)} className="notification-exit-button">
-						X
+						x
 					</button>
 				</div>
 				<p>{text}</p>

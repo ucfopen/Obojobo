@@ -17,7 +17,7 @@ exports[`Notification component handles click on exit button and updates state a
         className="notification-exit-button"
         onClick={[Function]}
       >
-        X
+        x
       </button>
     </div>
     <p>
@@ -37,7 +37,7 @@ exports[`Notification component handles click on exit button and updates state a
         className="notification-exit-button"
         onClick={[Function]}
       >
-        X
+        x
       </button>
     </div>
     <p>
@@ -64,7 +64,7 @@ exports[`Notification component handles click on exit button and updates state a
         className="notification-exit-button"
         onClick={[Function]}
       >
-        X
+        x
       </button>
     </div>
     <p>
@@ -91,7 +91,7 @@ exports[`Notification component hides the notification on exit button click 1`] 
         className="notification-exit-button"
         onClick={[Function]}
       >
-        X
+        x
       </button>
     </div>
     <p>
@@ -120,7 +120,7 @@ exports[`Notification component loads notifications from cookies on mount 1`] = 
         className="notification-exit-button"
         onClick={[Function]}
       >
-        X
+        x
       </button>
     </div>
     <p>

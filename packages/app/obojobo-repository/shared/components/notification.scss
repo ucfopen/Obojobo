@@ -1,4 +1,4 @@
-@import '../../../scss/_includes.scss';
+@import '../../../obojobo-document-engine/src/scss/_includes.scss';
 
 $poppin-pink: #af1b5c;
 $focus-pink: #fbdae6;
@@ -48,8 +48,12 @@ p {
 	color: $poppin-pink;
 	background-color: $white;
 	border: none;
-	border-radius: 0.5em;
+	border-radius: 6em;
 	font-size: 0.8cm;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	padding-top: 0.1em;
+	padding-bottom: 0.3em;
 }
 
 .notification-exit-button:hover {
