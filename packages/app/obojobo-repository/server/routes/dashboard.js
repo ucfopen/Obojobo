@@ -54,6 +54,7 @@ const renderDashboard = (req, res, options) => {
 		})
 		.then(collections => {
 			myCollections = collections
+
 			switch (options.mode) {
 				case MODE_COLLECTION:
 					pageTitle = 'View Collection'
