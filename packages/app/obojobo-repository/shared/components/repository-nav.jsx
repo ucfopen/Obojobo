@@ -1,12 +1,16 @@
 require('./repository-nav.scss')
 
 const React = require('react')
-const { useState } = require('react')
 const Avatar = require('./avatar')
+const { check } = require('express-validator')
+const Notification = require('./notification.jsx').default
 
 const RepositoryNav = props => {
 	let timeOutId
-	const [isMenuOpen, setMenuOpen] = useState(false)
+	const [isMenuOpen, setMenuOpen] = React.useState(false)
+	const [isNotificationsOpen, setNotificationsOpen] = React.useState(false) // New state for notification
+	const [notificationsExist, setNotificationsExist] = React.useState(false)
+
 	const onCloseMenu = () => setMenuOpen(false)
 	const onToggleMenu = e => {
 		setMenuOpen(!isMenuOpen)
@@ -21,6 +25,31 @@ const RepositoryNav = props => {
 	const onFocusHandler = () => {
 		clearTimeout(timeOutId)
 	}
+	const onNotifications = () => {
+		setNotificationsOpen(!isNotificationsOpen)
+	}
+	//write an if notifications exist in the cookie
+
+	React.useEffect(() => {
+		if (document && document.cookie) {
+			const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
+
+			let parsedValue
+			cookiePropsRaw.forEach(c => {
+				const parts = c.trim().split('=')
+				if (parts[0] === 'notifications') {
+					parsedValue = JSON.parse(parts[1])
+				}
+			})
+
+			//if there are notifications, set notificationsExist to true
+			if (parsedValue && parsedValue.length >= 1) {
+				setNotificationsExist(true)
+			}
+		} else {
+			//there is nothing to render
+		}
+	}, [])
 
 	return (
 		<div
@@ -49,7 +78,12 @@ const RepositoryNav = props => {
 				{props.userId !== 0 ? (
 					<div className="repository--nav--current-user">
 						<button onClick={onToggleMenu}>
-							<div className="repository--nav--current-user--name">{props.displayName}</div>
+							<div onClick={onNotifications} className="repository--nav--current-user--name">
+								{props.displayName}
+
+								{notificationsExist && <div className="notification-indicator"></div>}
+							</div>
+
 							<Avatar
 								id={props.userId}
 								avatarUrl={props.avatarUrl}
@@ -73,6 +107,11 @@ const RepositoryNav = props => {
 					</div>
 				)}
 			</nav>
+			{isNotificationsOpen && (
+				<div className="popup">
+					<Notification />
+				</div>
+			)}
 		</div>
 	)
 }

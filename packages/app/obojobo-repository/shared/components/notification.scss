@@ -1,16 +1,8 @@
-@import '../../../obojobo-document-engine/src/scss/_includes.scss';
+@import '~styles/includes';
 
 $poppin-pink: #af1b5c;
 $focus-pink: #fbdae6;
 $white: white;
-
-h1 {
-	margin: 0;
-}
-
-p {
-	display: block;
-}
 
 .notification-banner {
 	background-color: $poppin-pink;
@@ -19,6 +11,38 @@ p {
 	border-radius: 0.5em;
 	margin: 0.1em;
 	border-width: 0.5em;
+
+	h1 {
+		margin: 0;
+	}
+
+	p {
+		display: block;
+	}
+
+	.notification-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+
+		.notification-exit-button {
+			color: $poppin-pink;
+			background-color: $white;
+			border: none;
+			border-radius: 6em;
+			font-size: 0.8cm;
+			padding-left: 0.5em;
+			padding-right: 0.5em;
+			padding-top: 0.1em;
+			padding-bottom: 0.3em;
+		}
+
+		.notification-exit-button:hover {
+			color: $focus-pink;
+			background-color: $poppin-pink;
+		}
+	}
 }
 
 .notification-banner.hidden {
@@ -30,33 +54,4 @@ p {
 	color: $poppin-pink;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
-}
-
-.dashboard {
-	margin: 0.1em;
-	border-width: 1em;
-}
-
-.notification-header {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.notification-exit-button {
-	color: $poppin-pink;
-	background-color: $white;
-	border: none;
-	border-radius: 6em;
-	font-size: 0.8cm;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-	padding-top: 0.1em;
-	padding-bottom: 0.3em;
-}
-
-.notification-exit-button:hover {
-	color: $focus-pink;
-	background-color: $poppin-pink;
 }

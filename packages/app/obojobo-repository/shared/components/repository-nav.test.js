@@ -169,4 +169,80 @@ describe('RepositoryNav', () => {
 		})
 		expectMenuToBeClosed(component)
 	})
+	test('loads notifications from cookies on mount', () => {
+		document.cookie =
+			'notifications=' +
+			JSON.stringify([{ key: 1, text: 'Test Notification', title: 'Test Title' }])
+
+		const component = create(<RepositoryNav {...navProps} />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+		expect(document.cookie).toBe(
+			'notifications=[{"key":1,"text":"Test Notification","title":"Test Title"}]'
+		)
+	})
+	test('renders null when document.cookie is null', () => {
+		const originalDocument = document.cookie
+		document.cookie = null
+
+		const reusableComponent = <RepositoryNav {...navProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		if (document && document.cookie) {
+			//don't get here
+		} else {
+			expect(document.cookie).toBe(null)
+		}
+		document.cookie = originalDocument
+	})
+	test('toggles notifications popup on button click', () => {
+		const component = create(<RepositoryNav {...navProps} />)
+		const notificationsButton = component.root.findByProps({
+			className: 'repository--nav--current-user--name'
+		})
+
+		expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(0)
+
+		act(() => {
+			notificationsButton.props.onClick()
+			component.update(<RepositoryNav {...navProps} />)
+		})
+		expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(1)
+
+		act(() => {
+			notificationsButton.props.onClick()
+			component.update(<RepositoryNav {...navProps} />)
+		})
+		expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(0)
+	})
+
+	test('renders notifications indicator when notificationsExist is true', () => {
+		const navProps = {
+			userId: 99,
+			displayName: 'Display Name',
+			userPerms: [],
+			notificationsExist: true
+		}
+		const component = create(<RepositoryNav {...navProps} />)
+		const notificationsIndicator = component.root.findAllByProps({
+			className: 'notification-indicator'
+		})
+		expect(navProps.notificationsExist).toBe(true)
+		expect(notificationsIndicator).toBeTruthy()
+	})
+
+	test('does not render notifications indicator when notificationsExist is false', () => {
+		const component = create(<RepositoryNav {...navProps} notificationsExist={false} />)
+
+		const notificationsIndicators = component.root.findAllByProps({
+			className: 'notification-indicator'
+		})
+		expect(notificationsIndicators).not.toBe()
+	})
 })

@@ -55,9 +55,7 @@ const LayoutDefault = props => (
 		</head>
 		<body className={props.className}>
 			<div className="layout--wrapper">
-				<span id="repository-notifications" data-react-props={'{}'}>
-					<Notification></Notification>
-				</span>
+				<span id="repository-notifications" data-react-props={'{}'}></span>
 				<div className="layout--content">{props.children}</div>
 				<div className="layout--footer">
 					<Footer />

@@ -1,12 +1,11 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
 import './notification.scss'
 
 const Notification = () => {
-	const [notifications, setNotifications] = useState([])
-	const [hiddenNotifications, setHiddenNotifications] = useState([])
+	const [notifications, setNotifications] = React.useState([])
+	const [hiddenNotifications, setHiddenNotifications] = React.useState([])
 
-	useEffect(() => {
+	React.useEffect(() => {
 		if (document && document.cookie) {
 			const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
 

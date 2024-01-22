@@ -87,6 +87,7 @@ exports[`PageHomepage renders when given props 1`] = `
               >
                 <div
                   className="repository--nav--current-user--name"
+                  onClick={[Function]}
                 >
                   firstName lastName
                 </div>

@@ -1,5 +1,7 @@
 @import '../../client/css/defaults';
 
+$poppin-pink: #af1b5c;
+
 .repository--section-wrapper {
 	max-width: $dimension-width;
 	margin: 0 auto;
@@ -118,6 +120,19 @@
 		height: 2.9em;
 		width: 2.9em;
 		margin: 0;
+	}
+
+	.notification-indicator {
+		background: $poppin-pink;
+		border-radius: 50%;
+		width: 15px;
+		height: 15px;
+		margin-left: 5px;
+	}
+
+	.repository--nav--current-user--name {
+		display: flex;
+		align-items: center;
 	}
 }
 
