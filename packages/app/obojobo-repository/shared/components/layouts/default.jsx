@@ -3,8 +3,6 @@ require('./default.scss')
 const React = require('react')
 const Footer = require('./footer')
 const Dedication = require('./dedication')
-const Notification = require('../notification.jsx').default
-
 const reactVersion = '16.13.1'
 
 const LayoutDefault = props => (
@@ -55,7 +53,6 @@ const LayoutDefault = props => (
 		</head>
 		<body className={props.className}>
 			<div className="layout--wrapper">
-				<span id="repository-notifications" data-react-props={'{}'}></span>
 				<div className="layout--content">{props.children}</div>
 				<div className="layout--footer">
 					<Footer />
