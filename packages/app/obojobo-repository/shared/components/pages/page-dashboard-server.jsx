@@ -10,7 +10,6 @@ const PageDashboardServer = props => (
 		className="repository--dashboard"
 		appScriptUrl={props.appJsUrl}
 		appCSSUrl={props.appCSSUrl}
-		id="react-layout-root"
 	>
 		<span id="react-hydrate-root" data-react-props={convertPropsToString(props)}>
 			{createCommonReactApp(Dashboard, propsToStore(DashboardReducer, props))}
