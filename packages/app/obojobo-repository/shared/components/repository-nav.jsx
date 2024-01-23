@@ -2,8 +2,7 @@ require('./repository-nav.scss')
 
 const React = require('react')
 const Avatar = require('./avatar')
-const { check } = require('express-validator')
-const Notification = require('./notification.jsx').default
+const Notification = require('./notification')
 
 const RepositoryNav = props => {
 	let timeOutId

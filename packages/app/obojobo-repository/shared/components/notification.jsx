@@ -1,5 +1,5 @@
-import React from 'react'
-import './notification.scss'
+const React = require('react')
+require('./notification.scss')
 
 const Notification = () => {
 	const [notifications, setNotifications] = React.useState([])
@@ -63,4 +63,4 @@ const Notification = () => {
 	}
 }
 
-export default Notification
+module.exports = Notification
