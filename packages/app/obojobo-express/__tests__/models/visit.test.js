@@ -221,4 +221,32 @@ describe('Visit Model', () => {
 			})
 		})
 	})
+
+	test('updateState updates with expected values', () => {
+		db.none.mockResolvedValueOnce()
+
+		// this one is an instant method rather than a static one, we'll need to create an instance
+		// obviously more props than this on a visit, but these are the only two we care about for this test
+		const thisVisit = new Visit({
+			id: 'mock-visit',
+			state: {}
+		})
+
+		const newState = {
+			key: 'val'
+		}
+
+		thisVisit.updateState(newState)
+
+		const queryString = `
+			UPDATE visits
+			SET state=$[state]
+			WHERE id=$[visitId]
+		`
+
+		expect(db.none).toHaveBeenCalledWith(queryString, {
+			visitId: 'mock-visit',
+			state: newState
+		})
+	})
 })

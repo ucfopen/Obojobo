@@ -6,6 +6,8 @@ import React from 'react'
 
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
+import VariableListModal from '../variables/variable-list-modal'
+import FeatureFlags from '../../../common/util/feature-flags'
 import ObjectiveListModal from '../objectives/objective-list-modal'
 import ObjectiveListView from '../objectives/objective-list-view'
 import objectivesContext from '../objectives/objective-context'
@@ -13,6 +15,8 @@ import objectivesContext from '../objectives/objective-context'
 const { Button, Switch } = Common.components
 const { TabTrap } = Common.components.modal
 const { ModalUtil } = Common.util
+
+const FEATURE_FLAG_EXPERIMENTAL_VARIABLES = 'experimental.variables'
 
 // convenience function to reduce function creation in render
 const stopPropagation = event => event.stopPropagation()
@@ -50,6 +54,7 @@ class MoreInfoBox extends React.Component {
 
 		this.showObjectiveModal = this.showObjectiveModal.bind(this)
 		this.showTriggersModal = this.showTriggersModal.bind(this)
+		this.showVariablesModal = this.showVariablesModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
 		this.closeObjectiveModal = this.closeObjectiveModal.bind(this)
 
@@ -207,18 +212,33 @@ class MoreInfoBox extends React.Component {
 		this.setState({ modalOpen: true })
 	}
 
+	showVariablesModal() {
+		// Prevent info box from closing when modal is opened
+		document.removeEventListener('mousedown', this.handleClick, false)
+		ModalUtil.show(<VariableListModal content={this.state.content} onClose={this.closeModal} />)
+		this.setState({ modalOpen: true })
+	}
+
 	// TriggerListModal.onClose is called w/ no arguments when canceled
 	// TriggerListModal.onClose is called w/ triggers when save+closed
+
 	closeModal(modalState) {
 		ModalUtil.hide()
 
 		if (!modalState) return // do not save changes
 
-		this.setState(prevState => ({
-			content: { ...prevState.content, triggers: modalState.triggers },
-			needsUpdate: true,
-			modalOpen: false
-		}))
+		this.setState(
+			prevState => {
+				return {
+					content: { ...prevState.content, ...modalState },
+					needsUpdate: true,
+					modalOpen: false
+				}
+			},
+			() => {
+				this.onSave()
+			}
+		)
 	}
 
 	renderItem(item) {
@@ -288,8 +308,7 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 	renderInfoBox() {
-		const triggers = this.state.content.triggers
-		const objectives = this.state.content.objectives
+		const { triggers, objectives, variables } = this.state.content
 
 		return (
 			<div className="more-info-box">
@@ -367,6 +386,19 @@ class MoreInfoBox extends React.Component {
 									✎ Edit
 								</Button>
 							</div>
+							{FeatureFlags.is(FEATURE_FLAG_EXPERIMENTAL_VARIABLES, FeatureFlags.ENABLED) ? (
+								<div>
+									<span className="triggers">
+										Variables:
+										{Array.isArray(variables) ? (
+											<span>{variables.map(variable => '$' + variable.name).join(', ')}</span>
+										) : null}
+									</span>
+									<Button altAction className="trigger-button" onClick={this.showVariablesModal}>
+										✎ Edit
+									</Button>
+								</div>
+							) : null}
 							{this.props.hideButtonBar ? null : (
 								<div className="button-bar">
 									<Button altAction isDangerous onClick={this.props.deleteNode}>

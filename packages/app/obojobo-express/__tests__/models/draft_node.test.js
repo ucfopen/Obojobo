@@ -1,7 +1,13 @@
 jest.mock('../../server/db')
 
+jest.mock('../../server/models/variable-generator')
+
 import Draft from '../../server/models/draft'
 import DraftNode from '../../server/models/draft_node'
+
+import VariableGenerator from '../../server/models/variable-generator'
+
+import mockConsole from 'jest-mock-console'
 
 const mockRawDraft = {
 	id: 'whatever',
@@ -36,10 +42,19 @@ const mockRawDraft = {
 }
 
 describe('models draft', () => {
+	let restoreConsole
+
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {})
-	afterEach(() => {})
+
+	beforeEach(() => {
+		jest.resetAllMocks()
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
+	})
 
 	test('constructor initializes expected properties', () => {
 		const draftTree = {}
@@ -113,13 +128,17 @@ describe('models draft', () => {
 		const d = new DraftNode({}, mockRawDraft.content, jest.fn())
 		const eventFn = jest.fn()
 
+		// draft nodes register internal:generateVariables on their own
+		expect(d._listeners.size).toBe(1)
+		expect(d._listeners.has('internal:generateVariables')).toBe(true)
+
 		d.registerEvents({ test: eventFn, test2: eventFn })
 
-		expect(d._listeners.size).toBe(2)
+		expect(d._listeners.size).toBe(3)
 
 		d.registerEvents({ test: eventFn, test3: eventFn })
 
-		expect(d._listeners.size).toBe(3)
+		expect(d._listeners.size).toBe(4)
 	})
 
 	test('contains finds child nodes', () => {
@@ -194,6 +213,25 @@ describe('models draft', () => {
 		expect(eventFn).toHaveBeenCalled()
 	})
 
+	// since 'internal:generateVariables' is registered in the constructor this should never happen
+	test('yell does nothing if no listeners are registered', () => {
+		const draftTree = {}
+
+		const eventFn = jest.fn().mockReturnValueOnce(false)
+
+		const d = new DraftNode(draftTree, mockRawDraft.content)
+
+		expect(d._listeners.size).toBe(1)
+		d.registerEvents({ test: eventFn })
+		expect(d._listeners.size).toBe(2)
+
+		// the only way for the listeners list to be falsy is to get rid of it entirely
+		delete d._listeners
+
+		d.yell('test')
+		expect(eventFn).not.toHaveBeenCalled()
+	})
+
 	test('toObject converts itself to an object', () => {
 		const draftTree = {}
 		const initFn = jest.fn()
@@ -213,5 +251,79 @@ describe('models draft', () => {
 				id: 666
 			})
 		)
+	})
+
+	test('does not call VariableGenerator functions when reacting to internal:generateVariables yell for no variables', () => {
+		const draftTree = {}
+		const d = new DraftNode(draftTree, mockRawDraft.content)
+
+		const mockVariableValues = []
+
+		d.yell('internal:generateVariables', ({}, {}, mockVariableValues))
+
+		expect(VariableGenerator.generateOne).not.toHaveBeenCalled()
+	})
+
+	test('calls VariableGenerator functions when reacting to internal:generateVariables yell, no errors', () => {
+		const draftTree = {}
+		const thisMockRawDraft = { ...mockRawDraft }
+
+		VariableGenerator.generateOne = jest
+			.fn()
+			.mockReturnValueOnce('value1')
+			.mockReturnValueOnce('value2')
+
+		// variables would have more to them than this, but this component doesn't really need to care about it
+		thisMockRawDraft.content.content.variables = [{ name: 'var1' }, { name: 'var2' }]
+		const d = new DraftNode(draftTree, thisMockRawDraft.content)
+
+		const mockVariableValues = []
+
+		d.yell('internal:generateVariables', {}, {}, mockVariableValues)
+
+		expect(VariableGenerator.generateOne).toHaveBeenCalledTimes(2)
+		expect(VariableGenerator.generateOne.mock.calls[0][0]).toEqual({ name: 'var1' })
+		expect(VariableGenerator.generateOne.mock.calls[1][0]).toEqual({ name: 'var2' })
+
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(mockVariableValues).toEqual([
+			{ id: mockRawDraft.content.id + ':var1', value: 'value1' },
+			{ id: mockRawDraft.content.id + ':var2', value: 'value2' }
+		])
+	})
+
+	test('calls VariableGenerator functions when reacting to internal:generateVariables yell, with errors', () => {
+		const draftTree = {}
+		const thisMockRawDraft = { ...mockRawDraft }
+
+		VariableGenerator.generateOne = jest
+			.fn()
+			.mockImplementationOnce(() => {
+				throw 'mock error 1'
+			})
+			.mockImplementationOnce(() => {
+				throw 'mock error 2'
+			})
+
+		thisMockRawDraft.content.content.variables = [{ name: 'var1' }, { name: 'var2' }]
+		const d = new DraftNode(draftTree, thisMockRawDraft.content)
+
+		const mockVariableValues = []
+
+		d.yell('internal:generateVariables', {}, {}, mockVariableValues)
+
+		expect(VariableGenerator.generateOne).toHaveBeenCalledTimes(2)
+
+		expect(console.error).toHaveBeenCalledTimes(2)
+		expect(console.error.mock.calls[0][0]).toBe('Variable generation error:')
+		expect(console.error.mock.calls[0][1]).toBe('mock error 1')
+		expect(console.error.mock.calls[1][0]).toBe('Variable generation error:')
+		expect(console.error.mock.calls[1][1]).toBe('mock error 2')
+
+		expect(mockVariableValues).toEqual([
+			{ id: mockRawDraft.content.id + ':var1', value: '' },
+			{ id: mockRawDraft.content.id + ':var2', value: '' }
+		])
 	})
 })

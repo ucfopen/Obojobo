@@ -26,6 +26,7 @@
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"test:ci:each": "lerna run test:ci",
 		"test:dev": "TZ='America/New_York' jest --verbose --watchAll --coverage --coverageReporters lcov",
+		"test:view-lcov": "open ./coverage/lcov-report/index.html",
 		"postinstall": "husky install"
 	},
 	"devDependencies": {

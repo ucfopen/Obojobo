@@ -2,6 +2,15 @@
 <ObojoboDraftDoc>
 	<!-- Since this document is XML comments are allowed - Any comments are not included in the produced JSON. This OboXML document contains most of the available features of Obojobo and should be used as a quick reference / example. -->
 	<Module title="Obojobo Example Document"> <!-- Specify a start attribute to start the module on a different page (for example 'my-assessment') -->
+		<vars>
+			<v name="a" type="static-value" value="123" />
+			<v name="b" type="random-number" value="[0,10]" decimalPlaces="[0,2]" />
+			<v name="c" type="static-list" value="a,b,c" />
+			<v name="d" type="random-list" unique="true" size="[2,5]" value="[0,3]" decimalPlaces="0" />
+			<v name="e" type="pick-one" value="Alice,Bob" />
+			<v name="f" type="pick-list" value="10,20,30" ordered="true" choose="[1,2]" />
+			<v name="g" type="random-sequence" start="2" step="1.2" seriesType="arithmetic" size="[1,5]" />
+		</vars>
 		<Content>
 			<Page id="page-1" title="Example Content Page">
 				<h1>2D Motion</h1>

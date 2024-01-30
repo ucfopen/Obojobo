@@ -176,11 +176,47 @@ describe('VisualEditor', () => {
 			component.instance().decorate([
 				{
 					type: BREAK_NODE,
-					children: [{ text: '' }]
+					children: [{ text: '{{variable}}' }]
 				},
 				[0]
 			])
 		).toMatchSnapshot()
+	})
+
+	test('VisualEditor attaches decorators when necessary', () => {
+		const component = mount(<VisualEditor {...props} />)
+		// this feels a bit contrived, but it'll do
+		// this feature may be temporary, anyway
+		const decorated = component.instance().decorate([
+			{
+				type: 'node-type',
+				text: '{{variable}}'
+			},
+			[0]
+		])[0]
+		expect(decorated.highlight).toBe(true)
+		expect(decorated.variable).toBe('variable')
+	})
+
+	test('renderLeaf returns highlighted spans when necessary', () => {
+		const component = mount(<VisualEditor {...props} />)
+		// this feels a bit contrived, but it'll do
+		// this feature may be temporary, anyway
+		const renderedLeaf = component.instance().renderLeaf({
+			attributes: { 'data-slate-leaf': true },
+			leaf: {
+				text: '{{variable}}',
+				highlight: true,
+				variable: 'variable'
+			},
+			text: { text: '{{variable}}' }
+		})
+		expect(renderedLeaf.props).toEqual({
+			className: 'todo--highlight',
+			'data-var': 'variable',
+			'data-slate-leaf': true,
+			children: undefined
+		})
 	})
 
 	test('VisualEditor component with Elements', () => {

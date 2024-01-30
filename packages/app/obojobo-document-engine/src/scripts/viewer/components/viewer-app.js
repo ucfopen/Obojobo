@@ -19,6 +19,8 @@ import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
 import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
+import VariableStore from '../stores/variable-store'
+import VariableUtil from '../util/variable-util'
 
 const NAV_CLOSE_DURATION_MS = 400
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 30 // 30 minutes in milliseconds
@@ -92,6 +94,7 @@ export default class ViewerApp extends React.Component {
 
 		let visitIdFromApi
 		let extensions
+		let variables
 		let viewState
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
@@ -111,6 +114,7 @@ export default class ViewerApp extends React.Component {
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
 				extensions = visit.value.extensions
+				variables = visit.value.variables
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
 
@@ -132,6 +136,8 @@ export default class ViewerApp extends React.Component {
 					viewState
 				)
 
+				VariableStore.init(variables)
+
 				enableWindowCloseDispatcher()
 
 				window.onresize = this.onResize
@@ -149,6 +155,7 @@ export default class ViewerApp extends React.Component {
 						assessmentState: AssessmentStore.getState(),
 						modalState: ModalStore.getState(),
 						focusState: FocusStore.getState(),
+						variableState: VariableStore.getState(),
 						lti: Object.assign(this.state.lti, {
 							outcomeServiceHostname: getLTIOutcomeServiceHostname(outcomeServiceURL)
 						}),
@@ -391,6 +398,35 @@ export default class ViewerApp extends React.Component {
 	}
 
 	getTextForVariable(event, variable, textModel) {
+		if (variable && variable.indexOf('$') === 0) {
+			variable = variable.substr(1)
+
+			let value = null
+			if (variable.indexOf(':') !== -1) {
+				const [ownerId, varName] = variable.split(':')
+
+				value = VariableUtil.getValue(
+					NavUtil.getContext(this.state.navState),
+					this.state.variableState,
+					ownerId,
+					varName
+				)
+			} else {
+				value = VariableUtil.findValueWithModel(
+					NavUtil.getContext(this.state.navState),
+					this.state.variableState,
+					textModel,
+					variable
+				)
+			}
+
+			if (value !== null) {
+				event.text = value
+			}
+
+			return
+		}
+
 		return (event.text = Common.Registry.getTextForVariable(variable, textModel, this.state))
 	}
 

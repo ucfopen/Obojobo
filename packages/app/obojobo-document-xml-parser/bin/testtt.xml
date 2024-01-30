@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+	<Module title="My Obojobo Module Title" id="m">
+		<vars>
+			<var name="x" type="static-value" value="1234"/>
+		</vars>
+		<Content id="fc1983b7-fb61-4bd6-a77f-25a567a17b45">
+			<Page title="Example content page" id="814956ae-1596-42b5-8b70-2c90e2be5f33">
+				<Heading headingLevel="1" id="c18c1b3f-e647-43e5-ac9c-1012a3a71d0b">
+					<textGroup>
+						<t align="left">Your Title {{$x}} Here</t>
+					</textGroup>
+				</Heading>
+				<Text id="84094427-0918-4dad-8b17-bbeb78105dcf">
+					<textGroup>
+						<t align="left" indent="0" hangingIndent="false">Your content here</t>
+					</textGroup>
+				</Text>
+			</Page>
+		</Content>
+	</Module>
+</ObojoboDraftDoc>

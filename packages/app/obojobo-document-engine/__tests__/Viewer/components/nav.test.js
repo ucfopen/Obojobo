@@ -126,6 +126,7 @@ describe('Nav', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks()
+		mockDispatcherTrigger.mockReset()
 	})
 
 	test('renders opened', () => {
@@ -193,6 +194,148 @@ describe('Nav', () => {
 		const component = renderer.create(<Nav {...props} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('does not try to substitute labels if no brackets are found', () => {
+		// this shouldn't run in this test, but if it does the label will be changed
+		mockDispatcherTrigger.mockImplementationOnce((trigger, event) => {
+			event.text = 'not-label5'
+			return event
+		})
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{ id: 4, type: 'heading', label: 'label4' },
+			{
+				id: 5,
+				type: 'link',
+				label: 'label5',
+				flags: { visited: false, complete: false, correct: false },
+				// exists to be passed along to variable utilities, doesn't matter for testing
+				sourceModel: {}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 56 // select this item
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+
+		const liElements = component.root.findAllByType('li')
+		expect(liElements[1].children[0].children[0]).toBe('label5')
+		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
+	})
+
+	test('does not try to substitute labels if the variable text is not correctly formatted', () => {
+		// this shouldn't run in this test, but if it does the label will be changed
+		mockDispatcherTrigger.mockImplementationOnce((trigger, event) => {
+			event.text = 'not-label5'
+			return event
+		})
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{ id: 4, type: 'heading', label: 'label4' },
+			{
+				id: 5,
+				type: 'link',
+				label: '{{label5',
+				flags: { visited: false, complete: false, correct: false },
+				// exists to be passed along to variable utilities, doesn't matter for testing
+				sourceModel: {}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 56 // select this item
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+
+		const liElements = component.root.findAllByType('li')
+		expect(liElements[1].children[0].children[0]).toBe('{{label5')
+		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
+	})
+
+	test('renders substituted variables in labels - substitute exists', () => {
+		// this should run and as a result modify the label text
+		mockDispatcherTrigger.mockImplementationOnce((trigger, event) => {
+			event.text = 'not-label5'
+			return event
+		})
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{ id: 4, type: 'heading', label: 'label4' },
+			{
+				id: 5,
+				type: 'link',
+				label: '{{$var}}',
+				flags: { visited: false, complete: false, correct: false },
+				// exists to be passed along to variable utilities, doesn't matter for testing
+				sourceModel: {}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 56 // select this item
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+
+		const liElements = component.root.findAllByType('li')
+		expect(liElements[1].children[0].children[0]).toBe('not-label5')
+		expect(mockDispatcherTrigger).toHaveBeenCalledTimes(1)
+		// so this second argument is weird - it isn't the thing that was originally sent to Dispatch.trigger,
+		//  which was { text: '', isNav: true }, but because the callback triggered changed a property of the
+		//  object it was passed, then it was technically also changing the object it was passed, which means
+		//  we have to consider the state that object would have been in after the callback ran
+		expect(mockDispatcherTrigger).toHaveBeenCalledWith(
+			'getTextForVariable',
+			{ text: 'not-label5', isNav: true },
+			'$var',
+			{}
+		)
+	})
+
+	test('renders substituted variables in labels - no substitute exists', () => {
+		// this should run but as a result not modify the label text
+		mockDispatcherTrigger.mockImplementationOnce((trigger, event) => {
+			event.text = null
+			return event
+		})
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{ id: 4, type: 'heading', label: 'label4' },
+			{
+				id: 5,
+				type: 'link',
+				label: '{{$var}}',
+				flags: { visited: false, complete: false, correct: false },
+				// exists to be passed along to variable utilities, doesn't matter for testing
+				sourceModel: {}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 56 // select this item
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+
+		const liElements = component.root.findAllByType('li')
+		// event text was unchanged so original label text should be used
+		expect(liElements[1].children[0].children[0]).toBe('{{$var}}')
+		expect(mockDispatcherTrigger).toHaveBeenCalledTimes(1)
+		// see previous test note re: the second arg
+		expect(mockDispatcherTrigger).toHaveBeenCalledWith(
+			'getTextForVariable',
+			{ text: null, isNav: true },
+			'$var',
+			{}
+		)
 	})
 
 	test('renders blank title', () => {

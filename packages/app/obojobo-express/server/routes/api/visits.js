@@ -20,6 +20,22 @@ const getDraftAndStartVisitProps = (req, res) => {
 		.then(() => visitStartExtensions)
 }
 
+const getVariables = (req, res) => {
+	const variableValues = []
+	if (req.currentVisit.state && req.currentVisit.state.variables) {
+		return req.currentVisit.state.variables
+	}
+	return req.currentDocument
+		.yell('internal:generateVariables', req, res, variableValues)
+		.then(() => {
+			req.currentVisit.updateState({
+				...req.currentVisit.state,
+				variables: variableValues
+			})
+			return variableValues
+		})
+}
+
 router
 	.route('/:draftId/status')
 	.get([requireCurrentUser])
@@ -44,6 +60,7 @@ router
 
 		let viewState
 		let visitStartExtensions
+		let variableValues
 		let launch
 
 		return Promise.all([
@@ -52,12 +69,13 @@ router
 				req.currentDocument.contentId,
 				req.currentVisit.resource_link_id
 			),
-			getDraftAndStartVisitProps(req, res)
+			getDraftAndStartVisitProps(req, res),
+			getVariables(req, res)
 		])
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
-				;[viewState, visitStartExtensions] = results
+				;[viewState, visitStartExtensions, variableValues] = results
 
 				if (req.currentVisit.is_preview === false) {
 					if (req.currentVisit.draft_content_id !== req.currentDocument.contentId) {
@@ -86,8 +104,8 @@ router
 					draftId: req.currentDocument.draftId,
 					isPreview: req.currentVisit.is_preview,
 					contentId: req.currentDocument.contentId,
-					payload: { visitId: req.currentVisit.id },
-					eventVersion: '1.0.0',
+					payload: { visitId: req.currentVisit.id, variables: variableValues },
+					eventVersion: '1.1.0',
 					visitId: req.currentVisit.id
 				})
 			})
@@ -111,6 +129,7 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
+					variables: variableValues,
 					extensions: visitStartExtensions
 				})
 			})

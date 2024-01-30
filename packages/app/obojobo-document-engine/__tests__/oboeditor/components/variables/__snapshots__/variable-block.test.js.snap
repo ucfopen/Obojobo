@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VariableBlock VariableBlock component is selected" 1`] = `"<button class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\" aria-label=\\"Jump to variable mock_var\\"><h4>$mock_var</h4><small><span>Static value </span><b aria-label=\\"3\\">3</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "pick-list" - when choose > 1, item should be plural 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable g\\"><h4>$g</h4><small><b>4 items from [33,  3,  4,  55,  23,  444]</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "pick-list" - when chooseMax = choseMin = 1, item should be singular 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable g\\"><h4>$g</h4><small><b>1 item from [33,  3,  4,  55,  23,  444]</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "pick-list" 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable g\\"><h4>$g</h4><small><b>5-40 items from [33,  3,  4,  55,  23,  444]</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "pick-list" with no default value 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable g\\"><h4>$g</h4><small><b>Pick List</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "pick-list" with no default value 2`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable g\\"><h4>$g</h4><small><b>5-40 items from []</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "pick-one" 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable f\\"><h4>$f</h4><small><span>Pick from </span><b>[3,  4,  5,  3,  5]</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "pick-one" with no default value 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable f\\"><h4>$f</h4><small><span>Pick from </span><b>[]</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-list" - when sizeMin = sizeMax = 1, item should be singular 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable d\\"><h4>$d</h4><small><span>Random list </span><b>1 item of 3-33</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-list" - when sizeMin > 1, item should be plural 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable d\\"><h4>$d</h4><small><span>Random list </span></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-list" 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable d\\"><h4>$d</h4><small><span>Random list </span><b>3-5 items of 3-10</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-list" with no default value 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable d\\"><h4>$d</h4><small><span>Random list </span></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-number" 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable b\\"><h4>$b</h4><small><span>Random number </span><b>(3-10)</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-number" with no default value 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable b\\"><h4>$b</h4><small><span>Random number </span></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-sequence" - when size > 1, item should be plural 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable e\\"><h4>$e</h4><small><span>Random seq </span><b>4 items starting from 3</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-sequence" - when sizeMin = sizeMax = 1, item should be singular 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable e\\"><h4>$e</h4><small><span>Random seq </span><b>1 item starting from 3</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-sequence" 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable e\\"><h4>$e</h4><small><span>Random seq </span><b>3-10 items starting from 3</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "random-sequence" with no default value 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable e\\"><h4>$e</h4><small><span>Random seq </span></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "static-list" 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable c\\"><h4>$c</h4><small><b>[4,  5,  6]</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "static-list" with no default value 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable c\\"><h4>$c</h4><small><b>[]</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "static-value" 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable mock_var\\"><h4>$mock_var</h4><small><span>Static value </span><b aria-label=\\"3\\">3</b></small></button>"`;
+
+exports[`VariableBlock VariableBlock with type "static-value" and no default value 1`] = `"<button class=\\"single-variable\\" tabindex=\\"0\\" aria-label=\\"Jump to variable mock_var\\"><h4>$mock_var</h4><small><span>Static value </span><b></b></small></button>"`;

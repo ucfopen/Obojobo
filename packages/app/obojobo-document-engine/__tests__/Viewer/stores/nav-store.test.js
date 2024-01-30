@@ -941,6 +941,7 @@ describe('NavStore', () => {
 			path: '',
 			showChildren: true,
 			showChildrenOnNavigation: true,
+			sourceModel: model,
 			type: 'hidden'
 		})
 
