@@ -5,7 +5,7 @@ function getNotifications(ids) {
 		return db.manyOrNone(
 			`
 				SELECT title,text 
-				FROM notification_status
+				FROM notifications
 				WHERE id IN ($[ids:csv])
 				ORDER BY id ASC
 			`,
@@ -20,7 +20,7 @@ function getRecentNotifications(date) {
 	return db.manyOrNone(
 		`
 			SELECT id
-			FROM notification_status
+			FROM notifications
 			WHERE created_at >= $[date]
 			ORDER BY created_at ASC
 		`,

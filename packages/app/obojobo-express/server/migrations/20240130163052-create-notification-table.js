@@ -16,7 +16,7 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db.createTable('notification_status', {
+	return db.createTable('notifications', {
 		id: {
 			type: 'bigserial',
 			primaryKey: true,
@@ -33,7 +33,7 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	db.dropTable('notification_status')
+	db.dropTable('notifications')
 }
 
 exports._meta = {
