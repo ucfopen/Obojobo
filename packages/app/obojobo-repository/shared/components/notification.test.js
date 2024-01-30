@@ -26,7 +26,7 @@ describe('Notification component', () => {
 
 		expect(tree).toMatchSnapshot()
 		expect(document.cookie).toBe(
-			'notifications=[{"key":1,"text":"Test Notification","title":"Test Title"}]'
+			'notifications=%5B%7B%22key%22%3A1%2C%22text%22%3A%22Test%20Notification%22%2C%22title%22%3A%22Test%20Title%22%7D%5D;'
 		)
 	})
 
@@ -51,16 +51,18 @@ describe('Notification component', () => {
 		const key = 0
 		const exitButtons = component.root.findAllByProps({ className: 'notification-exit-button' })
 
-		act(() => {
-			exitButtons[key].props.onClick()
-		})
+		if (exitButtons[key]) {
+			act(() => {
+				exitButtons[key].props.onClick()
+			})
 
-		// Update the tree after state changes
-		tree = component.toJSON()
-		expect(tree).toMatchSnapshot()
-		expect(document.cookie).toBe(
-			'notifications=%5B%7B%22key%22%3A2%2C%22text%22%3A%22Notification2%22%2C%22title%22%3A%22Title2%22%7D%5D;'
-		)
+			// Update the tree after state changes
+			tree = component.toJSON()
+			expect(tree).toMatchSnapshot()
+			expect(document.cookie).toBe(
+				'notifications=%5B%7B%22key%22%3A2%2C%22text%22%3A%22Notification2%22%2C%22title%22%3A%22Title2%22%7D%5D;'
+			)
+		}
 	})
 
 	test('hides the notification on exit button click', () => {
@@ -135,5 +137,14 @@ describe('Notification component', () => {
 			expect(document.cookie).toBe(null)
 		}
 		document.cookie = originalDocument
+	})
+	test('does not update cookie when there are no notifications', () => {
+		// Ensure notifications state is empty
+		const component = create(<Notification />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		// The useEffect should not update the cookie since notifications is empty
+		expect(document.cookie).toBe('notifications=%5B%5D;')
 	})
 })

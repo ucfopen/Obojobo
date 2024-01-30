@@ -3,7 +3,6 @@ require('./notification.scss')
 
 const Notification = () => {
 	const [notifications, setNotifications] = React.useState([])
-	const [hiddenNotifications, setHiddenNotifications] = React.useState([])
 
 	React.useEffect(() => {
 		if (document && document.cookie) {
@@ -20,15 +19,19 @@ const Notification = () => {
 			const parsedNotifications = parsedValue
 			setNotifications(parsedNotifications)
 		} else {
-			//there is nothing to render
+			// there is nothing to render
 		}
 	}, [])
 
-	//when user clicks exit button, remove notification from state and add to hidden notifications
 	function onClickExitNotification(key) {
-		setHiddenNotifications(prevHiddenNotifications => [...prevHiddenNotifications, key])
 		setNotifications(prevNotifications => prevNotifications.filter((_, index) => index !== key))
 	}
+
+	React.useEffect(() => {
+		const jsonNotifications = JSON.stringify(notifications)
+		const cookieString = `${encodeURIComponent(jsonNotifications)};`
+		document.cookie = 'notifications=' + cookieString
+	}, [notifications])
 
 	const renderNotification = (key, text, title) => {
 		return (
@@ -44,17 +47,11 @@ const Notification = () => {
 		)
 	}
 
-	//rewrite to cookie to remove notifications that have been hidden
-	if (hiddenNotifications && hiddenNotifications.length >= 1) {
-		const jsonNotifications = JSON.stringify(notifications)
-		const cookieString = `${encodeURIComponent(jsonNotifications)};`
-		document.cookie = 'notifications=' + cookieString
-	}
 	if (notifications && notifications.length >= 1) {
 		return (
 			<div className="notification-wrapper">
-				{notifications.map((notifications, key) =>
-					renderNotification(key, notifications.text, notifications.title)
+				{notifications.map((notification, key) =>
+					renderNotification(key, notification.text, notification.title)
 				)}
 			</div>
 		)
