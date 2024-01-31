@@ -4,7 +4,7 @@ import IFrameSizingTypes from './iframe-sizing-types'
 /**
  * Generates an Obojobo IFrame from a Slate node.
  * Copies the id, type, and triggers.  The conversion also saves the
- * src, title, type, border, fit, width, height, initalZoom, autoload,
+ * src, title, type, controlsChanged, fit, width, height, initalZoom, autoload,
  * and controlls attributes.
  * @param {Object} node A Slate Node
  * @returns {Object} An Obojobo Iframe node
@@ -21,13 +21,14 @@ const slateToObo = node => {
 			src: node.content.src,
 			title: node.content.title,
 			type: node.content.type,
-			border: node.content.border,
 			fit: node.content.fit,
 			height: node.content.height,
 			initialZoom: node.content.initialZoom,
 			autoload: node.content.autoload,
 			controls: node.content.controls,
-			sizing: node.content.sizing
+			sizing: node.content.sizing,
+			contentType: node.content.contentType,
+			controlsChanged: node.content.controlsChanged
 		})
 	}
 
