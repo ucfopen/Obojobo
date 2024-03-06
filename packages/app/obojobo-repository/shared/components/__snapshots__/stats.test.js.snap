@@ -48,7 +48,6 @@ exports[`Stats Renders "modules loaded" state correctly 1`] = `
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -236,7 +235,6 @@ exports[`Stats Renders "modules loaded" state correctly 2`] = `
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -424,7 +422,6 @@ exports[`Stats Renders "modules loading" state correctly 1`] = `
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -523,7 +520,6 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -1056,7 +1052,6 @@ exports[`Stats Renders correctly when assessment stat fetching has not started o
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -1263,7 +1258,6 @@ exports[`Stats Renders correctly when assessment stat fetching has started but n
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>

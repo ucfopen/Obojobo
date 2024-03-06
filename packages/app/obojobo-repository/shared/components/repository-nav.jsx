@@ -7,8 +7,13 @@ const Notification = require('./notification')
 const RepositoryNav = props => {
 	let timeOutId
 	const [isMenuOpen, setMenuOpen] = React.useState(false)
-	const [isNotificationsOpen, setNotificationsOpen] = React.useState(false) // New state for notification
-	const [notificationsExist, setNotificationsExist] = React.useState(false)
+	const [isNotificationsOpen, setNotificationsOpen] = React.useState(false)
+	const [numberNotifications, setNumberNotifications] = React.useState(0)
+
+	const handleNotificationsData = numberOfNotificationsData => {
+		// Handle the data received from the Notification component
+		setNumberNotifications(numberOfNotificationsData)
+	}
 
 	const onCloseMenu = () => setMenuOpen(false)
 	const onToggleMenu = e => {
@@ -19,17 +24,22 @@ const RepositoryNav = props => {
 	const onBlurHandler = () => {
 		timeOutId = setTimeout(() => {
 			setMenuOpen(false)
+			setNotificationsOpen(false)
 		})
 	}
 	const onFocusHandler = () => {
 		clearTimeout(timeOutId)
 	}
-	const onNotifications = () => {
+	const onToggleNotifications = e => {
 		setNotificationsOpen(!isNotificationsOpen)
+		e.preventDefault() // block the event from bubbling out to the parent href
 	}
-	//write an if notifications exist in the cookie
+	function onClickExitPopup() {
+		setNotificationsOpen(false)
+	}
 
 	React.useEffect(() => {
+		//to set the number of notifications initially
 		if (document && document.cookie) {
 			const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
 
@@ -41,12 +51,11 @@ const RepositoryNav = props => {
 				}
 			})
 
-			//if there are notifications, set notificationsExist to true
 			if (parsedValue && parsedValue.length >= 1) {
-				setNotificationsExist(true)
+				setNumberNotifications(parsedValue.length)
 			}
 		} else {
-			//there is nothing to render
+			// there is nothing to update
 		}
 	}, [])
 
@@ -77,12 +86,16 @@ const RepositoryNav = props => {
 				{props.userId !== 0 ? (
 					<div className="repository--nav--current-user">
 						<button onClick={onToggleMenu}>
-							<div onClick={onNotifications} className="repository--nav--current-user--name">
+							<div className="repository--nav--current-user--name">
 								{props.displayName}
 
-								{notificationsExist && <div className="notification-indicator"></div>}
+								{numberNotifications > 0 && (
+									<div className="notification-indicator" onClick={onToggleNotifications}>
+										{' '}
+										{numberNotifications} Notifications{' '}
+									</div>
+								)}
 							</div>
-
 							<Avatar
 								id={props.userId}
 								avatarUrl={props.avatarUrl}
@@ -107,8 +120,14 @@ const RepositoryNav = props => {
 				)}
 			</nav>
 			{isNotificationsOpen && (
-				<div className="popup">
-					<Notification />
+				<div>
+					<div className="popup active">
+						<button className="exit-button" onClick={onClickExitPopup}>
+							X
+						</button>
+						<Notification onDataFromNotification={handleNotificationsData} />
+					</div>
+					<div className="overlay active"></div>
 				</div>
 			)}
 		</div>

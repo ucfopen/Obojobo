@@ -1,23 +1,25 @@
 @import '~styles/includes';
-
-$poppin-pink: #af1b5c;
-$focus-pink: #fbdae6;
-$white: white;
+@import '../../client/css/defaults';
 
 .notification-banner {
-	background-color: $poppin-pink;
+	background-color: $color-bg;
 	padding: 1em;
-	color: $white;
+	color: $color-text;
 	border-radius: 0.5em;
 	margin: 0.1em;
-	border-width: 0.5em;
+	text-align: left;
+	border: solid;
+	border-color: $color-notification;
+	border-width: 0.3em;
 
 	h1 {
 		margin: 0;
+		font-size: 0.6cm;
 	}
 
 	p {
 		display: block;
+		font-size: 0.5cm;
 	}
 
 	.notification-header {
@@ -27,8 +29,8 @@ $white: white;
 		align-items: center;
 
 		.notification-exit-button {
-			color: $poppin-pink;
-			background-color: $white;
+			color: $color-notification;
+			background-color: $color-bg;
 			border: none;
 			border-radius: 6em;
 			font-size: 0.8cm;
@@ -36,11 +38,12 @@ $white: white;
 			padding-right: 0.5em;
 			padding-top: 0.1em;
 			padding-bottom: 0.3em;
+			cursor: pointer;
 		}
 
 		.notification-exit-button:hover {
-			color: $focus-pink;
-			background-color: $poppin-pink;
+			color: $color-notification-focus;
+			background-color: $color-notification;
 		}
 	}
 }
@@ -50,8 +53,22 @@ $white: white;
 }
 
 .notification-banner:hover {
-	background-color: $focus-pink;
-	color: $poppin-pink;
+	background-color: $color-notification-focus;
+	color: $color-text;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
+}
+
+.notification-none {
+	color: $color-notification;
+	text-align: center;
+
+	p {
+		margin-top: 0.1em;
+		margin-bottom: 0.1em;
+		border-radius: 0.5em;
+		border-width: 0.5em;
+		border-color: $color-notification;
+		font-size: 5em;
+	}
 }

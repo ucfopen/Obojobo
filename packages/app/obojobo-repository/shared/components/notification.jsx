@@ -1,7 +1,7 @@
 const React = require('react')
 require('./notification.scss')
 
-const Notification = () => {
+const Notification = ({ onDataFromNotification }) => {
 	const [notifications, setNotifications] = React.useState([])
 
 	React.useEffect(() => {
@@ -24,6 +24,7 @@ const Notification = () => {
 	}, [])
 
 	function onClickExitNotification(key) {
+		onDataFromNotification(notifications.length - 1)
 		setNotifications(prevNotifications => prevNotifications.filter((_, index) => index !== key))
 	}
 
@@ -56,7 +57,11 @@ const Notification = () => {
 			</div>
 		)
 	} else {
-		return null
+		return (
+			<div className="notification-none">
+				<p>That's all for now</p>
+			</div>
+		)
 	}
 }
 

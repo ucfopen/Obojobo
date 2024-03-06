@@ -48,7 +48,6 @@ exports[`Dashboard renders in MODE_RECENT with fewer modules than moduleCount, n
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -286,7 +285,6 @@ exports[`Dashboard renders with default props 1`] = `
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -506,7 +504,6 @@ exports[`Dashboard renders with mode = MODE_ALL 1`] = `
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -759,7 +756,6 @@ exports[`Dashboard renders with mode = MODE_COLLECTION 1`] = `
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>
@@ -952,7 +948,6 @@ exports[`Dashboard renders with mode = MODE_RECENT 1`] = `
         >
           <div
             className="repository--nav--current-user--name"
-            onClick={[Function]}
           >
             firstName lastName
           </div>

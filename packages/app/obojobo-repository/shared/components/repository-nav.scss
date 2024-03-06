@@ -1,7 +1,5 @@
 @import '../../client/css/defaults';
 
-$poppin-pink: #af1b5c;
-
 .repository--section-wrapper {
 	max-width: $dimension-width;
 	margin: 0 auto;
@@ -10,7 +8,7 @@ $poppin-pink: #af1b5c;
 .repository--stick-to-top {
 	position: sticky;
 	top: 0;
-	background: #ffffff;
+	background: $color-bg;
 	min-width: 100%;
 	z-index: 100;
 	border-bottom: 1px solid $border-color;
@@ -78,7 +76,7 @@ $poppin-pink: #af1b5c;
 	position: absolute;
 	left: -1em;
 	top: 3.7em;
-	background: #ffffff;
+	background: $color-bg;
 	padding: 20px;
 	border-radius: 3px;
 	width: 100%;
@@ -123,17 +121,71 @@ $poppin-pink: #af1b5c;
 	}
 
 	.notification-indicator {
-		background: $poppin-pink;
-		border-radius: 50%;
-		width: 15px;
-		height: 15px;
-		margin-left: 5px;
+		color: $color-notification;
+		cursor: pointer;
 	}
 
 	.repository--nav--current-user--name {
 		display: flex;
 		align-items: center;
+		flex-direction: column;
 	}
+}
+
+.popup {
+	position: fixed;
+	text-align: right;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50%;
+	height: 50%;
+	max-width: 600px;
+	border: 1px solid $color-shadow;
+	border-radius: 10px;
+	background: $color-bg;
+	padding: 20px;
+	z-index: 1000;
+	box-shadow: 0 0 20px 0 $color-shadow;
+	display: none;
+	overflow-y: auto; /* Enable vertical scrolling */
+
+	.exit-button {
+		border: none;
+		text-align: right;
+		background: $color-bg;
+		border-radius: 6em;
+		font-size: 0.8cm;
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+		padding-top: 0.3em;
+		padding-bottom: 0.3em;
+		margin-bottom: 0.5em;
+		cursor: pointer;
+	}
+
+	.exit-button:hover {
+		color: $color-notification;
+	}
+}
+
+.popup.active {
+	display: block;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: $color-shadow;
+	z-index: 999;
+	display: none;
+}
+
+.overlay.active {
+	display: block;
 }
 
 // if the last child is a link (login link instead of logged in user avatar)

@@ -11,17 +11,18 @@ describe('Notification component', () => {
 	})
 
 	test('renders without crashing', () => {
-		const component = create(<Notification />)
+		const component = create(<Notification onDataFromNotification={() => {}} />) // Provide a mock function for onDataFromNotification
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('loads notifications from cookies on mount', () => {
+		const onDataFromNotification = jest.fn()
 		document.cookie =
 			'notifications=' +
 			JSON.stringify([{ key: 1, text: 'Test Notification', title: 'Test Title' }])
 
-		const component = create(<Notification />)
+		const component = create(<Notification onDataFromNotification={onDataFromNotification} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -31,6 +32,7 @@ describe('Notification component', () => {
 	})
 
 	test('handles click on exit button and updates state and cookie', () => {
+		const onDataFromNotification = jest.fn()
 		document.cookie =
 			'notifications=' +
 			JSON.stringify([
@@ -38,7 +40,7 @@ describe('Notification component', () => {
 				{ key: 2, text: 'Notification2', title: 'Title2' }
 			])
 
-		const reusableComponent = <Notification />
+		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
 		let component
 		act(() => {
 			component = create(reusableComponent)
@@ -66,12 +68,13 @@ describe('Notification component', () => {
 	})
 
 	test('hides the notification on exit button click', () => {
+		const onDataFromNotification = jest.fn()
 		document.cookie =
 			'notifications=' +
 			JSON.stringify([{ key: 1, text: 'Test Notification', title: 'Test Title' }])
 
 		const elementToExit = document.getElementsByClassName('notification-exit-button')[0]
-		const reusableComponent = <Notification />
+		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
 		let component
 		act(() => {
 			component = create(reusableComponent)
@@ -95,7 +98,8 @@ describe('Notification component', () => {
 		}
 	})
 	test('renders null when there are no notifications but document.cookie is not null', () => {
-		const reusableComponent = <Notification />
+		const onDataFromNotification = jest.fn()
+		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
 		let component
 		act(() => {
 			component = create(reusableComponent)
@@ -120,10 +124,11 @@ describe('Notification component', () => {
 		}
 	})
 	test('renders null when document.cookie is null', () => {
+		const onDataFromNotification = jest.fn()
 		const originalDocument = document.cookie
 		document.cookie = null
 
-		const reusableComponent = <Notification />
+		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
 		let component
 		act(() => {
 			component = create(reusableComponent)
@@ -139,8 +144,9 @@ describe('Notification component', () => {
 		document.cookie = originalDocument
 	})
 	test('does not update cookie when there are no notifications', () => {
+		const onDataFromNotification = jest.fn()
 		// Ensure notifications state is empty
-		const component = create(<Notification />)
+		const component = create(<Notification onDataFromNotification={onDataFromNotification} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 
