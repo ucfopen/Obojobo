@@ -122,10 +122,14 @@ const RepositoryNav = props => {
 			{isNotificationsOpen && (
 				<div>
 					<div className="popup active">
-						<button className="exit-button" onClick={onClickExitPopup}>
-							X
-						</button>
-						<Notification onDataFromNotification={handleNotificationsData} />
+						<div className="exit-container">
+							<button className="exit-button" onClick={onClickExitPopup}>
+								X
+							</button>
+						</div>
+						<div className="notification-container">
+							<Notification onDataFromNotification={handleNotificationsData} />
+						</div>
 					</div>
 					<div className="overlay active"></div>
 				</div>

@@ -133,8 +133,9 @@
 }
 
 .popup {
+	display: flex;
 	position: fixed;
-	text-align: right;
+	flex-direction: column;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -147,25 +148,32 @@
 	padding: 20px;
 	z-index: 1000;
 	box-shadow: 0 0 20px 0 $color-shadow;
-	display: none;
-	overflow-y: auto; /* Enable vertical scrolling */
+	overflow: hidden;
 
-	.exit-button {
-		border: none;
-		text-align: right;
-		background: $color-bg;
-		border-radius: 6em;
-		font-size: 0.8cm;
-		padding-left: 0.5em;
-		padding-right: 0.5em;
-		padding-top: 0.3em;
-		padding-bottom: 0.3em;
-		margin-bottom: 0.5em;
-		cursor: pointer;
+	.exit-container {
+		position: fixed;
+		top: 3px;
+		right: 3px;
+
+		.exit-button {
+			border: none;
+			background: $color-bg;
+			border-radius: 6em;
+			font-size: 0.5cm;
+			cursor: pointer;
+			z-index: 1000;
+		}
+
+		.exit-button:hover {
+			color: $color-notification;
+		}
 	}
 
-	.exit-button:hover {
-		color: $color-notification;
+	.notification-container {
+		justify-content: center;
+		align-items: center;
+		overflow-y: auto;
+		max-height: 100%;
 	}
 }
 
