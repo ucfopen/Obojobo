@@ -283,7 +283,7 @@ describe('RepositoryNav', () => {
 
 		expect(
 			component.root.findByProps({ className: 'repository--nav--current-user--name' }).children[1]
-				.props.children[1]
+				.props.children[0]
 		).toBe(5)
 	})
 	test('renders null when there are no notifications but document.cookie is not null', () => {

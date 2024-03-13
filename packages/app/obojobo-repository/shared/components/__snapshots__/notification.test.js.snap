@@ -30,7 +30,9 @@ exports[`Notification component hides the notification on exit button click 1`] 
     <div
       className="notification-header"
     >
-      <h1>
+      <h1
+        tabindex="0"
+      >
         Test Title
       </h1>
       <button
@@ -40,7 +42,9 @@ exports[`Notification component hides the notification on exit button click 1`] 
         x
       </button>
     </div>
-    <p>
+    <p
+      tabindex="0"
+    >
       Test Notification
     </p>
   </div>

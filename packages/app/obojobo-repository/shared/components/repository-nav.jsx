@@ -24,7 +24,6 @@ const RepositoryNav = props => {
 	const onBlurHandler = () => {
 		timeOutId = setTimeout(() => {
 			setMenuOpen(false)
-			setNotificationsOpen(false)
 		})
 	}
 	const onFocusHandler = () => {
@@ -90,10 +89,9 @@ const RepositoryNav = props => {
 								{props.displayName}
 
 								{numberNotifications > 0 && (
-									<div className="notification-indicator" onClick={onToggleNotifications}>
-										{' '}
-										{numberNotifications} Notifications{' '}
-									</div>
+									<button className="notification-indicator" onClick={onToggleNotifications}>
+										{numberNotifications} Notifications
+									</button>
 								)}
 							</div>
 							<Avatar

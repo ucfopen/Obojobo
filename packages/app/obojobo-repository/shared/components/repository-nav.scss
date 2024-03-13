@@ -123,6 +123,7 @@
 	.notification-indicator {
 		color: $color-notification;
 		cursor: pointer;
+		height: 0;
 	}
 
 	.repository--nav--current-user--name {

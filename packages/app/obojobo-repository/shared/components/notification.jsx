@@ -38,12 +38,12 @@ const Notification = ({ onDataFromNotification }) => {
 		return (
 			<div className={`notification-banner`} key={key}>
 				<div className="notification-header">
-					<h1>{title}</h1>
+					<h1 tabindex="0">{title}</h1>
 					<button onClick={() => onClickExitNotification(key)} className="notification-exit-button">
 						x
 					</button>
 				</div>
-				<p>{text}</p>
+				<p tabindex="0">{text}</p>
 			</div>
 		)
 	}
