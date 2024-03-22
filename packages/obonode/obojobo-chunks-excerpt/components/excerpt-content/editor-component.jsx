@@ -11,7 +11,9 @@ import ExcerptEditControls from '../excerpt-edit-controls'
 import Common from 'obojobo-document-engine/src/scripts/common'
 const { Button } = Common.components
 
-const getEdgeOptionsForBodyStyle = bodyStyle => {
+const edgeOptions = {top: [], bottom: []}
+
+const getEdgeOptionsForBodyStyle = (bodyStyle, edgeOptions) => {
 	switch (bodyStyle) {
 		case 'callout-try-it':
 		case 'callout-practice':
@@ -19,7 +21,9 @@ const getEdgeOptionsForBodyStyle = bodyStyle => {
 		case 'callout-example':
 		case 'callout-hint':
 		case 'none':
-			return []
+			edgeOptions.top = []
+			edgeOptions.bottom = []
+			return edgeOptions 
 
 		case 'filled-box':
 		case 'bordered-box':
@@ -29,10 +33,14 @@ const getEdgeOptionsForBodyStyle = bodyStyle => {
 		case 'light-yellow-paper':
 		case 'dark-yellow-paper':
 		case 'aged-paper':
-			return ['normal', 'fade', 'jagged']
+			edgeOptions.top = ['normal', 'fade', 'jagged', 'bookmark'] 
+			edgeOptions.bottom = ['normal', 'fade', 'jagged']
+			return edgeOptions 
 
 		default:
-			return ['normal', 'fade']
+			edgeOptions.top = ['normal', 'fade']
+			edgeOptions.bottom = ['normal', 'fade']
+			return edgeOptions 
 	}
 }
 
@@ -76,7 +84,7 @@ const ExcerptContent = props => {
 		return Transforms.removeNodes(props.editor, { at: parentPath })
 	}
 
-	const edgeOptions = getEdgeOptionsForBodyStyle(props.element.content.bodyStyle)
+	getEdgeOptionsForBodyStyle(props.element.content.bodyStyle, edgeOptions)
 
 	const shouldShowEdgeControls = props.selected && Range.isCollapsed(props.editor.selection)
 
@@ -86,13 +94,13 @@ const ExcerptContent = props => {
 				<React.Fragment>
 					<EdgeControls
 						position="top"
-						edges={edgeOptions}
+						edges={edgeOptions.top}
 						selectedEdge={props.element.content.topEdge}
 						onChangeEdge={edgeType => onChangeContentValue('topEdge', edgeType)}
 					/>
 					<EdgeControls
 						position="bottom"
-						edges={edgeOptions}
+						edges={edgeOptions.bottom}
 						selectedEdge={props.element.content.bottomEdge}
 						onChangeEdge={edgeType => onChangeContentValue('bottomEdge', edgeType)}
 					/>

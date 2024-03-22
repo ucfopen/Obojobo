@@ -26,7 +26,15 @@ const AssessmentAPI = {
 			visitId
 		}).then(API.processJsonResults)
 	},
-
+	saveAttempt({ draftId, draftContentId, assessmentId, attemptId, state, visitId }) {
+		return API.post(`/api/assessments/attempt/${attemptId}/save`, {
+			draftId,
+			draftContentId,
+			assessmentId,
+			state,
+			visitId
+		}).then(API.processJsonResults)
+	},
 	endAttempt({ attemptId, draftId, visitId }) {
 		return API.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
 			API.processJsonResults

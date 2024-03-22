@@ -6,7 +6,7 @@ const db = require('obojobo-express/server/db')
 const eventRecordResponse = 'client:question:setResponse'
 const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 
-// Store question responces
+// Store question responses
 oboEvents.on(eventRecordResponse, async (event, req) => {
 	try {
 		if (!event.payload.attemptId) return // assume we're in practice

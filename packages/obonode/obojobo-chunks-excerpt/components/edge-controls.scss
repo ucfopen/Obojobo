@@ -42,6 +42,10 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 			transform: translate(-4px);
 		}
 
+		&:nth-child(4) {
+			transform: translate(-6px);
+		}
+
 		&.is-selected {
 			background-color: $lighter-blue;
 			border: 2px solid $color-obojobo-blue;
@@ -78,6 +82,14 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 
 		&.is-edge-jagged::after {
 			background-image: url('../images/icon-jagged-edge.png');
+		}
+
+		&.is-edge-bookmark::after {
+			background-image: url('../images/icon-bookmark.png');
+
+			&.is-bottom-edge-type- {
+				display: none;
+			}
 		}
 	}
 

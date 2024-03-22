@@ -46,11 +46,19 @@ const resumeAttempt = async (
 	await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
 
 	attempt.questions = []
+	attempt.questionResponses = []
 
 	for (const node of attempt.state.chosen) {
 		if (node.type === QUESTION_NODE_TYPE) {
 			const questionNode = assessmentNode.draftTree.getChildNodeById(node.id)
 			attempt.questions.push(questionNode.toObject())
+		}
+	}
+
+	const responsesRaw = await AssessmentModel.fetchResponsesForAttempts([attempt.id])
+	if (responsesRaw.get(attempt.id)) {
+		for (const response of responsesRaw.get(attempt.id)) {
+			attempt.questionResponses.push(response)
 		}
 	}
 
