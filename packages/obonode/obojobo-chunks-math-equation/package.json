@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"katex": "^0.13.1"
+		"katex": "^0.16.10"
 	},
 	"peerDependencies": {
 		"obojobo-lib-utils": "^17.0.0"
