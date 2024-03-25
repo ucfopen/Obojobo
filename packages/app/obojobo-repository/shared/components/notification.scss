@@ -62,13 +62,16 @@
 .notification-none {
 	color: $color-notification;
 	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	p {
-		margin-top: 0.1em;
-		margin-bottom: 0.1em;
+		border-style: solid;
 		border-radius: 0.5em;
-		border-width: 0.5em;
+		padding: 0.5em;
+		width: 50%;
 		border-color: $color-notification;
-		font-size: 5em;
+		font-size: 3em;
 	}
 }
