@@ -59,7 +59,7 @@ const Notification = ({ onDataFromNotification }) => {
 	} else {
 		return (
 			<div className="notification-none">
-				<p>That's all for now</p>
+				<p tabindex="0">That's all for now</p>
 			</div>
 		)
 	}
