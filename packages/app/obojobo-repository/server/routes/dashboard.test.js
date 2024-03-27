@@ -18,6 +18,7 @@ jest.setTimeout(10000) // extend test timeout?
 
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
+let mockNotifications
 
 jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
@@ -28,6 +29,10 @@ jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) 
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
 	}
+	req.getNotifications = () => {
+		return Promise.resolve(mockNotifications)
+	}
+
 	next()
 })
 
@@ -124,6 +129,7 @@ describe('repository dashboard route', () => {
 			id: 99,
 			hasPermission: perm => perm === 'canPreviewDrafts'
 		}
+		mockNotifications = []
 		CollectionSummary = require('../models/collection_summary')
 		DraftSummary = require('../models/draft_summary')
 		CountServices = require('../services/count')
