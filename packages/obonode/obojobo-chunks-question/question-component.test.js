@@ -1,4 +1,5 @@
 import QuestionComponent from './question-component'
+import QuestionFooter from './question-footer'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -112,7 +113,8 @@ const getDefaultProps = ({
 		onClickReveal: jest.fn(),
 		onClickShowExplanation: jest.fn(),
 		onClickHideExplanation: jest.fn(),
-		onClickBlocker: jest.fn()
+		onClickBlocker: jest.fn(),
+		onSaveAnswer: jest.fn()
 	}
 }
 
@@ -236,5 +238,43 @@ describe('Question', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('Does not render a QuestionFooter in practice mode if the assessment has the appropriate setting', () => {
+		const props = getDefaultProps({
+			questionType: 'default',
+			mode: 'practice',
+			viewState: 'active',
+			response: null,
+			shouldShowRevealAnswerButton: false,
+			isAnswerRevealed: false,
+			isShowingExplanation: false,
+			isShowingExplanationButton: false,
+			score: null
+		})
+		props.questionAssessmentModel.modelState = { noFooter: true }
+
+		const component = renderer.create(<QuestionComponent {...props} />)
+
+		expect(component.root.findAllByType(QuestionFooter).length).toBe(0)
+	})
+
+	test('Renders a QuestionFooter in review mode regardles of the noFooter setting', () => {
+		const props = getDefaultProps({
+			questionType: 'default',
+			mode: 'review',
+			viewState: 'active',
+			response: null,
+			shouldShowRevealAnswerButton: false,
+			isAnswerRevealed: false,
+			isShowingExplanation: false,
+			isShowingExplanationButton: false,
+			score: null
+		})
+		props.questionAssessmentModel.modelState = { noFooter: true }
+
+		const component = renderer.create(<QuestionComponent {...props} />)
+
+		expect(component.root.findAllByType(QuestionFooter).length).toBe(1)
 	})
 })

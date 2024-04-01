@@ -13,6 +13,7 @@ const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
+const MATERIA_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.MateriaAssessment'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -68,6 +69,7 @@ const Question = props => {
 		const type = event.target.value
 
 		const item = Common.Registry.getItemForType(type)
+
 		const newBlock = item.cloneBlankNode()
 
 		// preserve whether this question is a survey or not
@@ -180,6 +182,24 @@ const Question = props => {
 		` is-type-${content.type}` +
 		` is-${content.collapsed ? 'collapsed' : 'not-collapsed'}`
 
+	const questionTypeOptions = [
+		<option key={MCASSESSMENT_NODE} value={MCASSESSMENT_NODE}>
+			Multiple choice
+		</option>,
+		<option key={NUMERIC_ASSESSMENT_NODE} value={NUMERIC_ASSESSMENT_NODE}>
+			Input a number
+		</option>
+	]
+
+	// only add the Materia widget option if the Materia assessment node has been registered
+	if (Common.Registry.contentTypes.includes(MATERIA_ASSESSMENT_NODE)) {
+		questionTypeOptions.push(
+			<option key={MATERIA_ASSESSMENT_NODE} value={MATERIA_ASSESSMENT_NODE}>
+				Materia widget
+			</option>
+		)
+	}
+
 	return (
 		<Node
 			{...props}
@@ -201,8 +221,7 @@ const Question = props => {
 							<div className="question-settings" contentEditable={false}>
 								<label>Question Type</label>
 								<select contentEditable={false} value={questionType} onChange={onSetAssessmentType}>
-									<option value={MCASSESSMENT_NODE}>Multiple choice</option>
-									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
+									{questionTypeOptions}
 								</select>
 								<label className="question-type" contentEditable={false}>
 									<input type="checkbox" checked={isTypeSurvey} onChange={onSetType} />

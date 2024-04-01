@@ -1,5 +1,7 @@
 const insertEvent = require('obojobo-express/server/insert_event')
 const logger = require('obojobo-express/server/logger')
+const oboEvents = require('obojobo-express/server/obo_events')
+const { expandLisResultSourcedId } = require('./route-helpers')
 
 // EVENTS
 const insertLtiLaunchWidgetEvent = ({
@@ -93,9 +95,19 @@ const insertLtiScorePassbackEvent = ({
 		metadata: {},
 		draftId,
 		contentId
-	}).catch(err => {
-		logger.error(`There was an error inserting the ${action} event`, err)
 	})
+		.then(() => {
+			const payload = {
+				score
+			}
+
+			const { nodeId } = expandLisResultSourcedId(lisResultSourcedId)
+
+			oboEvents.emit(action, { userId, visitId, contentId, nodeId, payload })
+		})
+		.catch(err => {
+			logger.error(`There was an error inserting the ${action} event`, err)
+		})
 }
 
 module.exports = {

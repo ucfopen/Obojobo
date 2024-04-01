@@ -10,13 +10,19 @@ import IFrameSizingTypes from 'obojobo-chunks-iframe/iframe-sizing-types'
 export default class Materia extends React.Component {
 	constructor(props) {
 		super(props)
+
 		this.iframeRef = React.createRef()
+
+		let iframeSrc = this.srcToLTILaunchUrl(props.moduleData.navState.visitId, props.model.id)
+		if (props.mode === 'review') {
+			iframeSrc = props.response.scoreUrl
+		}
 
 		// manipulate iframe settings
 		const model = props.model.clone()
 		model.modelState = {
 			...model.modelState,
-			src: this.srcToLTILaunchUrl(props.moduleData.navState.visitId, props.model.id),
+			src: iframeSrc,
 			border: true,
 			fit: 'scale',
 			initialZoom: 1,
@@ -27,8 +33,8 @@ export default class Materia extends React.Component {
 		// state setup
 		this.state = {
 			model,
-			score: null,
-			verifiedScore: false,
+			visitId: props.moduleData.navState.visitId,
+			nodeId: props.model.id,
 			open: false
 		}
 
@@ -38,9 +44,17 @@ export default class Materia extends React.Component {
 	}
 
 	onPostMessageFromMateria(event) {
-		// iframe isn't present OR
-		// postmessage didn't come from the iframe we're listening to
-		if (!this.iframeRef.current || event.source !== this.iframeRef.current.contentWindow) {
+		// no callback registered to do anything with a score event
+		if (!this.props.handleScorePassback) {
+			return
+		}
+
+		// iframe isn't present
+		if (!this.iframeRef || !this.iframeRef.current || !this.iframeRef.current.refs.iframe) {
+			return
+		}
+		// OR postmessage didn't come from the iframe we're listening to
+		if (event.source !== this.iframeRef.current.refs.iframe.contentWindow) {
 			return
 		}
 
@@ -58,7 +72,7 @@ export default class Materia extends React.Component {
 
 			switch (data.type) {
 				case 'materiaScoreRecorded':
-					this.setState({ score: data.score })
+					this.props.handleScorePassback(event, data)
 					break
 			}
 		} catch (e) {
@@ -82,21 +96,35 @@ export default class Materia extends React.Component {
 		this.setState({ open: true })
 	}
 
-	renderTextCaption() {
-		return this.state.model.modelState.textGroup.first.text ? (
-			<div className="label">
-				<TextGroupEl
-					parentModel={this.state.model}
-					textItem={this.state.model.modelState.textGroup.first}
-					groupIndex="0"
-				/>
-			</div>
-		) : null
+	renderCaptionAndScore() {
+		let textCaptionRender = null
+
+		let scoreRender = null
+		if (this.props.score && this.props.verifiedScore) {
+			scoreRender = (
+				<span className={'materia-score verified'}>Your highest score: {this.props.score}%</span>
+			)
+		}
+
+		if (this.state.model.modelState.textGroup.first.text) {
+			textCaptionRender = (
+				<div className="label">
+					<TextGroupEl
+						parentModel={this.state.model}
+						textItem={this.state.model.modelState.textGroup.first}
+						groupIndex="0"
+					/>
+					{scoreRender}
+				</div>
+			)
+		}
+
+		return textCaptionRender
 	}
 
-	renderCaptionOrScore() {
+	renderTextCaption() {
 		try {
-			return this.renderTextCaption()
+			return this.renderCaptionAndScore()
 		} catch (e) {
 			console.error('Error building Materia Caption') // eslint-disable-line no-console
 			return null
@@ -113,7 +141,7 @@ export default class Materia extends React.Component {
 					title={`${this.state.model.modelState.widgetEngine || 'Materia'} Widget`}
 					onShow={this.onShow}
 				/>
-				{this.renderCaptionOrScore()}
+				{this.renderTextCaption()}
 			</div>
 		)
 	}
