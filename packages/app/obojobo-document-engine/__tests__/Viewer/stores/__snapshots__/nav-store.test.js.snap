@@ -52,6 +52,28 @@ Object {
       "path": "whatever2",
       "showChildren": true,
       "showChildrenOnNavigation": true,
+      "sourceModel": Object {
+        "children": Object {
+          "models": Array [],
+        },
+        "get": [Function],
+        "getNavItem": [MockFunction] {
+          "calls": Array [
+            Array [
+              [Circular],
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "id": "mockItem2",
+                "path": "whatever2",
+              },
+            },
+          ],
+        },
+      },
       "type": "hidden",
     },
   ],
@@ -68,6 +90,36 @@ Object {
   "path": "whatever",
   "showChildren": true,
   "showChildrenOnNavigation": true,
+  "sourceModel": Object {
+    "children": Object {
+      "models": Array [
+        Object {
+          "children": Object {
+            "models": Array [],
+          },
+          "get": [Function],
+          "getNavItem": [MockFunction] {
+            "calls": Array [
+              Array [
+                [Circular],
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Object {
+                  "id": "mockItem2",
+                  "path": "whatever2",
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
+    "get": [Function],
+    "getRoot": [Function],
+  },
   "type": "hidden",
 }
 `;
@@ -107,11 +159,63 @@ Object {
         "path": "whatever",
         "showChildren": true,
         "showChildrenOnNavigation": true,
+        "sourceModel": Object {
+          "children": Object {
+            "models": Array [
+              Object {
+                "children": Object {
+                  "models": Array [],
+                },
+                "get": [Function],
+                "getNavItem": [MockFunction] {
+                  "calls": Array [
+                    Array [
+                      [Circular],
+                    ],
+                  ],
+                  "results": Array [
+                    Object {
+                      "type": "return",
+                      "value": Object {
+                        "id": "mockItem2",
+                        "path": "whatever2",
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          "get": [Function],
+          "getRoot": [Function],
+        },
         "type": "hidden",
       },
       "path": "whatever2",
       "showChildren": true,
       "showChildrenOnNavigation": true,
+      "sourceModel": Object {
+        "children": Object {
+          "models": Array [],
+        },
+        "get": [Function],
+        "getNavItem": [MockFunction] {
+          "calls": Array [
+            Array [
+              [Circular],
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "id": "mockItem2",
+                "path": "whatever2",
+              },
+            },
+          ],
+        },
+      },
       "type": "hidden",
     },
   },
@@ -136,6 +240,28 @@ Object {
           "path": "whatever2",
           "showChildren": true,
           "showChildrenOnNavigation": true,
+          "sourceModel": Object {
+            "children": Object {
+              "models": Array [],
+            },
+            "get": [Function],
+            "getNavItem": [MockFunction] {
+              "calls": Array [
+                Array [
+                  [Circular],
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "type": "return",
+                  "value": Object {
+                    "id": "mockItem2",
+                    "path": "whatever2",
+                  },
+                },
+              ],
+            },
+          },
           "type": "hidden",
         },
       ],
@@ -152,6 +278,36 @@ Object {
       "path": "whatever",
       "showChildren": true,
       "showChildrenOnNavigation": true,
+      "sourceModel": Object {
+        "children": Object {
+          "models": Array [
+            Object {
+              "children": Object {
+                "models": Array [],
+              },
+              "get": [Function],
+              "getNavItem": [MockFunction] {
+                "calls": Array [
+                  Array [
+                    [Circular],
+                  ],
+                ],
+                "results": Array [
+                  Object {
+                    "type": "return",
+                    "value": Object {
+                      "id": "mockItem2",
+                      "path": "whatever2",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        "get": [Function],
+        "getRoot": [Function],
+      },
       "type": "hidden",
     },
     "9": Object {
@@ -185,11 +341,63 @@ Object {
         "path": "whatever",
         "showChildren": true,
         "showChildrenOnNavigation": true,
+        "sourceModel": Object {
+          "children": Object {
+            "models": Array [
+              Object {
+                "children": Object {
+                  "models": Array [],
+                },
+                "get": [Function],
+                "getNavItem": [MockFunction] {
+                  "calls": Array [
+                    Array [
+                      [Circular],
+                    ],
+                  ],
+                  "results": Array [
+                    Object {
+                      "type": "return",
+                      "value": Object {
+                        "id": "mockItem2",
+                        "path": "whatever2",
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          "get": [Function],
+          "getRoot": [Function],
+        },
         "type": "hidden",
       },
       "path": "whatever2",
       "showChildren": true,
       "showChildrenOnNavigation": true,
+      "sourceModel": Object {
+        "children": Object {
+          "models": Array [],
+        },
+        "get": [Function],
+        "getNavItem": [MockFunction] {
+          "calls": Array [
+            Array [
+              [Circular],
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "id": "mockItem2",
+                "path": "whatever2",
+              },
+            },
+          ],
+        },
+      },
       "type": "hidden",
     },
   },
@@ -225,11 +433,63 @@ Object {
         "path": "whatever",
         "showChildren": true,
         "showChildrenOnNavigation": true,
+        "sourceModel": Object {
+          "children": Object {
+            "models": Array [
+              Object {
+                "children": Object {
+                  "models": Array [],
+                },
+                "get": [Function],
+                "getNavItem": [MockFunction] {
+                  "calls": Array [
+                    Array [
+                      [Circular],
+                    ],
+                  ],
+                  "results": Array [
+                    Object {
+                      "type": "return",
+                      "value": Object {
+                        "id": "mockItem2",
+                        "path": "whatever2",
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          "get": [Function],
+          "getRoot": [Function],
+        },
         "type": "hidden",
       },
       "path": "whatever2",
       "showChildren": true,
       "showChildrenOnNavigation": true,
+      "sourceModel": Object {
+        "children": Object {
+          "models": Array [],
+        },
+        "get": [Function],
+        "getNavItem": [MockFunction] {
+          "calls": Array [
+            Array [
+              [Circular],
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "id": "mockItem2",
+                "path": "whatever2",
+              },
+            },
+          ],
+        },
+      },
       "type": "hidden",
     },
   },

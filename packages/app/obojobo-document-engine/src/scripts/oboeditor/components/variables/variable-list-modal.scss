@@ -1,0 +1,57 @@
+@import '~styles/includes';
+
+.variable-list-modal-parent {
+	.error-warning {
+		display: none;
+		font-size: 0.75em;
+		margin: 0 auto 0.25em;
+	}
+
+	&:has(.error-count) .error-warning {
+		display: block;
+	}
+}
+
+.variable-list-modal {
+	font-size: 0.85em;
+	background-color: $color-bg2;
+	width: 35em;
+	height: 55vh;
+	border-radius: $dimension-rounded-radius;
+	border: solid 1px rgba(0, 0, 0, 0.1);
+	display: flex;
+
+	.variable-list {
+		overflow-y: scroll;
+		width: 12em;
+
+		.variable-holder {
+			background-color: $color-bg;
+			border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+			border-right: solid 1px rgba(0, 0, 0, 0.1);
+			padding: 0.2em 0;
+			text-align: left;
+			padding-left: 1em;
+			color: rgba(0, 0, 0, 0.5);
+			border-right: none;
+		}
+
+		.create-variable-button {
+			margin: 0.5rem;
+
+			.button {
+				padding: 0.2em 0.5em;
+				color: $color-action;
+				background-color: $color-bg;
+				border-color: $color-action;
+				border-width: 1px;
+				height: 2.5em;
+
+				&:hover {
+					color: $color-bg;
+					background-color: $color-action;
+				}
+			}
+		}
+	}
+}

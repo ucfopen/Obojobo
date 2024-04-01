@@ -2,8 +2,9 @@ const AssessmentModel = require('./models/assessment')
 const attemptStart = require('./attempt-start')
 const insertEvent = require('obojobo-express/server/insert_event')
 const insertEvents = require('./insert-events')
-const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ERROR_INVALID_ATTEMPT_RESUME = 'Cannot resume an attempt for a different module'
+
+const { getFullQuestionsFromDraftTree } = require('./util')
 
 const resumeAttempt = async (
 	currentUser,
@@ -48,12 +49,7 @@ const resumeAttempt = async (
 	attempt.questions = []
 	attempt.questionResponses = []
 
-	for (const node of attempt.state.chosen) {
-		if (node.type === QUESTION_NODE_TYPE) {
-			const questionNode = assessmentNode.draftTree.getChildNodeById(node.id)
-			attempt.questions.push(questionNode.toObject())
-		}
-	}
+	attempt.questions = getFullQuestionsFromDraftTree(assessmentNode.draftTree, attempt.state.chosen)
 
 	const responsesRaw = await AssessmentModel.fetchResponsesForAttempts([attempt.id])
 	if (responsesRaw.get(attempt.id)) {

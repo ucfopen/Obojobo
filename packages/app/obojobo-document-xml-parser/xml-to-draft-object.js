@@ -11,6 +11,7 @@ const parseObjectives = require('./src/objectives-parser')
 const parseListStyles = require('./src/list-styles-parser')
 const parseUnits = require('./src/units-parser')
 const parseAssessmentRubric = require('./src/assessment-rubric-parser')
+const parseVars = require('./src/variables-parser')
 const parseScoreAction = scoreParser.parseScoreAction
 const parseScoreActions = scoreParser.parseScoreActions
 
@@ -22,6 +23,7 @@ const parsers = {
 	triggers: parseTriggers,
 	objectives: parseObjectives,
 	listStyles: parseListStyles,
+	variables: parseVars,
 	units: parseUnits,
 	solution: solAttr => {
 		return solAttr.elements[0]

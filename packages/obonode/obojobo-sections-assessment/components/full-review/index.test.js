@@ -2,6 +2,7 @@ import AssessmentUtil from 'obojobo-document-engine/src/scripts/viewer/util/asse
 import FullReview from './index'
 import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher.js'
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
@@ -13,6 +14,7 @@ jest.mock('../assessment-score-report-view', () => {
 	return () => <div>Mock assessment score report view</div>
 })
 jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => () => 'mock-uuid')
+jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher.js')
 
 // register the modules required for this test
 require('../../viewer')
@@ -779,5 +781,91 @@ describe('FullReview', () => {
 
 		expect(NavUtil.setContext).toHaveBeenCalledTimes(2)
 		expect(NavUtil.setContext).toHaveBeenCalledWith('assessmentReview:mockSecondAttemptId')
+	})
+
+	test('dispatches variables:addContext trigger per attempt', () => {
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			navState: {
+				context: 'assessmentReview:mockAttemptId'
+			},
+			questionState: {
+				contexts: {
+					'assessmentReview:mockAttemptId': {
+						scores: {},
+						responses: {},
+						revealedQuestions: {}
+					}
+				}
+			},
+			focusState: {}
+		}
+		const model = OboModel.create(assessmentJSON)
+
+		const mockFirstAttemptVariables = [{ name: 'var1' }, { name: 'var2' }]
+		const mockSecondAttemptVariables = [{ name: 'var3' }, { name: 'var4' }]
+
+		const attempts = [
+			{
+				id: 'mockAttemptId',
+				attemptNumber: 3,
+				assessmentScore: 80,
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					]
+				},
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					},
+					variables: mockFirstAttemptVariables
+				}
+			},
+			{
+				id: 'mockSecondAttemptId',
+				attemptNumber: 2,
+				assessmentScore: 100,
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					]
+				},
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					},
+					variables: mockSecondAttemptVariables
+				}
+			}
+		]
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
+
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
+
+		mount(<FullReview model={model} moduleData={moduleData} attempts={attempts} />)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
+		expect(Dispatcher.trigger.mock.calls[0][0]).toEqual('variables:addContext')
+		expect(Dispatcher.trigger.mock.calls[0][1]).toEqual({
+			value: {
+				context: 'assessmentReview:' + attempts[0].id,
+				variables: mockFirstAttemptVariables
+			}
+		})
+		expect(Dispatcher.trigger.mock.calls[1][0]).toEqual('variables:addContext')
+		expect(Dispatcher.trigger.mock.calls[1][1]).toEqual({
+			value: {
+				context: 'assessmentReview:' + attempts[1].id,
+				variables: mockSecondAttemptVariables
+			}
+		})
 	})
 })

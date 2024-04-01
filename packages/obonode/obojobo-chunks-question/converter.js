@@ -21,6 +21,7 @@ const slateToObo = node => {
 	const content = {
 		triggers: node.content.triggers,
 		objectives: node.content.objectives,
+		variables: node.content.variables,
 		type: node.content.type,
 		revealAnswer: node.content.revealAnswer,
 		collapsed: node.content.collapsed
