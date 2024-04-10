@@ -1,7 +1,6 @@
 import React from 'react'
 import DeleteButton from '../../../src/scripts/common/components/delete-button'
 import DeleteButtonBase from '../../../src/scripts/common/components/delete-button-base'
-import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 jest.mock('../../../src/scripts/common/page/focus')
@@ -44,9 +43,9 @@ describe('DeleteButton', () => {
 
 	test('DeleteButton calls focus callback with ref argument', () => {
 		const focus = require('../../../src/scripts/common/page/focus').default
-		const wrapper = mount(<DeleteButton focus={focus} />)
-		const inst = wrapper.find(DeleteButtonBase).instance()
-		inst.focus()
-		expect(focus).toHaveBeenCalledWith(inst.deleteButtonRef)
+		const component = renderer.create(<DeleteButton focus={focus} />)
+		const inst = component.root.findByType(DeleteButtonBase).instance // Get the instance of DeleteButton
+		inst.focus() // Call the focus method
+		expect(focus).toHaveBeenCalledWith(inst.deleteButtonRef) // Check if focus callback is called with correct argument
 	})
 })
