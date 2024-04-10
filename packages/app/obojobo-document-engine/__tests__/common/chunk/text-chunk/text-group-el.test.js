@@ -1,4 +1,3 @@
-import { mount } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 import TextGroupEl from '../../../../src/scripts/common/chunk/text-chunk/text-group-el'
@@ -39,11 +38,24 @@ describe('TextGroupEl', () => {
 	})
 
 	test('Renders text', () => {
-		const component = mount(
+		const component = renderer.create(
 			<TextGroupEl groupIndex={0} textItem={tg.get(0)} parentModel={jest.fn()} />
 		)
 
-		expect(component.text()).toBe('First line')
+		const tree = component.toJSON()
+
+		const findText = node => {
+			if (typeof node === 'string') {
+				return node // Return text content if it's a string
+			}
+			if (Array.isArray(node.children) && node.children.length > 0) {
+				return findText(node.children[0]) // Recursively search for text content
+			}
+			return null // Return null if no text content is found
+		}
+
+		const textContent = findText(tree)
+		expect(textContent).toBe('First line')
 	})
 
 	test('Variable replacement', () => {
@@ -51,11 +63,24 @@ describe('TextGroupEl', () => {
 			event.text = 'REPLACE(' + variable + ')'
 		})
 
-		const component = mount(
+		const component = renderer.create(
 			<TextGroupEl groupIndex={1} textItem={tg.get(1)} parentModel={jest.fn()} />
 		)
+		const tree = component.toJSON()
 
-		expect(component.text()).toBe('Some BOLD text with a REPLACE(variable) included')
+		const findText = node => {
+			if (typeof node === 'string') {
+				return node // Return text content if it's a string
+			}
+			if (Array.isArray(node.children) && node.children.length > 0) {
+				// Concatenate text content from all child nodes
+				return node.children.map(child => findText(child)).join('')
+			}
+			return '' // Return empty string if no text content is found
+		}
+
+		const textContent = findText(tree)
+		expect(textContent).toBe('Some BOLD text with a REPLACE(variable) included')
 	})
 
 	test('Variable replacement with no match', () => {
@@ -63,11 +88,25 @@ describe('TextGroupEl', () => {
 			event.text = null
 		})
 
-		const component = mount(
+		const component = renderer.create(
 			<TextGroupEl groupIndex={1} textItem={tg.get(1)} parentModel={jest.fn()} />
 		)
 
-		expect(component.text()).toBe('Some BOLD text with a {{variable}} included')
+		const tree = component.toJSON()
+
+		const findText = node => {
+			if (typeof node === 'string') {
+				return node // Return text content if it's a string
+			}
+			if (Array.isArray(node.children) && node.children.length > 0) {
+				// Concatenate text content from all child nodes
+				return node.children.map(child => findText(child)).join('')
+			}
+			return '' // Return empty string if no text content is found
+		}
+
+		const textContent = findText(tree)
+		expect(textContent).toBe('Some BOLD text with a {{variable}} included')
 	})
 
 	test('String values of hangingIndent work as expected', () => {
