@@ -1,7 +1,6 @@
 import React from 'react'
 import Switch from '../../../src/scripts/common/components/switch'
 import TestRenderer from 'react-test-renderer'
-import { mount } from 'enzyme'
 
 describe('Switch', () => {
 	test('Switch renders correctly with no options set', () => {
@@ -41,11 +40,19 @@ describe('Switch', () => {
 
 	test('Switch calls onChange', () => {
 		const onChecked = jest.fn()
-		const component = mount(<Switch onChange={onChecked} />)
-		const checkbox = component.find('input')
+		const component = TestRenderer.create(<Switch onChange={onChecked} />)
+		const checkbox = component.root.findByType('input')
+
+		// Initially, the onChange function should not have been called
 		expect(onChecked).not.toHaveBeenCalled()
-		checkbox.simulate('change', { target: { checked: true } })
+
+		// Simulate the change event by directly setting the checked attribute of the input element
+		checkbox.props.onChange({ target: { checked: true } })
+
+		// After simulating the change event, the onChange function should have been called once
 		expect(onChecked).toHaveBeenCalledTimes(1)
+
+		// Also, it should have been called with the expected argument
 		expect(onChecked).toHaveBeenCalledWith(expect.objectContaining({ target: { checked: true } }))
 	})
 })
