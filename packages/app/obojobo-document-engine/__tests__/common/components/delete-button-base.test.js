@@ -44,8 +44,8 @@ describe('DeleteButton', () => {
 	test('DeleteButton calls focus callback with ref argument', () => {
 		const focus = require('../../../src/scripts/common/page/focus').default
 		const component = renderer.create(<DeleteButton focus={focus} />)
-		const inst = component.root.findByType(DeleteButtonBase).instance // Get the instance of DeleteButton
-		inst.focus() // Call the focus method
-		expect(focus).toHaveBeenCalledWith(inst.deleteButtonRef) // Check if focus callback is called with correct argument
+		const inst = component.root.findByType(DeleteButtonBase).instance
+		inst.focus()
+		expect(focus).toHaveBeenCalledWith(inst.deleteButtonRef)
 	})
 })

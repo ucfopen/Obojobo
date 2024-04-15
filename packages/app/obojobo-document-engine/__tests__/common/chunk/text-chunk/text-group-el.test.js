@@ -46,12 +46,12 @@ describe('TextGroupEl', () => {
 
 		const findText = node => {
 			if (typeof node === 'string') {
-				return node // Return text content if it's a string
+				return node
 			}
 			if (Array.isArray(node.children) && node.children.length > 0) {
-				return findText(node.children[0]) // Recursively search for text content
+				return findText(node.children[0])
 			}
-			return null // Return null if no text content is found
+			return null
 		}
 
 		const textContent = findText(tree)
@@ -70,13 +70,12 @@ describe('TextGroupEl', () => {
 
 		const findText = node => {
 			if (typeof node === 'string') {
-				return node // Return text content if it's a string
+				return node
 			}
 			if (Array.isArray(node.children) && node.children.length > 0) {
-				// Concatenate text content from all child nodes
 				return node.children.map(child => findText(child)).join('')
 			}
-			return '' // Return empty string if no text content is found
+			return ''
 		}
 
 		const textContent = findText(tree)
@@ -96,13 +95,12 @@ describe('TextGroupEl', () => {
 
 		const findText = node => {
 			if (typeof node === 'string') {
-				return node // Return text content if it's a string
+				return node
 			}
 			if (Array.isArray(node.children) && node.children.length > 0) {
-				// Concatenate text content from all child nodes
 				return node.children.map(child => findText(child)).join('')
 			}
-			return '' // Return empty string if no text content is found
+			return ''
 		}
 
 		const textContent = findText(tree)

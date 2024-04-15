@@ -40,7 +40,6 @@ describe('ButtonBar', () => {
 		buttonInstance.props.onClick()
 		expect(mockClick).toHaveBeenCalledTimes(1)
 
-		// default function coverage for buttonBarOnClick
 		const componentNoClick = renderer.create(<ButtonBar>{children}</ButtonBar>)
 		const buttonInstanceNoClick = componentNoClick.root.findByType('button')
 
