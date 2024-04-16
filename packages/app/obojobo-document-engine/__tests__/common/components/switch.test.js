@@ -43,16 +43,12 @@ describe('Switch', () => {
 		const component = TestRenderer.create(<Switch onChange={onChecked} />)
 		const checkbox = component.root.findByType('input')
 
-		// Initially, the onChange function should not have been called
 		expect(onChecked).not.toHaveBeenCalled()
 
-		// Simulate the change event by directly setting the checked attribute of the input element
 		checkbox.props.onChange({ target: { checked: true } })
 
-		// After simulating the change event, the onChange function should have been called once
 		expect(onChecked).toHaveBeenCalledTimes(1)
 
-		// Also, it should have been called with the expected argument
 		expect(onChecked).toHaveBeenCalledWith(expect.objectContaining({ target: { checked: true } }))
 	})
 })
