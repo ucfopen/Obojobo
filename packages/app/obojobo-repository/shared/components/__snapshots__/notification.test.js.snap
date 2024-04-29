@@ -5,7 +5,7 @@ exports[`Notification component does not update cookie when there are no notific
   className="notification-none"
 >
   <p
-    tabindex="0"
+    tabIndex="0"
   >
     That's all for now
   </p>
@@ -17,7 +17,7 @@ exports[`Notification component handles click on exit button and updates state a
   className="notification-none"
 >
   <p
-    tabindex="0"
+    tabIndex="0"
   >
     That's all for now
   </p>
@@ -35,7 +35,7 @@ exports[`Notification component hides the notification on exit button click 1`] 
       className="notification-header"
     >
       <h1
-        tabindex="0"
+        tabIndex="0"
       >
         Test Title
       </h1>
@@ -47,7 +47,7 @@ exports[`Notification component hides the notification on exit button click 1`] 
       </button>
     </div>
     <p
-      tabindex="0"
+      tabIndex="0"
     >
       Test Notification
     </p>
@@ -60,7 +60,7 @@ exports[`Notification component hides the notification on exit button click 2`] 
   className="notification-none"
 >
   <p
-    tabindex="0"
+    tabIndex="0"
   >
     That's all for now
   </p>
@@ -72,7 +72,7 @@ exports[`Notification component loads notifications from cookies on mount 1`] = 
   className="notification-none"
 >
   <p
-    tabindex="0"
+    tabIndex="0"
   >
     That's all for now
   </p>
@@ -84,7 +84,7 @@ exports[`Notification component renders null when document.cookie is null 1`] = 
   className="notification-none"
 >
   <p
-    tabindex="0"
+    tabIndex="0"
   >
     That's all for now
   </p>
@@ -96,7 +96,7 @@ exports[`Notification component renders null when there are no notifications but
   className="notification-none"
 >
   <p
-    tabindex="0"
+    tabIndex="0"
   >
     That's all for now
   </p>
@@ -108,7 +108,7 @@ exports[`Notification component renders without crashing 1`] = `
   className="notification-none"
 >
   <p
-    tabindex="0"
+    tabIndex="0"
   >
     That's all for now
   </p>

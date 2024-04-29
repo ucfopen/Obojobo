@@ -18,8 +18,6 @@ const Notification = ({ onDataFromNotification }) => {
 
 			const parsedNotifications = parsedValue
 			setNotifications(parsedNotifications)
-		} else {
-			// there is nothing to render
 		}
 	}, [])
 
@@ -38,12 +36,12 @@ const Notification = ({ onDataFromNotification }) => {
 		return (
 			<div className={`notification-banner`} key={key}>
 				<div className="notification-header">
-					<h1 tabindex="0">{title}</h1>
+					<h1 tabIndex="0">{title}</h1>
 					<button onClick={() => onClickExitNotification(key)} className="notification-exit-button">
 						x
 					</button>
 				</div>
-				<p tabindex="0">{text}</p>
+				<p tabIndex="0">{text}</p>
 			</div>
 		)
 	}
@@ -59,7 +57,7 @@ const Notification = ({ onDataFromNotification }) => {
 	} else {
 		return (
 			<div className="notification-none">
-				<p tabindex="0">That's all for now</p>
+				<p tabIndex="0">That's all for now</p>
 			</div>
 		)
 	}
