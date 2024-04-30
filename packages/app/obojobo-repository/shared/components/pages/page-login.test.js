@@ -12,7 +12,6 @@ const PageLogin = require('./page-login')
 
 describe('PageLogin', () => {
 	ReactModal.setAppElement = jest.fn()
-
 	test('renders when given props', () => {
 		const mockCurrentUser = {
 			id: 99,

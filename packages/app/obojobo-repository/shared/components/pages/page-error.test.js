@@ -12,7 +12,6 @@ const PageError = require('./page-error')
 
 describe('PageError', () => {
 	ReactModal.setAppElement = jest.fn()
-
 	test('renders when given props', () => {
 		const mockCurrentUser = {
 			id: 99,

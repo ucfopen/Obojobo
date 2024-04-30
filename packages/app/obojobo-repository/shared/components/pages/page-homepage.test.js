@@ -12,7 +12,6 @@ const PageHomepage = require('./page-homepage')
 
 describe('PageHomepage', () => {
 	ReactModal.setAppElement = jest.fn()
-
 	test('renders when given props', () => {
 		const mockCurrentUser = {
 			id: 99,

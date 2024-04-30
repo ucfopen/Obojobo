@@ -48,7 +48,6 @@ describe('RepositoryNav', () => {
 		).toBe(1)
 	}
 	const expectNotificationsPopupToBeOpen = component => {
-		//expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(1)
 		const modalInstances = component.root.findAllByType(ReactModal)
 
 		const modalInstance = modalInstances.find(instance =>
@@ -57,7 +56,6 @@ describe('RepositoryNav', () => {
 		expect(modalInstance.props.isOpen).toBe(true)
 	}
 	const expectNotificationsPopupToBeClosed = component => {
-		//expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(0)
 		const modalInstances = component.root.findAllByType(ReactModal)
 
 		const modalInstance = modalInstances.find(instance =>
