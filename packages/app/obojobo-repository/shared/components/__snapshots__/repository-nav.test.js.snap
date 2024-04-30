@@ -75,6 +75,29 @@ exports[`RepositoryNav does not render stats section with just canViewSystemStat
       </div>
     </div>
   </nav>
+  <mock-ReactModal
+    className="popup"
+    contentLabel="Notifications"
+    isOpen={false}
+    onRequestClose={[Function]}
+    overlayClassName="overlay"
+  >
+    <div
+      className="exit-container"
+    >
+      <button
+        className="exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <div
+      className="notification-container"
+    >
+      <mock-Notification />
+    </div>
+  </mock-ReactModal>
 </div>
 `;
 
@@ -153,6 +176,29 @@ exports[`RepositoryNav loads notifications from cookies on mount 1`] = `
       </div>
     </div>
   </nav>
+  <mock-ReactModal
+    className="popup"
+    contentLabel="Notifications"
+    isOpen={false}
+    onRequestClose={[Function]}
+    overlayClassName="overlay"
+  >
+    <div
+      className="exit-container"
+    >
+      <button
+        className="exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <div
+      className="notification-container"
+    >
+      <mock-Notification />
+    </div>
+  </mock-ReactModal>
 </div>
 `;
 
@@ -231,6 +277,29 @@ exports[`RepositoryNav renders correctly with standard expected props 1`] = `
       </div>
     </div>
   </nav>
+  <mock-ReactModal
+    className="popup"
+    contentLabel="Notifications"
+    isOpen={false}
+    onRequestClose={[Function]}
+    overlayClassName="overlay"
+  >
+    <div
+      className="exit-container"
+    >
+      <button
+        className="exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <div
+      className="notification-container"
+    >
+      <mock-Notification />
+    </div>
+  </mock-ReactModal>
 </div>
 `;
 
@@ -272,6 +341,29 @@ exports[`RepositoryNav renders correctly with standard expected props but no log
       </a>
     </div>
   </nav>
+  <mock-ReactModal
+    className="popup"
+    contentLabel="Notifications"
+    isOpen={false}
+    onRequestClose={[Function]}
+    overlayClassName="overlay"
+  >
+    <div
+      className="exit-container"
+    >
+      <button
+        className="exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <div
+      className="notification-container"
+    >
+      <mock-Notification />
+    </div>
+  </mock-ReactModal>
 </div>
 `;
 
@@ -350,6 +442,29 @@ exports[`RepositoryNav renders null when document.cookie is null 1`] = `
       </div>
     </div>
   </nav>
+  <mock-ReactModal
+    className="popup"
+    contentLabel="Notifications"
+    isOpen={false}
+    onRequestClose={[Function]}
+    overlayClassName="overlay"
+  >
+    <div
+      className="exit-container"
+    >
+      <button
+        className="exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <div
+      className="notification-container"
+    >
+      <mock-Notification />
+    </div>
+  </mock-ReactModal>
 </div>
 `;
 
@@ -428,6 +543,29 @@ exports[`RepositoryNav renders null when there are no notifications but document
       </div>
     </div>
   </nav>
+  <mock-ReactModal
+    className="popup"
+    contentLabel="Notifications"
+    isOpen={false}
+    onRequestClose={[Function]}
+    overlayClassName="overlay"
+  >
+    <div
+      className="exit-container"
+    >
+      <button
+        className="exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <div
+      className="notification-container"
+    >
+      <mock-Notification />
+    </div>
+  </mock-ReactModal>
 </div>
 `;
 
@@ -515,5 +653,28 @@ exports[`RepositoryNav renders stats section with canViewStatsPage 1`] = `
       </div>
     </div>
   </nav>
+  <mock-ReactModal
+    className="popup"
+    contentLabel="Notifications"
+    isOpen={false}
+    onRequestClose={[Function]}
+    overlayClassName="overlay"
+  >
+    <div
+      className="exit-container"
+    >
+      <button
+        className="exit-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+    <div
+      className="notification-container"
+    >
+      <mock-Notification />
+    </div>
+  </mock-ReactModal>
 </div>
 `;

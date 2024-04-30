@@ -192,11 +192,6 @@
 	height: 100%;
 	background: $color-shadow;
 	z-index: 999;
-	display: none;
-}
-
-.overlay.active {
-	display: block;
 }
 
 // if the last child is a link (login link instead of logged in user avatar)

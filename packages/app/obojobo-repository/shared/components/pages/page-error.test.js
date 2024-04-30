@@ -1,5 +1,9 @@
+jest.mock('react-modal', () => props => {
+	return <mock-ReactModal {...props}></mock-ReactModal>
+})
 import React from 'react'
 import renderer from 'react-test-renderer'
+import ReactModal from 'react-modal'
 
 mockStaticDate()
 
@@ -7,6 +11,8 @@ mockStaticDate()
 const PageError = require('./page-error')
 
 describe('PageError', () => {
+	ReactModal.setAppElement = jest.fn()
+
 	test('renders when given props', () => {
 		const mockCurrentUser = {
 			id: 99,

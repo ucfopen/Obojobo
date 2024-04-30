@@ -1,15 +1,22 @@
 jest.mock('./notification', () => props => {
 	return <mock-Notification>{props.children}</mock-Notification>
 })
+jest.mock('react-modal', () => props => {
+	return <mock-ReactModal {...props}></mock-ReactModal>
+})
 
 import React from 'react'
 import RepositoryNav from './repository-nav'
 import { create, act } from 'react-test-renderer'
 import Notification from './notification'
+import ReactModal from 'react-modal'
 
 describe('RepositoryNav', () => {
 	let navProps
 
+	beforeAll(() => {
+		ReactModal.setAppElement = jest.fn()
+	})
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.useFakeTimers()
@@ -27,7 +34,6 @@ describe('RepositoryNav', () => {
 	afterEach(() => {
 		jest.resetAllMocks()
 	})
-
 	const expectMenuToBeOpen = component => {
 		expect(
 			component.root.findAllByProps({ className: 'repository--nav--current-user--menu is-open' })
@@ -42,10 +48,22 @@ describe('RepositoryNav', () => {
 		).toBe(1)
 	}
 	const expectNotificationsPopupToBeOpen = component => {
-		expect(component.root.findAllByProps({ className: 'popup active' }).length).toBe(1)
+		//expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(1)
+		const modalInstances = component.root.findAllByType(ReactModal)
+
+		const modalInstance = modalInstances.find(instance =>
+			instance.findByProps({ contentLabel: 'Notifications' })
+		)
+		expect(modalInstance.props.isOpen).toBe(true)
 	}
 	const expectNotificationsPopupToBeClosed = component => {
-		expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(0)
+		//expect(component.root.findAllByProps({ className: 'popup' }).length).toBe(0)
+		const modalInstances = component.root.findAllByType(ReactModal)
+
+		const modalInstance = modalInstances.find(instance =>
+			instance.findByProps({ contentLabel: 'Notifications' })
+		)
+		expect(modalInstance.props.isOpen).toBe(false)
 	}
 
 	// default props.userId = 0 means there is no user logged in

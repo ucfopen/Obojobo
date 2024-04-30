@@ -3,12 +3,14 @@ require('./repository-nav.scss')
 const React = require('react')
 const Avatar = require('./avatar')
 const Notification = require('./notification')
+const ReactModal = require('react-modal')
 
 const RepositoryNav = props => {
 	let timeOutId
 	const [isMenuOpen, setMenuOpen] = React.useState(false)
 	const [isNotificationsOpen, setNotificationsOpen] = React.useState(false)
 	const [numberNotifications, setNumberNotifications] = React.useState(0)
+	ReactModal.setAppElement('#react-hydrate-root')
 
 	const handleNotificationsData = numberOfNotificationsData => {
 		// Handle the data received from the Notification component
@@ -53,8 +55,6 @@ const RepositoryNav = props => {
 			if (parsedValue && parsedValue.length >= 1) {
 				setNumberNotifications(parsedValue.length)
 			}
-		} else {
-			// there is nothing to update
 		}
 	}, [])
 
@@ -117,21 +117,23 @@ const RepositoryNav = props => {
 					</div>
 				)}
 			</nav>
-			{isNotificationsOpen && (
-				<div>
-					<div className="popup active">
-						<div className="exit-container">
-							<button className="exit-button" onClick={onClickExitPopup}>
-								X
-							</button>
-						</div>
-						<div className="notification-container">
-							<Notification onDataFromNotification={handleNotificationsData} />
-						</div>
-					</div>
-					<div className="overlay active"></div>
+
+			<ReactModal
+				isOpen={isNotificationsOpen}
+				contentLabel={'Notifications'}
+				className="popup"
+				overlayClassName="overlay"
+				onRequestClose={onClickExitPopup}
+			>
+				<div className="exit-container">
+					<button className="exit-button" onClick={onClickExitPopup}>
+						X
+					</button>
 				</div>
-			)}
+				<div className="notification-container">
+					<Notification onDataFromNotification={handleNotificationsData} />
+				</div>
+			</ReactModal>
 		</div>
 	)
 }
