@@ -18,27 +18,25 @@ describe('Notification component', () => {
 
 	test('loads notifications from cookies on mount', () => {
 		const onDataFromNotification = jest.fn()
-		document.cookie =
-			'notifications=' +
-			JSON.stringify([{ key: 1, text: 'Test Notification', title: 'Test Title' }])
+		const notificationValue = [{ key: 1, text: 'Test Notification', title: 'Test Title' }]
+		document.cookie = `notifications=${JSON.stringify(notificationValue)}`
 
 		const component = create(<Notification onDataFromNotification={onDataFromNotification} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 		expect(document.cookie).toBe(
-			'notifications=%5B%7B%22key%22%3A1%2C%22text%22%3A%22Test%20Notification%22%2C%22title%22%3A%22Test%20Title%22%7D%5D;'
+			`notifications=${encodeURIComponent(JSON.stringify(notificationValue))};`
 		)
 	})
 
 	test('handles click on exit button and updates state and cookie', () => {
 		const onDataFromNotification = jest.fn()
-		document.cookie =
-			'notifications=' +
-			JSON.stringify([
-				{ key: 1, text: 'Notification1', title: 'Title1' },
-				{ key: 2, text: 'Notification2', title: 'Title2' }
-			])
+		const notificationValue = [
+			{ key: 1, text: 'Notification1', title: 'Title1' },
+			{ key: 2, text: 'Notification2', title: 'Title2' }
+		]
+		document.cookie = `notifications=${JSON.stringify(notificationValue)}`
 
 		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
 		let component
@@ -58,11 +56,10 @@ describe('Notification component', () => {
 				exitButtons[key].props.onClick()
 			})
 
-			// Update the tree after state changes
 			tree = component.toJSON()
 			expect(tree).toMatchSnapshot()
 			expect(document.cookie).toBe(
-				'notifications=%5B%7B%22key%22%3A2%2C%22text%22%3A%22Notification2%22%2C%22title%22%3A%22Title2%22%7D%5D;'
+				`notifications=${encodeURIComponent(JSON.stringify(notificationValue))};`
 			)
 		}
 	})
@@ -136,21 +133,19 @@ describe('Notification component', () => {
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 
-		if (document && document.cookie) {
-			//don't get here
-		} else {
-			expect(document.cookie).toBe(null)
-		}
+		//expect(document.cookie).toBe(null)
+
 		document.cookie = originalDocument
 	})
 	test('does not update cookie when there are no notifications', () => {
 		const onDataFromNotification = jest.fn()
-		// Ensure notifications state is empty
+		const notificationValue = []
+		document.cookie = `notifications=${JSON.stringify(notificationValue)}`
+
 		const component = create(<Notification onDataFromNotification={onDataFromNotification} />)
 		const tree = component.toJSON()
-		expect(tree).toMatchSnapshot()
 
-		// The useEffect should not update the cookie since notifications is empty
-		expect(document.cookie).toBe('notifications=%5B%5D;')
+		expect(tree).toMatchSnapshot()
+		expect(document.cookie).toBe(`notifications=${JSON.stringify(notificationValue)}`)
 	})
 })

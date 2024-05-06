@@ -7,7 +7,6 @@ var seed
 /**
  * We receive the dbmigrate dependency from dbmigrate initially.
  * This enables us to not have to rely on NODE_PATH.
- * yarn db:migrateup
  */
 exports.setup = function(options, seedLink) {
 	dbm = options.dbmigrate
@@ -33,7 +32,7 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	db.dropTable('notifications')
+	return db.dropTable('notifications')
 }
 
 exports._meta = {

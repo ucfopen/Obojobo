@@ -230,11 +230,9 @@ describe('RepositoryNav', () => {
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 
-		if (document && document.cookie) {
-			//don't get here
-		} else {
-			expect(document.cookie).toBe(null)
-		}
+		expect(document).not.toBeNull()
+		expect(document.cookie).toBe(null)
+
 		document.cookie = originalDocument
 	})
 
@@ -305,26 +303,27 @@ describe('RepositoryNav', () => {
 	test('renders null when there are no notifications but document.cookie is not null', () => {
 		const reusableComponent = <RepositoryNav {...navProps} />
 		let component
+		let parsedValue
+		const notificationValue = 'otherrandomdata=otherrandomdata'
+		document.cookie = notificationValue
 		act(() => {
 			component = create(reusableComponent)
 		})
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 
-		if (document && document.cookie) {
-			const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
+		expect(document).not.toBeNull()
+		expect(document.cookie).not.toBeNull()
 
-			cookiePropsRaw.forEach(c => {
-				const parts = c.trim().split('=')
+		const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
 
-				if (parts[0] === 'notifications') {
-					//don't get here
-				} else {
-					expect(parts[0]).not.toBe('notifications')
-				}
-			})
-		} else {
-			expect(document.cookie).toBe('')
-		}
+		cookiePropsRaw.forEach(c => {
+			const parts = c.trim().split('=')
+
+			expect(parts[0]).not.toBe('notifications')
+			expect(parts[0] === 'notifications').toBe(false)
+		})
+		expect(document.cookie).toBe(notificationValue)
+		expect(parsedValue).toBe(undefined)
 	})
 })

@@ -23,7 +23,7 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.removeColumn('last_login')
+	return db.removeColumn('users', 'last_login')
 }
 
 exports._meta = {
