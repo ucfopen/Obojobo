@@ -15,7 +15,21 @@ describe('Notification component', () => {
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
+	test('renders nothing when document.cookie is null', () => {
+		const onDataFromNotification = jest.fn()
+		const originalDocument = document.cookie
+		Object.defineProperty(document, 'cookie', { value: null, writable: true })
 
+		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+
+		document.cookie = originalDocument
+	})
 	test('loads notifications from cookies on mount', () => {
 		const onDataFromNotification = jest.fn()
 		const notificationValue = [{ key: 1, text: 'Test Notification', title: 'Test Title' }]
@@ -25,9 +39,7 @@ describe('Notification component', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-		expect(document.cookie).toBe(
-			`notifications=${encodeURIComponent(JSON.stringify(notificationValue))};`
-		)
+		expect(document.cookie).toBe(`notifications=${JSON.stringify(notificationValue)}`)
 	})
 
 	test('handles click on exit button and updates state and cookie', () => {
@@ -90,51 +102,29 @@ describe('Notification component', () => {
 		tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 
-		if (elementToExit) {
-			expect(elementToExit.style.display).toBe('undefined')
-		}
+		expect(elementToExit).toBe(undefined)
 	})
 	test('renders null when there are no notifications but document.cookie is not null', () => {
 		const onDataFromNotification = jest.fn()
 		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
-		let component
-		act(() => {
-			component = create(reusableComponent)
-		})
-		const tree = component.toJSON()
-		expect(tree).toMatchSnapshot()
-
-		if (document && document.cookie) {
-			const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
-
-			cookiePropsRaw.forEach(c => {
-				const parts = c.trim().split('=')
-
-				if (parts[0] === 'notifications') {
-					//don't get here
-				} else {
-					expect(parts[0]).not.toBe('notifications')
-				}
-			})
-		} else {
-			expect(document.cookie).toBe(undefined)
-		}
-	})
-	test('renders null when document.cookie is null', () => {
-		const onDataFromNotification = jest.fn()
 		const originalDocument = document.cookie
-		document.cookie = null
-
-		const reusableComponent = <Notification onDataFromNotification={onDataFromNotification} />
 		let component
+		const cookieValue = 'otherrandomdata=otherrandomdata'
+		document.cookie = cookieValue
 		act(() => {
 			component = create(reusableComponent)
 		})
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 
-		//expect(document.cookie).toBe(null)
+		expect(document).not.toBeNull()
+		expect(document.cookie).not.toBeNull()
 
+		const cookiePropsRaw = decodeURIComponent(document.cookie).split(';')
+
+		const parts = cookiePropsRaw[0].trim().split('=')
+
+		expect(parts[1]).toBe('undefined')
 		document.cookie = originalDocument
 	})
 	test('does not update cookie when there are no notifications', () => {

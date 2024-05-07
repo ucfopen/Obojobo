@@ -205,17 +205,13 @@ describe('RepositoryNav', () => {
 	})
 
 	test('loads notifications from cookies on mount', () => {
-		document.cookie =
-			'notifications=' +
-			JSON.stringify([{ key: 1, text: 'Test Notification', title: 'Test Title' }])
-
+		const notificationValue = { key: 1, text: 'TestNotification', title: 'TestTitle' }
+		document.cookie = `notifications=${JSON.stringify(notificationValue)}`
 		const component = create(<RepositoryNav {...navProps} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-		expect(document.cookie).toBe(
-			'notifications=[{"key":1,"text":"Test Notification","title":"Test Title"}]'
-		)
+		expect(document.cookie).toBe(`notifications=${JSON.stringify(notificationValue)}`)
 	})
 
 	test('renders null when document.cookie is null', () => {
@@ -304,8 +300,8 @@ describe('RepositoryNav', () => {
 		const reusableComponent = <RepositoryNav {...navProps} />
 		let component
 		let parsedValue
-		const notificationValue = 'otherrandomdata=otherrandomdata'
-		document.cookie = notificationValue
+		const cookieValue = 'otherrandomdata=otherrandomdata'
+		document.cookie = cookieValue
 		act(() => {
 			component = create(reusableComponent)
 		})
@@ -323,7 +319,7 @@ describe('RepositoryNav', () => {
 			expect(parts[0]).not.toBe('notifications')
 			expect(parts[0] === 'notifications').toBe(false)
 		})
-		expect(document.cookie).toBe(notificationValue)
+		expect(document.cookie).toBe(cookieValue)
 		expect(parsedValue).toBe(undefined)
 	})
 })

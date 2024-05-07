@@ -79,7 +79,7 @@ exports[`Notification component loads notifications from cookies on mount 1`] = 
 </div>
 `;
 
-exports[`Notification component renders null when document.cookie is null 1`] = `
+exports[`Notification component renders nothing when document.cookie is null 1`] = `
 <div
   className="notification-none"
 >
