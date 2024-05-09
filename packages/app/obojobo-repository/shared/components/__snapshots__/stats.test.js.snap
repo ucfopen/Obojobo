@@ -79,6 +79,37 @@ exports[`Stats Renders "modules loaded" state correctly 1`] = `
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -266,6 +297,37 @@ exports[`Stats Renders "modules loaded" state correctly 2`] = `
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -453,6 +515,37 @@ exports[`Stats Renders "modules loading" state correctly 1`] = `
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -551,6 +644,37 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -1083,6 +1207,37 @@ exports[`Stats Renders correctly when assessment stat fetching has not started o
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -1289,6 +1444,37 @@ exports[`Stats Renders correctly when assessment stat fetching has started but n
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"

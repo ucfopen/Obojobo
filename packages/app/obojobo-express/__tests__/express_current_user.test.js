@@ -3,14 +3,28 @@ const userFunctions = ['setCurrentUser', 'getCurrentUser', 'requireCurrentUser']
 
 jest.mock('test_node')
 jest.mock('../server/models/user')
+jest.mock('../server/viewer/viewer_notification_state')
+
+const viewerNotificationState = require('../server/viewer/viewer_notification_state')
+
+jest.mock('../server/viewer/viewer_state', () => ({
+	get: jest.fn()
+}))
+
+const viewerState = require('../server/viewer/viewer_state')
 
 describe('current user middleware', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
+		jest.clearAllMocks()
 		mockArgs = (() => {
-			const res = {}
-			const req = { session: {} }
+			const res = {
+				cookie: jest.fn()
+			}
+			const req = {
+				session: {}
+			}
 			const mockJson = jest.fn().mockImplementation(() => {
 				return true
 			})
@@ -209,5 +223,77 @@ describe('current user middleware', () => {
 			cb('mock-error')
 		})
 		return expect(req.saveSessionPromise()).rejects.toEqual('mock-error')
+	})
+	test('getNotifications sets notifications in cookies when notifications are available', async () => {
+		expect.assertions(6)
+
+		const { req, res } = mockArgs
+		const User = oboRequire('server/models/user')
+		const mockUser = new User({ id: 8, lastLogin: '2019-01-01' })
+		User.fetchById = jest.fn().mockResolvedValue(mockUser)
+		req.currentUserId = mockUser.id
+		req.currentUser = mockUser
+		req.currentUser.lastLogin = mockUser.lastLogin
+		jest.useFakeTimers('modern')
+		jest.setSystemTime(new Date(2024, 3, 1)) //mock the date so that runtime does not affect the date/time
+
+		const mockNotifications = [
+			{ id: 1, title: 'Notification 1', text: 'Message 1' },
+			{ id: 2, title: 'Notification 2', text: 'Message 2' }
+		]
+		//simulate what would be added to the cookie
+		const mockNotificationsToCookie = [
+			{ title: 'Notification 1', text: 'Message 1' },
+			{ title: 'Notification 2', text: 'Message 2' }
+		]
+
+		viewerState.get.mockResolvedValueOnce(req.currentUserId)
+		viewerNotificationState.getRecentNotifications.mockResolvedValueOnce(
+			mockNotifications.map(n => ({ id: n.id }))
+		)
+		viewerNotificationState.getNotifications.mockResolvedValueOnce(mockNotifications)
+
+		return req.getNotifications(req, res).then(() => {
+			const today = new Date()
+			expect(viewerState.get).toHaveBeenCalledWith(8)
+			expect(viewerNotificationState.getRecentNotifications).toHaveBeenCalled()
+			expect(viewerNotificationState.getNotifications).toHaveBeenCalledWith([1, 2])
+
+			expect(res.cookie).toHaveBeenCalledWith(
+				'notifications',
+				JSON.stringify(mockNotificationsToCookie)
+			)
+			expect(req.currentUser.lastLogin).toStrictEqual(today)
+			expect(viewerNotificationState.setLastLogin).toHaveBeenCalledWith(8, today)
+
+			jest.useRealTimers()
+		})
+	})
+	test('getNotifications returns empty when there are no notifications', async () => {
+		expect.assertions(6)
+		const { req, res } = mockArgs
+		const User = oboRequire('server/models/user')
+		const mockUser = new User({ id: 8, lastLogin: '2019-01-01' })
+		User.fetchById = jest.fn().mockResolvedValue(mockUser)
+		req.currentUserId = mockUser.id
+		req.currentUser = mockUser
+		req.currentUser.lastLogin = mockUser.lastLogin
+		jest.useFakeTimers('modern')
+		jest.setSystemTime(new Date(2024, 3, 1)) //mock the date so that runtime does not affect the date/time
+
+		viewerState.get.mockResolvedValueOnce(req.currentUserId)
+		viewerNotificationState.getRecentNotifications.mockResolvedValueOnce(null)
+
+		return req.getNotifications(req, res).then(() => {
+			const today = new Date()
+			expect(viewerState.get).toHaveBeenCalledWith(8)
+			expect(viewerNotificationState.getRecentNotifications).toHaveBeenCalled() //With(req.currentUser.lastLogin)
+			expect(viewerNotificationState.getNotifications).not.toHaveBeenCalled()
+			expect(res.cookie).not.toHaveBeenCalled()
+			expect(req.currentUser.lastLogin).toStrictEqual(today)
+			expect(viewerNotificationState.setLastLogin).toHaveBeenCalledWith(8, today)
+
+			jest.useRealTimers()
+		})
 	})
 })
