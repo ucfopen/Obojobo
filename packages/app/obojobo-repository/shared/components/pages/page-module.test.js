@@ -1,9 +1,13 @@
 jest.mock('../../api-util')
 jest.mock('dayjs')
+jest.mock('react-modal', () => props => {
+	return <mock-ReactModal {...props}></mock-ReactModal>
+})
 
 import React from 'react'
 import PageModule from './page-module'
 import { create, act } from 'react-test-renderer'
+import ReactModal from 'react-modal'
 
 const Button = require('../button')
 const ButtonLink = require('../button-link')
@@ -23,6 +27,7 @@ describe('PageModule', () => {
 			fromNow: () => 'A long time ago'
 		}))
 		dayjs.extend = jest.fn()
+		ReactModal.setAppElement = jest.fn()
 	})
 
 	beforeEach(() => {

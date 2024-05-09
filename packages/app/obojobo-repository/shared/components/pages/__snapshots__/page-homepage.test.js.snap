@@ -114,6 +114,37 @@ exports[`PageHomepage renders when given props 1`] = `
               </div>
             </div>
           </nav>
+          <mock-ReactModal
+            className="popup"
+            contentLabel="Notifications"
+            isOpen={false}
+            onRequestClose={[Function]}
+            overlayClassName="overlay"
+          >
+            <div
+              className="exit-container"
+            >
+              <button
+                className="exit-button"
+                onClick={[Function]}
+              >
+                X
+              </button>
+            </div>
+            <div
+              className="notification-container"
+            >
+              <div
+                className="notification-none"
+              >
+                <p
+                  tabIndex="0"
+                >
+                  That's all for now
+                </p>
+              </div>
+            </div>
+          </mock-ReactModal>
         </div>
         <section
           className="hero"
