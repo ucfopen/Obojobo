@@ -234,6 +234,8 @@ describe('current user middleware', () => {
 		req.currentUserId = mockUser.id
 		req.currentUser = mockUser
 		req.currentUser.lastLogin = mockUser.lastLogin
+		jest.useFakeTimers('modern')
+		jest.setSystemTime(new Date(2024, 3, 1)) //mock the date so that runtime does not affect the date/time
 
 		const mockNotifications = [
 			{ id: 1, title: 'Notification 1', text: 'Message 1' },
@@ -263,6 +265,8 @@ describe('current user middleware', () => {
 			)
 			expect(req.currentUser.lastLogin).toStrictEqual(today)
 			expect(viewerNotificationState.setLastLogin).toHaveBeenCalledWith(8, today)
+
+			jest.useRealTimers()
 		})
 	})
 	test('getNotifications returns empty when there are no notifications', async () => {
@@ -274,6 +278,8 @@ describe('current user middleware', () => {
 		req.currentUserId = mockUser.id
 		req.currentUser = mockUser
 		req.currentUser.lastLogin = mockUser.lastLogin
+		jest.useFakeTimers('modern')
+		jest.setSystemTime(new Date(2024, 3, 1)) //mock the date so that runtime does not affect the date/time
 
 		viewerState.get.mockResolvedValueOnce(req.currentUserId)
 		viewerNotificationState.getRecentNotifications.mockResolvedValueOnce(null)
@@ -286,6 +292,8 @@ describe('current user middleware', () => {
 			expect(res.cookie).not.toHaveBeenCalled()
 			expect(req.currentUser.lastLogin).toStrictEqual(today)
 			expect(viewerNotificationState.setLastLogin).toHaveBeenCalledWith(8, today)
+
+			jest.useRealTimers()
 		})
 	})
 })
