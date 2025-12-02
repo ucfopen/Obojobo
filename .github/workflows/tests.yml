@@ -58,7 +58,7 @@ jobs:
       - name: Build App Image
         run: |
           cd docker
-          docker-compose build
+          docker compose build
 
       - name: Push App Images
         run: |
