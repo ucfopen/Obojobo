@@ -115,7 +115,17 @@ router.route('/materia-lti-picker-return').post(async (req, res) => {
 	// this is only here for Materia to redirect to
 	// once a resource is selected.  Normally,
 	// the client will close the browser before this loads
-	if (req.url) {
+	const materia_jwks = await fetch(`${config.clientMateriaHost}/.well-known/jwks.json`).then(r =>
+		r.json()
+	)
+	const keystore = jose.JWK.createKeyStore()
+	for (const jwk of materia_jwks.keys) {
+		await keystore.add(jwk)
+	}
+	const result = await jose.JWS.createVerify(keystore).verify(req.body.JWT)
+	const payload = JSON.parse(result.payload.toString())
+
+	if (payload.type === 'ltiResourceLink' && req.url) {
 		res.type('text/html')
 		res.send(`<html><head></head><body>Materia Widget Selection Complete</body></html>`)
 	}
