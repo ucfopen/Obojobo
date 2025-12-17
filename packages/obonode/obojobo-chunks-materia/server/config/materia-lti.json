@@ -1,6 +1,7 @@
 {
 	"default":
 	{
+		"materiaLtiVersion": "1.3",
 		"oauthKey": "materia-lti-key",
 		"oauthSecret": "materia-lti-secret",
 		"oboFamilyCode": "obojobo-next",
@@ -8,10 +9,12 @@
 		"oboJwtKey": "obojobo-jwt-key",
 		"oboLtiClientId": "1234",
 		"oboLtiUuid": "00000000-0000-0000-0000-000000000000",
+		"oboLtiDeploymentId": "obojobo-deploy-id",
 		"oboName": "Obojobo Next"
 	},
 	"development": {
 		"clientMateriaHost": "http://localhost:420",
+		"materiaLtiVersion": {"ENV": "MATERIA_LTI_VERSION"},
 		"oboGuid": "obojobo.next.local.dev.guid",
 		"oboLtiUuid": "00000000-0000-0000-0000-000000000000",
 		"oboPrivateRsaKey": {"ENV": "OBO_PRIVATE_RSA_KEY"},
@@ -19,12 +22,14 @@
 	},
 	"production": {
 		"clientMateriaHost": {"ENV": "MATERIA_HOST"},
+		"materiaLtiVersion": {"ENV": "MATERIA_LTI_VERSION"},
 		"oauthKey": {"ENV": "MATERIA_OAUTH_KEY"},
 		"oauthSecret": {"ENV": "MATERIA_OAUTH_SECRET"},
 		"oboGuid": {"ENV": "OBO_LTI_GUID"},
 		"oboJwtKey": {"ENV": "OBO_JWT_KEY"},
 		"oboLtiClientId": {"ENV": "OBO_LTI_CLIENTID"},
 		"oboLtiUuid": {"ENV": "OBO_LTI_UUID"},
+		"oboLtiDeploymentId": {"ENV": "OBO_LTI_DEPLOYMENTID"},
 		"oboPrivateRsaKey": {"ENV": "OBO_PRIVATE_RSA_KEY"}
 	}
 }
