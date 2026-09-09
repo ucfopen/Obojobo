@@ -55,7 +55,6 @@ const MathEquation = props => {
 		>
 			<NonEditableChunk>
 				<div
-					aria-hidden
 					className="katex-container"
 					style={{ fontSize: props.model.modelState.size }}
 					dangerouslySetInnerHTML={{ __html: katexHtml }}
