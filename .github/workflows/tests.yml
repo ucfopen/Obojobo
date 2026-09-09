@@ -14,12 +14,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-
-    # caches yarn dependencies in the yarn cache (not npm_modules)
-    # should help to speed up yarn install and be safe
-    # across changes to the repo and platforms
-    - name: Cache Yarn Deps
-      uses: c-hive/gha-yarn-cache@v1
+        # caches yarn dependencies in the yarn cache (not npm_modules)
+        # should help to speed up yarn install and be safe
+        # across changes to the repo and platforms
+        cache: 'yarn'
 
     - run: echo "github.ref = ${{ github.ref }}"
 
@@ -60,7 +58,7 @@ jobs:
       - name: Build App Image
         run: |
           cd docker
-          docker-compose build
+          docker compose build
 
       - name: Push App Images
         run: |
@@ -85,9 +83,7 @@ jobs:
       with:
         node-version: 18
         registry-url: https://registry.npmjs.org/
-
-    - name: Cache Yarn Deps
-      uses: c-hive/gha-yarn-cache@v1
+        cache: 'yarn'
 
     # frozen lockfile should make the cache more effective
     # and our tests more predictable
