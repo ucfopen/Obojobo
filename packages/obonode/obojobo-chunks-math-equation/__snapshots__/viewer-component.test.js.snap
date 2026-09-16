@@ -2,14 +2,13 @@
 
 exports[`MathEquation MathEquation component 1`] = `
 <div
-  aria-label="y=\\\\frac{1}{x}"
+  aria-label="Equation : "
   className="component obojobo-draft--chunks--math-equation pad align-center"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
-  role="math"
   tabIndex={-1}
 >
   <div
@@ -36,14 +35,13 @@ exports[`MathEquation MathEquation component 1`] = `
 
 exports[`MathEquation MathEquation component with alt 1`] = `
 <div
-  aria-label="y equals 1 over x"
+  aria-label="Equation : y equals 1 over x"
   className="component obojobo-draft--chunks--math-equation pad align-center"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
-  role="math"
   tabIndex={-1}
 >
   <div
@@ -70,14 +68,13 @@ exports[`MathEquation MathEquation component with alt 1`] = `
 
 exports[`MathEquation MathEquation component with error 1`] = `
 <div
-  aria-label="\\\\\\\\"
+  aria-label="Equation : "
   className="component obojobo-draft--chunks--math-equation pad align-center"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
-  role="math"
   tabIndex={-1}
 >
   <div
@@ -104,14 +101,13 @@ exports[`MathEquation MathEquation component with error 1`] = `
 
 exports[`MathEquation MathEquation component with label 1`] = `
 <div
-  aria-label="Equation mockLabel: y=\\\\frac{1}{x}"
+  aria-label="Equation mockLabel: "
   className="component obojobo-draft--chunks--math-equation pad align-center"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
-  role="math"
   tabIndex={-1}
 >
   <div
@@ -151,7 +147,6 @@ exports[`MathEquation MathEquation component with label AND alt 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
-  role="math"
   tabIndex={-1}
 >
   <div

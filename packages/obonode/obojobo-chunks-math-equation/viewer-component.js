@@ -45,12 +45,10 @@ const MathEquation = props => {
 			model={props.model}
 			moduleData={props.moduleData}
 			className={`obojobo-draft--chunks--math-equation pad align-${props.model.modelState.align}`}
-			role="math"
 			aria-label={
-				(props.model.modelState.label === ''
-					? ''
-					: 'Equation ' + props.model.modelState.label + ': ') +
-				(props.model.modelState.alt || props.model.modelState.latex)
+				'Equation ' +
+				(props.model.modelState.label ? props.model.modelState.label + ': ' : ': ') +
+				(props.model.modelState.alt || '') // used to be '|| props.model.modelState.latex', unhelpful
 			}
 		>
 			<NonEditableChunk>
