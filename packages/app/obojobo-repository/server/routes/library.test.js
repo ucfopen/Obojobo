@@ -13,6 +13,7 @@ jest.mock(
 	}),
 	{ virtual: true }
 )
+jest.mock('react-modal')
 
 jest.setTimeout(10000) // extend test timeout?
 

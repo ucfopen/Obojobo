@@ -13,6 +13,7 @@ class User {
 		email = null,
 		username = null,
 		createdAt = Date.now(),
+		lastLogin = Date.now(),
 		roles = [],
 		perms = null
 	} = {}) {
@@ -27,6 +28,7 @@ class User {
 		this.email = email
 		this.username = username
 		this.createdAt = createdAt
+		this.lastLogin = lastLogin
 		this.roles = roles
 		this.perms = [
 			...new Set(
@@ -47,6 +49,7 @@ class User {
 			email: result.email,
 			username: result.username,
 			createdAt: result.created_at,
+			lastLogin: result.last_login,
 			roles: result.roles,
 			perms: result.perms
 		})

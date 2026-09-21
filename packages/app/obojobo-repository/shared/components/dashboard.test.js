@@ -379,9 +379,12 @@ describe('Dashboard', () => {
 	}
 
 	const expectDialogToBeRendered = (component, dialogComponent, title) => {
-		expect(ReactModal.setAppElement).toHaveBeenCalledTimes(1)
-		expect(component.root.findByType(ReactModal).props.contentLabel).toBe(title)
+		expect(ReactModal.setAppElement).toHaveBeenCalledTimes(2)
+		const modal = component.root.findByProps({ contentLabel: title })
+		expect(modal).toBeDefined()
 		expect(component.root.findAllByType(dialogComponent).length).toBe(1)
+		const modalNotifications = component.root.findByProps({ contentLabel: 'Notifications' })
+		expect(modalNotifications).toBeDefined()
 	}
 
 	const expectMethodToBeCalledOnceWith = (method, calledWith = []) => {
@@ -487,8 +490,9 @@ describe('Dashboard', () => {
 		expect(moduleComponents[3].props.draftId).toBe('mockDraftId')
 		expect(moduleComponents[4].props.draftId).toBe('mockDraftId4')
 
-		// Shouldn't be any modal dialogs open, either
-		expect(component.root.findAllByType(ReactModal).length).toBe(0)
+		// Shouldn't be any modal dialogs open other than notifications, either
+		expect(component.root.findAllByType(ReactModal).length).toBe(1)
+		expect(component.root.findAllByType(ReactModal)[0].props.contentLabel).toBe('Notifications')
 
 		return component
 	}
@@ -2176,14 +2180,21 @@ describe('Dashboard', () => {
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
 	})
 
-	test('renders no dialogs if props.dialog value is unsupported', () => {
+	test('renders only the notification modal if props.dialog value is unsupported', () => {
 		dashboardProps.dialog = 'some-unsupported-value'
 		let component
 		act(() => {
 			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
 		})
 
-		expect(component.root.findAllByType(ReactModal).length).toBe(0)
+		const modalInstances = component.root.findAllByType(ReactModal)
+
+		const notificationModals = modalInstances.filter(instance =>
+			instance.findByProps({ contentLabel: 'Notifications' })
+		)
+
+		expect(component.root.findAllByType(ReactModal).length).toBe(1)
+		expect(notificationModals.length).toBe(1)
 
 		component.unmount()
 	})

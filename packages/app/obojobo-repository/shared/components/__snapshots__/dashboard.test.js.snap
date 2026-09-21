@@ -79,6 +79,37 @@ exports[`Dashboard renders in MODE_RECENT with fewer modules than moduleCount, n
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -316,6 +347,37 @@ exports[`Dashboard renders with default props 1`] = `
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -535,6 +597,37 @@ exports[`Dashboard renders with mode = MODE_ALL 1`] = `
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -787,6 +880,37 @@ exports[`Dashboard renders with mode = MODE_COLLECTION 1`] = `
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"
@@ -979,6 +1103,37 @@ exports[`Dashboard renders with mode = MODE_RECENT 1`] = `
         </div>
       </div>
     </nav>
+    <mock-ReactModal
+      className="popup"
+      contentLabel="Notifications"
+      isOpen={false}
+      onRequestClose={[Function]}
+      overlayClassName="overlay"
+    >
+      <div
+        className="exit-container"
+      >
+        <button
+          className="exit-button"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <div
+        className="notification-container"
+      >
+        <div
+          className="notification-none"
+        >
+          <p
+            tabIndex="0"
+          >
+            That's all for now
+          </p>
+        </div>
+      </div>
+    </mock-ReactModal>
   </div>
   <div
     className="repository--section-wrapper--full-width repository--section-wrapper--grey default-bg"

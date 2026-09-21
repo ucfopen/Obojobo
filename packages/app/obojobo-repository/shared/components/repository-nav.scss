@@ -8,7 +8,7 @@
 .repository--stick-to-top {
 	position: sticky;
 	top: 0;
-	background: #ffffff;
+	background: $color-bg;
 	min-width: 100%;
 	z-index: 100;
 	border-bottom: 1px solid $border-color;
@@ -76,7 +76,7 @@
 	position: absolute;
 	left: -1em;
 	top: 3.7em;
-	background: #ffffff;
+	background: $color-bg;
 	padding: 20px;
 	border-radius: 3px;
 	width: 100%;
@@ -119,6 +119,79 @@
 		width: 2.9em;
 		margin: 0;
 	}
+
+	.notification-indicator {
+		color: $color-notification;
+		cursor: pointer;
+		height: 1.5em;
+	}
+
+	.repository--nav--current-user--name {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+	}
+}
+
+.popup {
+	display: flex;
+	position: fixed;
+	flex-direction: column;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50%;
+	height: 50%;
+	max-width: 600px;
+	border: 1px solid $color-shadow;
+	border-radius: 10px;
+	background: $color-bg;
+	padding: 20px;
+	z-index: 1000;
+	box-shadow: 0 0 20px 0 $color-shadow;
+	overflow: hidden;
+
+	.exit-container {
+		position: fixed;
+		top: 3px;
+		right: 3px;
+
+		.exit-button {
+			border: none;
+			background: none;
+			border-radius: 6em;
+			font-size: 0.5cm;
+			cursor: pointer;
+			z-index: 1000;
+		}
+
+		.exit-button:hover {
+			color: $color-notification;
+		}
+	}
+
+	.notification-container {
+		justify-content: center;
+		align-items: center;
+		overflow-y: auto;
+		max-height: 100%;
+	}
+}
+
+.popup.active {
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: $color-shadow;
+	z-index: 999;
 }
 
 // if the last child is a link (login link instead of logged in user avatar)
