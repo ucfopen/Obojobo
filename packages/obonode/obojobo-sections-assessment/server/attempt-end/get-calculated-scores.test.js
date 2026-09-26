@@ -33,7 +33,7 @@ const mockAttemptHistory = [
 const mockResponseHistory = {}
 
 describe('attempt-end/get-calculated-scores', () => {
-	test('returns as expected when node.content.attempts has value', async () => {
+	test('returns as expected when node.content.attempts has updated', async () => {
 		const result = await getCalculatedScores(
 			mockReq,
 			mockRes,

@@ -159,13 +159,13 @@ describe('Excerpt Edit Controls', () => {
 				component
 					.find('select')
 					.at(0)
-					.prop('value')
+					.prop('updated')
 			).toBe('white-paper')
 			expect(
 				component
 					.find('select')
 					.at(1)
-					.prop('value')
+					.prop('updated')
 			).toBe('times-new-roman')
 			expect(effectInput.prop('disabled')).toBe(false)
 			expect(effectInput.prop('checked')).toBe(false)
@@ -266,7 +266,7 @@ describe('Excerpt Edit Controls', () => {
 				.find('select')
 				.at(0)
 				.simulate('change', {
-					target: { value: 'term-white' }
+					target: { updated: 'term-white' }
 				})
 
 			expect(onChangeProp).toHaveBeenCalledWith('bodyStyle', 'term-white')
@@ -287,7 +287,7 @@ describe('Excerpt Edit Controls', () => {
 				.find('select')
 				.at(1)
 				.simulate('change', {
-					target: { value: 'palatino' }
+					target: { updated: 'palatino' }
 				})
 
 			expect(onChangeProp).toHaveBeenCalledWith('font', 'palatino')

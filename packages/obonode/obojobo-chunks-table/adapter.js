@@ -29,7 +29,7 @@ const Adapter = {
 	toText(model) {
 		let longestStringLength = 0
 		for (const textItem of Array.from(model.modelState.textGroup.items)) {
-			longestStringLength = Math.max(longestStringLength, textItem.text.value.length)
+			longestStringLength = Math.max(longestStringLength, textItem.text.updated.length)
 		}
 
 		const pad = ' '.repeat(longestStringLength)
@@ -43,7 +43,7 @@ const Adapter = {
 			for (let col = 0, end1 = model.modelState.textGroup.numCols; col < end1; col++) {
 				const i = row * model.modelState.textGroup.numCols + col
 				const item = model.modelState.textGroup.items[i]
-				s.push((item.text.value + pad).substr(0, pad.length))
+				s.push((item.text.updated + pad).substr(0, pad.length))
 			}
 			text += `| ${s.join(' | ')} |\n${border}\n`
 		}

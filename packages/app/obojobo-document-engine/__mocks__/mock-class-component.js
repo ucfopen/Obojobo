@@ -3,14 +3,14 @@ import React from 'react'
 // from MDN solution https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value#Examples
 const getCircularReplacer = () => {
 	const seen = new WeakSet()
-	return (key, value) => {
-		if (typeof value === 'object' && value !== null) {
-			if (seen.has(value)) {
+	return (key, updated) => {
+		if (typeof updated === 'object' && updated !== null) {
+			if (seen.has(updated)) {
 				return
 			}
-			seen.add(value)
+			seen.add(updated)
 		}
-		return value
+		return updated
 	}
 }
 

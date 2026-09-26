@@ -108,7 +108,7 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 	const [isDebouncing, setIsDebouncing] = React.useState(false)
 
 	const onChangeViewMode = event => {
-		setViewMode(event.target.value)
+		setViewMode(event.target.updated)
 	}
 
 	const filteredAttempts = filterAttempts(attempts, controls)
@@ -120,9 +120,9 @@ const AssessmentStats = ({ attempts, defaultFilterSettings = {} }) => {
 				<label className="view-mode">
 					<span>Showing:</span>
 
-					<select onChange={onChangeViewMode} value={viewMode}>
-						<option value={VIEW_MODE_FINAL_ASSESSMENT_SCORE}>Final Assessment Scores</option>
-						<option value={VIEW_MODE_ALL_ATTEMPTS}>All Attempt Scores</option>
+					<select onChange={onChangeViewMode} updated={viewMode}>
+						<option updated={VIEW_MODE_FINAL_ASSESSMENT_SCORE}>Final Assessment Scores</option>
+						<option updated={VIEW_MODE_ALL_ATTEMPTS}>All Attempt Scores</option>
 					</select>
 				</label>
 				<hr />

@@ -37,7 +37,7 @@ const questionJSON = {
 						textGroup: [
 							{
 								text: {
-									value: 'Example text'
+									updated: 'Example text'
 								}
 							}
 						]
@@ -73,7 +73,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text'
+													updated: 'Example Text'
 												}
 											}
 										]
@@ -92,7 +92,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text 2'
+													updated: 'Example Text 2'
 												}
 											}
 										]
@@ -120,7 +120,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text 3'
+													updated: 'Example Text 3'
 												}
 											}
 										]
@@ -139,7 +139,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text 4'
+													updated: 'Example Text 4'
 												}
 											}
 										]
@@ -646,11 +646,11 @@ describe('Question', () => {
 
 		component.instance().applyFlipCSS = jest.fn()
 
-		const value = component.instance().onClickBlocker()
+		const updated = component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
 		expect(component.instance().applyFlipCSS).toHaveBeenCalled()
-		expect(value).toEqual(undefined) //eslint-disable-line
+		expect(updated).toEqual(undefined) //eslint-disable-line
 	})
 
 	test('onClickBlocker calls FocusUtil.focusComponent in practice mode', () => {
@@ -1065,11 +1065,11 @@ describe('Question', () => {
 		const thisValue = {
 			assessmentComponentRef: {
 				current: {
-					checkIfResponseIsValid: jest.fn().mockReturnValue('mock-return-value')
+					checkIfResponseIsValid: jest.fn().mockReturnValue('mock-return-updated')
 				}
 			}
 		}
-		expect(Question.prototype.checkIfResponseIsValid.bind(thisValue)()).toBe('mock-return-value')
+		expect(Question.prototype.checkIfResponseIsValid.bind(thisValue)()).toBe('mock-return-updated')
 	})
 
 	test('scoreResponse does nothing if in review mode', () => {

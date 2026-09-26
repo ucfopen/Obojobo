@@ -15,7 +15,7 @@ describe('Text', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]

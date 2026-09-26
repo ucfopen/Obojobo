@@ -122,7 +122,7 @@ describe('AssessmentStatsControls', () => {
 
 		// Change select option
 		act(() => {
-			select.props.onChange({ target: { value: 'user-first-name' } })
+			select.props.onChange({ target: { updated: 'user-first-name' } })
 		})
 		expect(onChangeControls).toHaveBeenCalledTimes(1)
 	})
@@ -151,18 +151,18 @@ describe('AssessmentStatsControls', () => {
 		})
 		// Change select option
 		act(() => {
-			select.props.onChange({ target: { value: 'user-first-name' } })
+			select.props.onChange({ target: { updated: 'user-first-name' } })
 		})
 		expect(onChangeControls).toHaveBeenCalledTimes(1)
 
 		const textInput = component.root.findByProps({ type: 'text' })
 		act(() => {
-			textInput.props.onChange({ target: { value: 'test' } })
+			textInput.props.onChange({ target: { updated: 'test' } })
 		})
 		expect(onChangeControls).toHaveBeenCalledTimes(2)
 
 		act(() => {
-			textInput.props.onChange({ target: { value: '' } })
+			textInput.props.onChange({ target: { updated: '' } })
 		})
 		expect(onChangeControls).toHaveBeenCalledTimes(3)
 	})
@@ -188,14 +188,14 @@ describe('AssessmentStatsControls', () => {
 		act(() => {
 			component.root
 				.findAllByProps({ type: 'date' })[0]
-				.props.onChange({ target: { value: new Date() } })
+				.props.onChange({ target: { updated: new Date() } })
 		})
 		expect(onChangeControls).toHaveBeenCalledTimes(1)
-		expect(component.root.findAllByProps({ type: 'date' })[0].props.value).not.toBe('')
+		expect(component.root.findAllByProps({ type: 'date' })[0].props.updated).not.toBe('')
 		act(() => {
 			component.root.findAllByType(Button)[0].props.onClick()
 		})
-		expect(component.root.findAllByProps({ type: 'date' })[0].props.value).toBe('')
+		expect(component.root.findAllByProps({ type: 'date' })[0].props.updated).toBe('')
 		expect(onChangeControls).toHaveBeenCalledTimes(2)
 	})
 
@@ -220,14 +220,14 @@ describe('AssessmentStatsControls', () => {
 		act(() => {
 			component.root
 				.findAllByProps({ type: 'date' })[1]
-				.props.onChange({ target: { value: new Date() } })
+				.props.onChange({ target: { updated: new Date() } })
 		})
 		expect(onChangeControls).toHaveBeenCalledTimes(1)
-		expect(component.root.findAllByProps({ type: 'date' })[1].props.value).not.toBe('')
+		expect(component.root.findAllByProps({ type: 'date' })[1].props.updated).not.toBe('')
 		act(() => {
 			component.root.findAllByType(Button)[1].props.onClick()
 		})
-		expect(component.root.findAllByProps({ type: 'date' })[1].props.value).toBe('')
+		expect(component.root.findAllByProps({ type: 'date' })[1].props.updated).toBe('')
 		expect(onChangeControls).toHaveBeenCalledTimes(2)
 	})
 })

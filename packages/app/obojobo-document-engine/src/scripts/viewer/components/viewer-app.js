@@ -33,8 +33,8 @@ const ModalStore = Common.stores.ModalStore
 
 Dispatcher.on('viewer:alert', payload =>
 	ModalUtil.show(
-		<SimpleDialog ok title={payload.value.title}>
-			{payload.value.message}
+		<SimpleDialog ok title={payload.updated.title}>
+			{payload.updated.message}
 		</SimpleDialog>
 	)
 )
@@ -47,7 +47,7 @@ export default class ViewerApp extends React.Component {
 		this.containerRef = React.createRef()
 
 		Dispatcher.on('viewer:scrollToTop', payload => {
-			this.scrollToTop(payload && payload.value ? payload.value.animateScroll : false)
+			this.scrollToTop(payload && payload.updated ? payload.updated.animateScroll : false)
 		})
 		Dispatcher.on('window:closeNow', this.sendCloseEvent.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
@@ -108,11 +108,11 @@ export default class ViewerApp extends React.Component {
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
-				visitIdFromApi = visit.value.visitId
-				viewState = visit.value.viewState
-				extensions = visit.value.extensions
-				isPreviewing = visit.value.isPreviewing
-				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
+				visitIdFromApi = visit.updated.visitId
+				viewState = visit.updated.viewState
+				extensions = visit.updated.extensions
+				isPreviewing = visit.updated.isPreviewing
+				outcomeServiceURL = visit.updated.lti.lisOutcomeServiceUrl
 
 				return ViewerAPI.getDraft(this.props.draftId)
 			})
@@ -343,7 +343,7 @@ export default class ViewerApp extends React.Component {
 				eventVersion: '1.0.0',
 				visitId: this.state.navState.visitId
 			}).then(res => {
-				this.leaveEvent = res.value
+				this.leaveEvent = res.updated
 			})
 
 			return
@@ -510,7 +510,7 @@ export default class ViewerApp extends React.Component {
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 			}
 		}).then(result => {
-			this.inactiveEvent = result.response.value
+			this.inactiveEvent = result.response.updated
 		})
 	}
 
@@ -549,8 +549,8 @@ export default class ViewerApp extends React.Component {
 			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">
-						{res.value && res.value.message
-							? `There was an error resetting assessments and questions: ${res.value.message}.`
+						{res.updated && res.updated.message
+							? `There was an error resetting assessments and questions: ${res.updated.message}.`
 							: 'There was an error resetting assessments and questions'}
 					</SimpleDialog>
 				)

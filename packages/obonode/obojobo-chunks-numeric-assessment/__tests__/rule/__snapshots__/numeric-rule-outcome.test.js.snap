@@ -46,7 +46,7 @@ NumericRuleOutcome {
       "max": null,
       "min": null,
     },
-    "value": Object {
+    "updated": Object {
       "isEmpty": false,
       "isMaxInclusive": true,
       "isMinInclusive": true,

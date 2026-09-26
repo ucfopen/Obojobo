@@ -10,7 +10,7 @@ Object {
         "actions": Array [
           Object {
             "type": "viewer:alert",
-            "value": Object {
+            "updated": Object {
               "message": "test",
               "title": "test",
             },
@@ -99,7 +99,7 @@ Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "A break:",
+          "updated": "A break:",
         },
       },
     ],
@@ -118,7 +118,7 @@ Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "test",
+          "updated": "test",
         },
       },
     ],
@@ -157,7 +157,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a small image",
+              "updated": "This is a small image",
             },
           },
         ],
@@ -176,7 +176,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a small image",
+              "updated": "This is a small image",
             },
           },
         ],
@@ -197,7 +197,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a small image",
+              "updated": "This is a small image",
             },
           },
         ],
@@ -304,7 +304,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -323,7 +323,7 @@ Object {
             },
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -342,7 +342,7 @@ Object {
             },
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -361,7 +361,7 @@ Object {
             },
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -378,7 +378,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -395,7 +395,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -438,14 +438,14 @@ Object {
             },
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
           Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -466,14 +466,14 @@ Object {
             },
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
           Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test",
+              "updated": "This is a test",
             },
           },
         ],
@@ -500,7 +500,7 @@ Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "test",
+          "updated": "test",
         },
       },
     ],
@@ -535,7 +535,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is a test answer.",
+              "updated": "This is a test answer.",
             },
           },
         ],
@@ -601,7 +601,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "This is a test question.",
+                          "updated": "This is a test question.",
                         },
                       },
                     ],
@@ -667,7 +667,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "This is a test question.",
+                          "updated": "This is a test question.",
                         },
                       },
                     ],
@@ -699,7 +699,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "This is a test question.",
+                          "updated": "This is a test question.",
                         },
                       },
                     ],
@@ -731,7 +731,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "This is a test question.",
+                          "updated": "This is a test question.",
                         },
                       },
                     ],
@@ -797,7 +797,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "This is a test question.",
+                          "updated": "This is a test question.",
                         },
                       },
                     ],
@@ -829,7 +829,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "This is a test question.",
+                          "updated": "This is a test question.",
                         },
                       },
                     ],
@@ -861,7 +861,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "This is a test question.",
+                          "updated": "This is a test question.",
                         },
                       },
                     ],
@@ -924,7 +924,7 @@ Object {
                 "data": null,
                 "text": Object {
                   "styleList": Array [],
-                  "value": "Good job!",
+                  "updated": "Good job!",
                 },
               },
             ],
@@ -957,7 +957,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "This is test feedback.",
+              "updated": "This is test feedback.",
             },
           },
         ],
@@ -1057,28 +1057,28 @@ Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "33333333333333333333333333333333333333",
+          "updated": "33333333333333333333333333333333333333",
         },
       },
       Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "True",
+          "updated": "True",
         },
       },
       Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "0.33333333333333333333333",
+          "updated": "0.33333333333333333333333",
         },
       },
       Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "0.3",
+          "updated": "0.3",
         },
       },
     ],
@@ -1101,7 +1101,7 @@ Object {
                 "data": null,
                 "text": Object {
                   "styleList": Array [],
-                  "value": "The answer is 1",
+                  "updated": "The answer is 1",
                 },
               },
             ],
@@ -1130,7 +1130,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Feedback",
+                          "updated": "Feedback",
                         },
                       },
                     ],
@@ -1164,7 +1164,7 @@ Object {
                   "type": "_latex",
                 },
               ],
-              "value": "m/s^2",
+              "updated": "m/s^2",
             },
           },
         ],
@@ -1208,7 +1208,7 @@ Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
-              "value": "test",
+              "updated": "test",
             },
           },
         ],
@@ -1230,7 +1230,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Correct",
+                          "updated": "Correct",
                         },
                       },
                     ],
@@ -1253,7 +1253,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Correct",
+                          "updated": "Correct",
                         },
                       },
                     ],
@@ -1285,7 +1285,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Incorrect",
+                          "updated": "Incorrect",
                         },
                       },
                     ],
@@ -1324,7 +1324,7 @@ Object {
                 "data": null,
                 "text": Object {
                   "styleList": Array [],
-                  "value": "This is a description of the solution to the problem.",
+                  "updated": "This is a description of the solution to the problem.",
                 },
               },
             ],
@@ -1364,7 +1364,7 @@ Object {
                                 "data": null,
                                 "text": Object {
                                   "styleList": Array [],
-                                  "value": "Correct",
+                                  "updated": "Correct",
                                 },
                               },
                             ],
@@ -1396,7 +1396,7 @@ Object {
                                 "data": null,
                                 "text": Object {
                                   "styleList": Array [],
-                                  "value": "Incorrect",
+                                  "updated": "Incorrect",
                                 },
                               },
                             ],
@@ -1447,7 +1447,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+                          "updated": "Question Bank 1 Question 1 - This is the first question you'll see",
                         },
                       },
                     ],
@@ -1469,7 +1469,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Correct",
+                                      "updated": "Correct",
                                     },
                                   },
                                 ],
@@ -1501,7 +1501,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Incorrect",
+                                      "updated": "Incorrect",
                                     },
                                   },
                                 ],
@@ -1543,7 +1543,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Question Bank 1 Question 2 - This is the fourth question you'll see",
+                          "updated": "Question Bank 1 Question 2 - This is the fourth question you'll see",
                         },
                       },
                     ],
@@ -1565,7 +1565,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Correct",
+                                      "updated": "Correct",
                                     },
                                   },
                                 ],
@@ -1597,7 +1597,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Incorrect",
+                                      "updated": "Incorrect",
                                     },
                                   },
                                 ],
@@ -1649,7 +1649,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Question Bank 2 Question 1 - This is the second question you'll see",
+                          "updated": "Question Bank 2 Question 1 - This is the second question you'll see",
                         },
                       },
                     ],
@@ -1671,7 +1671,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Correct",
+                                      "updated": "Correct",
                                     },
                                   },
                                 ],
@@ -1703,7 +1703,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Incorrect",
+                                      "updated": "Incorrect",
                                     },
                                   },
                                 ],
@@ -1745,7 +1745,7 @@ Object {
                         "data": null,
                         "text": Object {
                           "styleList": Array [],
-                          "value": "Question Bank 2 Question 2 - This is the third question you'll see",
+                          "updated": "Question Bank 2 Question 2 - This is the third question you'll see",
                         },
                       },
                     ],
@@ -1767,7 +1767,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Correct",
+                                      "updated": "Correct",
                                     },
                                   },
                                 ],
@@ -1799,7 +1799,7 @@ Object {
                                     "data": null,
                                     "text": Object {
                                       "styleList": Array [],
-                                      "value": "Incorrect",
+                                      "updated": "Incorrect",
                                     },
                                   },
                                 ],
@@ -1866,7 +1866,7 @@ Object {
               "data": null,
               "text": Object {
                 "styleList": Array [],
-                "value": "test",
+                "updated": "test",
               },
             },
           ],
@@ -1887,14 +1887,14 @@ Object {
               "data": null,
               "text": Object {
                 "styleList": Array [],
-                "value": "This is a test",
+                "updated": "This is a test",
               },
             },
             Object {
               "data": null,
               "text": Object {
                 "styleList": Array [],
-                "value": "test",
+                "updated": "test",
               },
             },
           ],
@@ -1919,7 +1919,7 @@ Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "This is a test",
+          "updated": "This is a test",
         },
       },
     ],

@@ -25,7 +25,7 @@ Object {
           "styleList": ChunkStyleList {
             "styles": Array [],
           },
-          "value": "",
+          "updated": "",
         },
       },
     ],
@@ -67,7 +67,7 @@ Object {
           "styleList": ChunkStyleList {
             "styles": Array [],
           },
-          "value": "",
+          "updated": "",
         },
       },
     ],

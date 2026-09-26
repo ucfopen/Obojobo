@@ -110,34 +110,34 @@ describe('MathEquation Editor', () => {
 		component
 			.find('#math-equation-latex')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mock math value' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: 'mock math updated' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
 		// click on size input, change, and blur
 		component
 			.find('#math-equation-size')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: '10' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: '10' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
 		// click on label and change
 		component
 			.find('#math-equation-label')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockLabelValue' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: 'mockLabelValue' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
 		component
 			.find('#math-equation-alt')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockAltValue' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: 'mockAltValue' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
 		  "alt": "mockAltValue",
 		  "label": "mockLabelValue",
-		  "latex": "mock math value",
+		  "latex": "mock math updated",
 		  "open": true,
 		  "size": 10,
 		}
@@ -219,7 +219,7 @@ describe('MathEquation Editor', () => {
 		component
 			.find('#math-equation-size')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: '-1' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: '-1' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
 		expect(component.state().size).toBe(0.1)
@@ -244,7 +244,7 @@ describe('MathEquation Editor', () => {
 		component
 			.find('#math-equation-size')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: '22' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: '22' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
 		expect(component.state().size).toBe(20)
@@ -269,7 +269,7 @@ describe('MathEquation Editor', () => {
 		component
 			.find('#math-equation-size')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: '' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: '' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
 		expect(component.state().size).toBe(1)
@@ -355,7 +355,7 @@ describe('MathEquation Editor', () => {
 		const nodeInstance = component.instance()
 		nodeInstance.node = {
 			current: {
-				contains: value => value
+				contains: updated => updated
 			}
 		}
 
@@ -363,7 +363,7 @@ describe('MathEquation Editor', () => {
 		let tree = component.html()
 		expect(tree).toMatchSnapshot()
 
-		nodeInstance.node.current = { contains: value => value }
+		nodeInstance.node.current = { contains: updated => updated }
 		nodeInstance.handleClick({ target: false }) // click outside
 		tree = component.html()
 		expect(tree).toMatchSnapshot()

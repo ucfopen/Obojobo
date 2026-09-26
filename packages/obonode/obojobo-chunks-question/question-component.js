@@ -148,7 +148,7 @@ const QuestionComponent = ({
 				</div>
 				<div className="blocker-front" key="blocker" onClick={onClickBlocker}>
 					<Button
-						value={mode === 'practice' ? 'Try Question' : 'Start Question'}
+						updated={mode === 'practice' ? 'Try Question' : 'Start Question'}
 						ariaLabel={startQuestionAriaLabel}
 						disabled={viewState !== 'hidden'}
 					/>

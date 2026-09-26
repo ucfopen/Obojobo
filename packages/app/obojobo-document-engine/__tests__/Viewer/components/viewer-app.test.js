@@ -49,7 +49,7 @@ describe('ViewerApp', () => {
 	const mocksForMount = (status = 'ok') => {
 		ViewerAPI.requestStart.mockResolvedValueOnce({
 			status: status,
-			value: {
+			updated: {
 				visitId: 123,
 				lti: {
 					lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
@@ -60,7 +60,7 @@ describe('ViewerApp', () => {
 				}
 			}
 		})
-		ViewerAPI.getDraft.mockResolvedValueOnce({ value: testObject })
+		ViewerAPI.getDraft.mockResolvedValueOnce({ updated: testObject })
 		NavStore.getState.mockReturnValueOnce({})
 		FocusStore.getState.mockReturnValueOnce({})
 	}
@@ -68,7 +68,7 @@ describe('ViewerApp', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
-		injectKatexIfNeeded.mockImplementation(async x => x.value)
+		injectKatexIfNeeded.mockImplementation(async x => x.updated)
 		restoreConsole = mockConsole('error')
 
 		isDOMFocusInsideNavSpy = jest
@@ -88,7 +88,7 @@ describe('ViewerApp', () => {
 
 	test('viewer:alert calls ModalUtil', () => {
 		Dispatcher.trigger('viewer:alert', {
-			value: {
+			updated: {
 				title: 'mockTitle',
 				message: 'mockMessage'
 			}
@@ -413,7 +413,7 @@ describe('ViewerApp', () => {
 		document.hidden = true
 
 		setTimeout(() => {
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ updated: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
@@ -447,7 +447,7 @@ describe('ViewerApp', () => {
 				extensions: { internalEventId: 'mock-id' }
 			}
 			component.instance().viewerHideDate = 999
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ updated: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
@@ -487,7 +487,7 @@ describe('ViewerApp', () => {
 			jest.setSystemTime(new Date(2020, 0, 1))
 
 			component.instance().viewerHideDate = 999
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ updated: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
@@ -524,7 +524,7 @@ describe('ViewerApp', () => {
 			component.instance().leaveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ updated: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
@@ -552,7 +552,7 @@ describe('ViewerApp', () => {
 			component.instance().leaveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ updated: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
@@ -606,15 +606,15 @@ describe('ViewerApp', () => {
 			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(2)
 			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
 
-			Dispatcher.trigger('viewer:scrollToTop', { value: {} })
+			Dispatcher.trigger('viewer:scrollToTop', { updated: {} })
 			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(3)
 			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
 
-			Dispatcher.trigger('viewer:scrollToTop', { value: { animateScroll: false } })
+			Dispatcher.trigger('viewer:scrollToTop', { updated: { animateScroll: false } })
 			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(4)
 			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
 
-			Dispatcher.trigger('viewer:scrollToTop', { value: { animateScroll: true } })
+			Dispatcher.trigger('viewer:scrollToTop', { updated: { animateScroll: true } })
 			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(5)
 			expect(component.instance().scrollToTop).toHaveBeenCalledWith(true)
 
@@ -955,7 +955,7 @@ describe('ViewerApp', () => {
 		})
 
 		setTimeout(() => {
-			ViewerAPI.postEvent.mockResolvedValueOnce({ response: { value: 'mock-value' } })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ response: { updated: 'mock-updated' } })
 			component
 				.instance()
 				.onIdle({ lastActiveEpoch: 'now' })
@@ -996,7 +996,7 @@ describe('ViewerApp', () => {
 				extensions: { internalEventId: 'mock-id' }
 			}
 
-			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ updated: null })
 			component.update()
 
 			component
@@ -1095,7 +1095,7 @@ describe('ViewerApp', () => {
 			ViewerAPI.clearPreviewScores.mockResolvedValueOnce({
 				status: 'not ok',
 				error: 'Not Authorized',
-				value: {
+				updated: {
 					message: 'mockMessage'
 				}
 			})
@@ -1274,10 +1274,10 @@ describe('ViewerApp', () => {
 			const oboModelModels = OboModel.models
 			OboModel.models['mock-id'] = 'mock-model'
 
-			// Force a return value of ViewerApp's focusComponent method:
+			// Force a return updated of ViewerApp's focusComponent method:
 			const spy = jest
 				.spyOn(component.instance(), 'focusComponent')
-				.mockImplementation(() => 'mock-return-value')
+				.mockImplementation(() => 'mock-return-updated')
 
 			// Mock return of getFocussedItemAndClear
 			FocusUtil.getFocussedItemAndClear = jest.fn()
@@ -1290,8 +1290,8 @@ describe('ViewerApp', () => {
 				}
 			})
 
-			// Expect updateDOMFocus to call focusComponent and return its value
-			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
+			// Expect updateDOMFocus to call focusComponent and return its updated
+			expect(component.instance().updateDOMFocus()).toBe('mock-return-updated')
 			expect(spy).toHaveBeenCalledWith('mock-model', {
 				animateScroll: 'mock-animate-scroll',
 				fade: false
@@ -1316,12 +1316,12 @@ describe('ViewerApp', () => {
 			const oboModelModels = OboModel.models
 			OboModel.models['mock-id'] = 'mock-model'
 
-			// Force a return value of ViewerApp's focusComponent method:
+			// Force a return updated of ViewerApp's focusComponent method:
 			const spy = jest
 				.spyOn(component.instance(), 'focusComponent')
-				.mockImplementation(() => 'mock-return-value')
+				.mockImplementation(() => 'mock-return-updated')
 
-			// Force a return value of NavUtil.getNavTargetModel
+			// Force a return updated of NavUtil.getNavTargetModel
 			const navTargetSpy = jest
 				.spyOn(NavUtil, 'getNavTargetModel')
 				.mockImplementation(() => 'mock-model')
@@ -1337,8 +1337,8 @@ describe('ViewerApp', () => {
 				}
 			})
 
-			// Expect updateDOMFocus to call focusComponent and return its value
-			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
+			// Expect updateDOMFocus to call focusComponent and return its updated
+			expect(component.instance().updateDOMFocus()).toBe('mock-return-updated')
 			expect(spy).toHaveBeenCalledWith('mock-model', {
 				animateScroll: 'mock-animate-scroll',
 				fade: false
@@ -1360,10 +1360,10 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			// Force a return value of ViewerApp's focusViewer method:
+			// Force a return updated of ViewerApp's focusViewer method:
 			const spy = jest
 				.spyOn(component.instance(), 'focusViewer')
-				.mockImplementation(() => 'mock-return-value')
+				.mockImplementation(() => 'mock-return-updated')
 
 			// Mock return of getFocussedItemAndClear
 			FocusUtil.getFocussedItemAndClear = jest.fn()
@@ -1372,8 +1372,8 @@ describe('ViewerApp', () => {
 				target: 'mock-target'
 			})
 
-			// Expect updateDOMFocus to call focusViewer and return its value
-			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
+			// Expect updateDOMFocus to call focusViewer and return its updated
+			expect(component.instance().updateDOMFocus()).toBe('mock-return-updated')
 			expect(spy).toHaveBeenCalledWith('mock-target')
 
 			// Undo our mocks and spies
@@ -1411,7 +1411,7 @@ describe('ViewerApp', () => {
 				getDomEl: () => mockDomEl
 			}
 
-			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			// Force focus() to modify the container scrollTop updated (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
 			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
 				component.instance().containerRef.current.scrollTop = 9999
@@ -1446,7 +1446,7 @@ describe('ViewerApp', () => {
 				getComponentClass: () => null
 			}
 
-			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			// Force focus() to modify the container scrollTop updated (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
 			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
 				component.instance().containerRef.current.scrollTop = 9999
@@ -1481,7 +1481,7 @@ describe('ViewerApp', () => {
 				getComponentClass: () => jest.fn()
 			}
 
-			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			// Force focus() to modify the container scrollTop updated (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
 			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
 				component.instance().containerRef.current.scrollTop = 9999
@@ -1520,7 +1520,7 @@ describe('ViewerApp', () => {
 			}
 			const mockOpts = jest.fn()
 
-			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			// Force focus() to modify the container scrollTop updated (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
 			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
 				component.instance().containerRef.current.scrollTop = 9999
@@ -1560,7 +1560,7 @@ describe('ViewerApp', () => {
 				preventScroll: true
 			}
 
-			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			// Force focus() to modify the container scrollTop updated (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
 			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
 				component.instance().containerRef.current.scrollTop = 9999
@@ -1599,7 +1599,7 @@ describe('ViewerApp', () => {
 				})
 			}
 
-			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			// Force focus() to modify the container scrollTop updated (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
 			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
 				component.instance().containerRef.current.scrollTop = 9999

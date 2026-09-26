@@ -50,11 +50,11 @@ class FocusStore extends Store {
 		Dispatcher.on('focus:navigation', this._focusOnNavigation.bind(this))
 		Dispatcher.on('focus:component', payload => {
 			this._focusComponent(
-				payload.value.id,
-				payload.value.animateScroll,
-				payload.value.fade,
-				payload.value.preventScroll,
-				payload.value.region
+				payload.updated.id,
+				payload.updated.animateScroll,
+				payload.updated.fade,
+				payload.updated.preventScroll,
+				payload.updated.region
 			)
 		})
 		Dispatcher.on('focus:clearFadeEffect', this._clearFadeEffect.bind(this))

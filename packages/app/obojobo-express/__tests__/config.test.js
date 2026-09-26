@@ -221,8 +221,8 @@ describe('config', () => {
 
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
-		// NOTE the value of port in this json is another ENV:value key that itself
-		// should be replaced with the actual env var value!!!
+		// NOTE the updated of port in this json is another ENV:updated key that itself
+		// should be replaced with the actual env var updated!!!
 		process.env.DB_CONFIG_JSON = '{"host":"mock-host","port":{"ENV":"DB_PORT"}}'
 		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'mock-host')
@@ -239,7 +239,7 @@ describe('config', () => {
 			config.db = {}
 		}
 
-		// attempt to change the value, it should throw an error
+		// attempt to change the updated, it should throw an error
 		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
 			`"Cannot assign to read only property 'db' of object '#<Object>'"`
 		)
@@ -256,7 +256,7 @@ describe('config', () => {
 			config.db.host = 'my-hijacked-database'
 		}
 
-		// attempt to change the value, it should throw an error
+		// attempt to change the updated, it should throw an error
 		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
 			`"Cannot assign to read only property 'host' of object '#<Object>'"`
 		)
@@ -273,7 +273,7 @@ describe('config', () => {
 			config.custom = 'test'
 		}
 
-		// attempt to change the value, it should throw an error
+		// attempt to change the updated, it should throw an error
 		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
 			`"Cannot add property custom, object is not extensible"`
 		)
@@ -290,7 +290,7 @@ describe('config', () => {
 			delete config.db
 		}
 
-		// attempt to change the value, it should throw an error
+		// attempt to change the updated, it should throw an error
 		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
 			`"Cannot delete property 'db' of #<Object>"`
 		)
@@ -307,7 +307,7 @@ describe('config', () => {
 			delete config.db.host
 		}
 
-		// attempt to change the value, it should throw an error
+		// attempt to change the updated, it should throw an error
 		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
 			`"Cannot delete property 'host' of #<Object>"`
 		)

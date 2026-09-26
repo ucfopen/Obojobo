@@ -14,7 +14,7 @@ describe('downloadDocument', () => {
 		// setup
 		API.get.mockResolvedValueOnce({
 			json: () => ({
-				value: { mock: 'contents' }
+				updated: { mock: 'contents' }
 			})
 		})
 
@@ -62,7 +62,7 @@ describe('downloadDocument', () => {
 		// setup
 		API.get.mockResolvedValueOnce({
 			json: () => ({
-				value: { mock: 'contents' }
+				updated: { mock: 'contents' }
 			})
 		})
 

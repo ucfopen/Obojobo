@@ -290,7 +290,7 @@ describe('Question Editor Node', () => {
 		component
 			.find('select')
 			.at(0)
-			.simulate('change', { target: { value: 'ObojoboDraft.Chunks.NumericAssessment' } })
+			.simulate('change', { target: { updated: 'ObojoboDraft.Chunks.NumericAssessment' } })
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
@@ -310,7 +310,7 @@ describe('Question Editor Node', () => {
 		component
 			.find('select')
 			.at(0)
-			.simulate('change', { target: { value: 'ObojoboDraft.Chunks.NumericAssessment' } })
+			.simulate('change', { target: { updated: 'ObojoboDraft.Chunks.NumericAssessment' } })
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
@@ -345,7 +345,7 @@ describe('Question Editor Node', () => {
 		)
 		Transforms.setNodes.mockClear()
 		// ordinarily this would be updated by the Slate code - here we do it manually
-		// doing this without re-mounting/re-rendering works because it's passed by reference, not by value I guess
+		// doing this without re-mounting/re-rendering works because it's passed by reference, not by updated I guess
 		mockElement.content.collapsed = true
 
 		component

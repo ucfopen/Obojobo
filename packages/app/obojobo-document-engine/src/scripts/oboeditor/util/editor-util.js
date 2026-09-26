@@ -32,7 +32,7 @@ const getFlatList = function(item) {
 const EditorUtil = {
 	renameModule(moduleId, newName) {
 		return Dispatcher.trigger('editor:renameModule', {
-			value: {
+			updated: {
 				moduleId,
 				name: newName
 			}
@@ -40,21 +40,21 @@ const EditorUtil = {
 	},
 	rebuildMenu(model) {
 		return Dispatcher.trigger('editor:rebuildMenu', {
-			value: {
+			updated: {
 				model
 			}
 		})
 	},
 	goto(id) {
 		return Dispatcher.trigger('editor:goto', {
-			value: {
+			updated: {
 				id
 			}
 		})
 	},
 	addPage(newPage, afterPageId) {
 		return Dispatcher.trigger('editor:addPage', {
-			value: {
+			updated: {
 				newPage,
 				afterPageId
 			}
@@ -62,21 +62,21 @@ const EditorUtil = {
 	},
 	addAssessment(newAssessment) {
 		return Dispatcher.trigger('editor:addAssessment', {
-			value: {
+			updated: {
 				newAssessment
 			}
 		})
 	},
 	deletePage(pageId) {
 		return Dispatcher.trigger('editor:deletePage', {
-			value: {
+			updated: {
 				pageId
 			}
 		})
 	},
 	gotoPath(path) {
 		return Dispatcher.trigger('editor:gotoPath', {
-			value: {
+			updated: {
 				path
 			}
 		})
@@ -124,7 +124,7 @@ const EditorUtil = {
 	},
 	renamePage(pageId, name) {
 		return Dispatcher.trigger('editor:renamePage', {
-			value: {
+			updated: {
 				pageId,
 				name
 			}
@@ -132,7 +132,7 @@ const EditorUtil = {
 	},
 	movePage(pageId, index) {
 		return Dispatcher.trigger('editor:movePage', {
-			value: {
+			updated: {
 				pageId,
 				index
 			}
@@ -140,7 +140,7 @@ const EditorUtil = {
 	},
 	setStartPage(pageId) {
 		return Dispatcher.trigger('editor:setStartPage', {
-			value: {
+			updated: {
 				pageId
 			}
 		})

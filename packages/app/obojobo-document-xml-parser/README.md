@@ -59,14 +59,14 @@ This will result in
 		"textGroup": [
 			{
 				"text": {
-					"value": "A text item",
+					"updated": "A text item",
 					"styleList": []
 				},
 				"data": {}
 			},
 			{
 				"text": {
-					"value": "Some bold text",
+					"updated": "Some bold text",
 					"styleList": [
 						{
 							"type": "b",
@@ -151,7 +151,7 @@ This will result in
 
 ### triggers
 
-This element describes a **triggers** property. `<triggers>` should contain one or more `<trigger>` elements which must have a `type` attribute representing the type of trigger. `<trigger>` elements should contain a singular `<actions>` element which should contain one or more `<action>` elements. `<action>` elements must contain a type attribute and optionally a `<value>` element. `<value>` elements must contain one or more attributes.
+This element describes a **triggers** property. `<triggers>` should contain one or more `<trigger>` elements which must have a `type` attribute representing the type of trigger. `<trigger>` elements should contain a singular `<actions>` element which should contain one or more `<action>` elements. `<action>` elements must contain a type attribute and optionally a `<updated>` element. `<updated>` elements must contain one or more attributes.
 
 An example of this format is shown below:
 
@@ -162,7 +162,7 @@ An example of this format is shown below:
 			<actions>
 				<action type="nav:lock" />
 				<action type="assessment:startAttempt">
-					<value id="assessment" />
+					<updated id="assessment" />
 				</action>
 			</actions>
 		</trigger>
@@ -187,7 +187,7 @@ This will result in the JSON
 					},
 					{
 						"type": "assessment:startAttempt",
-						"value": {
+						"updated": {
 							"id": "assessment"
 						}
 					}
@@ -237,14 +237,14 @@ This will result in the following JSON:
 		"textGroup": [
 			{
 				"text": {
-					"value": "One (indent=1)",
+					"updated": "One (indent=1)",
 					"styleList": []
 				},
 				"data": null
 			},
 			{
 				"text": {
-					"value": "Two (indent=2, align=right)",
+					"updated": "Two (indent=2, align=right)",
 					"styleList": []
 				},
 				"data": {
@@ -254,7 +254,7 @@ This will result in the following JSON:
 			},
 			{
 				"text": {
-					"value": "Three (indent=6)",
+					"updated": "Three (indent=6)",
 					"styleList": []
 				},
 				"data": {
@@ -263,7 +263,7 @@ This will result in the following JSON:
 			},
 			{
 				"text": {
-					"value": "Four (indent=2)",
+					"updated": "Four (indent=2)",
 					"styleList": []
 				},
 				"data": {
@@ -272,7 +272,7 @@ This will result in the following JSON:
 			},
 			{
 				"text": {
-					"value": "Five (indent=4)",
+					"updated": "Five (indent=4)",
 					"styleList": []
 				},
 				"data": {
@@ -281,7 +281,7 @@ This will result in the following JSON:
 			},
 			{
 				"text": {
-					"value": "Six (indent=3)",
+					"updated": "Six (indent=3)",
 					"styleList": []
 				},
 				"data": {
@@ -455,7 +455,7 @@ becomes
 		"textGroup": [
 			{
 				"text": {
-					"value": "This is a small image",
+					"updated": "This is a small image",
 					"styleList": []
 				},
 				"data": {}
@@ -571,7 +571,7 @@ Both examples above produce the following JSON:
 								"textGroup": [
 									{
 										"text": {
-											"value": "Hello, World",
+											"updated": "Hello, World",
 											"styleList": []
 										}
 										"data": {}

@@ -82,23 +82,23 @@ describe('numericChoicesToScoreRuleConfigs', () => {
 			])
 		).toEqual([
 			{
-				value: '1',
+				updated: '1',
 				feedback: 'mock-feedback',
 				score: 100
 			},
 			{
-				value: '[-1,1]',
+				updated: '[-1,1]',
 				feedback: null,
 				score: 0
 			},
 			{
-				value: '123',
+				updated: '123',
 				feedback: null,
 				score: 100,
 				percentError: 5
 			},
 			{
-				value: '987',
+				updated: '987',
 				feedback: 'mock-feedback-2',
 				score: 0,
 				absoluteError: 2

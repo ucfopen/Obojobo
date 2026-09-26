@@ -64,7 +64,7 @@ exports[`Objective Input ObjectiveInput renders correctly 1`] = `
                 onChange={[Function]}
                 placeholder="This objective's label (1.2, A, B, etc...) "
                 type="text"
-                value=""
+                updated=""
               />
             </div>
             <div>
@@ -84,7 +84,7 @@ exports[`Objective Input ObjectiveInput renders correctly 1`] = `
                 onChange={[Function]}
                 placeholder="Type your objective here..."
                 type="text"
-                value=""
+                updated=""
               />
             </div>
             <span

@@ -7,7 +7,7 @@ class ModalStore extends Store {
 		super('modalstore')
 
 		Dispatcher.on('modal:show', payload => {
-			this._show(payload.value)
+			this._show(payload.updated)
 		})
 
 		Dispatcher.on('modal:hide', this._hide.bind(this))

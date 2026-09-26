@@ -27,11 +27,11 @@ var signals = {
 };
 
 // Do any necessary shutdown logic for our application here
-const shutdown = (signal, value) => {
+const shutdown = (signal, updated) => {
 	console.log("shutdown!");
 	server.close(() => {
-		console.log(`server stopped by ${signal} with value ${value}`)
-		process.exit(128 + value)
+		console.log(`server stopped by ${signal} with updated ${updated}`)
+		process.exit(128 + updated)
 	})
 
 	// If server hasn't finished in 1000ms, shut down process

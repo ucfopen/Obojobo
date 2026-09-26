@@ -64,7 +64,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                   onChange={[Function]}
                   onClick={[Function]}
                   type="radio"
-                  value="highest"
+                  updated="highest"
                 />
                 Use the highest attempt score.
               </label>
@@ -75,7 +75,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                   onChange={[Function]}
                   onClick={[Function]}
                   type="radio"
-                  value="pass-fail"
+                  updated="pass-fail"
                 />
                 Calculate based on a threshold (pass/fail)
               </label>
@@ -109,7 +109,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                     onChange={[Function]}
                     onClick={[Function]}
                     type="number"
-                    value={100}
+                    updated={100}
                   />
                   <span>
                     %
@@ -134,23 +134,23 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                         id="attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$attempt_score"
+                        updated="$attempt_score"
                       />
                       The attempt score
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="specified-value"
+                      htmlFor="specified-updated"
                     >
                       <input
                         checked={false}
-                        id="specified-value"
+                        id="specified-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Specified value:
+                      Specified updated:
                     </label>
                     <input
                       disabled={true}
@@ -160,7 +160,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={100}
+                      updated={100}
                     />
                     <span>
                       %
@@ -186,7 +186,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                         id="set-score-to-attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$attempt_score"
+                        updated="$attempt_score"
                       />
                       Set the assessment score to the attempt score
                     </label>
@@ -200,23 +200,23 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                         id="dont-set-score"
                         onChange={[Function]}
                         type="radio"
-                        value="no-score"
+                        updated="no-score"
                       />
                       Don't set the score (no score will be sent to the gradebook)
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="set-score-to-specific-value"
+                      htmlFor="set-score-to-specific-updated"
                     >
                       <input
                         checked={false}
-                        id="set-score-to-specific-value"
+                        id="set-score-to-specific-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Set the assessment score to specified value
+                      Set the assessment score to specified updated
                     </label>
                     <input
                       disabled={true}
@@ -226,7 +226,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={0}
+                      updated={0}
                     />
                     <span>
                       %
@@ -245,14 +245,14 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                   </p>
                   <div>
                     <label
-                      htmlFor="out-of-attempts-no-value"
+                      htmlFor="out-of-attempts-no-updated"
                     >
                       <input
                         checked={false}
-                        id="out-of-attempts-no-value"
+                        id="out-of-attempts-no-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="no-value"
+                        updated="no-updated"
                       />
                       Don't do anything, the failing rule will still apply
                     </label>
@@ -266,7 +266,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                         id="out-of-attempts-highest-attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$highest_attempt_score"
+                        updated="$highest_attempt_score"
                       />
                       Set the assessment score to the highest attempt score
                     </label>
@@ -280,23 +280,23 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                         id="out-of-attempts-no-score"
                         onChange={[Function]}
                         type="radio"
-                        value="no-score"
+                        updated="no-score"
                       />
                       Don't set assessment the score (no score will be sent to the gradebook)
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="out-of-attempts-set-value"
+                      htmlFor="out-of-attempts-set-updated"
                     >
                       <input
                         checked={false}
-                        id="out-of-attempts-set-value"
+                        id="out-of-attempts-set-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Set the assessment score to specified value
+                      Set the assessment score to specified updated
                     </label>
                     <input
                       disabled={true}
@@ -306,7 +306,7 @@ exports[`Rubric editor modal Rubric modal renders 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={0}
+                      updated={0}
                     />
                     <span>
                       %
@@ -525,7 +525,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                   onChange={[Function]}
                   onClick={[Function]}
                   type="radio"
-                  value="highest"
+                  updated="highest"
                 />
                 Use the highest attempt score.
               </label>
@@ -536,7 +536,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                   onChange={[Function]}
                   onClick={[Function]}
                   type="radio"
-                  value="pass-fail"
+                  updated="pass-fail"
                 />
                 Calculate based on a threshold (pass/fail)
               </label>
@@ -570,7 +570,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                     onChange={[Function]}
                     onClick={[Function]}
                     type="number"
-                    value={100}
+                    updated={100}
                   />
                   <span>
                     %
@@ -595,23 +595,23 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                         id="attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$attempt_score"
+                        updated="$attempt_score"
                       />
                       The attempt score
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="specified-value"
+                      htmlFor="specified-updated"
                     >
                       <input
                         checked={false}
-                        id="specified-value"
+                        id="specified-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Specified value:
+                      Specified updated:
                     </label>
                     <input
                       disabled={true}
@@ -621,7 +621,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value="$attempt_score"
+                      updated="$attempt_score"
                     />
                     <span>
                       %
@@ -647,7 +647,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                         id="set-score-to-attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$attempt_score"
+                        updated="$attempt_score"
                       />
                       Set the assessment score to the attempt score
                     </label>
@@ -661,23 +661,23 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                         id="dont-set-score"
                         onChange={[Function]}
                         type="radio"
-                        value="no-score"
+                        updated="no-score"
                       />
                       Don't set the score (no score will be sent to the gradebook)
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="set-score-to-specific-value"
+                      htmlFor="set-score-to-specific-updated"
                     >
                       <input
                         checked={false}
-                        id="set-score-to-specific-value"
+                        id="set-score-to-specific-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Set the assessment score to specified value
+                      Set the assessment score to specified updated
                     </label>
                     <input
                       disabled={true}
@@ -687,7 +687,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={0}
+                      updated={0}
                     />
                     <span>
                       %
@@ -706,14 +706,14 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                   </p>
                   <div>
                     <label
-                      htmlFor="out-of-attempts-no-value"
+                      htmlFor="out-of-attempts-no-updated"
                     >
                       <input
                         checked={false}
-                        id="out-of-attempts-no-value"
+                        id="out-of-attempts-no-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="no-value"
+                        updated="no-updated"
                       />
                       Don't do anything, the failing rule will still apply
                     </label>
@@ -727,7 +727,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                         id="out-of-attempts-highest-attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$highest_attempt_score"
+                        updated="$highest_attempt_score"
                       />
                       Set the assessment score to the highest attempt score
                     </label>
@@ -741,23 +741,23 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                         id="out-of-attempts-no-score"
                         onChange={[Function]}
                         type="radio"
-                        value="no-score"
+                        updated="no-score"
                       />
                       Don't set assessment the score (no score will be sent to the gradebook)
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="out-of-attempts-set-value"
+                      htmlFor="out-of-attempts-set-updated"
                     >
                       <input
                         checked={false}
-                        id="out-of-attempts-set-value"
+                        id="out-of-attempts-set-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Set the assessment score to specified value
+                      Set the assessment score to specified updated
                     </label>
                     <input
                       disabled={true}
@@ -767,7 +767,7 @@ exports[`Rubric editor modal Rubric modal renders with given values 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={0}
+                      updated={0}
                     />
                     <span>
                       %
@@ -911,7 +911,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                   onChange={[Function]}
                   onClick={[Function]}
                   type="radio"
-                  value="highest"
+                  updated="highest"
                 />
                 Use the highest attempt score.
               </label>
@@ -922,7 +922,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                   onChange={[Function]}
                   onClick={[Function]}
                   type="radio"
-                  value="pass-fail"
+                  updated="pass-fail"
                 />
                 Calculate based on a threshold (pass/fail)
               </label>
@@ -956,7 +956,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                     onChange={[Function]}
                     onClick={[Function]}
                     type="number"
-                    value={100}
+                    updated={100}
                   />
                   <span>
                     %
@@ -981,23 +981,23 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                         id="attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$attempt_score"
+                        updated="$attempt_score"
                       />
                       The attempt score
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="specified-value"
+                      htmlFor="specified-updated"
                     >
                       <input
                         checked={false}
-                        id="specified-value"
+                        id="specified-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Specified value:
+                      Specified updated:
                     </label>
                     <input
                       disabled={true}
@@ -1007,7 +1007,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={100}
+                      updated={100}
                     />
                     <span>
                       %
@@ -1033,7 +1033,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                         id="set-score-to-attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$attempt_score"
+                        updated="$attempt_score"
                       />
                       Set the assessment score to the attempt score
                     </label>
@@ -1047,23 +1047,23 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                         id="dont-set-score"
                         onChange={[Function]}
                         type="radio"
-                        value="no-score"
+                        updated="no-score"
                       />
                       Don't set the score (no score will be sent to the gradebook)
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="set-score-to-specific-value"
+                      htmlFor="set-score-to-specific-updated"
                     >
                       <input
                         checked={false}
-                        id="set-score-to-specific-value"
+                        id="set-score-to-specific-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Set the assessment score to specified value
+                      Set the assessment score to specified updated
                     </label>
                     <input
                       disabled={true}
@@ -1073,7 +1073,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={0}
+                      updated={0}
                     />
                     <span>
                       %
@@ -1092,14 +1092,14 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                   </p>
                   <div>
                     <label
-                      htmlFor="out-of-attempts-no-value"
+                      htmlFor="out-of-attempts-no-updated"
                     >
                       <input
                         checked={false}
-                        id="out-of-attempts-no-value"
+                        id="out-of-attempts-no-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="no-value"
+                        updated="no-updated"
                       />
                       Don't do anything, the failing rule will still apply
                     </label>
@@ -1113,7 +1113,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                         id="out-of-attempts-highest-attempt-score"
                         onChange={[Function]}
                         type="radio"
-                        value="$highest_attempt_score"
+                        updated="$highest_attempt_score"
                       />
                       Set the assessment score to the highest attempt score
                     </label>
@@ -1127,23 +1127,23 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                         id="out-of-attempts-no-score"
                         onChange={[Function]}
                         type="radio"
-                        value="no-score"
+                        updated="no-score"
                       />
                       Don't set assessment the score (no score will be sent to the gradebook)
                     </label>
                   </div>
                   <div>
                     <label
-                      htmlFor="out-of-attempts-set-value"
+                      htmlFor="out-of-attempts-set-updated"
                     >
                       <input
                         checked={false}
-                        id="out-of-attempts-set-value"
+                        id="out-of-attempts-set-updated"
                         onChange={[Function]}
                         type="radio"
-                        value="set-value"
+                        updated="set-updated"
                       />
-                      Set the assessment score to specified value
+                      Set the assessment score to specified updated
                     </label>
                     <input
                       disabled={true}
@@ -1153,7 +1153,7 @@ exports[`Rubric editor modal Rubric modal renders with no mods 1`] = `
                       onChange={[Function]}
                       onClick={[Function]}
                       type="number"
-                      value={0}
+                      updated={0}
                     />
                     <span>
                       %

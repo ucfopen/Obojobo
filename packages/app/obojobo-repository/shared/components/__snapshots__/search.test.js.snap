@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Search renders correctly with a non-empty value 1`] = `
+exports[`Search renders correctly with a non-empty updated 1`] = `
 <div
   className="repository--nav--links--search is-not-empty"
 >
@@ -10,7 +10,7 @@ exports[`Search renders correctly with a non-empty value 1`] = `
       onChange={[Function]}
       placeholder="Search..."
       type="search"
-      value="string"
+      updated="string"
     />
     <button
       onClick={[Function]}
@@ -43,7 +43,7 @@ exports[`Search renders correctly with focusOnMount=true 1`] = `
       onChange={[Function]}
       placeholder="Search..."
       type="search"
-      value={null}
+      updated={null}
     />
   </form>
   <div

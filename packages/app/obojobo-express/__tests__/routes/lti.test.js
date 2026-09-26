@@ -5,7 +5,7 @@ jest.unmock('fs') // need fs working for view rendering
 
 jest.mock('../../server/config', () => ({
 	general: { hostname: 'mock-hostname' },
-	lti: { keys: [{ 'mock-lti-key': 'mock-lti-key-value' }] }
+	lti: { keys: [{ 'mock-lti-key': 'mock-lti-key-updated' }] }
 }))
 
 // ovveride requireCurrentDocument to provide our own

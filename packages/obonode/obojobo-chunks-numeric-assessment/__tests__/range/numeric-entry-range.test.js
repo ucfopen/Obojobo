@@ -1,6 +1,6 @@
 import NumericEntryRange from '../../range/numeric-entry-range'
 import NumericEntry from '../../entry/numeric-entry'
-import BigValueRange from '../../range/big-value-range'
+import BigValueRange from '../../range/big-updated-range'
 
 describe('NumericEntryRange', () => {
 	test('Constructor with no arguments creates an infinite range', () => {
@@ -176,7 +176,7 @@ describe('NumericEntryRange', () => {
 		expect(new NumericEntryRange('').toBigValueRange()).toEqual(new BigValueRange(''))
 	})
 
-	test('toStringValue returns the string value', () => {
+	test('toStringValue returns the string updated', () => {
 		expect(NumericEntryRange.toStringValue(new NumericEntry('3.14'))).toBe('3.14')
 		expect(NumericEntryRange.toStringValue(new NumericEntry('55/66'))).toBe('55/66')
 		expect(NumericEntryRange.toStringValue(null)).toBe('*')

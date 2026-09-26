@@ -8,7 +8,7 @@ exports[`HybridInputSelect renders with a given list and placeholder 1`] = `
     onChange={[Function]}
     placeholder="Mock placeholder"
     type="text"
-    value=""
+    updated=""
   />
   <div
     className="elements closed"
@@ -61,7 +61,7 @@ exports[`HybridInputSelect renders with default props 1`] = `
     onChange={[Function]}
     placeholder="Enter text"
     type="text"
-    value=""
+    updated=""
   />
   <div
     className="elements closed"

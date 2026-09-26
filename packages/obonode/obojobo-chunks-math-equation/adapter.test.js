@@ -27,7 +27,7 @@ describe('MathEquation adapter', () => {
 		expect(model.modelState).toMatchSnapshot()
 	})
 
-	test('construct sets size to 1 if given invalid value', () => {
+	test('construct sets size to 1 if given invalid updated', () => {
 		const attrs = {
 			content: {
 				size: 'tiny'

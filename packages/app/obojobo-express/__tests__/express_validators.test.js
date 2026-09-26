@@ -219,7 +219,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'draftId',
-				value: 'not-a-valid-UUID'
+				updated: 'not-a-valid-UUID'
 			})
 		})
 	})
@@ -252,13 +252,13 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'attemptIds[0]',
-				value: 'Callie'
+				updated: 'Callie'
 			})
 			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'attemptIds[1]',
-				value: 'Dega'
+				updated: 'Dega'
 			})
 		})
 	})
@@ -275,7 +275,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be an array of UUIDs',
 				param: 'attemptIds',
-				value: undefined
+				updated: undefined
 			})
 		})
 	})
@@ -291,7 +291,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be an array of UUIDs',
 				param: 'attemptIds',
-				value: mockReq.body.attemptIds
+				updated: mockReq.body.attemptIds
 			})
 		})
 	})
@@ -308,7 +308,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be an array of UUIDs',
 				param: 'attemptIds',
-				value: undefined
+				updated: undefined
 			})
 		})
 	})
@@ -337,7 +337,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'visitId',
-				value: 'not-a-valid-UUID'
+				updated: 'not-a-valid-UUID'
 			})
 		})
 	})
@@ -590,7 +590,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',
-				value: 'not-a-valid-INT'
+				updated: 'not-a-valid-INT'
 			})
 		})
 	})
@@ -614,7 +614,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',
-				value: '-10'
+				updated: '-10'
 			})
 		})
 	})
@@ -629,7 +629,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',
-				value: '0'
+				updated: '0'
 			})
 		})
 	})
@@ -642,7 +642,7 @@ describe('current user middleware', () => {
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',
-				value: undefined
+				updated: undefined
 			})
 		})
 	})

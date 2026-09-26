@@ -51,11 +51,11 @@ class NumericAnswer extends React.Component {
 		event.preventDefault()
 		event.stopPropagation()
 
-		const { name, value } = event.target
+		const { name, updated } = event.target
 
 		this.setState({
 			...this.state,
-			[name]: value
+			[name]: updated
 		})
 
 		this.updateNodeFromState()
@@ -111,16 +111,16 @@ class NumericAnswer extends React.Component {
 		event.preventDefault()
 		event.stopPropagation()
 
-		const { name, value } = event.target
+		const { name, updated } = event.target
 
 		switch (name) {
 			case 'requirement':
-				this.setState(this.getStateForRequirement(value))
+				this.setState(this.getStateForRequirement(updated))
 				break
 
 			case 'margin-type':
 				this.setState({
-					type: fullTextToSimplifed[value]
+					type: fullTextToSimplifed[updated]
 				})
 				break
 		}

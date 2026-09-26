@@ -27,7 +27,7 @@ Object {
     "textGroup": Array [
       Object {
         "text": Object {
-          "value": "Widget Caption",
+          "updated": "Widget Caption",
         },
       },
     ],
@@ -53,7 +53,7 @@ Object {
     "textGroup": Array [
       Object {
         "text": Object {
-          "value": "Widget Caption",
+          "updated": "Widget Caption",
         },
       },
     ],
@@ -77,7 +77,7 @@ Object {
         "data": null,
         "text": Object {
           "styleList": null,
-          "value": "Widget Caption",
+          "updated": "Widget Caption",
         },
       },
     ],

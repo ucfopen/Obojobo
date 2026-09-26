@@ -12,7 +12,7 @@ class StyleableText {
 	static createFromObject(o) {
 		const st = new StyleableText()
 		st.styleList = ChunkStyleList.createFromObject(o.styleList)
-		st.value = o.value
+		st.updated = o.updated
 
 		return st
 	}
@@ -83,12 +83,12 @@ class StyleableText {
 
 	init() {
 		this.styleList = new ChunkStyleList()
-		return (this.value = '')
+		return (this.updated = '')
 	}
 
 	clone() {
 		const clone = new StyleableText()
-		clone.value = this.value
+		clone.updated = this.updated
 		clone.styleList = this.styleList.clone()
 
 		return clone
@@ -96,7 +96,7 @@ class StyleableText {
 
 	getExportedObject() {
 		return {
-			value: this.value,
+			updated: this.updated,
 			styleList: this.styleList.getExportedObject()
 		}
 	}
@@ -141,7 +141,7 @@ class StyleableText {
 			}
 		}
 
-		this.value = this.value.substring(0, atIndex) + text + this.value.substring(atIndex)
+		this.updated = this.updated.substring(0, atIndex) + text + this.updated.substring(atIndex)
 
 		return this.normalizeStyles()
 	}
@@ -152,7 +152,7 @@ class StyleableText {
 		}
 
 		from = Math.max(0, from)
-		to = Math.min(to, this.value.length)
+		to = Math.min(to, this.updated.length)
 
 		const deleteLength = to - from
 
@@ -182,7 +182,7 @@ class StyleableText {
 			}
 		}
 
-		this.value = this.value.substring(0, from) + this.value.substring(to)
+		this.updated = this.updated.substring(0, from) + this.updated.substring(to)
 
 		return this.normalizeStyles()
 	}
@@ -192,9 +192,9 @@ class StyleableText {
 
 		const styleRange = trimStyleRange(
 			new StyleRange(from, to, styleType, styleData),
-			this.value.length
+			this.updated.length
 		)
-		if (this.styleList.rangeHasStyle(from, Math.min(to, this.value.length), styleType)) {
+		if (this.styleList.rangeHasStyle(from, Math.min(to, this.updated.length), styleType)) {
 			this.styleList.remove(styleRange)
 		} else {
 			this.styleList.add(styleRange)
@@ -208,7 +208,7 @@ class StyleableText {
 
 		const range = new StyleRange(from, to, styleType, styleData)
 
-		const styleRange = trimStyleRange(range, this.value.length)
+		const styleRange = trimStyleRange(range, this.updated.length)
 		this.styleList.add(styleRange)
 
 		return this.normalizeStyles()
@@ -217,7 +217,7 @@ class StyleableText {
 	unstyleText(styleType, from = 0, to = Infinity) {
 		to = Math.min(to, this.length)
 
-		const styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length)
+		const styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.updated.length)
 		this.styleList.remove(styleRange)
 		return this.normalizeStyles()
 	}
@@ -231,11 +231,11 @@ class StyleableText {
 			return null
 		}
 
-		const splitAtEnd = atIndex === this.value.length
+		const splitAtEnd = atIndex === this.updated.length
 
 		const sibling = this.clone()
 
-		this.deleteText(atIndex, this.value.length)
+		this.deleteText(atIndex, this.updated.length)
 
 		sibling.deleteText(0, atIndex)
 
@@ -244,8 +244,8 @@ class StyleableText {
 		// initial styles into the new sibling.
 		if (splitAtEnd) {
 			const lastCharStyles = this.styleList.getStylesInRange(
-				this.value.length - 1,
-				this.value.length
+				this.updated.length - 1,
+				this.updated.length
 			)
 			for (const style in lastCharStyles) {
 				sibling.styleText(style, 0, 0)
@@ -261,10 +261,10 @@ class StyleableText {
 
 	merge(otherText, atIndex = null) {
 		if (atIndex === null) {
-			atIndex = this.value.length
+			atIndex = this.updated.length
 		}
 
-		const insertLength = otherText.value.length
+		const insertLength = otherText.updated.length
 
 		for (const range of Array.from(this.styleList.styles)) {
 			switch (range.compareToRange(atIndex)) {
@@ -275,7 +275,7 @@ class StyleableText {
 			}
 		}
 
-		this.value = this.value.substring(0, atIndex) + otherText.value + this.value.substring(atIndex)
+		this.updated = this.updated.substring(0, atIndex) + otherText.updated + this.updated.substring(atIndex)
 
 		this.styleList.normalize()
 
@@ -291,7 +291,7 @@ class StyleableText {
 	}
 
 	get length() {
-		return this.value.length
+		return this.updated.length
 	}
 }
 

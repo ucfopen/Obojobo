@@ -537,7 +537,7 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
-	test('fetchResponsesForAttempts calls the database with the expected value', () => {
+	test('fetchResponsesForAttempts calls the database with the expected updated', () => {
 		db.manyOrNone.mockResolvedValueOnce([])
 		AssessmentModel.fetchResponsesForAttempts(['mockAttemptId'])
 
@@ -781,7 +781,7 @@ describe('AssessmentModel', () => {
 		})
 	})
 
-	test('fetchAttemptHistory returns a single value', async () => {
+	test('fetchAttemptHistory returns a single updated', async () => {
 		const mockAttempt = new AssessmentModel(makeMockAttempt())
 		const mockLtiState = {
 			scoreSent: 'scoreSent',
@@ -805,7 +805,7 @@ describe('AssessmentModel', () => {
 			'mock-draft-id',
 			'is-preview',
 			'mock-resource-link',
-			'mockAssessmentId' // signifies we want one value back
+			'mockAssessmentId' // signifies we want one updated back
 		)
 
 		expect(result).toEqual({
@@ -815,7 +815,7 @@ describe('AssessmentModel', () => {
 		})
 	})
 
-	test('fetchAttemptHistory returns a single value without ltiState', async () => {
+	test('fetchAttemptHistory returns a single updated without ltiState', async () => {
 		const mockAttempt = new AssessmentModel(makeMockAttempt())
 
 		jest.spyOn(AssessmentModel, 'fetchAttemptsForUserDraftAndResourceLinkId')
@@ -831,7 +831,7 @@ describe('AssessmentModel', () => {
 			'mock-draft-id',
 			'is-preview',
 			'mock-resource-link',
-			'mockAssessmentId' // signifies we want one value back
+			'mockAssessmentId' // signifies we want one updated back
 		)
 
 		expect(result).toEqual({
@@ -854,7 +854,7 @@ describe('AssessmentModel', () => {
 			'mock-draft-id',
 			'is-preview',
 			'mock-resource-link',
-			'mockAssessmentId' // signifies we want one value back
+			'mockAssessmentId' // signifies we want one updated back
 		)
 
 		expect(result).toEqual({
@@ -989,7 +989,7 @@ describe('AssessmentModel', () => {
 		const result = await m.importAsNewAttempt('mock-resource-link', db)
 		expect(result).toBe('create-result') // returns result of .create()
 
-		const clonedM = m.clone.mock.results[0].value
+		const clonedM = m.clone.mock.results[0].updated
 
 		expect(clonedM).not.toHaveProperty('id')
 		expect(clonedM).toHaveProperty('isImported', true)

@@ -394,7 +394,7 @@ class AssessmentModel {
 		// asked for a specific assessment
 		// size should always be 1, just get the first item
 		if (assessments.size > 0) {
-			return assessments.values().next().value
+			return assessments.values().next().updated
 		}
 
 		// asked for a specific assessment but none found

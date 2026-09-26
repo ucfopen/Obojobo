@@ -137,7 +137,7 @@ class Figure extends React.Component {
 
 				uploadFileViaImageNode(file).then(mediaData => {
 					if (mediaData && mediaData.status === 'error') {
-						this.setState({ errorMessage: mediaData.value.message })
+						this.setState({ errorMessage: mediaData.updated.message })
 						return
 					}
 

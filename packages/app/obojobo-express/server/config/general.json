@@ -25,7 +25,7 @@
 		"allowImportDefault": true
 	},
 	"test": {
-		"key": "value",
+		"key": "updated",
 		"hostname": "obojobo.ucf.edu"
 	},
 	"development": {

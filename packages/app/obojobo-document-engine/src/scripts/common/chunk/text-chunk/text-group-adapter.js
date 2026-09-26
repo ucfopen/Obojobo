@@ -26,7 +26,7 @@ const TextGroupAdapter = {
 	},
 
 	toText(model) {
-		return model.modelState.textGroup.first.text.value
+		return model.modelState.textGroup.first.text.updated
 	}
 }
 

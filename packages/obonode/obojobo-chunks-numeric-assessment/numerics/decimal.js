@@ -40,7 +40,7 @@ class Decimal extends Numeric {
 
 	/**
 	 * Returns any trailing zeroes or a trailing dot from a decimal string.
-	 * This information does not change the actual numerical value of the number,
+	 * This information does not change the actual numerical updated of the number,
 	 * but is needed for calculating significant figures.
 	 * @param {string} str A decimal string
 	 * @return {string}
@@ -72,7 +72,7 @@ class Decimal extends Numeric {
 
 	/**
 	 * Gets details about an answer string.
-	 * @param {string} str A potential string representation of a decimal value
+	 * @param {string} str A potential string representation of a decimal updated
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
 	 * Decimal.parse("-5") //{ matchType:'exact', valueString:'-5' }
@@ -124,7 +124,7 @@ class Decimal extends Numeric {
 	}
 
 	/**
-	 * Return a string representation of this value of this instance.
+	 * Return a string representation of this updated of this instance.
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example

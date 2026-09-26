@@ -5,7 +5,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 
 describe('NodeRenderer', () => {
 	test('NodeRenderer displays Elements', () => {
-		const component = mount(<NodeRenderer value={[]} />)
+		const component = mount(<NodeRenderer updated={[]} />)
 		expect(
 			component.instance().renderElement({
 				element: {
@@ -67,7 +67,7 @@ describe('NodeRenderer', () => {
 	})
 
 	test('NodeRenderer displays Leaf', () => {
-		const component = mount(<NodeRenderer value={[]} />)
+		const component = mount(<NodeRenderer updated={[]} />)
 
 		const mockLeaf = {
 			children: <span>child</span>,

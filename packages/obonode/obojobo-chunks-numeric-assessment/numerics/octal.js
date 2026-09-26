@@ -12,7 +12,7 @@ const octalInferred = /^[0-7]+$|^[0-7]+$/
  * An octal numeric type. Values should be prefixed with "0o" but are possible octal matches if given a number with only numbers 0-7.
  * @example
  * new Octal("0o701")
- * new Octal("701") // 'inferred' octal value
+ * new Octal("701") // 'inferred' octal updated
  */
 module.exports = class Octal extends Numeric {
 	/**
@@ -44,7 +44,7 @@ module.exports = class Octal extends Numeric {
 	}
 
 	/**
-	 * Get the value string portion of a possible octal string
+	 * Get the updated string portion of a possible octal string
 	 * @param {string} str
 	 * @return {string|null}
 	 * @example
@@ -66,7 +66,7 @@ module.exports = class Octal extends Numeric {
 
 	/**
 	 * Gets details about an answer string.
-	 * @param {string} str A potential string representation of a octal value
+	 * @param {string} str A potential string representation of a octal updated
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
 	 * Octal.parse("0o777") //{ matchType:'exact', valueString:'0o777' }
@@ -114,7 +114,7 @@ module.exports = class Octal extends Numeric {
 	}
 
 	/**
-	 * Get the string representation of a Big value
+	 * Get the string representation of a Big updated
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
@@ -126,7 +126,7 @@ module.exports = class Octal extends Numeric {
 	}
 
 	/**
-	 * Get a Big instance for a given value string
+	 * Get a Big instance for a given updated string
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
@@ -138,7 +138,7 @@ module.exports = class Octal extends Numeric {
 	}
 
 	/**
-	 * Get a number value for a given value string
+	 * Get a number updated for a given updated string
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
@@ -156,7 +156,7 @@ module.exports = class Octal extends Numeric {
 	}
 
 	/**
-	 * Converts the octal value to decimal and then returns the number of significant figures.
+	 * Converts the octal updated to decimal and then returns the number of significant figures.
 	 * @param {string} valueString
 	 * @return {number} The number of significant figures of this instance
 	 * @example

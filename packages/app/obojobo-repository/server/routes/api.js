@@ -232,7 +232,7 @@ router
 			const copiedDraftMetadata = new DraftsMetadata({
 				draft_id: newDraft.id,
 				key: 'copied',
-				value: draftId
+				updated: draftId
 			})
 
 			let readOnlyDraftMetadata = null
@@ -241,7 +241,7 @@ router
 				readOnlyDraftMetadata = new DraftsMetadata({
 					draft_id: newDraft.id,
 					key: 'read_only',
-					value: true
+					updated: true
 				})
 			}
 
@@ -276,7 +276,7 @@ router
 	.get((req, res) => {
 		DraftsMetadata.getByDraftIdAndKey(req.currentDocument.draftId, 'copied')
 			.then(md => {
-				return DraftSummary.fetchByIdMoreRecentThan(md.value, md.updatedAt)
+				return DraftSummary.fetchByIdMoreRecentThan(md.updated, md.updatedAt)
 			})
 			.then(mostRecentOriginalRevision => {
 				res.success(mostRecentOriginalRevision)
@@ -307,7 +307,7 @@ router
 
 				copyMeta = md
 				// use original draft ID from the copy metadata
-				const oldDraft = await Draft.fetchById(md.value)
+				const oldDraft = await Draft.fetchById(md.updated)
 				const draftObject = oldDraft.root.toObject()
 				const newTitle = req.body.title ? req.body.title : draftObject.content.title + ' Copy'
 				draftObject.content.title = newTitle

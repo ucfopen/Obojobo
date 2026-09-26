@@ -27,7 +27,7 @@ describe('ActionButton adapter', () => {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -49,7 +49,7 @@ describe('ActionButton adapter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'mock-tg'
+							updated: 'mock-tg'
 						}
 					}
 				],
@@ -59,7 +59,7 @@ describe('ActionButton adapter', () => {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -92,7 +92,7 @@ describe('ActionButton adapter', () => {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -125,7 +125,7 @@ describe('ActionButton adapter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'mock-tg'
+							updated: 'mock-tg'
 						}
 					}
 				]
@@ -170,7 +170,7 @@ describe('ActionButton adapter', () => {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -190,7 +190,7 @@ describe('ActionButton adapter', () => {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -213,7 +213,7 @@ describe('ActionButton adapter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'mock-tg'
+							updated: 'mock-tg'
 						}
 					}
 				],
@@ -223,7 +223,7 @@ describe('ActionButton adapter', () => {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -240,7 +240,7 @@ describe('ActionButton adapter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'mock-tg',
+							updated: 'mock-tg',
 							styleList: null
 						},
 						data: {
@@ -254,7 +254,7 @@ describe('ActionButton adapter', () => {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -277,7 +277,7 @@ describe('ActionButton adapter', () => {
 				textGroup: {
 					first: {
 						text: {
-							value: 'mockText'
+							updated: 'mockText'
 						}
 					}
 				}

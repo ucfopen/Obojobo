@@ -67,7 +67,7 @@ const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 	const params = signLtiParams(paramsIn, method, endpoint)
 	const keys = Object.keys(params)
 	const htmlInput = keys
-		.map(key => `<input type="hidden" name="${key}" value="${params[key]}"/>`)
+		.map(key => `<input type="hidden" name="${key}" updated="${params[key]}"/>`)
 		.join('')
 
 	res.set('Content-Type', 'text/html')
@@ -263,10 +263,10 @@ if (config.materiaLtiVersion === '1.3') {
 			res.set('Content-Type', 'text/html')
 			res.send(`<html><body>
 				<form id="form" method="POST" action="${redirect_uri}">
-					<input type="hidden" name="instance" value="${nodeContext.nodeId}" />
-					<input type="hidden" name="csrfmiddlewaretoken" value="${csrfCookie(req)}" />
-					<input type="hidden" name="state" value="${state}" />
-					<input type="hidden" name="id_token" value="${idToken}" />
+					<input type="hidden" name="instance" updated="${nodeContext.nodeId}" />
+					<input type="hidden" name="csrfmiddlewaretoken" updated="${csrfCookie(req)}" />
+					<input type="hidden" name="state" updated="${state}" />
+					<input type="hidden" name="id_token" updated="${idToken}" />
 				</form>
 				<script>document.getElementById('form').submit()</script>
 				</body></html>`)

@@ -4,31 +4,31 @@ import NumericRuleOutcome from '../../rule/numeric-rule-outcome'
 import NumericRule from '../../rule/numeric-rule'
 
 import NumericEntry from '../../entry/numeric-entry'
-import BigValueRange from '../../range/big-value-range'
+import BigValueRange from '../../range/big-updated-range'
 
 describe('NumericRuleOutcome', () => {
 	test('getPercentErrorRange returns a range of possible answer values', () => {
-		const r1 = new NumericRule({ value: '2', percentError: 1 })
+		const r1 = new NumericRule({ updated: '2', percentError: 1 })
 		expect(NumericRuleOutcome.getPercentErrorRange(r1).toString()).toEqual('[1.98,2.02]')
 
-		const r2 = new NumericRule({ value: '[2,3]', percentError: 2 })
+		const r2 = new NumericRule({ updated: '[2,3]', percentError: 2 })
 		expect(NumericRuleOutcome.getPercentErrorRange(r2).toString()).toEqual('[1.96,3.04]')
 
-		const r3 = new NumericRule({ value: '(*,3]', percentError: 3 })
+		const r3 = new NumericRule({ updated: '(*,3]', percentError: 3 })
 		expect(NumericRuleOutcome.getPercentErrorRange(r3).toString()).toEqual('(*,3.09]')
 
-		const r4 = new NumericRule({ value: '[2,*)', percentError: 4 })
+		const r4 = new NumericRule({ updated: '[2,*)', percentError: 4 })
 		expect(NumericRuleOutcome.getPercentErrorRange(r4).toString()).toEqual('[1.92,*)')
 
-		const r5 = new NumericRule({ value: '(*,*)', percentError: 5 })
+		const r5 = new NumericRule({ updated: '(*,*)', percentError: 5 })
 		expect(NumericRuleOutcome.getPercentErrorRange(r5).toString()).toEqual('(*,*)')
 	})
 
 	test('getAbsoluteErrorRange returns a range of possible answer values', () => {
-		const r3 = new NumericRule({ value: '2', absoluteError: 0.5 })
+		const r3 = new NumericRule({ updated: '2', absoluteError: 0.5 })
 		expect(NumericRuleOutcome.getAbsoluteErrorRange(r3).toString()).toEqual('[1.5,2.5]')
 
-		const r4 = new NumericRule({ value: '[2,3]', absoluteError: 0.5 })
+		const r4 = new NumericRule({ updated: '[2,3]', absoluteError: 0.5 })
 		expect(NumericRuleOutcome.getAbsoluteErrorRange(r4).toString()).toEqual('[1.5,3.5]')
 	})
 
@@ -60,7 +60,7 @@ describe('NumericRuleOutcome', () => {
 
 	test('getScoreOutcome returns expected details', () => {
 		expect(
-			NumericRuleOutcome.getScoreOutcome(new NumericEntry('1'), new NumericRule({ value: '1' }))
+			NumericRuleOutcome.getScoreOutcome(new NumericEntry('1'), new NumericRule({ updated: '1' }))
 		).toEqual({
 			errorType: 'noError',
 			isExactlyCorrect: true,
@@ -68,7 +68,7 @@ describe('NumericRuleOutcome', () => {
 		})
 
 		expect(
-			NumericRuleOutcome.getScoreOutcome(new NumericEntry('1.01'), new NumericRule({ value: '1' }))
+			NumericRuleOutcome.getScoreOutcome(new NumericEntry('1.01'), new NumericRule({ updated: '1' }))
 		).toEqual({
 			errorType: 'noError',
 			isExactlyCorrect: false,
@@ -78,7 +78,7 @@ describe('NumericRuleOutcome', () => {
 		expect(
 			NumericRuleOutcome.getScoreOutcome(
 				new NumericEntry('1'),
-				new NumericRule({ value: '1', percentError: 1 })
+				new NumericRule({ updated: '1', percentError: 1 })
 			)
 		).toEqual({
 			errorType: 'percent',
@@ -89,7 +89,7 @@ describe('NumericRuleOutcome', () => {
 		expect(
 			NumericRuleOutcome.getScoreOutcome(
 				new NumericEntry('1.01'),
-				new NumericRule({ value: '1', percentError: 1 })
+				new NumericRule({ updated: '1', percentError: 1 })
 			)
 		).toEqual({
 			errorType: 'percent',
@@ -100,7 +100,7 @@ describe('NumericRuleOutcome', () => {
 		expect(
 			NumericRuleOutcome.getScoreOutcome(
 				new NumericEntry('2'),
-				new NumericRule({ value: '1', percentError: 1 })
+				new NumericRule({ updated: '1', percentError: 1 })
 			)
 		).toEqual({
 			errorType: 'percent',
@@ -111,7 +111,7 @@ describe('NumericRuleOutcome', () => {
 		expect(
 			NumericRuleOutcome.getScoreOutcome(
 				new NumericEntry('1'),
-				new NumericRule({ value: '1', absoluteError: 1 })
+				new NumericRule({ updated: '1', absoluteError: 1 })
 			)
 		).toEqual({
 			errorType: 'absolute',
@@ -122,7 +122,7 @@ describe('NumericRuleOutcome', () => {
 		expect(
 			NumericRuleOutcome.getScoreOutcome(
 				new NumericEntry('1.01'),
-				new NumericRule({ value: '1', absoluteError: 1 })
+				new NumericRule({ updated: '1', absoluteError: 1 })
 			)
 		).toEqual({
 			errorType: 'absolute',
@@ -133,7 +133,7 @@ describe('NumericRuleOutcome', () => {
 		expect(
 			NumericRuleOutcome.getScoreOutcome(
 				new NumericEntry('2.01'),
-				new NumericRule({ value: '1', absoluteError: 1 })
+				new NumericRule({ updated: '1', absoluteError: 1 })
 			)
 		).toEqual({
 			errorType: 'absolute',
@@ -337,7 +337,7 @@ describe('NumericRuleOutcome', () => {
 	)
 
 	test('constructor sets properties as expected', () => {
-		const o = new NumericRuleOutcome(new NumericEntry('42'), new NumericRule({ value: '42' }))
+		const o = new NumericRuleOutcome(new NumericEntry('42'), new NumericRule({ updated: '42' }))
 
 		expect(o).toMatchSnapshot()
 	})

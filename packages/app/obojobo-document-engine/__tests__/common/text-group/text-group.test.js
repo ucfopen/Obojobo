@@ -272,14 +272,14 @@ describe('TextGroup', () => {
 		expect(tgWithItems.toDescriptor()).toEqual([
 			{
 				text: {
-					value: 'first',
+					updated: 'first',
 					styleList: null
 				},
 				data: {}
 			},
 			{
 				text: {
-					value: 'second',
+					updated: 'second',
 					styleList: null
 				},
 				data: {}

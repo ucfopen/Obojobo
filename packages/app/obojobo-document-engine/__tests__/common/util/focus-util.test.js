@@ -15,7 +15,7 @@ describe('FocusUtil', () => {
 		FocusUtil.focusComponent('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
+			updated: {
 				id: 'testId',
 				fade: false,
 				animateScroll: false,
@@ -35,7 +35,7 @@ describe('FocusUtil', () => {
 	`('FocusUtil.focusComponent("testId", $opts) = "$eventArgs"', ({ opts, eventArgs }) => {
 		FocusUtil.focusComponent('testId', opts)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
+			updated: {
 				id: 'testId',
 				...eventArgs
 			}

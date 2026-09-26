@@ -17,7 +17,7 @@ const fractionalRegex = /^[-+]?[0-9]+\/[0-9]+$/
  */
 
 /**
- * Same as FractionalTermsObject but includes the resulting Big value
+ * Same as FractionalTermsObject but includes the resulting Big updated
  * @typedef FractionalTermsValueObject
  * @property {Big} bigNumerator
  * @property {Big} bigDenominator
@@ -52,7 +52,7 @@ module.exports = class Fractional extends Numeric {
 
 	/**
 	 * Gets details about an answer string.
-	 * @param {string} str A potential string representation of a fractional value
+	 * @param {string} str A potential string representation of a fractional updated
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
 	 * Fractional.parse("1/2") //{ matchType:'exact', valueString:'1/2' }
@@ -119,7 +119,7 @@ module.exports = class Fractional extends Numeric {
 	}
 
 	/**
-	 * Return a string representation of this value of this instance. Fraction will be in its most reduced form.
+	 * Return a string representation of this updated of this instance. Fraction will be in its most reduced form.
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
@@ -183,7 +183,7 @@ module.exports = class Fractional extends Numeric {
 	}
 
 	/**
-	 * Computes close fractional terms for a given Big value. Return values are not guaranteed to be in reduced form.
+	 * Computes close fractional terms for a given Big updated. Return values are not guaranteed to be in reduced form.
 	 * @see https://stackoverflow.com/a/5128558
 	 * @param {Big} bigValue
 	 * @param {number} [error=0.000001]
@@ -242,7 +242,7 @@ module.exports = class Fractional extends Numeric {
 	}
 
 	/**
-	 * Determine the percent error between a given Big value and it's closest fractional representation
+	 * Determine the percent error between a given Big updated and it's closest fractional representation
 	 * @param {Big} bigValue
 	 * @return {number} The percent error
 	 */
@@ -299,7 +299,7 @@ module.exports = class Fractional extends Numeric {
 	}
 
 	/**
-	 * Create a new instance given either a string representation of a numeric value or a Big instance. If the value could not be parsed for this type then some properties will not be set (this.matchType will be 'none').
+	 * Create a new instance given either a string representation of a numeric updated or a Big instance. If the updated could not be parsed for this type then some properties will not be set (this.matchType will be 'none').
 	 * @param {string|Big} stringOrBigValue
 	 */
 	constructor(stringOrBigValue) {

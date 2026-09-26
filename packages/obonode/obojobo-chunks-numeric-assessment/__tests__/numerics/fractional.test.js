@@ -31,7 +31,7 @@ describe('Fractional', () => {
 		getTermsSpy.mockRestore()
 	})
 
-	test('getRoundedBigValue simply returns a copy of the big value', () => {
+	test('getRoundedBigValue simply returns a copy of the big updated', () => {
 		const b = new Big(123)
 		const r = Fractional.getRoundedBigValue(b)
 
@@ -196,7 +196,7 @@ describe('Fractional', () => {
 		expect(Fractional.getNumSigFigs()).toBeNull()
 	})
 
-	test('getFractionStringPercentError returns a percent error for the fractional version of a Big value', () => {
+	test('getFractionStringPercentError returns a percent error for the fractional version of a Big updated', () => {
 		const getBigValueReducedTermsSpy = jest
 			.spyOn(Fractional, 'getBigValueReducedTerms')
 			.mockImplementation(() => ({ bigNumerator: Big(7), bigDenominator: Big(11) }))

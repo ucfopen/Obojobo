@@ -88,7 +88,7 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -102,7 +102,7 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', true)
+				expect(response.body).toHaveProperty('updated', true)
 			})
 	})
 
@@ -116,7 +116,7 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'missing')
+				expect(response.body.updated).toHaveProperty('type', 'missing')
 			})
 	})
 
@@ -130,7 +130,7 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'missing')
+				expect(response.body.updated).toHaveProperty('type', 'missing')
 			})
 	})
 
@@ -143,7 +143,7 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -156,7 +156,7 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'missing')
+				expect(response.body.updated).toHaveProperty('type', 'missing')
 			})
 	})
 
@@ -171,8 +171,8 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'missing')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'missing')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'currentVisit missing from request, got undefined'
 				)
@@ -197,8 +197,8 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'missing')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'missing')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'currentVisit missing from request, got undefined'
 				)
@@ -222,8 +222,8 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(403)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'reject')
-				expect(response.body.value).toHaveProperty('message', 'lti launch lookup rejection error')
+				expect(response.body.updated).toHaveProperty('type', 'reject')
+				expect(response.body.updated).toHaveProperty('message', 'lti launch lookup rejection error')
 			})
 	})
 
@@ -250,8 +250,8 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(403)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'reject')
-				expect(response.body.value).toHaveProperty('message', 'Visit for older draft version!')
+				expect(response.body.updated).toHaveProperty('type', 'reject')
+				expect(response.body.updated).toHaveProperty('message', 'Visit for older draft version!')
 			})
 	})
 
@@ -271,7 +271,7 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body.value).toMatchInlineSnapshot(`
+				expect(response.body.updated).toMatchInlineSnapshot(`
 			Object {
 			  "extensions": Array [],
 			  "isPreviewing": true,
@@ -365,8 +365,8 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(403)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'reject')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'reject')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					"Cannot read properties of undefined (reading 'lis_outcome_service_url')"
 				)

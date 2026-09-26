@@ -30,10 +30,10 @@ describe('Heading Converter', () => {
 				triggers: 'mock-triggers',
 				textGroup: [
 					{
-						text: { value: 'mockText' }
+						text: { updated: 'mockText' }
 					},
 					{
-						text: { value: 'mockText' },
+						text: { updated: 'mockText' },
 						data: { align: 'left' }
 					}
 				]

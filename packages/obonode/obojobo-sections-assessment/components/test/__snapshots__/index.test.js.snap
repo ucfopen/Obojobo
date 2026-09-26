@@ -14,7 +14,7 @@ exports[`Test Test component (isAttemptReadyToSubmit) 1`] = `
           "results": Array [
             Object {
               "type": "return",
-              "value": "MockComponent",
+              "updated": "MockComponent",
             },
           ],
         },
@@ -60,7 +60,7 @@ exports[`Test Test component (isAttemptSubmitting) 1`] = `
           "results": Array [
             Object {
               "type": "return",
-              "value": "MockComponent",
+              "updated": "MockComponent",
             },
           ],
         },
@@ -113,7 +113,7 @@ exports[`Test Test component 1`] = `
           "results": Array [
             Object {
               "type": "return",
-              "value": "MockComponent",
+              "updated": "MockComponent",
             },
           ],
         },
@@ -165,7 +165,7 @@ exports[`Test Test component fetching score 1`] = `
           "results": Array [
             Object {
               "type": "return",
-              "value": "MockComponent",
+              "updated": "MockComponent",
             },
           ],
         },
@@ -217,7 +217,7 @@ exports[`Test Test component with completeAttempt 1`] = `
           "results": Array [
             Object {
               "type": "return",
-              "value": "MockComponent",
+              "updated": "MockComponent",
             },
           ],
         },

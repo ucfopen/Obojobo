@@ -392,7 +392,7 @@ describe('KeyDown Util', () => {
 		expect(Transforms.insertNodes).toHaveBeenCalled()
 
 		// make sure the correct node fragment is taken
-		const fragmentNode = Node.fragment.mock.results[0].value[0]
+		const fragmentNode = Node.fragment.mock.results[0].updated[0]
 		expect(fragmentNode).toHaveProperty('type', HEADING_NODE)
 		expect(fragmentNode.children[0]).toEqual({ text: 'Text' })
 

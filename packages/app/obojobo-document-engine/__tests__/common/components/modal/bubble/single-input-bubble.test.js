@@ -17,7 +17,7 @@ describe('SingleInputBubble', () => {
 		const component = mount(
 			<SingleInputBubble
 				label="Label"
-				value="Value"
+				updated="Value"
 				onClose={onClose}
 				onCancel={onCancel}
 				onChange={onChange}
@@ -31,7 +31,7 @@ describe('SingleInputBubble', () => {
 		const el = mount(
 			<SingleInputBubble
 				label="Timed"
-				value="Value"
+				updated="Value"
 				onClose={onClose}
 				onCancel={onCancel}
 				onChange={onChange}
@@ -49,7 +49,7 @@ describe('SingleInputBubble', () => {
 		const el = mount(
 			<SingleInputBubble
 				label="Label"
-				value="Value"
+				updated="Value"
 				onClose={onClose}
 				onCancel={onCancel}
 				onChange={onChange}
@@ -75,7 +75,7 @@ describe('SingleInputBubble', () => {
 		const el = mount(
 			<SingleInputBubble
 				label="Label"
-				value="Value"
+				updated="Value"
 				onClose={onClose}
 				onCancel={onCancel}
 				onChange={onChange}
@@ -88,7 +88,7 @@ describe('SingleInputBubble', () => {
 
 		input.simulate('change', {
 			target: {
-				value: 'Test123'
+				updated: 'Test123'
 			}
 		})
 
@@ -99,7 +99,7 @@ describe('SingleInputBubble', () => {
 		const el = mount(
 			<SingleInputBubble
 				label="Label"
-				value="Value"
+				updated="Value"
 				onClose={onClose}
 				onCancel={onCancel}
 				onChange={onChange}

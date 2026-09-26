@@ -8,7 +8,7 @@ const mockedDebounce = jest.fn().mockImplementation((time, fn) => fn())
 jest.mock('./choose-image-modal', () => {
 	const error = {
 		status: 'error',
-		value: {
+		updated: {
 			message: 'File too large'
 		}
 	}
@@ -214,7 +214,7 @@ describe('Image Properties Modal', () => {
 		// Simulate changing "Alt Text"
 		component
 			.find('#obojobo-draft--chunks--figure--alt')
-			.simulate('change', { target: { value: 'changed alt' } })
+			.simulate('change', { target: { updated: 'changed alt' } })
 
 		expect(component.instance().state.alt).toBe('changed alt')
 	})
@@ -230,7 +230,7 @@ describe('Image Properties Modal', () => {
 		// Simulate changing "Caption Width"
 		component
 			.find('#obojobo-draft--chunks--figure--caption-width')
-			.simulate('change', { target: { value: 'text-width' } })
+			.simulate('change', { target: { updated: 'text-width' } })
 
 		expect(component.instance().state.captionWidth).toBe('text-width')
 	})
@@ -244,18 +244,18 @@ describe('Image Properties Modal', () => {
 		// small
 		input = component
 			.find('#obojobo-draft--chunks--figure--size-small')
-			.simulate('change', { target: { value: 'small' } })
-		expect(input.html().includes(`value="small"`)).toBe(true)
+			.simulate('change', { target: { updated: 'small' } })
+		expect(input.html().includes(`updated="small"`)).toBe(true)
 
 		// medium
 		input = component.find('#obojobo-draft--chunks--figure--size-medium')
-		input.simulate('change', { target: { value: 'medium' } })
-		expect(input.html().includes(`value="medium"`)).toBe(true)
+		input.simulate('change', { target: { updated: 'medium' } })
+		expect(input.html().includes(`updated="medium"`)).toBe(true)
 
 		// large
 		input = component.find('#obojobo-draft--chunks--figure--size-large')
-		input.simulate('change', { target: { value: 'large' } })
-		expect(input.html().includes(`value="large`)).toBe(true)
+		input.simulate('change', { target: { updated: 'large' } })
+		expect(input.html().includes(`updated="large`)).toBe(true)
 	})
 
 	test('ImageProperties component changes width', () => {
@@ -264,9 +264,9 @@ describe('Image Properties Modal', () => {
 		)
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-width')
-		input.simulate('change', { target: { value: 'newWidth' } })
+		input.simulate('change', { target: { updated: 'newWidth' } })
 
-		expect(input.html().includes(`value="newWidth"`)).toBe(true)
+		expect(input.html().includes(`updated="newWidth"`)).toBe(true)
 	})
 
 	test('ImageProperties component changes height', () => {
@@ -275,9 +275,9 @@ describe('Image Properties Modal', () => {
 		)
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-height')
-		input.simulate('change', { target: { value: 'newHeight' } })
+		input.simulate('change', { target: { updated: 'newHeight' } })
 
-		expect(input.html().includes(`value="newHeight"`)).toBe(true)
+		expect(input.html().includes(`updated="newHeight"`)).toBe(true)
 	})
 
 	test('ImageProperties custom height handles null values', () => {
@@ -291,9 +291,9 @@ describe('Image Properties Modal', () => {
 		)
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-height')
-		input.simulate('change', { target: { value: null } })
+		input.simulate('change', { target: { updated: null } })
 
-		expect(input.html().includes(`value=""`)).toBe(true)
+		expect(input.html().includes(`updated=""`)).toBe(true)
 	})
 
 	test('ImageProperties custom width handles null values', () => {
@@ -307,8 +307,8 @@ describe('Image Properties Modal', () => {
 		)
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-width')
-		input.simulate('change', { target: { value: null } })
+		input.simulate('change', { target: { updated: null } })
 
-		expect(input.html().includes(`value=""`)).toBe(true)
+		expect(input.html().includes(`updated=""`)).toBe(true)
 	})
 })

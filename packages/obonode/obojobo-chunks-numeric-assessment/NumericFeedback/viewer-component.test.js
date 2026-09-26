@@ -31,7 +31,7 @@ describe('NumericFeedback', () => {
 								textGroup: [
 									{
 										text: {
-											value: 'Example Text 2'
+											updated: 'Example Text 2'
 										}
 									}
 								]
@@ -71,7 +71,7 @@ describe('NumericFeedback', () => {
 								textGroup: [
 									{
 										text: {
-											value: 'Example Text 2'
+											updated: 'Example Text 2'
 										}
 									}
 								]

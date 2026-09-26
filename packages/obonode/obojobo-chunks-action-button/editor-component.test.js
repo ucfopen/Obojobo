@@ -31,27 +31,27 @@ describe('ActionButton Editor Node', () => {
 				actions: [
 					{
 						type: 'mockType',
-						value: 'mockValue'
+						updated: 'mockValue'
 					}
 				],
 				triggers: [
 					{
 						type: 'onClick',
 						actions: [
-							{ type: 'nav:goto', value: {} },
-							{ type: 'nav:prev', value: {} },
-							{ type: 'nav:next', value: {} },
-							{ type: 'nav:openExternalLink', value: {} },
-							{ type: 'nav:lock', value: {} },
-							{ type: 'nav:unlock', value: {} },
-							{ type: 'nav:toggle', value: {} },
-							{ type: 'nav:close', value: {} },
-							{ type: 'nav:open', value: {} },
-							{ type: 'assessment:startAttempt', value: {} },
-							{ type: 'assessment:endAttempt', value: {} },
-							{ type: 'viewer:alert', value: {} },
-							{ type: 'viewer:scrollToTop', value: {} },
-							{ type: 'focus:component', value: {} }
+							{ type: 'nav:goto', updated: {} },
+							{ type: 'nav:prev', updated: {} },
+							{ type: 'nav:next', updated: {} },
+							{ type: 'nav:openExternalLink', updated: {} },
+							{ type: 'nav:lock', updated: {} },
+							{ type: 'nav:unlock', updated: {} },
+							{ type: 'nav:toggle', updated: {} },
+							{ type: 'nav:close', updated: {} },
+							{ type: 'nav:open', updated: {} },
+							{ type: 'assessment:startAttempt', updated: {} },
+							{ type: 'assessment:endAttempt', updated: {} },
+							{ type: 'viewer:alert', updated: {} },
+							{ type: 'viewer:scrollToTop', updated: {} },
+							{ type: 'focus:component', updated: {} }
 						]
 					}
 				]
@@ -142,7 +142,7 @@ describe('ActionButton Editor Node', () => {
 					actions: [
 						{
 							type: 'mockType',
-							value: 'mockValue'
+							updated: 'mockValue'
 						}
 					],
 					triggers: [
@@ -175,9 +175,9 @@ describe('ActionButton Editor Node', () => {
 
 test('Action Button Editor displays id for nav:goto trigger', () => {
 	const type = 'nav:goto'
-	const value = { id: 'mockId' }
+	const updated = { id: 'mockId' }
 
-	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	const component = mount(<ActionButtonEditorAction type={type} updated={updated} />)
 	expect(component.find('span').html()).toEqual(
 		'<span>Go to mockId (Ignore Navigation Lock)</span>'
 	)
@@ -185,24 +185,24 @@ test('Action Button Editor displays id for nav:goto trigger', () => {
 
 test('Action Button Editor displays empty id for nav:goto trigger', () => {
 	const type = 'nav:goto'
-	const value = { id: '' }
+	const updated = { id: '' }
 
-	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	const component = mount(<ActionButtonEditorAction type={type} updated={updated} />)
 	expect(component.find('span').html()).toEqual('<span>Go to ""</span>')
 })
 
 test('Action Button Editor displays id for nav:openExternalLink trigger', () => {
 	const type = 'nav:openExternalLink'
-	const value = { url: 'mockURL' }
+	const updated = { url: 'mockURL' }
 
-	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	const component = mount(<ActionButtonEditorAction type={type} updated={updated} />)
 	expect(component.find('span').html()).toEqual('<span>Open mockURL</span>')
 })
 
 test('Action Button Editor displays empty id for nav:openExternalLink trigger', () => {
 	const type = 'nav:openExternalLink'
-	const value = { url: '' }
+	const updated = { url: '' }
 
-	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	const component = mount(<ActionButtonEditorAction type={type} updated={updated} />)
 	expect(component.find('span').html()).toEqual('<span>Open ""</span>')
 })

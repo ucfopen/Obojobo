@@ -1,5 +1,5 @@
 const parseUnits = el => {
-	return el.elements[0].value
+	return el.elements[0].updated
 }
 
 module.exports = parseUnits

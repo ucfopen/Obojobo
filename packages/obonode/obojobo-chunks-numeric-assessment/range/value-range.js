@@ -11,9 +11,9 @@
  * @example "(3,4)" //Values greater than 3 and less than 4
  * @example "(*,4]" //Values less than or equal to 4
  * @example "(3,*)" //Values greater than 3
- * @example "(*,*)" //Any value
- * @example "*" //Any value
- * @example "" //No value
+ * @example "(*,*)" //Any updated
+ * @example "*" //Any updated
+ * @example "" //No updated
  */
 
 /**
@@ -39,8 +39,8 @@
  * to query the range to determine if values are less than, inside or greater than the
  * range. Ranges can be "singular" meaning they're singular values. You can also specify
  * a "empty" range which is simply a range with no valid values.
- * By default ValueRange works with numbers, however you can pass custom value parsing
- * functions and comparison functions to create a range to work with any value type.
+ * By default ValueRange works with numbers, however you can pass custom updated parsing
+ * functions and comparison functions to create a range to work with any updated type.
  * @example
  * new ValueRange() // -Infinity to Infinity
  * new ValueRange(true) // -Infinity to Infinity
@@ -124,7 +124,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Default serialize function which simply returns the value passed
+	 * Default serialize function which simply returns the updated passed
 	 * @param {number|null} o
 	 * @return {number}
 	 */
@@ -161,33 +161,33 @@ class ValueRange {
 		this.isEmpty = false
 
 		/**
-		 * The minimum value of the range. If equal to null then it is considered to
+		 * The minimum updated of the range. If equal to null then it is considered to
 		 * be -Infinity (i.e. there is no minimum)
 		 */
 		this.min = null
 
 		/**
-		 * If true then the minimum of the range is included in the range. This value
+		 * If true then the minimum of the range is included in the range. This updated
 		 * has no effect if this.min is null.
 		 */
 		this.isMinInclusive = null
 
 		/**
-		 * The maximum value of the range. If equal to null then it is considered to
+		 * The maximum updated of the range. If equal to null then it is considered to
 		 * be Infinity (i.e. there is no maximum)
 		 */
 		this.max = null
 
 		/**
-		 * If true then the maximum of the range is included in the range. This value
+		 * If true then the maximum of the range is included in the range. This updated
 		 * has no effect if this.max is null.
 		 */
 		this.isMaxInclusive = null
 
 		/**
 		 * Function used when comparing two values. Should return a negative number if
-		 * the first value is smaller than the second, a 0 if they are equal or a positive
-		 * value if the first value is larger than the second. This allows you to
+		 * the first updated is smaller than the second, a 0 if they are equal or a positive
+		 * updated if the first updated is larger than the second. This allows you to
 		 * create ranges where the values aren't numbers but any type of data you want.
 		 * However by default this is equal to parseFloat, meaning ValueRanges will work
 		 * with numbers by default.
@@ -276,7 +276,7 @@ class ValueRange {
 
 			// A range like [1,-1] is inverted, throw error
 			if (this.min !== null && this.max !== null && this.compareFn(this.min, this.max) > 0) {
-				throw 'Invalid range: min value must be larger than max value'
+				throw 'Invalid range: min updated must be larger than max updated'
 			}
 		}
 	}
@@ -304,21 +304,21 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if a given value sits inside the range
-	 * @param {*} value
+	 * Determine if a given updated sits inside the range
+	 * @param {*} updated
 	 * @return {boolean}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
 	 * range.isValueInRange(2) //true
 	 * range.isValueInRange(1) //false
 	 */
-	isValueInRange(value) {
-		return this.getValuePosition(value) === this.constructor.VALUE_INSIDE
+	isValueInRange(updated) {
+		return this.getValuePosition(updated) === this.constructor.VALUE_INSIDE
 	}
 
 	/**
-	 * Determine the position of value compared to the range's min value
-	 * @param {*} value
+	 * Determine the position of updated compared to the range's min updated
+	 * @param {*} updated
 	 * @return {'empty'|'equal'|'above'|'below'}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
@@ -326,16 +326,16 @@ class ValueRange {
 	 * range.getMinValuePosition(1) //'below'
 	 * range.getMinValuePosition(5) //'above'
 	 */
-	getMinValuePosition(value) {
+	getMinValuePosition(updated) {
 		if (this.isEmpty) return this.constructor.VALUE_EMPTY_RANGE
-		if (this.isMinInclusive && this.minEq(value)) return this.constructor.VALUE_EQUAL
-		if (this.minLt(value)) return this.constructor.VALUE_ABOVE
+		if (this.isMinInclusive && this.minEq(updated)) return this.constructor.VALUE_EQUAL
+		if (this.minLt(updated)) return this.constructor.VALUE_ABOVE
 		return this.constructor.VALUE_BELOW
 	}
 
 	/**
-	 * Determine the position of value compared to the range's max value
-	 * @param {*} value
+	 * Determine the position of updated compared to the range's max updated
+	 * @param {*} updated
 	 * @return {'empty'|'equal'|'above'|'below'}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
@@ -343,16 +343,16 @@ class ValueRange {
 	 * range.getMinValuePosition(1) //'below'
 	 * range.getMinValuePosition(5) //'above'
 	 */
-	getMaxValuePosition(value) {
+	getMaxValuePosition(updated) {
 		if (this.isEmpty) return this.constructor.VALUE_EMPTY_RANGE
-		if (this.isMaxInclusive && this.maxEq(value)) return this.constructor.VALUE_EQUAL
-		if (this.maxGt(value)) return this.constructor.VALUE_BELOW
+		if (this.isMaxInclusive && this.maxEq(updated)) return this.constructor.VALUE_EQUAL
+		if (this.maxGt(updated)) return this.constructor.VALUE_BELOW
 		return this.constructor.VALUE_ABOVE
 	}
 
 	/**
-	 * Determine if value is equal to or above the range's min value
-	 * @param {*} value
+	 * Determine if updated is equal to or above the range's min updated
+	 * @param {*} updated
 	 * @return {boolean}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
@@ -360,8 +360,8 @@ class ValueRange {
 	 * range.isValueWithinMin(2) //true
 	 * range.isValueWithinMin(5) //true
 	 */
-	isValueWithinMin(value) {
-		switch (this.getMinValuePosition(value)) {
+	isValueWithinMin(updated) {
+		switch (this.getMinValuePosition(updated)) {
 			case this.constructor.VALUE_EQUAL:
 			case this.constructor.VALUE_ABOVE:
 				return true
@@ -371,8 +371,8 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if value is equal to or below the range's max value
-	 * @param {*} value
+	 * Determine if updated is equal to or below the range's max updated
+	 * @param {*} updated
 	 * @return {boolean}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
@@ -380,8 +380,8 @@ class ValueRange {
 	 * range.isValueWithinMax(4) //true
 	 * range.isValueWithinMax(1) //true
 	 */
-	isValueWithinMax(value) {
-		switch (this.getMaxValuePosition(value)) {
+	isValueWithinMax(updated) {
+		switch (this.getMaxValuePosition(updated)) {
 			case this.constructor.VALUE_EQUAL:
 			case this.constructor.VALUE_BELOW:
 				return true
@@ -391,8 +391,8 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine the position of value compared to the range
-	 * @param {*} value
+	 * Determine the position of updated compared to the range
+	 * @param {*} updated
 	 * @return {'empty'|'inside'|'above'|'below'}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
@@ -402,12 +402,12 @@ class ValueRange {
 	 * range.getValuePosition(4) //'inside'
 	 * range.getValuePosition(5) //'above'
 	 */
-	getValuePosition(value) {
-		// By definition a value is not inside a empty range
+	getValuePosition(updated) {
+		// By definition a updated is not inside a empty range
 		if (this.isEmpty) return this.constructor.VALUE_EMPTY_RANGE
 
-		const isMinRequirementMet = this.isValueWithinMin(value)
-		const isMaxRequirementMet = this.isValueWithinMax(value)
+		const isMinRequirementMet = this.isValueWithinMin(updated)
+		const isMaxRequirementMet = this.isValueWithinMax(updated)
 
 		if (isMinRequirementMet && isMaxRequirementMet) {
 			return this.constructor.VALUE_INSIDE
@@ -469,16 +469,16 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine how the given value compares to this range's min value
+	 * Determine how the given updated compares to this range's min updated
 	 * @param {*} v
-	 * @return {number} Negative value if v < min, 0 if equal, positive if v > min
+	 * @return {number} Negative updated if v < min, 0 if equal, positive if v > min
 	 */
 	minCompare(v) {
 		return this.min === null ? 1 : this.compareFn(v, this.min)
 	}
 
 	/**
-	 * Determine if this range's min value is equal to the given value
+	 * Determine if this range's min updated is equal to the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -487,7 +487,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's min value is < the given value
+	 * Determine if this range's min updated is < the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -496,7 +496,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's min value is <= the given value
+	 * Determine if this range's min updated is <= the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -505,7 +505,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's min value is > the given value
+	 * Determine if this range's min updated is > the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -514,7 +514,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's min value is >= the given value
+	 * Determine if this range's min updated is >= the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -523,16 +523,16 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine how the given value compares to this range's max value
+	 * Determine how the given updated compares to this range's max updated
 	 * @param {*} v
-	 * @return {number} Negative value if v < max, 0 if equal, positive if v > max
+	 * @return {number} Negative updated if v < max, 0 if equal, positive if v > max
 	 */
 	maxCompare(v) {
 		return this.max === null ? -1 : this.compareFn(v, this.max)
 	}
 
 	/**
-	 * Determine if this range's max value is equal to the given value
+	 * Determine if this range's max updated is equal to the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -541,7 +541,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's max value is < the given value
+	 * Determine if this range's max updated is < the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -550,7 +550,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's max value is <= the given value
+	 * Determine if this range's max updated is <= the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -559,7 +559,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's max value is > the given value
+	 * Determine if this range's max updated is > the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -568,7 +568,7 @@ class ValueRange {
 	}
 
 	/**
-	 * Determine if this range's max value is >= the given value
+	 * Determine if this range's max updated is >= the given updated
 	 * @param {*} v
 	 * @return {boolean}
 	 */
@@ -577,7 +577,7 @@ class ValueRange {
 	}
 
 	/**
-	 * True if this range is a singular value, false otherwise
+	 * True if this range is a singular updated, false otherwise
 	 * @type {boolean}
 	 */
 	get isSingular() {
@@ -600,7 +600,7 @@ class ValueRange {
 	}
 
 	/**
-	 * True if the min value of this range is finite (i.e. [6,...), false otherwise (i.e. (*,...)
+	 * True if the min updated of this range is finite (i.e. [6,...), false otherwise (i.e. (*,...)
 	 * @type {boolean}
 	 */
 	get isLowerBounded() {
@@ -608,7 +608,7 @@ class ValueRange {
 	}
 
 	/**
-	 * True if the max value of this range is finite (i.e. ...,9]), false otherwise (i.e. ...,*))
+	 * True if the max updated of this range is finite (i.e. ...,9]), false otherwise (i.e. ...,*))
 	 * @type {boolean}
 	 */
 	get isUpperBounded() {

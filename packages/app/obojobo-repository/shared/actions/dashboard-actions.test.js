@@ -56,7 +56,7 @@ describe('Dashboard Actions', () => {
 
 		standardFetchResponse = {
 			ok: true,
-			json: jest.fn(() => ({ value: 'mockVal' }))
+			json: jest.fn(() => ({ updated: 'mockVal' }))
 		}
 
 		document.createElement = jest.fn(() => {
@@ -200,7 +200,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -215,7 +215,7 @@ describe('Dashboard Actions', () => {
 				'/api/drafts/mockDraftId/permission',
 				defaultFetchOptions
 			)
-			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+			expect(finalResponse).toEqual({ updated: 'mockSecondaryPermissionsVal' })
 		})
 	})
 
@@ -231,7 +231,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -262,10 +262,10 @@ describe('Dashboard Actions', () => {
 		// two additional API calls are made following the first
 		global.fetch
 			.mockResolvedValueOnce({
-				json: () => ({ value: 'mockSecondVal1' })
+				json: () => ({ updated: 'mockSecondVal1' })
 			})
 			.mockResolvedValueOnce({
-				json: () => ({ value: 'mockSecondVal2' })
+				json: () => ({ updated: 'mockSecondVal2' })
 			})
 
 		expect(actionReply).toEqual({
@@ -282,7 +282,7 @@ describe('Dashboard Actions', () => {
 			)
 
 			expect(finalResponse).toEqual({
-				value: 'mockSecondVal2',
+				updated: 'mockSecondVal2',
 				modules: 'mockSecondVal1'
 			})
 		})
@@ -326,7 +326,7 @@ describe('Dashboard Actions', () => {
 
 		return actionReply.promise.then(finalResponse => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResponse).toEqual({ value: 'mockVal' })
+			expect(finalResponse).toEqual({ updated: 'mockVal' })
 		})
 	})
 
@@ -342,7 +342,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryResponse' })
+			json: () => ({ updated: 'mockSecondaryResponse' })
 		})
 
 		expect(actionReply).toEqual({
@@ -355,7 +355,7 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
 
 			expect(finalResponse).toEqual({
-				value: 'mockSecondaryResponse'
+				updated: 'mockSecondaryResponse'
 			})
 		})
 	}
@@ -399,7 +399,7 @@ describe('Dashboard Actions', () => {
 
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockCollectionList' })
+			json: () => ({ updated: 'mockCollectionList' })
 		})
 
 		expect(actionReply).toEqual({
@@ -410,7 +410,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expectGetMyCollectionsCalled()
 
-			expect(finalResponse).toEqual({ value: 'mockCollectionList' })
+			expect(finalResponse).toEqual({ updated: 'mockCollectionList' })
 		})
 	})
 
@@ -435,7 +435,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryResponse' })
+			json: () => ({ updated: 'mockSecondaryResponse' })
 		})
 
 		expect(actionReply).toEqual({
@@ -448,7 +448,7 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
 
 			expect(finalResponse).toEqual({
-				value: 'mockSecondaryResponse'
+				updated: 'mockSecondaryResponse'
 			})
 		})
 	}
@@ -552,7 +552,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryResponse' })
+			json: () => ({ updated: 'mockSecondaryResponse' })
 		})
 
 		expect(actionReply).toEqual({
@@ -565,7 +565,7 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
 
 			expect(finalResponse).toEqual({
-				value: 'mockSecondaryResponse'
+				updated: 'mockSecondaryResponse'
 			})
 		})
 	}
@@ -721,7 +721,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -733,7 +733,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
 			expectGetCollectionsForModuleCalled()
-			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+			expect(finalResponse).toEqual({ updated: 'mockSecondaryPermissionsVal' })
 		})
 	})
 
@@ -752,7 +752,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -764,7 +764,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
 			expectGetCollectionsForModuleCalled()
-			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+			expect(finalResponse).toEqual({ updated: 'mockSecondaryPermissionsVal' })
 		})
 	})
 
@@ -843,7 +843,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -858,7 +858,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expectGetModulesForCollectionCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+			expect(finalResponse).toEqual({ updated: 'mockSecondaryPermissionsVal' })
 		})
 	})
 	test('collectionAddModule returns the expected output and calls other functions with options', () => {
@@ -878,7 +878,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -893,7 +893,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expectGetModulesForCollectionCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+			expect(finalResponse).toEqual({ updated: 'mockSecondaryPermissionsVal' })
 		})
 	})
 
@@ -909,7 +909,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -924,7 +924,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expectGetModulesForCollectionCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+			expect(finalResponse).toEqual({ updated: 'mockSecondaryPermissionsVal' })
 		})
 	})
 	test('collectionRemoveModule returns the expected output and calls other functions with options', () => {
@@ -944,7 +944,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -959,7 +959,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expectGetModulesForCollectionCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResponse).toEqual({ value: 'mockSecondaryPermissionsVal' })
+			expect(finalResponse).toEqual({ updated: 'mockSecondaryPermissionsVal' })
 		})
 	})
 
@@ -977,7 +977,7 @@ describe('Dashboard Actions', () => {
 		)
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryPermissionsVal' })
+			json: () => ({ updated: 'mockSecondaryPermissionsVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -1028,7 +1028,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondReturnVal' })
+			json: () => ({ updated: 'mockSecondReturnVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -1044,7 +1044,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResult => {
 			expectGetMyCollectionsCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResult).toEqual({ value: 'mockSecondReturnVal' })
+			expect(finalResult).toEqual({ updated: 'mockSecondReturnVal' })
 		})
 	})
 	test('renameCollection returns the expected output and calls other functions correctly with options', () => {
@@ -1059,7 +1059,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondReturnVal' })
+			json: () => ({ updated: 'mockSecondReturnVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -1075,7 +1075,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResult => {
 			expectGetMyCollectionsCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResult).toEqual({ value: 'mockSecondReturnVal' })
+			expect(finalResult).toEqual({ updated: 'mockSecondReturnVal' })
 		})
 	})
 
@@ -1091,7 +1091,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondReturnVal' })
+			json: () => ({ updated: 'mockSecondReturnVal' })
 		})
 
 		expect(actionReply).toEqual({
@@ -1102,7 +1102,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResult => {
 			expectGetMyCollectionsCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
-			expect(finalResult).toEqual({ value: 'mockSecondReturnVal' })
+			expect(finalResult).toEqual({ updated: 'mockSecondReturnVal' })
 		})
 	})
 
@@ -1290,7 +1290,7 @@ describe('Dashboard Actions', () => {
 
 	test('importModuleFile calls an alert if provided an invalid file', () => {
 		// this test expects mockfilereader to be undefined but it gets
-		// a value in the previous tests so it is set to undefined again
+		// a updated in the previous tests so it is set to undefined again
 		mockFileReader = undefined
 
 		const actionReply = DashboardActions.importModuleFile()
@@ -1318,7 +1318,7 @@ describe('Dashboard Actions', () => {
 		createElementCopy.onchange(mockChangeEvent)
 
 		// if global.FileReader were called mockFileReader would be
-		// assigned a value again and it's expect() would fail
+		// assigned a updated again and it's expect() would fail
 		expect(global.FileReader).toHaveBeenCalledTimes(0)
 		expect(global.alert).toHaveBeenCalledTimes(1)
 		expect(mockFileReader).toBeUndefined()
@@ -1353,7 +1353,7 @@ describe('Dashboard Actions', () => {
 		]
 
 		const mockFetchJSON = jest.fn(() => ({
-			value: mockRevisionHistoryList
+			updated: mockRevisionHistoryList
 		}))
 
 		const mockFetchResponse = {
@@ -1450,8 +1450,8 @@ describe('Dashboard Actions', () => {
 
 		const mockFetchJSON = jest
 			.fn()
-			.mockResolvedValueOnce({ value: mockRevisionHistoryList1 })
-			.mockResolvedValueOnce({ value: mockRevisionHistoryList2 })
+			.mockResolvedValueOnce({ updated: mockRevisionHistoryList1 })
+			.mockResolvedValueOnce({ updated: mockRevisionHistoryList2 })
 
 		const mockFetchResponse = {
 			...standardFetchResponse,
@@ -1570,8 +1570,8 @@ describe('Dashboard Actions', () => {
 
 		const mockFetchJSON = jest
 			.fn()
-			.mockResolvedValueOnce({ value: mockRevisionHistoryList1 })
-			.mockResolvedValueOnce({ value: mockRevisionHistoryList2 })
+			.mockResolvedValueOnce({ updated: mockRevisionHistoryList1 })
+			.mockResolvedValueOnce({ updated: mockRevisionHistoryList2 })
 
 		const mockFetchResponse = {
 			...standardFetchResponse,
@@ -1621,7 +1621,7 @@ describe('Dashboard Actions', () => {
 			rel="next"`)
 
 		const mockFetchJSON = jest.fn(() => ({
-			value: []
+			updated: []
 		}))
 
 		const mockFetchResponse = {
@@ -1674,20 +1674,20 @@ describe('Dashboard Actions', () => {
 			.fn()
 			// first call: get full json of target revision
 			.mockResolvedValueOnce({
-				value: {
+				updated: {
 					json: 'mockDraftJSONString'
 				}
 			})
 			//second call: save the full json as a new draft
 			.mockResolvedValueOnce({
-				value: {
+				updated: {
 					id: 'mockDraftId3'
 				},
 				status: 'ok'
 			})
 			//third call: get the revision history of the given draft
 			.mockResolvedValueOnce({
-				value: mockRevisionHistoryList
+				updated: mockRevisionHistoryList
 			})
 		const mockHeadersGet = jest.fn()
 
@@ -1773,13 +1773,13 @@ describe('Dashboard Actions', () => {
 			.fn()
 			// first call: get full json of target revision
 			.mockResolvedValueOnce({
-				value: {
+				updated: {
 					json: { id: 'mockDraftJSONString' }
 				}
 			})
 			//second call: save the full json as a new draft
 			.mockResolvedValueOnce({
-				value: {
+				updated: {
 					id: 'mockDraftId3'
 				},
 				status: 'not ok'
@@ -1841,7 +1841,7 @@ describe('Dashboard Actions', () => {
 			...standardFetchResponse,
 			json: jest.fn(() => ({
 				status: 'ok',
-				value: { ...mockLock }
+				updated: { ...mockLock }
 			}))
 		}
 
@@ -1901,7 +1901,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryResponse' })
+			json: () => ({ updated: 'mockSecondaryResponse' })
 		})
 
 		expect(actionReply).toEqual({
@@ -1914,7 +1914,7 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).toHaveBeenCalledWith('/api/drafts-deleted', defaultFetchOptions)
 
 			expect(finalResponse).toEqual({
-				value: 'mockSecondaryResponse'
+				updated: 'mockSecondaryResponse'
 			})
 		})
 	})
@@ -1930,7 +1930,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryResponse' })
+			json: () => ({ updated: 'mockSecondaryResponse' })
 		})
 
 		expect(actionReply).toEqual({
@@ -1941,7 +1941,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
 			expect(global.fetch).not.toHaveBeenCalled()
-			expect(finalResponse).toEqual({ value: 'mockVal' })
+			expect(finalResponse).toEqual({ updated: 'mockVal' })
 		})
 	})
 
@@ -1956,7 +1956,7 @@ describe('Dashboard Actions', () => {
 		})
 		global.fetch.mockReset()
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondaryResponse' })
+			json: () => ({ updated: 'mockSecondaryResponse' })
 		})
 
 		expect(actionReply).toEqual({
@@ -1967,7 +1967,7 @@ describe('Dashboard Actions', () => {
 		return actionReply.promise.then(finalResponse => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
 			expect(global.fetch).not.toHaveBeenCalled()
-			expect(finalResponse).toEqual({ value: 'mockVal' })
+			expect(finalResponse).toEqual({ updated: 'mockVal' })
 		})
 	})
 
@@ -1999,7 +1999,7 @@ describe('Dashboard Actions', () => {
 		global.fetch.mockReset()
 		// two additional API calls are made following the first
 		global.fetch.mockResolvedValueOnce({
-			json: () => ({ value: 'mockSecondVal1' })
+			json: () => ({ updated: 'mockSecondVal1' })
 		})
 
 		expect(actionReply).toEqual({
@@ -2012,7 +2012,7 @@ describe('Dashboard Actions', () => {
 			expect(global.fetch).toHaveBeenCalledWith(secondaryLookupUrl, defaultFetchOptions)
 
 			expect(finalResponse).toEqual({
-				value: 'mockSecondVal1'
+				updated: 'mockSecondVal1'
 			})
 		})
 	}

@@ -15,7 +15,7 @@ const QuestionUtil = {
 		sendResponseImmediately = true
 	) {
 		return Dispatcher.trigger('question:setResponse', {
-			value: {
+			updated: {
 				id,
 				response,
 				targetId,
@@ -29,7 +29,7 @@ const QuestionUtil = {
 
 	sendResponse(id, context) {
 		return Dispatcher.trigger('question:sendResponse', {
-			value: {
+			updated: {
 				id,
 				context
 			}
@@ -38,7 +38,7 @@ const QuestionUtil = {
 
 	forceSendAllResponsesForContext(context) {
 		return Dispatcher.trigger('question:forceSendAllResponses', {
-			value: {
+			updated: {
 				context
 			}
 		})
@@ -46,26 +46,26 @@ const QuestionUtil = {
 
 	clearResponse(id, context) {
 		return Dispatcher.trigger('question:clearResponse', {
-			value: {
+			updated: {
 				id,
 				context
 			}
 		})
 	},
 
-	setData(id, context, key, value) {
+	setData(id, context, key, updated) {
 		return Dispatcher.trigger('question:setData', {
-			value: {
+			updated: {
 				context,
 				key: id + ':' + key,
-				value
+				updated
 			}
 		})
 	},
 
 	clearData(id, context, key) {
 		return Dispatcher.trigger('question:clearData', {
-			value: {
+			updated: {
 				context,
 				key: id + ':' + key
 			}
@@ -74,19 +74,19 @@ const QuestionUtil = {
 
 	showExplanation(id, context) {
 		return Dispatcher.trigger('question:showExplanation', {
-			value: { id, context }
+			updated: { id, context }
 		})
 	},
 
 	hideExplanation(id, context, actor) {
 		return Dispatcher.trigger('question:hideExplanation', {
-			value: { id, context, actor }
+			updated: { id, context, actor }
 		})
 	},
 
 	viewQuestion(id, context) {
 		return Dispatcher.trigger('question:view', {
-			value: {
+			updated: {
 				id,
 				context
 			}
@@ -95,7 +95,7 @@ const QuestionUtil = {
 
 	hideQuestion(id, context) {
 		return Dispatcher.trigger('question:hide', {
-			value: {
+			updated: {
 				id,
 				context
 			}
@@ -104,7 +104,7 @@ const QuestionUtil = {
 
 	submitResponse(id, context) {
 		return Dispatcher.trigger('question:submitResponse', {
-			value: {
+			updated: {
 				id,
 				context
 			}
@@ -113,7 +113,7 @@ const QuestionUtil = {
 
 	checkAnswer(id, context) {
 		return Dispatcher.trigger('question:checkAnswer', {
-			value: {
+			updated: {
 				id,
 				context
 			}
@@ -122,7 +122,7 @@ const QuestionUtil = {
 
 	retryQuestion(id, context) {
 		return Dispatcher.trigger('question:retry', {
-			value: {
+			updated: {
 				id,
 				context
 			}
@@ -131,7 +131,7 @@ const QuestionUtil = {
 
 	revealAnswer(id, context) {
 		return Dispatcher.trigger('question:revealAnswer', {
-			value: {
+			updated: {
 				id,
 				context
 			}
@@ -140,7 +140,7 @@ const QuestionUtil = {
 
 	setScore(itemId, score, details, feedbackText, detailedText, context) {
 		return Dispatcher.trigger('question:scoreSet', {
-			value: {
+			updated: {
 				itemId,
 				score,
 				details,
@@ -153,7 +153,7 @@ const QuestionUtil = {
 
 	clearScore(itemId, context) {
 		return Dispatcher.trigger('question:scoreClear', {
-			value: {
+			updated: {
 				itemId,
 				context
 			}

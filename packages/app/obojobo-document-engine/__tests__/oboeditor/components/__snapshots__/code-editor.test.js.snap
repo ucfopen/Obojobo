@@ -22,7 +22,7 @@ exports[`CodeEditor CodeEditor component before loading 1`] = `
         onChange={[Function]}
         onKeyDown={[Function]}
         placeholder="Module Title"
-        value="Mock Title"
+        updated="Mock Title"
       />
     </div>
   </div>
@@ -30,8 +30,8 @@ exports[`CodeEditor CodeEditor component before loading 1`] = `
 </div>
 `;
 
-exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"editor--components--editor-title-input-parent\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"Module Title\\" maxlength=\\"300\\" aria-label=\\"Rename Module \\" aria-invalid=\\"false\\" value=\\"Mock Title\\"></div></div>Codemirror</div>"`;
+exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"editor--components--editor-title-input-parent\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"Module Title\\" maxlength=\\"300\\" aria-label=\\"Rename Module \\" aria-invalid=\\"false\\" updated=\\"Mock Title\\"></div></div>Codemirror</div>"`;
 
-exports[`CodeEditor can not change the Editor title to blank 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"editor--components--editor-title-input-parent\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"Module Title\\" maxlength=\\"300\\" aria-label=\\"Rename Module . Module title must not be empty.\\" aria-invalid=\\"true\\" value=\\"	\\"><div class=\\"empty-title-warning\\">Module title can not be empty!</div></div></div>Codemirror</div>"`;
+exports[`CodeEditor can not change the Editor title to blank 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"editor--components--editor-title-input-parent\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"Module Title\\" maxlength=\\"300\\" aria-label=\\"Rename Module . Module title must not be empty.\\" aria-invalid=\\"true\\" updated=\\"	\\"><div class=\\"empty-title-warning\\">Module title can not be empty!</div></div></div>Codemirror</div>"`;
 
-exports[`CodeEditor changes the Editor title 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"editor--components--editor-title-input-parent\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"Module Title\\" maxlength=\\"300\\" aria-label=\\"Rename Module \\" aria-invalid=\\"false\\" value=\\"mock new title\\"></div></div>Codemirror</div>"`;
+exports[`CodeEditor changes the Editor title 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"editor--components--editor-title-input-parent\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"Module Title\\" maxlength=\\"300\\" aria-label=\\"Rename Module \\" aria-invalid=\\"false\\" updated=\\"mock new title\\"></div></div>Codemirror</div>"`;

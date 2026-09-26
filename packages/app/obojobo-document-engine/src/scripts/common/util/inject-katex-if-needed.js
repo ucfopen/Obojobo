@@ -1,6 +1,6 @@
 import insertDomTag from './insert-dom-tag'
 
-const injectKatexIfNeeded = async ({ value: draftModel }) => {
+const injectKatexIfNeeded = async ({ updated: draftModel }) => {
 	// DETECT LATEX USAGE
 	// LATEX can be in seen in 2 places
 	// HTML allows div with a classname of 'latex' to render latex

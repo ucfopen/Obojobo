@@ -108,7 +108,7 @@ describe('StyleRange', () => {
 		expect(item.compareToRange(0, 6)).toBe(StyleRange.INSIDE_RIGHT)
 	})
 
-	test('compareToRange only looks at one value if not given to', () => {
+	test('compareToRange only looks at one updated if not given to', () => {
 		const item = new StyleRange(5, 10, 'mockType', 17)
 
 		expect(item.compareToRange(0)).toBe(StyleRange.AFTER)

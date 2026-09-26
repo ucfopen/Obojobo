@@ -278,7 +278,7 @@ describe('Materia Editor Node', () => {
 		expect(ModalUtil.hide).toHaveBeenCalled()
 	})
 
-	test('changeProperties sets the width and height to given value if valid', () => {
+	test('changeProperties sets the width and height to given updated if valid', () => {
 		const props = {
 			// mock slate element
 			element: {

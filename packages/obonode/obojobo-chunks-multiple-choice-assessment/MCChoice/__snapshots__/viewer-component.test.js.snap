@@ -18,7 +18,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -51,7 +51,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -84,7 +84,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -117,7 +117,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -150,7 +150,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -183,7 +183,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -216,7 +216,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -249,7 +249,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -282,7 +282,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -326,7 +326,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -370,7 +370,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -403,7 +403,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -436,7 +436,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -469,7 +469,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -502,7 +502,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -535,7 +535,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -568,7 +568,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -601,7 +601,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -634,7 +634,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -667,7 +667,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -700,7 +700,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -744,7 +744,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -788,7 +788,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -821,7 +821,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -854,7 +854,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -894,7 +894,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -927,7 +927,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -967,7 +967,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1007,7 +1007,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1047,7 +1047,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1080,7 +1080,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1120,7 +1120,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1153,7 +1153,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1204,7 +1204,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1255,7 +1255,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1295,7 +1295,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1328,7 +1328,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1361,7 +1361,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1394,7 +1394,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1427,7 +1427,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1460,7 +1460,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1493,7 +1493,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1526,7 +1526,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1559,7 +1559,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1592,7 +1592,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1636,7 +1636,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -1680,7 +1680,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1713,7 +1713,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1746,7 +1746,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1779,7 +1779,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1812,7 +1812,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1845,7 +1845,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1878,7 +1878,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1911,7 +1911,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1944,7 +1944,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -1977,7 +1977,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2010,7 +2010,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -2054,7 +2054,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -2098,7 +2098,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2131,7 +2131,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2164,7 +2164,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2197,7 +2197,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2230,7 +2230,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2270,7 +2270,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2310,7 +2310,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2343,7 +2343,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2376,7 +2376,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2409,7 +2409,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2442,7 +2442,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -2493,7 +2493,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -2544,7 +2544,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2577,7 +2577,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-all",questionTyp
     onChange={[Function]}
     role="checkbox"
     type="checkbox"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2610,7 +2610,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2643,7 +2643,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2676,7 +2676,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2709,7 +2709,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2742,7 +2742,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2775,7 +2775,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2808,7 +2808,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2841,7 +2841,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2874,7 +2874,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -2918,7 +2918,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -2962,7 +2962,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -2995,7 +2995,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3028,7 +3028,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3061,7 +3061,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3094,7 +3094,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3127,7 +3127,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3160,7 +3160,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3193,7 +3193,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3226,7 +3226,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3259,7 +3259,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3292,7 +3292,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -3336,7 +3336,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -3380,7 +3380,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3413,7 +3413,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3446,7 +3446,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3486,7 +3486,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3519,7 +3519,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3559,7 +3559,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3599,7 +3599,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3639,7 +3639,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3672,7 +3672,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3712,7 +3712,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3745,7 +3745,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -3796,7 +3796,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -3847,7 +3847,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3887,7 +3887,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3920,7 +3920,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3953,7 +3953,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -3986,7 +3986,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4019,7 +4019,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4052,7 +4052,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4085,7 +4085,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4118,7 +4118,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4151,7 +4151,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4184,7 +4184,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -4228,7 +4228,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -4272,7 +4272,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4305,7 +4305,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4338,7 +4338,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4371,7 +4371,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4404,7 +4404,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4437,7 +4437,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4470,7 +4470,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4503,7 +4503,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4536,7 +4536,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4569,7 +4569,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4602,7 +4602,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -4646,7 +4646,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -4690,7 +4690,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4723,7 +4723,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4756,7 +4756,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4789,7 +4789,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4822,7 +4822,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4862,7 +4862,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4902,7 +4902,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4935,7 +4935,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -4968,7 +4968,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -5001,7 +5001,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -5034,7 +5034,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -5085,7 +5085,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <span
     className="for-screen-reader-only"
@@ -5136,7 +5136,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"
@@ -5169,7 +5169,7 @@ exports[`MCChoice viewer-component construct(responseType="pick-one",questionTyp
     onChange={[Function]}
     role="radio"
     type="radio"
-    value="mock-id"
+    updated="mock-id"
   />
   <div
     className="children"

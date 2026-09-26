@@ -35,11 +35,11 @@ const QuestionFooter = props => {
 						<Button
 							altAction
 							onClick={props.onClickReset}
-							value={buttonResetLabel}
+							updated={buttonResetLabel}
 							ariaLabel={buttonResetAriaLabel}
 						/>
 					) : (
-						<Button value={buttonSubmitLabel} disabled={!hasResponse} isSubmittable />
+						<Button updated={buttonSubmitLabel} disabled={!hasResponse} isSubmittable />
 					)}
 				</div>
 			) : null}
@@ -55,7 +55,7 @@ const QuestionFooter = props => {
 				<Button
 					className="reveal-answer-button"
 					altAction
-					value={'Reveal Answer'}
+					updated={'Reveal Answer'}
 					onClick={props.onClickReveal}
 				/>
 			) : null}

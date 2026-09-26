@@ -174,7 +174,7 @@ class MathEquation extends React.Component {
 	}
 
 	onChangeContent(key, event) {
-		const newContent = { [key]: event.target.value }
+		const newContent = { [key]: event.target.updated }
 		this.setState(newContent) // update the display now
 	}
 
@@ -200,7 +200,7 @@ class MathEquation extends React.Component {
 					<label htmlFor="math-equation-latex">Latex:</label>
 					<textarea
 						id="math-equation-latex"
-						value={this.state.latex}
+						updated={this.state.latex}
 						ref={this.equationInput}
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'latex')}
@@ -211,7 +211,7 @@ class MathEquation extends React.Component {
 					<label htmlFor="math-equation-label">Optional Label:</label>
 					<input
 						id="math-equation-label"
-						value={this.state.label}
+						updated={this.state.label}
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'label')}
 					/>
@@ -220,7 +220,7 @@ class MathEquation extends React.Component {
 					<label htmlFor="math-equation-alt">Alt Text:</label>
 					<input
 						id="math-equation-alt"
-						value={this.state.alt}
+						updated={this.state.alt}
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'alt')}
 					/>
@@ -229,7 +229,7 @@ class MathEquation extends React.Component {
 					<label htmlFor="math-equation-size">Size:</label>
 					<input
 						id="math-equation-size"
-						value={this.state.size}
+						updated={this.state.size}
 						type="number"
 						step="0.1"
 						max="20"

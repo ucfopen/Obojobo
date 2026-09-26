@@ -52,7 +52,7 @@
 		"stylelint": "^15.10.0",
 		"stylelint-config-standard": "^21.0.0",
 		"stylelint-config-standard-scss": "^10.0.0",
-		"stylelint-declaration-strict-value": "^1.9.2"
+		"stylelint-declaration-strict-updated": "^1.9.2"
 	},
 	"bin": {
 		"obojobo-migrate": "./bin/obojobo-migrate"

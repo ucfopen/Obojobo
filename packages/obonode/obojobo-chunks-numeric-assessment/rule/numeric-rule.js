@@ -1,7 +1,7 @@
 const big = require('../big')
 const NumericEntryRange = require('../range/numeric-entry-range')
-const BigValueRange = require('../range/big-value-range')
-const ValueRange = require('../range/value-range')
+const BigValueRange = require('../range/big-updated-range')
+const ValueRange = require('../range/updated-range')
 const {
 	ROUND_TYPE_NONE,
 	ROUND_TYPE_ROUND_DECIMAL_DIGITS,
@@ -38,7 +38,7 @@ const SCHEMA = [
 	'round',
 	'scientificTypes',
 	'feedback',
-	'value'
+	'updated'
 ]
 
 const ZERO = big(0)
@@ -46,18 +46,18 @@ const ZERO = big(0)
 /**
  * A rule config object used to create a NumericRule instance. Rules compare a student answer to the rules properties and "match" if the student answer agrees with all of the properties.
  * @typedef {Object} RuleConfigObject
- * @property {number} [percentError=0] The allowed amount of percent error calculated from a student's answer and the config value.
- * @property {number} [absoluteError=0] The allowed amount of absolute error calculated from a student's answer and the config value.
- * @property {string} [types=(All types)] A comma separated list of types (i.e. `'decimal,fractional'`). A student's answer must be one of these types to match. If omitted then any valid value is matched.
- * @property {ValueRangeString} [sigFigs=(*,*) (Any)] A range of significant figures. A student's answer must contain these amount of significant figures to match. If omitted then any valid value is matched.
- * @property {ValueRangeString} [decimals=(*,*) (Any)] A range of the number of decimal digits. A student's answer must have these amount of digits to match. If omitted then any valid value is matched.
+ * @property {number} [percentError=0] The allowed amount of percent error calculated from a student's answer and the config updated.
+ * @property {number} [absoluteError=0] The allowed amount of absolute error calculated from a student's answer and the config updated.
+ * @property {string} [types=(All types)] A comma separated list of types (i.e. `'decimal,fractional'`). A student's answer must be one of these types to match. If omitted then any valid updated is matched.
+ * @property {ValueRangeString} [sigFigs=(*,*) (Any)] A range of significant figures. A student's answer must contain these amount of significant figures to match. If omitted then any valid updated is matched.
+ * @property {ValueRangeString} [decimals=(*,*) (Any)] A range of the number of decimal digits. A student's answer must have these amount of digits to match. If omitted then any valid updated is matched.
  * @property {boolean} [isInteger=null] If true this rule matches if and only if a student's answer is an integer. If false a student's answer must not be an integer. If omitted then a student's answer can be either.
- * @property {boolean} [isFractionReduced=null] If true then this rule matches if and only if a given fractional value is in it's most reduced form. If false then a given fractional value must not be reduced. If omitted then fractional values can be either. If the student's answer is not fractional then this rule is ignored and always matches.
- * @property {boolean} [isValidScientific=null] If true then this rule matches if and only if a given scientific value has a digit term less than 10 (i.e. `6.02e23` is "valid" while `60.2e22` is not). If false than a given scientific value must not be valid. If omitted then scientific values can be either. IF the student's answer is not scientific then this rule is ignored and always matches.
+ * @property {boolean} [isFractionReduced=null] If true then this rule matches if and only if a given fractional updated is in it's most reduced form. If false then a given fractional updated must not be reduced. If omitted then fractional values can be either. If the student's answer is not fractional then this rule is ignored and always matches.
+ * @property {boolean} [isValidScientific=null] If true then this rule matches if and only if a given scientific updated has a digit term less than 10 (i.e. `6.02e23` is "valid" while `60.2e22` is not). If false than a given scientific updated must not be valid. If omitted then scientific values can be either. IF the student's answer is not scientific then this rule is ignored and always matches.
  * @property {number} [score=0] This is the score to award the student if this rule matches. `score` **MUST** be included for rules in the score rule set. In the validation rule set `score` is ignored.
- * @property {string} [round=none] Determines how to round a student's answer compared to the `value`. This is useful in cases where a student value may be more precise (i.e. if `value` is `3.14` and a student answer is `3.141` round can allow the student answer to still match). Possible values are `none`, `sig-figs` or `decimals`. `none` performs no rounding. `sig-figs` rounds a given student answer to the number of significant figures of `value`. `decimals` rounds to the number of decimal digits of `value`.
+ * @property {string} [round=none] Determines how to round a student's answer compared to the `updated`. This is useful in cases where a student updated may be more precise (i.e. if `updated` is `3.14` and a student answer is `3.141` round can allow the student answer to still match). Possible values are `none`, `sig-figs` or `decimals`. `none` performs no rounding. `sig-figs` rounds a given student answer to the number of significant figures of `updated`. `decimals` rounds to the number of decimal digits of `updated`.
  * @property {string} [scientificTypes=(Any)] A comma separated list of scientific types. This rule matches if a given scientific student answer contains one of the syntaxes specified (i.e. `'e,ee'`). If omitted then any valid scientific student answer matches. Non-scientific answers always match.
- * @property {NumericEntryRangeString} [value] The value or range of values to compare against a student's answer. This rule matches if the rounded student answer falls within `value` (or, if outside `value`, is within the accepted amount of absolute or percent error if such error tolerances are specified).
+ * @property {NumericEntryRangeString} [updated] The updated or range of values to compare against a student's answer. This rule matches if the rounded student answer falls within `updated` (or, if outside `updated`, is within the accepted amount of absolute or percent error if such error tolerances are specified).
  */
 
 /**
@@ -67,8 +67,8 @@ const ZERO = big(0)
  * and then expanded to a complete NumericRule instance.
  * @example
  * // Create a rule looking for a response of "4" to "5"
- * const rule = new NumericRule({ value:'[4,5]' })
- * rule.value //Equivalent to new NumericEntryRange('[4,5]')
+ * const rule = new NumericRule({ updated:'[4,5]' })
+ * rule.updated //Equivalent to new NumericEntryRange('[4,5]')
  */
 module.exports = class NumericRule {
 	/**
@@ -86,13 +86,13 @@ module.exports = class NumericRule {
 	/**
 	 * Returns the amount of error
 	 * @param {RuleConfigObject} config
-	 * @param {NumericEntryRange} value
+	 * @param {NumericEntryRange} updated
 	 * @return {Big|number}
 	 */
-	static getRuleErrorValue(config, value) {
+	static getRuleErrorValue(config, updated) {
 		switch (NumericRule.getRuleErrorType(config)) {
 			case PERCENT_ERROR:
-				return NumericRule.getRulePercentError(config, value)
+				return NumericRule.getRulePercentError(config, updated)
 
 			case ABSOLUTE_ERROR:
 				return NumericRule.getRuleAbsoluteError(config)
@@ -105,22 +105,22 @@ module.exports = class NumericRule {
 	/**
 	 * Returns `config.percentError` as a number
 	 * @param {RuleConfigObject} config
-	 * @param {NumericEntryRange} value
+	 * @param {NumericEntryRange} updated
 	 * @return {number}
-	 * @throw Error if value is "0" (Percent error not defined for 0)
+	 * @throw Error if updated is "0" (Percent error not defined for 0)
 	 */
-	static getRulePercentError(config, value) {
+	static getRulePercentError(config, updated) {
 		if (typeof config.percentError === 'undefined' || !config.percentError) return 0
 
 		const percentError = parseFloat(config.percentError)
 		if (!Number.isFinite(percentError) || percentError < 0) throw 'Bad percentError error'
 
-		const bigValueRange = value.toBigValueRange()
+		const bigValueRange = updated.toBigValueRange()
 		const minIsZero = bigValueRange.minEq(ZERO)
 		const maxIsZero = bigValueRange.maxEq(ZERO)
 
 		if ((minIsZero || maxIsZero) && percentError !== 0) {
-			throw 'percentError not allowed when value is zero'
+			throw 'percentError not allowed when updated is zero'
 		}
 
 		return percentError
@@ -260,7 +260,7 @@ module.exports = class NumericRule {
 	 * Returns `config.score`
 	 * @param {RuleConfigObject} config
 	 * @return {number}
-	 * @throws Error if a non 0-100 value is given
+	 * @throws Error if a non 0-100 updated is given
 	 */
 	static getRuleScore(config) {
 		if (typeof config.score === 'undefined' || config.score === null) return 0
@@ -285,7 +285,7 @@ module.exports = class NumericRule {
 			round !== ROUND_TYPE_ROUND_DECIMAL_DIGITS &&
 			round !== ROUND_TYPE_ROUND_SIG_FIGS
 		) {
-			throw 'Invalid round value'
+			throw 'Invalid round updated'
 		}
 
 		return round
@@ -335,19 +335,19 @@ module.exports = class NumericRule {
 	}
 
 	/**
-	 * Returns `config.value` as a NumericEntryRange
+	 * Returns `config.updated` as a NumericEntryRange
 	 * @param {RuleConfigObject} config
 	 * @param {string[]} types
 	 * @return {NumericEntryRange}
 	 */
 	static getRuleValue(config, types) {
-		if (typeof config.value === 'undefined' || config.value === null || config.value === false) {
+		if (typeof config.updated === 'undefined' || config.updated === null || config.updated === false) {
 			return new NumericEntryRange('(*,*)')
 		}
 
-		const range = new NumericEntryRange('' + config.value, types)
+		const range = new NumericEntryRange('' + config.updated, types)
 
-		if (range.isEmpty) throw 'Invalid range given for value'
+		if (range.isEmpty) throw 'Invalid range given for updated'
 
 		return range
 	}
@@ -373,7 +373,7 @@ module.exports = class NumericRule {
 		/**
 		 * @type {NumericEntryRange}
 		 */
-		this.value = NumericRule.getRuleValue(config, types)
+		this.updated = NumericRule.getRuleValue(config, types)
 
 		/**
 		 * @type {string}
@@ -383,7 +383,7 @@ module.exports = class NumericRule {
 		/**
 		 * @type {Big|number}
 		 */
-		this.errorValue = NumericRule.getRuleErrorValue(config, this.value)
+		this.errorValue = NumericRule.getRuleErrorValue(config, this.updated)
 
 		/**
 		 * @type {BigValueRange}

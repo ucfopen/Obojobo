@@ -68,23 +68,23 @@ class RubricModal extends React.Component {
 	}
 
 	onChangeState(event) {
-		const { name, value } = event.target
+		const { name, updated } = event.target
 
 		const content = { ...this.state.content }
-		content[name] = value
+		content[name] = updated
 
 		this.setState({ ...content })
 	}
 
 	changeScoreType(typeName, event) {
 		const content = {}
-		content[typeName] = event.target.value
+		content[typeName] = event.target.updated
 
 		this.setState({ ...content })
 	}
 
 	changeRubricType(event) {
-		const type = event.target.value
+		const type = event.target.updated
 		this.setState({ ...this.state.content, type })
 	}
 
@@ -145,7 +145,7 @@ class RubricModal extends React.Component {
 							<input
 								type="radio"
 								name="score-type"
-								value={AssessmentRubric.TYPE_HIGHEST}
+								updated={AssessmentRubric.TYPE_HIGHEST}
 								checked={this.state.type === AssessmentRubric.TYPE_HIGHEST}
 								onChange={this.changeRubricType}
 								onClick={stopPropagation}
@@ -156,7 +156,7 @@ class RubricModal extends React.Component {
 							<input
 								type="radio"
 								name="score-type"
-								value={AssessmentRubric.TYPE_PASS_FAIL}
+								updated={AssessmentRubric.TYPE_PASS_FAIL}
 								checked={this.state.type === AssessmentRubric.TYPE_PASS_FAIL}
 								onChange={this.changeRubricType}
 								onClick={stopPropagation}
@@ -181,7 +181,7 @@ class RubricModal extends React.Component {
 										min="0"
 										max="100"
 										name="passingAttemptScore"
-										value={this.state.passingAttemptScore}
+										updated={this.state.passingAttemptScore}
 										onChange={this.onChangeState}
 										onClick={stopPropagation}
 										onFocus={this.freezeEditor}
@@ -199,7 +199,7 @@ class RubricModal extends React.Component {
 											<input
 												type="radio"
 												id="attempt-score"
-												value={AssessmentRubric.VAR_ATTEMPT_SCORE}
+												updated={AssessmentRubric.VAR_ATTEMPT_SCORE}
 												checked={this.state.passedType === AssessmentRubric.VAR_ATTEMPT_SCORE}
 												onChange={this.passedType}
 											/>
@@ -208,22 +208,22 @@ class RubricModal extends React.Component {
 									</div>
 
 									<div>
-										<label htmlFor="specified-value">
+										<label htmlFor="specified-updated">
 											<input
 												type="radio"
-												id="specified-value"
-												value={AssessmentRubric.SET_VALUE}
+												id="specified-updated"
+												updated={AssessmentRubric.SET_VALUE}
 												checked={this.state.passedType === AssessmentRubric.SET_VALUE}
 												onChange={this.passedType}
 											/>
-											Specified value:
+											Specified updated:
 										</label>
 										<input
 											type="number"
 											min="0"
 											max="100"
 											name="passedResult"
-											value={this.state.passedResult}
+											updated={this.state.passedResult}
 											onClick={stopPropagation}
 											onChange={this.onChangeState}
 											disabled={this.state.passedType !== AssessmentRubric.SET_VALUE}
@@ -242,7 +242,7 @@ class RubricModal extends React.Component {
 											<input
 												type="radio"
 												id="set-score-to-attempt-score"
-												value={AssessmentRubric.VAR_ATTEMPT_SCORE}
+												updated={AssessmentRubric.VAR_ATTEMPT_SCORE}
 												checked={this.state.failedType === AssessmentRubric.VAR_ATTEMPT_SCORE}
 												onChange={this.failedType}
 											/>
@@ -255,7 +255,7 @@ class RubricModal extends React.Component {
 											<input
 												type="radio"
 												id="dont-set-score"
-												value={AssessmentRubric.NO_SCORE}
+												updated={AssessmentRubric.NO_SCORE}
 												checked={this.state.failedType === AssessmentRubric.NO_SCORE}
 												onChange={this.failedType}
 											/>
@@ -264,22 +264,22 @@ class RubricModal extends React.Component {
 									</div>
 
 									<div>
-										<label htmlFor="set-score-to-specific-value">
+										<label htmlFor="set-score-to-specific-updated">
 											<input
 												type="radio"
-												id="set-score-to-specific-value"
-												value={AssessmentRubric.SET_VALUE}
+												id="set-score-to-specific-updated"
+												updated={AssessmentRubric.SET_VALUE}
 												checked={this.state.failedType === AssessmentRubric.SET_VALUE}
 												onChange={this.failedType}
 											/>
-											Set the assessment score to specified value
+											Set the assessment score to specified updated
 										</label>
 										<input
 											type="number"
 											min="0"
 											max="100"
 											name="failedResult"
-											value={this.state.failedResult}
+											updated={this.state.failedResult}
 											onClick={stopPropagation}
 											onChange={this.onChangeState}
 											disabled={this.state.failedType !== AssessmentRubric.SET_VALUE}
@@ -295,11 +295,11 @@ class RubricModal extends React.Component {
 									</p>
 
 									<div>
-										<label htmlFor="out-of-attempts-no-value">
+										<label htmlFor="out-of-attempts-no-updated">
 											<input
 												type="radio"
-												id="out-of-attempts-no-value"
-												value={AssessmentRubric.NO_VALUE}
+												id="out-of-attempts-no-updated"
+												updated={AssessmentRubric.NO_VALUE}
 												checked={this.state.unableToPassType === AssessmentRubric.NO_VALUE}
 												onChange={this.unableToPassType}
 											/>
@@ -312,7 +312,7 @@ class RubricModal extends React.Component {
 											<input
 												type="radio"
 												id="out-of-attempts-highest-attempt-score"
-												value={AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE}
+												updated={AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE}
 												checked={
 													this.state.unableToPassType === AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE
 												}
@@ -327,7 +327,7 @@ class RubricModal extends React.Component {
 											<input
 												type="radio"
 												id="out-of-attempts-no-score"
-												value={AssessmentRubric.NO_SCORE}
+												updated={AssessmentRubric.NO_SCORE}
 												checked={this.state.unableToPassType === AssessmentRubric.NO_SCORE}
 												onChange={this.unableToPassType}
 											/>
@@ -336,22 +336,22 @@ class RubricModal extends React.Component {
 									</div>
 
 									<div>
-										<label htmlFor="out-of-attempts-set-value">
+										<label htmlFor="out-of-attempts-set-updated">
 											<input
 												type="radio"
-												id="out-of-attempts-set-value"
-												value={AssessmentRubric.SET_VALUE}
+												id="out-of-attempts-set-updated"
+												updated={AssessmentRubric.SET_VALUE}
 												checked={this.state.unableToPassType === AssessmentRubric.SET_VALUE}
 												onChange={this.unableToPassType}
 											/>
-											Set the assessment score to specified value
+											Set the assessment score to specified updated
 										</label>
 										<input
 											type="number"
 											min="0"
 											max="100"
 											name="unableToPassResult"
-											value={this.state.unableToPassResult || 0}
+											updated={this.state.unableToPassResult || 0}
 											onClick={stopPropagation}
 											onChange={this.onChangeState}
 											disabled={this.state.unableToPassType !== AssessmentRubric.SET_VALUE}

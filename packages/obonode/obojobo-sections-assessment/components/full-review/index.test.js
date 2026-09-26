@@ -38,7 +38,7 @@ const questionJSON = {
 						textGroup: [
 							{
 								text: {
-									value: 'Example text'
+									updated: 'Example text'
 								}
 							}
 						]
@@ -70,7 +70,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text'
+													updated: 'Example Text'
 												}
 											}
 										]
@@ -89,7 +89,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text 2'
+													updated: 'Example Text 2'
 												}
 											}
 										]
@@ -117,7 +117,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text 3'
+													updated: 'Example Text 3'
 												}
 											}
 										]
@@ -136,7 +136,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text 4'
+													updated: 'Example Text 4'
 												}
 											}
 										]
@@ -169,7 +169,7 @@ const assessmentJSON = {
 						textGroup: [
 							{
 								text: {
-									value:
+									updated:
 										'You have {{assessment:attemptsRemaining}} attempts remaining out of {{assessment:attemptsAmount}}.'
 								}
 							}

@@ -73,7 +73,7 @@ describe('range-parsing', () => {
 		expect(tryGetParsedFloat('56.78')).toBe(56.78)
 	})
 
-	test('tryGetParsedFloat replaces value with replaceDict', () => {
+	test('tryGetParsedFloat replaces updated with replaceDict', () => {
 		expect(
 			tryGetParsedFloat('replace-me-too', {
 				'replace-me': 1234,
@@ -88,7 +88,7 @@ describe('range-parsing', () => {
 		).toBe(21)
 	})
 
-	test('tryGetParsedFloat returns value if value is included in nonParsedValues', () => {
+	test('tryGetParsedFloat returns updated if updated is included in nonParsedValues', () => {
 		expect(tryGetParsedFloat(null, null, [null])).toBe(null)
 		expect(tryGetParsedFloat('50', null, ['50'])).toBe('50')
 
@@ -99,7 +99,7 @@ describe('range-parsing', () => {
 		expect(tryGetParsedFloat(null, null, [null, undefined])).toBe(null)
 	})
 
-	test('tryGetParsedFloat allows nonParsedValues to be a single value rather than an array', () => {
+	test('tryGetParsedFloat allows nonParsedValues to be a single updated rather than an array', () => {
 		expect(tryGetParsedFloat(null, null, [null])).toBe(tryGetParsedFloat(null, null, null))
 		expect(tryGetParsedFloat('50', null, ['50'])).toBe(tryGetParsedFloat('50', null, '50'))
 		expect(tryGetParsedFloat('50', { '50': 'fifty' }, ['fifty'])).toBe(
@@ -107,7 +107,7 @@ describe('range-parsing', () => {
 		)
 	})
 
-	test('tryGetParsedFloat will throw an error if the value can not be parsed', () => {
+	test('tryGetParsedFloat will throw an error if the updated can not be parsed', () => {
 		expect(tryGetParsedFloat.bind(null, null)).toThrow(
 			'Unable to parse "null": Got "NaN" - Unsure how to proceed'
 		)
@@ -119,7 +119,7 @@ describe('range-parsing', () => {
 		)
 	})
 
-	test('isValueInRange returns if value is within a given range', () => {
+	test('isValueInRange returns if updated is within a given range', () => {
 		expect(isValueInRange(50, getParsedRange('50'))).toBe(true)
 		expect(isValueInRange(50, getParsedRange('(50,51)'))).toBe(false)
 		expect(isValueInRange(50, getParsedRange('[50,51]'))).toBe(true)

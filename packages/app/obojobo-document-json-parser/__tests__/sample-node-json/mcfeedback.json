@@ -8,7 +8,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -27,7 +27,7 @@
 							"indent": 0
 						},
 						"text": {
-							"value": "Here is some detailed information about the incorrect answer",
+							"updated": "Here is some detailed information about the incorrect answer",
 							"styleList": []
 						}
 					}

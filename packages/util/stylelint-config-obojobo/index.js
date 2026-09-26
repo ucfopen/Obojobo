@@ -1,6 +1,6 @@
 module.exports = {
 	"extends": "stylelint-config-standard-scss",
-	"plugins": ["stylelint-declaration-strict-value"],
+	"plugins": ["stylelint-declaration-strict-updated"],
 	"rules": {
 		"at-rule-no-unknown": [
 			true,
@@ -17,7 +17,7 @@ module.exports = {
 			}
 		],
 		"color-hex-length": "long",
-		"scale-unlimited/declaration-strict-value": [["/color/", "font-family"]],
+		"scale-unlimited/declaration-strict-updated": [["/color/", "font-family"]],
 
 		// all below are new rule configurations following the jump to version 15
 		// consider overhauling all of the styles to validate against the defaults for these rules
@@ -26,7 +26,7 @@ module.exports = {
 		"color-function-notation": "legacy",
 		"media-feature-range-notation": "prefix",
 		"property-no-vendor-prefix": null,
-		"alpha-value-notation": "number",
+		"alpha-updated-notation": "number",
 		"declaration-block-no-redundant-longhand-properties": null,
 		"number-max-precision": 10,
 		"no-invalid-position-at-import-rule": null,

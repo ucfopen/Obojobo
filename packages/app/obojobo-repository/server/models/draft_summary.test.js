@@ -102,7 +102,7 @@ describe('DraftSummary Model', () => {
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
-			drafts_metadata.value AS read_only,
+			drafts_metadata.updated AS read_only,
 			${selectSQL}
 			'visual' AS editor
 		FROM drafts
@@ -601,7 +601,7 @@ describe('DraftSummary Model', () => {
 			expectQueryToMatch(query, fetchAllDraftRevisionsQuery)
 			expect(options).toEqual({
 				afterVersionId: null,
-				count: 101, //maximum count value is 100, plus one
+				count: 101, //maximum count updated is 100, plus one
 				draftId: 'mockDraftId'
 			})
 		})

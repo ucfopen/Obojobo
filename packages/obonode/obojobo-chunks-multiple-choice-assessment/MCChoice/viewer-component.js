@@ -103,7 +103,7 @@ const MCChoice = props => {
 		>
 			<input
 				type={inputType}
-				value={props.model.get('id')}
+				updated={props.model.get('id')}
 				checked={isSelected}
 				onChange={/* istanbul ignore next */ () => {}} // for react to not complain
 				name={props.model.parent.get('id')}

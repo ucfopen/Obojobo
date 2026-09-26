@@ -232,8 +232,8 @@ AssessmentRubric.VAR_ATTEMPT_SCORE = '$attempt_score'
 AssessmentRubric.VAR_LAST_ATTEMPT = '$last_attempt'
 
 AssessmentRubric.NO_SCORE = 'no-score'
-AssessmentRubric.NO_VALUE = 'no-value'
-AssessmentRubric.SET_VALUE = 'set-value'
+AssessmentRubric.NO_VALUE = 'no-updated'
+AssessmentRubric.SET_VALUE = 'set-updated'
 // AssessmentRubric.VAR_CLOSE_DATE = '$close_date'
 
 module.exports = AssessmentRubric

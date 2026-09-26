@@ -35,7 +35,7 @@ const getTextItemsForMods = (mods, totalNumberOfAttemptsAllowed) => {
 		return {
 			type: parseInt(mod.reward, 10) >= 0 ? 'extra-credit' : 'penalty',
 			text: getModText(mod.attemptCondition, totalNumberOfAttemptsAllowed),
-			value: getDisplayFriendlyScore(Math.abs(mod.reward))
+			updated: getDisplayFriendlyScore(Math.abs(mod.reward))
 		}
 	})
 }

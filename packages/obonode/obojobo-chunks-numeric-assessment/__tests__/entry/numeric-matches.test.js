@@ -163,7 +163,7 @@ describe('NumericMatches', () => {
 		expect(matches.getInstance('typeExactShort')).toBe(null)
 	})
 
-	test('getStatus returns the expected status value', () => {
+	test('getStatus returns the expected status updated', () => {
 		const matches = new NumericMatches()
 		const mockExactShort = new NumericClasses.TypeExactShort()
 		const mockExactShort2 = new NumericClasses.TypeExactSameLengthAsShort()

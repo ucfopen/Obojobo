@@ -38,9 +38,9 @@ describe('HybridInputSelect', () => {
 
 		let input = component.root.findByProps({ type: 'text' })
 		act(() => {
-			input.props.onChange({ target: { value: 'mock-search-string' } })
+			input.props.onChange({ target: { updated: 'mock-search-string' } })
 		})
-		expect(input.props.value).toBe('mock-search-string')
+		expect(input.props.updated).toBe('mock-search-string')
 
 		// With onChange prop
 		mockProps = { ...mockProps, onChange: jest.fn() }
@@ -48,12 +48,12 @@ describe('HybridInputSelect', () => {
 
 		input = component.root.findByProps({ type: 'text' })
 		act(() => {
-			input.props.onChange({ target: { value: 'mock-search-string' } })
+			input.props.onChange({ target: { updated: 'mock-search-string' } })
 		})
-		expect(input.props.value).toBe('mock-search-string')
+		expect(input.props.updated).toBe('mock-search-string')
 	})
 
-	test("clicking on an element sets input value to element's text", () => {
+	test("clicking on an element sets input updated to element's text", () => {
 		const mockProps = {
 			placeholder: 'Mock placeholder',
 			list: ['mock-student-one', 'mock-student-two', 'mock-student-three'],
@@ -64,7 +64,7 @@ describe('HybridInputSelect', () => {
 		// Populating input so that the dropdown opens
 		const input = component.root.findByProps({ type: 'text' })
 		act(() => {
-			input.props.onChange({ target: { value: 'mock' } })
+			input.props.onChange({ target: { updated: 'mock' } })
 		})
 
 		// Selecting an element from the dropdown
@@ -73,6 +73,6 @@ describe('HybridInputSelect', () => {
 			element.props.onClick('mock-student-one')
 		})
 
-		expect(input.props.value).toBe('mock-student-one')
+		expect(input.props.updated).toBe('mock-student-one')
 	})
 })

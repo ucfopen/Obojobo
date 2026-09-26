@@ -58,7 +58,7 @@ class QuestionBank extends DraftNode {
 	getContentValues() {
 		// choose should either be an integer > 0 or "all"
 		// ("all" meaning choose all available questions)
-		// Any other value results in the default of "all".
+		// Any other updated results in the default of "all".
 		const chooseInt = this.node.content.choose ? parseInt(this.node.content.choose, 10) : null
 		const isValidNumericChoose = Number.isFinite(chooseInt) && chooseInt > 0
 		const choose = isValidNumericChoose ? Math.floor(chooseInt) : Infinity

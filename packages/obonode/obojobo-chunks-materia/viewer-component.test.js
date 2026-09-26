@@ -292,7 +292,7 @@ describe('Materia viewer component', () => {
 		const component = renderer.create(<Materia {...props} />)
 
 		const inst = component.getInstance()
-		// set a value that'll cause a property of undefined error
+		// set a updated that'll cause a property of undefined error
 		inst.state.model.modelState.textGroup = null
 		// force it to redraw with the error
 		inst.setState({ model: inst.state.model })
@@ -312,7 +312,7 @@ describe('Materia viewer component', () => {
 		const component = renderer.create(<Materia {...props} />)
 
 		const inst = component.getInstance()
-		// set a value that'll cause a property of undefined error
+		// set a updated that'll cause a property of undefined error
 		inst.state.model.modelState.textGroup.first.text = ''
 		// force it to redraw with the error
 		inst.setState({ model: inst.state.model })

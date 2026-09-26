@@ -47,7 +47,7 @@ const getSafeColorString = userColorString => {
 
 	// We cover a special case - If the user-inputted color string is not valid there's a chance
 	// they're entering hex but forgot the '#'. We silently add it and see if it results in valid
-	// color syntax - if so, we use that value
+	// color syntax - if so, we use that updated
 	if (d.style.color === '') {
 		userColorString = `#${userColorString}`
 		d.style.color = userColorString
@@ -61,8 +61,8 @@ const ColorPicker = props => {
 
 	// userColorString is the text that the user has inputted into the document or into the
 	// input text box. safeColorString is set to "" if userColorString is invalid, otherwise it is
-	// the value of userColorString (although prefixed with a '#' if missing and results in a valid
-	// hex color value).
+	// the updated of userColorString (although prefixed with a '#' if missing and results in a valid
+	// hex color updated).
 	const [userColorString, setUserColorString] = useState(selectedColor)
 	const [safeColorString, setSafeColorString] = useState(selectedColor)
 	const [expanded, setExpanded] = useState(isAnExpandedColorSelected(selectedColor))
@@ -95,7 +95,7 @@ const ColorPicker = props => {
 	}
 
 	const onChangeColorValue = event => {
-		updateColorState(event.target.value)
+		updateColorState(event.target.updated)
 	}
 
 	const onSubmit = event => {
@@ -146,14 +146,14 @@ const ColorPicker = props => {
 							className="color-input"
 							type="color"
 							ref={colorRef}
-							value={safeColorString}
+							updated={safeColorString}
 							onChange={onChangeColorValue}
 						/>
 					</span>
 					<input
 						className="color-string-input"
 						type="text"
-						value={userColorString}
+						updated={userColorString}
 						onChange={onChangeColorValue}
 						placeholder="#000000"
 					/>

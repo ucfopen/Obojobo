@@ -43,7 +43,7 @@ class ModProperties extends React.Component {
 	}
 
 	onChangeReward(index, event) {
-		const reward = event.target.value
+		const reward = event.target.updated
 		this.setState(
 			prevState => ({
 				mods: prevState.mods.map((mod, listIndex) =>
@@ -57,7 +57,7 @@ class ModProperties extends React.Component {
 	}
 
 	onChangeLower(index, event) {
-		const lower = event.target.value
+		const lower = event.target.updated
 		const range = getParsedRange(this.state.mods[index].attemptCondition)
 		const attemptCondition = '[' + lower + ',' + range.max + ']'
 		this.setState(
@@ -73,7 +73,7 @@ class ModProperties extends React.Component {
 	}
 
 	onChangeUpper(index, event) {
-		const upper = event.target.value
+		const upper = event.target.updated
 		const range = getParsedRange(this.state.mods[index].attemptCondition)
 		const attemptCondition = '[' + range.min + ',' + upper + ']'
 		this.setState(
@@ -128,7 +128,7 @@ class ModProperties extends React.Component {
 						const upperRange =
 							this.props.attempts === 'unlimited' ? 20 : parseInt(this.props.attempts, 10) + 1
 
-						// Safely wrap string values like $last_attempt as the highest value
+						// Safely wrap string values like $last_attempt as the highest updated
 						const lower = parseInt(range.min, 10)
 						const lowerVal = isNaN(lower) ? upperRange : lower
 						const upper = parseInt(range.max, 10)
@@ -151,14 +151,14 @@ class ModProperties extends React.Component {
 								<div className="slider-inputs">
 									<input
 										type="text"
-										value={range.min}
+										updated={range.min}
 										className="min-input"
 										onChange={this.onChangeLower.bind(this, index)}
 									/>
 									through
 									<input
 										type="text"
-										value={range.max}
+										updated={range.max}
 										className="max-input"
 										onChange={this.onChangeUpper.bind(this, index)}
 									/>
@@ -169,7 +169,7 @@ class ModProperties extends React.Component {
 										type="number"
 										min="-100"
 										max="100"
-										value={mod.reward}
+										updated={mod.reward}
 										onChange={this.onChangeReward.bind(this, index)}
 									/>
 									%

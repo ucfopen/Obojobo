@@ -37,7 +37,7 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 		const listLine = {
 			// text must follow TextUtil's formatting, sytyleList required here
 			// but don't confuse it with our list's styleList. NOT for bullet styles
-			text: { value: '', styleList: [] },
+			text: { updated: '', styleList: [] },
 			data: { indent: currLevel }
 		}
 
@@ -400,7 +400,7 @@ const switchType = {
 		}, Infinity)
 
 		list.forEach(([child, childPath]) => {
-			childPath.forEach((value, index) => {
+			childPath.forEach((updated, index) => {
 				// No changes are needed on the ListLine itself
 				if (index === childPath.length - 1) return
 

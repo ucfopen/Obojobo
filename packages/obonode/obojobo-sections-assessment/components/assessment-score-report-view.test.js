@@ -7,7 +7,7 @@ const TYPE_TEXT = 'text'
 const TYPE_DIV = 'divider'
 const TYPE_EXTRA_CRED = 'extra-credit'
 const TYPE_PENALTY = 'penalty'
-const TYPE_VAL = 'value'
+const TYPE_VAL = 'updated'
 const TYPE_TOTAL = 'total'
 const VAL_DID_NOT_PASS = 'Did Not Pass'
 
@@ -52,19 +52,19 @@ describe('AssessmentScoreReportView', () => {
 				},
 				{
 					type: TYPE_EXTRA_CRED,
-					value: '5'
+					updated: '5'
 				},
 				{
 					type: TYPE_PENALTY,
-					value: '5'
+					updated: '5'
 				},
 				{
 					type: TYPE_VAL,
-					value: '100'
+					updated: '100'
 				},
 				{
 					type: TYPE_TOTAL,
-					value: '100'
+					updated: '100'
 				}
 			],
 			scoreChangeDescription: 'mockDescription'
@@ -81,7 +81,7 @@ describe('AssessmentScoreReportView', () => {
 			textItems: [
 				{
 					type: TYPE_VAL,
-					value: VAL_DID_NOT_PASS
+					updated: VAL_DID_NOT_PASS
 				}
 			],
 			scoreChangeDescription: 'mockDescription'

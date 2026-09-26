@@ -301,7 +301,7 @@ describe('AssessmentDialog renders as expected', () => {
 			}
 		}
 		Object.defineProperty(window, 'location', {
-			value: { reload: jest.fn() }
+			updated: { reload: jest.fn() }
 		})
 
 		expect(window.location.reload).not.toHaveBeenCalled()

@@ -172,7 +172,7 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 	return assessmentquestionUsesMap
 }
 
-// When a question has been used, we will increment the value
+// When a question has been used, we will increment the updated
 // pointed to by the node's id in our usedMap.
 const initAssessmentUsedQuestions = (chosenAssessment, usedQuestionMap) => {
 	for (const node of chosenAssessment) {

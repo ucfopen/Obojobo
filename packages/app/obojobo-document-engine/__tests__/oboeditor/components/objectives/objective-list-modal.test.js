@@ -120,11 +120,11 @@ describe('Objective List Modal', () => {
 
 		// Writing mock label and description so that confirmation is allowed
 		component.find('input#objective-label').simulate('change', {
-			target: { value: 'mock-label' }
+			target: { updated: 'mock-label' }
 		})
 
 		component.find('input#objective-input').simulate('change', {
-			target: { value: 'mock-description' }
+			target: { updated: 'mock-description' }
 		})
 
 		// Actual testing starts here
@@ -206,11 +206,11 @@ describe('Objective List Modal', () => {
 
 		// Writing mock label and description so that confirmation is allowed
 		component.find('input#objective-label').simulate('change', {
-			target: { value: 'mock-label' }
+			target: { updated: 'mock-label' }
 		})
 
 		component.find('input#objective-input').simulate('change', {
-			target: { value: 'mock-description' }
+			target: { updated: 'mock-description' }
 		})
 
 		// Confirming edit
@@ -278,7 +278,7 @@ describe('Objective List Modal', () => {
 		const component = mount(<ObjectiveListModal {...props} />)
 
 		component.find(`input#${objectiveId}`).simulate('change', {
-			target: { value: 'mock-label' }
+			target: { updated: 'mock-label' }
 		})
 
 		expect(component).toMatchSnapshot()
@@ -302,7 +302,7 @@ describe('Objective List Modal', () => {
 		const component = mount(<ObjectiveListModal {...props} />)
 
 		component.find(`input#${objectiveId}`).simulate('change', {
-			target: { value: 'mock-label' }
+			target: { updated: 'mock-label' }
 		})
 
 		expect(component).toMatchSnapshot()

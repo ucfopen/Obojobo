@@ -8,7 +8,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -21,7 +21,7 @@
 					"indent": 0
 				},
 				"text": {
-					"value": "One Item",
+					"updated": "One Item",
 					"styleList": []
 				}
 			},
@@ -30,7 +30,7 @@
 					"indent": 0
 				},
 				"text": {
-					"value": "Another Item",
+					"updated": "Another Item",
 					"styleList": []
 				}
 			},
@@ -39,7 +39,7 @@
 					"indent": 0
 				},
 				"text": {
-					"value": "A Third Item",
+					"updated": "A Third Item",
 					"styleList": []
 				}
 			}

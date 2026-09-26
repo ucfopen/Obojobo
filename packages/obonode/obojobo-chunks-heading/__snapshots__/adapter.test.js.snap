@@ -22,7 +22,7 @@ Object {
           "styleList": ChunkStyleList {
             "styles": Array [],
           },
-          "value": "example text",
+          "updated": "example text",
         },
       },
     ],
@@ -53,7 +53,7 @@ Object {
           "styleList": ChunkStyleList {
             "styles": Array [],
           },
-          "value": "",
+          "updated": "",
         },
       },
     ],
@@ -76,7 +76,7 @@ Object {
         },
         "text": Object {
           "styleList": null,
-          "value": "example text",
+          "updated": "example text",
         },
       },
     ],

@@ -48,7 +48,7 @@ describe('ModalStore', () => {
 	test('modal:show calls ModalStore._show', () => {
 		const spy = jest.spyOn(ModalStore, '_show')
 
-		Dispatcher.trigger('modal:show', { value: 'mockValue' })
+		Dispatcher.trigger('modal:show', { updated: 'mockValue' })
 
 		expect(ModalStore._show).toHaveBeenCalledWith('mockValue')
 
@@ -61,7 +61,7 @@ describe('ModalStore', () => {
 		// Mock document.activeElement:
 		const origActiveElement = document.activeElement
 		Object.defineProperty(document, 'activeElement', {
-			value: mockEl,
+			updated: mockEl,
 			enumerable: true,
 			configurable: true
 		})
@@ -83,7 +83,7 @@ describe('ModalStore', () => {
 
 		// Restore overrides:
 		Object.defineProperty(document, 'activeElement', {
-			value: origActiveElement
+			updated: origActiveElement
 		})
 		document.body.contains = origBodyContains
 	})
@@ -94,7 +94,7 @@ describe('ModalStore', () => {
 		// Mock document.activeElement:
 		const origActiveElement = document.activeElement
 		Object.defineProperty(document, 'activeElement', {
-			value: mockEl,
+			updated: mockEl,
 			enumerable: true,
 			configurable: true
 		})
@@ -115,7 +115,7 @@ describe('ModalStore', () => {
 
 		// Restore overrides:
 		Object.defineProperty(document, 'activeElement', {
-			value: origActiveElement
+			updated: origActiveElement
 		})
 		document.body.contains = origBodyContains
 	})

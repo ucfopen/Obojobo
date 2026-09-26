@@ -123,7 +123,7 @@ exports[`Button shouldPreventTab 1`] = `
 </div>
 `;
 
-exports[`Button with empty string value 1`] = `
+exports[`Button with empty string updated 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-center"
   contentEditable={false}
@@ -138,7 +138,7 @@ exports[`Button with empty string value 1`] = `
 </div>
 `;
 
-exports[`Button with null value 1`] = `
+exports[`Button with null updated 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-center"
   contentEditable={false}
@@ -153,7 +153,7 @@ exports[`Button with null value 1`] = `
 </div>
 `;
 
-exports[`Button with value 1`] = `
+exports[`Button with updated 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-center"
   contentEditable={false}
@@ -163,7 +163,7 @@ exports[`Button with value 1`] = `
     contentEditable={false}
     type="button"
   >
-    child value
+    child updated
   </button>
 </div>
 `;

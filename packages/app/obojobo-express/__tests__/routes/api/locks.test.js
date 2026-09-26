@@ -67,7 +67,7 @@ describe('Route api/locks', () => {
 				expect(response.statusCode).toBe(200)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mockLockReturn')
+				expect(response.body).toHaveProperty('updated', 'mockLockReturn')
 				expect(EditLock.fetchByDraftId).toHaveBeenCalledTimes(1)
 				expect(EditLock.fetchByDraftId).toHaveBeenCalledWith('mock-draft-id')
 			})
@@ -114,8 +114,8 @@ describe('Route api/locks', () => {
 				expect(response.statusCode).toBe(401)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'You do not have the required access level to edit this module.'
 				)
@@ -134,7 +134,7 @@ describe('Route api/locks', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body).toHaveProperty(
-					'value.message',
+					'updated.message',
 					'Someone else is currently editing this module.'
 				)
 			})
@@ -153,7 +153,7 @@ describe('Route api/locks', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body).toHaveProperty(
-					'value.message',
+					'updated.message',
 					'Someone else is currently editing this module.'
 				)
 			})
@@ -171,8 +171,8 @@ describe('Route api/locks', () => {
 				expect(response.statusCode).toBe(403)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'Draft has been updated by someone else.'
 				)
@@ -191,8 +191,8 @@ describe('Route api/locks', () => {
 				expect(response.statusCode).toBe(500)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'Unexpected error while creating edit lock.'
 				)

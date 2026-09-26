@@ -8,19 +8,19 @@ describe('DraftsMetadata Model', () => {
 	const mockRawDraftsMetadata = {
 		draft_id: 'mockDraftId',
 		key: 'key',
-		value: 'value'
+		updated: 'updated'
 	}
 
 	const mockRawDraftMetadataMultiple = [
 		{
 			draft_id: 'mockDraftId1',
 			key: 'key',
-			value: 'value1'
+			updated: 'value1'
 		},
 		{
 			draft_id: 'mockDraftId2',
 			key: 'key',
-			value: 'value2'
+			updated: 'value2'
 		}
 	]
 
@@ -30,7 +30,7 @@ describe('DraftsMetadata Model', () => {
 		expect(draftMetadata.createdAt).toBeUndefined()
 		expect(draftMetadata.updatedAt).toBeUndefined()
 		expect(draftMetadata.key).toBe('key')
-		expect(draftMetadata.value).toBe(`value${number}`)
+		expect(draftMetadata.updated).toBe(`updated${number}`)
 	}
 
 	beforeEach(() => {
@@ -59,11 +59,11 @@ describe('DraftsMetadata Model', () => {
 		// Trying to match whitespace with the query that's actually running
 		const query = `
 				INSERT INTO
-					drafts_metadata (draft_id, key, value)
+					drafts_metadata (draft_id, key, updated)
 				VALUES
-					($[draftId], $[key], $[value])
+					($[draftId], $[key], $[updated])
 				ON CONFLICT (draft_id, key) DO UPDATE SET
-					value = $[value],
+					updated = $[updated],
 					updated_at = 'now()'
 				`
 
@@ -213,11 +213,11 @@ describe('DraftsMetadata Model', () => {
 		const query = `
 			SELECT *
 			FROM drafts_metadata
-			WHERE key = $[key] AND value = $[value]
+			WHERE key = $[key] AND updated = $[updated]
 			`
 
 		return DraftsMetadata.getByKeyAndValue('metaKey', 'metaValue').then(res => {
-			expect(db.manyOrNone).toHaveBeenCalledWith(query, { key: 'metaKey', value: 'metaValue' })
+			expect(db.manyOrNone).toHaveBeenCalledWith(query, { key: 'metaKey', updated: 'metaValue' })
 			expect(res.length).toBe(2)
 			expectMatchesRawMock(res[0], 1)
 			expectMatchesRawMock(res[1], 2)
@@ -234,11 +234,11 @@ describe('DraftsMetadata Model', () => {
 		const query = `
 			SELECT *
 			FROM drafts_metadata
-			WHERE key = $[key] AND value = $[value]
+			WHERE key = $[key] AND updated = $[updated]
 			`
 
 		return DraftsMetadata.getByKeyAndValue('metaKey', 'metaValue').then(res => {
-			expect(db.manyOrNone).toHaveBeenCalledWith(query, { key: 'metaKey', value: 'metaValue' })
+			expect(db.manyOrNone).toHaveBeenCalledWith(query, { key: 'metaKey', updated: 'metaValue' })
 			expect(res).toBe(null)
 		})
 	})

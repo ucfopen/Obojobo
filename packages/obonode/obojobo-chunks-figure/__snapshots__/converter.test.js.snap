@@ -25,7 +25,7 @@ Object {
     "textGroup": Array [
       Object {
         "text": Object {
-          "value": "mockCaption",
+          "updated": "mockCaption",
         },
       },
     ],
@@ -52,7 +52,7 @@ Object {
               "type": "b",
             },
           ],
-          "value": "mockText",
+          "updated": "mockText",
         },
       },
     ],

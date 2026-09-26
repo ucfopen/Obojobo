@@ -18,7 +18,7 @@ const eeScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?ee[-+]?[0-9]+$/
 const aposScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?'[-+]?[0-9]+$/
 
 /**
- * Object representing the terms of a Scientific value
+ * Object representing the terms of a Scientific updated
  * @typedef {Object} ScientificTermsObject
  * @property {Big} bigDigit
  * @property {Big} bigExponential
@@ -76,7 +76,7 @@ module.exports = class Scientific extends Numeric {
 
 	/**
 	 * Gets details about an answer string.
-	 * @param {string} str A potential string representation of a scientific value
+	 * @param {string} str A potential string representation of a scientific updated
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
 	 * Scientific.parse("6.02e23") //{ matchType:'exact', valueString:'6.02e23' }
@@ -150,7 +150,7 @@ module.exports = class Scientific extends Numeric {
 	}
 
 	/**
-	 * Returns a scientific notation string for a given Big value
+	 * Returns a scientific notation string for a given Big updated
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
@@ -214,7 +214,7 @@ module.exports = class Scientific extends Numeric {
 	}
 
 	/**
-	 * Determine if the digit portion of a scientific value is less than 10
+	 * Determine if the digit portion of a scientific updated is less than 10
 	 * @param {string} valueString
 	 * @return {boolean}
 	 * @example

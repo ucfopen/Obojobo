@@ -40,31 +40,31 @@ class ImageProperties extends React.Component {
 	}
 
 	handleAltTextChange(event) {
-		const alt = event.target.value
+		const alt = event.target.updated
 
 		this.setState({ alt })
 	}
 
 	handleCaptionWidthChange(event) {
-		const captionWidth = event.target.value
+		const captionWidth = event.target.updated
 
 		this.setState({ captionWidth })
 	}
 
 	handleWidthTextChange(event) {
-		const width = event.target.value
+		const width = event.target.updated
 
 		this.setState({ width })
 	}
 
 	handleHeightTextChange(event) {
-		const height = event.target.value
+		const height = event.target.updated
 
 		this.setState({ height })
 	}
 
 	onCheckSize(event) {
-		const size = event.target.value
+		const size = event.target.updated
 
 		this.setState({
 			size,
@@ -82,7 +82,7 @@ class ImageProperties extends React.Component {
 
 	onCloseChooseImageModal(mediaData) {
 		if (mediaData && mediaData.status === 'error') {
-			this.setState({ error: mediaData.value.message })
+			this.setState({ error: mediaData.updated.message })
 			return
 		}
 
@@ -154,7 +154,7 @@ class ImageProperties extends React.Component {
 						<input
 							type="text"
 							id="obojobo-draft--chunks--figure--alt"
-							value={this.state.alt || ''}
+							updated={this.state.alt || ''}
 							onChange={this.handleAltTextChange}
 							size="50"
 							placeholder="Describe the Image"
@@ -168,16 +168,16 @@ class ImageProperties extends React.Component {
 						</label>
 						<select
 							id="obojobo-draft--chunks--figure--caption-width"
-							value={this.state.captionWidth || ''}
+							updated={this.state.captionWidth || ''}
 							onChange={this.handleCaptionWidthChange}
 							disabled={!isCaptionWidthOptionAvailable}
 						>
 							{isCaptionWidthOptionAvailable ? (
 								<React.Fragment>
-									<option value={ImageCaptionWidthTypes.IMAGE_WIDTH}>
+									<option updated={ImageCaptionWidthTypes.IMAGE_WIDTH}>
 										Restrict caption to the same width as the image
 									</option>
-									<option value={ImageCaptionWidthTypes.TEXT_WIDTH}>
+									<option updated={ImageCaptionWidthTypes.TEXT_WIDTH}>
 										Allow caption to extend past the image width
 									</option>
 								</React.Fragment>
@@ -196,7 +196,7 @@ class ImageProperties extends React.Component {
 								<input
 									type="radio"
 									name="size"
-									value="large"
+									updated="large"
 									id="obojobo-draft--chunks--figure--size-large"
 									checked={size === 'large'}
 									onChange={this.onCheckSize}
@@ -207,7 +207,7 @@ class ImageProperties extends React.Component {
 								<input
 									type="radio"
 									name="size"
-									value="medium"
+									updated="medium"
 									id="obojobo-draft--chunks--figure--size-medium"
 									checked={size === 'medium'}
 									onChange={this.onCheckSize}
@@ -218,7 +218,7 @@ class ImageProperties extends React.Component {
 								<input
 									type="radio"
 									name="size"
-									value="small"
+									updated="small"
 									id="obojobo-draft--chunks--figure--size-small"
 									checked={size === 'small'}
 									onChange={this.onCheckSize}
@@ -229,7 +229,7 @@ class ImageProperties extends React.Component {
 								<input
 									type="radio"
 									name="size"
-									value="custom"
+									updated="custom"
 									id="obojobo-draft--chunks--figure--size-custom"
 									checked={size === 'custom'}
 									onChange={this.onCheckSize}
@@ -246,7 +246,7 @@ class ImageProperties extends React.Component {
 											type="number"
 											placeholder="Width"
 											aria-label="Width in pixels"
-											value={this.state.width || ''}
+											updated={this.state.width || ''}
 											onChange={this.handleWidthTextChange}
 										/>
 										<span>px × </span>
@@ -259,7 +259,7 @@ class ImageProperties extends React.Component {
 											type="number"
 											placeholder="Height"
 											aria-label="Height in pixels"
-											value={this.state.height || ''}
+											updated={this.state.height || ''}
 											onChange={this.handleHeightTextChange}
 										/>
 										<span>px</span>

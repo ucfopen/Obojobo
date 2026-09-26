@@ -53,7 +53,7 @@ class Link extends React.Component {
 			<Prompt
 				title="Edit Link"
 				message="Enter the link url:"
-				value={this.props.element.href}
+				updated={this.props.element.href}
 				onConfirm={this.changeLinkValue}
 			/>
 		)

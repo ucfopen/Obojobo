@@ -12,7 +12,7 @@ describe('Clipboard Util', () => {
 
 	test('EditorNav component clicks Copy URL button', () => {
 		const dummyEL = {
-			value: '',
+			updated: '',
 			setAttribute: jest.fn(),
 			style: {},
 			select: jest.fn()
@@ -24,7 +24,7 @@ describe('Clipboard Util', () => {
 
 		ClipboardUtil.copyToClipboard('testString')
 
-		expect(dummyEL.value).toEqual('testString')
+		expect(dummyEL.updated).toEqual('testString')
 		expect(dummyEL.select).toHaveBeenCalled()
 	})
 })

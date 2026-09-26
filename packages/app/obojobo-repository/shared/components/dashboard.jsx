@@ -617,10 +617,10 @@ function Dashboard(props) {
 	let moduleSortRender = (
 		<div className="repository--main-content--sort repository--module-sort">
 			<span>Sort</span>
-			<select value={moduleSortOrder} onChange={event => setModuleSortOrder(event.target.value)}>
-				<option value="newest">Newest</option>
-				<option value="alphabetical">Alphabetical</option>
-				<option value="last updated">Last updated</option>
+			<select updated={moduleSortOrder} onChange={event => setModuleSortOrder(event.target.updated)}>
+				<option updated="newest">Newest</option>
+				<option updated="alphabetical">Alphabetical</option>
+				<option updated="last updated">Last updated</option>
 			</select>
 		</div>
 	)
@@ -629,7 +629,7 @@ function Dashboard(props) {
 	// Will not be necessary when dashboard is in 'recent' mode
 	let moduleFilterRender = (
 		<Search
-			value={props.moduleSearchString}
+			updated={props.moduleSearchString}
 			placeholder="Filter Modules..."
 			onChange={props.filterModules}
 		/>
@@ -665,7 +665,7 @@ function Dashboard(props) {
 		if (props.myCollections.length > 0) {
 			collectionFilterRender = (
 				<Search
-					value={props.collectionSearchString}
+					updated={props.collectionSearchString}
 					placeholder="Filter Collections..."
 					onChange={props.filterCollections}
 				/>
@@ -679,11 +679,11 @@ function Dashboard(props) {
 					<div className="repository--main-content--sort repository--collection-sort">
 						<span>Sort</span>
 						<select
-							value={collectionSortOrder}
-							onChange={event => setCollectionSortOrder(event.target.value)}
+							updated={collectionSortOrder}
+							onChange={event => setCollectionSortOrder(event.target.updated)}
 						>
-							<option value="newest">Newest</option>
-							<option value="alphabetical">Alphabetical</option>
+							<option updated="newest">Newest</option>
+							<option updated="alphabetical">Alphabetical</option>
 						</select>
 					</div>
 				</div>
@@ -749,8 +749,8 @@ function Dashboard(props) {
 
 		props.createNewModule(useTutorial, createNewModuleOptions).then(data => {
 			setIsLoading(false)
-			data.payload.value.modules.sort(getSortMethod('newest'))
-			setNewModuleId(data.payload.value.modules[0].draftId)
+			data.payload.updated.modules.sort(getSortMethod('newest'))
+			setNewModuleId(data.payload.updated.modules[0].draftId)
 		})
 	}
 

@@ -17,20 +17,20 @@ const scoreReportView = props => (
 	</div>
 )
 
-const getAmountEl = (value, isTotal100 = false) => {
-	if (value === 'Did Not Pass') {
+const getAmountEl = (updated, isTotal100 = false) => {
+	if (updated === 'Did Not Pass') {
 		return <span className="amount is-null">Did Not Pass</span>
 	}
 
 	if (isTotal100) {
 		return (
 			<div className="amount is-number">
-				{value}%<span className="great-job-you-rock">{getRandomGreatJobEmoji()}</span>
+				{updated}%<span className="great-job-you-rock">{getRandomGreatJobEmoji()}</span>
 			</div>
 		)
 	}
 
-	return <span className="amount is-number">{value}%</span>
+	return <span className="amount is-number">{updated}%</span>
 }
 
 const getItemEl = (item, index) => {
@@ -51,7 +51,7 @@ const getItemEl = (item, index) => {
 					<span className="label">
 						<span>Extra-credit</span> - {item.text}
 					</span>
-					{getAmountEl('+' + item.value)}
+					{getAmountEl('+' + item.updated)}
 				</div>
 			)
 
@@ -61,16 +61,16 @@ const getItemEl = (item, index) => {
 					<span className="label">
 						<span>Penalty</span> - {item.text}
 					</span>
-					{getAmountEl('-' + item.value)}
+					{getAmountEl('-' + item.updated)}
 				</div>
 			)
 
-		case 'value':
+		case 'updated':
 		case 'total':
 			return (
 				<div key={index} className={item.type}>
 					<div className="label">{item.text}</div>
-					{getAmountEl(item.value, item.type === 'total' && item.value === '100')}
+					{getAmountEl(item.updated, item.type === 'total' && item.updated === '100')}
 				</div>
 			)
 	}

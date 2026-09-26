@@ -42,7 +42,7 @@ const replaceENVsInJson = originalJson => {
 			// if JSON, recurse to allow env replacement inside json
 			if (isJSON) replacement = replaceENVsInJson(replacement)
 
-			// if the value isnt true, false, or an integer, wrap it with quotes
+			// if the updated isnt true, false, or an integer, wrap it with quotes
 			if (
 				!isJSON &&
 				typeof replacement === 'string' &&

@@ -482,7 +482,7 @@ describe('MCAssessmentViewerComponent', () => {
 			const component = renderer.create(<MCAssessment {...props} />)
 
 			expect(
-				component.getInstance().handleFormChange({ target: { value: idClickedOn } }, prevResponse)
+				component.getInstance().handleFormChange({ target: { updated: idClickedOn } }, prevResponse)
 			).toEqual({
 				state: { ids: newResponseIds },
 				targetId: idClickedOn,

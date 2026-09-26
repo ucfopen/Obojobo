@@ -5,7 +5,7 @@
             <trigger type="onClick">
                 <actions>
                     <action type="viewer:alert">
-                        <value title="test" message="test" />
+                        <updated title="test" message="test" />
                     </action>
                 </actions>
             </trigger>

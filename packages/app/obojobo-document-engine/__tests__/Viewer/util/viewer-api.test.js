@@ -69,7 +69,7 @@ describe('apiutil', () => {
 		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
-				value: 'mockValue'
+				updated: 'mockValue'
 			})
 		})
 
@@ -102,7 +102,7 @@ describe('apiutil', () => {
 		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
-				value: 'mockValue'
+				updated: 'mockValue'
 			})
 		})
 
@@ -134,7 +134,7 @@ describe('apiutil', () => {
 		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
-				value: 'mockValue'
+				updated: 'mockValue'
 			})
 		})
 
@@ -167,7 +167,7 @@ describe('apiutil', () => {
 		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
-				value: 'mockValue'
+				updated: 'mockValue'
 			})
 		})
 
@@ -191,7 +191,7 @@ describe('apiutil', () => {
 		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'not-ok',
-				value: 'mockValue'
+				updated: 'mockValue'
 			})
 		})
 
@@ -214,7 +214,7 @@ describe('apiutil', () => {
 		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'error',
-				value: 'mockValue'
+				updated: 'mockValue'
 			})
 		})
 
@@ -256,7 +256,7 @@ describe('apiutil', () => {
 		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
-				value: 'mockValue'
+				updated: 'mockValue'
 			})
 		})
 

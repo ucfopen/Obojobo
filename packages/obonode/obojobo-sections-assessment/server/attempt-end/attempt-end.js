@@ -73,7 +73,7 @@ const endAttempt = async (req, res) => {
 		assessmentModel,
 		attempt.state,
 		attemptHistory,
-		responsesForAttempt.values().next().value // return the first result. Note: can be undefined
+		responsesForAttempt.values().next().updated // return the first result. Note: can be undefined
 	)
 	logSuccess('getCalculatedScores')
 

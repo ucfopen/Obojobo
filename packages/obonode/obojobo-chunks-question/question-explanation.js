@@ -31,13 +31,13 @@ export default class QuestionExplanation extends React.Component {
 		return (
 			<div className="solution" key="solution">
 				{isShowingExplanation ? (
-					<Button altAction onClick={this.props.onClickHideExplanation} value="Hide Explanation" />
+					<Button altAction onClick={this.props.onClickHideExplanation} updated="Hide Explanation" />
 				) : (
 					<Button
 						className="show-explanation-button"
 						altAction
 						onClick={this.props.onClickShowExplanation}
-						value="Read an explanation of the answer"
+						updated="Read an explanation of the answer"
 					/>
 				)}
 				<CSSTransition

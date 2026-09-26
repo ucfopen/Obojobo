@@ -53,7 +53,7 @@ class NavStore extends Store {
 		Dispatcher.on(
 			{
 				'nav:setContext': payload => {
-					this.state.context = payload.value.context
+					this.state.context = payload.updated.context
 					return this.triggerChange()
 				},
 				'nav:resetContext': () => {
@@ -61,21 +61,21 @@ class NavStore extends Store {
 					return this.triggerChange()
 				},
 				'nav:rebuildMenu': payload => {
-					this.buildMenu(payload.value.model)
+					this.buildMenu(payload.updated.model)
 					this.triggerChange()
 				},
 				'nav:gotoPath': payload => {
 					if (!this.state.isInitialized) {
 						this.pendingTarget = {
 							type: 'path',
-							target: payload.value.path
+							target: payload.updated.path
 						}
 
 						return
 					}
 
 					oldNavTargetId = this.state.navTargetId
-					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
+					if (this.gotoItem(this.state.itemsByPath[payload.updated.path])) {
 						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:gotoPath',
@@ -83,14 +83,14 @@ class NavStore extends Store {
 							visitId: this.state.visitId,
 							payload: {
 								from: oldNavTargetId,
-								to: this.state.itemsByPath[payload.value.path].id
+								to: this.state.itemsByPath[payload.updated.path].id
 							}
 						})
 					}
 				},
 				'nav:setFlag': payload => {
-					const navItem = this.state.itemsById[payload.value.id]
-					navItem.flags[payload.value.flagName] = payload.value.flagValue
+					const navItem = this.state.itemsById[payload.updated.id]
+					navItem.flags[payload.updated.flagName] = payload.updated.flagValue
 					this.triggerChange()
 				},
 				'nav:prev': () => {
@@ -129,27 +129,27 @@ class NavStore extends Store {
 					/* eslint-disable no-undefined */
 					if (
 						payload === undefined ||
-						payload.value === undefined ||
-						payload.value.id === undefined
+						payload.updated === undefined ||
+						payload.updated.id === undefined
 					) {
 						return
 					}
-					if (payload.value.ignoreLock === undefined) payload.value.ignoreLock = true
+					if (payload.updated.ignoreLock === undefined) payload.updated.ignoreLock = true
 					/* eslint-enable no-undefined */
 
-					if (this.state.locked && !payload.value.ignoreLock) return
+					if (this.state.locked && !payload.updated.ignoreLock) return
 
 					if (!this.state.isInitialized) {
 						this.pendingTarget = {
 							type: 'goto',
-							target: payload.value.id
+							target: payload.updated.id
 						}
 
 						return
 					}
 
 					oldNavTargetId = this.state.navTargetId
-					const navItem = this.state.itemsById[payload.value.id]
+					const navItem = this.state.itemsById[payload.updated.id]
 
 					if (!navItem) {
 						this.gotoFirst()
@@ -161,7 +161,7 @@ class NavStore extends Store {
 							visitId: this.state.visitId,
 							payload: {
 								from: oldNavTargetId,
-								to: this.state.itemsById[payload.value.id].id
+								to: this.state.itemsById[payload.updated.id].id
 							}
 						})
 					}
@@ -194,23 +194,23 @@ class NavStore extends Store {
 					this.updateOpenState(!this.state.open)
 				},
 				'nav:openExternalLink': payload => {
-					window.open(payload.value.url)
+					window.open(payload.updated.url)
 					this.triggerChange()
 				},
 				'nav:showChildren': payload => {
-					item = this.state.itemsById[payload.value.id]
+					item = this.state.itemsById[payload.updated.id]
 					item.showChildren = true
 					this.triggerChange()
 				},
 				'nav:hideChildren': payload => {
-					item = this.state.itemsById[payload.value.id]
+					item = this.state.itemsById[payload.updated.id]
 					item.showChildren = false
 					this.triggerChange()
 				},
 				'question:scoreSet': payload => {
-					const navItem = this.state.itemsById[payload.value.id]
+					const navItem = this.state.itemsById[payload.updated.id]
 					if (navItem) {
-						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
+						NavUtil.setFlag(payload.updated.id, 'correct', payload.updated.score === 100)
 					}
 				}
 			},
@@ -229,11 +229,11 @@ class NavStore extends Store {
 			navTargetId: null,
 			locked:
 				viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
-					? Boolean(viewState['nav:isLocked'].value)
+					? Boolean(viewState['nav:isLocked'].updated)
 					: false,
 			open:
 				viewState['nav:isOpen'] !== null && typeof viewState['nav:isOpen'] !== 'undefined'
-					? Boolean(viewState['nav:isOpen'].value)
+					? Boolean(viewState['nav:isOpen'].updated)
 					: true,
 			context: DEFAULT_CONTEXT,
 			visitId,
@@ -317,7 +317,7 @@ class NavStore extends Store {
 		NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter')
 
 		Dispatcher.trigger('nav:targetChanged', {
-			value: {
+			updated: {
 				from: prevNavItemId,
 				to: this.state.navTargetId
 			}

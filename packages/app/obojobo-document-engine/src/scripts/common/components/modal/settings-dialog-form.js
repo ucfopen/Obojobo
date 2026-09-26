@@ -3,17 +3,17 @@ import React, { useEffect, useMemo, useRef } from 'react'
 import Switch from '../switch'
 import 'obojobo-document-engine/src/scripts/common/components/switch.scss'
 
-const renderInput = (item, value, onChange, ref) => {
+const renderInput = (item, updated, onChange, ref) => {
 	const id = `obojobo-draft--settings--item-${item.prop}`
 	switch (item.type) {
 		case 'switch':
-			return <Switch id={id} checked={value === true} onChange={onChange} ref={ref} />
+			return <Switch id={id} checked={updated === true} onChange={onChange} ref={ref} />
 
 		case 'select':
 			return (
-				<select id={id} value={value} onChange={onChange} ref={ref}>
+				<select id={id} updated={updated} onChange={onChange} ref={ref}>
 					{item.options.map(o => (
-						<option key={o.value} value={o.value}>
+						<option key={o.updated} updated={o.updated}>
 							{o.label}
 						</option>
 					))}
@@ -29,7 +29,7 @@ const renderInput = (item, value, onChange, ref) => {
 					max={item.max || Number.POSITIVE_INFINITY}
 					step="1"
 					disabled={item.editable === false}
-					value={value || ''}
+					updated={updated || ''}
 					placeholder={item.placeholder || `${item.label} not set`}
 					onChange={onChange}
 					ref={ref}
@@ -42,7 +42,7 @@ const renderInput = (item, value, onChange, ref) => {
 					type={item.type || 'text'}
 					id={id}
 					disabled={item.editable === false}
-					value={value || ''}
+					updated={updated || ''}
 					placeholder={item.placeholder || `${item.label} not set`}
 					onChange={onChange}
 					ref={ref}

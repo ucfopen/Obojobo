@@ -16,12 +16,12 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
         onChange={[Function]}
       >
         <option
-          value="pick-one"
+          updated="pick-one"
         >
           Pick one correct answer
         </option>
         <option
-          value="pick-all"
+          updated="pick-all"
         >
           Pick all correct answers
         </option>

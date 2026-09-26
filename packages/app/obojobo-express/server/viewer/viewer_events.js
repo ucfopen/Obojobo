@@ -10,9 +10,9 @@ oboEvents.on('client:nav:close', event => {
 	return setNavOpen(event.userId, event.draftId, event.contentId, false, event.visitId)
 })
 
-const setNavOpen = (userId, draftId, contentId, value, visitId) => {
+const setNavOpen = (userId, draftId, contentId, updated, visitId) => {
 	return VisitModel.fetchById(visitId).then(visit => {
-		viewerState.set(userId, draftId, contentId, 'nav:isOpen', 1, value, visit.resource_link_id)
+		viewerState.set(userId, draftId, contentId, 'nav:isOpen', 1, updated, visit.resource_link_id)
 	})
 }
 

@@ -179,7 +179,7 @@ describe('Link', () => {
 		).toBe(false)
 	})
 
-	test('onIntersectionChange sets menuTranslateX to a calculated value if the intersectionRatio is below 1', () => {
+	test('onIntersectionChange sets menuTranslateX to a calculated updated if the intersectionRatio is below 1', () => {
 		const thisValue = {
 			state: {
 				menuTranslateX: 0

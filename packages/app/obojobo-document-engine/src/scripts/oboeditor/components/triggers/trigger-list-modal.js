@@ -21,7 +21,7 @@ class TriggerListModal extends React.Component {
 	}
 
 	updateTriggerType(index, event) {
-		const type = event.target.value
+		const type = event.target.updated
 
 		// Update triggers[triggerIndex].type
 		// The nested loop insures that React's immutable state is updated properly
@@ -49,7 +49,7 @@ class TriggerListModal extends React.Component {
 				actions: [
 					{
 						type: 'nav:goto',
-						value: {}
+						updated: {}
 					}
 				]
 			})
@@ -100,7 +100,7 @@ class TriggerListModal extends React.Component {
 	}
 
 	updateActionType(triggerIndex, actionIndex, event) {
-		const type = event.target.value
+		const type = event.target.updated
 
 		// Update triggers[triggerIndex].actions[actionIndex].type
 		// The nested loops insure that React's immutable state is updated properly
@@ -113,7 +113,7 @@ class TriggerListModal extends React.Component {
 								actionIndex === aIndex
 									? Object.assign(action, {
 											type,
-											value: this.createNewDefaultActionValueObject(type)
+											updated: this.createNewDefaultActionValueObject(type)
 									  })
 									: action
 							)
@@ -124,12 +124,12 @@ class TriggerListModal extends React.Component {
 	}
 
 	updateActionValue(triggerIndex, actionIndex, key, event) {
-		const value = {}
+		const updated = {}
 		// pull changes off the event
 		// checkbox handles events from <Switch> being a checkbox
-		value[key] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+		updated[key] = event.target.type === 'checkbox' ? event.target.checked : event.target.updated
 
-		// Update triggers[triggerIndex].actions[actionIndex].value.key
+		// Update triggers[triggerIndex].actions[actionIndex].updated.key
 		// The nested loops insure that React's immutable state is updated properly
 		return this.setState(prevState => ({
 			/* eslint-disable no-mixed-spaces-and-tabs */
@@ -139,7 +139,7 @@ class TriggerListModal extends React.Component {
 							actions: trigger.actions.map((action, aIndex) =>
 								actionIndex === aIndex
 									? Object.assign(action, {
-											value: Object.assign({}, action.value, value)
+											updated: Object.assign({}, action.updated, updated)
 									  })
 									: action
 							)
@@ -172,7 +172,7 @@ class TriggerListModal extends React.Component {
 					? Object.assign(trigger, {
 							actions: trigger.actions.concat({
 								type: 'nav:goto',
-								value: {}
+								updated: {}
 							})
 					  })
 					: trigger
@@ -181,11 +181,11 @@ class TriggerListModal extends React.Component {
 	}
 
 	getScrollType(action) {
-		const { value } = action
+		const { updated } = action
 
-		if (value.animateScroll === true || value.animateScroll === 'true') {
+		if (updated.animateScroll === true || updated.animateScroll === 'true') {
 			return 'animateScroll'
-		} else if (value.preventScroll === true || value.preventScroll === 'true') {
+		} else if (updated.preventScroll === true || updated.preventScroll === 'true') {
 			return 'preventScroll'
 		} else {
 			return 'jumpScroll'
@@ -193,17 +193,17 @@ class TriggerListModal extends React.Component {
 	}
 
 	updateScrollType(triggerIndex, actionIndex, event) {
-		const scrollType = event.target.value
-		const value = {
+		const scrollType = event.target.updated
+		const updated = {
 			animateScroll: false,
 			preventScroll: false
 		}
 
 		if (scrollType !== 'jumpScroll') {
-			value[scrollType] = true
+			updated[scrollType] = true
 		}
 
-		// Update triggers[triggerIndex].actions[actionIndex].value.key
+		// Update triggers[triggerIndex].actions[actionIndex].updated.key
 		// The nested loops insure that React's immutable state is updated properly
 		return this.setState(prevState => ({
 			/* eslint-disable no-mixed-spaces-and-tabs */
@@ -213,7 +213,7 @@ class TriggerListModal extends React.Component {
 							actions: trigger.actions.map((action, aIndex) =>
 								actionIndex === aIndex
 									? Object.assign(action, {
-											value: Object.assign({}, action.value, value)
+											updated: Object.assign({}, action.updated, updated)
 									  })
 									: action
 							)
@@ -232,13 +232,13 @@ class TriggerListModal extends React.Component {
 							<label>Item Id</label>
 							<input
 								className="input-item"
-								value={action.value.id || ''}
+								updated={action.updated.id || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
 							/>
 							<Switch
 								title="Ignore Navigation Lock"
 								// eslint-disable-next-line no-undefined
-								checked={action.value.ignoreLock === undefined ? true : action.value.ignoreLock}
+								checked={action.updated.ignoreLock === undefined ? true : action.updated.ignoreLock}
 								onChange={this.updateActionValue.bind(
 									this,
 									triggerIndex,
@@ -256,7 +256,7 @@ class TriggerListModal extends React.Component {
 							<label>URL</label>
 							<input
 								className="input-item"
-								value={action.value.url || ''}
+								updated={action.updated.url || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'url')}
 							/>
 						</div>
@@ -270,7 +270,7 @@ class TriggerListModal extends React.Component {
 							<label>Assessment Id</label>
 							<input
 								className="input-item"
-								value={action.value.id || ''}
+								updated={action.updated.id || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
 							/>
 						</div>
@@ -283,7 +283,7 @@ class TriggerListModal extends React.Component {
 							<label>Title</label>
 							<input
 								className="input-item"
-								value={action.value.title || ''}
+								updated={action.updated.title || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'title')}
 							/>
 						</div>
@@ -291,7 +291,7 @@ class TriggerListModal extends React.Component {
 							<label>Message</label>
 							<input
 								className="input-item"
-								value={action.value.message || ''}
+								updated={action.updated.message || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'message')}
 							/>
 						</div>
@@ -302,7 +302,7 @@ class TriggerListModal extends React.Component {
 					<div className="action-options">
 						<Switch
 							title="Animate Scroll"
-							checked={action.value.animateScroll}
+							checked={action.updated.animateScroll}
 							onChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
@@ -319,24 +319,24 @@ class TriggerListModal extends React.Component {
 							<label>Item Id</label>
 							<input
 								className="input-item"
-								value={action.value.id || ''}
+								updated={action.updated.id || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
 							/>
 						</div>
 						<Switch
 							title="Fade Out Other Items"
-							checked={action.value.fade || false}
+							checked={action.updated.fade || false}
 							onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'fade')}
 						/>
 						<label>If item not visible on screen</label>
 						<select
 							className="select-item"
-							value={this.getScrollType(action)}
+							updated={this.getScrollType(action)}
 							onChange={this.updateScrollType.bind(this, triggerIndex, actionIndex)}
 						>
-							<option value="animateScroll">Smoothly scroll page to the focussed item</option>
-							<option value="jumpScroll">Quickly jump page to the focussed item</option>
-							<option value="preventScroll">Keep the page where it is</option>
+							<option updated="animateScroll">Smoothly scroll page to the focussed item</option>
+							<option updated="jumpScroll">Quickly jump page to the focussed item</option>
+							<option updated="preventScroll">Keep the page where it is</option>
 						</select>
 					</div>
 				)
@@ -352,16 +352,16 @@ class TriggerListModal extends React.Component {
 							<label>When</label>
 							<select
 								className="select-item"
-								value={trigger.type}
+								updated={trigger.type}
 								onChange={this.updateTriggerType.bind(this, triggerIndex)}
 							>
-								<option value="onMount">This item is shown</option>
-								<option value="onUnmount">This item is hidden</option>
-								<option value="onNavEnter">The student enters the page</option>
-								<option value="onNavExit">The student leaves the page</option>
-								<option value="onStartAttempt">An assessment attempt starts</option>
-								<option value="onEndAttempt">An assessment attempt ends</option>
-								<option value="onClick">The student clicks the button</option>
+								<option updated="onMount">This item is shown</option>
+								<option updated="onUnmount">This item is hidden</option>
+								<option updated="onNavEnter">The student enters the page</option>
+								<option updated="onNavExit">The student leaves the page</option>
+								<option updated="onStartAttempt">An assessment attempt starts</option>
+								<option updated="onEndAttempt">An assessment attempt ends</option>
+								<option updated="onClick">The student clicks the button</option>
 							</select>
 							<button
 								className="delete-button"
@@ -375,23 +375,23 @@ class TriggerListModal extends React.Component {
 									<label>Then</label>
 									<select
 										className="select-item"
-										value={action.type}
+										updated={action.type}
 										onChange={this.updateActionType.bind(this, triggerIndex, actionIndex)}
 									>
-										<option value="nav:goto">Go to</option>
-										<option value="nav:prev">Go to the previous page</option>
-										<option value="nav:next">Go to the next page</option>
-										<option value="nav:openExternalLink">Open a webpage</option>
-										<option value="nav:lock">Lock navigation</option>
-										<option value="nav:unlock">Unlock navigation</option>
-										<option value="nav:open">Open the navigation menu</option>
-										<option value="nav:close">Close the navigation menu</option>
-										<option value="nav:toggle">Toggle the navigation menu</option>
-										<option value="assessment:startAttempt">Start an attempt for</option>
-										<option value="assessment:endAttempt">End an attempt for</option>
-										<option value="viewer:alert">Display a popup message</option>
-										<option value="viewer:scrollToTop">Scroll to the top of the page</option>
-										<option value="focus:component">Focus on a specific item</option>
+										<option updated="nav:goto">Go to</option>
+										<option updated="nav:prev">Go to the previous page</option>
+										<option updated="nav:next">Go to the next page</option>
+										<option updated="nav:openExternalLink">Open a webpage</option>
+										<option updated="nav:lock">Lock navigation</option>
+										<option updated="nav:unlock">Unlock navigation</option>
+										<option updated="nav:open">Open the navigation menu</option>
+										<option updated="nav:close">Close the navigation menu</option>
+										<option updated="nav:toggle">Toggle the navigation menu</option>
+										<option updated="assessment:startAttempt">Start an attempt for</option>
+										<option updated="assessment:endAttempt">End an attempt for</option>
+										<option updated="viewer:alert">Display a popup message</option>
+										<option updated="viewer:scrollToTop">Scroll to the top of the page</option>
+										<option updated="focus:component">Focus on a specific item</option>
 									</select>
 									<button
 										className="delete-button"

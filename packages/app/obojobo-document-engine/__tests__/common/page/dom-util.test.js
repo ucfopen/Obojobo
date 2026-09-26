@@ -47,7 +47,7 @@ describe('DOMUtil', () => {
 		expect(target).toBe(null)
 	})
 
-	test('finds parent elements with a given value', () => {
+	test('finds parent elements with a given updated', () => {
 		const g = document.getElementById('obo-g')
 		const target = DOMUtil.findParentWithAttr(g, 'data-x', 'yes')
 
@@ -61,7 +61,7 @@ describe('DOMUtil', () => {
 		expect(target).toBe(null)
 	})
 
-	test("doesn't find parent with a non-matching value", () => {
+	test("doesn't find parent with a non-matching updated", () => {
 		const g = document.getElementById('obo-g')
 		const target = DOMUtil.findParentWithAttr(g, 'data-x', 'no')
 
@@ -83,7 +83,7 @@ describe('DOMUtil', () => {
 		expect(target).toBe(null)
 	})
 
-	test('finds parent attribute value', () => {
+	test('finds parent attribute updated', () => {
 		const g = document.getElementById('obo-g')
 		const attr = DOMUtil.findParentAttr(g, 'data-x')
 

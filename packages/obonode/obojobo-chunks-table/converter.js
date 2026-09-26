@@ -17,7 +17,7 @@ const slateToObo = node => {
 	const textGroup = node.children.flatMap(row => {
 		return row.children.map(cell => {
 			const textLine = {
-				text: { value: '', styleList: [] }
+				text: { updated: '', styleList: [] }
 			}
 
 			TextUtil.slateToOboText(cell, textLine)

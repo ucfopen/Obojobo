@@ -34,7 +34,7 @@ class FileMenu extends React.PureComponent {
 			if (readOnly) {
 				const buttons = [
 					{
-						value: 'OK',
+						updated: 'OK',
 						onClick: ModalUtil.hide,
 						default: true
 					}
@@ -50,7 +50,7 @@ class FileMenu extends React.PureComponent {
 					</Dialog>
 				)
 			} else {
-				window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
+				window.open(window.location.origin + '/editor/visual/' + result.updated.draftId, '_blank')
 			}
 		})
 	}
@@ -109,7 +109,7 @@ class FileMenu extends React.PureComponent {
 				action: () =>
 					EditorAPI.createNewDraft().then(result => {
 						if (result.status === 'ok') {
-							window.open(window.location.origin + '/editor/visual/' + result.value.id, '_blank')
+							window.open(window.location.origin + '/editor/visual/' + result.updated.id, '_blank')
 						}
 					})
 			},
@@ -121,7 +121,7 @@ class FileMenu extends React.PureComponent {
 						<Prompt
 							title="Copy Module"
 							message="Enter the title for the copied module:"
-							value={this.props.title + ' - Copy'}
+							updated={this.props.title + ' - Copy'}
 							onConfirm={this.copyModule}
 						/>
 					)
@@ -134,7 +134,7 @@ class FileMenu extends React.PureComponent {
 						<Prompt
 							title="Copy Module (Read-Only)"
 							message="Enter the title for the copied module:"
-							value={this.props.title + ' - Copy'}
+							updated={this.props.title + ' - Copy'}
 							onConfirm={this.copyModuleReadOnly}
 						/>
 					)
@@ -161,12 +161,12 @@ class FileMenu extends React.PureComponent {
 				action: () => {
 					const buttons = [
 						{
-							value: 'Cancel',
+							updated: 'Cancel',
 							altAction: true,
 							onClick: ModalUtil.hide
 						},
 						{
-							value: 'Yes - Choose file...',
+							updated: 'Yes - Choose file...',
 							onClick: this.buildFileSelector,
 							default: true
 						}
@@ -185,12 +185,12 @@ class FileMenu extends React.PureComponent {
 				action: () => {
 					const buttons = [
 						{
-							value: 'Cancel',
+							updated: 'Cancel',
 							altAction: true,
 							onClick: ModalUtil.hide
 						},
 						{
-							value: 'Delete Now',
+							updated: 'Delete Now',
 							isDangerous: true,
 							onClick: this.deleteModule,
 							default: true

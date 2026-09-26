@@ -15,7 +15,7 @@ describe('Materia Converter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Widget Caption'
+							updated: 'Widget Caption'
 						}
 					}
 				]
@@ -54,7 +54,7 @@ describe('Materia Converter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Widget Caption'
+							updated: 'Widget Caption'
 						}
 					}
 				]
@@ -80,7 +80,7 @@ describe('Materia Converter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Widget Caption'
+							updated: 'Widget Caption'
 						}
 					}
 				]

@@ -31,25 +31,25 @@ describe('trigger-util', () => {
 		test('creates trigger when it does not exist and adds to triggers', () => {
 			const triggers = [{ type: 'someNotUsedTrigger' }]
 			const newTriggers = {
-				someTrigger: { type: 'someActionType', value: 'someValue' }
+				someTrigger: { type: 'someActionType', updated: 'someValue' }
 			}
 
 			const updatedTriggers = getTriggersWithActionsAdded(triggers, newTriggers)
 			expect(updatedTriggers).toEqual([
 				{ type: 'someNotUsedTrigger' },
-				{ type: 'someTrigger', actions: [{ type: 'someActionType', value: 'someValue' }] }
+				{ type: 'someTrigger', actions: [{ type: 'someActionType', updated: 'someValue' }] }
 			])
 		})
 
 		test('creates trigger when it does not exists and adds to triggers (using array in trigger map)', () => {
 			const triggers = []
 			const newTriggers = {
-				someTrigger: [{ type: 'someActionType', value: 'someValue' }]
+				someTrigger: [{ type: 'someActionType', updated: 'someValue' }]
 			}
 
 			const updatedTriggers = getTriggersWithActionsAdded(triggers, newTriggers)
 			expect(updatedTriggers).toEqual([
-				{ type: 'someTrigger', actions: [{ type: 'someActionType', value: 'someValue' }] }
+				{ type: 'someTrigger', actions: [{ type: 'someActionType', updated: 'someValue' }] }
 			])
 		})
 	})

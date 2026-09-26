@@ -23,12 +23,12 @@ exports[`Question Editor Node Question builds the expected component (not in ass
             onChange={[Function]}
           >
             <option
-              value="ObojoboDraft.Chunks.MCAssessment"
+              updated="ObojoboDraft.Chunks.MCAssessment"
             >
               Multiple choice
             </option>
             <option
-              value="ObojoboDraft.Chunks.NumericAssessment"
+              updated="ObojoboDraft.Chunks.NumericAssessment"
             >
               Input a number
             </option>
@@ -92,12 +92,12 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
             onChange={[Function]}
           >
             <option
-              value="ObojoboDraft.Chunks.MCAssessment"
+              updated="ObojoboDraft.Chunks.MCAssessment"
             >
               Multiple choice
             </option>
             <option
-              value="ObojoboDraft.Chunks.NumericAssessment"
+              updated="ObojoboDraft.Chunks.NumericAssessment"
             >
               Input a number
             </option>
@@ -138,7 +138,7 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Question Editor Node Question component adds Solution 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default is-not-collapsed\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\" contenteditable=\\"false\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple choice</option><option value=\\"ObojoboDraft.Chunks.NumericAssessment\\">Input a number</option></select><label class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\">Survey Only</label></div><div class=\\"add-solution-container\\" contenteditable=\\"false\\"><button class=\\"add-solution\\">Add Explanation</button></div></div></div><div class=\\"button-parent\\"><button class=\\"collapse-button\\" contenteditable=\\"false\\">-</button><button class=\\"delete-button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default is-not-collapsed\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\" contenteditable=\\"false\\"><label>Question Type</label><select contenteditable=\\"false\\"><option updated=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple choice</option><option updated=\\"ObojoboDraft.Chunks.NumericAssessment\\">Input a number</option></select><label class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\">Survey Only</label></div><div class=\\"add-solution-container\\" contenteditable=\\"false\\"><button class=\\"add-solution\\">Add Explanation</button></div></div></div><div class=\\"button-parent\\"><button class=\\"collapse-button\\" contenteditable=\\"false\\">-</button><button class=\\"delete-button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
 
 exports[`Question Editor Node Survey Question builds the expected component 1`] = `
 <div>
@@ -163,12 +163,12 @@ exports[`Question Editor Node Survey Question builds the expected component 1`] 
             onChange={[Function]}
           >
             <option
-              value="ObojoboDraft.Chunks.MCAssessment"
+              updated="ObojoboDraft.Chunks.MCAssessment"
             >
               Multiple choice
             </option>
             <option
-              value="ObojoboDraft.Chunks.NumericAssessment"
+              updated="ObojoboDraft.Chunks.NumericAssessment"
             >
               Input a number
             </option>

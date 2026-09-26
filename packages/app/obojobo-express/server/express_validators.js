@@ -4,7 +4,7 @@ const logger = oboRequire('server/logger')
 const semVerRegex = /\d+\.\d+\.\d+/
 
 // reusable method to call a promise method on req
-// and make sure it's value isn't falsy and is an object
+// and make sure it's updated isn't falsy and is an object
 // if it fails it'll register a validation error for express-validate
 const requireAndValidateReqMethod = (req, res, next, method, prop) => {
 	return req[method]()
@@ -138,7 +138,7 @@ exports.checkValidationRules = (req, res, next) => {
 		const rawErrors = errors.mapped()
 		for (const i in rawErrors) {
 			const e = rawErrors[i]
-			displayErrors.push(`${e.param} ${e.msg}, got ${e.value}`)
+			displayErrors.push(`${e.param} ${e.msg}, got ${e.updated}`)
 		}
 
 		const joinedErrors = displayErrors.join(', ')

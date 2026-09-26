@@ -1,7 +1,7 @@
 /*
 	Returns new updated triggers
 	newTriggers is keyed by trigger type
-	with a value of an action (object)
+	with a updated of an action (object)
 	or multiple actions (array of objects)
 	Example newTriggers:
 		{
@@ -64,7 +64,7 @@ export const hasTriggerTypeWithActionType = (triggers, triggerType, actionType) 
 /*
 	Returns new updated triggers
 	triggersToRemove is keyed by trigger type
-	with a value of an action type (string)
+	with a updated of an action type (string)
 	or multiple action types (array of strings)
 	Example triggersToRemove:
 		{

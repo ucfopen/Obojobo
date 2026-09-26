@@ -61,10 +61,10 @@ describe('Text editor', () => {
 				textGroup: [
 					{
 						data: { indent: 1 },
-						text: { value: 'mockText' }
+						text: { updated: 'mockText' }
 					},
 					{
-						text: { value: 'mockText2' }
+						text: { updated: 'mockText2' }
 					}
 				]
 			}

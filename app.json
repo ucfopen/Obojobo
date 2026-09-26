@@ -12,19 +12,19 @@
 	"env": {
 		"DB_SSL_JSON": {
 			"description": "PG-Promise SSL Configuration. https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax",
-			"value": "{\"rejectUnauthorized\":false}"
+			"updated": "{\"rejectUnauthorized\":false}"
 		},
 		"DB_TIMEOUT": {
 			"description": "DB Query timeout in milliseconds https://github.com/brianc/node-postgres/pull/1760",
-			"value": "29000"
+			"updated": "29000"
 		},
 		"OBO_LTI_KEYS_JSON": {
-			"description": "Edit the secret value. JSON string for LTI key:secret values.",
-			"value": "{\"obo-production-lti-key\":\"CHANGE_THIS_VALUE_NOW\"}"
+			"description": "Edit the secret updated. JSON string for LTI key:secret values.",
+			"updated": "{\"obo-production-lti-key\":\"CHANGE_THIS_VALUE_NOW\"}"
 		},
 		"OBO_LTI_USERNAME_PARAM": {
 			"description": "Which LTI Launch Param should Obojobo Use as a Username?",
-			"value": "user_id"
+			"updated": "user_id"
 		},
 		"OBO_COOKIE_SECRET": {
 			"description": "Do not change. Secret string used to encrypt cookie data",
@@ -32,45 +32,45 @@
 		},
 		"OBO_COOKIE_SECURE":{
 			"description": "Do not change. Restricts cookies to https.",
-			"value": "true"
+			"updated": "true"
 		},
 		"DEBUG": {
 			"description": "Logging Verbosity. Use obojobo_server:* for more output.",
-			"value": "obojobo_server:error,obojobo_server:warn"
+			"updated": "obojobo_server:error,obojobo_server:warn"
 		},
 		"YARN_PRODUCTION": {
 			"description": "Do not change. Makes sure yarn install includes dev dependencies",
-			"value": "false"
+			"updated": "false"
 		},
 		"OBO_DEMO_PURGE_MODE": {
 			"description": "Automatically purge old data for demo purposes or to limit database growth. Additional addon setup required.",
-			"value": "disabled"
+			"updated": "disabled"
 		},
 		"OBO_DEMO_PURGE_DAYS_AGO": {
 			"description": "If purge mode is enabled, purge data older than this many days",
-			"value": "7"
+			"updated": "7"
 		},
 		"OBO_EDITLOCK_TIME_UNTIL_RELEASE_MINUTES":{
 			"description": "Editor lock: period of inactivity to release the lock",
-			"value": "45"
+			"updated": "45"
 		},
 		"OBO_EDITLOCK_TIME_UNTIL_WARN_MINUTES":{
 			"description": "Editor lock: period of inactivity to warn the user about lock release",
-			"value": "40"
+			"updated": "40"
 		},
 		"OBO_EDITLOCK_DB_LOCK_DURATION":{
 			"description": "Editor lock: period of time a lock lasts unless it is renewed.",
-			"value": "5"
+			"updated": "5"
 		},
 		"OBO_OPTIONAL_NODES":{
 			"required": false,
 			"description": "Comma separated list of optional nodes to enable",
-			"value": ""
+			"updated": ""
 		},
 		"OBO_LTI_GUID":{
 			"required": false,
 			"description": "A GUID unique to this install of Obojobo. Google LTI launch param tool_consumer_instance_guid for more details.",
-			"value": "my.unique.heroku-obojobo-guid"
+			"updated": "my.unique.heroku-obojobo-guid"
 		}
 	},
 	"formation": {

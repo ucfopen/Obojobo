@@ -13,7 +13,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -24,7 +24,7 @@
 			{
 				"data": null,
 				"text": {
-					"value": "An image with a custom size",
+					"updated": "An image with a custom size",
 					"styleList": []
 				}
 			}

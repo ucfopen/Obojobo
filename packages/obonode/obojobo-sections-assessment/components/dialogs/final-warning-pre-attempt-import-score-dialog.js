@@ -19,14 +19,14 @@ const FinalWarningPreAttemptImportScoreDialog = ({
 			centered
 			buttons={[
 				{
-					value: 'Cancel',
+					updated: 'Cancel',
 					altAction: true,
 					onClick: () => {
 						shouldContinueFn(false)
 					}
 				},
 				{
-					value: buttonText,
+					updated: buttonText,
 					onClick: () => {
 						shouldContinueFn(true)
 					}

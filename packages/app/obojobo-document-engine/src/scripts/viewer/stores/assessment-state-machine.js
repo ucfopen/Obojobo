@@ -56,7 +56,7 @@ const updateContextWithAssessmentResponse = assign({
 	assessmentStoreState: (context, event) => {
 		const assessmentContext = getAssessmentContext(context)
 
-		assessmentContext.current = event.data.value
+		assessmentContext.current = event.data.updated
 		assessmentContext.attemptHistoryNetworkState === 'none'
 
 		return context.assessmentStoreState
@@ -66,7 +66,7 @@ const updateContextWithAssessmentResponse = assign({
 const updateContextWithAttemptHistoryResponse = assign({
 	assessmentStoreState: (context, event) => {
 		const state = context.assessmentStoreState
-		const attemptsByAssessment = event.data.value
+		const attemptsByAssessment = event.data.updated
 
 		// copy data into our state
 		attemptsByAssessment.forEach(assessmentItem => {
@@ -441,7 +441,7 @@ class AssessmentStateMachine {
 	}
 
 	getCurrentState() {
-		return this.service.state.value
+		return this.service.state.updated
 	}
 
 	start(onTransition) {

@@ -75,7 +75,7 @@ describe('AssessmentStats', () => {
 		act(() => {
 			component.root
 				.findAllByType('select')[0]
-				.props.onChange({ target: { value: 'all-attempts' } })
+				.props.onChange({ target: { updated: 'all-attempts' } })
 		})
 
 		const tree2 = component.toJSON()
@@ -157,7 +157,7 @@ describe('AssessmentStats', () => {
 				.props.onChange({ target: { checked: false } })
 			component.root
 				.findAllByType('select')[0]
-				.props.onChange({ target: { value: 'all-attempts' } })
+				.props.onChange({ target: { updated: 'all-attempts' } })
 		})
 		DataGrid = component.root.findByProps({ className: 'react-data-table-component' })
 		expect(DataGrid.props.data.length).toEqual(2)

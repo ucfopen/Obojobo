@@ -259,11 +259,11 @@ describe('OboModel', () => {
 						actions: [
 							{
 								type: 'a1',
-								value: 1
+								updated: 1
 							},
 							{
 								type: 'a2',
-								value: 2
+								updated: 2
 							}
 						]
 					},
@@ -272,7 +272,7 @@ describe('OboModel', () => {
 						actions: [
 							{
 								type: 'a3',
-								value: 3
+								updated: 3
 							}
 						]
 					}
@@ -284,8 +284,8 @@ describe('OboModel', () => {
 		o.processTrigger('t1')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
-		expect(Dispatcher.trigger.mock.calls[0]).toEqual(['a1', { type: 'a1', value: 1 }])
-		expect(Dispatcher.trigger.mock.calls[1]).toEqual(['a2', { type: 'a2', value: 2 }])
+		expect(Dispatcher.trigger.mock.calls[0]).toEqual(['a1', { type: 'a1', updated: 1 }])
+		expect(Dispatcher.trigger.mock.calls[1]).toEqual(['a2', { type: 'a2', updated: 2 }])
 
 		// process t1 but since run = 'once' it won't trigger again
 		Dispatcher.trigger.mockClear()
@@ -298,7 +298,7 @@ describe('OboModel', () => {
 		o.processTrigger('t2')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger.mock.calls[0]).toEqual(['a3', { type: 'a3', value: 3 }])
+		expect(Dispatcher.trigger.mock.calls[0]).toEqual(['a3', { type: 'a3', updated: 3 }])
 
 		// process t3 which isn't defined so nothing should be triggered
 		Dispatcher.trigger.mockClear()
@@ -676,8 +676,8 @@ describe('OboModel', () => {
 		const domHTML = component.html()
 		document.body.innerHTML = domHTML
 		const domEl = model.getDomEl()
-		expect(domEl.attributes[1].value).toBe('obo-testId')
-		expect(domEl.attributes[4].value).toBe('ObojoboDraft.Chunks.Heading')
+		expect(domEl.attributes[1].updated).toBe('obo-testId')
+		expect(domEl.attributes[4].updated).toBe('ObojoboDraft.Chunks.Heading')
 	})
 
 	test('getDomId returns an id for an element', () => {
@@ -1161,7 +1161,7 @@ describe('OboModel', () => {
 				textGroup: [
 					{
 						data: { align: 'left', hangingIndent: false, indent: 0 },
-						text: { styleList: null, value: '' }
+						text: { styleList: null, updated: '' }
 					}
 				]
 			},

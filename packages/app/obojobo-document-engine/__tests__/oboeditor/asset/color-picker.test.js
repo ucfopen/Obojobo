@@ -191,7 +191,7 @@ describe('Color Picker', () => {
 
 		// Input "#990000" into the custom color input field
 		const input = component.find('.color-string-input').at(0)
-		input.simulate('change', { target: { value: '#990000' } })
+		input.simulate('change', { target: { updated: '#990000' } })
 
 		// The custom color icon should update to be #990000
 		expect(
@@ -227,7 +227,7 @@ describe('Color Picker', () => {
 		expect(Editor.removeMark).not.toHaveBeenCalled()
 	})
 
-	test('Inputting a hex value without a # character still works', () => {
+	test('Inputting a hex updated without a # character still works', () => {
 		const props = {
 			editor: {},
 			close: jest.fn()
@@ -242,7 +242,7 @@ describe('Color Picker', () => {
 
 		// Input "#990000" into the custom color input field
 		const input = component.find('.color-string-input').at(0)
-		input.simulate('change', { target: { value: '990000' } })
+		input.simulate('change', { target: { updated: '990000' } })
 
 		// The custom color icon should update to be #990000
 		expect(
@@ -278,7 +278,7 @@ describe('Color Picker', () => {
 		expect(Editor.removeMark).not.toHaveBeenCalled()
 	})
 
-	test('Inputting an invalid value does nothing', () => {
+	test('Inputting an invalid updated does nothing', () => {
 		const props = {
 			editor: {},
 			close: jest.fn()
@@ -293,7 +293,7 @@ describe('Color Picker', () => {
 
 		// Input garbage into the custom color input field
 		const input = component.find('.color-string-input').at(0)
-		input.simulate('change', { target: { value: 'this is an invalid value!' } })
+		input.simulate('change', { target: { updated: 'this is an invalid updated!' } })
 
 		// The custom color icon should not have updated
 		expect(
@@ -339,7 +339,7 @@ describe('Color Picker', () => {
 
 		// Input "#990000" into the custom color input field
 		const input = component.find('.color-string-input').at(0)
-		input.simulate('change', { target: { value: '' } })
+		input.simulate('change', { target: { updated: '' } })
 
 		// The custom color icon should not update
 		expect(

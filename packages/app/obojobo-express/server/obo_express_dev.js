@@ -89,7 +89,7 @@ const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 	params['oauth_signature'] = hmac_sha1
 	const keys = Object.keys(params)
 	const htmlInput = keys
-		.map(key => `<input type="hidden" name="${key}" value="${params[key]}"/><br/>`)
+		.map(key => `<input type="hidden" name="${key}" updated="${params[key]}"/><br/>`)
 		.join('')
 
 	res.set('Content-Type', 'text/html')
@@ -126,10 +126,10 @@ module.exports = app => {
 			const users = results[0]
 			const drafts = results[1]
 			const userOptions = users
-				.map(user => `<option value=${user.id}>${user.first_name} ${user.last_name}</option>`)
+				.map(user => `<option updated=${user.id}>${user.first_name} ${user.last_name}</option>`)
 				.join('')
 			const draftOptions = drafts
-				.map(draft => `<option value="${draft.draftId}">${draft.title}</option>`)
+				.map(draft => `<option updated="${draft.draftId}">${draft.title}</option>`)
 				.join('')
 
 			let userSelectRender =
@@ -142,7 +142,7 @@ module.exports = app => {
 				</select>`
 			}
 
-			const permOptions = POSSIBLE_PERMS.map(perm => `<option value="${perm}">${perm}</option>`)
+			const permOptions = POSSIBLE_PERMS.map(perm => `<option updated="${perm}">${perm}</option>`)
 
 			res.set('Content-Type', 'text/html')
 			res.send(`<html>
@@ -182,10 +182,10 @@ module.exports = app => {
 								<label for='last'>Last name:</label>
 								<input type='text' name='last' placeholder='User (Optional)'/>
 								<br/>
-								<button type='submit' name='type' value='instructor'>Create new test instructor</button>
+								<button type='submit' name='type' updated='instructor'>Create new test instructor</button>
 								Note: The <b>canViewEditor</b>, <b>canCreateDrafts</b>, <b>canDeleteDrafts</b>, and <b>canPreviewDrafts</b> permissions are implicit for instructors.
 								<br/>
-								<button type='submit' name='type' value='learner'>Create new test learner</button>
+								<button type='submit' name='type' updated='learner'>Create new test learner</button>
 							</form>
 						</li>
 						<li><b>Add permission to user:</b>
@@ -201,8 +201,8 @@ module.exports = app => {
 											${permOptions}
 										</select>
 										<br/>
-										<input type='hidden' name='add_remove' value='add'/>
-										<button type='submit' value='submit'>Add</button>`
+										<input type='hidden' name='add_remove' updated='add'/>
+										<button type='submit' updated='submit'>Add</button>`
 										: ''
 								}
 							</form>
@@ -220,8 +220,8 @@ module.exports = app => {
 											${permOptions}
 										</select>
 										<br/>
-										<input type='hidden' name='add_remove' value='remove'/>
-										<button type='submit' value='submit'>Remove</button>`
+										<input type='hidden' name='add_remove' updated='remove'/>
+										<button type='submit' updated='submit'>Remove</button>`
 										: ''
 								}
 							</form>
@@ -235,9 +235,9 @@ module.exports = app => {
 								method='post'
 								target='_blank'
 								action='/lti/dev/launch/course_navigation'>
-								<input type='hidden' name='resource_link_id' value='course_1' />
+								<input type='hidden' name='resource_link_id' updated='course_1' />
 								${userSelectRender}
-								${userOptions.length ? "<button type='submit' value='submit'>Go</button>" : ''}
+								${userOptions.length ? "<button type='submit' updated='submit'>Go</button>" : ''}
 							</form>
 						</li>
 						<li><b>LTI Resource Selection:</b> (simulate LTI launch for resource/assignment selection)
@@ -248,7 +248,7 @@ module.exports = app => {
 								${userSelectRender}
 								${
 									userOptions.length
-										? `<button onClick="scrollToIframe()" type='submit' value='submit'>Go</button>`
+										? `<button onClick="scrollToIframe()" type='submit' updated='submit'>Go</button>`
 										: ''
 								}
 							</form>
@@ -285,7 +285,7 @@ module.exports = app => {
 										<label>LMS resource link title:</label>
 										<input type='text' name='resource_link_title' placeholder='Embedded Assignment'/>
 										<br/>
-										<button type='submit' value='submit'>Go</button>`
+										<button type='submit' updated='submit'>Go</button>`
 										: ''
 								}
 							</form>

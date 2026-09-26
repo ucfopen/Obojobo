@@ -1,6 +1,6 @@
 const parseScoreActions = el => {
 	return el.elements.map(child => {
-		return child.value
+		return child.updated
 	})
 }
 

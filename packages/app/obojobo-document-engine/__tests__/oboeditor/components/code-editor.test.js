@@ -21,8 +21,8 @@ describe('CodeEditor', () => {
 		jest.clearAllMocks()
 		jest.resetModules()
 		EditorUtil.getTitleFromString.mockReturnValue('Mock Title')
-		EditorUtil.setModuleTitleInJSON.mockReturnValue('mock-setModuleTitleInJSON-return-value')
-		EditorUtil.setModuleTitleInXML.mockReturnValue('mock-setModuleTitleInXML-return-value')
+		EditorUtil.setModuleTitleInJSON.mockReturnValue('mock-setModuleTitleInJSON-return-updated')
+		EditorUtil.setModuleTitleInXML.mockReturnValue('mock-setModuleTitleInXML-return-updated')
 	})
 
 	test('CodeEditor component', async () => {
@@ -77,7 +77,7 @@ describe('CodeEditor', () => {
 			.find('input')
 			.at(0)
 			.simulate('change', {
-				target: { value: 'mock new title' }
+				target: { updated: 'mock new title' }
 			})
 		thing
 			.find('input')
@@ -102,7 +102,7 @@ describe('CodeEditor', () => {
 			.find('input')
 			.at(0)
 			.simulate('change', {
-				target: { value: '	' }
+				target: { updated: '	' }
 			})
 		thing
 			.find('input')
@@ -189,11 +189,11 @@ describe('CodeEditor', () => {
 			.saveAndSetNewTitleInCode('New Title')
 			.then(() => {
 				const state = component.state()
-				expect(state).toHaveProperty('code', 'mock-setModuleTitleInJSON-return-value')
+				expect(state).toHaveProperty('code', 'mock-setModuleTitleInJSON-return-updated')
 				expect(state).toHaveProperty('title', 'New Title')
 				expect(props.saveDraft).toHaveBeenCalledWith(
 					'mock-draft-id',
-					'mock-setModuleTitleInJSON-return-value',
+					'mock-setModuleTitleInJSON-return-updated',
 					'json'
 				)
 			})
@@ -215,11 +215,11 @@ describe('CodeEditor', () => {
 			.saveAndSetNewTitleInCode('New Title')
 			.then(() => {
 				const state = component.state()
-				expect(state).toHaveProperty('code', 'mock-setModuleTitleInXML-return-value')
+				expect(state).toHaveProperty('code', 'mock-setModuleTitleInXML-return-updated')
 				expect(state).toHaveProperty('title', 'New Title')
 				expect(props.saveDraft).toHaveBeenCalledWith(
 					'mock-draft-id',
-					'mock-setModuleTitleInXML-return-value',
+					'mock-setModuleTitleInXML-return-updated',
 					'xml'
 				)
 			})
@@ -377,7 +377,7 @@ describe('CodeEditor', () => {
 	test('reload disables event listener and calls location.reload', () => {
 		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
 		Object.defineProperty(window, 'location', {
-			value: { reload: jest.fn() }
+			updated: { reload: jest.fn() }
 		})
 
 		const props = {

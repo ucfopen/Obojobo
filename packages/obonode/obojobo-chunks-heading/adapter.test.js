@@ -15,7 +15,7 @@ describe('Heading adapter', () => {
 	test('construct builds with attributes', () => {
 		const attrs = {
 			content: {
-				textGroup: [{ text: { value: 'example text' } }],
+				textGroup: [{ text: { updated: 'example text' } }],
 				headingLevel: '2',
 				align: 'right'
 			}
@@ -41,7 +41,7 @@ describe('Heading adapter', () => {
 		const json = { content: {} }
 		const attrs = {
 			content: {
-				textGroup: [{ text: { value: 'example text' } }],
+				textGroup: [{ text: { updated: 'example text' } }],
 				headingLevel: '2'
 			}
 		}
@@ -55,7 +55,7 @@ describe('Heading adapter', () => {
 	test('toText ', () => {
 		const attrs = {
 			content: {
-				textGroup: [{ text: { value: 'example text' } }],
+				textGroup: [{ text: { updated: 'example text' } }],
 				headingLevel: '2'
 			}
 		}

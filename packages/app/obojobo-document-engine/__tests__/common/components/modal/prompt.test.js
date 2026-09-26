@@ -36,7 +36,7 @@ describe('Prompt Modal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('Prompt component changes value', () => {
+	test('Prompt component changes updated', () => {
 		const onConfirm = jest.fn()
 
 		const component = mount(<Prompt onConfirm={onConfirm} />)
@@ -44,7 +44,7 @@ describe('Prompt Modal', () => {
 		component
 			.find('input')
 			.at(1)
-			.simulate('change', { target: { value: 'changed' } })
+			.simulate('change', { target: { updated: 'changed' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})

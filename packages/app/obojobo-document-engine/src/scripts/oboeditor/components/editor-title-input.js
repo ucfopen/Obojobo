@@ -26,11 +26,11 @@ const EditorTitleInput = ({ renameModule, title }) => {
 		<div className="editor--components--editor-title-input-parent">
 			<input
 				className="editor--components--editor-title-input"
-				value={stateTitle}
+				updated={stateTitle}
 				placeholder="Module Title"
 				onChange={event => {
-					if (emptyTitleError && event.target.value !== '') setEmptyTitleError(false)
-					setStateTitle(event.target.value)
+					if (emptyTitleError && event.target.updated !== '') setEmptyTitleError(false)
+					setStateTitle(event.target.updated)
 				}}
 				onBlur={event => {
 					if (stateTitle !== title) {

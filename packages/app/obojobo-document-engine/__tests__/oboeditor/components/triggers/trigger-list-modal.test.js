@@ -11,14 +11,14 @@ describe('TriggerListModal', () => {
 				{
 					type: 'onMount',
 					actions: [
-						{ type: 'nav:goto', value: {} },
-						{ type: 'nav:openExternalLink', value: {} },
-						{ type: 'assessment:startAttempt', value: {} },
-						{ type: 'assessment:endAttempt', value: {} },
-						{ type: 'viewer:alert', value: {} },
-						{ type: 'viewer:scrollToTop', value: {} },
-						{ type: 'focus:component', value: {} },
-						{ type: 'nav:prev', value: {} }
+						{ type: 'nav:goto', updated: {} },
+						{ type: 'nav:openExternalLink', updated: {} },
+						{ type: 'assessment:startAttempt', updated: {} },
+						{ type: 'assessment:endAttempt', updated: {} },
+						{ type: 'viewer:alert', updated: {} },
+						{ type: 'viewer:scrollToTop', updated: {} },
+						{ type: 'focus:component', updated: {} },
+						{ type: 'nav:prev', updated: {} }
 					]
 				}
 			]
@@ -39,7 +39,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }]
+					actions: [{ type: 'nav:goto', updated: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -63,7 +63,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:prev', value: {} }]
+					actions: [{ type: 'nav:goto', updated: {} }, { type: 'nav:prev', updated: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -87,7 +87,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }]
+					actions: [{ type: 'nav:goto', updated: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -111,7 +111,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }]
+					actions: [{ type: 'nav:goto', updated: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -135,7 +135,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }]
+					actions: [{ type: 'nav:goto', updated: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -178,7 +178,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }]
+					actions: [{ type: 'nav:goto', updated: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -192,7 +192,7 @@ describe('TriggerListModal', () => {
 			.find('select')
 			.at(0)
 			.simulate('change', {
-				target: { value: 'onNavEnter' }
+				target: { updated: 'onNavEnter' }
 			})
 
 		const tree = component.html()
@@ -204,7 +204,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:next', value: {} }]
+					actions: [{ type: 'nav:goto', updated: {} }, { type: 'nav:next', updated: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -218,19 +218,19 @@ describe('TriggerListModal', () => {
 			.find('select')
 			.at(1)
 			.simulate('change', {
-				target: { value: 'nav:prev' }
+				target: { updated: 'nav:prev' }
 			})
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('changes action value', () => {
+	test('changes action updated', () => {
 		const content = {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: { id: 1 } }, { type: 'nav:goto', value: { id: 2 } }]
+					actions: [{ type: 'nav:goto', updated: { id: 1 } }, { type: 'nav:goto', updated: { id: 2 } }]
 				},
 				{
 					type: 'onUnmount',
@@ -244,25 +244,25 @@ describe('TriggerListModal', () => {
 		const inputLabel = component.find('label').at(2)
 		expect(inputLabel.props().children).toBe('Item Id')
 
-		// change the value
+		// change the updated
 		component
 			.find('input')
 			.at(3)
-			.simulate('change', { target: { type: 'text', value: '10' } })
+			.simulate('change', { target: { type: 'text', updated: '10' } })
 
-		// check that the value changed
+		// check that the updated changed
 		expect(
 			component
 				.find('input')
 				.at(3)
 				.props()
-		).toHaveProperty('value', '10')
+		).toHaveProperty('updated', '10')
 
 		// check the change to state
 		expect(component.state()).toHaveProperty('triggers')
 		expect(component.state().triggers[0].actions).toContainEqual({
 			type: 'nav:goto',
-			value: { id: '10' }
+			updated: { id: '10' }
 		})
 
 		// check the rendered component
@@ -270,12 +270,12 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('sets value that was previously undefined', () => {
+	test('sets updated that was previously undefined', () => {
 		const content = {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: { id: 1 } }]
+					actions: [{ type: 'nav:goto', updated: { id: 1 } }]
 				},
 				{
 					type: 'onUnmount',
@@ -296,13 +296,13 @@ describe('TriggerListModal', () => {
 				.props()
 		).toHaveProperty('checked', true)
 
-		// change the value
+		// change the updated
 		component
 			.find('input')
 			.at(2)
-			.simulate('change', { target: { type: 'boolean', value: false } })
+			.simulate('change', { target: { type: 'boolean', updated: false } })
 
-		// check that the value changed
+		// check that the updated changed
 		expect(
 			component
 				.find('input')
@@ -314,7 +314,7 @@ describe('TriggerListModal', () => {
 		expect(component.state()).toHaveProperty('triggers')
 		expect(component.state().triggers[0].actions).toContainEqual({
 			type: 'nav:goto',
-			value: { id: 1, ignoreLock: false }
+			updated: { id: 1, ignoreLock: false }
 		})
 	})
 
@@ -324,8 +324,8 @@ describe('TriggerListModal', () => {
 				{
 					type: 'onMount',
 					actions: [
-						{ type: 'focus:component', value: { id: 1 } },
-						{ type: 'focus:component', value: { id: 1 } }
+						{ type: 'focus:component', updated: { id: 1 } },
+						{ type: 'focus:component', updated: { id: 1 } }
 					]
 				},
 				{
@@ -340,28 +340,28 @@ describe('TriggerListModal', () => {
 			.find('select')
 			.at(2)
 			.simulate('change', {
-				target: { value: 'animateScroll' }
+				target: { updated: 'animateScroll' }
 			})
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', true)
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('animateScroll', true)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('preventScroll', false)
 
 		component
 			.find('select')
 			.at(2)
 			.simulate('change', {
-				target: { value: 'preventScroll' }
+				target: { updated: 'preventScroll' }
 			})
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', true)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('preventScroll', true)
 
 		component
 			.find('select')
 			.at(2)
 			.simulate('change', {
-				target: { value: 'jumpScroll' }
+				target: { updated: 'jumpScroll' }
 			})
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('preventScroll', false)
 	})
 
 	test('updateActionValue using a switch/checkbox', () => {
@@ -369,7 +369,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'focus:component', value: { fade: false } }]
+					actions: [{ type: 'focus:component', updated: { fade: false } }]
 				},
 				{
 					type: 'onUnmount',
@@ -380,15 +380,15 @@ describe('TriggerListModal', () => {
 		const component = mount(<TriggerListModal content={content} />)
 		const input = component.find(Switch).find('input')
 		input.simulate('change', { target: { type: 'checkbox', checked: true } })
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', true)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('fade', true)
 
 		input.simulate('change', { target: { type: 'checkbox', checked: false } })
-		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', false)
+		expect(component.state().triggers[0].actions[0].updated).toHaveProperty('fade', false)
 	})
 
-	test('getScrollType returns correct value', () => {
+	test('getScrollType returns correct updated', () => {
 		const action = {
-			value: {
+			updated: {
 				animateScroll: false,
 				preventScroll: false
 			}
@@ -396,12 +396,12 @@ describe('TriggerListModal', () => {
 
 		expect(TriggerListModal.prototype.getScrollType(action)).toBe('jumpScroll')
 
-		action.value.preventScroll = true
+		action.updated.preventScroll = true
 		expect(TriggerListModal.prototype.getScrollType(action)).toBe('preventScroll')
 
-		action.value.animateScroll = true
+		action.updated.animateScroll = true
 		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
-		action.value.preventScroll = false
+		action.updated.preventScroll = false
 		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
 	})
 
@@ -422,7 +422,7 @@ describe('TriggerListModal', () => {
 		${'viewer:scrollToTop'}
 		${'focus:component'}
 	`(
-		'createNewDefaultActionValueObject($type) creates a new default action value object',
+		'createNewDefaultActionValueObject($type) creates a new default action updated object',
 		({ type }) => {
 			expect(TriggerListModal.prototype.createNewDefaultActionValueObject(type)).toMatchSnapshot()
 		}

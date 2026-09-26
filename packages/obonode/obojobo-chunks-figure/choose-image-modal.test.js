@@ -51,7 +51,7 @@ describe('Choose Image Modal', () => {
 
 		component
 			.find('#choose-image--image-controls--url')
-			.simulate('change', { target: { value: 'changed url' } })
+			.simulate('change', { target: { updated: 'changed url' } })
 
 		return flushPromises().then(() => {
 			expect(component.instance().state.url).toBe('changed url')
@@ -64,7 +64,7 @@ describe('Choose Image Modal', () => {
 
 		component.find('#fileupload').simulate('change', {
 			target: {
-				value: 'changed',
+				updated: 'changed',
 				files: [
 					new window.Blob([JSON.stringify({ name: 'mockFileName' })], { type: 'application/json' })
 				]

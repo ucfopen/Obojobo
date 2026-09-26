@@ -1,13 +1,13 @@
 const parseObjectives = el => {
 	const obj = el.elements.map(objectivesEl => {
-		if (objectivesEl.value === null) {
+		if (objectivesEl.updated === null) {
 			return { objectiveId: objectivesEl.attributes.id }
 		}
 
 		return {
 			objectiveId: objectivesEl.attributes.id,
 			objectiveLabel: objectivesEl.attributes.label,
-			description: objectivesEl.value[0].text
+			description: objectivesEl.updated[0].text
 		}
 	})
 

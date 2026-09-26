@@ -25,7 +25,7 @@ describe('TextGroupAdapter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Text goes here'
+							updated: 'Text goes here'
 						}
 					}
 				]
@@ -69,8 +69,8 @@ describe('TextGroupAdapter', () => {
 
 	test('toText', () => {
 		const toText = TextGroupAdapter.toText({
-			modelState: { textGroup: { first: { text: { value: 'test value' } } } }
+			modelState: { textGroup: { first: { text: { updated: 'test updated' } } } }
 		})
-		expect(toText).toEqual('test value')
+		expect(toText).toEqual('test updated')
 	})
 })

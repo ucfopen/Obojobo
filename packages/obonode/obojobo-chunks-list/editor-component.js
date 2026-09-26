@@ -61,15 +61,15 @@ const List = props => {
 			type: 'select',
 			values: [
 				{
-					value: 'compact',
+					updated: 'compact',
 					description: 'Compact'
 				},
 				{
-					value: 'moderate',
+					updated: 'moderate',
 					description: 'Moderate'
 				},
 				{
-					value: 'generous',
+					updated: 'generous',
 					description: 'Generous'
 				}
 			]

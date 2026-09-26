@@ -591,7 +591,7 @@ describe('AssessmentUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:startAttempt', {
-			value: { id: 'testId' }
+			updated: { id: 'testId' }
 		})
 	})
 
@@ -607,7 +607,7 @@ describe('AssessmentUtil', () => {
 		}),
 			expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:endAttempt', {
-			value: { id: 'testId', context: 'mockContext', visitId: 'mockVisitId' }
+			updated: { id: 'testId', context: 'mockContext', visitId: 'mockVisitId' }
 		})
 	})
 
@@ -620,7 +620,7 @@ describe('AssessmentUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:resendLTIScore', {
-			value: { id: 'testId' }
+			updated: { id: 'testId' }
 		})
 	})
 
@@ -998,7 +998,7 @@ describe('AssessmentUtil', () => {
 		AssessmentUtil[method]({ get: () => 'mock-id' })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:' + method, {
-			value: { id: 'mock-id' }
+			updated: { id: 'mock-id' }
 		})
 	})
 
@@ -1008,7 +1008,7 @@ describe('AssessmentUtil', () => {
 		AssessmentUtil.forceSendResponsesForCurrentAttempt({ get: () => 'mock-id' }, 'mock-context')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:forceSendResponses', {
-			value: { id: 'mock-id', context: 'mock-context' }
+			updated: { id: 'mock-id', context: 'mock-context' }
 		})
 	})
 
@@ -1018,7 +1018,7 @@ describe('AssessmentUtil', () => {
 		AssessmentUtil.acknowledgeFetchHistoryFailed({ get: () => 'mock-id' })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:acknowledgeFetchHistoryFailed', {
-			value: { id: 'mock-id', retry: false }
+			updated: { id: 'mock-id', retry: false }
 		})
 	})
 
@@ -1028,7 +1028,7 @@ describe('AssessmentUtil', () => {
 		AssessmentUtil.acknowledgeFetchHistoryFailed({ get: () => 'mock-id' }, false)
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:acknowledgeFetchHistoryFailed', {
-			value: { id: 'mock-id', retry: false }
+			updated: { id: 'mock-id', retry: false }
 		})
 	})
 
@@ -1038,7 +1038,7 @@ describe('AssessmentUtil', () => {
 		AssessmentUtil.acknowledgeFetchHistoryFailed({ get: () => 'mock-id' }, true)
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:acknowledgeFetchHistoryFailed', {
-			value: { id: 'mock-id', retry: true }
+			updated: { id: 'mock-id', retry: true }
 		})
 	})
 

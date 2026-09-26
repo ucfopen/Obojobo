@@ -34,95 +34,95 @@ class QuestionStore extends Store {
 
 		Dispatcher.on({
 			'question:forceSendAllResponses': payload => {
-				this.forceSendAllResponses(payload.value)
+				this.forceSendAllResponses(payload.updated)
 			},
 
 			'question:sendResponse': payload => {
-				this.sendResponse(payload.value).then(() => {
+				this.sendResponse(payload.updated).then(() => {
 					this.triggerChange()
 				})
 				this.triggerChange()
 			},
 
 			'question:setResponse': payload => {
-				if (!this.setResponse(payload.value)) return
+				if (!this.setResponse(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:clearResponse': payload => {
-				if (!this.clearResponse(payload.value.id, payload.value.context)) return
+				if (!this.clearResponse(payload.updated.id, payload.updated.context)) return
 				this.triggerChange()
 			},
 
 			'question:setData': payload => {
-				this.setData(payload.value)
+				this.setData(payload.updated)
 				this.triggerChange()
 			},
 
 			'question:showExplanation': payload => {
-				this.showExplanation(payload.value)
+				this.showExplanation(payload.updated)
 				this.triggerChange()
 			},
 
 			'question:hideExplanation': payload => {
-				this.hideExplanation(payload.value)
+				this.hideExplanation(payload.updated)
 				this.triggerChange()
 			},
 
 			'question:clearData': payload => {
-				if (!this.clearData(payload.value)) return
+				if (!this.clearData(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:hide': payload => {
-				if (!this.hide(payload.value)) return
+				if (!this.hide(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:view': payload => {
-				this.view(payload.value)
+				this.view(payload.updated)
 				this.triggerChange()
 			},
 
 			'question:checkAnswer': payload => {
-				if (!this.checkAnswer(payload.value)) return
+				if (!this.checkAnswer(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:submitResponse': payload => {
-				if (!this.submitResponse(payload.value)) return
+				if (!this.submitResponse(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:retry': payload => {
-				if (!this.retry(payload.value)) return
+				if (!this.retry(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:revealAnswer': payload => {
-				if (!this.revealAnswer(payload.value)) return
+				if (!this.revealAnswer(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:scoreSet': payload => {
-				if (!this.scoreSet(payload.value)) return
+				if (!this.scoreSet(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'question:scoreClear': payload => {
-				if (!this.scoreClear(payload.value)) return
+				if (!this.scoreClear(payload.updated)) return
 				this.triggerChange()
 			},
 
 			'assessment:endAttempt': payload => {
-				if (!this.clearResponse(payload.value.id, payload.value.context)) return
+				if (!this.clearResponse(payload.updated.id, payload.updated.context)) return
 				this.triggerChange()
 			},
 
 			'nav:setContext': payload => {
 				// When a new context is created by the nav go ahead and start
 				// a new context in our store (if it doesn't exist already)
-				this.getOrCreateContextState(payload.value.context)
+				this.getOrCreateContextState(payload.updated.context)
 			}
 		})
 	}
@@ -193,7 +193,7 @@ class QuestionStore extends Store {
 		return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, Promise.all(promises))
 			.then(values => {
 				Dispatcher.trigger('question:forceSentAllResponses', {
-					value: { context, success: values.length === 0 || values.every(v => v), error: null }
+					updated: { context, success: values.length === 0 || values.every(v => v), error: null }
 				})
 
 				return true
@@ -201,7 +201,7 @@ class QuestionStore extends Store {
 			.catch(e => {
 				console.error('Unable to send all responses', e) //eslint-disable-line no-console
 				Dispatcher.trigger('question:forceSentAllResponses', {
-					value: { context, success: false, error: e.message }
+					updated: { context, success: false, error: e.message }
 				})
 
 				return true
@@ -292,9 +292,9 @@ class QuestionStore extends Store {
 		return true
 	}
 
-	setData({ context, key, value }) {
+	setData({ context, key, updated }) {
 		const contextState = this.getOrCreateContextState(context)
-		contextState.data[key] = value
+		contextState.data[key] = updated
 	}
 
 	showExplanation({ id, context }) {

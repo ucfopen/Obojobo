@@ -126,17 +126,17 @@ describe('api response middleware', () => {
 		})
 	})
 
-	test('success to pass the value object', () => {
+	test('success to pass the updated object', () => {
 		const { res, mockJson } = mockArgs
 
 		const input = { test: true }
-		const expected = { status: 'ok', value: { test: true } }
+		const expected = { status: 'ok', updated: { test: true } }
 
 		res.success(input)
 		expect(mockJson).toBeCalledWith(expected)
 	})
 
-	test('messages to be returned in the value object', () => {
+	test('messages to be returned in the updated object', () => {
 		expect.assertions(functionsWithMessages.length * 2)
 
 		const { res, mockJson } = mockArgs
@@ -145,7 +145,7 @@ describe('api response middleware', () => {
 			mockJson.mockReset()
 			res[method]('message text')
 			expect(mockJson).toBeCalled()
-			expect(mockJson.mock.calls[0][0].value.message).toBe('message text')
+			expect(mockJson.mock.calls[0][0].updated.message).toBe('message text')
 		})
 	})
 
@@ -242,7 +242,7 @@ describe('api response middleware', () => {
 		const input = { top_value: { bottom_value: 'leave_me_alone' } }
 		const expected = {
 			status: 'ok',
-			value: { topValue: { bottomValue: 'leave_me_alone' } }
+			updated: { topValue: { bottomValue: 'leave_me_alone' } }
 		}
 
 		res.success(input)
@@ -254,7 +254,7 @@ describe('api response middleware', () => {
 		res.unexpected(new Error('test error'))
 		expect(res.json).toHaveBeenCalledWith({
 			status: 'error',
-			value: {
+			updated: {
 				type: 'unexpected',
 				message: 'test error'
 			}
@@ -277,7 +277,7 @@ describe('api response middleware', () => {
 
 		expect(res.json).toHaveBeenCalledWith({
 			status: 'error',
-			value: {
+			updated: {
 				type: 'unexpected',
 				message: 'QueryResultError'
 			}

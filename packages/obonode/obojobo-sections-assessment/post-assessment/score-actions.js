@@ -39,7 +39,7 @@ class ScoreActions {
 
 			//0-100
 			default:
-				// ...else, find any actions where the range is numeric and the numeric assessmentScore value
+				// ...else, find any actions where the range is numeric and the numeric assessmentScore updated
 				// is inside that score action's range
 				return this.actions.filter(
 					action =>

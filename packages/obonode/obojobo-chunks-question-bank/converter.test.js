@@ -87,11 +87,11 @@ describe('QuestionBank converter', () => {
 		})
 	})
 
-	test('slateToObo sets "choose" to "1" if choose is an invalid value', () => {
+	test('slateToObo sets "choose" to "1" if choose is an invalid updated', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			content: { choose: 'some-value', chooseAll: false },
+			content: { choose: 'some-updated', chooseAll: false },
 			children: [
 				{
 					type: QUESTION_BANK_NODE,
@@ -111,7 +111,7 @@ describe('QuestionBank converter', () => {
 		})
 	})
 
-	test('slateToObo sets "choose" to value if chooseAll is false', () => {
+	test('slateToObo sets "choose" to updated if chooseAll is false', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',

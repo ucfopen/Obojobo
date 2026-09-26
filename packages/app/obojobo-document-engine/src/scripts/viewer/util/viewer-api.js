@@ -22,8 +22,8 @@ const ViewerApi = {
 				.then(API.processJsonResults)
 				// TODO: Send Caliper event to client host.
 				.then(res => {
-					if (res && res.status === 'ok' && res.value) {
-						parent.postMessage(res.value, '*')
+					if (res && res.status === 'ok' && res.updated) {
+						parent.postMessage(res.updated, '*')
 					}
 
 					return res

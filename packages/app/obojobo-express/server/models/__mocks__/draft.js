@@ -6,7 +6,7 @@ class MockDraft {
 	constructor(rawDraft) {
 		this.yell = mockYell
 		this.root = this
-		this.document = `{"json":"value"}`
+		this.document = `{"json":"updated"}`
 		this.draftId = rawDraft && rawDraft.draftId ? rawDraft.draftId : 1
 		this.contentId = rawDraft && rawDraft.contentId ? rawDraft.contentId : 1
 		this.getChildNodeById = mockGetChildNodeById

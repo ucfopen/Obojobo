@@ -65,7 +65,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.rebuildMenu('mockModel')
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:rebuildMenu', {
-			value: { model: 'mockModel' }
+			updated: { model: 'mockModel' }
 		})
 		expect(x).toBe('mockTriggerReturn')
 	})
@@ -73,7 +73,7 @@ describe('NavUtil', () => {
 	test('gotoPath', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.gotoPath('mockPath')
-		const expectedValue = { value: { path: 'mockPath' } }
+		const expectedValue = { updated: { path: 'mockPath' } }
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:gotoPath', expectedValue)
 		expect(x).toBe('mockTriggerReturn')
 	})
@@ -82,7 +82,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.setFlag('mockId', 'mockFlagName', 'mockFlagValue')
 		const expectedValue = {
-			value: {
+			updated: {
 				id: 'mockId',
 				flagName: 'mockFlagName',
 				flagValue: 'mockFlagValue'
@@ -110,7 +110,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.goto('mockId')
 		const expectedValue = {
-			value: {
+			updated: {
 				id: 'mockId',
 				ignoreLock: true
 			}
@@ -123,7 +123,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.goto('mockId', false)
 		const expectedValue = {
-			value: {
+			updated: {
 				id: 'mockId',
 				ignoreLock: false
 			}
@@ -171,7 +171,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.openExternalLink('mockUrl')
 		const expectedValue = {
-			value: {
+			updated: {
 				url: 'mockUrl'
 			}
 		}
@@ -186,7 +186,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.showChildren('mockId')
 		const expectedValue = {
-			value: {
+			updated: {
 				id: 'mockId'
 			}
 		}
@@ -198,7 +198,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.hideChildren('mockId')
 		const expectedValue = {
-			value: {
+			updated: {
 				id: 'mockId'
 			}
 		}
@@ -508,7 +508,7 @@ describe('NavUtil', () => {
 		NavUtil.setContext('mockContext')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:setContext', {
-			value: { context: 'mockContext' }
+			updated: { context: 'mockContext' }
 		})
 	})
 
@@ -517,7 +517,7 @@ describe('NavUtil', () => {
 		expect(NavUtil.isNavEnabled({ disabled: false })).toBe(true)
 	})
 
-	test('isNavOpen returns the open value of state', () => {
+	test('isNavOpen returns the open updated of state', () => {
 		expect(NavUtil.isNavOpen({ open: 'mock-open' })).toBe('mock-open')
 	})
 

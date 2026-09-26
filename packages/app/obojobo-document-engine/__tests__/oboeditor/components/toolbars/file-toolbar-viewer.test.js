@@ -43,7 +43,7 @@ class MockNodesIterator {
 	[Symbol.iterator]() {
 		return {
 			next: () => ({
-				value: this._nextValue,
+				updated: this._nextValue,
 				done: true
 			})
 		}
@@ -76,7 +76,7 @@ describe('FileToolbarViewer', () => {
 		}
 		useEditor.mockReturnValue(editor)
 
-		// always return some value - clear this mock and override for specific test cases
+		// always return some updated - clear this mock and override for specific test cases
 		Editor.parent.mockReturnValue([{ children: [1] }])
 	})
 

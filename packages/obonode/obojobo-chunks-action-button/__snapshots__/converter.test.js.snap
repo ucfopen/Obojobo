@@ -32,7 +32,7 @@ Object {
     "textGroup": Array [
       Object {
         "text": Object {
-          "value": "mockLabel",
+          "updated": "mockLabel",
         },
       },
     ],
@@ -65,7 +65,7 @@ Object {
           },
           Object {
             "type": "mockOtherType",
-            "value": Object {
+            "updated": Object {
               "id": "mockId",
             },
           },
@@ -96,7 +96,7 @@ Object {
           },
           Object {
             "type": "mockOtherType",
-            "value": Object {
+            "updated": Object {
               "id": "mockId",
             },
           },
@@ -129,7 +129,7 @@ Object {
               "type": "b",
             },
           ],
-          "value": "mockText",
+          "updated": "mockText",
         },
       },
     ],
@@ -138,11 +138,11 @@ Object {
         "actions": Array [
           Object {
             "type": "mockType",
-            "value": "{\\"id\\":\\"mockId\\"}",
+            "updated": "{\\"id\\":\\"mockId\\"}",
           },
           Object {
             "type": "mockType",
-            "value": "",
+            "updated": "",
           },
         ],
         "type": "onClick",

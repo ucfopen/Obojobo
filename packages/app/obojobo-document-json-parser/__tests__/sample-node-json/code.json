@@ -8,7 +8,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -21,7 +21,7 @@
 					"indent": 0
 				},
 				"text": {
-					"value": "// Sample code",
+					"updated": "// Sample code",
 					"styleList": [
 						{
 							"end": 14,
@@ -37,7 +37,7 @@
 					"indent": 0
 				},
 				"text": {
-					"value": "function main() {",
+					"updated": "function main() {",
 					"styleList": []
 				}
 			},
@@ -46,7 +46,7 @@
 					"indent": 1
 				},
 				"text": {
-					"value": "print(\"Hello world\");",
+					"updated": "print(\"Hello world\");",
 					"styleList": []
 				}
 			},
@@ -55,7 +55,7 @@
 					"indent": 0
 				},
 				"text": {
-					"value": "}",
+					"updated": "}",
 					"styleList": []
 				}
 			}

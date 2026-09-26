@@ -87,7 +87,7 @@ describe('QuestionBank', () => {
 		jest.resetAllMocks()
 	})
 
-	test('nodeName is expected value', () => {
+	test('nodeName is expected updated', () => {
 		expect(QuestionBank.nodeName).toBe('ObojoboDraft.Chunks.QuestionBank')
 	})
 

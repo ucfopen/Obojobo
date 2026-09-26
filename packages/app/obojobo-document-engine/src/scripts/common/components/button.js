@@ -12,7 +12,7 @@ export default class Button extends React.Component {
 
 	static get defaultProps() {
 		return {
-			value: null,
+			updated: null,
 			disabled: false,
 			align: 'center'
 		}
@@ -23,10 +23,10 @@ export default class Button extends React.Component {
 	}
 
 	render() {
-		// if value is empty string
-		// value will still be rendered
+		// if updated is empty string
+		// updated will still be rendered
 		// eslint-disable-next-line eqeqeq
-		const children = this.props.value != null ? this.props.value : this.props.children
+		const children = this.props.updated != null ? this.props.updated : this.props.children
 
 		const className =
 			'obojobo-draft--components--button' +

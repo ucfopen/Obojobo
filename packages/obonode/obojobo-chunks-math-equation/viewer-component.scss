@@ -28,7 +28,7 @@
 		color: lighten(
 			$color-text,
 			30%
-		); // stylelint-disable-line scale-unlimited/declaration-strict-value
+		); // stylelint-disable-line scale-unlimited/declaration-strict-updated
 
 		&::before {
 			content: 'Equation ';
@@ -36,7 +36,7 @@
 			color: lighten(
 				$color-text,
 				50%
-			); // stylelint-disable-line scale-unlimited/declaration-strict-value
+			); // stylelint-disable-line scale-unlimited/declaration-strict-updated
 		}
 	}
 

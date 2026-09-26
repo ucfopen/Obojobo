@@ -3,7 +3,7 @@
 const getAttemptStartServerResponse = () => {
 	return {
 		status: 'ok',
-		value: {
+		updated: {
 			assessmentId: 'my-assessment',
 			attemptId: '3af99802-2450-42e1-bddf-0649bb4007fe',
 			endTime: null,
@@ -26,7 +26,7 @@ const getAttemptStartServerResponse = () => {
 														data: null,
 														text: {
 															styleList: [],
-															value: 'What is 2+2?'
+															updated: 'What is 2+2?'
 														}
 													}
 												]
@@ -48,7 +48,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: '4'
+																					updated: '4'
 																				}
 																			}
 																		]
@@ -71,7 +71,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: 'Optional answer feedback'
+																					updated: 'Optional answer feedback'
 																				}
 																			}
 																		]
@@ -103,7 +103,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: '2'
+																					updated: '2'
 																				}
 																			}
 																		]
@@ -126,7 +126,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: 'Optional answer feedback'
+																					updated: 'Optional answer feedback'
 																				}
 																			}
 																		]
@@ -167,7 +167,7 @@ const getAttemptStartServerResponse = () => {
 																data: null,
 																text: {
 																	styleList: [],
-																	value: 'Add additional information here'
+																	updated: 'Add additional information here'
 																}
 															}
 														]
@@ -195,7 +195,7 @@ const getAttemptStartServerResponse = () => {
 														data: null,
 														text: {
 															styleList: [],
-															value: 'What is 3-0?'
+															updated: 'What is 3-0?'
 														}
 													}
 												]
@@ -217,7 +217,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: '3'
+																					updated: '3'
 																				}
 																			}
 																		]
@@ -240,7 +240,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: 'Optional answer feedback'
+																					updated: 'Optional answer feedback'
 																				}
 																			}
 																		]
@@ -272,7 +272,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: '0'
+																					updated: '0'
 																				}
 																			}
 																		]
@@ -295,7 +295,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: 'Optional answer feedback'
+																					updated: 'Optional answer feedback'
 																				}
 																			}
 																		]
@@ -336,7 +336,7 @@ const getAttemptStartServerResponse = () => {
 																data: null,
 																text: {
 																	styleList: [],
-																	value: 'Add additional information here'
+																	updated: 'Add additional information here'
 																}
 															}
 														]
@@ -364,7 +364,7 @@ const getAttemptStartServerResponse = () => {
 														data: null,
 														text: {
 															styleList: [],
-															value: 'What is 9-4?'
+															updated: 'What is 9-4?'
 														}
 													}
 												]
@@ -386,7 +386,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: '5'
+																					updated: '5'
 																				}
 																			}
 																		]
@@ -409,7 +409,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: 'Optional answer feedback'
+																					updated: 'Optional answer feedback'
 																				}
 																			}
 																		]
@@ -441,7 +441,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: '3'
+																					updated: '3'
 																				}
 																			}
 																		]
@@ -464,7 +464,7 @@ const getAttemptStartServerResponse = () => {
 																				data: null,
 																				text: {
 																					styleList: [],
-																					value: 'Optional answer feedback'
+																					updated: 'Optional answer feedback'
 																				}
 																			}
 																		]
@@ -505,7 +505,7 @@ const getAttemptStartServerResponse = () => {
 																data: null,
 																text: {
 																	styleList: [],
-																	value: 'Add additional information here'
+																	updated: 'Add additional information here'
 																}
 															}
 														]
@@ -549,7 +549,7 @@ const getAttemptStartServerResponse = () => {
 											data: null,
 											text: {
 												styleList: [],
-												value: 'What is 2+2?'
+												updated: 'What is 2+2?'
 											}
 										}
 									]
@@ -571,7 +571,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: '4'
+																		updated: '4'
 																	}
 																}
 															]
@@ -594,7 +594,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: 'Optional answer feedback'
+																		updated: 'Optional answer feedback'
 																	}
 																}
 															]
@@ -626,7 +626,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: '2'
+																		updated: '2'
 																	}
 																}
 															]
@@ -649,7 +649,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: 'Optional answer feedback'
+																		updated: 'Optional answer feedback'
 																	}
 																}
 															]
@@ -690,7 +690,7 @@ const getAttemptStartServerResponse = () => {
 													data: null,
 													text: {
 														styleList: [],
-														value: 'Add additional information here'
+														updated: 'Add additional information here'
 													}
 												}
 											]
@@ -718,7 +718,7 @@ const getAttemptStartServerResponse = () => {
 											data: null,
 											text: {
 												styleList: [],
-												value: 'What is 3-0?'
+												updated: 'What is 3-0?'
 											}
 										}
 									]
@@ -740,7 +740,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: '3'
+																		updated: '3'
 																	}
 																}
 															]
@@ -763,7 +763,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: 'Optional answer feedback'
+																		updated: 'Optional answer feedback'
 																	}
 																}
 															]
@@ -795,7 +795,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: '0'
+																		updated: '0'
 																	}
 																}
 															]
@@ -818,7 +818,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: 'Optional answer feedback'
+																		updated: 'Optional answer feedback'
 																	}
 																}
 															]
@@ -859,7 +859,7 @@ const getAttemptStartServerResponse = () => {
 													data: null,
 													text: {
 														styleList: [],
-														value: 'Add additional information here'
+														updated: 'Add additional information here'
 													}
 												}
 											]
@@ -887,7 +887,7 @@ const getAttemptStartServerResponse = () => {
 											data: null,
 											text: {
 												styleList: [],
-												value: 'What is 9-4?'
+												updated: 'What is 9-4?'
 											}
 										}
 									]
@@ -909,7 +909,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: '5'
+																		updated: '5'
 																	}
 																}
 															]
@@ -932,7 +932,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: 'Optional answer feedback'
+																		updated: 'Optional answer feedback'
 																	}
 																}
 															]
@@ -964,7 +964,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: '3'
+																		updated: '3'
 																	}
 																}
 															]
@@ -987,7 +987,7 @@ const getAttemptStartServerResponse = () => {
 																	data: null,
 																	text: {
 																		styleList: [],
-																		value: 'Optional answer feedback'
+																		updated: 'Optional answer feedback'
 																	}
 																}
 															]
@@ -1028,7 +1028,7 @@ const getAttemptStartServerResponse = () => {
 													data: null,
 													text: {
 														styleList: [],
-														value: 'Add additional information here'
+														updated: 'Add additional information here'
 													}
 												}
 											]
@@ -1055,10 +1055,10 @@ const getAttemptStartServerResponse = () => {
 // select the first answer of each qestion and submit
 // copyt the api results from the attempt end and paste here
 const getAttemptEndServerResponse = () => {
-	// res.success always renders { status: ..., value: {} }
+	// res.success always renders { status: ..., updated: {} }
 	return {
 		status: 'ok',
-		value: {
+		updated: {
 			assessmentId: 'my-assessment',
 			attempts: [
 				{
@@ -1104,7 +1104,7 @@ const getAttemptEndServerResponse = () => {
 																	{
 																		data: null,
 																		text: {
-																			value: 'Add additional information here',
+																			updated: 'Add additional information here',
 																			styleList: []
 																		}
 																	}
@@ -1124,7 +1124,7 @@ const getAttemptEndServerResponse = () => {
 															{
 																data: null,
 																text: {
-																	value: 'What is 2+2?',
+																	updated: 'What is 2+2?',
 																	styleList: []
 																}
 															}
@@ -1161,7 +1161,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: '4',
+																							updated: '4',
 																							styleList: []
 																						}
 																					}
@@ -1184,7 +1184,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: 'Optional answer feedback',
+																							updated: 'Optional answer feedback',
 																							styleList: []
 																						}
 																					}
@@ -1216,7 +1216,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: '2',
+																							updated: '2',
 																							styleList: []
 																						}
 																					}
@@ -1239,7 +1239,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: 'Optional answer feedback',
+																							updated: 'Optional answer feedback',
 																							styleList: []
 																						}
 																					}
@@ -1272,7 +1272,7 @@ const getAttemptEndServerResponse = () => {
 																	{
 																		data: null,
 																		text: {
-																			value: 'Add additional information here',
+																			updated: 'Add additional information here',
 																			styleList: []
 																		}
 																	}
@@ -1292,7 +1292,7 @@ const getAttemptEndServerResponse = () => {
 															{
 																data: null,
 																text: {
-																	value: 'What is 3-0?',
+																	updated: 'What is 3-0?',
 																	styleList: []
 																}
 															}
@@ -1329,7 +1329,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: '3',
+																							updated: '3',
 																							styleList: []
 																						}
 																					}
@@ -1352,7 +1352,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: 'Optional answer feedback',
+																							updated: 'Optional answer feedback',
 																							styleList: []
 																						}
 																					}
@@ -1384,7 +1384,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: '0',
+																							updated: '0',
 																							styleList: []
 																						}
 																					}
@@ -1407,7 +1407,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: 'Optional answer feedback',
+																							updated: 'Optional answer feedback',
 																							styleList: []
 																						}
 																					}
@@ -1440,7 +1440,7 @@ const getAttemptEndServerResponse = () => {
 																	{
 																		data: null,
 																		text: {
-																			value: 'Add additional information here',
+																			updated: 'Add additional information here',
 																			styleList: []
 																		}
 																	}
@@ -1460,7 +1460,7 @@ const getAttemptEndServerResponse = () => {
 															{
 																data: null,
 																text: {
-																	value: 'What is 9-4?',
+																	updated: 'What is 9-4?',
 																	styleList: []
 																}
 															}
@@ -1497,7 +1497,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: '5',
+																							updated: '5',
 																							styleList: []
 																						}
 																					}
@@ -1520,7 +1520,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: 'Optional answer feedback',
+																							updated: 'Optional answer feedback',
 																							styleList: []
 																						}
 																					}
@@ -1552,7 +1552,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: '3',
+																							updated: '3',
 																							styleList: []
 																						}
 																					}
@@ -1575,7 +1575,7 @@ const getAttemptEndServerResponse = () => {
 																					{
 																						data: null,
 																						text: {
-																							value: 'Optional answer feedback',
+																							updated: 'Optional answer feedback',
 																							styleList: []
 																						}
 																					}
@@ -1614,7 +1614,7 @@ const getAttemptEndServerResponse = () => {
 														{
 															data: null,
 															text: {
-																value: 'Add additional information here',
+																updated: 'Add additional information here',
 																styleList: []
 															}
 														}
@@ -1634,7 +1634,7 @@ const getAttemptEndServerResponse = () => {
 												{
 													data: null,
 													text: {
-														value: 'What is 2+2?',
+														updated: 'What is 2+2?',
 														styleList: []
 													}
 												}
@@ -1671,7 +1671,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: '4',
+																				updated: '4',
 																				styleList: []
 																			}
 																		}
@@ -1694,7 +1694,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: 'Optional answer feedback',
+																				updated: 'Optional answer feedback',
 																				styleList: []
 																			}
 																		}
@@ -1726,7 +1726,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: '2',
+																				updated: '2',
 																				styleList: []
 																			}
 																		}
@@ -1749,7 +1749,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: 'Optional answer feedback',
+																				updated: 'Optional answer feedback',
 																				styleList: []
 																			}
 																		}
@@ -1782,7 +1782,7 @@ const getAttemptEndServerResponse = () => {
 														{
 															data: null,
 															text: {
-																value: 'Add additional information here',
+																updated: 'Add additional information here',
 																styleList: []
 															}
 														}
@@ -1802,7 +1802,7 @@ const getAttemptEndServerResponse = () => {
 												{
 													data: null,
 													text: {
-														value: 'What is 3-0?',
+														updated: 'What is 3-0?',
 														styleList: []
 													}
 												}
@@ -1839,7 +1839,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: '3',
+																				updated: '3',
 																				styleList: []
 																			}
 																		}
@@ -1862,7 +1862,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: 'Optional answer feedback',
+																				updated: 'Optional answer feedback',
 																				styleList: []
 																			}
 																		}
@@ -1894,7 +1894,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: '0',
+																				updated: '0',
 																				styleList: []
 																			}
 																		}
@@ -1917,7 +1917,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: 'Optional answer feedback',
+																				updated: 'Optional answer feedback',
 																				styleList: []
 																			}
 																		}
@@ -1950,7 +1950,7 @@ const getAttemptEndServerResponse = () => {
 														{
 															data: null,
 															text: {
-																value: 'Add additional information here',
+																updated: 'Add additional information here',
 																styleList: []
 															}
 														}
@@ -1970,7 +1970,7 @@ const getAttemptEndServerResponse = () => {
 												{
 													data: null,
 													text: {
-														value: 'What is 9-4?',
+														updated: 'What is 9-4?',
 														styleList: []
 													}
 												}
@@ -2007,7 +2007,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: '5',
+																				updated: '5',
 																				styleList: []
 																			}
 																		}
@@ -2030,7 +2030,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: 'Optional answer feedback',
+																				updated: 'Optional answer feedback',
 																				styleList: []
 																			}
 																		}
@@ -2062,7 +2062,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: '3',
+																				updated: '3',
 																				styleList: []
 																			}
 																		}
@@ -2085,7 +2085,7 @@ const getAttemptEndServerResponse = () => {
 																		{
 																			data: null,
 																			text: {
-																				value: 'Optional answer feedback',
+																				updated: 'Optional answer feedback',
 																				styleList: []
 																			}
 																		}

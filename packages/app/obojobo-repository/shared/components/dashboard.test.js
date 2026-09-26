@@ -172,7 +172,7 @@ describe('Dashboard', () => {
 				const parts = string.split(';')
 				const propAndValue = parts[0].split('=')
 				cookie[propAndValue[0]] = {
-					value: propAndValue[1],
+					updated: propAndValue[1],
 					path: parts[parts.length - 1].split('=')[1]
 				}
 			},
@@ -373,8 +373,8 @@ describe('Dashboard', () => {
 		return component.root.findAllByProps({ className: expectedPlaceholderClass })
 	}
 
-	const expectCookiePropForPath = (prop, value, path) => {
-		expect(document.cookie[prop].value).toBe(value)
+	const expectCookiePropForPath = (prop, updated, path) => {
+		expect(document.cookie[prop].updated).toBe(updated)
 		expect(document.cookie[prop].path).toBe(path)
 	}
 
@@ -446,7 +446,7 @@ describe('Dashboard', () => {
 		const moduleSort = moduleSortParent.children[1]
 
 		// default sort method should be 'alphabetical'
-		expect(moduleSort.props.value).toBe('alphabetical')
+		expect(moduleSort.props.updated).toBe('alphabetical')
 		expect(moduleComponents[0].props.draftId).toBe('mockDraftId2')
 		expect(moduleComponents[1].props.draftId).toBe('mockDraftId4')
 		expect(moduleComponents[2].props.draftId).toBe('mockDraftId3')
@@ -455,7 +455,7 @@ describe('Dashboard', () => {
 
 		// sort order should change when the drop-down changes
 		act(() => {
-			moduleSort.props.onChange({ target: { value: 'newest' } })
+			moduleSort.props.onChange({ target: { updated: 'newest' } })
 			component.update(reusableComponent)
 		})
 
@@ -464,7 +464,7 @@ describe('Dashboard', () => {
 
 		// changing the sort method should resort modules automatically
 		moduleComponents = component.root.findAllByType(Module)
-		expect(moduleSort.props.value).toBe('newest')
+		expect(moduleSort.props.updated).toBe('newest')
 		expect(moduleComponents[0].props.draftId).toBe('mockDraftId5')
 		expect(moduleComponents[1].props.draftId).toBe('mockDraftId4')
 		expect(moduleComponents[2].props.draftId).toBe('mockDraftId3')
@@ -472,7 +472,7 @@ describe('Dashboard', () => {
 		expect(moduleComponents[4].props.draftId).toBe('mockDraftId')
 
 		act(() => {
-			moduleSort.props.onChange({ target: { value: 'last updated' } })
+			moduleSort.props.onChange({ target: { updated: 'last updated' } })
 			component.update(reusableComponent)
 		})
 
@@ -480,7 +480,7 @@ describe('Dashboard', () => {
 		expectCookiePropForPath('collectionSortOrder', 'alphabetical', cookiePath)
 
 		moduleComponents = component.root.findAllByType(Module)
-		expect(moduleSort.props.value).toBe('last updated')
+		expect(moduleSort.props.updated).toBe('last updated')
 		expect(moduleComponents[0].props.draftId).toBe('mockDraftId5')
 		expect(moduleComponents[1].props.draftId).toBe('mockDraftId2')
 		expect(moduleComponents[2].props.draftId).toBe('mockDraftId3')
@@ -653,7 +653,7 @@ describe('Dashboard', () => {
 		const collectionSort = collectionSortParent.children[1]
 
 		// default sort method should be 'alphabetical'
-		expect(collectionSort.props.value).toBe('alphabetical')
+		expect(collectionSort.props.updated).toBe('alphabetical')
 		expect(collectionComponents[0].props.id).toBe('mockCollectionId2')
 		expect(collectionComponents[1].props.id).toBe('mockCollectionId4')
 		expect(collectionComponents[2].props.id).toBe('mockCollectionId3')
@@ -662,7 +662,7 @@ describe('Dashboard', () => {
 
 		// sort order should change when the drop-down changes
 		act(() => {
-			collectionSort.props.onChange({ target: { value: 'newest' } })
+			collectionSort.props.onChange({ target: { updated: 'newest' } })
 			component.update(reusableComponent)
 		})
 
@@ -671,7 +671,7 @@ describe('Dashboard', () => {
 
 		// changing the sort method should resort collections automatically
 		collectionComponents = component.root.findAllByType(Collection)
-		expect(collectionSort.props.value).toBe('newest')
+		expect(collectionSort.props.updated).toBe('newest')
 		expect(collectionComponents[0].props.id).toBe('mockCollectionId5')
 		expect(collectionComponents[1].props.id).toBe('mockCollectionId4')
 		expect(collectionComponents[2].props.id).toBe('mockCollectionId3')
@@ -679,7 +679,7 @@ describe('Dashboard', () => {
 		expect(collectionComponents[4].props.id).toBe('mockCollectionId')
 
 		act(() => {
-			collectionSort.props.onChange({ target: { value: 'last updated' } })
+			collectionSort.props.onChange({ target: { updated: 'last updated' } })
 			component.update(reusableComponent)
 		})
 
@@ -687,7 +687,7 @@ describe('Dashboard', () => {
 		expectCookiePropForPath('collectionSortOrder', 'last updated', '/dashboard')
 
 		collectionComponents = component.root.findAllByType(Collection)
-		expect(collectionSort.props.value).toBe('last updated')
+		expect(collectionSort.props.updated).toBe('last updated')
 		expect(collectionComponents[0].props.id).toBe('mockCollectionId5')
 		expect(collectionComponents[1].props.id).toBe('mockCollectionId2')
 		expect(collectionComponents[2].props.id).toBe('mockCollectionId3')
@@ -714,7 +714,7 @@ describe('Dashboard', () => {
 		expect(collectionComponents[4].props.id).toBe('mockCollectionId5')
 
 		// changing the text of the search field should call props.filterCollections
-		const filterChangePayload = { target: { value: 'string' } }
+		const filterChangePayload = { target: { updated: 'string' } }
 		component.root.findByType(Search).props.onChange(filterChangePayload)
 		expect(dashboardProps.filterCollections).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.filterCollections).toHaveBeenCalledWith(filterChangePayload)
@@ -775,7 +775,7 @@ describe('Dashboard', () => {
 		expect(moduleComponents[4].props.draftId).toBe('mockDraftId5')
 
 		// changing the text of the search field should call props.filterModules
-		const filterChangePayload = { target: { value: 'string' } }
+		const filterChangePayload = { target: { updated: 'string' } }
 		component.root.findByType(Search).props.onChange(filterChangePayload)
 		expect(dashboardProps.filterModules).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.filterModules).toHaveBeenCalledWith(filterChangePayload)
@@ -1163,7 +1163,7 @@ describe('Dashboard', () => {
 		expect(moduleComponents[4].props.draftId).toBe('mockDraftId5')
 
 		// changing the text of the search field should call props.filterModules
-		const filterChangePayload = { target: { value: 'string' } }
+		const filterChangePayload = { target: { updated: 'string' } }
 		component.root.findByType(Search).props.onChange(filterChangePayload)
 		expect(dashboardProps.filterModules).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.filterModules).toHaveBeenCalledWith(filterChangePayload)
@@ -1223,7 +1223,7 @@ describe('Dashboard', () => {
 		]
 		const newModule = {
 			payload: {
-				value: {
+				updated: {
 					modules: newModuleMockPayload,
 					allCount: newModuleMockPayload.length
 				}
@@ -2176,8 +2176,8 @@ describe('Dashboard', () => {
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
 	})
 
-	test('renders no dialogs if props.dialog value is unsupported', () => {
-		dashboardProps.dialog = 'some-unsupported-value'
+	test('renders no dialogs if props.dialog updated is unsupported', () => {
+		dashboardProps.dialog = 'some-unsupported-updated'
 		let component
 		act(() => {
 			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)

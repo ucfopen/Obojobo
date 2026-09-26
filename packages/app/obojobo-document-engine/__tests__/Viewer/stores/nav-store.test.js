@@ -51,7 +51,7 @@ describe('NavStore', () => {
 		const spy = jest.spyOn(NavStore, 'triggerChange')
 		NavStore.triggerChange.mockReturnValueOnce('')
 
-		eventCallbacks['nav:setContext']({ value: { context: 'fake' } })
+		eventCallbacks['nav:setContext']({ updated: { context: 'fake' } })
 
 		expect(NavStore.triggerChange).toHaveBeenCalled()
 
@@ -62,7 +62,7 @@ describe('NavStore', () => {
 		const spy = jest.spyOn(NavStore, 'triggerChange')
 		NavStore.triggerChange.mockReturnValueOnce('')
 
-		eventCallbacks['nav:resetContext']({ value: { context: 'practice' } })
+		eventCallbacks['nav:resetContext']({ updated: { context: 'practice' } })
 
 		expect(NavStore.triggerChange).toHaveBeenCalled()
 
@@ -74,7 +74,7 @@ describe('NavStore', () => {
 		NavStore.buildMenu.mockReturnValueOnce('')
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
-		eventCallbacks['nav:rebuildMenu']({ value: { model: 'fake' } })
+		eventCallbacks['nav:rebuildMenu']({ updated: { model: 'fake' } })
 
 		expect(NavStore.buildMenu).toHaveBeenCalledWith('fake')
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
@@ -93,7 +93,7 @@ describe('NavStore', () => {
 		})
 		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
-		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
+		eventCallbacks['nav:gotoPath']({ updated: { path: 'fake' } })
 
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ id: 'mock' })
 		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
@@ -112,7 +112,7 @@ describe('NavStore', () => {
 		})
 		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(false)
-		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
+		eventCallbacks['nav:gotoPath']({ updated: { path: 'fake' } })
 
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ id: 'mock' })
 		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
@@ -132,7 +132,7 @@ describe('NavStore', () => {
 		})
 		const spy = jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
-		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
+		eventCallbacks['nav:gotoPath']({ updated: { path: 'fake' } })
 
 		expect(NavStore.gotoItem).not.toHaveBeenCalled()
 		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(0)
@@ -156,7 +156,7 @@ describe('NavStore', () => {
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 
-		eventCallbacks['nav:setFlag']({ value: { id: 'fake', flagName: 'spoof' } })
+		eventCallbacks['nav:setFlag']({ updated: { id: 'fake', flagName: 'spoof' } })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -297,7 +297,7 @@ describe('NavStore', () => {
 		NavStore.gotoItem.mockReturnValueOnce(true)
 
 		// go
-		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
+		eventCallbacks['nav:goto']({ updated: { id: 'mock' } })
 		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
 		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 
@@ -319,7 +319,7 @@ describe('NavStore', () => {
 		NavStore.gotoItem.mockReturnValueOnce(true)
 
 		// go
-		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
+		eventCallbacks['nav:goto']({ updated: { id: 'mock' } })
 		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(NavStore.pendingTarget).toEqual({
 			type: 'goto',
@@ -344,7 +344,7 @@ describe('NavStore', () => {
 		NavStore.gotoItem.mockReturnValueOnce(false)
 
 		// make sure the nav defaults to the first page if an ID isn't found
-		eventCallbacks['nav:goto']({ value: { id: 'does-not-exist' } })
+		eventCallbacks['nav:goto']({ updated: { id: 'does-not-exist' } })
 		expect(gotoFirstSpy).toHaveBeenCalled()
 		expect(gotoItemSpy).not.toHaveBeenCalled()
 
@@ -362,7 +362,7 @@ describe('NavStore', () => {
 		})
 
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
-		eventCallbacks['nav:goto']({ value: { id: 'mockId' } })
+		eventCallbacks['nav:goto']({ updated: { id: 'mockId' } })
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
@@ -380,7 +380,7 @@ describe('NavStore', () => {
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
-	test('nav:goto does nothing if payload.value is undefined', () => {
+	test('nav:goto does nothing if payload.updated is undefined', () => {
 		NavStore.setState({
 			isInitialized: true,
 			navTargetId: 'mockId',
@@ -409,7 +409,7 @@ describe('NavStore', () => {
 		NavStore.gotoItem.mockReturnValueOnce(true)
 
 		// go
-		eventCallbacks['nav:goto']({ value: { id: 'mockId' } })
+		eventCallbacks['nav:goto']({ updated: { id: 'mockId' } })
 		expect(NavStore.gotoItem).toHaveBeenCalledTimes(1)
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ flags: {}, id: 'mockId' })
 		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
@@ -432,7 +432,7 @@ describe('NavStore', () => {
 		NavStore.gotoItem.mockReturnValueOnce(true)
 
 		// go
-		eventCallbacks['nav:goto']({ value: { id: 'mockId', ignoreLock: true } })
+		eventCallbacks['nav:goto']({ updated: { id: 'mockId', ignoreLock: true } })
 		expect(NavStore.gotoItem).toHaveBeenCalledTimes(1)
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ flags: {}, id: 'mockId' })
 		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
@@ -453,7 +453,7 @@ describe('NavStore', () => {
 		const spy = jest.spyOn(NavStore, 'gotoItem')
 
 		// go
-		eventCallbacks['nav:goto']({ value: { id: 'mockId', ignoreLock: false } })
+		eventCallbacks['nav:goto']({ updated: { id: 'mockId', ignoreLock: false } })
 		expect(NavStore.gotoItem).not.toHaveBeenCalled()
 		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
@@ -687,7 +687,7 @@ describe('NavStore', () => {
 		Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
-		eventCallbacks['nav:openExternalLink']({ value: { url: 'mockUrl' } })
+		eventCallbacks['nav:openExternalLink']({ updated: { url: 'mockUrl' } })
 		expect(window.open).toHaveBeenCalledTimes(1)
 		expect(window.open).toHaveBeenCalledWith('mockUrl')
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -700,7 +700,7 @@ describe('NavStore', () => {
 		Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
-		eventCallbacks['nav:showChildren']({ value: { id: 'mockID' } })
+		eventCallbacks['nav:showChildren']({ updated: { id: 'mockID' } })
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -712,7 +712,7 @@ describe('NavStore', () => {
 		Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
-		eventCallbacks['nav:hideChildren']({ value: { id: 'mockID' } })
+		eventCallbacks['nav:hideChildren']({ updated: { id: 'mockID' } })
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -724,7 +724,7 @@ describe('NavStore', () => {
 		Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
-		eventCallbacks['question:scoreSet']({ value: { id: 'mockID', score: 0 } })
+		eventCallbacks['question:scoreSet']({ updated: { id: 'mockID', score: 0 } })
 		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
@@ -735,7 +735,7 @@ describe('NavStore', () => {
 		Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
-		eventCallbacks['question:scoreSet']({ value: { id: 'mockID', score: 0 } })
+		eventCallbacks['question:scoreSet']({ updated: { id: 'mockID', score: 0 } })
 		expect(NavUtil.setFlag).not.toHaveBeenCalled()
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
@@ -747,7 +747,7 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['question:scoreSet']({
-			value: { id: 'mockID', score: 100 }
+			updated: { id: 'mockID', score: 100 }
 		})
 		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
@@ -759,12 +759,12 @@ describe('NavStore', () => {
 	})
 
 	test('init builds state locked state', () => {
-		NavStore.init('mockDraftId', null, 12, '', 11, { 'nav:isLocked': { value: true } })
+		NavStore.init('mockDraftId', null, 12, '', 11, { 'nav:isLocked': { updated: true } })
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state open state', () => {
-		NavStore.init('mockDraftId', null, 12, '', 11, { 'nav:isOpen': { value: true } })
+		NavStore.init('mockDraftId', null, 12, '', 11, { 'nav:isOpen': { updated: true } })
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -863,7 +863,7 @@ describe('NavStore', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:targetChanged', {
-			value: {
+			updated: {
 				from: 'mockId',
 				to: 'newItem'
 			}
@@ -900,7 +900,7 @@ describe('NavStore', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:targetChanged', {
-			value: {
+			updated: {
 				from: 'mockId',
 				to: 'newItem'
 			}

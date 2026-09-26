@@ -118,7 +118,7 @@ describe('FormatPlugin', () => {
 		expect(item.switchType['mock-type']).toHaveBeenCalled()
 	})
 
-	test('changeToType does not call item.switchToType when the value doent exist', () => {
+	test('changeToType does not call item.switchToType when the updated doent exist', () => {
 		const editor = {
 			children: [
 				{

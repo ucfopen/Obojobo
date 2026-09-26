@@ -35,7 +35,7 @@ describe('ResultsDialog', () => {
 		      Object {
 		        "default": true,
 		        "onClick": "mock-on-show-click",
-		        "value": "Show mock-label Overview",
+		        "updated": "Show mock-label Overview",
 		      },
 		    ]
 		  }

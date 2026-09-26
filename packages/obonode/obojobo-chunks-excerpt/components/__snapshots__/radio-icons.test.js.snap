@@ -23,7 +23,7 @@ exports[`Radio Icons Node builds the expected component - icons are functions 1`
         name="sizes"
         onChange={[Function]}
         type="radio"
-        value="small"
+        updated="small"
       />
       <span>
         small
@@ -46,7 +46,7 @@ exports[`Radio Icons Node builds the expected component - icons are functions 1`
         name="sizes"
         onChange={[Function]}
         type="radio"
-        value="medium"
+        updated="medium"
       />
       <span>
         medium
@@ -69,7 +69,7 @@ exports[`Radio Icons Node builds the expected component - icons are functions 1`
         name="sizes"
         onChange={[Function]}
         type="radio"
-        value="large"
+        updated="large"
       />
       <span>
         large
@@ -105,7 +105,7 @@ exports[`Radio Icons Node builds the expected component - icons are strings 1`] 
         name="sizes"
         onChange={[Function]}
         type="radio"
-        value="small"
+        updated="small"
       />
       <span>
         small
@@ -128,7 +128,7 @@ exports[`Radio Icons Node builds the expected component - icons are strings 1`] 
         name="sizes"
         onChange={[Function]}
         type="radio"
-        value="medium"
+        updated="medium"
       />
       <span>
         medium
@@ -151,7 +151,7 @@ exports[`Radio Icons Node builds the expected component - icons are strings 1`] 
         name="sizes"
         onChange={[Function]}
         type="radio"
-        value="large"
+        updated="large"
       />
       <span>
         large

@@ -10,8 +10,8 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Heading', {
 		switch (model.modelState.headingLevel) {
 			// when 1
 			// 	type: 'link',
-			// 	label: model.modelState.textGroup.first.text.value,
-			// 	path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
+			// 	label: model.modelState.textGroup.first.text.updated,
+			// 	path: [model.modelState.textGroup.first.text.updated.toLowerCase().replace(/ /g, '-')],
 			// 	showChildren: false
 
 			case 1:

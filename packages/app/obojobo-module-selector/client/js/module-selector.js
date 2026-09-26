@@ -18,7 +18,7 @@ import '../css/module-selector.scss'
 	const listContainerEl = document.getElementById('list-container')
 	const searchEl = document.getElementById('search')
 	const progressBarEL = document.getElementById('progressbar')
-	const progressBarValueEl = progressBarEL.querySelector('.ui-progressbar-value')
+	const progressBarValueEl = progressBarEL.querySelector('.ui-progressbar-updated')
 	const progressBarContainerEl = document.querySelector('.progress-container')
 	const data = {
 		items: undefined, // eslint-disable-line no-undefined
@@ -84,7 +84,7 @@ import '../css/module-selector.scss'
 			return
 		}
 
-		const text = searchEl.value.trim()
+		const text = searchEl.updated.trim()
 		if (searchEl.getAttribute('data-last-search') !== text) {
 			const ul = document.querySelector(sectionClassName(section) + ' ul')
 			empty(ul)
@@ -99,7 +99,7 @@ import '../css/module-selector.scss'
 		const className = sectionClassName(section)
 		const ul = document.querySelector(className + ' ul')
 		empty(ul)
-		searchEl.value = ''
+		searchEl.updated = ''
 		data.items = data.allItems
 		data.last = 0
 		searchEl.setAttribute('data-last-search', '')
@@ -230,7 +230,7 @@ import '../css/module-selector.scss'
 				SETTINGS_IS_ASSIGNMENT
 			)
 			const formEl = document.getElementById('submit-form')
-			formEl.querySelector('input[name=content_items]').value = JSON.stringify(ltiData)
+			formEl.querySelector('input[name=content_items]').updated = JSON.stringify(ltiData)
 			formEl.submit()
 		}, 1000)
 	}
@@ -278,7 +278,7 @@ import '../css/module-selector.scss'
 		resetSectionList(section)
 
 		hide(listContainerEl.querySelector('.section'))
-		searchEl.value = ''
+		searchEl.updated = ''
 
 		let title = ''
 		let apiUrl = ''
@@ -311,12 +311,12 @@ import '../css/module-selector.scss'
 				if (respJson.status !== 'ok') throw 'Failed loading modules'
 
 				// personal module lookup has an extra layer indicating total module count
-				data.allItems = data.items = respJson.value.modules
-					? respJson.value.modules
-					: respJson.value
+				data.allItems = data.items = respJson.updated.modules
+					? respJson.updated.modules
+					: respJson.updated
 				populateSection(section, title, color)
 
-				if (searchEl.value !== '') {
+				if (searchEl.updated !== '') {
 					search()
 				}
 			})
@@ -404,7 +404,7 @@ import '../css/module-selector.scss'
 		document.getElementById('finish-button').addEventListener('click', event => {
 			event.preventDefault()
 			allowScorePassback =
-				document.querySelector("input[name='allow_import']:checked").value === '1'
+				document.querySelector("input[name='allow_import']:checked").updated === '1'
 			gotoSection(SECTION_PRE_PROGRESS)
 		})
 

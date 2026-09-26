@@ -25,7 +25,7 @@ describe('Figure', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]
@@ -75,7 +75,7 @@ describe('Figure', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]
@@ -102,7 +102,7 @@ describe('Figure', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]
@@ -131,7 +131,7 @@ describe('Figure', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]

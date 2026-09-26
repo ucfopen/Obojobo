@@ -69,7 +69,7 @@ describe('File Menu', () => {
 
 		EditorAPI.postDraft.mockResolvedValueOnce({
 			status: 'error',
-			value: { message: 'mock Error' }
+			updated: { message: 'mock Error' }
 		})
 
 		component
@@ -84,14 +84,14 @@ describe('File Menu', () => {
 
 		EditorAPI.createNewDraft.mockResolvedValueOnce({
 			status: 'ok',
-			value: { id: 'mock-id' }
+			updated: { id: 'mock-id' }
 		})
 
 		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
 
 		EditorAPI.createNewDraft.mockResolvedValueOnce({
 			status: 'error',
-			value: { message: 'mock Error' }
+			updated: { message: 'mock Error' }
 		})
 
 		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
@@ -140,7 +140,7 @@ describe('File Menu', () => {
 		}
 
 		EditorAPI.getFullDraft.mockResolvedValueOnce('')
-		EditorAPI.getFullDraft.mockResolvedValueOnce('{ "item": "value" }')
+		EditorAPI.getFullDraft.mockResolvedValueOnce('{ "item": "updated" }')
 
 		// render
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
@@ -248,7 +248,7 @@ describe('File Menu', () => {
 
 		EditorAPI.copyDraft.mockResolvedValueOnce({
 			status: 'ok',
-			value: {
+			updated: {
 				draftId: 'new-copy-draft-id'
 			}
 		})
@@ -290,7 +290,7 @@ describe('File Menu', () => {
 
 		EditorAPI.copyDraft.mockResolvedValueOnce({
 			status: 'ok',
-			value: {
+			updated: {
 				draftId: 'new-copy-draft-id'
 			}
 		})
@@ -322,7 +322,7 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu - processFileContent', () => {
-		EditorAPI.postDraft.mockResolvedValue({ status: 'ok', value: { id: 'mockId' } })
+		EditorAPI.postDraft.mockResolvedValue({ status: 'ok', updated: { id: 'mockId' } })
 
 		const reload = jest.fn()
 		const component = mount(<FileMenu draftId="mockDraft" reload={reload} />)

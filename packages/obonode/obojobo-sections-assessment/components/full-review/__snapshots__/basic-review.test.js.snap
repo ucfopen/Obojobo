@@ -29,7 +29,7 @@ exports[`BasicReview Basic component correct 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text",
+                                "updated": "Example Text",
                               },
                             },
                           ],
@@ -60,7 +60,7 @@ exports[`BasicReview Basic component correct 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 2",
+                                "updated": "Example Text 2",
                               },
                             },
                           ],
@@ -102,7 +102,7 @@ exports[`BasicReview Basic component correct 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 3",
+                                "updated": "Example Text 3",
                               },
                             },
                           ],
@@ -133,7 +133,7 @@ exports[`BasicReview Basic component correct 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 4",
+                                "updated": "Example Text 4",
                               },
                             },
                           ],
@@ -189,7 +189,7 @@ exports[`BasicReview Basic component correct 1`] = `
                       },
                       "text": Object {
                         "styleList": null,
-                        "value": "Example text",
+                        "updated": "Example text",
                       },
                     },
                   ],
@@ -254,7 +254,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text",
+                                "updated": "Example Text",
                               },
                             },
                           ],
@@ -285,7 +285,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 2",
+                                "updated": "Example Text 2",
                               },
                             },
                           ],
@@ -327,7 +327,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 3",
+                                "updated": "Example Text 3",
                               },
                             },
                           ],
@@ -358,7 +358,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 4",
+                                "updated": "Example Text 4",
                               },
                             },
                           ],
@@ -414,7 +414,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                       },
                       "text": Object {
                         "styleList": null,
-                        "value": "Example text",
+                        "updated": "Example text",
                       },
                     },
                   ],
@@ -479,7 +479,7 @@ exports[`BasicReview Basic component survey 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text",
+                                "updated": "Example Text",
                               },
                             },
                           ],
@@ -510,7 +510,7 @@ exports[`BasicReview Basic component survey 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 2",
+                                "updated": "Example Text 2",
                               },
                             },
                           ],
@@ -552,7 +552,7 @@ exports[`BasicReview Basic component survey 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 3",
+                                "updated": "Example Text 3",
                               },
                             },
                           ],
@@ -583,7 +583,7 @@ exports[`BasicReview Basic component survey 1`] = `
                               },
                               "text": Object {
                                 "styleList": null,
-                                "value": "Example Text 4",
+                                "updated": "Example Text 4",
                               },
                             },
                           ],
@@ -639,7 +639,7 @@ exports[`BasicReview Basic component survey 1`] = `
                       },
                       "text": Object {
                         "styleList": null,
-                        "value": "Example text",
+                        "updated": "Example text",
                       },
                     },
                   ],

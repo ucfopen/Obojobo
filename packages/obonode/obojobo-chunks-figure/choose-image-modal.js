@@ -111,8 +111,8 @@ class ChooseImageModal extends React.Component {
 							id="choose-image--image-controls--url"
 							type="text"
 							placeholder="Enter image URL"
-							value={this.props.url}
-							onChange={e => this.setState({ url: e.target.value })}
+							updated={this.props.url}
+							onChange={e => this.setState({ url: e.target.updated })}
 							tabIndex="0"
 							aria-label="Enter image URL"
 						/>

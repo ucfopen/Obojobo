@@ -96,7 +96,7 @@ describe('NumericAnswer Editor Node', () => {
 			stopPropagation: jest.fn(),
 			target: {
 				name: 'mockName',
-				value: 'mockValue'
+				updated: 'mockValue'
 			}
 		}
 		const thisValue = {
@@ -113,7 +113,7 @@ describe('NumericAnswer Editor Node', () => {
 		expect(thisValue.updateNodeFromState).toBeCalled()
 	})
 
-	test('getAnswerFromState returns the expected value', () => {
+	test('getAnswerFromState returns the expected updated', () => {
 		expect(NumericAnswer.prototype.getAnswerFromState({})).toBe('1')
 		expect(NumericAnswer.prototype.getAnswerFromState({ answer: '2' })).toBe('2')
 		expect(NumericAnswer.prototype.getAnswerFromState({ start: '3' })).toBe('3')
@@ -134,7 +134,7 @@ describe('NumericAnswer Editor Node', () => {
 		${'range'}  | ${'Exact answer'}    | ${null}       | ${null} | ${null} | ${'-3'} | ${'3'}  | ${{ requirement: 'exact', answer: '-3', start: undefined, end: undefined, type: undefined, margin: undefined }}
 		${'range'}  | ${'Margin of error'} | ${null}       | ${null} | ${null} | ${'-3'} | ${'3'}  | ${{ requirement: 'margin', type: 'percent', margin: '0', answer: '-3', start: undefined, end: undefined }}
 	`(
-		'getStateForRequirement $requirement->$newRequirement (type="$type",answer="$answer",margin="$margin",start="$start",end="$end") returns expected value',
+		'getStateForRequirement $requirement->$newRequirement (type="$type",answer="$answer",margin="$margin",start="$start",end="$end") returns expected updated',
 		({ requirement, newRequirement, type, answer, margin, start, end, expectedState }) => {
 			const props = {
 				editor: {},
@@ -162,13 +162,13 @@ describe('NumericAnswer Editor Node', () => {
 		}
 		const thisValue = {
 			setState: jest.fn(),
-			getStateForRequirement: jest.fn().mockImplementation(value => ({ mockState: value })),
+			getStateForRequirement: jest.fn().mockImplementation(updated => ({ mockState: updated })),
 			updateNodeFromState: jest.fn()
 		}
 
 		event.target = {
 			name: 'requirement',
-			value: 'mockValue'
+			updated: 'mockValue'
 		}
 		NumericAnswer.prototype.onHandleSelectChange.bind(thisValue)(event)
 
@@ -179,7 +179,7 @@ describe('NumericAnswer Editor Node', () => {
 
 		event.target = {
 			name: 'margin-type',
-			value: 'Within a range'
+			updated: 'Within a range'
 		}
 		NumericAnswer.prototype.onHandleSelectChange.bind(thisValue)(event)
 

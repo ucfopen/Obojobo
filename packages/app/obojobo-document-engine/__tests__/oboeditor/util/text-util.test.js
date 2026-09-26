@@ -7,7 +7,7 @@ describe('TextUtil', () => {
 
 	test('parseMarkings converts empty styleList to leaves', () => {
 		const text = {
-			value: '',
+			updated: '',
 			styleList: []
 		}
 
@@ -18,7 +18,7 @@ describe('TextUtil', () => {
 
 	test('parseMarkings converts styleList to leaves', () => {
 		const text = {
-			value: 'ThisTextIsFormatted',
+			updated: 'ThisTextIsFormatted',
 			styleList: [
 				{
 					type: 'b',
@@ -80,7 +80,7 @@ describe('TextUtil', () => {
 
 	test('parseMarkings converts styleList to leaves', () => {
 		const text = {
-			value: 'ThisTextIsFormatted',
+			updated: 'ThisTextIsFormatted',
 			styleList: [
 				{
 					type: 'b',
@@ -132,7 +132,7 @@ describe('TextUtil', () => {
 
 	test('parseMarkings creates leaves without styleList', () => {
 		const text = {
-			value: 'ThisTextIsFormatted'
+			updated: 'ThisTextIsFormatted'
 		}
 
 		const line = { text }
@@ -190,7 +190,7 @@ describe('TextUtil', () => {
 		}
 
 		const line = {
-			text: { value: '', styleList: [] },
+			text: { updated: '', styleList: [] },
 			data: { indent: 0 }
 		}
 		TextUtil.slateToOboText(text, line)

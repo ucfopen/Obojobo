@@ -77,7 +77,7 @@ class AssessmentPostTest extends React.Component {
 			return (
 				<div className="recorded-score is-null">
 					<h2>Recorded Score:</h2>
-					<span className="value">Did Not Pass</span>
+					<span className="updated">Did Not Pass</span>
 				</div>
 			)
 		}
@@ -90,7 +90,7 @@ class AssessmentPostTest extends React.Component {
 		return (
 			<div className="recorded-score is-not-null">
 				<h2>Recorded Score:</h2>
-				<span className="value">
+				<span className="updated">
 					{Math.round(assessmentScore)}
 					<span className="for-screen-reader-only percent-label"> percent out of 100</span>
 				</span>

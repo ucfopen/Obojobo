@@ -7,8 +7,8 @@ const downloadDocument = (draftId, format = 'json', contentId = null) => {
 		return (
 			API.get(url, 'json')
 				.then(res => res.json())
-				// pull document out of json.value
-				.then(json => JSON.stringify(json.value, null, 2))
+				// pull document out of json.updated
+				.then(json => JSON.stringify(json.updated, null, 2))
 				.then(contents => {
 					download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
 				})

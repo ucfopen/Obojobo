@@ -22,7 +22,7 @@ Object {
         "data": Object {},
         "text": Object {
           "styleList": Array [],
-          "value": "grams",
+          "updated": "grams",
         },
       },
     ],

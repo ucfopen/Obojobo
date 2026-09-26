@@ -18,12 +18,12 @@ const importQuestionModal = props => {
 
 	const buttons = [
 		{
-			value: 'Cancel',
+			updated: 'Cancel',
 			altAction: true,
 			onClick: ModalUtil.hide
 		},
 		{
-			value: 'Import',
+			updated: 'Import',
 			onClick: confirm,
 			default: true
 		}
@@ -57,7 +57,7 @@ const importQuestionModal = props => {
 						>
 							<input type="checkbox" checked={selectStates[index]} readOnly />
 							<div>
-								<NodeRenderer key={question} value={questionContent} />
+								<NodeRenderer key={question} updated={questionContent} />
 							</div>
 						</div>
 					)

@@ -31,7 +31,7 @@ NumericRule {
     "max": "3",
     "min": "1",
   },
-  "value": Object {
+  "updated": Object {
     "isEmpty": false,
     "isMaxInclusive": true,
     "isMinInclusive": true,

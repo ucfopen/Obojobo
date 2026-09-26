@@ -175,7 +175,7 @@ class CodeEditor extends React.Component {
 				<Suspense fallback={<div>Loading...</div>}>
 					<CodeMirror
 						options={this.state.options}
-						value={this.state.code}
+						updated={this.state.code}
 						onBeforeChange={this.onBeforeChange}
 						editorDidMount={this.setEditor}
 					/>

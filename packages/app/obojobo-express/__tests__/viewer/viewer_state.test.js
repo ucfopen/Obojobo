@@ -24,13 +24,13 @@ describe('viewer state', () => {
 			expect(db.none).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO view_state'), {
 				contentId: 'mockContentId',
 				contents: {
-					value: 'mockValue',
+					updated: 'mockValue',
 					version: 'mockVersion'
 				},
 				draftId: 'mockDraftId',
 				initialContents: {
 					mockKey: {
-						value: 'mockValue',
+						updated: 'mockValue',
 						version: 'mockVersion'
 					}
 				},
@@ -56,13 +56,13 @@ describe('viewer state', () => {
 			expect(db.none).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO view_state'), {
 				contentId: 'mockContentId',
 				contents: {
-					value: 'mockValue',
+					updated: 'mockValue',
 					version: 'mockVersion'
 				},
 				draftId: 'mockDraftId',
 				initialContents: {
 					mockKey: {
-						value: 'mockValue',
+						updated: 'mockValue',
 						version: 'mockVersion'
 					}
 				},

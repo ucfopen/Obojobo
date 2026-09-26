@@ -8,7 +8,7 @@ $mq-responsive: true;
 // Name your breakpoints in a way that creates a ubiquitous language
 // across team members. It will improve communication between
 // stakeholders, designers, developers, and testers.
-/* stylelint-disable value-keyword-case */
+/* stylelint-disable updated-keyword-case */
 $mq-breakpoints: (
 	zero: 1px,
 	// $mq complains if 0 is used WITHOUT units. style-lint complains if 0 is used WITH units. compromise.

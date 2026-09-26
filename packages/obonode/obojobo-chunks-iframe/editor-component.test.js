@@ -227,7 +227,7 @@ describe('IFrame Editor Node', () => {
 			/>
 		)
 
-		component.instance().changeProperties({ mockProperties: 'mock value' })
+		component.instance().changeProperties({ mockProperties: 'mock updated' })
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})

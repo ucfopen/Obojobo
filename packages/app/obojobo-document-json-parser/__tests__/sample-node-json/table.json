@@ -9,7 +9,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -22,55 +22,55 @@
 			"textGroup": [
 				{
 					"text": {
-						"value": "Header 1",
+						"updated": "Header 1",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Header 2",
+						"updated": "Header 2",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Header 3",
+						"updated": "Header 3",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Item 1",
+						"updated": "Item 1",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Item 2",
+						"updated": "Item 2",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Item 3",
+						"updated": "Item 3",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Item 4",
+						"updated": "Item 4",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Item 5",
+						"updated": "Item 5",
 						"styleList": []
 					}
 				},
 				{
 					"text": {
-						"value": "Item 6",
+						"updated": "Item 6",
 						"styleList": []
 					}
 				}

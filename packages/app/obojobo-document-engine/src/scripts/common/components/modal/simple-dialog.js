@@ -23,7 +23,7 @@ class SimpleDialog extends React.Component {
 		if (this.props.ok) {
 			buttons = [
 				{
-					value: 'OK',
+					updated: 'OK',
 					onClick: this.props.onConfirm,
 					default: true
 				}
@@ -31,12 +31,12 @@ class SimpleDialog extends React.Component {
 		} else if (this.props.noOrYes) {
 			buttons = [
 				{
-					value: 'No',
+					updated: 'No',
 					onClick: this.props.onCancel
 				},
 				'or',
 				{
-					value: 'Yes',
+					updated: 'Yes',
 					onClick: this.props.onConfirm,
 					default: true
 				}
@@ -44,12 +44,12 @@ class SimpleDialog extends React.Component {
 		} else if (this.props.yesOrNo) {
 			buttons = [
 				{
-					value: 'Yes',
+					updated: 'Yes',
 					onClick: this.props.onConfirm
 				},
 				'or',
 				{
-					value: 'No',
+					updated: 'No',
 					onClick: this.props.onCancel,
 					default: true
 				}
@@ -57,12 +57,12 @@ class SimpleDialog extends React.Component {
 		} else {
 			buttons = [
 				{
-					value: 'Cancel',
+					updated: 'Cancel',
 					altAction: true,
 					onClick: this.props.onCancel
 				},
 				{
-					value: 'OK',
+					updated: 'OK',
 					onClick: this.props.onConfirm,
 					default: true
 				}

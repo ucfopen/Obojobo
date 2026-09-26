@@ -62,22 +62,22 @@ describe('Button', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('with value', () => {
-		const component = renderer.create(<Button value="child value">Label</Button>)
+	test('with updated', () => {
+		const component = renderer.create(<Button updated="child updated">Label</Button>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('with null value', () => {
-		const component = renderer.create(<Button value={null}>Label</Button>)
+	test('with null updated', () => {
+		const component = renderer.create(<Button updated={null}>Label</Button>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('with empty string value', () => {
-		const component = renderer.create(<Button value={''}></Button>)
+	test('with empty string updated', () => {
+		const component = renderer.create(<Button updated={''}></Button>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -85,7 +85,7 @@ describe('Button', () => {
 
 	test('focus', () => {
 		const focus = require('../../../src/scripts/common/page/focus').default
-		const component = renderer.create(<Button value={''}></Button>)
+		const component = renderer.create(<Button updated={''}></Button>)
 		expect(focus).not.toHaveBeenCalled()
 		component.getInstance().focus()
 		expect(focus).toHaveBeenCalled()

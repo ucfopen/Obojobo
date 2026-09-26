@@ -23,7 +23,7 @@ describe('Search', () => {
 
 	beforeEach(() => {
 		searchProps = {
-			value: null,
+			updated: null,
 			onChange: jest.fn()
 		}
 		React.useRef.mockClear()
@@ -67,8 +67,8 @@ describe('Search', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('renders correctly with a non-empty value', () => {
-		searchProps.value = 'string'
+	test('renders correctly with a non-empty updated', () => {
+		searchProps.updated = 'string'
 		let component
 		act(() => {
 			component = create(<Search {...searchProps} />)
@@ -87,7 +87,7 @@ describe('Search', () => {
 		})
 
 		const mockChangeEvent = {
-			target: { value: 'string' }
+			target: { updated: 'string' }
 		}
 		component.root.findByProps({ type: 'search' }).props.onChange(mockChangeEvent)
 
@@ -98,7 +98,7 @@ describe('Search', () => {
 	test('clicks clear filter button', () => {
 		let component
 		act(() => {
-			searchProps = { ...searchProps, value: 'mock-value' }
+			searchProps = { ...searchProps, updated: 'mock-updated' }
 			component = create(<Search {...searchProps} />)
 		})
 
@@ -119,7 +119,7 @@ describe('Search', () => {
 		})
 
 		const mockChangeEvent = {
-			target: { value: 'string' }
+			target: { updated: 'string' }
 		}
 		component.root.findByProps({ type: 'search' }).props.onChange(mockChangeEvent)
 	})

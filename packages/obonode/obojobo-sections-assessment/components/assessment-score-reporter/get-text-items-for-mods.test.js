@@ -44,37 +44,37 @@ describe('getTextItemsForMods', () => {
 			{
 				type: 'extra-credit',
 				text: 'Passed on first attempt',
-				value: '1'
+				updated: '1'
 			},
 			{
 				type: 'penalty',
 				text: 'Passed on attempts 2 to 3',
-				value: '2'
+				updated: '2'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on attempt\u00a02',
-				value: '3'
+				updated: '3'
 			},
 			{
 				type: 'penalty',
 				text: 'Passed on attempts 2 to 3',
-				value: '4'
+				updated: '4'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on attempts 1 to 2',
-				value: '5'
+				updated: '5'
 			},
 			{
 				type: 'penalty',
 				text: 'Passed on last attempt',
-				value: '6'
+				updated: '6'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on attempts 1 to 3',
-				value: '7'
+				updated: '7'
 			}
 		])
 	})

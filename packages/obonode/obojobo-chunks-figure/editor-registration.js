@@ -81,7 +81,7 @@ const Figure = {
 			// need to convert the duplicated figure below to a text node.
 			if (editor.children.length !== prevChildrenCount + 1) {
 				// Because we want the figure two lines below,
-				// we need to ignore the last value in the path since
+				// we need to ignore the last updated in the path since
 				// it refers to the figure's caption.
 				const newPath = [...path.slice(0, path.length - 1)]
 				newPath[newPath.length - 1] += 2

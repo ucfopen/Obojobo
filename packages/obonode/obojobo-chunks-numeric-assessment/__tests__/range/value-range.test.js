@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 
-import ValueRange from '../../range/value-range'
+import ValueRange from '../../range/updated-range'
 
 describe('ValueRange', () => {
 	test('Constructor with no arguments creates class with expected values', () => {
@@ -59,7 +59,7 @@ describe('ValueRange', () => {
 	test('Backwards range throws error', () => {
 		expect(() => {
 			new ValueRange('[99,-99]')
-		}).toThrow('Invalid range: min value must be larger than max value')
+		}).toThrow('Invalid range: min updated must be larger than max updated')
 	})
 
 	test('Non-inclusive singular range throws error', () => {
@@ -128,7 +128,7 @@ describe('ValueRange', () => {
 		})
 	})
 
-	test('isValueInRange will return boolean if given value is inside a range', () => {
+	test('isValueInRange will return boolean if given updated is inside a range', () => {
 		//-Infinity to Infinity
 		expect(new ValueRange().isValueInRange(-Infinity)).toBe(true)
 		expect(new ValueRange().isValueInRange(-1.1)).toBe(true)
@@ -502,7 +502,7 @@ describe('ValueRange', () => {
 	})
 
 	test.each`
-		range       | test         | value
+		range       | test         | updated
 		${'[-1,1]'} | ${-Infinity} | ${-1}
 		${'[-1,1]'} | ${-1.1}      | ${-1}
 		${'[-1,1]'} | ${-1}        | ${0}
@@ -552,8 +552,8 @@ describe('ValueRange', () => {
 		${''}       | ${1}         | ${1}
 		${''}       | ${1.1}       | ${1}
 		${''}       | ${Infinity}  | ${1}
-	`(`$range minCompare($test)={$value}`, ({ range, test, value }) => {
-		expect(new ValueRange(range).minCompare(test)).toBe(value)
+	`(`$range minCompare($test)={$updated}`, ({ range, test, updated }) => {
+		expect(new ValueRange(range).minCompare(test)).toBe(updated)
 	})
 
 	test('minEq returns true when minCompare is 0', () => {
@@ -642,7 +642,7 @@ describe('ValueRange', () => {
 	})
 
 	test.each`
-		range       | test         | value
+		range       | test         | updated
 		${'[-1,1]'} | ${-Infinity} | ${-1}
 		${'[-1,1]'} | ${-1.1}      | ${-1}
 		${'[-1,1]'} | ${-1}        | ${-1}
@@ -692,8 +692,8 @@ describe('ValueRange', () => {
 		${''}       | ${1}         | ${-1}
 		${''}       | ${1.1}       | ${-1}
 		${''}       | ${Infinity}  | ${-1}
-	`(`$range maxCompare($test)={$value}`, ({ range, test, value }) => {
-		expect(new ValueRange(range).maxCompare(test)).toBe(value)
+	`(`$range maxCompare($test)={$updated}`, ({ range, test, updated }) => {
+		expect(new ValueRange(range).maxCompare(test)).toBe(updated)
 	})
 
 	test('maxEq returns true when maxCompare is 0', () => {

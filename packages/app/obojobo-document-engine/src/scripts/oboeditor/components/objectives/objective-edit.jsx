@@ -67,10 +67,10 @@ class ObjectiveEdit extends React.Component {
 						<input
 							type="text"
 							placeholder="This objective's label (1.2, A, B, etc...) "
-							value={this.state.label}
+							updated={this.state.label}
 							id="objective-label"
 							className="objective-input"
-							onChange={e => this.setState({ label: e.target.value })}
+							onChange={e => this.setState({ label: e.target.updated })}
 						/>
 					</div>
 					<div>
@@ -80,10 +80,10 @@ class ObjectiveEdit extends React.Component {
 						<input
 							type="text"
 							placeholder="Type your objective here..."
-							value={this.state.description}
+							updated={this.state.description}
 							id="objective-input"
 							className="objective-input--objective"
-							onChange={event => this.setState({ description: event.target.value })}
+							onChange={event => this.setState({ description: event.target.updated })}
 						/>
 					</div>
 					<span className="objective-error">{this.state.error}</span>

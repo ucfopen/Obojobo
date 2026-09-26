@@ -182,7 +182,7 @@ describe('Resume Attempt Route', () => {
 				assessment_id: 'mock-assessment-id',
 				question_id: 'mock-question-id',
 				score: 0,
-				response: { value: 'mock-value-1' }
+				response: { updated: 'mock-updated-1' }
 			}
 		])
 		const mockResponses = mockResponsesMap
@@ -212,7 +212,7 @@ describe('Resume Attempt Route', () => {
 		      "id": 0,
 		      "question_id": "mock-question-id",
 		      "response": Object {
-		        "value": "mock-value-1",
+		        "updated": "mock-updated-1",
 		      },
 		      "score": 0,
 		    },

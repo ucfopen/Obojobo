@@ -2,12 +2,12 @@ const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
 class DraftsMetadata {
-	constructor({ draft_id, created_at, updated_at, key, value }) {
+	constructor({ draft_id, created_at, updated_at, key, updated }) {
 		this.draftId = draft_id
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.key = key
-		this.value = value
+		this.updated = updated
 	}
 
 	static getByDraftId(draftId) {
@@ -50,15 +50,15 @@ class DraftsMetadata {
 			})
 	}
 
-	static getByKeyAndValue(key, value) {
+	static getByKeyAndValue(key, updated) {
 		return db
 			.manyOrNone(
 				`
 			SELECT *
 			FROM drafts_metadata
-			WHERE key = $[key] AND value = $[value]
+			WHERE key = $[key] AND updated = $[updated]
 			`,
-				{ key, value }
+				{ key, updated }
 			)
 			.then(res => {
 				if (res) return res.map(r => new DraftsMetadata(r))
@@ -75,11 +75,11 @@ class DraftsMetadata {
 			.none(
 				`
 				INSERT INTO
-					drafts_metadata (draft_id, key, value)
+					drafts_metadata (draft_id, key, updated)
 				VALUES
-					($[draftId], $[key], $[value])
+					($[draftId], $[key], $[updated])
 				ON CONFLICT (draft_id, key) DO UPDATE SET
-					value = $[value],
+					updated = $[updated],
 					updated_at = 'now()'
 				`,
 				this

@@ -191,7 +191,7 @@ describe('NumericEntry', () => {
 		expect(entry.status).toBe('inputNotMatched')
 	})
 
-	test('constructor throws error if wrong type of value passed in', () => {
+	test('constructor throws error if wrong type of updated passed in', () => {
 		expect(() => {
 			new NumericEntry(true) // eslint-disable-line no-new
 		}).toThrow('inputString must be of type string!')

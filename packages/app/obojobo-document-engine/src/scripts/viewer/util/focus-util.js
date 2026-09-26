@@ -9,7 +9,7 @@ const FocusUtil = {
 		opts = { fade: false, animateScroll: false, preventScroll: false, region: null }
 	) {
 		Dispatcher.trigger('focus:component', {
-			value: {
+			updated: {
 				id,
 				fade: opts.fade || false,
 				region: opts.region || null,

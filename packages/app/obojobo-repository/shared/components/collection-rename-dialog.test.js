@@ -25,7 +25,7 @@ describe('CollectionRenameDialog', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('input onChange event changes state and sets its own value properly', () => {
+	test('input onChange event changes state and sets its own updated properly', () => {
 		defaultProps.collectionModules = null
 		const reusableComponent = <CollectionRenameDialog {...defaultProps} />
 		let component
@@ -33,11 +33,11 @@ describe('CollectionRenameDialog', () => {
 			component = create(reusableComponent)
 		})
 
-		expect(component.root.findByType('input').props.value).toBe('mockCollectionTitle')
+		expect(component.root.findByType('input').props.updated).toBe('mockCollectionTitle')
 
 		const mockEventObject = {
 			target: {
-				value: 'mockInputValue'
+				updated: 'mockInputValue'
 			}
 		}
 
@@ -46,7 +46,7 @@ describe('CollectionRenameDialog', () => {
 			component.update(reusableComponent)
 		})
 
-		expect(component.root.findByType('input').props.value).toBe('mockInputValue')
+		expect(component.root.findByType('input').props.updated).toBe('mockInputValue')
 	})
 
 	test('clicking the "Accept" button calls props.onAccept and props.onClose', () => {
@@ -59,7 +59,7 @@ describe('CollectionRenameDialog', () => {
 
 		const mockEventObject = {
 			target: {
-				value: 'mockInputValue'
+				updated: 'mockInputValue'
 			}
 		}
 		act(() => {
@@ -67,7 +67,7 @@ describe('CollectionRenameDialog', () => {
 			component.update(reusableComponent)
 		})
 
-		expect(component.root.findByType('input').props.value).toBe('mockInputValue')
+		expect(component.root.findByType('input').props.updated).toBe('mockInputValue')
 
 		act(() => {
 			component.root.findByProps({ className: 'done-button secondary-button' }).props.onClick()
@@ -103,7 +103,7 @@ describe('CollectionRenameDialog', () => {
 
 		const mockEventObject = {
 			target: {
-				value: 'mockInputValue'
+				updated: 'mockInputValue'
 			}
 		}
 		const inputElement = component.root.findByType('input')

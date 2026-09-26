@@ -14,19 +14,19 @@ describe('Inject Katex if Needed Util', () => {
 	})
 
 	test('loads katex when object contains string of latex', async () => {
-		const result = await injectKatexIfNeeded({ value: { text: 'latex' } })
+		const result = await injectKatexIfNeeded({ updated: { text: 'latex' } })
 		expect(global.window).toHaveProperty('katex')
 		expect(result).toEqual({ text: 'latex' })
 	})
 
 	test('skips katex when object doesnt contains string of latex', async () => {
-		await injectKatexIfNeeded({ value: { text: 'no math here' } })
+		await injectKatexIfNeeded({ updated: { text: 'no math here' } })
 		expect(global.window).not.toHaveProperty('katex')
 	})
 
 	test('skips loading if katex is already defined', async () => {
 		global.window.katex = 'mockObjectWithKatexLoaded'
-		await injectKatexIfNeeded({ value: { text: 'latex' } })
+		await injectKatexIfNeeded({ updated: { text: 'latex' } })
 		expect(global.window.katex).toEqual('mockObjectWithKatexLoaded')
 	})
 
@@ -36,7 +36,7 @@ describe('Inject Katex if Needed Util', () => {
 		jest.useFakeTimers()
 		insertDomTag.mockReturnValue('')
 		try {
-			const promise = injectKatexIfNeeded({ value: { text: 'is latex here' } })
+			const promise = injectKatexIfNeeded({ updated: { text: 'is latex here' } })
 			jest.runAllTimers()
 			await promise
 		} catch (error) {

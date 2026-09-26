@@ -91,16 +91,16 @@ class ModulePermissionsDialog extends React.Component {
 					<div className="access-level-dropdown">
 						<span>Level:</span>
 						<select
-							onChange={event => this.changeAccessLevel(p.id, event.target.value)}
+							onChange={event => this.changeAccessLevel(p.id, event.target.updated)}
 							disabled={p.id === this.props.currentUserId}
 						>
-							<option value={levelName[FULL]} selected={p.accessLevel === FULL}>
+							<option updated={levelName[FULL]} selected={p.accessLevel === FULL}>
 								Full
 							</option>
-							<option value={levelName[PARTIAL]} selected={p.accessLevel === PARTIAL}>
+							<option updated={levelName[PARTIAL]} selected={p.accessLevel === PARTIAL}>
 								Partial
 							</option>
-							<option value={levelName[MINIMAL]} selected={p.accessLevel === MINIMAL}>
+							<option updated={levelName[MINIMAL]} selected={p.accessLevel === MINIMAL}>
 								Minimal
 							</option>
 						</select>

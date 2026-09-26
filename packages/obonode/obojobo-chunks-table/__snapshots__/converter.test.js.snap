@@ -82,22 +82,22 @@ Object {
       "textGroup": Array [
         Object {
           "text": Object {
-            "value": "Mock1",
+            "updated": "Mock1",
           },
         },
         Object {
           "text": Object {
-            "value": "Mock2",
+            "updated": "Mock2",
           },
         },
         Object {
           "text": Object {
-            "value": "Mock3",
+            "updated": "Mock3",
           },
         },
         Object {
           "text": Object {
-            "value": "Mock4",
+            "updated": "Mock4",
           },
         },
       ],
@@ -191,22 +191,22 @@ Object {
       "textGroup": Array [
         Object {
           "text": Object {
-            "value": "Mock1",
+            "updated": "Mock1",
           },
         },
         Object {
           "text": Object {
-            "value": "Mock2",
+            "updated": "Mock2",
           },
         },
         Object {
           "text": Object {
-            "value": "Mock3",
+            "updated": "Mock3",
           },
         },
         Object {
           "text": Object {
-            "value": "Mock4",
+            "updated": "Mock4",
           },
         },
       ],
@@ -237,7 +237,7 @@ Object {
                 "type": "b",
               },
             ],
-            "value": "MockText",
+            "updated": "MockText",
           },
         },
       ],

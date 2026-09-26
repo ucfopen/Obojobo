@@ -12,7 +12,7 @@ const binaryInferred = /^[0-1]+$|^[0-1]+$/
  * A binary numeric type. Values should be prefixed with "0b" but are possible binary matches if given a number with only zeroes and ones.
  * @example
  * new Binary("0b1101")
- * new Binary("101") // 'inferred' binary value
+ * new Binary("101") // 'inferred' binary updated
  */
 module.exports = class Binary extends Numeric {
 	/**
@@ -44,7 +44,7 @@ module.exports = class Binary extends Numeric {
 	}
 
 	/**
-	 * Get the value string portion of a possible binary string
+	 * Get the updated string portion of a possible binary string
 	 * @param {string} str
 	 * @return {string|null}
 	 * @example
@@ -66,7 +66,7 @@ module.exports = class Binary extends Numeric {
 
 	/**
 	 * Gets details about an answer string.
-	 * @param {string} str A potential string representation of a binary value
+	 * @param {string} str A potential string representation of a binary updated
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
 	 * Binary.parse("0b1101") //{ matchType:'exact', valueString:'0b1101' }
@@ -114,7 +114,7 @@ module.exports = class Binary extends Numeric {
 	}
 
 	/**
-	 * Get the string representation of a Big value
+	 * Get the string representation of a Big updated
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
@@ -126,7 +126,7 @@ module.exports = class Binary extends Numeric {
 	}
 
 	/**
-	 * Get a Big instance for a given value string
+	 * Get a Big instance for a given updated string
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
@@ -138,7 +138,7 @@ module.exports = class Binary extends Numeric {
 	}
 
 	/**
-	 * Get a number for a given value string
+	 * Get a number for a given updated string
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
@@ -156,7 +156,7 @@ module.exports = class Binary extends Numeric {
 	}
 
 	/**
-	 * Converts the binary value to decimal and then returns the number of significant figures.
+	 * Converts the binary updated to decimal and then returns the number of significant figures.
 	 * @param {string} valueString
 	 * @return {number} The number of significant figures of this instance
 	 * @example

@@ -14,7 +14,7 @@ describe('ModalUtil', () => {
 		ModalUtil.show({ example: 'component' })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('modal:show', {
-			value: {
+			updated: {
 				component: { example: 'component' },
 				hideViewer: false
 			}
@@ -23,7 +23,7 @@ describe('ModalUtil', () => {
 		ModalUtil.show({ example: 'component' }, true)
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('modal:show', {
-			value: {
+			updated: {
 				component: { example: 'component' },
 				hideViewer: true
 			}

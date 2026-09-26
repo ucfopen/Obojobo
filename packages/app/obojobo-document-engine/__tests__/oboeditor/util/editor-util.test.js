@@ -37,7 +37,7 @@ describe('EditorUtil', () => {
 		EditorUtil.renameModule('mock-draft-id', 'New Name')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:renameModule', {
-			value: {
+			updated: {
 				moduleId: 'mock-draft-id',
 				name: 'New Name'
 			}
@@ -48,49 +48,49 @@ describe('EditorUtil', () => {
 		EditorUtil.rebuildMenu('mockOboModel')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:rebuildMenu', {
-			value: { model: 'mockOboModel' }
+			updated: { model: 'mockOboModel' }
 		})
 	})
 	test('goto calls editor:goto', () => {
 		EditorUtil.goto('mockId')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:goto', {
-			value: { id: 'mockId' }
+			updated: { id: 'mockId' }
 		})
 	})
 	test('addPage calls editor:addPage', () => {
 		EditorUtil.addPage('mockOboModel')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:addPage', {
-			value: { newPage: 'mockOboModel' }
+			updated: { newPage: 'mockOboModel' }
 		})
 	})
 	test('addAssessment calls editor:addAssessment', () => {
 		EditorUtil.addAssessment('mockOboModel')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:addAssessment', {
-			value: { newAssessment: 'mockOboModel' }
+			updated: { newAssessment: 'mockOboModel' }
 		})
 	})
 	test('deletePage calls editor:deletePage', () => {
 		EditorUtil.deletePage('mockId')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:deletePage', {
-			value: { pageId: 'mockId' }
+			updated: { pageId: 'mockId' }
 		})
 	})
 	test('setStartPage calls editor:setStartPage', () => {
 		EditorUtil.setStartPage('mockId')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:setStartPage', {
-			value: { pageId: 'mockId' }
+			updated: { pageId: 'mockId' }
 		})
 	})
 	test('gotoPath calls editor:gotoPath', () => {
 		EditorUtil.gotoPath('mockPath')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:gotoPath', {
-			value: { path: 'mockPath' }
+			updated: { path: 'mockPath' }
 		})
 	})
 	test('getFirst gets the ordered list and returns the first link', () => {
@@ -289,7 +289,7 @@ describe('EditorUtil', () => {
 		EditorUtil.renamePage('mockId', 'newName')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:renamePage', {
-			value: { pageId: 'mockId', name: 'newName' }
+			updated: { pageId: 'mockId', name: 'newName' }
 		})
 	})
 
@@ -297,7 +297,7 @@ describe('EditorUtil', () => {
 		EditorUtil.movePage('mockId', 'newIndex')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:movePage', {
-			value: { pageId: 'mockId', index: 'newIndex' }
+			updated: { pageId: 'mockId', index: 'newIndex' }
 		})
 	})
 

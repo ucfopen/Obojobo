@@ -57,59 +57,59 @@ class AssessmentStore extends Store {
 		super('assessmentstore')
 
 		Dispatcher.on('assessment:startAttempt', payload => {
-			this.startAttempt(payload.value.id)
+			this.startAttempt(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:importAttempt', payload => {
-			this.importAttempt(payload.value.id)
+			this.importAttempt(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:abandonImport', payload => {
-			this.abandonImport(payload.value.id)
+			this.abandonImport(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.endAttempt(payload.value.id)
+			this.endAttempt(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:forceSendResponses', payload => {
-			this.forceSendResponses(payload.value.id)
+			this.forceSendResponses(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:resendLTIScore', payload => {
-			this.tryResendLTIScore(payload.value.id)
+			this.tryResendLTIScore(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:acknowledgeEndAttemptSuccessful', payload => {
-			this.acknowledgeEndAttemptSuccessful(payload.value.id)
+			this.acknowledgeEndAttemptSuccessful(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:acknowledgeStartAttemptFailed', payload => {
-			this.acknowledgeStartAttemptFailed(payload.value.id)
+			this.acknowledgeStartAttemptFailed(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:acknowledgeEndAttemptFailed', payload => {
-			this.acknowledgeEndAttemptFailed(payload.value.id)
+			this.acknowledgeEndAttemptFailed(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:acknowledgeResumeAttemptFailed', payload => {
-			this.acknowledgeResumeAttemptFailed(payload.value.id)
+			this.acknowledgeResumeAttemptFailed(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:acknowledgeImportAttemptFailed', payload => {
-			this.acknowledgeImportAttemptFailed(payload.value.id)
+			this.acknowledgeImportAttemptFailed(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:resumeAttempt', payload => {
-			this.resumeAttempt(payload.value.id)
+			this.resumeAttempt(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:continueAttempt', payload => {
-			this.continueAttempt(payload.value.id)
+			this.continueAttempt(payload.updated.id)
 		})
 
 		Dispatcher.on('assessment:acknowledgeFetchHistoryFailed', payload => {
-			this.acknowledgeFetchHistoryFailed(payload.value.id, payload.value.retry)
+			this.acknowledgeFetchHistoryFailed(payload.updated.id, payload.updated.retry)
 		})
 
 		Dispatcher.on('window:closeAttempt', shouldPrompt => {
@@ -119,7 +119,7 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('nav:targetChanged', payload => {
-			const navTargetModel = OboModel.models[payload.value.to]
+			const navTargetModel = OboModel.models[payload.updated.to]
 			const assessment = AssessmentUtil.getAssessmentForModel(this.state, navTargetModel)
 
 			if (!assessment || assessment.attemptHistoryNetworkState === 'loaded') {
@@ -205,7 +205,7 @@ class AssessmentStore extends Store {
 
 				this.updateLTIScore(
 					AssessmentUtil.getAssessmentForModel(this.state, assessmentModel),
-					res.value
+					res.updated
 				)
 			})
 			.catch(e => {
@@ -236,7 +236,7 @@ class AssessmentStore extends Store {
 
 	displayScoreImportNotice() {
 		Dispatcher.trigger('viewer:alert', {
-			value: {
+			updated: {
 				title: 'Score Import Available',
 				message: `You previously completed this module in another course or assignment. The option to import your highest score will be shown when you start the assessment.`
 			}
@@ -245,7 +245,7 @@ class AssessmentStore extends Store {
 
 	displayImportAlreadyUsed() {
 		Dispatcher.trigger('viewer:alert', {
-			value: {
+			updated: {
 				title: 'Score Already Imported',
 				message:
 					'You have already imported a score for this module in this course, no attempts remain.'

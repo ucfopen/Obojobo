@@ -60,7 +60,7 @@ Object {
       "actions": Array [
         Object {
           "type": "mockType",
-          "value": "mockValue",
+          "updated": "mockValue",
         },
       ],
       "triggers": Array [],
@@ -239,7 +239,7 @@ Object {
       "actions": Array [
         Object {
           "type": "mockType",
-          "value": "mockValue",
+          "updated": "mockValue",
         },
       ],
       "triggers": Array [
@@ -247,59 +247,59 @@ Object {
           "actions": Array [
             Object {
               "type": "nav:goto",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:prev",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:next",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:openExternalLink",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:lock",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:unlock",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:toggle",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:close",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "nav:open",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "assessment:startAttempt",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "assessment:endAttempt",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "viewer:alert",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "viewer:scrollToTop",
-              "value": Object {},
+              "updated": Object {},
             },
             Object {
               "type": "focus:component",
-              "value": Object {},
+              "updated": Object {},
             },
           ],
           "type": "onClick",

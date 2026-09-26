@@ -65,7 +65,7 @@ const Question = props => {
 	}
 
 	function onSetAssessmentType(event) {
-		const type = event.target.value
+		const type = event.target.updated
 
 		const item = Common.Registry.getItemForType(type)
 		const newBlock = item.cloneBlankNode()
@@ -141,16 +141,16 @@ const Question = props => {
 				type: 'select',
 				values: [
 					{
-						value: 'default',
+						updated: 'default',
 						description: '(Use the default setting for this question type)'
 					},
 					{
-						value: 'never',
+						updated: 'never',
 						description: 'No'
 					},
-					{ value: 'always', description: 'Yes' },
+					{ updated: 'always', description: 'Yes' },
 					{
-						value: 'when-incorrect',
+						updated: 'when-incorrect',
 						description: 'Yes, but only after submitting an incorrect answer'
 					}
 				]
@@ -200,9 +200,9 @@ const Question = props => {
 						<div className="content-back">
 							<div className="question-settings" contentEditable={false}>
 								<label>Question Type</label>
-								<select contentEditable={false} value={questionType} onChange={onSetAssessmentType}>
-									<option value={MCASSESSMENT_NODE}>Multiple choice</option>
-									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
+								<select contentEditable={false} updated={questionType} onChange={onSetAssessmentType}>
+									<option updated={MCASSESSMENT_NODE}>Multiple choice</option>
+									<option updated={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
 								</select>
 								<label className="question-type" contentEditable={false}>
 									<input type="checkbox" checked={isTypeSurvey} onChange={onSetType} />

@@ -146,7 +146,7 @@ describe('VisualEditor', () => {
 
 		const component = renderer.create(<VisualEditor {...props} />)
 
-		Dispatcher.trigger('modal:show', { value: 'mockValue' })
+		Dispatcher.trigger('modal:show', { updated: 'mockValue' })
 		expect(component.getInstance().state.editable).toEqual(false)
 	})
 
@@ -155,7 +155,7 @@ describe('VisualEditor', () => {
 
 		const component = renderer.create(<VisualEditor {...props} />)
 
-		Dispatcher.trigger('modal:hide', { value: 'mockValue' })
+		Dispatcher.trigger('modal:hide', { updated: 'mockValue' })
 		expect(component.getInstance().state.editable).toEqual(true)
 	})
 
@@ -344,7 +344,7 @@ describe('VisualEditor', () => {
 
 		// save action should have occured
 		expect(spy).toHaveBeenCalledTimes(1)
-		expect(spy).toHaveBeenCalledWith(prevProps.page, prevState.value)
+		expect(spy).toHaveBeenCalledWith(prevProps.page, prevState.updated)
 		spy.mockClear()
 	})
 
@@ -361,20 +361,20 @@ describe('VisualEditor', () => {
 		expect(ReactEditor.focus).toHaveBeenCalledTimes(1)
 	})
 
-	test('VisualEditor component alters value majorly', () => {
+	test('VisualEditor component alters updated majorly', () => {
 		const component = mount(<VisualEditor {...props} />)
 
-		const value = [
+		const updated = [
 			{
 				type: 'mocknode',
 				children: [{ text: '' }]
 			}
 		]
 
-		component.instance().onChange(value)
+		component.instance().onChange(updated)
 	})
 
-	test('VisualEditor component alters value majorly with multi-select', () => {
+	test('VisualEditor component alters updated majorly with multi-select', () => {
 		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
 		window.getSelection = jest.fn().mockReturnValue({
 			getRangeAt: () => ({
@@ -388,17 +388,17 @@ describe('VisualEditor', () => {
 		})
 		const component = mount(<VisualEditor {...props} />)
 
-		const value = [
+		const updated = [
 			{
 				type: 'mocknode',
 				children: [{ text: '' }]
 			}
 		]
 
-		component.instance().onChange(value)
+		component.instance().onChange(updated)
 	})
 
-	test('VisualEditor component alters value majorly with latex', () => {
+	test('VisualEditor component alters updated majorly with latex', () => {
 		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
 		window.getSelection = jest.fn().mockReturnValue({
 			getRangeAt: () => ({
@@ -412,14 +412,14 @@ describe('VisualEditor', () => {
 		})
 		const component = mount(<VisualEditor {...props} />)
 
-		const value = [
+		const updated = [
 			{
 				type: 'mocknode',
 				children: [{ text: '' }]
 			}
 		]
 
-		component.instance().onChange(value)
+		component.instance().onChange(updated)
 	})
 
 	test('toggleEditable changes the state', () => {
@@ -438,7 +438,7 @@ describe('VisualEditor', () => {
 		  "saveState": "saveSuccessful",
 		  "showPlaceholders": true,
 		  "updateObjective": [Function],
-		  "value": Array [
+		  "updated": Array [
 		    Object {
 		      "text": "",
 		    },
@@ -463,7 +463,7 @@ describe('VisualEditor', () => {
 		  "saveState": "",
 		  "showPlaceholders": true,
 		  "updateObjective": [Function],
-		  "value": Array [
+		  "updated": Array [
 		    Object {
 		      "text": "",
 		    },
@@ -525,7 +525,7 @@ describe('VisualEditor', () => {
 
 		// simulate clicking on the input
 		thing.find('.editor--components--editor-title-input').simulate('change', {
-			target: { value: 'mock new title' }
+			target: { updated: 'mock new title' }
 		})
 
 		thing.find('.editor--components--editor-title-input').simulate('blur')
@@ -588,7 +588,7 @@ describe('VisualEditor', () => {
 
 		// simulate changing the title input
 		thing.find('.editor--components--editor-title-input').simulate('change', {
-			target: { value: '	' }
+			target: { updated: '	' }
 		})
 
 		thing.find('.editor--components--editor-title-input').simulate('blur')
@@ -702,7 +702,7 @@ describe('VisualEditor', () => {
 			})
 		}
 
-		const value = {
+		const updated = {
 			document: {
 				nodes: {
 					get: () => ({
@@ -717,7 +717,7 @@ describe('VisualEditor', () => {
 
 		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
 
-		const result = thing.instance().exportToJSON(page, value)
+		const result = thing.instance().exportToJSON(page, updated)
 		expect(result).toMatchInlineSnapshot(`
 		Object {
 		  "children": Array [
@@ -740,7 +740,7 @@ describe('VisualEditor', () => {
 			})
 		})
 
-		Component.helpers.slateToObo.mockReturnValue('mock-converted-node-value')
+		Component.helpers.slateToObo.mockReturnValue('mock-converted-node-updated')
 
 		const page = {
 			get: () => 'will-result-in-else-path-taken',
@@ -751,13 +751,13 @@ describe('VisualEditor', () => {
 			toJSON: () => ({ children: [{ type: 'mock node' }] })
 		}
 
-		const value = ['node-one', 'node-two']
+		const updated = ['node-one', 'node-two']
 
 		const thing = mount(<VisualEditor {...props} />)
 
 		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
 
-		const result = thing.instance().exportToJSON(page, value)
+		const result = thing.instance().exportToJSON(page, updated)
 
 		// make sure the nodes are passed to the converter
 		expect(Component.helpers.slateToObo).toHaveBeenCalledTimes(2)
@@ -767,16 +767,16 @@ describe('VisualEditor', () => {
 		// make sure the updated children are set on the page
 		expect(page.set).toHaveBeenCalledTimes(1)
 		expect(page.set).toHaveBeenCalledWith('children', [
-			'mock-converted-node-value',
-			'mock-converted-node-value'
+			'mock-converted-node-updated',
+			'mock-converted-node-updated'
 		])
 
 		// make sure the return matches
 		expect(result).toMatchInlineSnapshot(`
 				Object {
 				  "children": Array [
-				    "mock-converted-node-value",
-				    "mock-converted-node-value",
+				    "mock-converted-node-updated",
+				    "mock-converted-node-updated",
 				  ],
 				}
 		`)
@@ -1275,7 +1275,7 @@ describe('VisualEditor', () => {
 	test('reload disables event listener and calls location.reload', () => {
 		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
 		Object.defineProperty(window, 'location', {
-			value: { reload: jest.fn() }
+			updated: { reload: jest.fn() }
 		})
 
 		const component = renderer.create(<VisualEditor {...props} />)

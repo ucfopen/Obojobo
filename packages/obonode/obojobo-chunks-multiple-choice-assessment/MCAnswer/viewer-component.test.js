@@ -20,7 +20,7 @@ describe('MCAnswer', () => {
 						textGroup: [
 							{
 								text: {
-									value: 'Example Text'
+									updated: 'Example Text'
 								}
 							}
 						]

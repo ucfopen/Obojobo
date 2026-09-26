@@ -188,17 +188,17 @@ describe('Scientific', () => {
 	})
 
 	test.each`
-		input          | digit   | exponent | value
+		input          | digit   | exponent | updated
 		${'6.02e23'}   | ${6.02} | ${23}    | ${6.02e23}
 		${'-2.5ee-4'}  | ${-2.5} | ${-4}    | ${-2.5e-4}
 		${'0x10^1'}    | ${0}    | ${1}     | ${0e1}
 		${'99.1*10^3'} | ${99.1} | ${3}     | ${99.1e3}
 		${"99.1'-3"}   | ${99.1} | ${-3}    | ${99.1e-3}
-	`(`getTerms($input)=$digit,$exponent`, ({ input, digit, exponent, value }) => {
+	`(`getTerms($input)=$digit,$exponent`, ({ input, digit, exponent, updated }) => {
 		expect(Scientific.getTerms(input)).toEqual({
 			bigDigit: Big(digit),
 			bigExponential: Big(exponent),
-			bigValue: Big(value)
+			bigValue: Big(updated)
 		})
 	})
 

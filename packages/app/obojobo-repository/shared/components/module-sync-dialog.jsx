@@ -11,7 +11,7 @@ const ModuleSyncDialog = props => {
 		props.syncModuleUpdates(props.draftId)
 	}
 
-	// default props.newest value will be 'false', indicating still searching
+	// default props.newest updated will be 'false', indicating still searching
 	// explicit check for 'null' later, which will be the result if there are no updates
 	let syncableStatusRender = (
 		<p className="sync-info-text-only">Checking for updates to this module's original...</p>

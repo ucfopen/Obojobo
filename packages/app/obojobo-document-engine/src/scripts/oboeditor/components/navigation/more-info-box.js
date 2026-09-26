@@ -19,7 +19,7 @@ const stopPropagation = event => event.stopPropagation()
 
 // Expected Props:
 // id: String - the id of the item to edit
-// content: Object - the item data for the node.  Each key-value pair would be edited independently
+// content: Object - the item data for the node.  Each key-updated pair would be edited independently
 // saveId: Function(oldId, newId) - updates the id.  Returns a string error if the id couldn't save
 // saveContent: Function(oldContent, newContent) - updates the content. Returns a string error if the content is invalid
 // contentDescription: [Object] - a list of descriptions that tells which content attributes to display and how
@@ -111,7 +111,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	handleIdChange(event) {
-		const currentId = event.target.value
+		const currentId = event.target.updated
 
 		return this.setState({ currentId, needsUpdate: true })
 	}
@@ -119,7 +119,7 @@ class MoreInfoBox extends React.Component {
 	handleContentChange(key, event) {
 		stopPropagation(event)
 		const newContent = {}
-		newContent[key] = event.target.value
+		newContent[key] = event.target.updated
 
 		this.setState(prevState => ({
 			content: Object.assign({}, prevState.content, newContent),
@@ -178,10 +178,10 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 
-	showObjectiveModal(value) {
+	showObjectiveModal(updated) {
 		ModalUtil.show(
 			<ObjectiveListModal
-				objectiveContext={value}
+				objectiveContext={updated}
 				content={this.state.content}
 				onClose={this.closeObjectiveModal}
 			/>
@@ -230,7 +230,7 @@ class MoreInfoBox extends React.Component {
 						<input
 							id={item.description}
 							type="text"
-							value={this.state.content[item.name]}
+							updated={this.state.content[item.name]}
 							onChange={this.handleContentChange.bind(this, item.name)}
 							placeholder={item.placeholder || ''}
 							onClick={stopPropagation}
@@ -245,12 +245,12 @@ class MoreInfoBox extends React.Component {
 						<select
 							id={item.description}
 							className="select-item"
-							value={this.state.content[item.name]}
+							updated={this.state.content[item.name]}
 							onChange={this.handleContentChange.bind(this, item.name)}
 							onClick={stopPropagation}
 						>
 							{item.values.map(option => (
-								<option value={option.value} key={option.value}>
+								<option updated={option.updated} key={option.updated}>
 									{option.description}
 								</option>
 							))}
@@ -272,7 +272,7 @@ class MoreInfoBox extends React.Component {
 					<Switch
 						key={item.description}
 						title={item.description}
-						checked={item.value(this.state.content)}
+						checked={item.updated(this.state.content)}
 						onChange={this.handleAbstractToggleChange.bind(this, item.onChange)}
 					/>
 				)
@@ -305,7 +305,7 @@ class MoreInfoBox extends React.Component {
 										readOnly={this.state.isIdDisabled}
 										type="text"
 										id="oboeditor--components--more-info-box--id-input"
-										value={this.state.currentId}
+										updated={this.state.currentId}
 										onChange={this.handleIdChange}
 										className="id-input"
 										onClick={stopPropagation}
@@ -333,19 +333,19 @@ class MoreInfoBox extends React.Component {
 								{this.props.contentDescription.map(description => this.renderItem(description))}
 							</div>
 							<objectivesContext.Consumer>
-								{value => (
+								{updated => (
 									<div>
 										<span className="objectives">
 											Objectives:
 											<ObjectiveListView
 												objectives={objectives}
-												globalObjectives={typeof value === 'undefined' ? [] : value.objectives}
+												globalObjectives={typeof updated === 'undefined' ? [] : updated.objectives}
 											/>
 										</span>
 										<Button
 											altAction
 											className="objective-button"
-											onClick={() => this.showObjectiveModal(value)}
+											onClick={() => this.showObjectiveModal(updated)}
 										>
 											✎ Edit
 										</Button>

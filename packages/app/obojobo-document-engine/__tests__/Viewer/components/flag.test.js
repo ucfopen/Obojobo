@@ -39,7 +39,7 @@ describe('Flag', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Renders unexpected flag value', () => {
+	test('Renders unexpected flag updated', () => {
 		const component = renderer.create(<Flag type={'someInvalidType'} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()

@@ -49,7 +49,7 @@ describe('FocusStore', () => {
 		Dispatcher.trigger('focus:navTarget')
 		Dispatcher.trigger('focus:navigation')
 		Dispatcher.trigger('focus:component', {
-			value: {
+			updated: {
 				id: 'mock-id',
 				animateScroll: 'mock-animate-scroll',
 				preventScroll: 'mock-prevent-scroll',

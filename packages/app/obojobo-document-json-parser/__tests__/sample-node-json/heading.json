@@ -8,7 +8,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -21,7 +21,7 @@
 					"align": "left"
 				},
 				"text": {
-					"value": "Welcome to the Obojobo Visual Editor",
+					"updated": "Welcome to the Obojobo Visual Editor",
 					"styleList": []
 				}
 			}

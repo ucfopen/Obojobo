@@ -10,7 +10,7 @@ const slateToObo = node => {
 	const choiceNodes = node.children.slice(1)
 
 	const textLine = {
-		text: { value: '', styleList: [] },
+		text: { updated: '', styleList: [] },
 		data: {}
 	}
 	TextUtil.slateToOboText(unitsNode, textLine)

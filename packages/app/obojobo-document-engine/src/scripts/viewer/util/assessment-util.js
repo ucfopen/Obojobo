@@ -338,7 +338,7 @@ const AssessmentUtil = {
 
 	startAttempt(model) {
 		return Dispatcher.trigger('assessment:startAttempt', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -346,7 +346,7 @@ const AssessmentUtil = {
 
 	endAttempt({ model, context, visitId }) {
 		return Dispatcher.trigger('assessment:endAttempt', {
-			value: {
+			updated: {
 				id: model.get('id'),
 				context,
 				visitId
@@ -356,7 +356,7 @@ const AssessmentUtil = {
 
 	forceSendResponsesForCurrentAttempt(model, context) {
 		return Dispatcher.trigger('assessment:forceSendResponses', {
-			value: {
+			updated: {
 				id: model.get('id'),
 				context
 			}
@@ -365,7 +365,7 @@ const AssessmentUtil = {
 
 	continueAttempt(model) {
 		return Dispatcher.trigger('assessment:continueAttempt', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -373,7 +373,7 @@ const AssessmentUtil = {
 
 	resumeAttempt(model) {
 		return Dispatcher.trigger('assessment:resumeAttempt', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -381,7 +381,7 @@ const AssessmentUtil = {
 
 	importAttempt(model) {
 		return Dispatcher.trigger('assessment:importAttempt', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -389,7 +389,7 @@ const AssessmentUtil = {
 
 	abandonImport(model) {
 		return Dispatcher.trigger('assessment:abandonImport', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -397,7 +397,7 @@ const AssessmentUtil = {
 
 	acknowledgeStartAttemptFailed(model) {
 		return Dispatcher.trigger('assessment:acknowledgeStartAttemptFailed', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -405,7 +405,7 @@ const AssessmentUtil = {
 
 	acknowledgeResumeAttemptFailed(model) {
 		return Dispatcher.trigger('assessment:acknowledgeResumeAttemptFailed', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -413,7 +413,7 @@ const AssessmentUtil = {
 
 	acknowledgeEndAttemptSuccessful(model) {
 		return Dispatcher.trigger('assessment:acknowledgeEndAttemptSuccessful', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -421,7 +421,7 @@ const AssessmentUtil = {
 
 	acknowledgeEndAttemptFailed(model) {
 		return Dispatcher.trigger('assessment:acknowledgeEndAttemptFailed', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -429,7 +429,7 @@ const AssessmentUtil = {
 
 	acknowledgeImportAttemptFailed(model) {
 		return Dispatcher.trigger('assessment:acknowledgeImportAttemptFailed', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})
@@ -437,7 +437,7 @@ const AssessmentUtil = {
 
 	acknowledgeFetchHistoryFailed(model, retry = false) {
 		return Dispatcher.trigger('assessment:acknowledgeFetchHistoryFailed', {
-			value: {
+			updated: {
 				id: model.get('id'),
 				retry
 			}
@@ -446,7 +446,7 @@ const AssessmentUtil = {
 
 	resendLTIScore(model) {
 		return Dispatcher.trigger('assessment:resendLTIScore', {
-			value: {
+			updated: {
 				id: model.get('id')
 			}
 		})

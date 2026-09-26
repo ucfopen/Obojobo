@@ -5,7 +5,7 @@ import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 import NumericAssessment from './viewer-component'
 import TextGroup from 'obojobo-document-engine/src/scripts/common/text-group/text-group'
 import NumericAnswerEvaluator from './evaluation/numeric-answer-evaluator'
-import ValueRange from './range/value-range'
+import ValueRange from './range/updated-range'
 import NumericRule from './rule/numeric-rule'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
@@ -20,8 +20,8 @@ describe('NumericAssessment', () => {
 			getDomId: () => 'mock-id',
 			processTrigger: jest.fn(),
 			modelState: {
-				units: TextGroup.fromDescriptor([{ text: { value: 'mock-units-text' } }]),
-				scoreRules: [{ value: '6928', feedback: 'mock-feedback', score: 100 }]
+				units: TextGroup.fromDescriptor([{ text: { updated: 'mock-units-text' } }]),
+				scoreRules: [{ updated: '6928', feedback: 'mock-feedback', score: 100 }]
 			},
 			children: {
 				models: []
@@ -77,7 +77,7 @@ describe('NumericAssessment', () => {
 			<NumericAssessment
 				{...getDefaultProps()}
 				hasResponse={true}
-				response={{ value: '6928' }}
+				response={{ updated: '6928' }}
 				score={100}
 			/>
 		)
@@ -107,7 +107,7 @@ describe('NumericAssessment', () => {
 			<NumericAssessment
 				{...getDefaultProps()}
 				hasResponse={true}
-				response={{ value: '6928' }}
+				response={{ updated: '6928' }}
 				score={100}
 				mode={'review'}
 			/>
@@ -123,7 +123,7 @@ describe('NumericAssessment', () => {
 			<NumericAssessment
 				{...getDefaultProps()}
 				hasResponse={true}
-				response={{ value: '22/7' }}
+				response={{ updated: '22/7' }}
 				score={0}
 			/>
 		)
@@ -138,7 +138,7 @@ describe('NumericAssessment', () => {
 			<NumericAssessment
 				{...getDefaultProps()}
 				hasResponse={true}
-				response={{ value: '22/7' }}
+				response={{ updated: '22/7' }}
 				score={0}
 				mode={'review'}
 			/>
@@ -151,13 +151,13 @@ describe('NumericAssessment', () => {
 
 	test('NumericAssessment renders an incorrect response in review (with multiple correct answers)', () => {
 		const props = getDefaultProps()
-		props.model.modelState.scoreRules.push({ value: '123', score: 100 })
+		props.model.modelState.scoreRules.push({ updated: '123', score: 100 })
 
 		const component = renderer.create(
 			<NumericAssessment
 				{...props}
 				hasResponse={true}
-				response={{ value: '22/7' }}
+				response={{ updated: '22/7' }}
 				score={0}
 				mode={'review'}
 			/>
@@ -176,7 +176,7 @@ describe('NumericAssessment', () => {
 			<NumericAssessment
 				{...props}
 				hasResponse={true}
-				response={{ value: '22/7' }}
+				response={{ updated: '22/7' }}
 				score={0}
 				mode={'review'}
 			/>
@@ -192,7 +192,7 @@ describe('NumericAssessment', () => {
 		props.model.modelState.scoreRules[0].percentError = 1
 
 		const component = renderer.create(
-			<NumericAssessment {...props} hasResponse={true} response={{ value: '6929' }} score={100} />
+			<NumericAssessment {...props} hasResponse={true} response={{ updated: '6929' }} score={100} />
 		)
 
 		const tree = component.toJSON()
@@ -211,7 +211,7 @@ describe('NumericAssessment', () => {
 			})
 
 		const component = renderer.create(
-			<NumericAssessment {...props} hasResponse={true} response={{ value: '6929' }} score={100} />
+			<NumericAssessment {...props} hasResponse={true} response={{ updated: '6929' }} score={100} />
 		)
 
 		const tree = component.toJSON()
@@ -235,11 +235,11 @@ describe('NumericAssessment', () => {
 
 	test('calculateScore returns expected object when answered incorrectly', () => {
 		const component = renderer.create(
-			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ value: '22/7' }} />
+			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ updated: '22/7' }} />
 		)
 
 		const validator = new NumericAnswerEvaluator({
-			scoreRuleConfigs: [{ value: '6928', feedback: 'mock-feedback', score: 100 }]
+			scoreRuleConfigs: [{ updated: '6928', feedback: 'mock-feedback', score: 100 }]
 		})
 		const results = validator.evaluate('22/7')
 
@@ -258,11 +258,11 @@ describe('NumericAssessment', () => {
 
 	test('calculateScore returns expected object when answered correctly', () => {
 		const component = renderer.create(
-			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ value: '6928' }} />
+			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ updated: '6928' }} />
 		)
 
 		const validator = new NumericAnswerEvaluator({
-			scoreRuleConfigs: [{ value: '6928', feedback: 'mock-feedback', score: 100 }]
+			scoreRuleConfigs: [{ updated: '6928', feedback: 'mock-feedback', score: 100 }]
 		})
 		const results = validator.evaluate('6928')
 
@@ -298,7 +298,7 @@ describe('NumericAssessment', () => {
 
 	test('checkIfResponseIsValid returns true if response is valid and correct', () => {
 		const component = renderer.create(
-			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ value: '6928' }} />
+			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ updated: '6928' }} />
 		)
 
 		const evaluatorSpy = jest.spyOn(component.getInstance().evaluator, 'evaluate')
@@ -312,7 +312,7 @@ describe('NumericAssessment', () => {
 
 	test('checkIfResponseIsValid returns true if response is valid and incorrect', () => {
 		const component = renderer.create(
-			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ value: '$FF0F' }} />
+			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ updated: '$FF0F' }} />
 		)
 
 		const evaluatorSpy = jest.spyOn(component.getInstance().evaluator, 'evaluate')
@@ -326,7 +326,7 @@ describe('NumericAssessment', () => {
 
 	test('checkIfResponseIsValid returns false, updates form validity, if input is invalid', () => {
 		const component = renderer.create(
-			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ value: '***' }} />
+			<NumericAssessment {...getDefaultProps()} hasResponse={true} response={{ updated: '***' }} />
 		)
 
 		const evaluatorSpy = jest.spyOn(component.getInstance().evaluator, 'evaluate')
@@ -340,7 +340,7 @@ describe('NumericAssessment', () => {
 
 		expect(evaluatorSpy).toHaveBeenCalled()
 		expect(component.getInstance().inputRef.current.setCustomValidity).toHaveBeenCalledWith(
-			'Please enter a valid numeric value'
+			'Please enter a valid numeric updated'
 		)
 
 		evaluatorSpy.mockRestore()
@@ -350,7 +350,7 @@ describe('NumericAssessment', () => {
 		const props = getDefaultProps()
 
 		const component = renderer.create(
-			<NumericAssessment {...props} hasResponse={true} response={{ value: '1/2' }} />
+			<NumericAssessment {...props} hasResponse={true} response={{ updated: '1/2' }} />
 		)
 
 		component.getInstance().evaluator = new NumericAnswerEvaluator({
@@ -382,7 +382,7 @@ describe('NumericAssessment', () => {
 			<NumericAssessment
 				{...props}
 				hasResponse={true}
-				response={{ value: '0xFFFFFFFFFFFFFFFFFFFFFFFF' }}
+				response={{ updated: '0xFFFFFFFFFFFFFFFFFFFFFFFF' }}
 			/>
 		)
 
@@ -405,10 +405,10 @@ describe('NumericAssessment', () => {
 		// There is no exact obvious match, resulting in an error state
 
 		const props = getDefaultProps()
-		props.model.modelState.scoreRules[0].value = '0b1101'
+		props.model.modelState.scoreRules[0].updated = '0b1101'
 
 		const component = renderer.create(
-			<NumericAssessment {...props} hasResponse={true} response={{ value: '1101' }} />
+			<NumericAssessment {...props} hasResponse={true} response={{ updated: '1101' }} />
 		)
 
 		component.getInstance().evaluator = new NumericAnswerEvaluator({
@@ -439,11 +439,11 @@ describe('NumericAssessment', () => {
 
 		expect(
 			component.getInstance().handleFormChange({
-				target: { value: '6928' }
+				target: { updated: '6928' }
 			})
 		).toEqual({
 			state: {
-				value: '6928'
+				updated: '6928'
 			},
 			targetId: null,
 			sendResponseImmediately: false
@@ -455,16 +455,16 @@ describe('NumericAssessment', () => {
 	test('handleFormChange calls retry if score is not null, returns expected object', () => {
 		const props = getDefaultProps()
 		const component = renderer.create(
-			<NumericAssessment {...props} score={100} hasResponse={true} response={{ value: '6928 ' }} />
+			<NumericAssessment {...props} score={100} hasResponse={true} response={{ updated: '6928 ' }} />
 		)
 
 		expect(
 			component.getInstance().handleFormChange({
-				target: { value: '6928' }
+				target: { updated: '6928' }
 			})
 		).toEqual({
 			state: {
-				value: '6928'
+				updated: '6928'
 			},
 			targetId: null,
 			sendResponseImmediately: false
@@ -475,16 +475,16 @@ describe('NumericAssessment', () => {
 
 	test.each`
 		rangeString | expectedSummary                                                                                                              | expectedString
-		${'1'}      | ${{ type: 'value', value: '1' }}                                                                                             | ${'1'}
+		${'1'}      | ${{ type: 'updated', updated: '1' }}                                                                                             | ${'1'}
 		${'[-1,1]'} | ${{ type: 'range', min: '-1', conjunction: 'to', max: '1' }}                                                                 | ${'-1 to 1'}
 		${'(-1,1]'} | ${{ type: 'range', minPrefix: 'Greater than', min: '-1', conjunction: 'and', maxPrefix: 'less than or equal to', max: '1' }} | ${'Greater than -1 and less than or equal to 1'}
 		${'[-1,1)'} | ${{ type: 'range', minPrefix: 'Greater than or equal to', min: '-1', conjunction: 'and', maxPrefix: 'less than', max: '1' }} | ${'Greater than or equal to -1 and less than 1'}
 		${'(-1,1)'} | ${{ type: 'range', minPrefix: 'Greater than', min: '-1', conjunction: 'and', maxPrefix: 'less than', max: '1' }}             | ${'Greater than -1 and less than 1'}
-		${'(*,1]'}  | ${{ type: 'text-and-value', text: 'Less than or equal to', value: '1' }}                                                     | ${'Less than or equal to 1'}
-		${'(*,1)'}  | ${{ type: 'text-and-value', text: 'Less than', value: '1' }}                                                                 | ${'Less than 1'}
-		${'[-1,*)'} | ${{ type: 'text-and-value', text: 'Greater than or equal to', value: '-1' }}                                                 | ${'Greater than or equal to -1'}
-		${'(-1,*)'} | ${{ type: 'text-and-value', text: 'Greater than', value: '-1' }}                                                             | ${'Greater than -1'}
-		${'(*,*)'}  | ${{ type: 'text', text: 'Any value' }}                                                                                       | ${'Any value'}
+		${'(*,1]'}  | ${{ type: 'text-and-updated', text: 'Less than or equal to', updated: '1' }}                                                     | ${'Less than or equal to 1'}
+		${'(*,1)'}  | ${{ type: 'text-and-updated', text: 'Less than', updated: '1' }}                                                                 | ${'Less than 1'}
+		${'[-1,*)'} | ${{ type: 'text-and-updated', text: 'Greater than or equal to', updated: '-1' }}                                                 | ${'Greater than or equal to -1'}
+		${'(-1,*)'} | ${{ type: 'text-and-updated', text: 'Greater than', updated: '-1' }}                                                             | ${'Greater than -1'}
+		${'(*,*)'}  | ${{ type: 'text', text: 'Any updated' }}                                                                                       | ${'Any updated'}
 		${''}       | ${{ type: 'text', text: 'Nothing' }}                                                                                         | ${'Nothing'}
 	`(
 		'getRangeSummary("$rangeString") = "$expectedSummary", getRangeSummaryString(...) = "$expectedString", matches snapshot',
@@ -622,9 +622,9 @@ describe('NumericAssessment', () => {
 		)
 	})
 
-	test('isResponseEmpty returns true if response object has empty value string', () => {
-		expect(NumericAssessment.isResponseEmpty({ value: 'a' })).toBe(false)
-		expect(NumericAssessment.isResponseEmpty({ value: '' })).toBe(true)
+	test('isResponseEmpty returns true if response object has empty updated string', () => {
+		expect(NumericAssessment.isResponseEmpty({ updated: 'a' })).toBe(false)
+		expect(NumericAssessment.isResponseEmpty({ updated: '' })).toBe(true)
 	})
 
 	test('getFeedback calls QuestionUtil.getData', () => {
@@ -713,8 +713,8 @@ describe('NumericAssessment', () => {
 			getDomEl: () => el
 		}
 
-		expect(NumericAssessment.focusOnContent(model, { scroll: 'mock-scroll-value' })).toBe(true)
-		expect(focus).toHaveBeenCalledWith(el, 'mock-scroll-value')
+		expect(NumericAssessment.focusOnContent(model, { scroll: 'mock-scroll-updated' })).toBe(true)
+		expect(focus).toHaveBeenCalledWith(el, 'mock-scroll-updated')
 	})
 
 	test('focusOnContent focuses on dom element with region', () => {
@@ -724,8 +724,8 @@ describe('NumericAssessment', () => {
 		}
 
 		expect(
-			NumericAssessment.focusOnContent(model, { region: 'answers', scroll: 'mock-scroll-value' })
+			NumericAssessment.focusOnContent(model, { region: 'answers', scroll: 'mock-scroll-updated' })
 		).toBe(true)
-		expect(focus).toHaveBeenCalledWith(el, 'mock-scroll-value')
+		expect(focus).toHaveBeenCalledWith(el, 'mock-scroll-updated')
 	})
 })

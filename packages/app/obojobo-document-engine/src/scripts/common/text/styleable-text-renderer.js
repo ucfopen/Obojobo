@@ -238,7 +238,7 @@ const applyStyle = function(el, styleRange) {
 
 const getMockElement = function(styleableText) {
 	const root = new MockElement('span')
-	root.addChild(new MockTextNode(styleableText.value))
+	root.addChild(new MockTextNode(styleableText.updated))
 
 	// If any unexpected style ranges are encountered, they'll be stored here for later use
 	const unhandledTypes = []

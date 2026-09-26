@@ -26,7 +26,7 @@ const RANGE_ERROR_INVERTED = 'inverted'
 
 const getValidityString = valueString => {
 	if (valueString === '') {
-		return 'Missing a value'
+		return 'Missing a updated'
 	}
 
 	switch (new NumericEntry(valueString).status) {
@@ -34,7 +34,7 @@ const getValidityString = valueString => {
 			return ''
 
 		case INPUT_NOT_SAFE:
-			return 'This answer is too large of a value'
+			return 'This answer is too large of a updated'
 
 		case INPUT_MATCHES_MULTIPLE_TYPES:
 			return 'This answer matches multiple types'
@@ -44,7 +44,7 @@ const getValidityString = valueString => {
 
 		case INPUT_INVALID:
 		default:
-			return 'Not a valid numeric value'
+			return 'Not a valid numeric updated'
 	}
 }
 
@@ -58,7 +58,7 @@ const getRangeError = (startValueString, endValueString) => {
 			return RANGE_ERROR_SINGULAR
 		}
 	} catch (e) {
-		if (e === 'Invalid range: min value must be larger than max value') {
+		if (e === 'Invalid range: min updated must be larger than max updated') {
 			// The range is backwards, such as [10,0]
 			return RANGE_ERROR_INVERTED
 		}
@@ -74,10 +74,10 @@ const getRangeError = (startValueString, endValueString) => {
 const getRangeStartValidityString = (startValueString, endValueString) => {
 	switch (getRangeError(startValueString, endValueString)) {
 		case RANGE_ERROR_SINGULAR:
-			return 'Start value should be smaller than the end value'
+			return 'Start updated should be smaller than the end updated'
 
 		case RANGE_ERROR_INVERTED:
-			return "Start value can't be larger than the end value"
+			return "Start updated can't be larger than the end updated"
 
 		default:
 			return getValidityString(startValueString)
@@ -87,10 +87,10 @@ const getRangeStartValidityString = (startValueString, endValueString) => {
 const getRangeEndValidityString = (startValueString, endValueString) => {
 	switch (getRangeError(startValueString, endValueString)) {
 		case RANGE_ERROR_SINGULAR:
-			return 'End value should be larger than the start value'
+			return 'End updated should be larger than the start updated'
 
 		case RANGE_ERROR_INVERTED:
-			return "End value can't be smaller than the start value"
+			return "End updated can't be smaller than the start updated"
 
 		default:
 			return getValidityString(endValueString)
@@ -157,11 +157,11 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		clearCustomValidity()
 
 		// Get normal error validity string
-		let answerValidityString = getValidityString(event.target.value)
+		let answerValidityString = getValidityString(event.target.updated)
 
 		// Validate for margin of error
 		if (answerValidityString === '' && !isRefRelatedTarget(event, marginErrorTypeRef)) {
-			answerValidityString = getMarginOfErrorAnswerValidityString(event.target.value, type)
+			answerValidityString = getMarginOfErrorAnswerValidityString(event.target.updated, type)
 		}
 
 		event.target.setCustomValidity(answerValidityString)
@@ -171,7 +171,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 	const onBlurErrorValue = event => {
 		clearCustomValidity()
 
-		const errorAmount = parseFloat(event.target.value)
+		const errorAmount = parseFloat(event.target.updated)
 
 		if (!Number.isFinite(errorAmount)) {
 			event.target.setCustomValidity('Enter a numeric error amount')
@@ -190,7 +190,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
 		if (!isRefRelatedTarget(event, inputEndRef)) {
-			event.target.setCustomValidity(getRangeStartValidityString(event.target.value, end))
+			event.target.setCustomValidity(getRangeStartValidityString(event.target.updated, end))
 			event.target.reportValidity()
 			return
 		}
@@ -204,7 +204,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 		// If we don't do this then the user might be in the middle of typing a range
 		// and would be forced to fix it before they're done inputting the range
 		if (!isRefRelatedTarget(event, inputStartRef)) {
-			event.target.setCustomValidity(getRangeEndValidityString(start, event.target.value))
+			event.target.setCustomValidity(getRangeEndValidityString(start, event.target.updated))
 			event.target.reportValidity()
 			return
 		}
@@ -234,7 +234,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 						<select
 							className="select-item"
 							name="requirement"
-							value={simplifedToFullText[requirement]}
+							updated={simplifedToFullText[requirement]}
 							onChange={onAnswerTypeChange}
 						>
 							{requirementDropdown.map(requirement => (
@@ -248,7 +248,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							ref={inputStartRef}
 							className="input-item"
 							name="start"
-							value={start || ''}
+							updated={start || ''}
 							onChange={onChangeNumericValue}
 							onBlur={onBlurStart}
 							contentEditable={false}
@@ -261,7 +261,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							ref={inputEndRef}
 							className="input-item"
 							name="end"
-							value={end || ''}
+							updated={end || ''}
 							onChange={onChangeNumericValue}
 							onBlur={onBlurEnd}
 							contentEditable={false}
@@ -281,7 +281,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 						<select
 							className="select-item"
 							name="requirement"
-							value={simplifedToFullText[requirement]}
+							updated={simplifedToFullText[requirement]}
 							onChange={onAnswerTypeChange}
 						>
 							{requirementDropdown.map(requirement => (
@@ -294,7 +294,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 						<input
 							className="input-item"
 							name="answer"
-							value={answer || ''}
+							updated={answer || ''}
 							onChange={onChangeNumericValue}
 							onBlur={onBlurAnswer}
 							contentEditable={false}
@@ -307,7 +307,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 						<select
 							className="select-item"
 							name="margin-type"
-							value={simplifedToFullText[type]}
+							updated={simplifedToFullText[type]}
 							onChange={onHandleSelectChange}
 							ref={marginErrorTypeRef}
 							onBlur={onBlurMarginOfErrorType}
@@ -317,12 +317,12 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							))}
 						</select>
 					</label>
-					<label className="input margin-value">
+					<label className="input margin-updated">
 						{type === 'percent' ? '% Error' : '± Error'}
 						<input
 							className="input-item"
 							name="margin"
-							value={margin || ''}
+							updated={margin || ''}
 							onChange={onChangeNumericValue}
 							onBlur={onBlurErrorValue}
 							contentEditable={false}
@@ -343,7 +343,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 						<select
 							className="select-item"
 							name="requirement"
-							value={simplifedToFullText[requirement]}
+							updated={simplifedToFullText[requirement]}
 							onChange={onHandleSelectChange}
 						>
 							{requirementDropdown.map(requirement => (
@@ -356,7 +356,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 						<input
 							className="input-item"
 							name="answer"
-							value={answer || ''}
+							updated={answer || ''}
 							onChange={onChangeNumericValue}
 							onBlur={onBlurAnswer}
 							contentEditable={false}

@@ -128,12 +128,12 @@ class SubMenu extends React.Component {
 				centered
 				buttons={[
 					{
-						value: 'Cancel',
+						updated: 'Cancel',
 						altAction: true,
 						onClick: ModalUtil.hide
 					},
 					{
-						value: 'Yes, Delete',
+						updated: 'Yes, Delete',
 						onClick: this.deletePage,
 						default: true,
 						isDangerous: true
@@ -222,15 +222,15 @@ class SubMenu extends React.Component {
 					type: 'select',
 					values: [
 						{
-							value: 'always',
+							updated: 'always',
 							description: 'Always show answers in review'
 						},
 						{
-							value: 'never',
+							updated: 'never',
 							description: 'Never show answers in review'
 						},
 						{
-							value: 'no-attempts-remaining',
+							updated: 'no-attempts-remaining',
 							description: 'Show answers in review after last attempt'
 						}
 					]
@@ -239,7 +239,7 @@ class SubMenu extends React.Component {
 					name: 'lock-nav',
 					description: 'Lock Navigation During Attempts',
 					type: 'abstract-toggle',
-					value: this.lockValue,
+					updated: this.lockValue,
 					onChange: this.onChangeLock
 				}
 			)

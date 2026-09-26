@@ -189,15 +189,15 @@ exports[`Dashboard renders in MODE_RECENT with fewer modules than moduleCount, n
           </span>
           <select
             onChange={[Function]}
-            value="alphabetical"
+            updated="alphabetical"
           >
             <option
-              value="newest"
+              updated="newest"
             >
               Newest
             </option>
             <option
-              value="alphabetical"
+              updated="alphabetical"
             >
               Alphabetical
             </option>
@@ -408,15 +408,15 @@ exports[`Dashboard renders with default props 1`] = `
           </span>
           <select
             onChange={[Function]}
-            value="alphabetical"
+            updated="alphabetical"
           >
             <option
-              value="newest"
+              updated="newest"
             >
               Newest
             </option>
             <option
-              value="alphabetical"
+              updated="alphabetical"
             >
               Alphabetical
             </option>
@@ -598,20 +598,20 @@ exports[`Dashboard renders with mode = MODE_ALL 1`] = `
           </span>
           <select
             onChange={[Function]}
-            value="alphabetical"
+            updated="alphabetical"
           >
             <option
-              value="newest"
+              updated="newest"
             >
               Newest
             </option>
             <option
-              value="alphabetical"
+              updated="alphabetical"
             >
               Alphabetical
             </option>
             <option
-              value="last updated"
+              updated="last updated"
             >
               Last updated
             </option>
@@ -660,15 +660,15 @@ exports[`Dashboard renders with mode = MODE_ALL 1`] = `
           </span>
           <select
             onChange={[Function]}
-            value="alphabetical"
+            updated="alphabetical"
           >
             <option
-              value="newest"
+              updated="newest"
             >
               Newest
             </option>
             <option
-              value="alphabetical"
+              updated="alphabetical"
             >
               Alphabetical
             </option>
@@ -847,20 +847,20 @@ exports[`Dashboard renders with mode = MODE_COLLECTION 1`] = `
           </span>
           <select
             onChange={[Function]}
-            value="alphabetical"
+            updated="alphabetical"
           >
             <option
-              value="newest"
+              updated="newest"
             >
               Newest
             </option>
             <option
-              value="alphabetical"
+              updated="alphabetical"
             >
               Alphabetical
             </option>
             <option
-              value="last updated"
+              updated="last updated"
             >
               Last updated
             </option>
@@ -1071,15 +1071,15 @@ exports[`Dashboard renders with mode = MODE_RECENT 1`] = `
           </span>
           <select
             onChange={[Function]}
-            value="alphabetical"
+            updated="alphabetical"
           >
             <option
-              value="newest"
+              updated="newest"
             >
               Newest
             </option>
             <option
-              value="alphabetical"
+              updated="alphabetical"
             >
               Alphabetical
             </option>

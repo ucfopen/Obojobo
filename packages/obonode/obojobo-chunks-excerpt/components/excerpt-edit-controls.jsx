@@ -21,79 +21,79 @@ const NO_EFFECT_DESCRIPTION = '(No effect available)'
 const presets = [
 	{
 		label: 'Minimal',
-		value: 'minimal'
+		updated: 'minimal'
 	},
 	{
 		label: 'Excerpt',
-		value: 'excerpt'
+		updated: 'excerpt'
 	},
 	{
 		label: 'Simple Filled',
-		value: 'simple-filled'
+		updated: 'simple-filled'
 	},
 	{
 		label: 'Simple Bordered',
-		value: 'simple-bordered'
+		updated: 'simple-bordered'
 	},
 	{
 		label: 'Card',
-		value: 'card'
+		updated: 'card'
 	},
 	{
 		label: 'Fiction',
-		value: 'fiction'
+		updated: 'fiction'
 	},
 	{
 		label: 'Non-Fiction',
-		value: 'non-fiction'
+		updated: 'non-fiction'
 	},
 	{
 		label: 'Historical',
-		value: 'historical'
+		updated: 'historical'
 	},
 	{
 		label: 'Very Historical',
-		value: 'very-historical'
+		updated: 'very-historical'
 	},
 	{
 		label: 'White Paper',
-		value: 'white-paper'
+		updated: 'white-paper'
 	},
 	{
 		label: 'Inst. Manual',
-		value: 'instruction-manual'
+		updated: 'instruction-manual'
 	},
 	{
 		label: 'Typewritten',
-		value: 'typewritten'
+		updated: 'typewritten'
 	},
 	{
 		label: 'Receipt',
-		value: 'receipt'
+		updated: 'receipt'
 	},
 	{
 		label: 'Site / Doc',
-		value: 'modern-text-file'
+		updated: 'modern-text-file'
 	},
 	{
 		label: 'Retro Text File',
-		value: 'retro-text-file'
+		updated: 'retro-text-file'
 	},
 	{
 		label: 'Command Line',
-		value: 'computer-modern'
+		updated: 'computer-modern'
 	},
 	{
 		label: 'Hacker Green',
-		value: 'computer-hacker-green'
+		updated: 'computer-hacker-green'
 	},
 	{
 		label: 'Hacker Orange',
-		value: 'computer-hacker-orange'
+		updated: 'computer-hacker-orange'
 	},
 	{
 		label: 'Callout',
-		value: 'callout'
+		updated: 'callout'
 	}
 ]
 
@@ -153,11 +153,11 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 						{presets.map(p => {
 							return (
 								<li
-									key={p.value}
-									className={content.preset === p.value ? 'is-selected' : 'is-not-selected'}
+									key={p.updated}
+									className={content.preset === p.updated ? 'is-selected' : 'is-not-selected'}
 								>
-									<button onClick={() => onChangePreset(p.value)}>
-										<div className={`icon icon-${p.value}`}></div>
+									<button onClick={() => onChangePreset(p.updated)}>
+										<div className={`icon icon-${p.updated}`}></div>
 										<span>{p.label}</span>
 									</button>
 								</li>
@@ -174,37 +174,37 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 									<span>Style</span>
 								</label>
 								<select
-									value={content.bodyStyle}
-									onChange={event => onChangeProp('bodyStyle', event.target.value)}
+									updated={content.bodyStyle}
+									onChange={event => onChangeProp('bodyStyle', event.target.updated)}
 								>
 									<optgroup label="Simple">
-										<option value="none">None</option>
-										<option value="filled-box">Filled Box</option>
-										<option value="bordered-box">Bordered Box</option>
-										<option value="card">Card</option>
+										<option updated="none">None</option>
+										<option updated="filled-box">Filled Box</option>
+										<option updated="bordered-box">Bordered Box</option>
+										<option updated="card">Card</option>
 									</optgroup>
 									<optgroup label="Paper">
-										<option value="white-paper">White Paper</option>
-										<option value="modern-paper">Gray Paper</option>
-										<option value="light-yellow-paper">Light Yellow Paper</option>
-										<option value="dark-yellow-paper">Dark Yellow Paper</option>
-										<option value="aged-paper">Aged Paper</option>
+										<option updated="white-paper">White Paper</option>
+										<option updated="modern-paper">Gray Paper</option>
+										<option updated="light-yellow-paper">Light Yellow Paper</option>
+										<option updated="dark-yellow-paper">Dark Yellow Paper</option>
+										<option updated="aged-paper">Aged Paper</option>
 									</optgroup>
 									<optgroup label="Computer">
-										<option value="modern-text-file">Browser</option>
-										<option value="retro-text-file">Retro Text File</option>
-										<option value="command-line">Command Line</option>
-										<option value="term-white">CRT Terminal (White)</option>
-										<option value="term-green">CRT Terminal (Green)</option>
-										<option value="term-orange">CRT Terminal (Orange)</option>
-										<option value="term-c64">Commodore 64 Screen</option>
+										<option updated="modern-text-file">Browser</option>
+										<option updated="retro-text-file">Retro Text File</option>
+										<option updated="command-line">Command Line</option>
+										<option updated="term-white">CRT Terminal (White)</option>
+										<option updated="term-green">CRT Terminal (Green)</option>
+										<option updated="term-orange">CRT Terminal (Orange)</option>
+										<option updated="term-c64">Commodore 64 Screen</option>
 									</optgroup>
 									<optgroup label="Callout">
-										<option value="callout-try-it">Try It!</option>
-										<option value="callout-practice">Practice!</option>
-										<option value="callout-do-this">Do This:</option>
-										<option value="callout-example">Example</option>
-										<option value="callout-hint">Hint</option>
+										<option updated="callout-try-it">Try It!</option>
+										<option updated="callout-practice">Practice!</option>
+										<option updated="callout-do-this">Do This:</option>
+										<option updated="callout-example">Example</option>
+										<option updated="callout-hint">Hint</option>
 									</optgroup>
 								</select>
 							</div>
@@ -214,20 +214,20 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 									<span>Font</span>
 								</label>
 								<select
-									value={content.font}
-									onChange={event => onChangeProp('font', event.target.value)}
+									updated={content.font}
+									onChange={event => onChangeProp('font', event.target.updated)}
 								>
 									<optgroup label="Obojobo Default Fonts">
-										<option value="serif">Serif</option>
-										<option value="sans">Sans-Serif</option>
-										<option value="monospace">Monospace</option>
+										<option updated="serif">Serif</option>
+										<option updated="sans">Sans-Serif</option>
+										<option updated="monospace">Monospace</option>
 									</optgroup>
 									<optgroup label="System Fonts">
-										<option value="times-new-roman">Times New Roman</option>
-										<option value="georgia">Georgia</option>
-										<option value="helvetica">Helvetica</option>
-										<option value="courier">Courier</option>
-										<option value="palatino">Palatino</option>
+										<option updated="times-new-roman">Times New Roman</option>
+										<option updated="georgia">Georgia</option>
+										<option updated="helvetica">Helvetica</option>
+										<option updated="courier">Courier</option>
+										<option updated="palatino">Palatino</option>
 									</optgroup>
 								</select>
 							</div>
@@ -263,7 +263,7 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 										{ label: 'tiny', icon: iconWidthTiny }
 									]}
 									selectedOption={content.width}
-									onChangeOption={value => onChangeProp('width', value)}
+									onChangeOption={updated => onChangeProp('width', updated)}
 								/>
 							</div>
 
@@ -280,7 +280,7 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 										{ label: 'larger', icon: iconFontSizeLarge }
 									]}
 									selectedOption={content.fontSize}
-									onChangeOption={value => onChangeProp('fontSize', value)}
+									onChangeOption={updated => onChangeProp('fontSize', updated)}
 								/>
 							</div>
 							<div>
@@ -296,7 +296,7 @@ const ExcerptEditControls = ({ content, onChangeProp, onChangePreset }) => {
 										{ label: 'generous', icon: iconLineHeightGenerous }
 									]}
 									selectedOption={content.lineHeight}
-									onChangeOption={value => onChangeProp('lineHeight', value)}
+									onChangeOption={updated => onChangeProp('lineHeight', updated)}
 								/>
 							</div>
 						</section>
