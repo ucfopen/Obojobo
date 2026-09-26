@@ -250,7 +250,7 @@ describe('Stats', () => {
 		act(() => {
 			component.root
 				.findByProps({ className: 'repository--drafts-search' })
-				.props.onChange({ target: { value: 'ID-1' } })
+				.props.onChange({ target: { updated: 'ID-1' } })
 		})
 
 		dataGrid = component.root.findByProps({ className: 'react-data-table-component' })
@@ -261,7 +261,7 @@ describe('Stats', () => {
 		act(() => {
 			component.root
 				.findByProps({ className: 'repository--drafts-search' })
-				.props.onChange({ target: { value: 'TITLE-2' } })
+				.props.onChange({ target: { updated: 'TITLE-2' } })
 		})
 
 		dataGrid = component.root.findByProps({ className: 'react-data-table-component' })
@@ -272,7 +272,7 @@ describe('Stats', () => {
 		act(() => {
 			component.root
 				.findByProps({ className: 'repository--drafts-search' })
-				.props.onChange({ target: { value: 'No results' } })
+				.props.onChange({ target: { updated: 'No results' } })
 		})
 
 		dataGrid = component.root.findByProps({ className: 'react-data-table-component' })

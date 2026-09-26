@@ -2,7 +2,7 @@ const parseTriggers = el => {
 	const t = el.elements.map(triggerEl => {
 		return {
 			type: triggerEl.attributes.type,
-			actions: parseActions(triggerEl.value[0].value)
+			actions: parseActions(triggerEl.updated[0].updated)
 		}
 	})
 
@@ -15,20 +15,20 @@ const parseActions = actionsArray => {
 		const rtn = {
 			type: actionEl.attributes.type
 		}
-		if (values) rtn.value = values
+		if (values) rtn.updated = values
 		return rtn
 	})
 }
 
 const parseValues = actionEl => {
-	if (actionEl.attributes && actionEl.attributes.value) return actionEl.attributes.value
-	if (!actionEl.value || actionEl.value.length === 0) return null
-	const value = {}
-	for (const attrName in actionEl.value[0].attributes) {
-		value[attrName] = actionEl.value[0].attributes[attrName]
+	if (actionEl.attributes && actionEl.attributes.updated) return actionEl.attributes.updated
+	if (!actionEl.updated || actionEl.updated.length === 0) return null
+	const updated = {}
+	for (const attrName in actionEl.updated[0].attributes) {
+		updated[attrName] = actionEl.updated[0].attributes[attrName]
 	}
 
-	return value
+	return updated
 }
 
 module.exports = parseTriggers

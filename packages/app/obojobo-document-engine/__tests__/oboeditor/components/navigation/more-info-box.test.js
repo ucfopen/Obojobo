@@ -178,11 +178,11 @@ describe('MoreInfoBox', () => {
 						name: 'mockSelect',
 						values: [
 							{
-								value: 'value1',
+								updated: 'value1',
 								description: 'Value One'
 							},
 							{
-								value: 'value2',
+								updated: 'value2',
 								description: 'Value Two'
 							}
 						]
@@ -196,7 +196,7 @@ describe('MoreInfoBox', () => {
 						type: 'abstract-toggle',
 						description: 'Mock Abstract Toggle',
 						name: 'mockAbstractToggle',
-						value: () => false,
+						updated: () => false,
 						onChange: () => true
 					},
 					{
@@ -240,8 +240,8 @@ describe('MoreInfoBox', () => {
 
 		component.find('.more-info-button').simulate('click')
 
-		expect(component.find({ value: 'mockInputValue1' }).props().placeholder).toBe('')
-		expect(component.find({ value: 'mockInputValue2' }).props().placeholder).toBe(
+		expect(component.find({ updated: 'mockInputValue1' }).props().placeholder).toBe('')
+		expect(component.find({ updated: 'mockInputValue2' }).props().placeholder).toBe(
 			'mockPlaceholderValue'
 		)
 
@@ -254,7 +254,7 @@ describe('MoreInfoBox', () => {
 				select: jest.fn()
 			}
 		})
-		// mocks extracting custom content prop for value
+		// mocks extracting custom content prop for updated
 		const abstractValue = jest.fn().mockImplementation(contentState => contentState.abstractValue)
 		// mocks using checked to change custom content prop
 		const abstractOnChangeFn = jest.fn().mockImplementation((prevContentState, checked) => ({
@@ -289,11 +289,11 @@ describe('MoreInfoBox', () => {
 						name: 'mockSelect',
 						values: [
 							{
-								value: 'mockSelectValue1',
+								updated: 'mockSelectValue1',
 								description: 'Value One'
 							},
 							{
-								value: 'mockSelectValue2',
+								updated: 'mockSelectValue2',
 								description: 'Value Two'
 							}
 						]
@@ -307,7 +307,7 @@ describe('MoreInfoBox', () => {
 						type: 'abstract-toggle',
 						description: 'Mock Abstract Toggle',
 						name: 'mockAbstractToggle',
-						value: abstractValue,
+						updated: abstractValue,
 						onChange: abstractOnChangeFn
 					}
 				]}
@@ -323,7 +323,7 @@ describe('MoreInfoBox', () => {
 		expect(component.state()).toHaveProperty('currentId', 'mock-id')
 		const idInputBox = component.find({ id: 'oboeditor--components--more-info-box--id-input' })
 		idInputBox.simulate('change', {
-			target: { value: 'new-mock-id' }
+			target: { updated: 'new-mock-id' }
 		})
 		idInputBox.simulate('click') // used to cover internal onClick Handler
 		expect(component.state()).toHaveProperty('currentId', 'new-mock-id')
@@ -331,19 +331,19 @@ describe('MoreInfoBox', () => {
 
 		// Change mockInput
 		expect(component.state()).toHaveProperty('content.mockInput', 'mockInputValue1')
-		const mockInput = component.find({ value: 'mockInputValue1' }) // value of content['mockInput']
+		const mockInput = component.find({ updated: 'mockInputValue1' }) // updated of content['mockInput']
 		mockInput.simulate('change', {
-			target: { value: 'changed value' }
+			target: { updated: 'changed updated' }
 		})
 		mockInput.simulate('click') // used to cover internal onClick Handler
-		expect(component.state()).toHaveProperty('content.mockInput', 'changed value')
+		expect(component.state()).toHaveProperty('content.mockInput', 'changed updated')
 		expect(component.html()).toMatchSnapshot()
 
 		// Change mockSelect
 		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue2')
 		const selectItem = component.find({ className: 'select-item' })
 		selectItem.simulate('change', {
-			target: { value: 'mockSelectValue1' }
+			target: { updated: 'mockSelectValue1' }
 		})
 		selectItem.simulate('click') // used to cover internal onClick Handler
 		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue1')
@@ -369,7 +369,7 @@ describe('MoreInfoBox', () => {
 		expect(abstractOnChangeFn).toHaveBeenLastCalledWith(
 			{
 				abstractValue: false,
-				mockInput: 'changed value',
+				mockInput: 'changed updated',
 				mockSelect: 'mockSelectValue1',
 				mockToggle: true
 			},
@@ -406,7 +406,7 @@ describe('MoreInfoBox', () => {
 			.find('input')
 			.at(1)
 			.simulate('change', {
-				target: { value: 'changed value' }
+				target: { updated: 'changed updated' }
 			})
 
 		component.find('.more-info-button').simulate('click')
@@ -825,7 +825,7 @@ describe('MoreInfoBox', () => {
 		onSave.mockReturnValue(null)
 		nodeInstance.domRef = {
 			current: {
-				contains: value => value
+				contains: updated => updated
 			}
 		}
 

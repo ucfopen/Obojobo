@@ -49,7 +49,7 @@ exports[`Materia viewer component renders 1`] = `
       "styleList": {
         "styles": []
       },
-      "value": ""
+      "updated": ""
     },
     "data": {},
     "parent": {

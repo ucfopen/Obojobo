@@ -38,9 +38,9 @@
 			<div class="option-list">
 				<div class="option">
 					<div class="small-label">Allow importing previous scores for the same module?</div>
-					<input id="import-on" type="radio" name="allow_import" value="1" <%= allowImportDefault ? 'checked' : '' %>>
+					<input id="import-on" type="radio" name="allow_import" updated="1" <%= allowImportDefault ? 'checked' : '' %>>
 					<label for="import-on">Yes<%= allowImportDefault ? ' (default)' : '' %></label>
-					<input id="import-off" type="radio" name="allow_import" value="0" <%= allowImportDefault ? '' : 'checked' %>>
+					<input id="import-off" type="radio" name="allow_import" updated="0" <%= allowImportDefault ? '' : 'checked' %>>
 					<label for="import-off">No<%= allowImportDefault ? '' : ' (default)' %></label>
 				</div>
 
@@ -153,7 +153,7 @@
 			<div class="progress-container">
 				<span>Embedding Module...</span>
 				<div id="progressbar" class="progressbar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
-					<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: block; width: 0;"></div>
+					<div class="ui-progressbar-updated ui-widget-header ui-corner-left" style="display: block; width: 0;"></div>
 				</div>
 			</div>
 		</section>
@@ -181,10 +181,10 @@
 		</div>
 
 		<form id="submit-form" action="<%- returnUrl %>" method="post" encType="application/x-www-form-urlencoded">
-			<input type="hidden" name="lti_message_type" value="ContentItemSelection" />
-			<input type="hidden" name="lti_version" value="LTI-1p0" />
-			<input type="hidden" name="content_items" value="" />
-			<input type="hidden" name="data" value="<%= opaqueData %>" />
+			<input type="hidden" name="lti_message_type" updated="ContentItemSelection" />
+			<input type="hidden" name="lti_version" updated="LTI-1p0" />
+			<input type="hidden" name="content_items" updated="" />
+			<input type="hidden" name="data" updated="<%= opaqueData %>" />
 		</form>
 
 		<script type="text/javascript">

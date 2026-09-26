@@ -48,7 +48,7 @@ const PeopleSearchDialog = props => {
 					onChange={props.onSearchChange}
 					focusOnMount={true}
 					placeholder="Search..."
-					value={props.searchString}
+					updated={props.searchString}
 				/>
 			</div>
 			<div className="access-list-wrapper">

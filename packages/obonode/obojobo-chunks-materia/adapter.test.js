@@ -68,7 +68,7 @@ describe('Materia adapter', () => {
 		expect(model.modelState.src).toBe('mocked-src')
 	})
 
-	test('adapter sets modelState.width to the default width is invalid, otherwise to the given value', () => {
+	test('adapter sets modelState.width to the default width is invalid, otherwise to the given updated', () => {
 		model = new MockOboModel({})
 		MateriaAdapter.construct(model)
 		expect(model.modelState.width).toBe(800)
@@ -86,7 +86,7 @@ describe('Materia adapter', () => {
 		expect(model.modelState.width).toBe(800)
 	})
 
-	test('adapter sets modelState.height to the default width is invalid, otherwise to the given value', () => {
+	test('adapter sets modelState.height to the default width is invalid, otherwise to the given updated', () => {
 		model = new MockOboModel({})
 		MateriaAdapter.construct(model)
 		expect(model.modelState.height).toBe(600)
@@ -118,7 +118,7 @@ describe('Materia adapter', () => {
 		        "styleList": ChunkStyleList {
 		          "styles": Array [],
 		        },
-		        "value": "",
+		        "updated": "",
 		      },
 		    },
 		  ],
@@ -139,7 +139,7 @@ describe('Materia adapter', () => {
 		        "styleList": ChunkStyleList {
 		          "styles": Array [],
 		        },
-		        "value": "",
+		        "updated": "",
 		      },
 		    },
 		  ],
@@ -152,7 +152,7 @@ describe('Materia adapter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Widget Caption'
+							updated: 'Widget Caption'
 						}
 					}
 				]
@@ -173,7 +173,7 @@ describe('Materia adapter', () => {
 		        "styleList": ChunkStyleList {
 		          "styles": Array [],
 		        },
-		        "value": "Widget Caption",
+		        "updated": "Widget Caption",
 		      },
 		    },
 		  ],

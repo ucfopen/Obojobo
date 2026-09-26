@@ -20,7 +20,7 @@ const {
 } = require('./numeric-entry-statuses')
 
 /**
- * Represents, processes and validates a numeric value in an accepted format. Used as
+ * Represents, processes and validates a numeric updated in an accepted format. Used as
  * answer values in numeric questions.
  * @example
  * const entry = new NumericEntry('6.02e23', ['decimal', 'scientific'])
@@ -99,10 +99,10 @@ module.exports = class NumericEntry {
 	}
 
 	/**
-	 * Reduces the given data to a single status value.
+	 * Reduces the given data to a single status updated.
 	 * Possible status values:
 	 * * `inputMatchesMultipleTypes`: There are a few inferred matches and it is not clear which one was intended.
-	 * * `inputNotSafe`: The computed value is larger than can be safely computed.
+	 * * `inputNotSafe`: The computed updated is larger than can be safely computed.
 	 * * `inputInvalid`: There was no matching Numeric type, meaning the entry string is malformed.
 	 * * `inputNotMatched`: There was no matching Numeric type from the included allowed types, meaning the entry was in a format that is not allowed.
 	 * * `ok`: The entry matched one exact or inferred Numeric type.

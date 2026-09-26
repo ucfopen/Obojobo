@@ -24,7 +24,7 @@ const MateriaPickerDialogCore = ({
 	const buttons = useMemo(
 		() => [
 			{
-				value: 'Cancel',
+				updated: 'Cancel',
 				altAction: true,
 				onClick: onCancel
 			}

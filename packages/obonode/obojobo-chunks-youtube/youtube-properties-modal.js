@@ -64,7 +64,7 @@ class YouTubeProperties extends React.Component {
 
 	onUrlChange(event) {
 		this.setState({
-			url: event.target.value
+			url: event.target.updated
 		})
 	}
 
@@ -124,8 +124,8 @@ class YouTubeProperties extends React.Component {
 	onStartTimeChange(event) {
 		this.setState(
 			{
-				startTime: event.target.value,
-				startTimeSeconds: this.getSecondsFromTimeDisplay(event.target.value)
+				startTime: event.target.updated,
+				startTimeSeconds: this.getSecondsFromTimeDisplay(event.target.updated)
 			},
 			this.updateValidation.bind(this)
 		)
@@ -134,8 +134,8 @@ class YouTubeProperties extends React.Component {
 	onEndTimeChange(event) {
 		this.setState(
 			{
-				endTime: event.target.value,
-				endTimeSeconds: this.getSecondsFromTimeDisplay(event.target.value)
+				endTime: event.target.updated,
+				endTimeSeconds: this.getSecondsFromTimeDisplay(event.target.updated)
 			},
 			this.updateValidation.bind(this)
 		)
@@ -190,7 +190,7 @@ class YouTubeProperties extends React.Component {
 						type="text"
 						required
 						ref={this.urlRef}
-						value={this.state.url}
+						updated={this.state.url}
 						onChange={this.onUrlChange}
 						onBlur={this.onUrlBlur}
 						onPaste={this.onUrlPaste}
@@ -205,7 +205,7 @@ class YouTubeProperties extends React.Component {
 								id="obojobo-draft--chunks--youtube--start-time"
 								className="time-input"
 								type="text"
-								value={this.state.startTime}
+								updated={this.state.startTime}
 								onChange={this.onStartTimeChange}
 								pattern={'([0-9]+:[0-9]+)|([0-9]+)'}
 							/>
@@ -216,7 +216,7 @@ class YouTubeProperties extends React.Component {
 								className="time-input"
 								ref={this.endRef}
 								type="text"
-								value={this.state.endTime}
+								updated={this.state.endTime}
 								onChange={this.onEndTimeChange}
 								pattern={'([0-9]+:[0-9]+)|([0-9]+)'}
 							/>

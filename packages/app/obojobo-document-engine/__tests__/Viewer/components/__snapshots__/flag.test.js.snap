@@ -52,7 +52,7 @@ exports[`Flag Renders SHOULD_NOT_HAVE_CHOSEN 1`] = `
 
 exports[`Flag Renders UNCHOSEN_CORRECTLY 1`] = `null`;
 
-exports[`Flag Renders unexpected flag value 1`] = `
+exports[`Flag Renders unexpected flag updated 1`] = `
 <div
   className="obojobo-draft--components--flag is-type-someInvalidType"
 >

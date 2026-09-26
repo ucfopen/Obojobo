@@ -541,7 +541,7 @@ describe('repository api route', () => {
 				expect(DraftsMetadata).toHaveBeenCalledWith({
 					draft_id: 'mockNewDraftId',
 					key: 'copied',
-					value: mockCurrentDocument.draftId
+					updated: mockCurrentDocument.draftId
 				})
 				expect(DraftsMetadata.mock.instances[0].saveOrCreate).toHaveBeenCalledTimes(1)
 				expect(insertEvent).toHaveBeenCalledWith({
@@ -632,12 +632,12 @@ describe('repository api route', () => {
 				expect(DraftsMetadata).toHaveBeenCalledWith({
 					draft_id: 'mockNewDraftId',
 					key: 'copied',
-					value: mockCurrentDocument.draftId
+					updated: mockCurrentDocument.draftId
 				})
 				expect({
 					draft_id: 'mockNewDraftId',
 					key: 'read_only',
-					value: true
+					updated: true
 				})
 				expect(DraftsMetadata.mock.instances[0].saveOrCreate).toHaveBeenCalledTimes(1)
 				expect(DraftsMetadata.mock.instances[1].saveOrCreate).toHaveBeenCalledTimes(1)
@@ -775,7 +775,7 @@ describe('repository api route', () => {
 		expect.hasAssertions()
 
 		const mockMetadataResponse = {
-			value: 'mockOriginalDraftId',
+			updated: 'mockOriginalDraftId',
 			updatedAt: '1999-01-01 01:00:00.000000+00'
 		}
 
@@ -794,7 +794,7 @@ describe('repository api route', () => {
 					'copied'
 				)
 				expect(DraftSummary.fetchByIdMoreRecentThan).toHaveBeenCalledWith(
-					mockMetadataResponse.value,
+					mockMetadataResponse.updated,
 					mockMetadataResponse.updatedAt
 				)
 				expect(response.body).toEqual(mockDraftResponse)
@@ -825,7 +825,7 @@ describe('repository api route', () => {
 
 		const mockMetaSaveOrCreate = jest.fn()
 		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
-			value: 'mockOriginalDraftId',
+			updated: 'mockOriginalDraftId',
 			updatedAt: '1999-01-01 01:00:00.000000+00',
 			saveOrCreate: mockMetaSaveOrCreate
 		})
@@ -847,7 +847,7 @@ describe('repository api route', () => {
 
 		const mockMetaSaveOrCreate = jest.fn()
 		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
-			value: 'mockOriginalDraftId',
+			updated: 'mockOriginalDraftId',
 			updatedAt: '1999-01-01 01:00:00.000000+00',
 			saveOrCreate: mockMetaSaveOrCreate
 		})
@@ -888,7 +888,7 @@ describe('repository api route', () => {
 
 		const mockMetaSaveOrCreate = jest.fn()
 		DraftsMetadata.getByDraftIdAndKey.mockResolvedValueOnce({
-			value: 'mockOriginalDraftId',
+			updated: 'mockOriginalDraftId',
 			updatedAt: '1999-01-01 01:00:00.000000+00',
 			saveOrCreate: mockMetaSaveOrCreate
 		})
@@ -952,9 +952,9 @@ describe('repository api route', () => {
 				expect(DraftPermissions.updateAccessLevel).not.toHaveBeenCalled()
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'Current User does not have permission to share this draft'
 				)
@@ -971,9 +971,9 @@ describe('repository api route', () => {
 				expect(DraftPermissions.updateAccessLevel).not.toHaveBeenCalled()
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'Current User does not have permission to share this draft'
 				)
@@ -1116,8 +1116,8 @@ describe('repository api route', () => {
 				)
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value.message).toBe('database error')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated.message).toBe('database error')
 			})
 	})
 
@@ -1362,8 +1362,8 @@ describe('repository api route', () => {
 					mockCurrentUser.id
 				)
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toStrictEqual(mockCollection)
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toStrictEqual(mockCollection)
 			})
 	})
 
@@ -1385,8 +1385,8 @@ describe('repository api route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value.message).toBe('database error')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated.message).toBe('database error')
 			})
 	})
 
@@ -1415,8 +1415,8 @@ describe('repository api route', () => {
 				)
 				expect(Collection.rename).toHaveBeenCalledTimes(0)
 				expect(response.statusCode).toBe(401)
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'You must be the creator of this collection to rename it'
 				)
@@ -1523,8 +1523,8 @@ describe('repository api route', () => {
 				)
 				expect(Collection.addModule).toHaveBeenCalledTimes(0)
 				expect(response.statusCode).toBe(401)
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'You must be the creator of this collection to add modules to it'
 				)
@@ -1544,8 +1544,8 @@ describe('repository api route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value.message).toBe('some-error')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated.message).toBe('some-error')
 			})
 	})
 
@@ -1594,8 +1594,8 @@ describe('repository api route', () => {
 				)
 				expect(Collection.removeModule).toHaveBeenCalledTimes(0)
 				expect(response.statusCode).toBe(401)
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'You must be the creator of this collection to remove modules from it'
 				)
@@ -1615,8 +1615,8 @@ describe('repository api route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value.message).toBe('some-error')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated.message).toBe('some-error')
 			})
 	})
 })

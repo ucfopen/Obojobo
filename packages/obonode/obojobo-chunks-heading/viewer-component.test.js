@@ -19,7 +19,7 @@ describe('Heading', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]
@@ -44,7 +44,7 @@ describe('Heading', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]
@@ -69,7 +69,7 @@ describe('Heading', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]

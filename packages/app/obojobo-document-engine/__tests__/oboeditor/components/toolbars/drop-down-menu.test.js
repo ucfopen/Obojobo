@@ -18,8 +18,8 @@ describe('Drop Down Menu', () => {
 
 	test('DropDownMenu node with toggle-action', () => {
 		const menu = [
-			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: true },
-			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: false }
+			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), updated: true },
+			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), updated: false }
 		]
 		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
 		const tree = component.html()

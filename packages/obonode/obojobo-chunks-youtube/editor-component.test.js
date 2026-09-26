@@ -92,7 +92,7 @@ describe('YouTube Editor Node', () => {
 	test('changeProperties sets the nodes content', () => {
 		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} />)
 
-		component.instance().handleSourceChange({ mockProperties: 'mock value' })
+		component.instance().handleSourceChange({ mockProperties: 'mock updated' })
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})

@@ -9,7 +9,7 @@ const ClipboardUtil = {
 		// Loads the url into an invisible textarea
 		// to copy it to the clipboard
 		const el = document.createElement('textarea')
-		el.value = str
+		el.updated = str
 		el.setAttribute('readonly', '')
 		el.style.position = 'absolute'
 		el.style.left = '-9999px'

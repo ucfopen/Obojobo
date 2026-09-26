@@ -13,8 +13,8 @@ const triggersParser = triggers => {
 
 		// Parser actions in each trigger
 		trigger.actions.forEach(action => {
-			const attrs = processAttrs(action.value, [])
-			actionsBodyXML += `<action type="${action.type}">` + `<value${attrs} />` + `</action>`
+			const attrs = processAttrs(action.updated, [])
+			actionsBodyXML += `<action type="${action.type}">` + `<updated${attrs} />` + `</action>`
 		})
 
 		let actionsXML = ''

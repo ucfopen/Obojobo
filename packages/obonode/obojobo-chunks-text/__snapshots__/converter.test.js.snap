@@ -39,12 +39,12 @@ Object {
           "indent": 1,
         },
         "text": Object {
-          "value": "mockText",
+          "updated": "mockText",
         },
       },
       Object {
         "text": Object {
-          "value": "mockText2",
+          "updated": "mockText2",
         },
       },
     ],
@@ -71,7 +71,7 @@ Object {
               "type": "b",
             },
           ],
-          "value": "mockText",
+          "updated": "mockText",
         },
       },
     ],
@@ -97,7 +97,7 @@ Object {
               "type": "b",
             },
           ],
-          "value": "mockText",
+          "updated": "mockText",
         },
       },
     ],

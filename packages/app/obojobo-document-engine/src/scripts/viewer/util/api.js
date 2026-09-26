@@ -1,7 +1,7 @@
 const processJsonResults = res => {
 	return Promise.resolve(res.json()).then(json => {
 		if (json.status === 'error') {
-			console.error(json.value) //eslint-disable-line no-console
+			console.error(json.updated) //eslint-disable-line no-console
 		}
 
 		return json

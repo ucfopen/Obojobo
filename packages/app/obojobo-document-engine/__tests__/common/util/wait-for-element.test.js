@@ -8,7 +8,7 @@ describe('waitForElement', () => {
 
 		// Override document.querySelector
 		Object.defineProperty(global.document, 'querySelector', {
-			value: () => mockEl,
+			updated: () => mockEl,
 			enumerable: true,
 			configurable: true
 		})
@@ -18,7 +18,7 @@ describe('waitForElement', () => {
 		expect(el).toBe(mockEl)
 
 		// Restore document.querySelector
-		Object.defineProperty(global.document, 'querySelector', { value: originalDocument })
+		Object.defineProperty(global.document, 'querySelector', { updated: originalDocument })
 	})
 
 	test('waitForElement uses a MutationObserver if the element does not exist', async () => {
@@ -33,7 +33,7 @@ describe('waitForElement', () => {
 		// Override MutationObserver
 		const disconnect = jest.fn()
 		Object.defineProperty(global, 'MutationObserver', {
-			value: callback => {
+			updated: callback => {
 				return {
 					observe: () => {
 						callback([
@@ -56,7 +56,7 @@ describe('waitForElement', () => {
 
 		// Restore MutationObserver
 		Object.defineProperty(global, 'MutationObserver', {
-			value: originalMutationObserver
+			updated: originalMutationObserver
 		})
 	})
 
@@ -72,7 +72,7 @@ describe('waitForElement', () => {
 		// Override MutationObserver
 		const disconnect = jest.fn()
 		Object.defineProperty(global, 'MutationObserver', {
-			value: callback => {
+			updated: callback => {
 				return {
 					observe: () => {
 						callback([
@@ -94,7 +94,7 @@ describe('waitForElement', () => {
 
 		// Restore MutationObserver
 		Object.defineProperty(global, 'MutationObserver', {
-			value: originalMutationObserver
+			updated: originalMutationObserver
 		})
 	})
 })

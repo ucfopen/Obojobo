@@ -28,7 +28,7 @@ const questionJSON = {
 						textGroup: [
 							{
 								text: {
-									value: 'Example text'
+									updated: 'Example text'
 								}
 							}
 						]
@@ -60,7 +60,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text Choice 1'
+													updated: 'Example Text Choice 1'
 												}
 											}
 										]
@@ -79,7 +79,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text Feedback 1'
+													updated: 'Example Text Feedback 1'
 												}
 											}
 										]
@@ -107,7 +107,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text Choice 2'
+													updated: 'Example Text Choice 2'
 												}
 											}
 										]
@@ -126,7 +126,7 @@ const questionJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example Text Feedback 2'
+													updated: 'Example Text Feedback 2'
 												}
 											}
 										]

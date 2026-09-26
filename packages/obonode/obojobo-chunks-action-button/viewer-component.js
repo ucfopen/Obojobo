@@ -24,7 +24,7 @@ export default class ActionButton extends React.Component {
 				<TextChunk className="obojobo-draft--chunks--action-button pad">
 					<Button
 						onClick={model.processTrigger.bind(model, 'onClick')}
-						value={model.modelState.label}
+						updated={model.modelState.label}
 						align={model.modelState.align}
 						tabIndex="0"
 					>

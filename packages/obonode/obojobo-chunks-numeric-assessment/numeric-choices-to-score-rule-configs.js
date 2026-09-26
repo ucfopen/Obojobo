@@ -7,7 +7,7 @@ module.exports = numericChoices => {
 		switch (answer.requirement) {
 			case 'range':
 				return {
-					value: `[${answer.start},${answer.end}]`,
+					updated: `[${answer.start},${answer.end}]`,
 					feedback,
 					score
 				}
@@ -16,7 +16,7 @@ module.exports = numericChoices => {
 				switch (answer.type) {
 					case 'percent':
 						return {
-							value: '' + answer.answer,
+							updated: '' + answer.answer,
 							percentError: answer.margin,
 							feedback,
 							score
@@ -24,7 +24,7 @@ module.exports = numericChoices => {
 
 					case 'absolute':
 						return {
-							value: '' + answer.answer,
+							updated: '' + answer.answer,
 							absoluteError: answer.margin,
 							feedback,
 							score
@@ -37,7 +37,7 @@ module.exports = numericChoices => {
 			case 'exact':
 			default:
 				return {
-					value: '' + answer.answer,
+					updated: '' + answer.answer,
 					feedback,
 					score
 				}

@@ -36,7 +36,7 @@ const Adapter = {
 	toText(model) {
 		let text = ''
 		for (const textItem of Array.from(model.modelState.textGroup.items)) {
-			text += `  * ${textItem.text.value}\n`
+			text += `  * ${textItem.text.updated}\n`
 		}
 
 		return text

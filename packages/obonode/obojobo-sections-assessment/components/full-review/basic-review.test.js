@@ -28,7 +28,7 @@ describe('BasicReview', () => {
 								textGroup: [
 									{
 										text: {
-											value: 'Example text'
+											updated: 'Example text'
 										}
 									}
 								]
@@ -60,7 +60,7 @@ describe('BasicReview', () => {
 												textGroup: [
 													{
 														text: {
-															value: 'Example Text'
+															updated: 'Example Text'
 														}
 													}
 												]
@@ -79,7 +79,7 @@ describe('BasicReview', () => {
 												textGroup: [
 													{
 														text: {
-															value: 'Example Text 2'
+															updated: 'Example Text 2'
 														}
 													}
 												]
@@ -107,7 +107,7 @@ describe('BasicReview', () => {
 												textGroup: [
 													{
 														text: {
-															value: 'Example Text 3'
+															updated: 'Example Text 3'
 														}
 													}
 												]
@@ -126,7 +126,7 @@ describe('BasicReview', () => {
 												textGroup: [
 													{
 														text: {
-															value: 'Example Text 4'
+															updated: 'Example Text 4'
 														}
 													}
 												]

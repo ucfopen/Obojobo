@@ -87,7 +87,7 @@ class Header extends React.Component {
 				values: list
 					.filter(item => item.type === 'link')
 					.map(item => ({
-						value: item.id,
+						updated: item.id,
 						description: item.label
 					}))
 			}

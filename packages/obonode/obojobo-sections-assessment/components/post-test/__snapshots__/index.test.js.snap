@@ -19,7 +19,7 @@ exports[`PostTest PostTest component 1`] = `
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         Did Not Pass
       </span>
@@ -100,7 +100,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         100
         <span
@@ -267,7 +267,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         100
         <span
@@ -434,7 +434,7 @@ exports[`PostTest PostTest component with review 1`] = `
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         100
         <span
@@ -601,7 +601,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         100
         <span
@@ -768,7 +768,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         100
         <span
@@ -935,7 +935,7 @@ exports[`PostTest PostTest component with review with imported score 1`] = `
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         100
         <span
@@ -1102,7 +1102,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
         Recorded Score:
       </h2>
       <span
-        className="value"
+        className="updated"
       >
         Did Not Pass
       </span>

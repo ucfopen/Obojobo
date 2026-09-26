@@ -99,11 +99,11 @@
 					font-size: 0.8em;
 					border: 0.1em solid $color-shadow;
 
-					&[value=''] {
+					&[updated=''] {
 						color: $color-text-minor;
 					}
 
-					&:not([value='']) {
+					&:not([updated='']) {
 						background-color: $color-action-bg;
 						border: 1px solid $color-action;
 					}

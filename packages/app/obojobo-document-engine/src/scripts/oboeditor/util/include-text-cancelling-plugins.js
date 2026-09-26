@@ -2,7 +2,7 @@
 // cancel any input and pasting.
 
 const isType = (editor, nodeType) => {
-	return editor.value.blocks.some(block => block.type === nodeType)
+	return editor.updated.blocks.some(block => block.type === nodeType)
 }
 
 export default (nodeType, pluginsConfig) => {

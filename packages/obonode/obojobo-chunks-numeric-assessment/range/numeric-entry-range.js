@@ -1,6 +1,6 @@
-const ValueRange = require('./value-range')
+const ValueRange = require('./updated-range')
 const NumericEntry = require('../entry/numeric-entry')
-const BigValueRange = require('./big-value-range')
+const BigValueRange = require('./big-updated-range')
 
 /**
  * String describing the range for NumericEntryRange.
@@ -63,7 +63,7 @@ module.exports = class NumericEntryRange extends ValueRange {
 	}
 
 	/**
-	 * Get a serialized value for a NumericEntry
+	 * Get a serialized updated for a NumericEntry
 	 * @param {NumericEntry|null} o
 	 * @return {string|null}
 	 */

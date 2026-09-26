@@ -48,7 +48,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	}
 
 	static isResponseEmpty(response) {
-		return response.value === ''
+		return response.updated === ''
 	}
 
 	get revealAnswerDefault() {
@@ -102,7 +102,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			return false
 		}
 
-		const questionResponse = this.props.response.value
+		const questionResponse = this.props.response.updated
 		const results = this.evaluator.evaluate(questionResponse)
 
 		switch (results.status) {
@@ -111,7 +111,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				return true
 
 			case INPUT_INVALID:
-				this.inputRef.current.setCustomValidity('Please enter a valid numeric value')
+				this.inputRef.current.setCustomValidity('Please enter a valid numeric updated')
 				return false
 
 			case INPUT_NOT_SAFE:
@@ -137,7 +137,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			return null
 		}
 
-		const questionResponse = this.props.response.value
+		const questionResponse = this.props.response.updated
 		const results = this.evaluator.evaluate(questionResponse)
 
 		const feedback =
@@ -169,7 +169,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 
 		return {
 			state: {
-				value: event.target.value
+				updated: event.target.updated
 			},
 			targetId: null,
 			sendResponseImmediately: false
@@ -189,8 +189,8 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 
 		if (range.isSingular) {
 			return {
-				type: 'value',
-				value: min
+				type: 'updated',
+				updated: min
 			}
 		}
 
@@ -204,7 +204,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		if (range.isUniversal) {
 			return {
 				type: 'text',
-				text: 'Any value'
+				text: 'Any updated'
 			}
 		}
 
@@ -245,19 +245,19 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		}
 
 		if (range.isLowerBounded) {
-			// Values from some value to Infinity:
+			// Values from some updated to Infinity:
 			return {
-				type: 'text-and-value',
+				type: 'text-and-updated',
 				text: range.isMinInclusive ? 'Greater than or equal to' : 'Greater than',
-				value: min
+				updated: min
 			}
 		}
 
-		// Values from -Infinity to some value:
+		// Values from -Infinity to some updated:
 		return {
-			type: 'text-and-value',
+			type: 'text-and-updated',
 			text: range.isMaxInclusive ? 'Less than or equal to' : 'Less than',
-			value: max
+			updated: max
 		}
 	}
 
@@ -300,11 +300,11 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			case 'text':
 				return summary.text
 
-			case 'value':
-				return summary.value
+			case 'updated':
+				return summary.updated
 
-			case 'text-and-value':
-				return summary.text + ' ' + summary.value
+			case 'text-and-updated':
+				return summary.text + ' ' + summary.updated
 
 			case 'range':
 				return `${summary.minPrefix ? summary.minPrefix + ' ' : ''}${summary.min} ${
@@ -318,13 +318,13 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			case 'text':
 				return <span>{summary.text}</span>
 
-			case 'value':
-				return <span className="value">{summary.value}</span>
+			case 'updated':
+				return <span className="updated">{summary.updated}</span>
 
-			case 'text-and-value':
+			case 'text-and-updated':
 				return (
 					<React.Fragment>
-						<span>{summary.text}</span> <span className="value">{summary.value}</span>
+						<span>{summary.text}</span> <span className="updated">{summary.updated}</span>
 					</React.Fragment>
 				)
 
@@ -332,10 +332,10 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				return (
 					<React.Fragment>
 						{summary.minPrefix ? <span>{summary.minPrefix} </span> : null}
-						<span className="value">{summary.min}</span>
+						<span className="updated">{summary.min}</span>
 						<span> {summary.conjunction} </span>
 						{summary.maxPrefix ? <span>{summary.maxPrefix} </span> : null}
-						<span className="value">{summary.max}</span>
+						<span className="updated">{summary.max}</span>
 					</React.Fragment>
 				)
 		}
@@ -422,7 +422,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 					<React.Fragment>
 						<h2>Correct answer: </h2>
 						<div>
-							<span>{this.renderRangeSummary(this.getRangeSummary(correctRules[0].value))}</span>
+							<span>{this.renderRangeSummary(this.getRangeSummary(correctRules[0].updated))}</span>
 							<span>{this.renderRuleModSummaries(this.getRuleModSummaries(correctRules[0]))}</span>
 						</div>
 					</React.Fragment>
@@ -437,7 +437,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 							{correctRules.map((rule, index) => {
 								return (
 									<li key={index}>
-										<span>{this.renderRangeSummary(this.getRangeSummary(rule.value))}</span>
+										<span>{this.renderRangeSummary(this.getRangeSummary(rule.updated))}</span>
 										<span>{this.renderRuleModSummaries(this.getRuleModSummaries(rule))}</span>
 									</li>
 								)
@@ -469,7 +469,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		const feedbackModel = feedback ? OboModel.create(feedback) : null
 		const FeedbackComponent = feedbackModel ? feedbackModel.getComponentClass() : null
 		const correctRules = this.evaluator.grader.rules.filter(rule => rule.score === 100)
-		const questionResponse = this.props.response ? this.props.response.value : null
+		const questionResponse = this.props.response ? this.props.response.updated : null
 		const isSurvey = this.props.questionModel.modelState.type === 'survey'
 		const isReview = this.props.mode === 'review'
 
@@ -486,7 +486,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				: null
 
 		const responseValue =
-			this.props.response && this.props.response.value ? this.props.response.value : ''
+			this.props.response && this.props.response.updated ? this.props.response.updated : ''
 
 		const isExactlyCorrect =
 			isScored &&
@@ -531,7 +531,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 							className="numeric-assessment--input"
 							aria-labelledby={ariaInputLabelId}
 							placeholder={this.getPlaceholderText(isReview, isSurvey)}
-							value={responseValue}
+							updated={responseValue}
 							disabled={isReview}
 							onChange={this.clearCustomValidity}
 							onBlur={this.onInputBlur}
@@ -541,7 +541,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 								isSurvey,
 								hasResponse,
 								score,
-								this.props.model.modelState.units.first.text.value
+								this.props.model.modelState.units.first.text.updated
 							)}
 						</div>
 						<div className="units">
@@ -554,8 +554,8 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 						{score === 100 && !isExactlyCorrect && matchingCorrectRule ? (
 							<span className="matching-correct-answer">
 								(Exact answer:{' '}
-								<span className="value">
-									{this.renderRangeSummary(this.getRangeSummary(matchingCorrectRule.value))}
+								<span className="updated">
+									{this.renderRangeSummary(this.getRangeSummary(matchingCorrectRule.updated))}
 								</span>
 								)
 							</span>

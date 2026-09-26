@@ -37,7 +37,7 @@ router
 	.get((req, res) => {
 		// allow modules to provide editor settings
 		// Example:
-		// oboEvents.on('EDITOR_SETTINGS', event => { event.moduleSettings.obojoboChunksSample = {var: value}})
+		// oboEvents.on('EDITOR_SETTINGS', event => { event.moduleSettings.obojoboChunksSample = {var: updated}})
 		const moduleSettings = {}
 		oboEvents.emit('EDITOR_SETTINGS', { moduleSettings })
 

@@ -1,4 +1,4 @@
-const ValueRange = require('./value-range')
+const ValueRange = require('./updated-range')
 const big = require('../big')
 
 /**
@@ -22,7 +22,7 @@ module.exports = class BigValueRange extends ValueRange {
 	}
 
 	/**
-	 * Creates a Big value from a string
+	 * Creates a Big updated from a string
 	 * @param {string} inputString
 	 * @return {Big}
 	 */

@@ -63,14 +63,14 @@ const ExcerptContent = props => {
 		Transforms.setNodes(props.editor, { content: { ...newContent } }, { at: parentPath })
 	}
 
-	const onChangeContentValue = (contentValueName, value) => {
+	const onChangeContentValue = (contentValueName, updated) => {
 		const [, parentPath] = Editor.parent(
 			props.editor,
 			ReactEditor.findPath(props.editor, props.element)
 		)
 		const path = ReactEditor.findPath(props.editor, props.element)
 
-		const newContent = { ...props.element.content, [contentValueName]: value }
+		const newContent = { ...props.element.content, [contentValueName]: updated }
 
 		Transforms.setNodes(props.editor, { content: { ...newContent } }, { at: path })
 		Transforms.setNodes(props.editor, { content: { ...newContent } }, { at: parentPath })

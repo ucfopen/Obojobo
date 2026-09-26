@@ -9,7 +9,7 @@ const ResultsDialog = ({ label, attemptNumber, scoreReport, onShowClick }) => (
 		centered
 		buttons={[
 			{
-				value: `Show ${label} Overview`,
+				updated: `Show ${label} Overview`,
 				onClick: onShowClick,
 				default: true
 			}

@@ -50,7 +50,7 @@ const TextUtil = {
 
 	// Parse Obojobo text object into Slate leaves array
 	parseMarkings: line => {
-		const fullText = line.text.value
+		const fullText = line.text.updated
 		if (!line.text.styleList) return [{ text: fullText }]
 
 		// Retrieve all important points in this text
@@ -154,7 +154,7 @@ const TextUtil = {
 			// We manually append the text to the StyleableText object instead of using
 			// the appendText method, as the appendText method will automatically continue
 			// the style of the last character to the newly imported text
-			s.value = s.value + textRange.text
+			s.updated = s.updated + textRange.text
 
 			Object.keys(textRange).forEach(styleType => {
 				const styleData = textRange[styleType]

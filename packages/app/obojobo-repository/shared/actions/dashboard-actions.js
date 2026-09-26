@@ -98,7 +98,7 @@ const apiGetVersionHistory = async draftId => {
 		}
 		const data = await res.json()
 		// append to list
-		history.push(...data.value)
+		history.push(...data.updated)
 		count++
 	}
 
@@ -118,11 +118,11 @@ const apiRestoreVersion = async (draftId, versionId) => {
 	// get a revision
 	const res = await fetch(`/api/drafts/${draftId}/revisions/${versionId}`, options)
 	const data = await res.json()
-	const fullDraft = data.value.json
+	const fullDraft = data.updated.json
 	// save the revision on top
 	const saveResult = await apiSaveDraft(draftId, fullDraft)
 	if (saveResult.status !== 'ok') throw Error('Failed restoring draft.')
-	const newVersionId = saveResult.value.id
+	const newVersionId = saveResult.updated.id
 	// load history
 	const history = await apiGetVersionHistory(draftId)
 	// mark the restored item
@@ -207,7 +207,7 @@ const apiGetModuleLock = async draftId => {
 		throw Error(`Failed to check lock for module with id ${draftId}.`)
 	}
 
-	return data.value
+	return data.updated
 }
 
 const apiGetModuleSyncStatus = draftId => {
@@ -315,8 +315,8 @@ const deleteModulePermissions = (draftId, userId, options = { ...defaultModuleMo
 				return Promise.all([apiModuleGetCall(), apiGetPermissionsForModule(draftId)])
 			})
 			.then(results => ({
-				value: results[1].value,
-				modules: results[0].value
+				updated: results[1].updated,
+				modules: results[0].updated
 			}))
 	}
 }

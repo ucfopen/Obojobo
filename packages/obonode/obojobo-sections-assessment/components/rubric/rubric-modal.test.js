@@ -153,7 +153,7 @@ describe('Rubric editor modal', () => {
 		component
 			.find({ name: 'passingAttemptScore' })
 			.at(0)
-			.simulate('change', { target: { name: 'passingAttemptScore', value: 100 } })
+			.simulate('change', { target: { name: 'passingAttemptScore', updated: 100 } })
 		component
 			.find({ name: 'passingAttemptScore' })
 			.at(0)
@@ -182,15 +182,15 @@ describe('Rubric editor modal', () => {
 		input = component
 			.find({ name: 'score-type' })
 			.at(0)
-			.simulate('change', { target: { value: AssessmentRubric.TYPE_HIGHEST } })
-		expect(input.html().includes(`value="highest"`)).toBe(true)
+			.simulate('change', { target: { updated: AssessmentRubric.TYPE_HIGHEST } })
+		expect(input.html().includes(`updated="highest"`)).toBe(true)
 		expect(component.instance().state.type).toBe(AssessmentRubric.TYPE_HIGHEST)
 
 		input = component
 			.find({ name: 'score-type' })
 			.at(1)
-			.simulate('change', { target: { value: AssessmentRubric.TYPE_PASS_FAIL } })
-		expect(input.html().includes(`value="pass-fail"`)).toBe(true)
+			.simulate('change', { target: { updated: AssessmentRubric.TYPE_PASS_FAIL } })
+		expect(input.html().includes(`updated="pass-fail"`)).toBe(true)
 		expect(component.instance().state.type).toBe(AssessmentRubric.TYPE_PASS_FAIL)
 	})
 
@@ -215,14 +215,14 @@ describe('Rubric editor modal', () => {
 		// If passing, set assessment score to attempt score.
 		input = component
 			.find('#attempt-score')
-			.simulate('change', { target: { value: AssessmentRubric.VAR_ATTEMPT_SCORE } })
-		expect(input.html().includes(`value="$attempt_score"`)).toBe(true)
+			.simulate('change', { target: { updated: AssessmentRubric.VAR_ATTEMPT_SCORE } })
+		expect(input.html().includes(`updated="$attempt_score"`)).toBe(true)
 
-		// If passing, set assessment score to a specific value.
+		// If passing, set assessment score to a specific updated.
 		input = component
-			.find('#specified-value')
-			.simulate('change', { target: { value: AssessmentRubric.SET_VALUE } })
-		expect(input.html().includes(`value="set-value"`)).toBe(true)
+			.find('#specified-updated')
+			.simulate('change', { target: { updated: AssessmentRubric.SET_VALUE } })
+		expect(input.html().includes(`updated="set-updated"`)).toBe(true)
 	})
 
 	test('Rubric modal renders mod properties section', () => {

@@ -92,7 +92,7 @@ describe('ModalContainer', () => {
 		const mockEl = jest.fn()
 
 		Object.defineProperty(global, 'MutationObserver', {
-			value: () => ({
+			updated: () => ({
 				observe: mockObserve,
 				disconnect: mockDisconnect
 			}),
@@ -112,7 +112,7 @@ describe('ModalContainer', () => {
 		spy.mockRestore()
 		// Restore MutationObserver
 		Object.defineProperty(global, 'MutationObserver', {
-			value: originalMutationObserver
+			updated: originalMutationObserver
 		})
 	})
 

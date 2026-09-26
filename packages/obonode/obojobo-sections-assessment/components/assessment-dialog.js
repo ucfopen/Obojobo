@@ -189,7 +189,7 @@ const getDialog = (
 					centered
 					buttons={[
 						{
-							value: `Retry Resuming Your Attempt`,
+							updated: `Retry Resuming Your Attempt`,
 							onClick: () => acknowledgeResumeAttemptFailed(assessmentModel),
 							default: true
 						}
@@ -213,7 +213,7 @@ const getDialog = (
 					centered
 					buttons={[
 						{
-							value: `Show ${assessmentLabel} Overview`,
+							updated: `Show ${assessmentLabel} Overview`,
 							onClick: () => onCloseResultsDialog(assessmentModel),
 							default: true
 						}
@@ -244,7 +244,7 @@ const getDialog = (
 							centered
 							buttons={[
 								{
-									value: `Close`,
+									updated: `Close`,
 									onClick: () => acknowledgeEndAttemptFailed(assessmentModel),
 									default: true
 								}
@@ -264,7 +264,7 @@ const getDialog = (
 					centered
 					buttons={[
 						{
-							value: `Close`,
+							updated: `Close`,
 							onClick: () => acknowledgeImportAttemptFailed(assessmentModel),
 							default: true
 						}
@@ -283,12 +283,12 @@ const getDialog = (
 					centered
 					buttons={[
 						{
-							value: 'Close',
+							updated: 'Close',
 							altAction: true,
 							onClick: () => acknowledgeFetchHistoryFailed(assessmentModel, false)
 						},
 						{
-							value: `Try again`,
+							updated: `Try again`,
 							onClick: () => acknowledgeFetchHistoryFailed(assessmentModel, true),
 							default: true
 						}
@@ -335,13 +335,13 @@ const getDialog = (
 									title="This is your last attempt"
 									buttons={[
 										{
-											value: 'Cancel',
+											updated: 'Cancel',
 											altAction: true,
 											default: true,
 											onClick: () => continueAttempt(assessmentModel)
 										},
 										{
-											value: 'OK - Submit Last Attempt',
+											updated: 'OK - Submit Last Attempt',
 											onClick: endAttemptFn
 										}
 									]}

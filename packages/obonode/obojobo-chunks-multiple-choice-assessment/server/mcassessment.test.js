@@ -31,7 +31,7 @@ describe('MCAssessment', () => {
 		})
 	})
 
-	test('nodeName is expected value', () => {
+	test('nodeName is expected updated', () => {
 		expect(MCAssessment.nodeName).toBe('ObojoboDraft.Chunks.MCAssessment')
 	})
 

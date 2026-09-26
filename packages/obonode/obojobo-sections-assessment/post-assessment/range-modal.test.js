@@ -44,12 +44,12 @@ describe('Range Modal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('getValueFromInput returns the element value based on type', () => {
+	test('getValueFromInput returns the element updated based on type', () => {
 		expect(
 			RangeModal.prototype.getValueFromInput({
 				type: 'checkbox',
 				checked: 'mock-checked',
-				value: 'mock-value'
+				updated: 'mock-updated'
 			})
 		).toBe('mock-checked')
 
@@ -57,7 +57,7 @@ describe('Range Modal', () => {
 			RangeModal.prototype.getValueFromInput({
 				type: 'radio',
 				checked: 'mock-checked',
-				value: 'mock-value'
+				updated: 'mock-updated'
 			})
 		).toBe('mock-checked')
 
@@ -65,15 +65,15 @@ describe('Range Modal', () => {
 			RangeModal.prototype.getValueFromInput({
 				type: 'number',
 				checked: 'mock-checked',
-				value: 'mock-value'
+				updated: 'mock-updated'
 			})
-		).toBe('mock-value')
+		).toBe('mock-updated')
 
 		expect(
 			RangeModal.prototype.getValueFromInput({
 				type: 'unrecognized-type',
 				checked: 'mock-checked',
-				value: 'mock-value'
+				updated: 'mock-updated'
 			})
 		).toBe(null)
 	})
@@ -82,10 +82,10 @@ describe('Range Modal', () => {
 		const spy = jest.spyOn(RangeModal.prototype, 'updateSingleScore').mockImplementation(jest.fn())
 
 		RangeModal.prototype.updateSingleScoreFromEvent({
-			target: { type: 'number', value: 'mock-value' }
+			target: { type: 'number', updated: 'mock-updated' }
 		})
 
-		expect(spy).toHaveBeenLastCalledWith('mock-value')
+		expect(spy).toHaveBeenLastCalledWith('mock-updated')
 
 		spy.mockRestore()
 	})
@@ -94,10 +94,10 @@ describe('Range Modal', () => {
 		const spy = jest.spyOn(RangeModal.prototype, 'updateRange').mockImplementation(jest.fn())
 
 		RangeModal.prototype.updateRangeFromEvent('propName', {
-			target: { type: 'number', value: 'mock-value' }
+			target: { type: 'number', updated: 'mock-updated' }
 		})
 
-		expect(spy).toHaveBeenLastCalledWith({ propName: 'mock-value' })
+		expect(spy).toHaveBeenLastCalledWith({ propName: 'mock-updated' })
 
 		spy.mockRestore()
 	})
@@ -320,7 +320,7 @@ describe('Range Modal', () => {
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
-	test('RangeModal component calls onConfirm from props with single value', () => {
+	test('RangeModal component calls onConfirm from props with single updated', () => {
 		const component = mount(<RangeModal for="100" onConfirm={onConfirm} />)
 
 		component
@@ -402,7 +402,7 @@ describe('Range Modal', () => {
 		).toBe(1)
 
 		// switch radio to single
-		typeSingleRadio.simulate('change', { target: { value: 'single' } })
+		typeSingleRadio.simulate('change', { target: { updated: 'single' } })
 		expect(component.instance().state.type).toBe('single')
 
 		// check visibility
@@ -418,7 +418,7 @@ describe('Range Modal', () => {
 		expect(component.html()).toMatchSnapshot()
 
 		// switch radio back to range
-		typeRangeRadio.simulate('change', { target: { value: 'range' } })
+		typeRangeRadio.simulate('change', { target: { updated: 'range' } })
 		expect(component.instance().state.type).toBe('range')
 		expect(component.html()).toMatchSnapshot()
 
@@ -443,7 +443,7 @@ describe('Range Modal', () => {
 		expect(singleInput.props().id).toContain('range-modal--single-input')
 
 		// update
-		singleInput.simulate('change', { target: { value: '75', type: 'number' } })
+		singleInput.simulate('change', { target: { updated: '75', type: 'number' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -477,7 +477,7 @@ describe('Range Modal', () => {
 		expect(minRangeInput.props().id).toContain('range-modal--min')
 
 		// update
-		minRangeInput.simulate('change', { target: { value: '100', type: 'number' } })
+		minRangeInput.simulate('change', { target: { updated: '100', type: 'number' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -505,7 +505,7 @@ describe('Range Modal', () => {
 		expect(maxRangeInput.props().id).toContain('range-modal--max')
 
 		// update
-		maxRangeInput.simulate('change', { target: { value: '1', type: 'number' } })
+		maxRangeInput.simulate('change', { target: { updated: '1', type: 'number' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})

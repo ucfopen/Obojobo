@@ -42,7 +42,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'mockVideoId'
+					updated: 'mockVideoId'
 				}
 			})
 			.simulate('blur')
@@ -71,7 +71,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value:
+					updated:
 						'<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
 				}
 			})
@@ -101,7 +101,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'dQw4w9WgXcQ'
+					updated: 'dQw4w9WgXcQ'
 				}
 			})
 			.simulate('blur')
@@ -130,7 +130,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'https://www.youtube.com/v/dQw4w9WgXcQ?start=12'
+					updated: 'https://www.youtube.com/v/dQw4w9WgXcQ?start=12'
 				}
 			})
 			.simulate('blur')
@@ -159,7 +159,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'https://www.youtube.com/v/dQw4w9WgXcQ?end=99'
+					updated: 'https://www.youtube.com/v/dQw4w9WgXcQ?end=99'
 				}
 			})
 			.simulate('blur')
@@ -188,7 +188,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'https://www.youtube.com/v/dQw4w9WgXcQ?start=12&end=99'
+					updated: 'https://www.youtube.com/v/dQw4w9WgXcQ?start=12&end=99'
 				}
 			})
 			.simulate('blur')
@@ -252,7 +252,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'https://www.youtube.com/v/vnm4R3gg-io'
+					updated: 'https://www.youtube.com/v/vnm4R3gg-io'
 				}
 			})
 			.simulate('blur')
@@ -286,7 +286,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'https://www.youtube.com/v/vnm4R3gg-io?t=62'
+					updated: 'https://www.youtube.com/v/vnm4R3gg-io?t=62'
 				}
 			})
 			.simulate('blur')
@@ -319,7 +319,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: '1:23'
+					updated: '1:23'
 				}
 			})
 
@@ -404,7 +404,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: 'invalid-value'
+					updated: 'invalid-updated'
 				}
 			})
 
@@ -431,7 +431,7 @@ describe('YouTubeProperties modal', () => {
 			.at(0)
 			.simulate('change', {
 				target: {
-					value: '12'
+					updated: '12'
 				}
 			})
 

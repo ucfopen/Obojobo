@@ -18,7 +18,7 @@ exports[`AssessmentScoreReportView AssessmentScoreReportView component did not p
     className="text-items"
   >
     <div
-      className="value"
+      className="updated"
     >
       <div
         className="label"
@@ -105,7 +105,7 @@ exports[`AssessmentScoreReportView AssessmentScoreReportView component with text
       </span>
     </div>
     <div
-      className="value"
+      className="updated"
     >
       <div
         className="label"

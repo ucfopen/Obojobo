@@ -526,7 +526,7 @@ since it is not compatible with stylelint's indentation rules
 				> .wrapper > .component[data-obo-component='true'] {
 					> .text-chunk,
 					> .component > .non-editable-chunk > .katex-container {
-						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						//stylelint-disable-next-line declaration-colon-newline-after, updated-list-comma-newline-after
 						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3),
 							0.0625em 0.0625em 0.6875em rgba(255, 255, 255, 0.3);
 					}
@@ -573,7 +573,7 @@ since it is not compatible with stylelint's indentation rules
 				> .wrapper > .component[data-obo-component='true'] {
 					> .text-chunk,
 					> .component > .non-editable-chunk > .katex-container {
-						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						//stylelint-disable-next-line declaration-colon-newline-after, updated-list-comma-newline-after
 						text-shadow: 0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3),
 							0.0625em 0.0625em 0.6875em rgba(131, 255, 39, 0.3);
 					}
@@ -620,7 +620,7 @@ since it is not compatible with stylelint's indentation rules
 				> .wrapper > .component[data-obo-component='true'] {
 					> .text-chunk,
 					> .component > .non-editable-chunk > .katex-container {
-						//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+						//stylelint-disable-next-line declaration-colon-newline-after, updated-list-comma-newline-after
 						text-shadow: 0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3),
 							0.0625em 0.0625em 0.6875em rgba(255, 170, 39, 0.3);
 					}

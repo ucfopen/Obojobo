@@ -233,7 +233,7 @@ describe('Text editor', () => {
 
 	test.skip('plugins.onKeyDown deals with random keys', () => {
 		const editor = {
-			value: {
+			updated: {
 				blocks: [
 					{
 						key: 'mockBlockKey',

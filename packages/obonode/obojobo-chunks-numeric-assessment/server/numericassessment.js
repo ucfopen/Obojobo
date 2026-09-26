@@ -34,7 +34,7 @@ class NumericAssessment extends DraftNode {
 			scoreRuleConfigs
 		})
 
-		const results = evaluator.evaluate(responseRecord.response.value)
+		const results = evaluator.evaluate(responseRecord.response.updated)
 
 		switch (results.status) {
 			case 'passed':

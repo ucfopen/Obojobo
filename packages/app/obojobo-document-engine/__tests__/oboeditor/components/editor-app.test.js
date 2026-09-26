@@ -13,7 +13,7 @@ import { mount } from 'enzyme'
 describe('EditorApp', () => {
 	const XML_MODE = 'xml'
 	const testObject = require('test-object.json')
-	const testObjectString = JSON.stringify({ value: testObject })
+	const testObjectString = JSON.stringify({ updated: testObject })
 	const msPerSec = 60000
 	const ogConsoleError = console.error // eslint-disable-line no-console
 
@@ -213,7 +213,7 @@ describe('EditorApp', () => {
 			contentId: 0,
 			body: JSON.stringify({
 				status: 'error',
-				value: mockError
+				updated: mockError
 			})
 		})
 
@@ -266,7 +266,7 @@ describe('EditorApp', () => {
 		expect.hasAssertions()
 		EditorAPI.requestEditLock.mockResolvedValue({
 			status: 'error',
-			value: { message: 'mock-message' }
+			updated: { message: 'mock-message' }
 		})
 
 		EditorAPI.getFullDraft.mockResolvedValueOnce({ contentId: 0, body: testObjectString })
@@ -392,7 +392,7 @@ describe('EditorApp', () => {
 		expect.hasAssertions()
 		jest.useFakeTimers()
 		window.history.pushState({}, null, '/api/drafts/mock-draft-id/whatever')
-		EditorAPI.getDraftRevision.mockResolvedValueOnce({ value: { json: testObject } })
+		EditorAPI.getDraftRevision.mockResolvedValueOnce({ updated: { json: testObject } })
 		EditorStore.getState.mockReturnValueOnce({})
 
 		defaultProps.settings.revisionId = 'mock-revision-id'
@@ -457,7 +457,7 @@ describe('EditorApp', () => {
 			contentId: 'mock-saved-content-id',
 			result: {
 				status: 'ok',
-				value: {
+				updated: {
 					id: 'mock-content-id'
 				}
 			}
@@ -489,7 +489,7 @@ describe('EditorApp', () => {
 			contentId: 'mock-saved-content-id',
 			result: {
 				status: 'error',
-				value: {
+				updated: {
 					message: 'mock-error-message'
 				}
 			}
@@ -517,7 +517,7 @@ describe('EditorApp', () => {
 			contentId: 'mock-saved-content-id',
 			result: {
 				status: 'error',
-				value: {
+				updated: {
 					message: 'mock-error-message'
 				}
 			}
@@ -608,7 +608,7 @@ describe('EditorApp', () => {
 		jest.useFakeTimers()
 		EditorAPI.getDraftRevision.mockResolvedValueOnce({
 			status: 'error',
-			value: { type: 'mock-type', message: 'mock-message' }
+			updated: { type: 'mock-type', message: 'mock-message' }
 		})
 		EditorStore.getState.mockReturnValueOnce({})
 		defaultProps.settings.revisionId = 'mockId'

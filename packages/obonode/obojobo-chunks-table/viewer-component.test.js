@@ -23,22 +23,22 @@ describe('Table', () => {
 					textGroup: [
 						{
 							text: {
-								value: '1'
+								updated: '1'
 							}
 						},
 						{
 							text: {
-								value: '2'
+								updated: '2'
 							}
 						},
 						{
 							text: {
-								value: '3'
+								updated: '3'
 							}
 						},
 						{
 							text: {
-								value: '4'
+								updated: '4'
 							}
 						}
 					]
@@ -68,22 +68,22 @@ describe('Table', () => {
 					textGroup: [
 						{
 							text: {
-								value: '1'
+								updated: '1'
 							}
 						},
 						{
 							text: {
-								value: '2'
+								updated: '2'
 							}
 						},
 						{
 							text: {
-								value: '3'
+								updated: '3'
 							}
 						},
 						{
 							text: {
-								value: '4'
+								updated: '4'
 							}
 						}
 					]
@@ -113,22 +113,22 @@ describe('Table', () => {
 					textGroup: [
 						{
 							text: {
-								value: '1'
+								updated: '1'
 							}
 						},
 						{
 							text: {
-								value: '2'
+								updated: '2'
 							}
 						},
 						{
 							text: {
-								value: '3'
+								updated: '3'
 							}
 						},
 						{
 							text: {
-								value: '4'
+								updated: '4'
 							}
 						}
 					]

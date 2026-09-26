@@ -1,5 +1,5 @@
 /**
- * Computes the percent error of Big values. `null` is returned if the true value is zero
+ * Computes the percent error of Big values. `null` is returned if the true updated is zero
  * (Percent error is not defined for values of zero).
  * @param {Big} measuredBigValue
  * @param {Big} trueBigValue
@@ -8,7 +8,7 @@
 module.exports = (measuredBigValue, trueBigValue) => {
 	if (measuredBigValue === null || trueBigValue === null) return null
 
-	// There is no percent error when the true value is zero:
+	// There is no percent error when the true updated is zero:
 	if (trueBigValue.eq(0)) return null
 
 	if (measuredBigValue.eq(trueBigValue)) return 0

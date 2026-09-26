@@ -78,13 +78,13 @@ describe('API', () => {
 
 	test('post fetches with the correct args', () => {
 		post.mockRestore() // disable our mock
-		API.post('mockEndpoint', { arg: 'value' })
+		API.post('mockEndpoint', { arg: 'updated' })
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
 		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
-			body: JSON.stringify({ arg: 'value' }),
+			body: JSON.stringify({ arg: 'updated' }),
 			credentials: 'include',
 			headers: {
 				Accept: 'application/json',
@@ -132,13 +132,13 @@ describe('API', () => {
 
 	test('postWithFormat fetches with the correct args', () => {
 		postMultiPart.mockRestore() // disable our mock
-		API.postWithFormat('mockEndpoint', '{"arg":"value"}', 'application/json')
+		API.postWithFormat('mockEndpoint', '{"arg":"updated"}', 'application/json')
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
 		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
-			body: JSON.stringify({ arg: 'value' }),
+			body: JSON.stringify({ arg: 'updated' }),
 			credentials: 'include',
 			headers: {
 				Accept: 'application/json',
@@ -184,11 +184,11 @@ describe('API', () => {
 		})
 	})
 
-	test('processJsonResults logs json value on error', async () => {
+	test('processJsonResults logs json updated on error', async () => {
 		fetch.mockResolvedValueOnce({
 			json: jest.fn().mockResolvedValueOnce({
 				status: 'error',
-				value: 'mockError'
+				updated: 'mockError'
 			})
 		})
 

@@ -59,14 +59,14 @@ describe('List Converter', () => {
 				listStyles: {},
 				textGroup: [
 					{
-						text: { value: 'mockLine1' }
+						text: { updated: 'mockLine1' }
 					},
 					{
-						text: { value: 'mockLine1' },
+						text: { updated: 'mockLine1' },
 						data: { indent: 5 }
 					},
 					{
-						text: { value: 'mockLine2' }
+						text: { updated: 'mockLine2' }
 					}
 				]
 			}
@@ -88,13 +88,13 @@ describe('List Converter', () => {
 				},
 				textGroup: [
 					{
-						text: { value: 'mockLine1' }
+						text: { updated: 'mockLine1' }
 					},
 					{
-						text: { value: 'mockLine2' }
+						text: { updated: 'mockLine2' }
 					},
 					{
-						text: { value: 'mockLine3' },
+						text: { updated: 'mockLine3' },
 						data: { indent: 5, hangingIndent: false }
 					}
 				],

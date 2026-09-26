@@ -10,7 +10,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -34,7 +34,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "A sample question",
+									"updated": "A sample question",
 									"styleList": []
 								}
 							}
@@ -72,7 +72,7 @@
 															"indent": 0
 														},
 														"text": {
-															"value": "",
+															"updated": "",
 															"styleList": []
 														}
 													}

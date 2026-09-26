@@ -116,7 +116,7 @@ describe('server/express', () => {
 		// verify the response body
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: {
+			updated: {
 				score: mockReturnValue.scoreSent,
 				status: mockReturnValue.status,
 				statusDetails: mockReturnValue.statusDetails,
@@ -138,7 +138,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: expect.any(String),
 				type: 'unexpected'
 			}
@@ -166,7 +166,7 @@ describe('server/express', () => {
 		expect(startAttempt).toHaveBeenCalledTimes(1)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: mockReturnValue
+			updated: mockReturnValue
 		})
 	})
 
@@ -192,7 +192,7 @@ describe('server/express', () => {
 		expect(saveAttempt).toHaveBeenCalledTimes(1)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: mockReturnValue
+			updated: mockReturnValue
 		})
 	})
 
@@ -221,7 +221,7 @@ describe('server/express', () => {
 		)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: mockReturnValue
+			updated: mockReturnValue
 		})
 	})
 
@@ -239,7 +239,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: expect.any(String),
 				type: 'unexpected'
 			}
@@ -253,7 +253,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: ERROR_INVALID_ATTEMPT_RESUME,
 				type: 'unexpected'
 			}
@@ -277,7 +277,7 @@ describe('server/express', () => {
 		expect(requireAttemptId).toHaveBeenCalledTimes(1)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: mockReturnValue
+			updated: mockReturnValue
 		})
 	})
 
@@ -297,7 +297,7 @@ describe('server/express', () => {
 		expect(requireAttemptId).toHaveBeenCalledTimes(1)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: mockReturnValue
+			updated: mockReturnValue
 		})
 	})
 
@@ -315,7 +315,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: expect.any(String),
 				type: 'unexpected'
 			}
@@ -329,7 +329,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: ERROR_INVALID_ATTEMPT_END,
 				type: 'unexpected'
 			}
@@ -352,7 +352,7 @@ describe('server/express', () => {
 		expect(requireAttemptId).toHaveBeenCalledTimes(1)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: mockReturnValue
+			updated: mockReturnValue
 		})
 	})
 
@@ -430,7 +430,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(401)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'Not in preview mode',
 				type: 'notAuthorized'
 			}
@@ -448,7 +448,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: expect.any(String),
 				type: 'unexpected'
 			}
@@ -476,7 +476,7 @@ describe('server/express', () => {
 		)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: mockReturnValue
+			updated: mockReturnValue
 		})
 	})
 
@@ -491,7 +491,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: expect.any(String),
 				type: 'unexpected'
 			}
@@ -529,7 +529,7 @@ describe('server/express', () => {
 		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith('mock-draft-id')
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: [
+			updated: [
 				{
 					userUsername: 'Test',
 					userFirstName: 'First',
@@ -571,7 +571,7 @@ describe('server/express', () => {
 		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith('mock-draft-id')
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: [
+			updated: [
 				{
 					userUsername: 'Test',
 					userFirstName: 'First',
@@ -628,7 +628,7 @@ describe('server/express', () => {
 		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledWith('mock-draft-id')
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: [
+			updated: [
 				{
 					userUsername: '(anonymized-mock-uuid)',
 					userFirstName: '(anonymized-mock-uuid)',
@@ -683,7 +683,7 @@ describe('server/express', () => {
 		expect(AssessmentModel.fetchAttemptHistoryDetails).toHaveBeenCalledTimes(0)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				type: 'notAuthorized'
 			}
 		})
@@ -701,7 +701,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				message: expect.any(String),
 				type: 'unexpected'
 			}
@@ -725,7 +725,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(200)
 		expect(response.body).toEqual({
 			status: 'ok',
-			value: 'mock-import-result'
+			updated: 'mock-import-result'
 		})
 
 		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
@@ -751,7 +751,7 @@ describe('server/express', () => {
 		expect(response.statusCode).toBe(500)
 		expect(response.body).toEqual({
 			status: 'error',
-			value: {
+			updated: {
 				type: 'unexpected',
 				message: 'Error importing score'
 			}

@@ -55,7 +55,7 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       name="answer"
       onBlur={[Function]}
       onChange={[Function]}
-      value=""
+      updated=""
     />
   </label>
 </div>
@@ -93,7 +93,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
     <select
       className="select-item"
       name="requirement"
-      value="Exact answer"
+      updated="Exact answer"
     >
       <option>
         Exact answer
@@ -117,7 +117,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       name="answer"
       onBlur={[Function]}
       onChange={[Function]}
-      value=""
+      updated=""
     />
   </label>
 </div>
@@ -156,7 +156,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="select-item"
       name="requirement"
       onChange={[Function]}
-      value="Margin of error"
+      updated="Margin of error"
     >
       <option>
         Exact answer
@@ -180,7 +180,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       name="answer"
       onBlur={[Function]}
       onChange={[Function]}
-      value=""
+      updated=""
     />
   </label>
   <label
@@ -201,7 +201,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     </select>
   </label>
   <label
-    className="input margin-value"
+    className="input margin-updated"
   >
     ± Error
     <input
@@ -211,7 +211,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       name="margin"
       onBlur={[Function]}
       onChange={[Function]}
-      value=""
+      updated=""
     />
   </label>
 </div>
@@ -250,7 +250,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="select-item"
       name="requirement"
       onChange={[Function]}
-      value="Within a range"
+      updated="Within a range"
     >
       <option>
         Exact answer
@@ -274,7 +274,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       name="start"
       onBlur={[Function]}
       onChange={[Function]}
-      value=""
+      updated=""
     />
   </label>
   <label
@@ -288,7 +288,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       name="end"
       onBlur={[Function]}
       onChange={[Function]}
-      value=""
+      updated=""
     />
   </label>
 </div>

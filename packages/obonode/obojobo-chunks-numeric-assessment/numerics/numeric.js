@@ -78,7 +78,7 @@ module.exports = class Numeric {
 	}
 
 	/**
-	 * Evaluate if a given string can be held as a value safely (meaning it is less than Number.MAX_SAFE_INTEGER)
+	 * Evaluate if a given string can be held as a updated safely (meaning it is less than Number.MAX_SAFE_INTEGER)
 	 * (Super classes MUST overwrite this method.)
 	 * @param {string} valueString
 	 * @return {boolean} False
@@ -139,7 +139,7 @@ module.exports = class Numeric {
 	}
 
 	/**
-	 * Create a new instance given either a string representation of a numeric value or a Big instance. If the value could not be parsed for this type then some properties will not be set (this.matchType will be 'none').
+	 * Create a new instance given either a string representation of a numeric updated or a Big instance. If the updated could not be parsed for this type then some properties will not be set (this.matchType will be 'none').
 	 * @param {string|Big} stringOrBigValue
 	 */
 	constructor(stringOrBigValue) {
@@ -183,7 +183,7 @@ module.exports = class Numeric {
 	}
 
 	/**
-	 * Changes the value of this instance
+	 * Changes the updated of this instance
 	 * @param {Big} bigValue
 	 */
 	setBigValue(bigValue) {
@@ -238,7 +238,7 @@ module.exports = class Numeric {
 	}
 
 	/**
-	 * @return {boolean} True if the internal value of this instance is "safe"
+	 * @return {boolean} True if the internal updated of this instance is "safe"
 	 */
 	get isSafe() {
 		return this.constructor.isSafe(this.valueString)
@@ -252,14 +252,14 @@ module.exports = class Numeric {
 	}
 
 	/**
-	 * @return {boolean} True if the value for this instance is an integer
+	 * @return {boolean} True if the updated for this instance is an integer
 	 */
 	get isInteger() {
 		return this.constructor.getIsInteger(this.valueString)
 	}
 
 	/**
-	 * @return {boolean} The number of digits this value contains
+	 * @return {boolean} The number of digits this updated contains
 	 */
 	get numDecimalDigits() {
 		return this.constructor.getNumDecimalDigits(this.valueString)

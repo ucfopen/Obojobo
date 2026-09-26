@@ -162,7 +162,7 @@ describe('Slider Update Mode', () => {
 		expect(SliderUtils.getUpdatedHandles(curr, 'key-3', 3, false)).toEqual(curr)
 	})
 
-	test('getUpdatedHandles returns handles when the value is already present', () => {
+	test('getUpdatedHandles returns handles when the updated is already present', () => {
 		const curr = [{ key: 'key-1', val: 2 }, { key: 'key-2', val: 2 }]
 
 		expect(SliderUtils.getUpdatedHandles(curr, 'key-2', 2, false)).toEqual(curr)

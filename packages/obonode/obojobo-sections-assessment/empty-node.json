@@ -50,7 +50,7 @@
 							"type":"onClick",
 							"actions":[{
 								"type":"assessment:startAttempt",
-								"value": {"id":"my-assessment"} 
+								"updated": {"id":"my-assessment"} 
 							}]
 						}]
 					},
@@ -187,7 +187,7 @@
 												"actions":[
 													{
 														"type":"assessment:startAttempt",
-														"value":{"id":"my-assessment"}
+														"updated":{"id":"my-assessment"}
 													}
 												]
 											}
@@ -210,9 +210,9 @@
 				"passedResult":100,
 				"unableToPassResult":0,
 				"passingAttemptScore":100,
-				"passedType":"set-value",
-				"failedType":"set-value",
-				"unableToPassType":"no-value"
+				"passedType":"set-updated",
+				"failedType":"set-updated",
+				"unableToPassType":"no-updated"
 			},
 			"children":[{"text":""}]
 		}

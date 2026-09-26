@@ -114,7 +114,7 @@ describe('QuestionStore', () => {
 
 			// 1. Fire the event such that the mocked method returns true
 			eventSpy.mockReturnValueOnce(true)
-			Dispatcher.trigger(event, { value: {} })
+			Dispatcher.trigger(event, { updated: {} })
 
 			// Test if trigger change was called
 			switch (callsTriggerChange) {
@@ -134,7 +134,7 @@ describe('QuestionStore', () => {
 			// 2. Fire the event again, such that the mocked method returns false
 			triggerSpy.mockReset()
 			eventSpy.mockReturnValueOnce(false)
-			Dispatcher.trigger(event, { value: {} })
+			Dispatcher.trigger(event, { updated: {} })
 
 			// Test if trigger change was called
 			switch (callsTriggerChange) {
@@ -437,7 +437,7 @@ describe('QuestionStore', () => {
 		const result = await questionStore.forceSendAllResponses({ context: 'mockContext' })
 		expect(result).toEqual(true)
 		expect(dispatcherSpy).toHaveBeenCalledWith('question:forceSentAllResponses', {
-			value: {
+			updated: {
 				context: 'mockContext',
 				success: true,
 				error: null
@@ -458,7 +458,7 @@ describe('QuestionStore', () => {
 		const result = await questionStore.forceSendAllResponses({ context: 'mockContext' })
 		expect(result).toEqual(true)
 		expect(dispatcherSpy).toHaveBeenCalledWith('question:forceSentAllResponses', {
-			value: {
+			updated: {
 				context: 'mockContext',
 				success: true,
 				error: null
@@ -479,7 +479,7 @@ describe('QuestionStore', () => {
 		const result = await questionStore.forceSendAllResponses({ context: 'mockContext' })
 		expect(result).toEqual(true)
 		expect(dispatcherSpy).toHaveBeenCalledWith('question:forceSentAllResponses', {
-			value: {
+			updated: {
 				context: 'mockContext',
 				success: false,
 				error: null
@@ -504,7 +504,7 @@ describe('QuestionStore', () => {
 		const result = await questionStore.forceSendAllResponses({ context: 'mockContext' })
 		expect(result).toEqual(true)
 		expect(dispatcherSpy).toHaveBeenCalledWith('question:forceSentAllResponses', {
-			value: {
+			updated: {
 				context: 'mockContext',
 				success: false,
 				error: 'mock-error'
@@ -532,7 +532,7 @@ describe('QuestionStore', () => {
 		expect(spy).not.toHaveBeenCalled()
 		expect(triggerSpy).not.toHaveBeenCalled()
 
-		Dispatcher.trigger('question:sendResponse', { value: {} })
+		Dispatcher.trigger('question:sendResponse', { updated: {} })
 
 		setTimeout(() => {
 			expect(spy).toHaveBeenCalled()
@@ -756,7 +756,7 @@ describe('QuestionStore', () => {
 		// Override Date
 		const originalDate = global.Date
 		Object.defineProperty(global, 'Date', {
-			value: () => ({ mockDate: true }),
+			updated: () => ({ mockDate: true }),
 			enumerable: true,
 			configurable: true
 		})
@@ -813,7 +813,7 @@ describe('QuestionStore', () => {
 
 		// Restore Date:
 		Object.defineProperty(global, 'Date', {
-			value: originalDate
+			updated: originalDate
 		})
 	})
 
@@ -823,7 +823,7 @@ describe('QuestionStore', () => {
 		// Override Date
 		const originalDate = global.Date
 		Object.defineProperty(global, 'Date', {
-			value: () => ({ mockDate: true }),
+			updated: () => ({ mockDate: true }),
 			enumerable: true,
 			configurable: true
 		})
@@ -880,7 +880,7 @@ describe('QuestionStore', () => {
 
 		// Restore Date:
 		Object.defineProperty(global, 'Date', {
-			value: originalDate
+			updated: originalDate
 		})
 	})
 
@@ -944,14 +944,14 @@ describe('QuestionStore', () => {
 		questionStore.setData({
 			context: 'mockContext',
 			key: 'key',
-			value: 'value'
+			updated: 'updated'
 		})
 
 		expect(questionStore.state).toEqual({
 			contexts: {
 				mockContext: {
 					data: {
-						key: 'value'
+						key: 'updated'
 					}
 				}
 			}
@@ -1038,7 +1038,7 @@ describe('QuestionStore', () => {
 			contexts: {
 				mockContext: {
 					data: {
-						key: 'value'
+						key: 'updated'
 					}
 				}
 			}

@@ -25,7 +25,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "2D Motion",
+											"updated": "2D Motion",
 											"styleList": []
 										},
 										"data": null
@@ -43,7 +43,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Projectile motion",
+											"updated": "Projectile motion",
 											"styleList": []
 										},
 										"data": null
@@ -59,7 +59,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+											"updated": "Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -93,7 +93,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+											"updated": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -137,7 +137,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "v_{0_x} = v_0 \\cos \\theta",
+											"updated": "v_{0_x} = v_0 \\cos \\theta",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -153,7 +153,7 @@
 									},
 									{
 										"text": {
-											"value": "v_{0_t} = v_0 \\sin \\theta",
+											"updated": "v_{0_t} = v_0 \\sin \\theta",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -178,7 +178,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "See also the section Parabolic equation for information on finding the initial velocity.",
+											"updated": "See also the section Parabolic equation for information on finding the initial velocity.",
 											"styleList": []
 										},
 										"data": null
@@ -195,7 +195,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Kinematic quantities of projectile motion",
+											"updated": "Kinematic quantities of projectile motion",
 											"styleList": []
 										},
 										"data": null
@@ -211,7 +211,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.",
+											"updated": "In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.",
 											"styleList": []
 										},
 										"data": null
@@ -237,7 +237,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Images",
+											"updated": "Images",
 											"styleList": []
 										},
 										"data": null
@@ -254,7 +254,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Default size options",
+											"updated": "Default size options",
 											"styleList": []
 										},
 										"data": null
@@ -270,7 +270,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Small image (size=\"small\"):",
+											"updated": "Small image (size=\"small\"):",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -296,7 +296,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This is a small image",
+											"updated": "This is a small image",
 											"styleList": []
 										},
 										"data": null
@@ -312,7 +312,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Medium image (size=\"medium\"):",
+											"updated": "Medium image (size=\"medium\"):",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -345,7 +345,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Large image (size=\"large\"):",
+											"updated": "Large image (size=\"large\"):",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -379,7 +379,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Custom size options",
+											"updated": "Custom size options",
 											"styleList": []
 										},
 										"data": null
@@ -395,7 +395,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Image with an explicit width (width=\"200\"):",
+											"updated": "Image with an explicit width (width=\"200\"):",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -429,7 +429,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Image with an explicit height (height=\"200\"):",
+											"updated": "Image with an explicit height (height=\"200\"):",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -463,7 +463,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Image with width and height - not recommended as image will not respect aspect ratio (width=\"400\" height=\"100\"):",
+											"updated": "Image with width and height - not recommended as image will not respect aspect ratio (width=\"400\" height=\"100\"):",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -498,7 +498,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "No size or width or height results in images at their native size:",
+											"updated": "No size or width or height results in images at their native size:",
 											"styleList": []
 										},
 										"data": null
@@ -532,7 +532,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Native size images are still restricted to the width of the page (at native size this image would be 1080x720 pixels)",
+											"updated": "Native size images are still restricted to the width of the page (at native size this image would be 1080x720 pixels)",
 											"styleList": []
 										},
 										"data": null
@@ -558,7 +558,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Other features",
+											"updated": "Other features",
 											"styleList": []
 										},
 										"data": null
@@ -574,7 +574,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Image with caption:",
+											"updated": "Image with caption:",
 											"styleList": []
 										},
 										"data": null
@@ -593,7 +593,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This is a small image",
+											"updated": "This is a small image",
 											"styleList": []
 										},
 										"data": null
@@ -609,7 +609,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Base 64 encoded image:",
+											"updated": "Base 64 encoded image:",
 											"styleList": []
 										},
 										"data": null
@@ -634,7 +634,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "An image with no source:",
+											"updated": "An image with no source:",
 											"styleList": []
 										},
 										"data": null
@@ -668,7 +668,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Practice question:",
+											"updated": "Practice question:",
 											"styleList": []
 										},
 										"data": null
@@ -684,7 +684,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This question is a pick-one-multiple-correct type question with feedback and an included solution:",
+											"updated": "This question is a pick-one-multiple-correct type question with feedback and an included solution:",
 											"styleList": [
 												{
 													"type": "b",
@@ -723,7 +723,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "Here you could provide a long-form solution which would provide a detailed answer to the question.",
+															"updated": "Here you could provide a long-form solution which would provide a detailed answer to the question.",
 															"styleList": []
 														},
 														"data": null
@@ -739,7 +739,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "You can also include a button that would link back to the page containing more relevant information. In this example this button will take you back to page 1:",
+															"updated": "You can also include a button that would link back to the page containing more relevant information. In this example this button will take you back to page 1:",
 															"styleList": []
 														},
 														"data": null
@@ -759,7 +759,7 @@
 														"actions": [
 															{
 																"type": "nav:goto",
-																"value": {
+																"updated": {
 																	"id": "page-1"
 																}
 															}
@@ -781,7 +781,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Which equation describes horizontal displacement of projectile motion?",
+													"updated": "Which equation describes horizontal displacement of projectile motion?",
 													"styleList": []
 												},
 												"data": null
@@ -859,7 +859,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:",
+																			"updated": "Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:",
 																			"styleList": []
 																		},
 																		"data": null
@@ -918,7 +918,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "The a_x term representing horizontal acceleration is always 0 so this equation is simply x = 0.",
+																			"updated": "The a_x term representing horizontal acceleration is always 0 so this equation is simply x = 0.",
 																			"styleList": [
 																				{
 																					"type": "_latex",
@@ -959,7 +959,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Questions can also contain other content such as video or lists. This question is an example of a pick-all type question:",
+											"updated": "Questions can also contain other content such as video or lists. This question is an example of a pick-all type question:",
 											"styleList": [
 												{
 													"type": "b",
@@ -998,14 +998,14 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Here is a list",
+													"updated": "Here is a list",
 													"styleList": []
 												},
 												"data": null
 											},
 											{
 												"text": {
-													"value": "With two items",
+													"updated": "With two items",
 													"styleList": []
 												},
 												"data": null
@@ -1040,7 +1040,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "This is a correct answer choice",
+																			"updated": "This is a correct answer choice",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1063,7 +1063,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "Good job!",
+																			"updated": "Good job!",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1095,7 +1095,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "This is another correct answer choice",
+																			"updated": "This is another correct answer choice",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1118,7 +1118,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "Fantastic!",
+																			"updated": "Fantastic!",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1150,7 +1150,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "This is an incorrect answer choice",
+																			"updated": "This is an incorrect answer choice",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1173,7 +1173,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "Nope!",
+																			"updated": "Nope!",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1197,7 +1197,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Here is a pick-one type question. This question has shuffle=\"false\" meaning that the order of the answer choices will never change.",
+											"updated": "Here is a pick-one type question. This question has shuffle=\"false\" meaning that the order of the answer choices will never change.",
 											"styleList": [
 												{
 													"type": "b",
@@ -1231,7 +1231,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "What is 2+2 = ?",
+													"updated": "What is 2+2 = ?",
 													"styleList": []
 												},
 												"data": null
@@ -1267,7 +1267,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "2",
+																			"updated": "2",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1299,7 +1299,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "4",
+																			"updated": "4",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1323,7 +1323,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This question is using custom correct or incorrect labels. Try answering this question to see the different labels.",
+											"updated": "This question is using custom correct or incorrect labels. Try answering this question to see the different labels.",
 											"styleList": []
 										},
 										"data": null
@@ -1344,7 +1344,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "What is 2+2 = ?",
+													"updated": "What is 2+2 = ?",
 													"styleList": []
 												},
 												"data": null
@@ -1381,7 +1381,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "2",
+																			"updated": "2",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1413,7 +1413,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value": "4",
+																			"updated": "4",
 																			"styleList": []
 																		},
 																		"data": null
@@ -1447,7 +1447,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "IFrame Examples",
+											"updated": "IFrame Examples",
 											"styleList": []
 										},
 										"data": null
@@ -1463,7 +1463,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "IFrames display external sites within Obojobo.",
+											"updated": "IFrames display external sites within Obojobo.",
 											"styleList": []
 										},
 										"data": null
@@ -1480,7 +1480,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Types of IFrames:",
+											"updated": "Types of IFrames:",
 											"styleList": []
 										},
 										"data": null
@@ -1496,7 +1496,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This is a webpage type IFrame with default attributes that make it suitable to embed webpages. webpage type Iframes will load and display their content when View Content is selected.",
+											"updated": "This is a webpage type IFrame with default attributes that make it suitable to embed webpages. webpage type Iframes will load and display their content when View Content is selected.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1541,7 +1541,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This is a media type IFrame with default attributes. Since it is optimized for media playback, its defaults differ from the webpage defaults.",
+											"updated": "This is a media type IFrame with default attributes. Since it is optimized for media playback, its defaults differ from the webpage defaults.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1574,7 +1574,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Use the media type when embedding video or interactive material. Otherwise, use the webpage type when embedding websites. If no type is specified, media will be used.",
+											"updated": "Use the media type when embedding video or interactive material. Otherwise, use the webpage type when embedding websites. If no type is specified, media will be used.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1610,7 +1610,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Additional options",
+											"updated": "Additional options",
 											"styleList": []
 										},
 										"data": null
@@ -1626,7 +1626,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The autoload property allows an IFrame to load automatically. Autoloading is not recommended, as it may affect the load speed of the Obojobo Module.",
+											"updated": "The autoload property allows an IFrame to load automatically. Autoloading is not recommended, as it may affect the load speed of the Obojobo Module.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1659,7 +1659,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The IFrame below omits the title property. When omitted, the embedded URL is shown instead. In general, it is recommended to include a title, as this is more readable than a URL (and will also be read aloud by screen-readers).",
+											"updated": "The IFrame below omits the title property. When omitted, the embedded URL is shown instead. In general, it is recommended to include a title, as this is more readable than a URL (and will also be read aloud by screen-readers).",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1691,7 +1691,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "A custom width and height can be provided, as shown below. This IFrame also has no border (once it is loaded).",
+											"updated": "A custom width and height can be provided, as shown below. This IFrame also has no border (once it is loaded).",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1733,7 +1733,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The fit property controls an IFrame's behavior when constricted by the available space. The IFrame below specifies fit=\"scale\", which means it will scale down proportionally as the IFrame box shrinks. To see it in action, view the IFrame content, then try reducing the size of the browser until the IFrame can no longer fit in the available space - the inner contents will decrease in size. This is the default setting when type is set to media (and in general is recommended when embedding media).",
+											"updated": "The fit property controls an IFrame's behavior when constricted by the available space. The IFrame below specifies fit=\"scale\", which means it will scale down proportionally as the IFrame box shrinks. To see it in action, view the IFrame content, then try reducing the size of the browser until the IFrame can no longer fit in the available space - the inner contents will decrease in size. This is the default setting when type is set to media (and in general is recommended when embedding media).",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1785,7 +1785,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The other fit type is fit=\"scroll\". This does not scale down the inner contents. The contents remain the same size while the IFrame box that contains them becomes skinnier. If the external content won't fit inside the reduced IFrame box, the user will need to scroll inside the IFrame to see all of the content. This is the default setting when type is set to webpage (and in general is recommended when embedding content with text).",
+											"updated": "The other fit type is fit=\"scroll\". This does not scale down the inner contents. The contents remain the same size while the IFrame box that contains them becomes skinnier. If the external content won't fit inside the reduced IFrame box, the user will need to scroll inside the IFrame to see all of the content. This is the default setting when type is set to webpage (and in general is recommended when embedding content with text).",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1837,7 +1837,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The initialZoom property allows an IFrame to be set to a custom zoom level. In the example below, the embedded webpage is zoomed to 150% of its original size. This can be used to tailor embedded content to more closely match the text size of the Obojobo module (or if the embedded content defaults to a small size).",
+											"updated": "The initialZoom property allows an IFrame to be set to a custom zoom level. In the example below, the embedded webpage is zoomed to 150% of its original size. This can be used to tailor embedded content to more closely match the text size of the Obojobo module (or if the embedded content defaults to a small size).",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1872,7 +1872,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "IFrame Controls",
+											"updated": "IFrame Controls",
 											"styleList": []
 										},
 										"data": null
@@ -1888,7 +1888,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "An IFrame can contain any of the three control types: reload, new-window and zoom.",
+											"updated": "An IFrame can contain any of the three control types: reload, new-window and zoom.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1923,7 +1923,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The IFrame below has only the reload control. reload allows the user to refresh the site within the IFrame. It's helpful if the user manages to navigate to another page inside the IFrame - The reload button will restore the original embedded page.",
+											"updated": "The IFrame below has only the reload control. reload allows the user to refresh the site within the IFrame. It's helpful if the user manages to navigate to another page inside the IFrame - The reload button will restore the original embedded page.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -1963,7 +1963,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The IFrame below has only the new-window control. new-window allows the user to load the external site in a new tab or a new window (depending on browser defaults).",
+											"updated": "The IFrame below has only the new-window control. new-window allows the user to load the external site in a new tab or a new window (depending on browser defaults).",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -2003,7 +2003,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "The IFrame below has only the zoom controls. Zoom enables the user to adjust the iframe scale.",
+											"updated": "The IFrame below has only the zoom controls. Zoom enables the user to adjust the iframe scale.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -2043,7 +2043,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Finally, in the example below, all of the controls have been removed: ",
+											"updated": "Finally, in the example below, all of the controls have been removed: ",
 											"styleList": []
 										},
 										"data": null
@@ -2070,7 +2070,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "If the controls property is not specified, the defaults will be used. With media type IFrames, the default controls include reload only. For webpage type IFrames, all controls (reload, new-window and zoom) are enabled by default.",
+											"updated": "If the controls property is not specified, the defaults will be used. With media type IFrames, the default controls include reload only. For webpage type IFrames, all controls (reload, new-window and zoom) are enabled by default.",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -2139,7 +2139,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Other Content Types",
+											"updated": "Other Content Types",
 											"styleList": []
 										},
 										"data": null
@@ -2156,7 +2156,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Code",
+											"updated": "Code",
 											"styleList": []
 										},
 										"data": null
@@ -2172,21 +2172,21 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "// Computers code example:",
+											"updated": "// Computers code example:",
 											"styleList": []
 										},
 										"data": null
 									},
 									{
 										"text": {
-											"value": "int Fibonacci(int n)",
+											"updated": "int Fibonacci(int n)",
 											"styleList": []
 										},
 										"data": null
 									},
 									{
 										"text": {
-											"value": "if( n == 0 || n == 1) return n",
+											"updated": "if( n == 0 || n == 1) return n",
 											"styleList": []
 										},
 										"data": {
@@ -2195,7 +2195,7 @@
 									},
 									{
 										"text": {
-											"value": "return Fibonacci(n - 1) + Fibonacci(n - 2)",
+											"updated": "return Fibonacci(n - 1) + Fibonacci(n - 2)",
 											"styleList": []
 										},
 										"data": {
@@ -2213,21 +2213,21 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "// Computer code example:",
+											"updated": "// Computer code example:",
 											"styleList": []
 										},
 										"data": null
 									},
 									{
 										"text": {
-											"value": "int Fibonacci(int n)",
+											"updated": "int Fibonacci(int n)",
 											"styleList": []
 										},
 										"data": null
 									},
 									{
 										"text": {
-											"value": "if( n == 0 || n == 1) return n",
+											"updated": "if( n == 0 || n == 1) return n",
 											"styleList": []
 										},
 										"data": {
@@ -2236,7 +2236,7 @@
 									},
 									{
 										"text": {
-											"value": "return Fibonacci(n - 1) + Fibonacci(n - 2)",
+											"updated": "return Fibonacci(n - 1) + Fibonacci(n - 2)",
 											"styleList": []
 										},
 										"data": {
@@ -2255,7 +2255,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Table with table headers:",
+											"updated": "Table with table headers:",
 											"styleList": []
 										},
 										"data": null
@@ -2273,28 +2273,28 @@
 									"textGroup": [
 										{
 											"text": {
-												"value": "Heading 1",
+												"updated": "Heading 1",
 												"styleList": []
 											},
 											"data": null
 										},
 										{
 											"text": {
-												"value": "Heading 2",
+												"updated": "Heading 2",
 												"styleList": []
 											},
 											"data": null
 										},
 										{
 											"text": {
-												"value": "Cell 1",
+												"updated": "Cell 1",
 												"styleList": []
 											},
 											"data": null
 										},
 										{
 											"text": {
-												"value": "Cell 2",
+												"updated": "Cell 2",
 												"styleList": []
 											},
 											"data": null
@@ -2314,7 +2314,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Table without table headers:",
+											"updated": "Table without table headers:",
 											"styleList": []
 										},
 										"data": null
@@ -2332,28 +2332,28 @@
 									"textGroup": [
 										{
 											"text": {
-												"value": "Cell 1",
+												"updated": "Cell 1",
 												"styleList": []
 											},
 											"data": null
 										},
 										{
 											"text": {
-												"value": "Cell 2",
+												"updated": "Cell 2",
 												"styleList": []
 											},
 											"data": null
 										},
 										{
 											"text": {
-												"value": "Cell 3",
+												"updated": "Cell 3",
 												"styleList": []
 											},
 											"data": null
 										},
 										{
 											"text": {
-												"value": "Cell 4",
+												"updated": "Cell 4",
 												"styleList": []
 											},
 											"data": null
@@ -2373,7 +2373,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "A break:",
+											"updated": "A break:",
 											"styleList": []
 										},
 										"data": null
@@ -2395,7 +2395,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "A wider break:",
+											"updated": "A wider break:",
 											"styleList": []
 										},
 										"data": null
@@ -2420,7 +2420,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "YouTube video:",
+											"updated": "YouTube video:",
 											"styleList": []
 										},
 										"data": null
@@ -2445,7 +2445,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Math Equations",
+											"updated": "Math Equations",
 											"styleList": []
 										},
 										"data": null
@@ -2461,7 +2461,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Math equations can be specified with LaTeX:",
+											"updated": "Math equations can be specified with LaTeX:",
 											"styleList": []
 										},
 										"data": null
@@ -2486,7 +2486,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Using the label option you can label your equation:",
+											"updated": "Using the label option you can label your equation:",
 											"styleList": []
 										},
 										"data": null
@@ -2512,7 +2512,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "You can also include math inline with other text, such as \\alpha = \\omega t.",
+											"updated": "You can also include math inline with other text, such as \\alpha = \\omega t.",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -2538,7 +2538,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "HTML",
+											"updated": "HTML",
 											"styleList": []
 										},
 										"data": null
@@ -2554,7 +2554,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.",
+											"updated": "In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.",
 											"styleList": []
 										},
 										"data": null
@@ -2579,7 +2579,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Buttons",
+											"updated": "Buttons",
 											"styleList": []
 										},
 										"data": null
@@ -2599,7 +2599,7 @@
 										"actions": [
 											{
 												"type": "viewer:alert",
-												"value": {
+												"updated": {
 													"title": "I have a message for you:",
 													"message": "Thanks for clicking the button"
 												}
@@ -2617,7 +2617,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Button using a text group rather than a label:",
+											"updated": "Button using a text group rather than a label:",
 											"styleList": []
 										},
 										"data": null
@@ -2636,7 +2636,7 @@
 										"actions": [
 											{
 												"type": "nav:goto",
-												"value": {
+												"updated": {
 													"id": "page-1"
 												}
 											}
@@ -2646,7 +2646,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Click me to jump to page 1!",
+											"updated": "Click me to jump to page 1!",
 											"styleList": [
 												{
 													"type": "b",
@@ -2679,7 +2679,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Formatting",
+											"updated": "Formatting",
 											"styleList": []
 										},
 										"data": null
@@ -2696,7 +2696,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Aligning headings:",
+											"updated": "Aligning headings:",
 											"styleList": []
 										},
 										"data": null
@@ -2713,7 +2713,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Align right",
+											"updated": "Align right",
 											"styleList": []
 										},
 										"data": {
@@ -2732,7 +2732,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Align center",
+											"updated": "Align center",
 											"styleList": []
 										},
 										"data": {
@@ -2751,7 +2751,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Aligning equations:",
+											"updated": "Aligning equations:",
 											"styleList": []
 										},
 										"data": null
@@ -2778,7 +2778,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Aligning text items:",
+											"updated": "Aligning text items:",
 											"styleList": []
 										},
 										"data": null
@@ -2794,7 +2794,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Left",
+											"updated": "Left",
 											"styleList": []
 										},
 										"data": {
@@ -2803,7 +2803,7 @@
 									},
 									{
 										"text": {
-											"value": "Center",
+											"updated": "Center",
 											"styleList": []
 										},
 										"data": {
@@ -2812,7 +2812,7 @@
 									},
 									{
 										"text": {
-											"value": "Right",
+											"updated": "Right",
 											"styleList": []
 										},
 										"data": {
@@ -2831,7 +2831,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Aligning buttons:",
+											"updated": "Aligning buttons:",
 											"styleList": []
 										},
 										"data": null
@@ -2857,7 +2857,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Styling",
+											"updated": "Styling",
 											"styleList": []
 										},
 										"data": null
@@ -2873,7 +2873,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Bold, Italic, Superscript2, Subscript2, Links, Strikethrough content, a quotation, monospaced text and in-line math equations: \\frac{dy}{dx}",
+											"updated": "Bold, Italic, Superscript2, Subscript2, Links, Strikethrough content, a quotation, monospaced text and in-line math equations: \\frac{dy}{dx}",
 											"styleList": [
 												{
 													"type": "b",
@@ -2949,7 +2949,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Advanced lists:",
+											"updated": "Advanced lists:",
 											"styleList": []
 										},
 										"data": null
@@ -2965,7 +2965,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)",
+											"updated": "This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)",
 											"styleList": []
 										},
 										"data": null
@@ -2981,7 +2981,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "One (indent=\"1\")",
+											"updated": "One (indent=\"1\")",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -2995,7 +2995,7 @@
 									},
 									{
 										"text": {
-											"value": "Two (indent=\"2\")",
+											"updated": "Two (indent=\"2\")",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3011,7 +3011,7 @@
 									},
 									{
 										"text": {
-											"value": "Three (indent=\"6\")",
+											"updated": "Three (indent=\"6\")",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3027,7 +3027,7 @@
 									},
 									{
 										"text": {
-											"value": "Four (indent=\"2\")",
+											"updated": "Four (indent=\"2\")",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3043,7 +3043,7 @@
 									},
 									{
 										"text": {
-											"value": "Five (indent=\"4\")",
+											"updated": "Five (indent=\"4\")",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3059,7 +3059,7 @@
 									},
 									{
 										"text": {
-											"value": "Six (indent=\"3\")",
+											"updated": "Six (indent=\"3\")",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3099,7 +3099,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Whitespace",
+											"updated": "Whitespace",
 											"styleList": []
 										},
 										"data": null
@@ -3115,7 +3115,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "\n\n\t\t\t\t\tUnlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.\n\n\t\t\t\t",
+											"updated": "\n\n\t\t\t\t\tUnlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.\n\n\t\t\t\t",
 											"styleList": []
 										},
 										"data": null
@@ -3141,7 +3141,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Actions",
+											"updated": "Actions",
 											"styleList": []
 										},
 										"data": null
@@ -3158,7 +3158,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Button onClick examples",
+											"updated": "Button onClick examples",
 											"styleList": []
 										},
 										"data": null
@@ -3174,7 +3174,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Each of these buttons contain an example action that are triggered when the button is clicked. Take a look at the document source to see how they are implemented.",
+											"updated": "Each of these buttons contain an example action that are triggered when the button is clicked. Take a look at the document source to see how they are implemented.",
 											"styleList": []
 										},
 										"data": null
@@ -3201,7 +3201,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Lock navigation (nav:lock)",
+											"updated": "Lock navigation (nav:lock)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3234,7 +3234,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Unlock navigation (nav:unlock)",
+											"updated": "Unlock navigation (nav:unlock)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3267,7 +3267,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Open navigation (nav:open)",
+											"updated": "Open navigation (nav:open)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3300,7 +3300,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Close navigation (nav:close)",
+											"updated": "Close navigation (nav:close)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3333,7 +3333,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Toggle navigation (nav:toggle)",
+											"updated": "Toggle navigation (nav:toggle)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3359,7 +3359,7 @@
 										"actions": [
 											{
 												"type": "nav:goto",
-												"value": {
+												"updated": {
 													"id": "page-1"
 												}
 											}
@@ -3369,7 +3369,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Go to page 1 (nav:goto)",
+											"updated": "Go to page 1 (nav:goto)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3402,7 +3402,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Go back (nav:prev)",
+											"updated": "Go back (nav:prev)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3435,7 +3435,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Go forward (nav:next)",
+											"updated": "Go forward (nav:next)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3461,7 +3461,7 @@
 										"actions": [
 											{
 												"type": "assessment:startAttempt",
-												"value": {
+												"updated": {
 													"id": "my-assessment"
 												}
 											}
@@ -3471,7 +3471,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Start an attempt (assessment:startAttempt)",
+											"updated": "Start an attempt (assessment:startAttempt)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3497,7 +3497,7 @@
 										"actions": [
 											{
 												"type": "viewer:alert",
-												"value": {
+												"updated": {
 													"title": "I have a message for you:",
 													"message": "Thanks for clicking the button"
 												}
@@ -3508,7 +3508,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Dialog messages (viewer:alert)",
+											"updated": "Dialog messages (viewer:alert)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3531,7 +3531,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Click the button below to focus in on this text. Clicking away from this text will remove the focus.",
+											"updated": "Click the button below to focus in on this text. Clicking away from this text will remove the focus.",
 											"styleList": []
 										},
 										"data": {
@@ -3552,7 +3552,7 @@
 										"actions": [
 											{
 												"type": "focus:component",
-												"value": {
+												"updated": {
 													"id": "focus-on-me",
 													"fade": "true"
 												}
@@ -3563,7 +3563,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Focus (focus:component)",
+											"updated": "Focus (focus:component)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3586,7 +3586,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Click the button below to focus on and scroll up to the first button on this page",
+											"updated": "Click the button below to focus on and scroll up to the first button on this page",
 											"styleList": []
 										},
 										"data": {
@@ -3607,7 +3607,7 @@
 										"actions": [
 											{
 												"type": "focus:component",
-												"value": {
+												"updated": {
 													"id": "scroll-to-me",
 													"animateScroll": "true"
 												}
@@ -3618,7 +3618,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Focus (focus:component)",
+											"updated": "Focus (focus:component)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3642,7 +3642,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Multiple actions",
+											"updated": "Multiple actions",
 											"styleList": []
 										},
 										"data": null
@@ -3658,7 +3658,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "In the above examples each button performs one action, however you can specify more than one. The button below will perform the following actions:",
+											"updated": "In the above examples each button performs one action, however you can specify more than one. The button below will perform the following actions:",
 											"styleList": []
 										},
 										"data": null
@@ -3677,7 +3677,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Toggle the navigation (nav:toggle)",
+											"updated": "Toggle the navigation (nav:toggle)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3691,7 +3691,7 @@
 									},
 									{
 										"text": {
-											"value": "Go to page 1 (nav:goto)",
+											"updated": "Go to page 1 (nav:goto)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3705,7 +3705,7 @@
 									},
 									{
 										"text": {
-											"value": "Focus on a math equation (focus:component)",
+											"updated": "Focus on a math equation (focus:component)",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -3735,13 +3735,13 @@
 											},
 											{
 												"type": "nav:goto",
-												"value": {
+												"updated": {
 													"id": "page-1"
 												}
 											},
 											{
 												"type": "focus:component",
-												"value": {
+												"updated": {
 													"id": "my-math-equation",
 													"fade": "true"
 												}
@@ -3760,7 +3760,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Navigation Triggers",
+											"updated": "Navigation Triggers",
 											"styleList": []
 										},
 										"data": null
@@ -3776,7 +3776,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This page has a few triggers that are commented out. Uncomment them to see them working. onNavEnter trigger will trigger an alert action. When leaving the page a onNavExit trigger will trigger another alert action.",
+											"updated": "This page has a few triggers that are commented out. Uncomment them to see them working. onNavEnter trigger will trigger an alert action. When leaving the page a onNavExit trigger will trigger another alert action.",
 											"styleList": [
 												{
 													"type": "b",
@@ -3827,7 +3827,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Extensions",
+											"updated": "Extensions",
 											"styleList": []
 										},
 										"data": null
@@ -3843,7 +3843,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Here is an edX multiple choice question which is converted to an Obojobo question. Note that hints are not supported and are ignored. With this extension whitespace is not preserved.",
+											"updated": "Here is an edX multiple choice question which is converted to an Obojobo question. Note that hints are not supported and are ignored. With this extension whitespace is not preserved.",
 											"styleList": [
 												{
 													"type": "a",
@@ -4029,7 +4029,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Great job!",
+													"updated": "Great job!",
 													"styleList": []
 												},
 												"data": {
@@ -4047,7 +4047,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Here is where you can congratulate the student for a job well done. If you have other modules or content that you'd like them to look at after having passed this module you can provide links here.",
+													"updated": "Here is where you can congratulate the student for a job well done. If you have other modules or content that you'd like them to look at after having passed this module you can provide links here.",
 													"styleList": []
 												},
 												"data": null
@@ -4063,7 +4063,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Try again ({{assessment:attemptsRemaining}} attempts left)",
+													"updated": "Try again ({{assessment:attemptsRemaining}} attempts left)",
 													"styleList": []
 												},
 												"data": null
@@ -4075,7 +4075,7 @@
 												"actions": [
 													{
 														"type": "assessment:startAttempt",
-														"value": {
+														"updated": {
 															"id": "my-assessment"
 														}
 													}
@@ -4103,7 +4103,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Not quite!",
+													"updated": "Not quite!",
 													"styleList": []
 												},
 												"data": {
@@ -4121,7 +4121,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Here you could direct students back to the content or provide links to additional information.",
+													"updated": "Here you could direct students back to the content or provide links to additional information.",
 													"styleList": []
 												},
 												"data": null
@@ -4137,7 +4137,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value": "Try again ({{assessment:attemptsRemaining}} attempts left)",
+													"updated": "Try again ({{assessment:attemptsRemaining}} attempts left)",
 													"styleList": []
 												},
 												"data": null
@@ -4149,7 +4149,7 @@
 												"actions": [
 													{
 														"type": "assessment:startAttempt",
-														"value": {
+														"updated": {
 															"id": "my-assessment"
 														}
 													}
@@ -4178,7 +4178,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "Assessment",
+											"updated": "Assessment",
 											"styleList": []
 										},
 										"data": null
@@ -4194,7 +4194,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt",
+											"updated": "This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt",
 											"styleList": []
 										},
 										"data": null
@@ -4210,7 +4210,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value": "(This paragraph uses variables - view the XML source for formatting details). You have {{assessment:attemptsRemaining}} of {{assessment:attemptsAmount}} attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.",
+											"updated": "(This paragraph uses variables - view the XML source for formatting details). You have {{assessment:attemptsRemaining}} of {{assessment:attemptsAmount}} attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.",
 											"styleList": [
 												{
 													"type": "b",
@@ -4243,7 +4243,7 @@
 										"actions": [
 											{
 												"type": "assessment:startAttempt",
-												"value": {
+												"updated": {
 													"id": "my-assessment"
 												}
 											}
@@ -4286,7 +4286,7 @@
 														"textGroup": [
 															{
 																"text": {
-																	"value": "Add additional information here",
+																	"updated": "Add additional information here",
 																	"styleList": []
 																},
 																"data": null
@@ -4307,7 +4307,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "What is 2+2?",
+															"updated": "What is 2+2?",
 															"styleList": [
 																{
 																	"type": "_latex",
@@ -4352,7 +4352,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "4",
+																					"updated": "4",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4375,7 +4375,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4407,7 +4407,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "2",
+																					"updated": "2",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4430,7 +4430,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4463,7 +4463,7 @@
 														"textGroup": [
 															{
 																"text": {
-																	"value": "Add additional information here",
+																	"updated": "Add additional information here",
 																	"styleList": []
 																},
 																"data": null
@@ -4484,7 +4484,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "What is 3-0?",
+															"updated": "What is 3-0?",
 															"styleList": [
 																{
 																	"type": "_latex",
@@ -4529,7 +4529,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "3",
+																					"updated": "3",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4552,7 +4552,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4584,7 +4584,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "0",
+																					"updated": "0",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4607,7 +4607,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4640,7 +4640,7 @@
 														"textGroup": [
 															{
 																"text": {
-																	"value": "Add additional information here",
+																	"updated": "Add additional information here",
 																	"styleList": []
 																},
 																"data": null
@@ -4661,7 +4661,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "What is 9-4?",
+															"updated": "What is 9-4?",
 															"styleList": [
 																{
 																	"type": "_latex",
@@ -4706,7 +4706,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "5",
+																					"updated": "5",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4729,7 +4729,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4761,7 +4761,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "3",
+																					"updated": "3",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4784,7 +4784,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4826,7 +4826,7 @@
 														"textGroup": [
 															{
 																"text": {
-																	"value": "Add additional information here",
+																	"updated": "Add additional information here",
 																	"styleList": []
 																},
 																"data": null
@@ -4847,7 +4847,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "Apple is a type of",
+															"updated": "Apple is a type of",
 															"styleList": []
 														},
 														"data": null
@@ -4883,7 +4883,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Fruit",
+																					"updated": "Fruit",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4906,7 +4906,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4938,7 +4938,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Vegetable",
+																					"updated": "Vegetable",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4961,7 +4961,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -4994,7 +4994,7 @@
 														"textGroup": [
 															{
 																"text": {
-																	"value": "Add additional information here",
+																	"updated": "Add additional information here",
 																	"styleList": []
 																},
 																"data": null
@@ -5015,7 +5015,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "Which of the following is a US State?",
+															"updated": "Which of the following is a US State?",
 															"styleList": []
 														},
 														"data": null
@@ -5051,7 +5051,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Florida",
+																					"updated": "Florida",
 																					"styleList": []
 																				},
 																				"data": null
@@ -5074,7 +5074,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -5106,7 +5106,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Quebec",
+																					"updated": "Quebec",
 																					"styleList": []
 																				},
 																				"data": null
@@ -5129,7 +5129,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -5162,7 +5162,7 @@
 														"textGroup": [
 															{
 																"text": {
-																	"value": "Add additional information here",
+																	"updated": "Add additional information here",
 																	"styleList": []
 																},
 																"data": null
@@ -5183,7 +5183,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "Evaluate this statement:",
+															"updated": "Evaluate this statement:",
 															"styleList": []
 														},
 														"data": null
@@ -5199,7 +5199,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value": "Pablo Picasso was a painter",
+															"updated": "Pablo Picasso was a painter",
 															"styleList": []
 														},
 														"data": null
@@ -5235,7 +5235,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "True",
+																					"updated": "True",
 																					"styleList": []
 																				},
 																				"data": null
@@ -5258,7 +5258,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null
@@ -5290,7 +5290,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "False",
+																					"updated": "False",
 																					"styleList": []
 																				},
 																				"data": null
@@ -5313,7 +5313,7 @@
 																		"textGroup": [
 																			{
 																				"text": {
-																					"value": "Optional answer feedback",
+																					"updated": "Optional answer feedback",
 																					"styleList": []
 																				},
 																				"data": null

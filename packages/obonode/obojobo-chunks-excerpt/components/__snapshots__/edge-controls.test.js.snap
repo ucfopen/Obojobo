@@ -19,7 +19,7 @@ exports[`Edge Controls Node builds the expected component 1`] = `
         name="top"
         onChange={[Function]}
         type="radio"
-        value="normal"
+        updated="normal"
       />
       <span>
         normal
@@ -34,7 +34,7 @@ exports[`Edge Controls Node builds the expected component 1`] = `
         name="top"
         onChange={[Function]}
         type="radio"
-        value="fade"
+        updated="fade"
       />
       <span>
         fade

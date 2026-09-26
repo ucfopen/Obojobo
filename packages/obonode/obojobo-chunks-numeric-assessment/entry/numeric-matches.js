@@ -27,7 +27,7 @@ const {
 module.exports = class NumericMatches {
 	constructor() {
 		/**
-		 * Object with the key as the match type and the value an array of matching numeric types
+		 * Object with the key as the match type and the updated an array of matching numeric types
 		 * @type {object}
 		 */
 		this.matches = {}
@@ -35,13 +35,13 @@ module.exports = class NumericMatches {
 		this.matches[MATCH_INFERRED] = []
 
 		/**
-		 * Object with the key as the numeric type and the value a Numeric instance
+		 * Object with the key as the numeric type and the updated a Numeric instance
 		 * @type {object}
 		 */
 		this.instances = {}
 
 		/**
-		 * Object with the key as the numeric type and the value the match type
+		 * Object with the key as the numeric type and the updated the match type
 		 * @type {object}
 		 */
 		this.matchTypes = {}

@@ -21,7 +21,7 @@ const { RULE_MATCHED } = require('./numeric-rule-set-evaluator-statuses')
  * @example
  * const evaluator = new NumericAnswerEvaluator({
  * 	scoreRuleConfigs: [
- * 		{ value:"1/3", score:100 }
+ * 		{ updated:"1/3", score:100 }
  * 	],
  * 	types: "decimal"
  * })

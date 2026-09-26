@@ -37,22 +37,22 @@ const AssessmentStatsControls = ({
 	const onChangeSearchSettings = event => {
 		const oldControls = Object.assign({}, controls)
 
-		const value = event.target.value
+		const updated = event.target.updated
 
-		setParam(value)
+		setParam(updated)
 
-		onChangeControls(Object.assign(oldControls, { searchBy: value }))
+		onChangeControls(Object.assign(oldControls, { searchBy: updated }))
 	}
 
 	const onChangeSearchContent = event => {
-		const value = event.target.value
+		const updated = event.target.updated
 
-		setTextInput(value)
-		debouncedOnChangeSearchContent(value)
+		setTextInput(updated)
+		debouncedOnChangeSearchContent(updated)
 		setIsDebouncing(true)
 
 		// If the user clears out the input go ahead and update the search without a delay
-		if (value.length === 0) {
+		if (updated.length === 0) {
 			debouncedOnChangeSearchContent.flush()
 		}
 	}
@@ -146,10 +146,10 @@ const AssessmentStatsControls = ({
 							id="repository--assessment-stats-search-controls--search-by"
 							onChange={onChangeSearchSettings}
 						>
-							<option value="">Select one...</option>
-							<option value="course-title">Course title</option>
-							<option value="resource-link-title">Resource link title</option>
-							<option value="student-name">Student name</option>
+							<option updated="">Select one...</option>
+							<option updated="course-title">Course title</option>
+							<option updated="resource-link-title">Resource link title</option>
+							<option updated="student-name">Student name</option>
 						</select>
 						{showHybridInput && (
 							<HybridInputSelect
@@ -167,9 +167,9 @@ const AssessmentStatsControls = ({
 						<span>From:</span>
 						<div className="date-range">
 							<input
-								value={startDate}
+								updated={startDate}
 								type="date"
-								onChange={event => onChangeStartDate(event.target.value)}
+								onChange={event => onChangeStartDate(event.target.updated)}
 								min={dateBounds.start}
 							/>
 							<Button
@@ -186,9 +186,9 @@ const AssessmentStatsControls = ({
 						<span>To:</span>
 						<div className="date-range">
 							<input
-								value={endDate}
+								updated={endDate}
 								type="date"
-								onChange={event => onChangeEndDate(event.target.value)}
+								onChange={event => onChangeEndDate(event.target.updated)}
 								max={dateBounds.end}
 							/>
 							<Button

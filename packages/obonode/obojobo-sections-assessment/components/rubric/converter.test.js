@@ -11,7 +11,7 @@ describe('Assessment Converter', () => {
 				passedType: '$attempt_score',
 				failedType: '$attempt_score',
 				type: 'pass-fail',
-				unableToPassType: 'no-value',
+				unableToPassType: 'no-updated',
 				mods: []
 			}
 		}
@@ -33,12 +33,12 @@ describe('Assessment Converter', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			content: {
-				passedType: 'set-value',
+				passedType: 'set-updated',
 				passedResult: '100',
 				type: 'pass-fail',
-				failedType: 'set-value',
+				failedType: 'set-updated',
 				failedResult: '100',
-				unableToPassType: 'set-value',
+				unableToPassType: 'set-updated',
 				unableToPassResult: '100'
 			}
 		}
@@ -61,11 +61,11 @@ describe('Assessment Converter', () => {
 			type: 'mockType',
 			content: {
 				type: 'highest',
-				passedType: 'set-value',
+				passedType: 'set-updated',
 				passedResult: '100',
-				failedType: 'set-value',
+				failedType: 'set-updated',
 				failedResult: '10',
-				unableToPassType: 'set-value',
+				unableToPassType: 'set-updated',
 				unableToPassResult: '100'
 			}
 		}

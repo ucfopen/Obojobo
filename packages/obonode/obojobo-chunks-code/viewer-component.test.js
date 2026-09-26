@@ -11,7 +11,7 @@ const chunkJSON = {
 		textGroup: [
 			{
 				text: {
-					value: 'Example Text'
+					updated: 'Example Text'
 				}
 			}
 		]

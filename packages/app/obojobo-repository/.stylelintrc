@@ -2,6 +2,6 @@
   "extends": "stylelint-config-obojobo",
   "rules": {
     "unit-disallowed-list": "warning",
-    "scale-unlimited/declaration-strict-value": "warning"
+    "scale-unlimited/declaration-strict-updated": "warning"
   }
 }

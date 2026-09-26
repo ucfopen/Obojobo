@@ -74,13 +74,13 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => {
 					const filteredCollections = filterCollections(
-						action.payload.value,
+						action.payload.updated,
 						state.collectionSearchString
 					)
 					return {
 						...prevState,
 						collectionSearchString: '',
-						myCollections: action.payload.value,
+						myCollections: action.payload.updated,
 						filteredCollections
 					}
 				}
@@ -89,9 +89,9 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => {
 					const newState = { ...prevState }
-					newState.myCollections = action.payload.value
+					newState.myCollections = action.payload.updated
 					newState.filteredCollections = filterCollections(
-						action.payload.value,
+						action.payload.updated,
 						state.collectionSearchString
 					)
 					if (
@@ -109,8 +109,8 @@ function DashboardReducer(state, action) {
 				// update my modules list & remove filtering because the new module could be filtered
 				success: prevState => ({
 					...prevState,
-					moduleCount: action.payload.value.allCount,
-					myModules: action.payload.value.modules,
+					moduleCount: action.payload.updated.allCount,
+					myModules: action.payload.updated.modules,
 					moduleSearchString: '',
 					filteredModules: null
 				})
@@ -124,13 +124,13 @@ function DashboardReducer(state, action) {
 				// update myModules and re-apply the filter if one exists
 				success: prevState => {
 					const filteredModules = filterModules(
-						action.payload.value.modules,
+						action.payload.updated.modules,
 						state.moduleSearchString
 					)
 					return {
 						...prevState,
-						moduleCount: action.payload.value.allCount,
-						myModules: action.payload.value.modules,
+						moduleCount: action.payload.updated.allCount,
+						myModules: action.payload.updated.modules,
 						filteredModules
 					}
 				}
@@ -141,13 +141,13 @@ function DashboardReducer(state, action) {
 				// update myModules, re-apply the filter, and exit multi-select mode
 				success: prevState => {
 					const filteredModules = filterModules(
-						action.payload.value.modules,
+						action.payload.updated.modules,
 						state.moduleSearchString
 					)
 					return {
 						...prevState,
-						myModules: action.payload.value.modules,
-						moduleCount: action.payload.value.allCount,
+						myModules: action.payload.updated.modules,
+						moduleCount: action.payload.updated.allCount,
 						filteredModules,
 						selectedModules: [],
 						multiSelectMode: false
@@ -168,9 +168,9 @@ function DashboardReducer(state, action) {
 				success: prevState => {
 					return {
 						...prevState,
-						myModules: action.payload.value.modules,
-						collectionModules: action.payload.value.modules,
-						moduleCount: action.payload.value.allCount,
+						myModules: action.payload.updated.modules,
+						collectionModules: action.payload.updated.modules,
+						moduleCount: action.payload.updated.allCount,
 						selectedModules: [],
 						multiSelectMode: false
 					}
@@ -197,7 +197,7 @@ function DashboardReducer(state, action) {
 				success: prevState => {
 					return {
 						...prevState,
-						newest: action.payload.value
+						newest: action.payload.updated
 					}
 				}
 			})
@@ -261,7 +261,7 @@ function DashboardReducer(state, action) {
 				// update the permissions and repopulate search state
 				// update the modules if the payload contains them
 				success: prevState => {
-					const searchPeople = searchPeopleResultsState(false, true, action.payload.value)
+					const searchPeople = searchPeopleResultsState(false, true, action.payload.updated)
 					const newState = { ...prevState }
 					newState.draftPermissions = { ...newState.draftPermissions }
 					newState.draftPermissions[newState.selectedModule.draftId] = searchPeople
@@ -279,7 +279,7 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => {
 					const newState = { ...prevState }
-					newState.draftCollections = action.payload.value
+					newState.draftCollections = action.payload.updated
 					return newState
 				}
 			})
@@ -287,7 +287,7 @@ function DashboardReducer(state, action) {
 		case LOAD_USER_SEARCH:
 			return handle(state, action, {
 				start: prevState => ({ ...prevState, shareSearchString: action.meta.searchString }),
-				success: prevState => ({ ...prevState, searchPeople: { items: action.payload.value } })
+				success: prevState => ({ ...prevState, searchPeople: { items: action.payload.updated } })
 			})
 
 		case SHOW_MODULE_MANAGE_COLLECTIONS:
@@ -321,7 +321,7 @@ function DashboardReducer(state, action) {
 				success: prevState => ({
 					...prevState,
 					searchModules: {
-						items: action.payload.value.modules
+						items: action.payload.updated.modules
 					}
 				})
 			})
@@ -335,12 +335,12 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => {
 					const newState = { ...prevState }
-					newState.collectionModules = action.payload.value.modules
+					newState.collectionModules = action.payload.updated.modules
 					if (
 						action.meta.currentCollectionId &&
 						action.meta.changedCollectionId === action.meta.currentCollectionId
 					) {
-						newState.myModules = action.payload.value.modules
+						newState.myModules = action.payload.updated.modules
 					}
 					return newState
 				}
@@ -421,7 +421,7 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => ({
 					...prevState,
-					myModules: action.payload.value
+					myModules: action.payload.updated
 				})
 			})
 
@@ -429,7 +429,7 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => ({
 					...prevState,
-					myModules: action.payload.value
+					myModules: action.payload.updated
 				})
 			})
 
@@ -438,7 +438,7 @@ function DashboardReducer(state, action) {
 				success: prevState => ({
 					...prevState,
 					selectedModules: [],
-					myModules: action.payload.value,
+					myModules: action.payload.updated,
 					multiSelectMode: false
 				})
 			})

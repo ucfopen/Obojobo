@@ -6,7 +6,7 @@ const { Dispatcher } = Common.flux
 const MediaUtil = {
 	show(id) {
 		return Dispatcher.trigger('media:show', {
-			value: {
+			updated: {
 				id
 			}
 		})
@@ -14,7 +14,7 @@ const MediaUtil = {
 
 	hide(id, actor = null) {
 		return Dispatcher.trigger('media:hide', {
-			value: {
+			updated: {
 				id,
 				actor
 			}
@@ -23,7 +23,7 @@ const MediaUtil = {
 
 	setDefaultZoom(id, zoom) {
 		return Dispatcher.trigger('media:setDefaultZoom', {
-			value: {
+			updated: {
 				id,
 				zoom
 			}
@@ -32,7 +32,7 @@ const MediaUtil = {
 
 	setZoom(id, zoom) {
 		return Dispatcher.trigger('media:setZoom', {
-			value: {
+			updated: {
 				id,
 				zoom
 			}
@@ -41,7 +41,7 @@ const MediaUtil = {
 
 	resetZoom(id) {
 		return Dispatcher.trigger('media:resetZoom', {
-			value: {
+			updated: {
 				id
 			}
 		})

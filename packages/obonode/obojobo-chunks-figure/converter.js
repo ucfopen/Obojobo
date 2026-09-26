@@ -11,7 +11,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  */
 const slateToObo = node => {
 	const captionLine = {
-		text: { value: '', styleList: [] },
+		text: { updated: '', styleList: [] },
 		data: null
 	}
 	TextUtil.slateToOboText(node, captionLine)

@@ -21,7 +21,7 @@ describe('ActionButton', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'Example Text'
+							updated: 'Example Text'
 						}
 					}
 				]

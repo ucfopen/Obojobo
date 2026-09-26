@@ -21,7 +21,7 @@ const {
  * by creating NumericRuleOutcomes for each NumericRule when given a NumericEntry.
  * @example
  * const evaluator = new NumericRuleSetEvaluator({
- * 	rules: [new NumericRule({ value:'4', score:100 })]
+ * 	rules: [new NumericRule({ updated:'4', score:100 })]
  * })
  * const results = evaluator.evaluate(new NumericEntry('4'))
  * results.status //'ruleMatched'

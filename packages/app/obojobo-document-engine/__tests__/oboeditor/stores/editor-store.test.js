@@ -31,7 +31,7 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'triggerChange')
 		EditorStore.triggerChange.mockReturnValueOnce('')
 
-		eventCallbacks['editor:setContext']({ value: { context: 'fake' } })
+		eventCallbacks['editor:setContext']({ updated: { context: 'fake' } })
 
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
 	})
@@ -42,7 +42,7 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'buildMenu')
 		EditorStore.buildMenu.mockReturnValueOnce('')
 
-		eventCallbacks['editor:rebuildMenu']({ value: { model: 'fake' } })
+		eventCallbacks['editor:rebuildMenu']({ updated: { model: 'fake' } })
 
 		expect(EditorStore.buildMenu).toHaveBeenCalledWith('fake')
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
@@ -57,7 +57,7 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'gotoItem')
 		EditorStore.gotoItem.mockReturnValueOnce(true)
 
-		eventCallbacks['editor:goto']({ value: { id: 'mockId' } })
+		eventCallbacks['editor:goto']({ updated: { id: 'mockId' } })
 
 		expect(EditorStore.gotoItem).toHaveBeenCalledWith({ id: 'mockId' })
 	})
@@ -71,7 +71,7 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'gotoItem')
 		EditorStore.gotoItem.mockReturnValueOnce(false)
 
-		eventCallbacks['editor:gotoPath']({ value: { path: 'fake' } })
+		eventCallbacks['editor:gotoPath']({ updated: { path: 'fake' } })
 
 		expect(EditorStore.gotoItem).toHaveBeenCalledWith({ id: 'mockId' })
 	})
@@ -81,7 +81,7 @@ describe('EditorStore', () => {
 		EditorStore.addPage.mockReturnValueOnce(false)
 
 		eventCallbacks['editor:addPage']({
-			value: {
+			updated: {
 				newPage: 'mockPage',
 				afterPageId: 'mockId'
 			}
@@ -95,7 +95,7 @@ describe('EditorStore', () => {
 		EditorStore.addAssessment.mockReturnValueOnce(false)
 
 		eventCallbacks['editor:addAssessment']({
-			value: { newAssessment: 'mockAssessment' }
+			updated: { newAssessment: 'mockAssessment' }
 		})
 
 		expect(EditorStore.addAssessment).toHaveBeenCalledWith('mockAssessment')
@@ -105,7 +105,7 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'deletePage')
 		EditorStore.deletePage.mockReturnValueOnce(false)
 
-		eventCallbacks['editor:deletePage']({ value: { pageId: 'mockId' } })
+		eventCallbacks['editor:deletePage']({ updated: { pageId: 'mockId' } })
 
 		expect(EditorStore.deletePage).toHaveBeenCalledWith('mockId')
 	})
@@ -115,7 +115,7 @@ describe('EditorStore', () => {
 		EditorStore.movePage.mockReturnValueOnce(false)
 
 		eventCallbacks['editor:movePage']({
-			value: { pageId: 'mockId', index: 1 }
+			updated: { pageId: 'mockId', index: 1 }
 		})
 
 		expect(EditorStore.movePage).toHaveBeenCalledWith('mockId', 1)
@@ -125,7 +125,7 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'setStartPage')
 
 		eventCallbacks['editor:setStartPage']({
-			value: { pageId: 'mockId' }
+			updated: { pageId: 'mockId' }
 		})
 
 		expect(EditorStore.setStartPage).toHaveBeenCalledWith('mockId')
@@ -136,7 +136,7 @@ describe('EditorStore', () => {
 		EditorStore.renamePageOrModule.mockReturnValueOnce(false)
 
 		eventCallbacks['editor:renamePage']({
-			value: { pageId: 'mockId', name: 'mockName' }
+			updated: { pageId: 'mockId', name: 'mockName' }
 		})
 
 		expect(EditorStore.renamePageOrModule).toHaveBeenCalledWith('mockId', 'mockName')
@@ -147,7 +147,7 @@ describe('EditorStore', () => {
 		EditorStore.renamePageOrModule.mockReturnValueOnce(false)
 
 		eventCallbacks['editor:renameModule']({
-			value: { moduleId: 'mockId', name: 'mockName' }
+			updated: { moduleId: 'mockId', name: 'mockName' }
 		})
 
 		expect(EditorStore.renamePageOrModule).toHaveBeenCalledWith('mockId', 'mockName')
@@ -485,7 +485,7 @@ describe('EditorStore', () => {
 		Common.models.OboModel.models['mockId'] = {
 			get: () => ({
 				title: 'mock-title',
-				value: 'other-value'
+				updated: 'other-updated'
 			}),
 			set: mockSet
 		}
@@ -493,7 +493,7 @@ describe('EditorStore', () => {
 
 		EditorStore.renamePageOrModule('mockId', 'mockTitle')
 
-		expect(mockSet).toHaveBeenCalledWith('content', { title: 'mockTitle', value: 'other-value' })
+		expect(mockSet).toHaveBeenCalledWith('content', { title: 'mockTitle', updated: 'other-updated' })
 		expect(Common.models.OboModel.models['mockId'].title).toBe('mockTitle')
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 		expect(EditorStore.triggerChange).toHaveBeenCalled()

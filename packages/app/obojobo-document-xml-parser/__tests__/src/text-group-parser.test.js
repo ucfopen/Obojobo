@@ -7,7 +7,7 @@ describe('TextGroup parser', () => {
 			{
 				name: 't',
 				attributes: { indent: '0' },
-				value: []
+				updated: []
 			}
 		]
 	}
@@ -16,7 +16,7 @@ describe('TextGroup parser', () => {
 		return {
 			name,
 			attributes,
-			value: [
+			updated: [
 				{
 					type: 'text',
 					text
@@ -26,7 +26,7 @@ describe('TextGroup parser', () => {
 	}
 
 	function setTextGroupElements(elements) {
-		textGroup.elements[0].value = elements
+		textGroup.elements[0].updated = elements
 	}
 
 	function checkStyleExpectations(style, type, start, end, data) {
@@ -46,7 +46,7 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog')
+		expect(parsed[0].text.updated).toBe('dog')
 		checkStyleExpectations(parsedStyles[0], '_latex', 0, 3, { alt: 'test' })
 	})
 
@@ -56,7 +56,7 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog')
+		expect(parsed[0].text.updated).toBe('dog')
 		checkStyleExpectations(parsedStyles[0], '_latex', 0, 3, {})
 	})
 
@@ -69,7 +69,7 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog fox')
+		expect(parsed[0].text.updated).toBe('dog fox')
 		checkStyleExpectations(parsedStyles[0], 'a', 0, 3, { href: 'testUrlOne' })
 		checkStyleExpectations(parsedStyles[1], 'a', 3, 7, { href: 'testUrlTwo' })
 	})
@@ -83,7 +83,7 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog fox')
+		expect(parsed[0].text.updated).toBe('dog fox')
 		checkStyleExpectations(parsedStyles[0], 'a', 0, 3, { href: 'testUrlOne' })
 		checkStyleExpectations(parsedStyles[1], 'a', 3, 7, { href: 'testUrlTwo' })
 	})
@@ -94,7 +94,7 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog')
+		expect(parsed[0].text.updated).toBe('dog')
 		checkStyleExpectations(parsedStyles[0], 'sup', 0, 3, 1)
 	})
 
@@ -104,7 +104,7 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog')
+		expect(parsed[0].text.updated).toBe('dog')
 		checkStyleExpectations(parsedStyles[0], 'sup', 0, 3, -1)
 	})
 
@@ -114,7 +114,7 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog')
+		expect(parsed[0].text.updated).toBe('dog')
 		checkStyleExpectations(parsedStyles[0], 'monospace', 0, 3, {})
 	})
 
@@ -127,35 +127,35 @@ describe('TextGroup parser', () => {
 		const parsed = textGroupParser(textGroup)
 		const parsedStyles = parsed[0].text.styleList
 
-		expect(parsed[0].text.value).toBe('dog fox')
+		expect(parsed[0].text.updated).toBe('dog fox')
 		checkStyleExpectations(parsedStyles[0], 'extra', 0, 3, { prop: 'val' })
 		checkStyleExpectations(parsedStyles[1], 'extra', 3, 7, {})
 	})
 
 	test('Handles undefined values', () => {
-		textGroup.elements[0].value = undefined //eslint-disable-line no-undefined
+		textGroup.elements[0].updated = undefined //eslint-disable-line no-undefined
 		const parsed = textGroupParser(textGroup)
 
-		expect(parsed[0].text.value).toBe('')
+		expect(parsed[0].text.updated).toBe('')
 	})
 
 	test('Handles null values', () => {
-		textGroup.elements[0].value = null
+		textGroup.elements[0].updated = null
 		const parsed = textGroupParser(textGroup)
 
-		expect(parsed[0].text.value).toBe('')
+		expect(parsed[0].text.updated).toBe('')
 	})
 
 	test('Handles missing text item', () => {
 		setTextGroupElements([
 			{
 				name: 'sup',
-				value: undefined
+				updated: undefined
 			}
 		])
 
 		const parsed = textGroupParser(textGroup)
 
-		expect(parsed[0].text.value).toBe('')
+		expect(parsed[0].text.updated).toBe('')
 	})
 })

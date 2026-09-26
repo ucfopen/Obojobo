@@ -63,7 +63,7 @@ describe('Stats Reducer', () => {
 		const action = {
 			type: LOAD_STATS_PAGE_MODULES_FOR_USER,
 			payload: {
-				value: mockModuleList
+				updated: mockModuleList
 			}
 		}
 

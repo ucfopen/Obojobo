@@ -27,10 +27,10 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } }
 			]
 		})
 	})
@@ -42,22 +42,22 @@ describe('GridTextGroup', () => {
 			textGroup: [
 				{
 					text: {
-						value: 'first cell'
+						updated: 'first cell'
 					}
 				},
 				{
 					text: {
-						value: 'second cell'
+						updated: 'second cell'
 					}
 				},
 				{
 					text: {
-						value: 'third cell'
+						updated: 'third cell'
 					}
 				},
 				{
 					text: {
-						value: 'fourth cell'
+						updated: 'fourth cell'
 					}
 				}
 			]
@@ -82,10 +82,10 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } }
 			]
 		})
 	})
@@ -97,22 +97,22 @@ describe('GridTextGroup', () => {
 			textGroup: [
 				{
 					text: {
-						value: 'first cell'
+						updated: 'first cell'
 					}
 				},
 				{
 					text: {
-						value: 'second cell'
+						updated: 'second cell'
 					}
 				},
 				{
 					text: {
-						value: 'third cell'
+						updated: 'third cell'
 					}
 				},
 				{
 					text: {
-						value: 'fourth cell'
+						updated: 'fourth cell'
 					}
 				}
 			]
@@ -139,10 +139,10 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } }
 			]
 		})
 	})
@@ -167,10 +167,10 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: '' } }
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: '' } }
 			]
 		})
 	})
@@ -195,10 +195,10 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: '' } }
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: '' } }
 			]
 		})
 	})
@@ -251,12 +251,12 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 3,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } },
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: '' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } },
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: '' } }
 			]
 		})
 	})
@@ -289,12 +289,12 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 3,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: 'added row cell' } },
-				{ data: {}, text: { styleList: null, value: 'added row cell' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: 'added row cell' } },
+				{ data: {}, text: { styleList: null, updated: 'added row cell' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } }
 			]
 		})
 	})
@@ -345,12 +345,12 @@ describe('GridTextGroup', () => {
 			numCols: 3,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: '' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } },
-				{ data: {}, text: { styleList: null, value: '' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: '' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } },
+				{ data: {}, text: { styleList: null, updated: '' } }
 			]
 		})
 	})
@@ -381,12 +381,12 @@ describe('GridTextGroup', () => {
 			numCols: 3,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'added row cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'added row cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'added row cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'added row cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } }
 			]
 		})
 	})
@@ -430,8 +430,8 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 1,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'second cell' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'second cell' } }
 			]
 		})
 	})
@@ -460,8 +460,8 @@ describe('GridTextGroup', () => {
 			numCols: 2,
 			numRows: 1,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'third cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+				{ data: {}, text: { styleList: null, updated: 'third cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } }
 			]
 		})
 	})
@@ -507,8 +507,8 @@ describe('GridTextGroup', () => {
 			numCols: 1,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'first cell' } },
-				{ data: {}, text: { styleList: null, value: 'third cell' } }
+				{ data: {}, text: { styleList: null, updated: 'first cell' } },
+				{ data: {}, text: { styleList: null, updated: 'third cell' } }
 			]
 		})
 	})
@@ -539,8 +539,8 @@ describe('GridTextGroup', () => {
 			numCols: 1,
 			numRows: 2,
 			textGroup: [
-				{ data: {}, text: { styleList: null, value: 'second cell' } },
-				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+				{ data: {}, text: { styleList: null, updated: 'second cell' } },
+				{ data: {}, text: { styleList: null, updated: 'fourth cell' } }
 			]
 		})
 	})
@@ -574,8 +574,8 @@ describe('GridTextGroup', () => {
 
 		const result = {
 			textGroup: [
-				{ text: { styleList: null, value: 'first cell' }, data: { num: 1 } },
-				{ text: { styleList: null, value: 'second cell' }, data: { num: 2 } }
+				{ text: { styleList: null, updated: 'first cell' }, data: { num: 1 } },
+				{ text: { styleList: null, updated: 'second cell' }, data: { num: 2 } }
 			],
 			numRows: 1,
 			numCols: 2
@@ -583,8 +583,8 @@ describe('GridTextGroup', () => {
 
 		const resultAfterFunction = {
 			textGroup: [
-				{ text: { styleList: null, value: 'first cell' }, data: { num: 2 } },
-				{ text: { styleList: null, value: 'second cell' }, data: { num: 4 } }
+				{ text: { styleList: null, updated: 'first cell' }, data: { num: 2 } },
+				{ text: { styleList: null, updated: 'second cell' }, data: { num: 4 } }
 			],
 			numRows: 1,
 			numCols: 2

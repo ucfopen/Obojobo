@@ -70,7 +70,7 @@
 				margin-bottom: 1em;
 			}
 
-			.value {
+			.updated {
 				display: inline-block;
 				position: relative;
 				margin-bottom: 0.5em;
@@ -93,13 +93,13 @@
 			}
 
 			&.is-null {
-				.value {
+				.updated {
 					font-size: 1.5em;
 				}
 			}
 
 			&.is-not-null {
-				.value {
+				.updated {
 					font-size: 2em;
 
 					&::after {

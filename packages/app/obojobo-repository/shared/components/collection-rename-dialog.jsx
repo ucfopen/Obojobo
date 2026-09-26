@@ -8,7 +8,7 @@ const CollectionOptionsDialog = props => {
 	const [collectionTitle, setCollectionTitle] = useState(props.collection.title)
 
 	const onInputChange = event => {
-		setCollectionTitle(event.target.value)
+		setCollectionTitle(event.target.updated)
 	}
 
 	const onAccept = () => {
@@ -27,7 +27,7 @@ const CollectionOptionsDialog = props => {
 			<div className="wrapper">
 				<input
 					className="collection-rename-input"
-					value={collectionTitle}
+					updated={collectionTitle}
 					onKeyPress={e => e.key === 'Enter' && onAccept()}
 					onChange={onInputChange}
 					aria-label="Rename Collection"

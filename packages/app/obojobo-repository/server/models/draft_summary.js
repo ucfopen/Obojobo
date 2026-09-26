@@ -18,7 +18,7 @@ const buildQueryWhere = (
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
-			drafts_metadata.value AS read_only,
+			drafts_metadata.updated AS read_only,
 			${selectSQL}
 			'visual' AS editor
 		FROM drafts

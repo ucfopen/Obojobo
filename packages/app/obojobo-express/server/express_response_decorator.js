@@ -31,7 +31,7 @@ const success = (req, res, next, valueObject) => {
 		return res.json(
 			camelize({
 				status: 'ok',
-				value: valueObject
+				updated: valueObject
 			})
 		)
 	}
@@ -46,7 +46,7 @@ const badInput = (req, res, next, message) => {
 		return res.json(
 			camelize({
 				status: 'error',
-				value: {
+				updated: {
 					type: 'badInput',
 					message: message
 				}
@@ -69,7 +69,7 @@ const notAuthorized = (req, res, next, message) => {
 		return res.json(
 			camelize({
 				status: 'error',
-				value: {
+				updated: {
 					type: 'notAuthorized',
 					message: message
 				}
@@ -92,7 +92,7 @@ const reject = (req, res, next, message) => {
 		return res.json(
 			camelize({
 				status: 'error',
-				value: {
+				updated: {
 					type: 'reject',
 					message: message
 				}
@@ -115,7 +115,7 @@ const missing = (req, res, next, message) => {
 		return res.json(
 			camelize({
 				status: 'error',
-				value: {
+				updated: {
 					type: 'missing',
 					message: message
 				}
@@ -150,7 +150,7 @@ const unexpected = (req, res, next, messageOrError) => {
 		return res.json(
 			camelize({
 				status: 'error',
-				value: {
+				updated: {
 					type: 'unexpected',
 					message: message
 				}

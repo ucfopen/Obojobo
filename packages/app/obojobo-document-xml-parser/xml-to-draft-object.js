@@ -35,11 +35,11 @@ const elementsToAttrElements = o => {
 
 	if (parsers[o.name]) {
 		o.type = 'attribute'
-		o.value = parsers[o.name](o)
+		o.updated = parsers[o.name](o)
 		delete o.elements
 	} else if (o.name && o.name.charAt(0) === o.name.charAt(0).toLowerCase()) {
 		o.type = 'attribute'
-		o.value = o.elements
+		o.updated = o.elements
 		delete o.elements
 	}
 }

@@ -43,13 +43,13 @@ class IFrameProperties extends React.Component {
 	}
 
 	handleTitleChange(event) {
-		const title = event.target.value
+		const title = event.target.updated
 
 		this.setState({ title })
 	}
 
 	handleURLChange(event) {
-		const src = event.target.value
+		const src = event.target.updated
 
 		this.setState({ src })
 	}
@@ -59,31 +59,31 @@ class IFrameProperties extends React.Component {
 	}
 
 	handleFitChange(event) {
-		const fit = event.target.value
+		const fit = event.target.updated
 
 		this.setState({ fit })
 	}
 
 	handleWidthChange(event) {
-		const width = event.target.value
+		const width = event.target.updated
 
 		this.setState({ width })
 	}
 
 	handleHeightChange(event) {
-		const height = event.target.value
+		const height = event.target.updated
 
 		this.setState({ height })
 	}
 
 	handleZoomChange(event) {
-		const initialZoom = event.target.value
+		const initialZoom = event.target.updated
 
 		this.setState({ initialZoom })
 	}
 
 	handleSizingChange(event) {
-		const sizing = event.target.value
+		const sizing = event.target.updated
 
 		this.setState({ sizing })
 	}
@@ -95,7 +95,7 @@ class IFrameProperties extends React.Component {
 	handleControlChange(property, event) {
 		const controls = new Set(this.state.controls.split(',').filter(control => control !== ''))
 
-		// Use checked value to determine the control string for the changed property
+		// Use checked updated to determine the control string for the changed property
 		// Use controlList values to determine control strings for unchanged properties
 		if (event.target.checked) {
 			controls.add(property)
@@ -133,7 +133,7 @@ class IFrameProperties extends React.Component {
 								type="text"
 								id="obojobo-draft--chunks--iframe--properties-modal--title"
 								ref={this.inputRef}
-								value={this.state.title || ''}
+								updated={this.state.title || ''}
 								placeholder="IFrame Title"
 								onChange={this.handleTitleChange}
 							/>
@@ -144,7 +144,7 @@ class IFrameProperties extends React.Component {
 							<input
 								type="text"
 								id="obojobo-draft--chunks--iframe--properties-modal--src"
-								value={this.state.src || ''}
+								updated={this.state.src || ''}
 								placeholder="Web Address"
 								onChange={this.handleURLChange}
 							/>
@@ -159,12 +159,12 @@ class IFrameProperties extends React.Component {
 							</label>
 							<select
 								id="obojobo-draft--chunks--iframe--properties-model--sizing"
-								value={this.state.sizing}
+								updated={this.state.sizing}
 								onChange={this.handleSizingChange}
 							>
-								<option value="fixed">Fixed</option>
-								<option value="text-width">Text Width</option>
-								<option value="max-width">Max Width</option>
+								<option updated="fixed">Fixed</option>
+								<option updated="text-width">Text Width</option>
+								<option updated="max-width">Max Width</option>
 							</select>
 						</div>
 						<div>
@@ -178,7 +178,7 @@ class IFrameProperties extends React.Component {
 								type="number"
 								placeholder={isSizingSetToTextOrMaxWidth ? '--' : 'Width'}
 								aria-label="Width"
-								value={isSizingSetToTextOrMaxWidth ? '' : this.state.width}
+								updated={isSizingSetToTextOrMaxWidth ? '' : this.state.width}
 								onChange={this.handleWidthChange}
 								disabled={isSizingSetToTextOrMaxWidth}
 							/>
@@ -191,7 +191,7 @@ class IFrameProperties extends React.Component {
 								type="number"
 								placeholder="Height"
 								aria-label="Height"
-								value={this.state.height}
+								updated={this.state.height}
 								onChange={this.handleHeightChange}
 							/>
 							<span className="px-label">px</span>
@@ -214,11 +214,11 @@ class IFrameProperties extends React.Component {
 							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--fit">Fit:</label>
 							<select
 								id="obojobo-draft--chunks--iframe--properties-modal--fit"
-								value={this.state.fit || 'scale'}
+								updated={this.state.fit || 'scale'}
 								onChange={this.handleFitChange}
 							>
-								<option value="scale">Scale</option>
-								<option value="scroll">Scroll</option>
+								<option updated="scale">Scale</option>
+								<option updated="scroll">Scroll</option>
 							</select>
 						</div>
 						<div className="zoom-option-container">
@@ -232,7 +232,7 @@ class IFrameProperties extends React.Component {
 								step=".01"
 								type="number"
 								placeholder="Decimal Value"
-								value={this.state.initialZoom}
+								updated={this.state.initialZoom}
 								onChange={this.handleZoomChange}
 							/>
 						</div>

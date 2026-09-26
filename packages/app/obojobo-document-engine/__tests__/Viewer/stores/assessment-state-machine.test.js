@@ -132,7 +132,7 @@ describe('AssessmentStateMachine', () => {
 	const standardStartAttemptMock = () => {
 		AssessmentAPI.startAttempt.mockResolvedValue({
 			status: 'ok',
-			value: {
+			updated: {
 				assessmentId: 'mockAssessmentId',
 				attemptId: 'mockAttemptId',
 				endTime: null,
@@ -274,7 +274,7 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'ok',
-			value: [
+			updated: [
 				{
 					assessmentId: 'mockAssessmentId',
 					ltiState: 'mockLtiState',
@@ -309,7 +309,7 @@ describe('AssessmentStateMachine', () => {
 		})
 		AssessmentAPI.reviewAttempt.mockResolvedValue({
 			status: 'ok',
-			value: []
+			updated: []
 		})
 
 		expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
@@ -367,7 +367,7 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -498,7 +498,7 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.startAttempt.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -578,7 +578,7 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -641,11 +641,11 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.importScore.mockResolvedValue({
 			status: 'ok',
-			value: {}
+			updated: {}
 		})
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'ok',
-			value: []
+			updated: []
 		})
 
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
@@ -682,7 +682,7 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.importScore.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -721,7 +721,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		AssessmentAPI.resumeAttempt.mockResolvedValue({
 			status: 'ok',
-			value: {
+			updated: {
 				assessmentId: 'mockAssessmentId',
 				attemptId: 'mockAttemptId',
 				endTime: null,
@@ -776,7 +776,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		AssessmentAPI.resumeAttempt.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -979,7 +979,7 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.startAttempt.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -1025,7 +1025,7 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.importScore.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -1071,7 +1071,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		AssessmentAPI.resumeAttempt.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -1113,7 +1113,7 @@ describe('AssessmentStateMachine', () => {
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
 		AssessmentAPI.resumeAttempt.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'Cannot resume an attempt for a different module'
 			}
 		})
@@ -1154,7 +1154,7 @@ describe('AssessmentStateMachine', () => {
 		})
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'ok',
-			value: [
+			updated: [
 				{
 					assessmentId: 'mockAssessmentId',
 					ltiState: 'mockLtiState',
@@ -1189,7 +1189,7 @@ describe('AssessmentStateMachine', () => {
 		})
 		AssessmentAPI.reviewAttempt.mockResolvedValue({
 			status: 'ok',
-			value: []
+			updated: []
 		})
 		const spy = jest.spyOn(AssessmentStateHelpers, 'sendResponses').mockResolvedValue(true)
 
@@ -1362,11 +1362,11 @@ describe('AssessmentStateMachine', () => {
 
 		AssessmentAPI.importScore.mockResolvedValue({
 			status: 'ok',
-			value: {}
+			updated: {}
 		})
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'ok',
-			value: []
+			updated: []
 		})
 
 		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
@@ -1404,7 +1404,7 @@ describe('AssessmentStateMachine', () => {
 		standardStartAttemptMock()
 		AssessmentAPI.endAttempt.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'mockErrorMessage'
 			}
 		})
@@ -1458,7 +1458,7 @@ describe('AssessmentStateMachine', () => {
 		standardStartAttemptMock()
 		AssessmentAPI.endAttempt.mockResolvedValue({
 			status: 'error',
-			value: {
+			updated: {
 				message: 'Cannot end an attempt for a different module'
 			}
 		})

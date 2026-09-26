@@ -52,16 +52,16 @@ const getTextItems = (
 			items.push({
 				type: 'total',
 				text: 'Score',
-				value: assessScore
+				updated: assessScore
 			})
 			break
 
 		case TYPE_ATTEMPT_WITH_MODS_REWARDED:
 		case TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED:
 			items.push({
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: attemptScore
+				updated: attemptScore
 			})
 			break
 
@@ -69,17 +69,17 @@ const getTextItems = (
 		case TYPE_PASSFAIL_PASSED_GIVEN_SCORE:
 			items.push(
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Attempt Score (Passed)',
-					value: attemptScore
+					updated: attemptScore
 				},
 				{
 					type: 'divider'
 				},
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Score adjusted for passing',
-					value: getDisplayFriendlyScore(statusResult)
+					updated: getDisplayFriendlyScore(statusResult)
 				}
 			)
 			break
@@ -88,9 +88,9 @@ const getTextItems = (
 		case TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE:
 			items.push(
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Attempt Score',
-					value: attemptScore
+					updated: attemptScore
 				},
 				{
 					type: 'divider'
@@ -105,20 +105,20 @@ const getTextItems = (
 		case TYPE_PASSFAIL_FAILED_GIVEN_SCORE:
 			items.push(
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Attempt Score',
-					value: attemptScore
+					updated: attemptScore
 				},
 				{
 					type: 'divider'
 				},
 				{
-					type: 'value',
+					type: 'updated',
 					text:
 						'Score adjusted for not passing (less than ' +
 						getDisplayFriendlyScore(passingAttemptScore) +
 						'%)',
-					value: getDisplayFriendlyScore(statusResult)
+					updated: getDisplayFriendlyScore(statusResult)
 				}
 			)
 			break
@@ -126,9 +126,9 @@ const getTextItems = (
 		case TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE:
 			items.push(
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Attempt Score',
-					value: attemptScore
+					updated: attemptScore
 				},
 				{
 					type: 'divider'
@@ -143,9 +143,9 @@ const getTextItems = (
 		case TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE:
 			items.push(
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Attempt Score',
-					value: attemptScore
+					updated: attemptScore
 				},
 				{
 					type: 'divider'
@@ -161,9 +161,9 @@ const getTextItems = (
 					type: 'divider'
 				},
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Highest attempt score (Attempt\u00a0' + attemptNum + ')',
-					value: assessScore
+					updated: assessScore
 				}
 			)
 			break
@@ -171,9 +171,9 @@ const getTextItems = (
 		case TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE:
 			items.push(
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Attempt Score',
-					value: attemptScore
+					updated: attemptScore
 				},
 				{
 					type: 'divider'
@@ -186,9 +186,9 @@ const getTextItems = (
 						' score within the number of attempts available.'
 				},
 				{
-					type: 'value',
+					type: 'updated',
 					text: 'Score for not achieving a passing attempt',
-					value: getDisplayFriendlyScore(statusResult)
+					updated: getDisplayFriendlyScore(statusResult)
 				}
 			)
 			break
@@ -204,8 +204,8 @@ const getTextItems = (
 			{
 				type: 'total',
 				text: 'Total Score' + (isAssessScoreOver100 ? ' (Max 100%)' : ''),
-				// value: assessScore === null ? 'Did Not Pass' : assessScore
-				value: assessScore
+				// updated: assessScore === null ? 'Did Not Pass' : assessScore
+				updated: assessScore
 			}
 		)
 	}

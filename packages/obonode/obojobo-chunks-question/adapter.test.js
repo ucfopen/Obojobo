@@ -46,7 +46,7 @@ describe('Question adapter', () => {
 								textGroup: [
 									{
 										text: {
-											value: 'this is some example solution text',
+											updated: 'this is some example solution text',
 											styleList: []
 										},
 										data: null
@@ -103,7 +103,7 @@ describe('Question adapter', () => {
 								textGroup: [
 									{
 										text: {
-											value: 'this is some example solution text',
+											updated: 'this is some example solution text',
 											styleList: []
 										},
 										data: null
@@ -146,7 +146,7 @@ describe('Question adapter', () => {
 								textGroup: [
 									{
 										text: {
-											value: 'this is some example solution text',
+											updated: 'this is some example solution text',
 											styleList: []
 										},
 										data: null

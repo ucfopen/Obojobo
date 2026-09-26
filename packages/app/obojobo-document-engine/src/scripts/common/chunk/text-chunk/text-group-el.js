@@ -10,7 +10,7 @@ const getText = props => {
 
 	// Quickly exit if the text has no double brackets, since we
 	// know there are no variables to substitue:
-	if (!props.parentModel || text.value.indexOf('{{') === -1) {
+	if (!props.parentModel || text.updated.indexOf('{{') === -1) {
 		return text
 	}
 
@@ -20,7 +20,7 @@ const getText = props => {
 	text = text.clone()
 
 	// Collect all of the potential variables:
-	while ((match = varRegex.exec(text.value)) !== null) {
+	while ((match = varRegex.exec(text.updated)) !== null) {
 		const variableText = match[1]
 		const event = { text: '' }
 

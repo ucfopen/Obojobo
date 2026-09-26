@@ -27,7 +27,7 @@
 						<trigger type="onClick">
 							<actions>
 								<action type="assessment:startAttempt">
-									<value id="my-assessment" />
+									<updated id="my-assessment" />
 								</action>
 							</actions>
 						</trigger>
@@ -81,7 +81,7 @@
 								<trigger type="onClick">
 									<actions>
 										<action type="assessment:startAttempt">
-											<value id="my-assessment" />
+											<updated id="my-assessment" />
 										</action>
 									</actions>
 								</trigger>

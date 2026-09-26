@@ -30,7 +30,7 @@ class MediaStore extends Store {
 	}
 
 	show(payload) {
-		const id = payload.value.id
+		const id = payload.updated.id
 
 		this.state.shown[id] = true
 		this.triggerChange()
@@ -49,8 +49,8 @@ class MediaStore extends Store {
 	}
 
 	hide(payload) {
-		const id = payload.value.id
-		const actor = payload.value.actor || 'user'
+		const id = payload.updated.id
+		const actor = payload.updated.actor || 'user'
 
 		delete this.state.shown[id]
 		delete this.state.zoomById[id]
@@ -72,8 +72,8 @@ class MediaStore extends Store {
 	}
 
 	setDefaultZoom(payload) {
-		const id = payload.value.id
-		let zoom = parseFloat(payload.value.zoom) || 0
+		const id = payload.updated.id
+		let zoom = parseFloat(payload.updated.zoom) || 0
 
 		zoom = zoom > 0 ? zoom : DEFAULT_ZOOM
 
@@ -85,9 +85,9 @@ class MediaStore extends Store {
 	}
 
 	setZoom(payload) {
-		const id = payload.value.id
+		const id = payload.updated.id
 		const model = OboModel.models[id]
-		const zoom = parseFloat(payload.value.zoom) || 0
+		const zoom = parseFloat(payload.updated.zoom) || 0
 
 		if (zoom <= 0) return
 
@@ -113,7 +113,7 @@ class MediaStore extends Store {
 	}
 
 	resetZoom(payload) {
-		const id = payload.value.id
+		const id = payload.updated.id
 		const model = OboModel.models[id]
 		const previousZoom = MediaUtil.getZoom(this.state, model)
 		const defaultZoom = MediaUtil.getDefaultZoom(this.state, model)

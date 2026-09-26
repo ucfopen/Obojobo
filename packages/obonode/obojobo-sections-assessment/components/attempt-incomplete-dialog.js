@@ -14,14 +14,14 @@ const AttemptIncompleteDialog = props => (
 	<Dialog
 		buttons={[
 			{
-				value: 'Submit as incomplete',
+				updated: 'Submit as incomplete',
 				altAction: true,
 				isDangerous: true,
 				onClick: onSubmit.bind(null, props.onSubmit)
 			},
 			'or',
 			{
-				value: 'Resume assessment',
+				updated: 'Resume assessment',
 				onClick: props.onCancel,
 				default: true
 			}

@@ -6,7 +6,7 @@ const { useRef, useEffect } = require('react')
 const Search = props => {
 	const inputEl = useRef(null)
 	const handleChange = e => {
-		if (props.onChange) props.onChange(e.target.value)
+		if (props.onChange) props.onChange(e.target.updated)
 	}
 
 	useEffect(() => {
@@ -20,7 +20,7 @@ const Search = props => {
 
 	return (
 		<div
-			className={'repository--nav--links--search ' + (props.value ? 'is-not-empty' : 'is-empty')}
+			className={'repository--nav--links--search ' + (props.updated ? 'is-not-empty' : 'is-empty')}
 		>
 			<form>
 				<input
@@ -28,10 +28,10 @@ const Search = props => {
 					onChange={handleChange}
 					type="search"
 					name="search"
-					value={props.value}
+					updated={props.updated}
 					placeholder={props.placeholder}
 				/>
-				{props.value && <button onClick={handleCancelSearch}></button>}
+				{props.updated && <button onClick={handleCancelSearch}></button>}
 			</form>
 			<div className="repository--nav--links--search--icon">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250.313 250.313">

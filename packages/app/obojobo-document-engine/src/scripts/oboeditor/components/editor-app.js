@@ -50,7 +50,7 @@ class EditorApp extends React.Component {
 		/*
 		Locks are created so that only one author can be editing a draft at a time.
 		Each lock is stored in the database and remains active for dbLockDurationMinutes.
-		Here we renew the lock on an interval, every renewLockIntervalMs. This value must
+		Here we renew the lock on an interval, every renewLockIntervalMs. This updated must
 		be shorter than dbLockDurationMinutes to ensure the lock is renewed, so after 90%
 		of dbLockDurationMinutes has passed we go ahead and ask the server to renew the lock.
 
@@ -92,7 +92,7 @@ class EditorApp extends React.Component {
 		return EditorAPI.postDraft(draftId, draftSrc, mode)
 			.then(({ contentId, result }) => {
 				if (result.status !== 'ok') {
-					throw Error(result.value.message)
+					throw Error(result.updated.message)
 				}
 
 				this.contentId = contentId // keep new contentId for edit locks
@@ -199,7 +199,7 @@ class EditorApp extends React.Component {
 	createEditLock(draftId, contentId) {
 		return EditorAPI.requestEditLock(draftId, contentId).then(json => {
 			if (json.status === 'error') {
-				const msg = json.value && json.value.message ? json.value.message : 'Unable to lock module.'
+				const msg = json.updated && json.updated.message ? json.updated.message : 'Unable to lock module.'
 				throw Error(msg)
 			}
 		})
@@ -219,12 +219,12 @@ class EditorApp extends React.Component {
 						const json = JSON.parse(body)
 						// check the api status
 						if (json.status === 'error') {
-							const error = Error(json.value.message)
-							error.type = json.value.type
+							const error = Error(json.updated.message)
+							error.type = json.updated.type
 							throw error
 						}
 						// stringify and format the draft data
-						return JSON.stringify(json.value, null, 4)
+						return JSON.stringify(json.updated, null, 4)
 					}
 				}
 			})
@@ -249,12 +249,12 @@ class EditorApp extends React.Component {
 		return EditorAPI.getDraftRevision(draftId, revisionId)
 			.then(response => {
 				if (response.status === 'error') {
-					const error = Error(response.value.message)
-					error.type = response.value.type
+					const error = Error(response.updated.message)
+					error.type = response.updated.type
 					throw error
 				}
 
-				return JSON.stringify(response.value.json, null, 4)
+				return JSON.stringify(response.updated.json, null, 4)
 			})
 			.then(draftModel => {
 				this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })

@@ -17,7 +17,7 @@ describe('DraftPermissions Model', () => {
 		username: 'dude',
 		created_at: 'whevever',
 		roles: ['student'],
-		extras: 'test-value'
+		extras: 'test-updated'
 	}
 
 	beforeEach(() => {

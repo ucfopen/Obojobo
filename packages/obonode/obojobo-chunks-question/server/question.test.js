@@ -15,7 +15,7 @@ describe('Question', () => {
 		currentAttempt = { addScore: jest.fn() }
 	})
 
-	test('nodeName is expected value', () => {
+	test('nodeName is expected updated', () => {
 		expect(Question.nodeName).toBe('ObojoboDraft.Chunks.Question')
 	})
 

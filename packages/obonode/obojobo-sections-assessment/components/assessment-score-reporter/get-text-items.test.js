@@ -47,7 +47,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 
@@ -64,7 +64,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -81,14 +81,14 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on first attempt',
-				value: '5'
+				updated: '5'
 			},
 			{
 				type: 'divider'
@@ -96,7 +96,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score (Max 100%)',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 
@@ -111,14 +111,14 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on first attempt',
-				value: '5'
+				updated: '5'
 			},
 			{
 				type: 'divider'
@@ -126,7 +126,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -144,17 +144,17 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '100'
+				updated: '100'
 			},
 			{
 				type: 'divider'
@@ -162,7 +162,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score (Max 100%)',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 
@@ -178,17 +178,17 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '100'
+				updated: '100'
 			},
 			{
 				type: 'divider'
@@ -196,7 +196,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -214,22 +214,22 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '100'
+				updated: '100'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on first attempt',
-				value: '5'
+				updated: '5'
 			},
 			{
 				type: 'divider'
@@ -237,7 +237,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score (Max 100%)',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 
@@ -253,22 +253,22 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '100'
+				updated: '100'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on first attempt',
-				value: '5'
+				updated: '5'
 			},
 			{
 				type: 'divider'
@@ -276,7 +276,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -296,17 +296,17 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '90'
+				updated: '90'
 			},
 			{
 				type: 'divider'
@@ -314,7 +314,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score (Max 100%)',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 
@@ -332,17 +332,17 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '90'
+				updated: '90'
 			},
 			{
 				type: 'divider'
@@ -350,7 +350,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -370,22 +370,22 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '90'
+				updated: '90'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on first attempt',
-				value: '5'
+				updated: '5'
 			},
 			{
 				type: 'divider'
@@ -393,7 +393,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score (Max 100%)',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 
@@ -411,22 +411,22 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score (Passed)',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for passing',
-				value: '90'
+				updated: '90'
 			},
 			{
 				type: 'extra-credit',
 				text: 'Passed on first attempt',
-				value: '5'
+				updated: '5'
 			},
 			{
 				type: 'divider'
@@ -434,7 +434,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -451,9 +451,9 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
@@ -468,7 +468,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -485,9 +485,9 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
@@ -502,7 +502,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -520,17 +520,17 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score adjusted for not passing (less than 50%)',
-				value: '0'
+				updated: '0'
 			},
 			{
 				type: 'divider'
@@ -538,7 +538,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -556,9 +556,9 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
@@ -573,7 +573,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -591,9 +591,9 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
@@ -608,7 +608,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -626,9 +626,9 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
@@ -643,7 +643,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -661,9 +661,9 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
@@ -677,9 +677,9 @@ describe('getTextItems', () => {
 				type: 'divider'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Highest attempt score (Attempt\u00a0AttemptNumber)',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			},
 			{
 				type: 'divider'
@@ -687,7 +687,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -705,9 +705,9 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Attempt Score',
-				value: 'AttemptScore'
+				updated: 'AttemptScore'
 			},
 			{
 				type: 'divider'
@@ -718,9 +718,9 @@ describe('getTextItems', () => {
 					'You did not achieve a passing 50% or higher score within the number of attempts available.'
 			},
 			{
-				type: 'value',
+				type: 'updated',
 				text: 'Score for not achieving a passing attempt',
-				value: '0'
+				updated: '0'
 			},
 			{
 				type: 'divider'
@@ -728,7 +728,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Total Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})
@@ -746,7 +746,7 @@ describe('getTextItems', () => {
 			{
 				type: 'total',
 				text: 'Score',
-				value: 'AssessmentScore'
+				updated: 'AssessmentScore'
 			}
 		])
 	})

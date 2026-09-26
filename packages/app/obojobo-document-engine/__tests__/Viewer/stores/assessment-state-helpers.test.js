@@ -49,7 +49,7 @@ describe('AssessmentStateHelpers', () => {
 	})
 
 	test('startAttempt calls AssessmentStateHelpers.onAttemptStarted when good response returned', async () => {
-		AssessmentAPI.startAttempt.mockResolvedValue({ status: 'ok', value: { questions: [] } })
+		AssessmentAPI.startAttempt.mockResolvedValue({ status: 'ok', updated: { questions: [] } })
 		const spy = jest.spyOn(AssessmentStateHelpers, 'onAttemptStarted').mockReturnValue(true)
 
 		expect(spy).not.toHaveBeenCalled()
@@ -64,7 +64,7 @@ describe('AssessmentStateHelpers', () => {
 	test('startAttempt throws an error when bad response returned', async () => {
 		AssessmentAPI.startAttempt.mockResolvedValue({
 			status: 'error',
-			value: { message: 'mockErrorMessage' }
+			updated: { message: 'mockErrorMessage' }
 		})
 		const spy = jest.spyOn(AssessmentStateHelpers, 'onAttemptStarted').mockReturnValue(true)
 
@@ -107,7 +107,7 @@ describe('AssessmentStateHelpers', () => {
 	test('saveAttemptState throws an error when bad response returns', async () => {
 		AssessmentAPI.saveAttempt.mockResolvedValue({
 			status: 'error',
-			value: { message: 'mockErrorMessage' }
+			updated: { message: 'mockErrorMessage' }
 		})
 
 		try {
@@ -121,7 +121,7 @@ describe('AssessmentStateHelpers', () => {
 	})
 
 	test('resumeAttempt calls AssessmentStateHelpers.onAttemptStarted when good response returned', async () => {
-		AssessmentAPI.resumeAttempt.mockResolvedValue({ status: 'ok', value: { questions: [] } })
+		AssessmentAPI.resumeAttempt.mockResolvedValue({ status: 'ok', updated: { questions: [] } })
 		const spy = jest.spyOn(AssessmentStateHelpers, 'onAttemptStarted').mockReturnValue(true)
 
 		expect(spy).not.toHaveBeenCalled()
@@ -136,7 +136,7 @@ describe('AssessmentStateHelpers', () => {
 	test('resumeAttempt throws an error when bad response returned', async () => {
 		AssessmentAPI.resumeAttempt.mockResolvedValue({
 			status: 'error',
-			value: { message: 'mockErrorMessage' }
+			updated: { message: 'mockErrorMessage' }
 		})
 		const spy = jest.spyOn(AssessmentStateHelpers, 'onAttemptStarted').mockReturnValue(true)
 
@@ -178,7 +178,7 @@ describe('AssessmentStateHelpers', () => {
 	test('endAttempt throws an error when bad response returned', async () => {
 		AssessmentAPI.endAttempt.mockResolvedValue({
 			status: 'error',
-			value: { message: 'mockErrorMessage' }
+			updated: { message: 'mockErrorMessage' }
 		})
 		const getAttemptHistorySpy = jest
 			.spyOn(AssessmentStateHelpers, 'getAttemptHistoryWithReviewData')
@@ -228,7 +228,7 @@ describe('AssessmentStateHelpers', () => {
 	test('importAttempt throws an error when bad response returned', async () => {
 		AssessmentAPI.importScore.mockResolvedValue({
 			status: 'error',
-			value: { message: 'mockErrorMessage' }
+			updated: { message: 'mockErrorMessage' }
 		})
 		const getAttemptHistorySpy = jest
 			.spyOn(AssessmentStateHelpers, 'getAttemptHistoryWithReviewData')
@@ -257,7 +257,7 @@ describe('AssessmentStateHelpers', () => {
 	test('getAttemptHistoryWithReviewData returns history data with review data included', async () => {
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'ok',
-			value: [
+			updated: [
 				{ assessmentId: 'someAssessment' },
 				{
 					assessmentId: 'mockAssessmentId',
@@ -280,7 +280,7 @@ describe('AssessmentStateHelpers', () => {
 			await AssessmentStateHelpers.getAttemptHistoryWithReviewData('mockAssessmentId')
 		).toEqual({
 			status: 'ok',
-			value: [
+			updated: [
 				{ assessmentId: 'someAssessment' },
 				{
 					assessmentId: 'mockAssessmentId',
@@ -301,7 +301,7 @@ describe('AssessmentStateHelpers', () => {
 	test('getAttemptHistoryWithReviewData throws error with bad response', async () => {
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'error',
-			value: { message: 'mockErrorMessage' }
+			updated: { message: 'mockErrorMessage' }
 		})
 
 		try {
@@ -316,7 +316,7 @@ describe('AssessmentStateHelpers', () => {
 	test('Errors have a default message if none is returned from the server', async () => {
 		AssessmentAPI.getAttemptHistory.mockResolvedValue({
 			status: 'error',
-			value: {}
+			updated: {}
 		})
 
 		try {
@@ -330,7 +330,7 @@ describe('AssessmentStateHelpers', () => {
 
 	test('sendResponses does not throw when successful', async () => {
 		QuestionUtil.forceSendAllResponsesForContext.mockImplementation(() => {
-			Dispatcher.trigger('question:forceSentAllResponses', { value: { success: true } })
+			Dispatcher.trigger('question:forceSentAllResponses', { updated: { success: true } })
 		})
 
 		try {
@@ -344,7 +344,7 @@ describe('AssessmentStateHelpers', () => {
 
 	test('sendResponses throws when not successful', async () => {
 		QuestionUtil.forceSendAllResponsesForContext.mockImplementation(() => {
-			Dispatcher.trigger('question:forceSentAllResponses', { value: { success: false } })
+			Dispatcher.trigger('question:forceSentAllResponses', { updated: { success: false } })
 		})
 
 		try {
@@ -358,7 +358,7 @@ describe('AssessmentStateHelpers', () => {
 
 	test('onAttemptStarted creates OboModels, updates nav context, rebuilds the nav menu, navigates to the assessment, runs the onStartAttempt trigger and fires the assessment:attemptStarted event (no question responses)', () => {
 		const res = {
-			value: {
+			updated: {
 				assessmentId: 'mockAssessmentId',
 				attemptId: 'mockAttemptId',
 				questions: [{ id: 'question1' }, { id: 'question2' }]
@@ -389,7 +389,7 @@ describe('AssessmentStateHelpers', () => {
 
 	test('onAttemptStarted creates OboModels, updates nav context, rebuilds the nav menu, navigates to the assessment, runs the onStartAttempt trigger and fires the assessment:attemptStarted event (with question responses)', () => {
 		const res = {
-			value: {
+			updated: {
 				assessmentId: 'mockAssessmentId',
 				attemptId: 'mockAttemptId',
 				questions: [{ id: 'question1' }, { id: 'question2' }],
@@ -660,7 +660,7 @@ describe('AssessmentStateHelpers', () => {
 
 		expect(() => {
 			AssessmentStateHelpers.onError({
-				value: {
+				updated: {
 					message: 'mock-error-message'
 				}
 			})

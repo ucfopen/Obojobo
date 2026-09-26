@@ -72,15 +72,15 @@ exports[`SubMenu SubMenu component selected as assessment 1`] = `
       "type": "select",
       "values": [
         {
-          "value": "always",
+          "updated": "always",
           "description": "Always show answers in review"
         },
         {
-          "value": "never",
+          "updated": "never",
           "description": "Never show answers in review"
         },
         {
-          "value": "no-attempts-remaining",
+          "updated": "no-attempts-remaining",
           "description": "Show answers in review after last attempt"
         }
       ]
@@ -117,7 +117,7 @@ Object {
     "results": Array [
       Object {
         "type": "return",
-        "value": undefined,
+        "updated": undefined,
       },
     ],
   },
@@ -155,11 +155,11 @@ Object {
     "results": Array [
       Object {
         "type": "return",
-        "value": undefined,
+        "updated": undefined,
       },
       Object {
         "type": "return",
-        "value": undefined,
+        "updated": undefined,
       },
     ],
   },

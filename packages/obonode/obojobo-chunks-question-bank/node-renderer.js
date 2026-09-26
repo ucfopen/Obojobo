@@ -53,7 +53,7 @@ class NodeRenderer extends React.Component {
 
 	render() {
 		return (
-			<Slate editor={this.editor} value={this.props.value}>
+			<Slate editor={this.editor} updated={this.props.updated}>
 				<Editable renderElement={this.renderElement} renderLeaf={this.renderLeaf} readOnly={true} />
 			</Slate>
 		)

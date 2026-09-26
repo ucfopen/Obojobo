@@ -39,7 +39,7 @@ describe('Assessment', () => {
 		db.manyOrNone.mockReset()
 	})
 
-	test('nodeName is expected value', () => {
+	test('nodeName is expected updated', () => {
 		expect(Assessment.nodeName).toBe('ObojoboDraft.Sections.Assessment')
 	})
 

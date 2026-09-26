@@ -52,7 +52,7 @@ class AssessmentTest extends React.Component {
 						ariaLabel={buttonAriaLabel}
 						disabled={this.props.isAttemptSubmitting}
 						onClick={this.props.onClickSubmit}
-						value={buttonLabel}
+						updated={buttonLabel}
 					/>
 					{!this.props.isAttemptReadyToSubmit ? (
 						<span aria-hidden className="incomplete-notice">

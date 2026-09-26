@@ -15,10 +15,10 @@ describe('insert_event', () => {
 		const insertObject = {
 			action: 'test::testAction',
 			actorTime: new Date().toISOString(),
-			payload: { value: 'test' },
+			payload: { updated: 'test' },
 			userId: 9,
 			ip: '1.2.3.4',
-			metadata: { value: 'test2' },
+			metadata: { updated: 'test2' },
 			draftId: '999999',
 			contentId: '12'
 		}

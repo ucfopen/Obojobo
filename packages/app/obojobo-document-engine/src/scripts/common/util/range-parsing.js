@@ -14,25 +14,25 @@ const getParsedRange = range => {
 	}
 }
 
-const getParsedRangeFromSingleValue = value => {
-	if (typeof value === 'undefined' || value === null) return null
+const getParsedRangeFromSingleValue = updated => {
+	if (typeof updated === 'undefined' || updated === null) return null
 
 	return {
-		min: value,
+		min: updated,
 		isMinInclusive: true,
-		max: value,
+		max: updated,
 		isMaxInclusive: true
 	}
 }
 
-// replaceDict is an object of possibile replacements for `value`.
-// For example, if replaceDict = { '$highest_score':100 } and `value` is '$highest_score' then
-// `value` will be replaced with 100.
-// nonParsedValueOrValues is a value or an array of values that won't be parsed by parseFloat.
-// If `value` is one of these values then `value` is not parsed and simply returned.
-// For example, if nonParsedValueOrValues is `[null, undefined]` and `value` is null
+// replaceDict is an object of possibile replacements for `updated`.
+// For example, if replaceDict = { '$highest_score':100 } and `updated` is '$highest_score' then
+// `updated` will be replaced with 100.
+// nonParsedValueOrValues is a updated or an array of values that won't be parsed by parseFloat.
+// If `updated` is one of these values then `updated` is not parsed and simply returned.
+// For example, if nonParsedValueOrValues is `[null, undefined]` and `updated` is null
 // then null is returned.
-const tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) => {
+const tryGetParsedFloat = (updated, replaceDict = {}, nonParsedValueOrValues = []) => {
 	let nonParsedValues
 
 	if (!(nonParsedValueOrValues instanceof Array)) {
@@ -42,27 +42,27 @@ const tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = [])
 	}
 
 	for (const placeholder in replaceDict) {
-		if (value === placeholder) {
-			value = replaceDict[placeholder]
+		if (updated === placeholder) {
+			updated = replaceDict[placeholder]
 			break
 		}
 	}
 
-	// If the value is an allowed non-numeric value then we don't parse it
+	// If the updated is an allowed non-numeric updated then we don't parse it
 	// and simply return it as is
-	if (nonParsedValues.indexOf(value) > -1) return value
+	if (nonParsedValues.indexOf(updated) > -1) return updated
 
-	const parsedValue = parseFloat(value)
+	const parsedValue = parseFloat(updated)
 
 	if (!Number.isFinite(parsedValue) && parsedValue !== Infinity && parsedValue !== -Infinity) {
-		throw new Error(`Unable to parse "${value}": Got "${parsedValue}" - Unsure how to proceed`)
+		throw new Error(`Unable to parse "${updated}": Got "${parsedValue}" - Unsure how to proceed`)
 	}
 
 	return parsedValue
 }
 
-const isValueInRange = (value, range, replaceDict) => {
-	// By definition a value is not inside a null range
+const isValueInRange = (updated, range, replaceDict) => {
+	// By definition a updated is not inside a null range
 	if (range === null) return false
 
 	let isMinRequirementMet, isMaxRequirementMet
@@ -71,15 +71,15 @@ const isValueInRange = (value, range, replaceDict) => {
 	const max = tryGetParsedFloat(range.max, replaceDict)
 
 	if (range.isMinInclusive) {
-		isMinRequirementMet = value >= min
+		isMinRequirementMet = updated >= min
 	} else {
-		isMinRequirementMet = value > min
+		isMinRequirementMet = updated > min
 	}
 
 	if (range.isMaxInclusive) {
-		isMaxRequirementMet = value <= max
+		isMaxRequirementMet = updated <= max
 	} else {
-		isMaxRequirementMet = value < max
+		isMaxRequirementMet = updated < max
 	}
 
 	return isMinRequirementMet && isMaxRequirementMet

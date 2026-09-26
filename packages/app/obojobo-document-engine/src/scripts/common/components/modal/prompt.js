@@ -9,7 +9,7 @@ class Prompt extends React.Component {
 		super(props)
 
 		this.state = {
-			text: this.props.value || ''
+			text: this.props.updated || ''
 		}
 
 		this.inputRef = React.createRef()
@@ -25,7 +25,7 @@ class Prompt extends React.Component {
 	}
 
 	handleTextChange(event) {
-		const text = event.target.value
+		const text = event.target.updated
 
 		return this.setState({ text })
 	}
@@ -59,7 +59,7 @@ class Prompt extends React.Component {
 					<input
 						type="text"
 						id="common--components--modal--prompt--input"
-						value={this.state.text}
+						updated={this.state.text}
 						onChange={this.handleTextChange}
 						ref={this.inputRef}
 						size="50"

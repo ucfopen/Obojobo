@@ -10,7 +10,7 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
  */
 const slateToObo = node => {
 	const labelLine = {
-		text: { value: '', styleList: [] },
+		text: { updated: '', styleList: [] },
 		data: null
 	}
 	TextUtil.slateToOboText(node, labelLine)

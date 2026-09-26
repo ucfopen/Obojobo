@@ -61,7 +61,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Welcome to the Obojobo {{x}}:{{y}}:{{z}} Editor",
+                                            "updated": "Welcome to the Obojobo {{x}}:{{y}}:{{z}} Editor",
                                             "styleList": []
                                         },
                                         "data": {
@@ -82,7 +82,7 @@
                                         "actions": [
                                             {
                                                 "type": "variable:clearAll",
-                                                "value": {
+                                                "updated": {
                                                     "id": "p1"
                                                 }
                                             }
@@ -92,7 +92,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Reset x and y which are {{x}} and {{y}}",
+                                            "updated": "Reset x and y which are {{x}} and {{y}}",
                                             "styleList": []
                                         },
                                         "data": null
@@ -111,7 +111,7 @@
                                         "actions": [
                                             {
                                                 "type": "variable:clear",
-                                                "value": {
+                                                "updated": {
                                                     "id": "p1",
                                                     "name": "y"
                                                 }
@@ -122,7 +122,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Reset the value of y which is {{y}}",
+                                            "updated": "Reset the updated of y which is {{y}}",
                                             "styleList": []
                                         },
                                         "data": null
@@ -141,10 +141,10 @@
                                         "actions": [
                                             {
                                                 "type": "variable:setValue",
-                                                "value": {
+                                                "updated": {
                                                     "id": "p1",
                                                     "name": "x",
-                                                    "value": "dogs"
+                                                    "updated": "dogs"
                                                 }
                                             }
                                         ]
@@ -153,7 +153,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Set the value of x to 'dogs'",
+                                            "updated": "Set the updated of x to 'dogs'",
                                             "styleList": []
                                         },
                                         "data": null
@@ -172,10 +172,10 @@
                                         "actions": [
                                             {
                                                 "type": "variable:setValue",
-                                                "value": {
+                                                "updated": {
                                                     "id": "p1",
                                                     "name": "z",
-                                                    "value": "sauce"
+                                                    "updated": "sauce"
                                                 }
                                             }
                                         ]
@@ -184,7 +184,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Set the value of z to 'sauce'",
+                                            "updated": "Set the updated of z to 'sauce'",
                                             "styleList": []
                                         },
                                         "data": null
@@ -205,7 +205,7 @@
                                         "textGroup": [
                                             {
                                                 "text": {
-                                                    "value": "asdf",
+                                                    "updated": "asdf",
                                                     "styleList": []
                                                 },
                                                 "data": {
@@ -243,7 +243,7 @@
                                                                 "textGroup": [
                                                                     {
                                                                         "text": {
-                                                                            "value": "asdf",
+                                                                            "updated": "asdf",
                                                                             "styleList": []
                                                                         },
                                                                         "data": {
@@ -277,7 +277,7 @@
                                                                 "textGroup": [
                                                                     {
                                                                         "text": {
-                                                                            "value": "ffff",
+                                                                            "updated": "ffff",
                                                                             "styleList": []
                                                                         },
                                                                         "data": {
@@ -339,7 +339,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
+                                            "updated": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
                                             "styleList": []
                                         },
                                         "data": {
@@ -359,7 +359,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Navigation",
+                                            "updated": "Navigation",
                                             "styleList": []
                                         },
                                         "data": null
@@ -375,7 +375,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The navigation panel along the left side allows for manipulation of the pages and assessments that make up an Obojobo Module. Pages are identified by the ◯ symbol, and assessments are identified by the Ⓠ symbol.",
+                                            "updated": "The navigation panel along the left side allows for manipulation of the pages and assessments that make up an Obojobo Module. Pages are identified by the ◯ symbol, and assessments are identified by the Ⓠ symbol.",
                                             "styleList": []
                                         },
                                         "data": {
@@ -393,7 +393,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Clicking on a page or assessment name navigates to that item and loads its content into the editor. Any altered content on the current page is temporarily saved and can be viewed again by clicking back to that page. If the Obojobo Visual Editor is reloaded without clicking the Save Document button, the temporary changes will be deleted.",
+                                            "updated": "Clicking on a page or assessment name navigates to that item and loads its content into the editor. Any altered content on the current page is temporarily saved and can be viewed again by clicking back to that page. If the Obojobo Visual Editor is reloaded without clicking the Save Document button, the temporary changes will be deleted.",
                                             "styleList": [
                                                 {
                                                     "type": "monospace",
@@ -418,7 +418,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The arrow next to each page or assessment provides a menu with special actions that can be taken on each item. ",
+                                            "updated": "The arrow next to each page or assessment provides a menu with special actions that can be taken on each item. ",
                                             "styleList": []
                                         },
                                         "data": {
@@ -436,7 +436,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Move Up swaps a page with the previous page in the list, and Move Down swaps a page with the next page in the list.",
+                                            "updated": "Move Up swaps a page with the previous page in the list, and Move Down swaps a page with the next page in the list.",
                                             "styleList": [
                                                 {
                                                     "type": "monospace",
@@ -467,7 +467,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Edit Name allows you to change the name of the page. ",
+                                            "updated": "Edit Name allows you to change the name of the page. ",
                                             "styleList": [
                                                 {
                                                     "type": "monospace",
@@ -483,7 +483,7 @@
                                     },
                                     {
                                         "text": {
-                                            "value": "Warning: Pages that have the same name will cause issues in the Obojobo viewer.",
+                                            "updated": "Warning: Pages that have the same name will cause issues in the Obojobo viewer.",
                                             "styleList": [
                                                 {
                                                     "type": "b",
@@ -514,7 +514,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Delete deletes the entire page, including all of its content.",
+                                            "updated": "Delete deletes the entire page, including all of its content.",
                                             "styleList": [
                                                 {
                                                     "type": "monospace",
@@ -539,7 +539,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The last item in the menu is the unique id for the page. Clicking on the id copies it to the clipboard, so you can paste it elsewhere in the Editor. (see Action Buttons for some uses of ids)",
+                                            "updated": "The last item in the menu is the unique id for the page. Clicking on the id copies it to the clipboard, so you can paste it elsewhere in the Editor. (see Action Buttons for some uses of ids)",
                                             "styleList": [
                                                 {
                                                     "type": "b",
@@ -565,7 +565,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Module Editing Buttons",
+                                            "updated": "Module Editing Buttons",
                                             "styleList": []
                                         },
                                         "data": null
@@ -581,7 +581,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The buttons at the bottom of the navigation panel provide actions that edit the entire module. ",
+                                            "updated": "The buttons at the bottom of the navigation panel provide actions that edit the entire module. ",
                                             "styleList": []
                                         },
                                         "data": {
@@ -599,7 +599,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The Add Page button adds a new page to the bottom of the list of pages. The AddAssessment button adds a new assessment at the end of the assessments list.",
+                                            "updated": "The Add Page button adds a new page to the bottom of the list of pages. The AddAssessment button adds a new assessment at the end of the assessments list.",
                                             "styleList": [
                                                 {
                                                     "type": "monospace",
@@ -636,7 +636,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The Rename Module button allows you to rename the entire module and will change the title at the top of the navigation panel.",
+                                            "updated": "The Rename Module button allows you to rename the entire module and will change the title at the top of the navigation panel.",
                                             "styleList": [
                                                 {
                                                     "type": "monospace",
@@ -661,7 +661,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "The Copy ModuleURL button copies a URL to the clipboard. This URL allows the student to access the Obojobo module.",
+                                            "updated": "The Copy ModuleURL button copies a URL to the clipboard. This URL allows the student to access the Obojobo module.",
                                             "styleList": [
                                                 {
                                                     "type": "monospace",
@@ -693,7 +693,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Adding Content",
+                                            "updated": "Adding Content",
                                             "styleList": []
                                         },
                                         "data": null
@@ -709,7 +709,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "Within the pages of an Obojobo Module, you can add any of the supported Obojobo nodes. Nodes range from simple Text and Headings to more complex items such as Questions.",
+                                            "updated": "Within the pages of an Obojobo Module, you can add any of the supported Obojobo nodes. Nodes range from simple Text and Headings to more complex items such as Questions.",
                                             "styleList": []
                                         },
                                         "data": {
@@ -727,7 +727,7 @@
                                 "textGroup": [
                                     {
                                         "text": {
-                                            "value": "When you click on an existing node, two + buttons will appear above and below the node. Hovering over either of these buttons will open up a menu that lists all nodes that can be inserted. Clicking on any of the buttons will insert a new node into the document, either above or below the existing node.",
+                                            "updated": "When you click on an existing node, two + buttons will appear above and below the node. Hovering over either of these buttons will open up a menu that lists all nodes that can be inserted. Clicking on any of the buttons will insert a new node into the document, either above or below the existing node.",
                                             "styleList": []
                                         },
                                         "data": {

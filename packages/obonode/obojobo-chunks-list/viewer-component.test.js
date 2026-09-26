@@ -50,7 +50,7 @@ describe('List', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'One(indent=1)',
+							updated: 'One(indent=1)',
 							styleList: []
 						},
 						data: {
@@ -59,7 +59,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Two(indent=2)',
+							updated: 'Two(indent=2)',
 							styleList: []
 						},
 						data: {
@@ -68,7 +68,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Three(indent=3)',
+							updated: 'Three(indent=3)',
 							styleList: []
 						},
 						data: {
@@ -77,7 +77,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Four(indent=4)',
+							updated: 'Four(indent=4)',
 							styleList: []
 						},
 						data: {
@@ -86,7 +86,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Five(indent=5)',
+							updated: 'Five(indent=5)',
 							styleList: []
 						},
 						data: {
@@ -95,7 +95,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Six(indent=6)',
+							updated: 'Six(indent=6)',
 							styleList: []
 						},
 						data: {
@@ -137,14 +137,14 @@ describe('List', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'One(indent=1)',
+							updated: 'One(indent=1)',
 							styleList: []
 						},
 						data: '3'
 					},
 					{
 						text: {
-							value: 'Two(indent=2)',
+							updated: 'Two(indent=2)',
 							styleList: []
 						},
 						data: {
@@ -153,7 +153,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Three(indent=6)',
+							updated: 'Three(indent=6)',
 							styleList: []
 						},
 						data: {
@@ -195,14 +195,14 @@ describe('List', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'One(indent=1)',
+							updated: 'One(indent=1)',
 							styleList: []
 						},
 						data: null
 					},
 					{
 						text: {
-							value: 'Two(indent=2)',
+							updated: 'Two(indent=2)',
 							styleList: []
 						},
 						data: {
@@ -211,7 +211,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Three(indent=6)',
+							updated: 'Three(indent=6)',
 							styleList: []
 						},
 						data: {
@@ -220,7 +220,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Four(indent=2)',
+							updated: 'Four(indent=2)',
 							styleList: []
 						},
 						data: {
@@ -229,7 +229,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Five(indent=4)',
+							updated: 'Five(indent=4)',
 							styleList: []
 						},
 						data: {
@@ -238,7 +238,7 @@ describe('List', () => {
 					},
 					{
 						text: {
-							value: 'Six(indent=3)',
+							updated: 'Six(indent=3)',
 							styleList: []
 						},
 						data: {

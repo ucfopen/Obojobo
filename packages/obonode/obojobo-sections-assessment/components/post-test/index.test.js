@@ -50,7 +50,7 @@ const assessmentJSON = {
 						textGroup: [
 							{
 								text: {
-									value:
+									updated:
 										'You have {{assessment:attemptsRemaining}} attempts remaining out of {{assessment:attemptsAmount}}.'
 								}
 							}
@@ -79,7 +79,7 @@ const assessmentJSON = {
 										textGroup: [
 											{
 												text: {
-													value: 'Example text'
+													updated: 'Example text'
 												}
 											}
 										]
@@ -111,7 +111,7 @@ const assessmentJSON = {
 														textGroup: [
 															{
 																text: {
-																	value: 'Example Text'
+																	updated: 'Example Text'
 																}
 															}
 														]
@@ -130,7 +130,7 @@ const assessmentJSON = {
 														textGroup: [
 															{
 																text: {
-																	value: 'Example Text 2'
+																	updated: 'Example Text 2'
 																}
 															}
 														]
@@ -158,7 +158,7 @@ const assessmentJSON = {
 														textGroup: [
 															{
 																text: {
-																	value: 'Example Text 3'
+																	updated: 'Example Text 3'
 																}
 															}
 														]
@@ -177,7 +177,7 @@ const assessmentJSON = {
 														textGroup: [
 															{
 																text: {
-																	value: 'Example Text 4'
+																	updated: 'Example Text 4'
 																}
 															}
 														]
@@ -208,7 +208,7 @@ const scoreActionJSON = {
 				textGroup: [
 					{
 						text: {
-							value: 'Not quite!',
+							updated: 'Not quite!',
 							styleList: []
 						},
 						data: {
@@ -226,7 +226,7 @@ const scoreActionJSON = {
 				textGroup: [
 					{
 						text: {
-							value: 'Try again ({{assessment:attemptsRemaining}} attempts left)',
+							updated: 'Try again ({{assessment:attemptsRemaining}} attempts left)',
 							styleList: []
 						},
 						data: null
@@ -238,7 +238,7 @@ const scoreActionJSON = {
 						actions: [
 							{
 								type: 'assessment:startAttempt',
-								value: {
+								updated: {
 									id: 'assessment'
 								}
 							}
@@ -519,7 +519,7 @@ describe('PostTest', () => {
 		const origActiveElement = document.activeElement
 		const mockEl = jest.fn()
 		Object.defineProperty(document, 'activeElement', {
-			value: mockEl,
+			updated: mockEl,
 			enumerable: true,
 			configurable: true
 		})
@@ -528,7 +528,7 @@ describe('PostTest', () => {
 		expect(focus).not.toHaveBeenCalled()
 
 		Object.defineProperty(document, 'activeElement', {
-			value: origActiveElement
+			updated: origActiveElement
 		})
 	})
 })

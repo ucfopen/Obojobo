@@ -29,7 +29,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:setResponse', {
-			value: {
+			updated: {
 				id: 'testId',
 				response: { response: 'A Response' },
 				targetId: 'mockTargetId',
@@ -53,7 +53,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:setResponse', {
-			value: {
+			updated: {
 				id: 'testId',
 				response: { response: 'A Response' },
 				targetId: 'mockTargetId',
@@ -70,7 +70,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:sendResponse', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -82,7 +82,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:forceSendAllResponses', {
-			value: {
+			updated: {
 				context: 'mockContext'
 			}
 		})
@@ -93,7 +93,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:clearResponse', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -105,9 +105,9 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:setData', {
-			value: {
+			updated: {
 				key: 'testId:theKey',
-				value: 'theValue',
+				updated: 'theValue',
 				context: 'mockContext'
 			}
 		})
@@ -118,7 +118,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:clearData', {
-			value: {
+			updated: {
 				key: 'testId:theKey',
 				context: 'mockContext'
 			}
@@ -130,7 +130,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:view', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -142,7 +142,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:hide', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -154,7 +154,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:submitResponse', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -166,7 +166,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:checkAnswer', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -178,7 +178,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:showExplanation', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -190,7 +190,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:hideExplanation', {
-			value: {
+			updated: {
 				id: 'testId',
 				actor: 'testActor',
 				context: 'mockContext'
@@ -203,7 +203,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:retry', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -508,7 +508,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:scoreSet', {
-			value: {
+			updated: {
 				itemId: 'testId',
 				score: 'mockScore',
 				details: 'mockDetails',
@@ -524,7 +524,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:scoreClear', {
-			value: {
+			updated: {
 				itemId: 'testId',
 				context: 'mockContext'
 			}
@@ -536,7 +536,7 @@ describe('QuestionUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:revealAnswer', {
-			value: {
+			updated: {
 				id: 'testId',
 				context: 'mockContext'
 			}
@@ -896,7 +896,7 @@ describe('QuestionUtil', () => {
 		).toBe(false)
 	})
 
-	test('isResponseEmpty returns the value of the component classes isResponseEmpty method', () => {
+	test('isResponseEmpty returns the updated of the component classes isResponseEmpty method', () => {
 		const state = {
 			contexts: {
 				mockContext: {

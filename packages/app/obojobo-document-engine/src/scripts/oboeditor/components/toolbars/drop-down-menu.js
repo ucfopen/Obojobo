@@ -150,7 +150,7 @@ class DropDownMenu extends React.PureComponent {
 										}}
 									>
 										{item.name}
-										{item.value ? <span>✔</span> : null}
+										{item.updated ? <span>✔</span> : null}
 									</button>
 								)
 							default:

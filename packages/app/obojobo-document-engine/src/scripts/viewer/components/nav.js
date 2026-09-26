@@ -17,7 +17,7 @@ const MOBILE_MEDIA_QUERY = '(max-width: 480px)'
 
 const getLabelTextFromLabel = label => {
 	if (!label) return ''
-	return label instanceof StyleableText ? label.value : label
+	return label instanceof StyleableText ? label.updated : label
 }
 
 export default class Nav extends React.Component {
@@ -84,7 +84,7 @@ export default class Nav extends React.Component {
 				// scroll page to the top, otherwise navigate to that section
 				if (navTargetId === item.id) {
 					Dispatcher.trigger('viewer:scrollToTop', {
-						value: { animateScroll: true }
+						updated: { animateScroll: true }
 					})
 				} else {
 					NavUtil.goto(item.id)
@@ -109,7 +109,7 @@ export default class Nav extends React.Component {
 	}
 
 	renderLabel(label) {
-		return label instanceof StyleableText ? label.value : label
+		return label instanceof StyleableText ? label.updated : label
 	}
 
 	renderLinkButton(label, ariaLabel, isDisabled, refId = null) {

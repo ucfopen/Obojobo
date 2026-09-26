@@ -125,9 +125,9 @@ describe('QuestionBank editor', () => {
 		}
 
 		const component = mount(<QuestionBank {...props} />)
-		const pickSomeRadioInput = component.find({ type: 'radio', value: 'pick' })
+		const pickSomeRadioInput = component.find({ type: 'radio', updated: 'pick' })
 		pickSomeRadioInput.simulate('click')
-		pickSomeRadioInput.simulate('change', { target: { value: 'all' } })
+		pickSomeRadioInput.simulate('change', { target: { updated: 'all' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -157,15 +157,15 @@ describe('QuestionBank editor', () => {
 
 		// make sure the pick input is set to 8 based on props
 		const pickCountInput = component.find({ type: 'number' })
-		expect(pickCountInput.props()).toHaveProperty('value', 8)
+		expect(pickCountInput.props()).toHaveProperty('updated', 8)
 
-		const pickSomeRadioInput = component.find({ type: 'radio', value: 'pick' })
+		const pickSomeRadioInput = component.find({ type: 'radio', updated: 'pick' })
 		pickSomeRadioInput.simulate('click')
-		pickSomeRadioInput.simulate('change', { target: { value: 'pick' } })
+		pickSomeRadioInput.simulate('change', { target: { updated: 'pick' } })
 
 		pickCountInput.simulate('focus')
 		pickCountInput.simulate('click')
-		pickCountInput.simulate('change', { target: { value: '7' } })
+		pickCountInput.simulate('change', { target: { updated: '7' } })
 		pickCountInput.simulate('blur')
 		jest.runAllTimers()
 
@@ -194,7 +194,7 @@ describe('QuestionBank editor', () => {
 
 		const questionChooseMethodSelectInput = component.find('select')
 		questionChooseMethodSelectInput.simulate('click')
-		questionChooseMethodSelectInput.simulate('change', { target: { value: 'pick' } })
+		questionChooseMethodSelectInput.simulate('change', { target: { updated: 'pick' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -474,7 +474,7 @@ describe('QuestionBank editor', () => {
 		)
 		Transforms.setNodes.mockClear()
 		// ordinarily this would be updated by the Slate code - here we do it manually
-		// doing this without re-mounting/re-rendering works because it's passed by reference, not by value I guess
+		// doing this without re-mounting/re-rendering works because it's passed by reference, not by updated I guess
 		mockElement.content.collapsed = true
 
 		renderer.act(() => {

@@ -27,7 +27,7 @@ exports.up = function(db) {
 				length: 256,
 				notNull: true
 			},
-			value: {
+			updated: {
 				type: 'varchar',
 				length: 256,
 				notNull: true

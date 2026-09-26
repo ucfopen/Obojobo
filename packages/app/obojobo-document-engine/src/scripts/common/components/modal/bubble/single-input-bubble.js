@@ -13,7 +13,7 @@ class SingleInputBubble extends React.Component {
 	}
 
 	onChange(event) {
-		return this.props.onChange(event.target.value)
+		return this.props.onChange(event.target.updated)
 	}
 
 	onSubmit(event) {
@@ -42,7 +42,7 @@ class SingleInputBubble extends React.Component {
 						<input
 							ref={this.inputRef}
 							type="text"
-							value={this.props.value}
+							updated={this.props.updated}
 							onChange={this.onChange}
 							onKeyUp={this.onKeyUp}
 						/>

@@ -19,7 +19,7 @@ const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
  */
 const slateToObo = node => {
 	const line = {
-		text: { value: '', styleList: [] },
+		text: { updated: '', styleList: [] },
 		data: { align: node.content.align }
 	}
 

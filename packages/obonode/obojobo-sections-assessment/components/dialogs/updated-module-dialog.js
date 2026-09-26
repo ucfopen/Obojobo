@@ -10,13 +10,13 @@ const UpdatedModuleDialog = ({ onClose, onRestart }) => (
 		title="Updated Module"
 		buttons={[
 			{
-				value: 'Close Dialog',
+				updated: 'Close Dialog',
 				altAction: true,
 				default: true,
 				onClick: onClose
 			},
 			{
-				value: 'Restart',
+				updated: 'Restart',
 				onClick: onRestart
 			}
 		]}

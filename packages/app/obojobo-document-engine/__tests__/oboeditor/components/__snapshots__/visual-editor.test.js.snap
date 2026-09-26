@@ -362,11 +362,11 @@ Array [
       "results": Array [
         Object {
           "type": "return",
-          "value": undefined,
+          "updated": undefined,
         },
         Object {
           "type": "return",
-          "value": undefined,
+          "updated": undefined,
         },
       ],
     },
@@ -482,7 +482,7 @@ Array [
       "results": Array [
         Object {
           "type": "return",
-          "value": undefined,
+          "updated": undefined,
         },
       ],
     },
@@ -517,7 +517,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         onChange={[Function]}
         onKeyDown={[Function]}
         placeholder="Module Title"
-        value="Mock Title"
+        updated="Mock Title"
       />
     </div>
     <div
@@ -1107,7 +1107,7 @@ Ctrl+Shift+L"
       contentEditable={true}
       data-gramm={false}
       data-slate-editor={true}
-      data-slate-node="value"
+      data-slate-node="updated"
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onClick={[Function]}
@@ -1178,7 +1178,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         onChange={[Function]}
         onKeyDown={[Function]}
         placeholder="Module Title"
-        value="Mock Title"
+        updated="Mock Title"
       />
     </div>
     <div
@@ -1768,7 +1768,7 @@ Ctrl+Shift+L"
       contentEditable={true}
       data-gramm={false}
       data-slate-editor={true}
-      data-slate-node="value"
+      data-slate-node="updated"
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onClick={[Function]}
@@ -1839,7 +1839,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         onChange={[Function]}
         onKeyDown={[Function]}
         placeholder="Module Title"
-        value="Mock Title"
+        updated="Mock Title"
       />
     </div>
     <div
@@ -2429,7 +2429,7 @@ Ctrl+Shift+L"
       contentEditable={true}
       data-gramm={false}
       data-slate-editor={true}
-      data-slate-node="value"
+      data-slate-node="updated"
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onClick={[Function]}
@@ -2546,7 +2546,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         onChange={[Function]}
         onKeyDown={[Function]}
         placeholder="Module Title"
-        value="Mock Title"
+        updated="Mock Title"
       />
     </div>
     <div
@@ -3135,7 +3135,7 @@ Ctrl+Shift+L"
       className="obojobo-draft--pages--page"
       data-gramm={false}
       data-slate-editor={true}
-      data-slate-node="value"
+      data-slate-node="updated"
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onClick={[Function]}
@@ -3203,7 +3203,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         onChange={[Function]}
         onKeyDown={[Function]}
         placeholder="Module Title"
-        value="Mock Title"
+        updated="Mock Title"
       />
     </div>
     <div
@@ -3793,7 +3793,7 @@ Ctrl+Shift+L"
       contentEditable={true}
       data-gramm={false}
       data-slate-editor={true}
-      data-slate-node="value"
+      data-slate-node="updated"
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onClick={[Function]}

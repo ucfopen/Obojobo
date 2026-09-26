@@ -196,7 +196,7 @@ describe('Excerpt Content Node', () => {
 			.find('input')
 			.at(0)
 			.simulate('change', {
-				target: { value: 'fade' }
+				target: { updated: 'fade' }
 			})
 
 		const newContent = {
@@ -237,7 +237,7 @@ describe('Excerpt Content Node', () => {
 			.find('input')
 			.at(0)
 			.simulate('change', {
-				target: { value: 'fade' }
+				target: { updated: 'fade' }
 			})
 
 		const newContent = {
@@ -286,7 +286,7 @@ describe('Excerpt Content Node', () => {
 			.find('input')
 			.at(0)
 			.simulate('change', {
-				target: { value: 'large' }
+				target: { updated: 'large' }
 			})
 
 		const newContent = {

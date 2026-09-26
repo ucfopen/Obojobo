@@ -85,7 +85,7 @@ describe('AssessmentStore', () => {
 
 		// Fire the event such that the mocked method returns true
 		eventSpy.mockReturnValueOnce(true)
-		Dispatcher.trigger(event, { value: { id: 'mock-id' } })
+		Dispatcher.trigger(event, { updated: { id: 'mock-id' } })
 
 		expect(eventSpy).toHaveBeenCalledWith('mock-id')
 
@@ -102,7 +102,7 @@ describe('AssessmentStore', () => {
 
 		expect(spy).not.toHaveBeenCalled()
 		Dispatcher.trigger('assessment:acknowledgeFetchHistoryFailed', {
-			value: { id: 'mock-id', retry: 'mock-retry' }
+			updated: { id: 'mock-id', retry: 'mock-retry' }
 		})
 		expect(spy).toHaveBeenCalledWith('mock-id', 'mock-retry')
 
@@ -126,7 +126,7 @@ describe('AssessmentStore', () => {
 		machine.send = jest.fn()
 
 		Dispatcher.trigger('nav:targetChanged ', {
-			value: { to: 'someMockId' }
+			updated: { to: 'someMockId' }
 		})
 		expect(machine.getCurrentState).not.toHaveBeenCalled()
 		expect(machine.send).not.toHaveBeenCalled()
@@ -149,7 +149,7 @@ describe('AssessmentStore', () => {
 		machine.send = jest.fn()
 
 		Dispatcher.trigger('nav:targetChanged ', {
-			value: { to: 'mockAssessmentId' }
+			updated: { to: 'mockAssessmentId' }
 		})
 		expect(machine.getCurrentState).not.toHaveBeenCalled()
 		expect(machine.send).not.toHaveBeenCalled()
@@ -171,7 +171,7 @@ describe('AssessmentStore', () => {
 		machine.send = jest.fn()
 
 		Dispatcher.trigger('nav:targetChanged ', {
-			value: { to: 'mockAssessmentId' }
+			updated: { to: 'mockAssessmentId' }
 		})
 		expect(machine.getCurrentState).toHaveBeenCalled()
 		expect(machine.send).not.toHaveBeenCalled()
@@ -193,7 +193,7 @@ describe('AssessmentStore', () => {
 		machine.send = jest.fn()
 
 		Dispatcher.trigger('nav:targetChanged ', {
-			value: { to: 'mockAssessmentId' }
+			updated: { to: 'mockAssessmentId' }
 		})
 		expect(machine.getCurrentState).toHaveBeenCalled()
 		expect(machine.send).toHaveBeenCalledWith('fetchAttemptHistory')
@@ -365,7 +365,7 @@ describe('AssessmentStore', () => {
 		const consoleSpy = jest.spyOn(global.console, 'error').mockImplementation(jest.fn())
 
 		// Mock the API call
-		AssessmentAPI.resendLTIAssessmentScore.mockResolvedValueOnce({ value: 'mock-value' })
+		AssessmentAPI.resendLTIAssessmentScore.mockResolvedValueOnce({ updated: 'mock-updated' })
 
 		// Run tryResendLTIScore
 		await assessmentStore.tryResendLTIScore('mockAssessmentId')
@@ -375,7 +375,7 @@ describe('AssessmentStore', () => {
 		expect(consoleSpy).not.toHaveBeenCalled()
 		expect(updateLTIScoreSpy).toHaveBeenCalledWith(
 			assessmentStore.state.assessments.mockAssessmentId,
-			'mock-value'
+			'mock-updated'
 		)
 		expect(triggerChangeSpy).toHaveBeenCalled()
 
@@ -415,7 +415,7 @@ describe('AssessmentStore', () => {
 		const consoleSpy = jest.spyOn(global.console, 'error').mockImplementation(jest.fn())
 
 		// Mock the API call
-		AssessmentAPI.resendLTIAssessmentScore.mockResolvedValueOnce({ value: 'mock-value' })
+		AssessmentAPI.resendLTIAssessmentScore.mockResolvedValueOnce({ updated: 'mock-updated' })
 
 		// Run tryResendLTIScore
 		await assessmentStore.tryResendLTIScore('mockAssessmentId')
@@ -425,7 +425,7 @@ describe('AssessmentStore', () => {
 		expect(consoleSpy).not.toHaveBeenCalled()
 		expect(updateLTIScoreSpy).toHaveBeenCalledWith(
 			assessmentStore.state.assessments.mockAssessmentId,
-			'mock-value'
+			'mock-updated'
 		)
 		expect(triggerChangeSpy).toHaveBeenCalled()
 

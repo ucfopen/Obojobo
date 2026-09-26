@@ -70,7 +70,7 @@ describe('Media Store', () => {
 
 	test('show', () => {
 		MediaStore.show({
-			value: { id: 'mocked-id' }
+			updated: { id: 'mocked-id' }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -99,7 +99,7 @@ describe('Media Store', () => {
 			defaultZoomById: { 'mocked-id': 1, 'other-id': 2 }
 		}
 		MediaStore.hide({
-			value: { id: 'mocked-id', actor: 'mocked-actor' }
+			updated: { id: 'mocked-id', actor: 'mocked-actor' }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -125,7 +125,7 @@ describe('Media Store', () => {
 
 	test('hide (no actor)', () => {
 		MediaStore.hide({
-			value: { id: 'mocked-id' }
+			updated: { id: 'mocked-id' }
 		})
 
 		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
@@ -144,9 +144,9 @@ describe('Media Store', () => {
 		})
 	})
 
-	test('setZoom (to a set value)', () => {
+	test('setZoom (to a set updated)', () => {
 		MediaStore.setZoom({
-			value: { id: 'mocked-id', zoom: 2 }
+			updated: { id: 'mocked-id', zoom: 2 }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -175,7 +175,7 @@ describe('Media Store', () => {
 	test('setting zoom to null does nothing', () => {
 		MediaStore.state.zoomById['mocked-id'] = 'other-zoom'
 		MediaStore.setZoom({
-			value: { id: 'mocked-id', zoom: null }
+			updated: { id: 'mocked-id', zoom: null }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -189,9 +189,9 @@ describe('Media Store', () => {
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
-	test('setZoom (to value <= 0)', () => {
+	test('setZoom (to updated <= 0)', () => {
 		MediaStore.setZoom({
-			value: { id: 'mocked-id', zoom: 0 }
+			updated: { id: 'mocked-id', zoom: 0 }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -203,8 +203,8 @@ describe('Media Store', () => {
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
-	test('setZoom (to an invalid value)', () => {
-		MediaStore.setZoom({ value: { id: 'mocked-id', zoom: 'invalid-value' } })
+	test('setZoom (to an invalid updated)', () => {
+		MediaStore.setZoom({ updated: { id: 'mocked-id', zoom: 'invalid-updated' } })
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
@@ -218,7 +218,7 @@ describe('Media Store', () => {
 	test('resetZoom', () => {
 		MediaStore.state.zoomById['mocked-id'] = 'mocked-zoom'
 		MediaStore.resetZoom({
-			value: { id: 'mocked-id' }
+			updated: { id: 'mocked-id' }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -249,7 +249,7 @@ describe('Media Store', () => {
 	test('resetZoom (with default)', () => {
 		MediaStore.state.zoomById['mocked-id'] = 0.5
 		MediaStore.state.defaultZoomById['mocked-id'] = 2
-		MediaStore.resetZoom({ value: { id: 'mocked-id' } })
+		MediaStore.resetZoom({ updated: { id: 'mocked-id' } })
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
@@ -280,7 +280,7 @@ describe('Media Store', () => {
 
 	test('resetZoom works even if no zoom previously set', () => {
 		MediaStore.resetZoom({
-			value: { id: 'mocked-id' }
+			updated: { id: 'mocked-id' }
 		})
 
 		expect(MediaStore.state).toEqual({
@@ -309,7 +309,7 @@ describe('Media Store', () => {
 	})
 
 	test('setDefaultZoom', () => {
-		MediaStore.setDefaultZoom({ value: { id: 'mocked-id', zoom: 2 } })
+		MediaStore.setDefaultZoom({ updated: { id: 'mocked-id', zoom: 2 } })
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
@@ -325,8 +325,8 @@ describe('Media Store', () => {
 		})
 	})
 
-	test('setDefaultZoom to an invalid value', () => {
-		MediaStore.setDefaultZoom({ value: { id: 'mocked-id', zoom: 0 } })
+	test('setDefaultZoom to an invalid updated', () => {
+		MediaStore.setDefaultZoom({ updated: { id: 'mocked-id', zoom: 0 } })
 
 		expect(MediaStore.state).toEqual({
 			shown: {},

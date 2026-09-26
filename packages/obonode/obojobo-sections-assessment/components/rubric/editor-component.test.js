@@ -45,7 +45,7 @@ describe('Rubric editor', () => {
 		const component = mount(
 			<Rubric
 				element={{
-					content: { unableToPassType: 'set-value', mods: [] }
+					content: { unableToPassType: 'set-updated', mods: [] }
 				}}
 				editor={{
 					children: [
@@ -55,7 +55,7 @@ describe('Rubric editor', () => {
 							children: [
 								{
 									type: RUBRIC_NODE,
-									content: { unableToPassType: 'set-value', mods: [] },
+									content: { unableToPassType: 'set-updated', mods: [] },
 									children: []
 								}
 							]
@@ -158,7 +158,7 @@ describe('Rubric editor', () => {
 					content: {
 						type: 'pass-fail',
 						failedType: '$attempt_score',
-						unableToPassType: 'no-value',
+						unableToPassType: 'no-updated',
 						mods: [
 							{ reward: 3, attemptCondition: '$last_attempt' },
 							{ reward: 3, attemptCondition: '1' },
@@ -199,7 +199,7 @@ describe('Rubric editor', () => {
 				element={{
 					content: {
 						type: 'pass-fail',
-						failedType: 'set-value',
+						failedType: 'set-updated',
 						unableToPassType: 'no-score',
 						mods: [
 							{ reward: 3, attemptCondition: '$last_attempt' },
@@ -220,8 +220,8 @@ describe('Rubric editor', () => {
 				element={{
 					content: {
 						type: 'pass-fail',
-						failedType: 'set-value',
-						unableToPassType: 'set-value',
+						failedType: 'set-updated',
+						unableToPassType: 'set-updated',
 						mods: [
 							{ reward: 3, attemptCondition: '$last_attempt' },
 							{ reward: 3, attemptCondition: '1' },
@@ -241,8 +241,8 @@ describe('Rubric editor', () => {
 				element={{
 					content: {
 						type: 'pass-fail',
-						failedType: 'set-value',
-						unableToPassType: 'set-value',
+						failedType: 'set-updated',
+						unableToPassType: 'set-updated',
 						mods: []
 					}
 				}}

@@ -46,15 +46,15 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
           </span>
           <select
             onChange={[Function]}
-            value="final-assessment-scores"
+            updated="final-assessment-scores"
           >
             <option
-              value="final-assessment-scores"
+              updated="final-assessment-scores"
             >
               Final Assessment Scores
             </option>
             <option
-              value="all-attempts"
+              updated="all-attempts"
             >
               All Attempt Scores
             </option>
@@ -87,22 +87,22 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                     onChange={[Function]}
                   >
                     <option
-                      value=""
+                      updated=""
                     >
                       Select one...
                     </option>
                     <option
-                      value="course-title"
+                      updated="course-title"
                     >
                       Course title
                     </option>
                     <option
-                      value="resource-link-title"
+                      updated="resource-link-title"
                     >
                       Resource link title
                     </option>
                     <option
-                      value="student-name"
+                      updated="student-name"
                     >
                       Student name
                     </option>
@@ -129,7 +129,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                       min={null}
                       onChange={[Function]}
                       type="date"
-                      value=""
+                      updated=""
                     />
                     <button
                       className="repository--button secondary-button"
@@ -151,7 +151,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                       max={null}
                       onChange={[Function]}
                       type="date"
-                      value=""
+                      updated=""
                     />
                     <button
                       className="repository--button secondary-button"
@@ -353,15 +353,15 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
           </span>
           <select
             onChange={[Function]}
-            value="final-assessment-scores"
+            updated="final-assessment-scores"
           >
             <option
-              value="final-assessment-scores"
+              updated="final-assessment-scores"
             >
               Final Assessment Scores
             </option>
             <option
-              value="all-attempts"
+              updated="all-attempts"
             >
               All Attempt Scores
             </option>
@@ -394,22 +394,22 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                     onChange={[Function]}
                   >
                     <option
-                      value=""
+                      updated=""
                     >
                       Select one...
                     </option>
                     <option
-                      value="course-title"
+                      updated="course-title"
                     >
                       Course title
                     </option>
                     <option
-                      value="resource-link-title"
+                      updated="resource-link-title"
                     >
                       Resource link title
                     </option>
                     <option
-                      value="student-name"
+                      updated="student-name"
                     >
                       Student name
                     </option>
@@ -436,7 +436,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                       min={null}
                       onChange={[Function]}
                       type="date"
-                      value=""
+                      updated=""
                     />
                     <button
                       className="repository--button secondary-button"
@@ -458,7 +458,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                       max={null}
                       onChange={[Function]}
                       type="date"
-                      value=""
+                      updated=""
                     />
                     <button
                       className="repository--button secondary-button"
@@ -660,15 +660,15 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
           </span>
           <select
             onChange={[Function]}
-            value="final-assessment-scores"
+            updated="final-assessment-scores"
           >
             <option
-              value="final-assessment-scores"
+              updated="final-assessment-scores"
             >
               Final Assessment Scores
             </option>
             <option
-              value="all-attempts"
+              updated="all-attempts"
             >
               All Attempt Scores
             </option>
@@ -701,22 +701,22 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                     onChange={[Function]}
                   >
                     <option
-                      value=""
+                      updated=""
                     >
                       Select one...
                     </option>
                     <option
-                      value="course-title"
+                      updated="course-title"
                     >
                       Course title
                     </option>
                     <option
-                      value="resource-link-title"
+                      updated="resource-link-title"
                     >
                       Resource link title
                     </option>
                     <option
-                      value="student-name"
+                      updated="student-name"
                     >
                       Student name
                     </option>
@@ -743,7 +743,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                       min="NaN-NaN-NaN"
                       onChange={[Function]}
                       type="date"
-                      value=""
+                      updated=""
                     />
                     <button
                       className="repository--button secondary-button"
@@ -765,7 +765,7 @@ exports[`AssessmentScoreDataDialog AssessmentScoreDataDialog renders correctly w
                       max="NaN-NaN-NaN"
                       onChange={[Function]}
                       type="date"
-                      value=""
+                      updated=""
                     />
                     <button
                       className="repository--button secondary-button"

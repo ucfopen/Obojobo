@@ -17,7 +17,7 @@ describe('includeTextCancellingPlugins', () => {
 			preventDefault: jest.fn()
 		}
 		const editor = {
-			value: {
+			updated: {
 				blocks: {
 					some: fn => fn({ type: 'not-target-node' })
 				}
@@ -37,7 +37,7 @@ describe('includeTextCancellingPlugins', () => {
 			preventDefault: jest.fn()
 		}
 		const editor = {
-			value: {
+			updated: {
 				blocks: {
 					some: fn => fn({ type: 'target-node' })
 				}
@@ -54,7 +54,7 @@ describe('includeTextCancellingPlugins', () => {
 	test('plugins.onPaste calls next for non-target nodes', () => {
 		const next = jest.fn()
 		const editor = {
-			value: {
+			updated: {
 				blocks: {
 					some: fn => fn({ type: 'not-target-node' })
 				}
@@ -70,7 +70,7 @@ describe('includeTextCancellingPlugins', () => {
 	test('plugins.onPaste does not call next for target nodes', () => {
 		const next = jest.fn()
 		const editor = {
-			value: {
+			updated: {
 				blocks: {
 					some: fn => fn({ type: 'target-node' })
 				}

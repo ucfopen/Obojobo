@@ -57,10 +57,10 @@ describe('Code Converter', () => {
 				textGroup: [
 					{
 						data: { indent: 1 },
-						text: { value: 'mockCode' }
+						text: { updated: 'mockCode' }
 					},
 					{
-						text: { value: 'mockCode2' }
+						text: { updated: 'mockCode2' }
 					}
 				],
 				triggers: 'mock-triggers'

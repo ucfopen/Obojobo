@@ -25,22 +25,22 @@ describe('Table adapter', () => {
 					textGroup: [
 						{
 							text: {
-								value: 'First column heading'
+								updated: 'First column heading'
 							}
 						},
 						{
 							text: {
-								value: 'Second column heading'
+								updated: 'Second column heading'
 							}
 						},
 						{
 							text: {
-								value: 'First column second row'
+								updated: 'First column second row'
 							}
 						},
 						{
 							text: {
-								value: 'Second column second row'
+								updated: 'Second column second row'
 							}
 						}
 					]
@@ -64,7 +64,7 @@ describe('Table adapter', () => {
 		${''}                                               | ${'fixed'}
 		${'fixed'}                                          | ${'fixed'}
 		${'auto'}                                           | ${'auto'}
-		${'invalid-value'}                                  | ${'fixed'}
+		${'invalid-updated'}                                  | ${'fixed'}
 		${'  FIxEd  '}                                      | ${'fixed'}
 		${'  aUTO  '}                                       | ${'auto'}
 		${true}                                             | ${'fixed'}
@@ -115,22 +115,22 @@ describe('Table adapter', () => {
 					textGroup: [
 						{
 							text: {
-								value: 'First column heading'
+								updated: 'First column heading'
 							}
 						},
 						{
 							text: {
-								value: 'Second column heading'
+								updated: 'Second column heading'
 							}
 						},
 						{
 							text: {
-								value: 'First column second row'
+								updated: 'First column second row'
 							}
 						},
 						{
 							text: {
-								value: 'Second column second row'
+								updated: 'Second column second row'
 							}
 						}
 					]

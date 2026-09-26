@@ -13,7 +13,7 @@ describe('EditorTitleInput', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorTitleInput onChange updates value', () => {
+	test('EditorTitleInput onChange updates updated', () => {
 		// setup
 		const mockRenameModule = jest.fn()
 		let component
@@ -26,16 +26,16 @@ describe('EditorTitleInput', () => {
 		const inputEl = component.root.findByType('input')
 
 		// establish baseline
-		expect(inputEl.props.value).toBe('mock-title')
+		expect(inputEl.props.updated).toBe('mock-title')
 
 		// execute
 		act(() => {
-			const mockChangeEvent = { target: { value: 'mock-new-title' } }
+			const mockChangeEvent = { target: { updated: 'mock-new-title' } }
 			inputEl.props.onChange(mockChangeEvent)
 		})
 
 		// verify
-		expect(inputEl.props.value).toBe('mock-new-title')
+		expect(inputEl.props.updated).toBe('mock-new-title')
 	})
 
 	test('EditorTitleInput onBlur calls renameModule prop', () => {
@@ -55,7 +55,7 @@ describe('EditorTitleInput', () => {
 
 		// execute
 		act(() => {
-			const mockChangeEvent = { target: { value: 'mock-new-title' } }
+			const mockChangeEvent = { target: { updated: 'mock-new-title' } }
 			inputEl.props.onChange(mockChangeEvent)
 		})
 
@@ -86,7 +86,7 @@ describe('EditorTitleInput', () => {
 
 		// execute
 		act(() => {
-			const mockChangeEvent = { target: { value: 'mock-title' } }
+			const mockChangeEvent = { target: { updated: 'mock-title' } }
 			inputEl.props.onChange(mockChangeEvent)
 		})
 
@@ -137,11 +137,11 @@ describe('EditorTitleInput', () => {
 
 		act(() => {
 			// update the title
-			const mockChangeEvent = { target: { value: 'mock-new-title' } }
+			const mockChangeEvent = { target: { updated: 'mock-new-title' } }
 			inputEl.props.onChange(mockChangeEvent)
 		})
 
-		expect(inputEl.props.value).toBe('mock-new-title')
+		expect(inputEl.props.updated).toBe('mock-new-title')
 		expect(mockRenameModule).not.toHaveBeenCalled()
 
 		act(() => {
@@ -149,7 +149,7 @@ describe('EditorTitleInput', () => {
 		})
 
 		expect(mockRenameModule).not.toHaveBeenCalled()
-		expect(inputEl.props.value).toBe('mock-title')
+		expect(inputEl.props.updated).toBe('mock-title')
 	})
 
 	test('EditorTitleInput pressing ctrl+s calls blur and preventDefault', () => {
@@ -236,7 +236,7 @@ describe('EditorTitleInput', () => {
 		})
 
 		const inputEl = component.root.findByType('input')
-		expect(inputEl.props.value).toBe('')
+		expect(inputEl.props.updated).toBe('')
 	})
 
 	test('changing title to an empty string and pressing enter refocuses and creates a warning', () => {
@@ -252,7 +252,7 @@ describe('EditorTitleInput', () => {
 
 		act(() => {
 			// update the title
-			const mockChangeEvent = { target: { value: '' } }
+			const mockChangeEvent = { target: { updated: '' } }
 			inputEl.props.onChange(mockChangeEvent)
 		})
 
@@ -280,7 +280,7 @@ describe('EditorTitleInput', () => {
 
 		act(() => {
 			// update the title
-			const mockChangeEvent = { target: { value: '' } }
+			const mockChangeEvent = { target: { updated: '' } }
 			inputEl.props.onChange(mockChangeEvent)
 		})
 
@@ -298,7 +298,7 @@ describe('EditorTitleInput', () => {
 		mockFocus.mockReset()
 
 		act(() => {
-			inputEl.props.onChange({ target: { value: 'mock-new-title' } })
+			inputEl.props.onChange({ target: { updated: 'mock-new-title' } })
 		})
 
 		expect(component.root.findAllByProps({ className: 'empty-title-warning' }).length).toBe(0)

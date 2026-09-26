@@ -113,7 +113,7 @@ class Rubric extends React.Component {
 											</div>
 										)}
 
-										{this.state.rubricContent.failedType === 'set-value' && (
+										{this.state.rubricContent.failedType === 'set-updated' && (
 											<div>
 												<b>When failing, set the assessment score to: </b>
 												<span>{this.state.rubricContent.failedResult}%</span>
@@ -121,7 +121,7 @@ class Rubric extends React.Component {
 										)}
 									</li>
 									<li>
-										{this.state.rubricContent.unableToPassType === 'no-value' && (
+										{this.state.rubricContent.unableToPassType === 'no-updated' && (
 											<div>
 												<b>If the student is out of attempts and did not pass: </b>
 												<span>Don&apos;t do anything</span>
@@ -142,7 +142,7 @@ class Rubric extends React.Component {
 											</div>
 										)}
 
-										{this.state.rubricContent.unableToPassType === 'set-value' && (
+										{this.state.rubricContent.unableToPassType === 'set-updated' && (
 											<div>
 												<b>
 													If the student is out of attempts and did not pass, set assessment score

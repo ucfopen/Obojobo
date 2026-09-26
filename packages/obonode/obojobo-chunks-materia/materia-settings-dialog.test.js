@@ -208,17 +208,17 @@ describe('MateriaSettingsDialog', () => {
 		expect(component.find(SettingsDialogForm).props().onChange).toBe(onSettingChange)
 
 		// changes caption
-		onSettingChange({ prop: 'caption' }, { target: { value: 'new-caption' } })
+		onSettingChange({ prop: 'caption' }, { target: { updated: 'new-caption' } })
 		expect(component.state()).toHaveProperty('caption', 'new-caption')
 
 		// changes src
-		onSettingChange({ prop: 'src' }, { target: { value: 'new-src' } })
+		onSettingChange({ prop: 'src' }, { target: { updated: 'new-src' } })
 		expect(component.state()).toHaveProperty('src', 'new-src')
 
 		// manually set state so we can check it gets cleared
 		component.setState({ icon: 'mock-icon', widgetEngine: 'mock-engine' })
 		// empty src clears icon and widgetEngine
-		onSettingChange({ prop: 'src' }, { target: { value: '' } })
+		onSettingChange({ prop: 'src' }, { target: { updated: '' } })
 		expect(component.state()).toHaveProperty('src', '')
 		expect(component.state()).toHaveProperty('icon', '')
 		expect(component.state()).toHaveProperty('widgetEngine', '')
@@ -245,59 +245,59 @@ describe('MateriaSettingsDialog', () => {
 
 		const onSettingChange = component.instance().onSettingChange
 
-		onSettingChange({ prop: 'width' }, { target: { value: '' } })
+		onSettingChange({ prop: 'width' }, { target: { updated: '' } })
 		expect(getWidthSettings().validity).toBe('')
 		expect(getHeightSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'width' }, { target: { value: '100' } })
+		onSettingChange({ prop: 'width' }, { target: { updated: '100' } })
 		expect(getWidthSettings().validity).toBe('')
 		expect(getHeightSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'width' }, { target: { value: '99' } })
+		onSettingChange({ prop: 'width' }, { target: { updated: '99' } })
 		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
 		expect(getHeightSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'width' }, { target: { value: null } })
+		onSettingChange({ prop: 'width' }, { target: { updated: null } })
 		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
 		expect(getHeightSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'width' }, { target: { value: false } })
+		onSettingChange({ prop: 'width' }, { target: { updated: false } })
 		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
 		expect(getHeightSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'width' }, { target: { value: 'invalid-value' } })
+		onSettingChange({ prop: 'width' }, { target: { updated: 'invalid-updated' } })
 		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
 		expect(getHeightSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'width' }, { target: { value: '100' } })
+		onSettingChange({ prop: 'width' }, { target: { updated: '100' } })
 		expect(getWidthSettings().validity).toBe('')
 		expect(getHeightSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'height' }, { target: { value: '' } })
+		onSettingChange({ prop: 'height' }, { target: { updated: '' } })
 		expect(getHeightSettings().validity).toBe('')
 		expect(getWidthSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'height' }, { target: { value: '100' } })
+		onSettingChange({ prop: 'height' }, { target: { updated: '100' } })
 		expect(getHeightSettings().validity).toBe('')
 		expect(getWidthSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'height' }, { target: { value: '99' } })
+		onSettingChange({ prop: 'height' }, { target: { updated: '99' } })
 		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
 		expect(getWidthSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'height' }, { target: { value: null } })
+		onSettingChange({ prop: 'height' }, { target: { updated: null } })
 		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
 		expect(getWidthSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'height' }, { target: { value: false } })
+		onSettingChange({ prop: 'height' }, { target: { updated: false } })
 		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
 		expect(getWidthSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'height' }, { target: { value: 'invalid-value' } })
+		onSettingChange({ prop: 'height' }, { target: { updated: 'invalid-updated' } })
 		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
 		expect(getWidthSettings().validity).toBe('')
 
-		onSettingChange({ prop: 'height' }, { target: { value: '100' } })
+		onSettingChange({ prop: 'height' }, { target: { updated: '100' } })
 		expect(getHeightSettings().validity).toBe('')
 		expect(getWidthSettings().validity).toBe('')
 	})

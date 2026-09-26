@@ -33,7 +33,7 @@ describe('Figure Converter', () => {
 				triggers: 'mock-triggers',
 				textGroup: [
 					{
-						text: { value: 'mockCaption' }
+						text: { updated: 'mockCaption' }
 					}
 				]
 			}

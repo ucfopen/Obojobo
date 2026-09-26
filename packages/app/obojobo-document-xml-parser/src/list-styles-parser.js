@@ -4,11 +4,11 @@ const parseListStyles = el => {
 	el.elements.forEach(child => {
 		switch (child.name) {
 			case 'type':
-				listStyles.type = child.value[0].text
+				listStyles.type = child.updated[0].text
 				break
 
 			case 'indents':
-				listStyles.indents = parseIndents(child.value)
+				listStyles.indents = parseIndents(child.updated)
 				break
 		}
 	})

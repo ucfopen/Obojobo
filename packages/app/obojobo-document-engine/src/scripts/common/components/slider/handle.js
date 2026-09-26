@@ -5,7 +5,7 @@ import isOrNot from '../../util/isornot'
 
 const Handle = ({
 	domain: [min, max],
-	handle: { id, value, percent },
+	handle: { id, updated, percent },
 	disabled,
 	getHandleProps
 }) => {
@@ -14,7 +14,7 @@ const Handle = ({
 			role="slider"
 			aria-valuemin={min}
 			aria-valuemax={max}
-			aria-valuenow={value}
+			aria-valuenow={updated}
 			className={'obojobo-draft--components--slider--handle ' + isOrNot(disabled, 'disabled')}
 			style={{
 				left: `${percent}%`

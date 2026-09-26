@@ -17,39 +17,39 @@ class EditorStore extends Store {
 		Dispatcher.on(
 			{
 				'editor:setContext': payload => {
-					this.state.context = payload.value.context
+					this.state.context = payload.updated.context
 					return this.triggerChange()
 				},
 				'editor:rebuildMenu': payload => {
-					this.buildMenu(payload.value.model)
+					this.buildMenu(payload.updated.model)
 					this.triggerChange()
 				},
 				'editor:goto': payload => {
-					this.gotoItem(this.state.itemsById[payload.value.id])
+					this.gotoItem(this.state.itemsById[payload.updated.id])
 				},
 				'editor:gotoPath': payload => {
-					this.gotoItem(this.state.itemsByPath[payload.value.path])
+					this.gotoItem(this.state.itemsByPath[payload.updated.path])
 				},
 				'editor:addPage': payload => {
-					this.addPage(payload.value.newPage, payload.value.afterPageId)
+					this.addPage(payload.updated.newPage, payload.updated.afterPageId)
 				},
 				'editor:addAssessment': payload => {
-					this.addAssessment(payload.value.newAssessment)
+					this.addAssessment(payload.updated.newAssessment)
 				},
 				'editor:deletePage': payload => {
-					this.deletePage(payload.value.pageId)
+					this.deletePage(payload.updated.pageId)
 				},
 				'editor:movePage': payload => {
-					this.movePage(payload.value.pageId, payload.value.index)
+					this.movePage(payload.updated.pageId, payload.updated.index)
 				},
 				'editor:renameModule': payload => {
-					this.renamePageOrModule(payload.value.moduleId, payload.value.name)
+					this.renamePageOrModule(payload.updated.moduleId, payload.updated.name)
 				},
 				'editor:renamePage': payload => {
-					this.renamePageOrModule(payload.value.pageId, payload.value.name)
+					this.renamePageOrModule(payload.updated.pageId, payload.updated.name)
 				},
 				'editor:setStartPage': payload => {
-					this.setStartPage(payload.value.pageId)
+					this.setStartPage(payload.updated.pageId)
 				}
 			},
 			this

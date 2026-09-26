@@ -19,7 +19,7 @@ describe('getReportDisplayValuesForAttempt', () => {
 		})
 	})
 
-	test('returns default value for passingAttemptScore and assessScore', () => {
+	test('returns default updated for passingAttemptScore and assessScore', () => {
 		expect(
 			getReportDisplayValuesForAttempt(
 				{

@@ -34,16 +34,16 @@ describe('Table Converter', () => {
 					numCols: 2,
 					textGroup: [
 						{
-							text: { value: 'Mock1' }
+							text: { updated: 'Mock1' }
 						},
 						{
-							text: { value: 'Mock2' }
+							text: { updated: 'Mock2' }
 						},
 						{
-							text: { value: 'Mock3' }
+							text: { updated: 'Mock3' }
 						},
 						{
-							text: { value: 'Mock4' }
+							text: { updated: 'Mock4' }
 						}
 					]
 				},
@@ -65,16 +65,16 @@ describe('Table Converter', () => {
 					numCols: 2,
 					textGroup: [
 						{
-							text: { value: 'Mock1' }
+							text: { updated: 'Mock1' }
 						},
 						{
-							text: { value: 'Mock2' }
+							text: { updated: 'Mock2' }
 						},
 						{
-							text: { value: 'Mock3' }
+							text: { updated: 'Mock3' }
 						},
 						{
-							text: { value: 'Mock4' }
+							text: { updated: 'Mock4' }
 						}
 					]
 				},
@@ -91,7 +91,7 @@ describe('Table Converter', () => {
 		${''}                                               | ${'fixed'}
 		${'fixed'}                                          | ${'fixed'}
 		${'auto'}                                           | ${'auto'}
-		${'invalid-value'}                                  | ${'fixed'}
+		${'invalid-updated'}                                  | ${'fixed'}
 		${'  FIxEd  '}                                      | ${'fixed'}
 		${'  aUTO  '}                                       | ${'auto'}
 		${true}                                             | ${'fixed'}
@@ -112,16 +112,16 @@ describe('Table Converter', () => {
 					numCols: 2,
 					textGroup: [
 						{
-							text: { value: 'Mock1' }
+							text: { updated: 'Mock1' }
 						},
 						{
-							text: { value: 'Mock2' }
+							text: { updated: 'Mock2' }
 						},
 						{
-							text: { value: 'Mock3' }
+							text: { updated: 'Mock3' }
 						},
 						{
-							text: { value: 'Mock4' }
+							text: { updated: 'Mock4' }
 						}
 					]
 				}

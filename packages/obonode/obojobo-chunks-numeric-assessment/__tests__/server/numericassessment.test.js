@@ -17,7 +17,7 @@ describe('Question', () => {
 					{
 						data: {},
 						text: {
-							value: '',
+							updated: '',
 							styleList: null
 						}
 					}
@@ -46,7 +46,7 @@ describe('Question', () => {
 		})
 	})
 
-	test('nodeName is expected value', () => {
+	test('nodeName is expected updated', () => {
 		expect(NumericAssessment.nodeName).toBe('ObojoboDraft.Chunks.NumericAssessment')
 	})
 
@@ -67,7 +67,7 @@ describe('Question', () => {
 		}
 		const responseRecord = {
 			response: {
-				value: '4'
+				updated: '4'
 			}
 		}
 
@@ -84,7 +84,7 @@ describe('Question', () => {
 		}
 		const responseRecord = {
 			response: {
-				value: '4'
+				updated: '4'
 			}
 		}
 
@@ -101,7 +101,7 @@ describe('Question', () => {
 		}
 		const responseRecord = {
 			response: {
-				value: '0'
+				updated: '0'
 			}
 		}
 
@@ -122,7 +122,7 @@ describe('Question', () => {
 		}
 		const responseRecord = {
 			response: {
-				value: '4'
+				updated: '4'
 			}
 		}
 

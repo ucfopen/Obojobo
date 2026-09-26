@@ -49,7 +49,7 @@ const assessmentJSON = {
 						textGroup: [
 							{
 								text: {
-									value:
+									updated:
 										'You have {{assessment:attemptsRemaining}} attempts remaining out of {{assessment:attemptsAmount}}.'
 								}
 							}

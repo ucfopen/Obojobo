@@ -24,7 +24,7 @@ const hexInferred = /^[0-9]+$|^[0-9]+$/
  * new Hexadecimal("0xFF")
  * new Hexadecimal("#FF9900")
  * new Hexadecimal("$6928")
- * new Hexadecimal("B0283") // 'inferred' hex value
+ * new Hexadecimal("B0283") // 'inferred' hex updated
  */
 module.exports = class Hexadecimal extends Numeric {
 	/**
@@ -59,7 +59,7 @@ module.exports = class Hexadecimal extends Numeric {
 	}
 
 	/**
-	 * Get the value string portion of a possible hex string
+	 * Get the updated string portion of a possible hex string
 	 * @param {string} str
 	 * @return {string|null}
 	 * @example
@@ -90,7 +90,7 @@ module.exports = class Hexadecimal extends Numeric {
 
 	/**
 	 * Gets details about an answer string.
-	 * @param {string} str A potential string representation of a hex value
+	 * @param {string} str A potential string representation of a hex updated
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
 	 * Hexadecimal.parse("0xFF") //{ matchType:'exact', valueString:'0xFF' }
@@ -141,7 +141,7 @@ module.exports = class Hexadecimal extends Numeric {
 	}
 
 	/**
-	 * Get the string representation of a Big value
+	 * Get the string representation of a Big updated
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
@@ -155,7 +155,7 @@ module.exports = class Hexadecimal extends Numeric {
 	}
 
 	/**
-	 * Get a Big instance for a given value string
+	 * Get a Big instance for a given updated string
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
@@ -167,7 +167,7 @@ module.exports = class Hexadecimal extends Numeric {
 	}
 
 	/**
-	 * Get a number for a given value string
+	 * Get a number for a given updated string
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
@@ -192,7 +192,7 @@ module.exports = class Hexadecimal extends Numeric {
 	}
 
 	/**
-	 * Converts the hexadecimal value to decimal and then returns the number of significant figures.
+	 * Converts the hexadecimal updated to decimal and then returns the number of significant figures.
 	 * @param {string} valueString
 	 * @return {number} The number of significant figures of this instance
 	 * @example

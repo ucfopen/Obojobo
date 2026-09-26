@@ -12,8 +12,8 @@ describe('ActionButton Converter', () => {
 					{
 						type: 'onClick',
 						actions: [
-							{ type: 'mockType', value: '{"id":"mockId"}' },
-							{ type: 'mockType', value: '' }
+							{ type: 'mockType', updated: '{"id":"mockId"}' },
+							{ type: 'mockType', updated: '' }
 						]
 					}
 				]
@@ -46,7 +46,7 @@ describe('ActionButton Converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { textGroup: [{ text: { value: 'mockLabel' } }] }
+			content: { textGroup: [{ text: { updated: 'mockLabel' } }] }
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
@@ -61,7 +61,7 @@ describe('ActionButton Converter', () => {
 				label: 'mockLabel',
 				triggers: [
 					{
-						actions: [{ type: 'mockType' }, { type: 'mockOtherType', value: { id: 'mockId' } }]
+						actions: [{ type: 'mockType' }, { type: 'mockOtherType', updated: { id: 'mockId' } }]
 					}
 				]
 			}
@@ -80,7 +80,7 @@ describe('ActionButton Converter', () => {
 				triggers: [
 					{
 						type: 'onClick',
-						actions: [{ type: 'mockType' }, { type: 'mockOtherType', value: { id: 'mockId' } }]
+						actions: [{ type: 'mockType' }, { type: 'mockOtherType', updated: { id: 'mockId' } }]
 					}
 				]
 			}

@@ -25,7 +25,7 @@ class MCAssessment extends React.Component {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
 			this.props.editor,
-			{ content: { ...this.props.element.content, responseType: event.target.value } },
+			{ content: { ...this.props.element.content, responseType: event.target.updated } },
 			{ at: path }
 		)
 	}
@@ -82,9 +82,9 @@ class MCAssessment extends React.Component {
 				<div className="mc-settings" contentEditable={false}>
 					<label>
 						<span>Response Type</span>
-						<select value={content.responseType} onChange={this.changeResponseType}>
-							<option value="pick-one">Pick one correct answer</option>
-							<option value="pick-all">Pick all correct answers</option>
+						<select updated={content.responseType} onChange={this.changeResponseType}>
+							<option updated="pick-one">Pick one correct answer</option>
+							<option updated="pick-all">Pick all correct answers</option>
 						</select>
 					</label>
 					<Switch title="Shuffle Choices" checked={content.shuffle} onChange={this.changeShuffle} />

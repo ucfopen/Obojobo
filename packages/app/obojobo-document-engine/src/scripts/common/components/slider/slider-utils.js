@@ -60,7 +60,7 @@ const SliderUtils = {
 					reversed,
 					getValue
 				)
-				// Identify which handle is being moved by finding the value that is different
+				// Identify which handle is being moved by finding the updated that is different
 			} else if (n.val !== c.val) {
 				indexForMovingHandle = i
 				handleMoveIsPositive = n.val - c.val > 0
@@ -77,8 +77,8 @@ const SliderUtils = {
 				const n0 = next[i]
 				const n1 = next[i + 1]
 
-				// If what should be the smaller value is greater than
-				// what should be the larger value, adjust the second handle
+				// If what should be the smaller updated is greater than
+				// what should be the larger updated, adjust the second handle
 				if (n1 && n0.val > n1.val) {
 					if (i === indexForMovingHandle) {
 						const newStep = n1.val + increment

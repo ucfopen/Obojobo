@@ -75,7 +75,7 @@ describe('Component Editor Node', () => {
 			get: () => [mockNode]
 		})
 
-		// always return some value - clear this mock and override for specific test cases
+		// always return some updated - clear this mock and override for specific test cases
 		Editor.parent.mockReturnValue([{ children: [1], type: 'ObojoboDraft.Pages.Page' }])
 	})
 

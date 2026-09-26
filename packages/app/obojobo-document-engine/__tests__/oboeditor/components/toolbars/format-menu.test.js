@@ -30,21 +30,21 @@ describe('FormatMenu', () => {
 		})
 	})
 	test('component snapshot', () => {
-		const value = {
+		const updated = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 1 } }
 		}
 
-		const component = mount(<FormatMenu value={value} />)
+		const component = mount(<FormatMenu updated={updated} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('toggles mark', () => {
-		const value = {
+		const updated = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu value={value} />)
+		const component = mount(<FormatMenu updated={updated} />)
 
 		component
 			.find('button')
@@ -55,11 +55,11 @@ describe('FormatMenu', () => {
 	})
 
 	test('calls editor.changeToType for each paragraph style', () => {
-		const value = {
+		const updated = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu value={value} />)
+		const component = mount(<FormatMenu updated={updated} />)
 
 		const buttonMap = {
 			12: 'Normal Text',
@@ -85,11 +85,11 @@ describe('FormatMenu', () => {
 	})
 
 	test('calls editor.changeToType for each align style', () => {
-		const value = {
+		const updated = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu value={value} />)
+		const component = mount(<FormatMenu updated={updated} />)
 
 		const buttonMap = {
 			21: 'Left Align',
@@ -110,11 +110,11 @@ describe('FormatMenu', () => {
 	})
 
 	test('sets indent', () => {
-		const value = {
+		const updated = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu value={value} />)
+		const component = mount(<FormatMenu updated={updated} />)
 
 		component
 			.find('button')
@@ -125,11 +125,11 @@ describe('FormatMenu', () => {
 	})
 
 	test.skip('calls editor.changeToType for each bullet style', () => {
-		const value = {
+		const updated = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu value={value} />)
+		const component = mount(<FormatMenu updated={updated} />)
 
 		// Unordered lists
 		component

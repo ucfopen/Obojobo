@@ -13,7 +13,7 @@ const generatePage = () => ({
 				textGroup: [
 					{
 						text: {
-							value: ''
+							updated: ''
 						}
 					}
 				]
@@ -27,7 +27,7 @@ const generatePage = () => ({
 				textGroup: [
 					{
 						text: {
-							value: ''
+							updated: ''
 						}
 					}
 				]

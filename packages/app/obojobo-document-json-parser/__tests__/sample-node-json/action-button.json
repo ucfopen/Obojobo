@@ -8,7 +8,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -19,7 +19,7 @@
 			{
 				"data": null,
 				"text": {
-					"value": "Example Button",
+					"updated": "Example Button",
 					"styleList": []
 				}
 			}

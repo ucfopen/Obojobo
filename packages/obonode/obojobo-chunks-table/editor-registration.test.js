@@ -145,7 +145,7 @@ describe('Table editor', () => {
 
 	test('plugins.onKeyDown deals with random key press', () => {
 		const editor = {
-			value: {
+			updated: {
 				blocks: [
 					{
 						key: 'mockBlockKey'

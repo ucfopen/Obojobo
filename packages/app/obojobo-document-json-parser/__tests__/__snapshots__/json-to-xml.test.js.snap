@@ -11,7 +11,7 @@ exports[`JSON to XML Parser Converts action-button.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -63,9 +63,9 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			<Text id=\\"63b4fe5e-e0d7-4909-9819-55bcbde08267\\">
 				<textGroup>
 					<t>The review type describes how answers will be displayed after an attempt has ended.</t>
-					<t>A value of <code>never</code> means that after every attempt, the student will only be able to see if an answered question is incorrect.</t>
-					<t>A value of <code>always</code> means that the student will see both incorrect responses and the correct answers after every attempt.</t>
-					<t>A value of no-attempts-remaining means that the student will see whether or not they got a question wrong after every attempt. Correct answers are shown after the final attempt.</t>
+					<t>A updated of <code>never</code> means that after every attempt, the student will only be able to see if an answered question is incorrect.</t>
+					<t>A updated of <code>always</code> means that the student will see both incorrect responses and the correct answers after every attempt.</t>
+					<t>A updated of no-attempts-remaining means that the student will see whether or not they got a question wrong after every attempt. Correct answers are shown after the final attempt.</t>
 				</textGroup>
 			</Text>
 			<Heading headingLevel=\\"3\\" id=\\"55ec109c-9486-43c9-affe-6e03abd0c205\\">
@@ -91,7 +91,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 					<trigger type=\\"onClick\\">
 						<actions>
 							<action type=\\"assessment:startAttempt\\">
-								<value id=\\"my-assessment\\"/>
+								<updated id=\\"my-assessment\\"/>
 							</action>
 						</actions>
 					</trigger>
@@ -151,7 +151,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			</Text>
 			<Text id=\\"367a23f3-a67f-425a-87f2-a9eae6a7b6f0\\">
 				<textGroup>
-					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l<code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
+					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single updated, or as the variable <b>$l<code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"c39ac706-f041-42e0-b0b4-6414fb69aed0\\">
@@ -210,7 +210,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 							<trigger type=\\"onClick\\">
 								<actions>
 									<action type=\\"assessment:startAttempt\\">
-										<value id=\\"my-assessment\\"/>
+										<updated id=\\"my-assessment\\"/>
 									</action>
 								</actions>
 							</trigger>
@@ -233,7 +233,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -250,7 +250,7 @@ exports[`JSON to XML Parser Converts break.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -275,7 +275,7 @@ exports[`JSON to XML Parser Converts code.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -292,7 +292,7 @@ exports[`JSON to XML Parser Converts content.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -312,7 +312,7 @@ exports[`JSON to XML Parser Converts figure.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -332,7 +332,7 @@ exports[`JSON to XML Parser Converts heading.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -349,7 +349,7 @@ exports[`JSON to XML Parser Converts iframe.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -377,7 +377,7 @@ exports[`JSON to XML Parser Converts list.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -394,7 +394,7 @@ exports[`JSON to XML Parser Converts mathequation.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -416,7 +416,7 @@ exports[`JSON to XML Parser Converts mcanswer.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -442,7 +442,7 @@ exports[`JSON to XML Parser Converts mcassessment.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -466,7 +466,7 @@ exports[`JSON to XML Parser Converts mcchoice.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -488,7 +488,7 @@ exports[`JSON to XML Parser Converts mcfeedback.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -505,7 +505,7 @@ exports[`JSON to XML Parser Converts module.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -522,7 +522,7 @@ exports[`JSON to XML Parser Converts page.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -569,7 +569,7 @@ exports[`JSON to XML Parser Converts question.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -604,7 +604,7 @@ exports[`JSON to XML Parser Converts questionbank.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -737,7 +737,7 @@ exports[`JSON to XML Parser Converts table.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -757,7 +757,7 @@ exports[`JSON to XML Parser Converts text.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>
@@ -774,7 +774,7 @@ exports[`JSON to XML Parser Converts youtube.json to xml 1`] = `
 			<trigger type=\\"onClick\\">
 				<actions>
 					<action type=\\"nav:goto\\">
-						<value id=\\"example-id\\"/>
+						<updated id=\\"example-id\\"/>
 					</action>
 				</actions>
 			</trigger>

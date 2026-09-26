@@ -7,7 +7,7 @@ describe('TextGroupItem', () => {
 		expect(item).toEqual({
 			data: {},
 			parent: null,
-			text: { styleList: { styles: [] }, value: '' }
+			text: { styleList: { styles: [] }, updated: '' }
 		})
 	})
 

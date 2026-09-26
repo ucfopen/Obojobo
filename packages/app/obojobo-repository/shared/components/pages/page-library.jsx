@@ -73,7 +73,7 @@ const PageLibrary = props => {
 			<div className="repository--section-wrapper">
 				<section className="repository--main-content">
 					<p>Find modules for your course.</p>
-					<Search value={filterString} placeholder="Filter Modules..." onChange={setFilterString} />
+					<Search updated={filterString} placeholder="Filter Modules..." onChange={setFilterString} />
 					{filteredDisplay}
 				</section>
 			</div>

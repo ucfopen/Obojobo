@@ -15,7 +15,7 @@ describe('sharedAPIMethods', () => {
 			return Promise.resolve({
 				json: () =>
 					Promise.resolve({
-						value: [
+						updated: [
 							{
 								draftId,
 								userRoles: ['A'],

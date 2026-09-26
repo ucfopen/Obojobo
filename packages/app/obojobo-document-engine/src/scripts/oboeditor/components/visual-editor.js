@@ -71,7 +71,7 @@ class VisualEditor extends React.Component {
 		}
 
 		this.state = {
-			value: json,
+			updated: json,
 			saveState: 'saveSuccessful',
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
@@ -333,12 +333,12 @@ class VisualEditor extends React.Component {
 		}
 	}
 
-	onChange(value) {
+	onChange(updated) {
 		// Save the previous selection in case the editor is unfocused
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
-		this.setState({ value })
+		this.setState({ updated })
 		this.markUnsaved()
 	}
 
@@ -358,7 +358,7 @@ class VisualEditor extends React.Component {
 		// If updating from an existing page to no page, set the user alert message
 		if (prevProps.page && !this.props.page) {
 			return this.setState({
-				value: [{ text: 'No content available, create a page to start editing' }],
+				updated: [{ text: 'No content available, create a page to start editing' }],
 				editable: false
 			})
 		}
@@ -367,21 +367,21 @@ class VisualEditor extends React.Component {
 		if (!prevProps.page && this.props.page) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
+			return this.setState({ updated: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
 				this.setEditorFocus()
 			})
 		}
 
 		// Both page and previous page are garunteed to not be null here
-		// Save changes and update value when switching pages
+		// Save changes and update updated when switching pages
 		if (prevProps.page.id !== this.props.page.id) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
 			if (OboModel.models[prevProps.page.id]) {
-				this.exportToJSON(prevProps.page, prevState.value)
+				this.exportToJSON(prevProps.page, prevState.updated)
 			}
-			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
+			return this.setState({ updated: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
 				this.setEditorFocus()
 			})
@@ -465,11 +465,11 @@ class VisualEditor extends React.Component {
 		})
 	}
 
-	exportToJSON(page, value) {
+	exportToJSON(page, updated) {
 		if (page === null) return
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = this.assessment.slateToObo(value[0])
+			const json = this.assessment.slateToObo(updated[0])
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
 			page.children.reset(childrenModels)
@@ -480,7 +480,7 @@ class VisualEditor extends React.Component {
 			const json = {}
 			json.children = []
 
-			value.forEach(child => {
+			updated.forEach(child => {
 				const oboChild = Component.helpers.slateToObo(child)
 				json.children.push(oboChild)
 			})
@@ -495,7 +495,7 @@ class VisualEditor extends React.Component {
 
 	// convenience method to prevent rerendring nav and duplicate code
 	exportCurrentToJSON() {
-		this.exportToJSON(this.props.page, this.state.value)
+		this.exportToJSON(this.props.page, this.state.updated)
 	}
 
 	importFromJSON() {
@@ -642,7 +642,7 @@ class VisualEditor extends React.Component {
 
 		return (
 			<div className={className} ref={this.pageEditorContainerRef}>
-				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange}>
+				<Slate editor={this.editor} updated={this.state.updated} onChange={this.onChange}>
 					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					{this.props.readOnly ? null : (
 						<div className="draft-toolbars">
@@ -663,7 +663,7 @@ class VisualEditor extends React.Component {
 								togglePlaceholders={this.togglePlaceholders}
 								showPlaceholders={this.state.showPlaceholders}
 							/>
-							<ContentToolbar editor={this.editor} value={this.state.value} />
+							<ContentToolbar editor={this.editor} updated={this.state.updated} />
 						</div>
 					)}
 					<ObjectiveProvider state={this.state}>

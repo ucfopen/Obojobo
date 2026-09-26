@@ -6,7 +6,7 @@ import ErrorDialog from '../components/modal/error-dialog'
 const ErrorUtil = {
 	show(title, errorMessage) {
 		return Dispatcher.trigger('modal:show', {
-			value: {
+			updated: {
 				component: <ErrorDialog title={title}>{errorMessage}</ErrorDialog>
 			}
 		})
@@ -14,7 +14,7 @@ const ErrorUtil = {
 
 	errorResponse(res) {
 		const title = (() => {
-			switch (res.value.type) {
+			switch (res.updated.type) {
 				case 'input':
 					return 'Bad Input'
 				case 'unexpected':
@@ -23,7 +23,7 @@ const ErrorUtil = {
 					return 'Rejected'
 			}
 		})()
-		return ErrorUtil.show(title, res.value.message)
+		return ErrorUtil.show(title, res.updated.message)
 	}
 }
 

@@ -4,7 +4,7 @@ import NumericRule from '../../rule/numeric-rule'
 
 import Big from 'big.js'
 import NumericEntryRange from '../../range/numeric-entry-range'
-import BigValueRange from '../../range/big-value-range'
+import BigValueRange from '../../range/big-updated-range'
 
 describe('NumericRule', () => {
 	test.each`
@@ -29,16 +29,16 @@ describe('NumericRule', () => {
 	test('getRuleErrorValue calls the expected method', () => {
 		const percSpy = jest
 			.spyOn(NumericRule, 'getRulePercentError')
-			.mockImplementation(() => 'mock-percent-value')
+			.mockImplementation(() => 'mock-percent-updated')
 		const absSpy = jest
 			.spyOn(NumericRule, 'getRuleAbsoluteError')
-			.mockImplementation(() => 'mock-absolute-value')
+			.mockImplementation(() => 'mock-absolute-updated')
 
-		expect(NumericRule.getRuleErrorValue({ percentError: 1 })).toBe('mock-percent-value')
+		expect(NumericRule.getRuleErrorValue({ percentError: 1 })).toBe('mock-percent-updated')
 		expect(percSpy).toHaveBeenCalledTimes(1)
 		expect(absSpy).toHaveBeenCalledTimes(0)
 
-		expect(NumericRule.getRuleErrorValue({ absoluteError: 1 })).toBe('mock-absolute-value')
+		expect(NumericRule.getRuleErrorValue({ absoluteError: 1 })).toBe('mock-absolute-updated')
 		expect(percSpy).toHaveBeenCalledTimes(1)
 		expect(absSpy).toHaveBeenCalledTimes(1)
 
@@ -70,19 +70,19 @@ describe('NumericRule', () => {
 		}).toThrow('Bad percentError error')
 	})
 
-	test('getRulePercentError throws error if checked value is zero', () => {
+	test('getRulePercentError throws error if checked updated is zero', () => {
 		expect(() => {
 			NumericRule.getRulePercentError({ percentError: 1 }, new NumericEntryRange('0'))
-		}).toThrow('percentError not allowed when value is zero')
+		}).toThrow('percentError not allowed when updated is zero')
 		expect(() => {
 			NumericRule.getRulePercentError({ percentError: 1 }, new NumericEntryRange('[0,*)'))
-		}).toThrow('percentError not allowed when value is zero')
+		}).toThrow('percentError not allowed when updated is zero')
 		expect(() => {
 			NumericRule.getRulePercentError({ percentError: 1 }, new NumericEntryRange('(*,0]'))
-		}).toThrow('percentError not allowed when value is zero')
+		}).toThrow('percentError not allowed when updated is zero')
 	})
 
-	test('getRuleAbsoluteError returns the expected value', () => {
+	test('getRuleAbsoluteError returns the expected updated', () => {
 		expect(NumericRule.getRuleAbsoluteError({})).toEqual(Big(0))
 		expect(NumericRule.getRuleAbsoluteError({ absoluteError: false })).toEqual(Big(0))
 		expect(NumericRule.getRuleAbsoluteError({ absoluteError: 9 })).toEqual(Big(9))
@@ -173,12 +173,12 @@ describe('NumericRule', () => {
 		}).toThrow('sigFigs cannot be defined if fractional values are allowed')
 	})
 
-	test('getRuleDecimalDigits returns an infinte BigValueRange if not given a digits value', () => {
+	test('getRuleDecimalDigits returns an infinte BigValueRange if not given a digits updated', () => {
 		expect(NumericRule.getRuleDecimalDigits({})).toEqual(new BigValueRange('*'))
 		expect(NumericRule.getRuleDecimalDigits({ decimals: null })).toEqual(new BigValueRange('*'))
 	})
 
-	test('getRuleDecimalDigits returns a BigValueRange of the given value', () => {
+	test('getRuleDecimalDigits returns a BigValueRange of the given updated', () => {
 		expect(NumericRule.getRuleDecimalDigits({ decimals: '0' })).toEqual(new BigValueRange('0'))
 		expect(NumericRule.getRuleDecimalDigits({ decimals: '[0,2]' })).toEqual(
 			new BigValueRange('[0,2]')
@@ -203,7 +203,7 @@ describe('NumericRule', () => {
 		}).toThrow('decimals range must be 0 or larger')
 	})
 
-	test('getIsInteger returns the config value if explicity boolean', () => {
+	test('getIsInteger returns the config updated if explicity boolean', () => {
 		expect(NumericRule.getIsInteger({ isInteger: true })).toBe(true)
 		expect(NumericRule.getIsInteger({ isInteger: false })).toBe(false)
 		expect(NumericRule.getIsInteger({ isInteger: 1 })).toBe(null)
@@ -212,7 +212,7 @@ describe('NumericRule', () => {
 		expect(NumericRule.getIsInteger({})).toBe(null)
 	})
 
-	test('getRuleIsFractionReduced returns the config value if explicity boolean', () => {
+	test('getRuleIsFractionReduced returns the config updated if explicity boolean', () => {
 		expect(NumericRule.getRuleIsFractionReduced({ isFractionReduced: true })).toBe(true)
 		expect(NumericRule.getRuleIsFractionReduced({ isFractionReduced: false })).toBe(false)
 		expect(NumericRule.getRuleIsFractionReduced({ isFractionReduced: 1 })).toBe(null)
@@ -221,7 +221,7 @@ describe('NumericRule', () => {
 		expect(NumericRule.getRuleIsFractionReduced({})).toBe(null)
 	})
 
-	test('getRuleIsValidScientific returns the config value if explicity boolean', () => {
+	test('getRuleIsValidScientific returns the config updated if explicity boolean', () => {
 		expect(NumericRule.getRuleIsValidScientific({ isValidScientific: true })).toBe(true)
 		expect(NumericRule.getRuleIsValidScientific({ isValidScientific: false })).toBe(false)
 		expect(NumericRule.getRuleIsValidScientific({ isValidScientific: 1 })).toBe(null)
@@ -235,7 +235,7 @@ describe('NumericRule', () => {
 		expect(NumericRule.getRuleScore({ score: null })).toBe(0)
 	})
 
-	test('getRuleScore returns a float value of the score', () => {
+	test('getRuleScore returns a float updated of the score', () => {
 		expect(NumericRule.getRuleScore({ score: 0 })).toBe(0)
 		expect(NumericRule.getRuleScore({ score: 12.34 })).toBe(12.34)
 		expect(NumericRule.getRuleScore({ score: 100 })).toBe(100)
@@ -244,7 +244,7 @@ describe('NumericRule', () => {
 		expect(NumericRule.getRuleScore({ score: '100' })).toBe(100)
 	})
 
-	test('getRuleScore throws error if given bad score value', () => {
+	test('getRuleScore throws error if given bad score updated', () => {
 		expect(() => {
 			NumericRule.getRuleScore({ score: -1 })
 		}).toThrowError('Score must be 0-100')
@@ -263,16 +263,16 @@ describe('NumericRule', () => {
 		expect(NumericRule.getRuleRound({ round: false })).toBe('none')
 	})
 
-	test('getRuleRound returns a valid round value', () => {
+	test('getRuleRound returns a valid round updated', () => {
 		expect(NumericRule.getRuleRound({ round: 'none' })).toBe('none')
 		expect(NumericRule.getRuleRound({ round: 'decimals' })).toBe('decimals')
 		expect(NumericRule.getRuleRound({ round: 'sig-figs' })).toBe('sig-figs')
 	})
 
-	test('getRuleRound throws an error if given an invalid round value', () => {
+	test('getRuleRound throws an error if given an invalid round updated', () => {
 		expect(() => {
 			NumericRule.getRuleRound({ round: 'abc123' })
-		}).toThrow('Invalid round value')
+		}).toThrow('Invalid round updated')
 	})
 
 	//////
@@ -305,22 +305,22 @@ describe('NumericRule', () => {
 
 	test('getRuleValue returns an infinite range if nothing given', () => {
 		expect(NumericRule.getRuleValue({})).toEqual(new NumericEntryRange('(*,*)'))
-		expect(NumericRule.getRuleValue({ value: null })).toEqual(new NumericEntryRange('(*,*)'))
-		expect(NumericRule.getRuleValue({ value: false })).toEqual(new NumericEntryRange('(*,*)'))
-		expect(NumericRule.getRuleValue({ value: 0 })).toEqual(new NumericEntryRange('0'))
+		expect(NumericRule.getRuleValue({ updated: null })).toEqual(new NumericEntryRange('(*,*)'))
+		expect(NumericRule.getRuleValue({ updated: false })).toEqual(new NumericEntryRange('(*,*)'))
+		expect(NumericRule.getRuleValue({ updated: 0 })).toEqual(new NumericEntryRange('0'))
 	})
 
 	test('getRuleValue throws error when given an invalid range', () => {
 		expect(() => {
-			NumericRule.getRuleValue({ value: '' })
-		}).toThrow('Invalid range given for value')
+			NumericRule.getRuleValue({ updated: '' })
+		}).toThrow('Invalid range given for updated')
 	})
 
 	test('getRuleValue returns a NumericEntryRange', () => {
-		expect(NumericRule.getRuleValue({ value: '0' })).toEqual(new NumericEntryRange('0'))
-		expect(NumericRule.getRuleValue({ value: '1.77' })).toEqual(new NumericEntryRange('1.77'))
-		expect(NumericRule.getRuleValue({ value: '(*,*)' })).toEqual(new NumericEntryRange('(*,*)'))
-		expect(NumericRule.getRuleValue({ value: '[0xF0,0xFF]' })).toEqual(
+		expect(NumericRule.getRuleValue({ updated: '0' })).toEqual(new NumericEntryRange('0'))
+		expect(NumericRule.getRuleValue({ updated: '1.77' })).toEqual(new NumericEntryRange('1.77'))
+		expect(NumericRule.getRuleValue({ updated: '(*,*)' })).toEqual(new NumericEntryRange('(*,*)'))
+		expect(NumericRule.getRuleValue({ updated: '[0xF0,0xFF]' })).toEqual(
 			new NumericEntryRange('[0xF0,0xFF]')
 		)
 	})
@@ -342,7 +342,7 @@ describe('NumericRule', () => {
 				round: true,
 				scientificTypes: true,
 				blackberries: true,
-				value: true
+				updated: true
 			})
 		).toEqual(['blueberries', 'strawberries', 'blackberries'])
 	})
@@ -361,7 +361,7 @@ describe('NumericRule', () => {
 					score: 100,
 					round: 'decimals',
 					scientificTypes: 'e',
-					value: '6.78'
+					updated: '6.78'
 				},
 				['decimal', 'scientific']
 			)

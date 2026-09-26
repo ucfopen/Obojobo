@@ -101,13 +101,13 @@ class QuestionBank extends React.Component {
 
 	changeChooseType(event) {
 		event.stopPropagation()
-		const chooseAll = event.target.value === 'all'
+		const chooseAll = event.target.updated === 'all'
 		this.setState({ chooseAll }) // update the display now
 		this.updateNodeFromState()
 	}
 
 	onChangeContent(key, event) {
-		let val = event.target.value
+		let val = event.target.updated
 		if (key === 'choose') val = Math.max(parseInt(val, 10), 1)
 		const newContent = { [key]: val }
 		this.setState(newContent) // update the display now
@@ -124,7 +124,7 @@ class QuestionBank extends React.Component {
 						<input
 							type="radio"
 							name={radioGroupName}
-							value="all"
+							updated="all"
 							checked={this.state.chooseAll}
 							onChange={this.changeChooseType}
 						/>
@@ -135,7 +135,7 @@ class QuestionBank extends React.Component {
 						<input
 							type="radio"
 							name={radioGroupName}
-							value="pick"
+							updated="pick"
 							checked={!this.state.chooseAll}
 							onChange={this.changeChooseType}
 						/>
@@ -144,7 +144,7 @@ class QuestionBank extends React.Component {
 					<input
 						type="number"
 						min="1"
-						value={this.state.choose}
+						updated={this.state.choose}
 						disabled={this.state.chooseAll}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'choose')}
@@ -153,13 +153,13 @@ class QuestionBank extends React.Component {
 				<label className="select">
 					How should questions be selected?
 					<select
-						value={this.state.select}
+						updated={this.state.select}
 						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'select')}
 					>
-						<option value="sequential">In order</option>
-						<option value="random">Randomly</option>
-						<option value="random-unseen">Randomly, with no repeats</option>
+						<option updated="sequential">In order</option>
+						<option updated="random">Randomly</option>
+						<option updated="random-unseen">Randomly, with no repeats</option>
 					</select>
 				</label>
 			</div>

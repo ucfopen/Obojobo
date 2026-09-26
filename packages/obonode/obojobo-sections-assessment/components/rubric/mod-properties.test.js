@@ -95,7 +95,7 @@ describe('ModProperties Modal', () => {
 		expect(component.state('mods').length).toEqual(2)
 	})
 
-	test('ModProperties changes lower value', () => {
+	test('ModProperties changes lower updated', () => {
 		const component = mount(
 			<ModProperties
 				mods={[
@@ -110,12 +110,12 @@ describe('ModProperties Modal', () => {
 		component
 			.find('input')
 			.at(1)
-			.simulate('change', { target: { value: '1' } })
+			.simulate('change', { target: { updated: '1' } })
 
 		expect(component.state('mods')[0].attemptCondition).toEqual('[$last_attempt,1]')
 	})
 
-	test('ModProperties changes upper value', () => {
+	test('ModProperties changes upper updated', () => {
 		const component = mount(
 			<ModProperties
 				mods={[
@@ -130,7 +130,7 @@ describe('ModProperties Modal', () => {
 		component
 			.find('input')
 			.at(2)
-			.simulate('change', { target: { value: '1' } })
+			.simulate('change', { target: { updated: '1' } })
 
 		expect(component.state('mods')[0].attemptCondition).toEqual('$last_attempt')
 	})
@@ -151,7 +151,7 @@ describe('ModProperties Modal', () => {
 		component
 			.find('input')
 			.at(3)
-			.simulate('change', { target: { value: 1 } })
+			.simulate('change', { target: { updated: 1 } })
 
 		expect(component.state('mods')[0].reward).toEqual(3)
 	})

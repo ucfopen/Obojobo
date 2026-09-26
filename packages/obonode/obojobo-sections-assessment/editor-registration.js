@@ -177,9 +177,9 @@ const Assessment = {
 								passedResult: 100,
 								unableToPassResult: 0,
 								passingAttemptScore: 100,
-								passedType: 'set-value',
-								failedType: 'set-value',
-								unableToPassType: 'no-value',
+								passedType: 'set-updated',
+								failedType: 'set-updated',
+								unableToPassType: 'no-updated',
 								mods: []
 							},
 							children: [{ text: '' }]

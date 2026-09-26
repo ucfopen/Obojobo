@@ -101,7 +101,7 @@ describe('ActionButton adapter', () => {
 					items: [
 						{
 							text: {
-								value: 'mockItem'
+								updated: 'mockItem'
 							}
 						}
 					]

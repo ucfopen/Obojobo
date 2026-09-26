@@ -31,7 +31,7 @@ const FileToolbarViewer = props => {
 				at: Editor.path(editor, sel, { edge: 'start' }),
 				mode: 'lowest',
 				match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-			}).next().value
+			}).next().updated
 		})()
 
 		const selectedNode = selectedNodeData?.[0] ?? null

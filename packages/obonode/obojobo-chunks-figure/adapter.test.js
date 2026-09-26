@@ -69,7 +69,7 @@ describe('Figure adapter', () => {
 			content: {
 				url: 'http://website.com/image.jpg',
 				alt: 'An image',
-				textGroup: [{ text: { value: 'mock-tg' } }]
+				textGroup: [{ text: { updated: 'mock-tg' } }]
 			}
 		}
 		const model = new OboModel(attrs)
@@ -82,7 +82,7 @@ describe('Figure adapter', () => {
 				textGroup: [
 					{
 						text: {
-							value: 'mock-tg',
+							updated: 'mock-tg',
 							styleList: null
 						},
 						data: {}
@@ -102,7 +102,7 @@ describe('Figure adapter', () => {
 	test('toText creates a text representation (With caption)', () => {
 		const attrs = {
 			content: {
-				textGroup: [{ text: { value: 'mock-tg' } }],
+				textGroup: [{ text: { updated: 'mock-tg' } }],
 				url: 'http://website.com/image.jpg',
 				alt: 'An image'
 			}

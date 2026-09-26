@@ -24,11 +24,11 @@ describe('Objective Input', () => {
 
 		// Writing mock label and description
 		component.find('input#objective-label').simulate('change', {
-			target: { value: 'mock-label' }
+			target: { updated: 'mock-label' }
 		})
 
 		component.find('input#objective-input').simulate('change', {
-			target: { value: 'mock-description' }
+			target: { updated: 'mock-description' }
 		})
 
 		// Actual testing starts here
@@ -64,7 +64,7 @@ describe('Objective Input', () => {
 
 		// Writing mock description
 		component.find('input#objective-input').simulate('change', {
-			target: { value: 'mock-description' }
+			target: { updated: 'mock-description' }
 		})
 
 		// Actual testing starts here
@@ -85,7 +85,7 @@ describe('Objective Input', () => {
 
 		// Writing mock label
 		component.find('input#objective-label').simulate('change', {
-			target: { value: 'mock-label' }
+			target: { updated: 'mock-label' }
 		})
 
 		// Actual testing starts here

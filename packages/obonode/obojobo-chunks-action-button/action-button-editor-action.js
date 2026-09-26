@@ -5,13 +5,13 @@ const ActionButtonEditorAction = props => {
 
 	switch (props.type) {
 		case 'nav:goto':
-			if (props.value.id) {
-				description = `Go to ${props.value.id}`
+			if (props.updated.id) {
+				description = `Go to ${props.updated.id}`
 			} else {
 				description = 'Go to ""'
 			}
 			// eslint-disable-next-line no-undefined
-			if (props.value.id && props.value.ignoreLock === undefined ? true : props.value.ignoreLock) {
+			if (props.updated.id && props.updated.ignoreLock === undefined ? true : props.updated.ignoreLock) {
 				description = `${description} (Ignore Navigation Lock)`
 			}
 
@@ -23,8 +23,8 @@ const ActionButtonEditorAction = props => {
 			description = 'Go to the next page'
 			break
 		case 'nav:openExternalLink':
-			if (props.value.url) {
-				description = `Open ${props.value.url}`
+			if (props.updated.url) {
+				description = `Open ${props.updated.url}`
 			} else {
 				description = 'Open ""'
 			}
@@ -46,10 +46,10 @@ const ActionButtonEditorAction = props => {
 			description = 'Toggle the navigation drawer'
 			break
 		case 'assessment:startAttempt':
-			description = `Start an attempt for "${props.value.id}"`
+			description = `Start an attempt for "${props.updated.id}"`
 			break
 		case 'assessment:endAttempt':
-			description = `End an attempt for "${props.value.id}"`
+			description = `End an attempt for "${props.updated.id}"`
 			break
 		case 'viewer:alert':
 			description = 'Display a popup message'
@@ -58,7 +58,7 @@ const ActionButtonEditorAction = props => {
 			description = 'Scroll to the top of the page'
 			break
 		case 'focus:component':
-			description = `Focus on "${props.value.id}"`
+			description = `Focus on "${props.updated.id}"`
 			break
 	}
 

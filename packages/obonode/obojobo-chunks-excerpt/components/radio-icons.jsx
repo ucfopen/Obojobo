@@ -12,7 +12,7 @@ const RadioIcons = ({ name, options, selectedOption, ariaLabel, onChangeOption }
 	const onChange = event => {
 		event.preventDefault()
 
-		onChangeOption(event.target.value)
+		onChangeOption(event.target.updated)
 	}
 
 	return (
@@ -32,7 +32,7 @@ const RadioIcons = ({ name, options, selectedOption, ariaLabel, onChangeOption }
 						<input
 							type="radio"
 							name={name}
-							value={o.label}
+							updated={o.label}
 							checked={selectedOption === o.label}
 							onChange={onChange}
 						/>

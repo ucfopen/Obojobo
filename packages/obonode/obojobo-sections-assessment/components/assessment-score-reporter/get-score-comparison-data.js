@@ -1,8 +1,8 @@
 // import Common from 'Common'
 // const { findItemsWithMaxPropValue } = Common.findItemsWithMaxPropValue
-import findItemsWithMaxPropValue from 'obojobo-document-engine/src/scripts/common/util/find-items-with-max-prop-value'
-// import findItemsWithMaxPropValue from '../../../../app/obojobo-document-engine/src/scripts/common/util/find-items-with-max-prop-value'
-// import findItemsWithMaxPropValue from '../../../common/util/find-items-with-max-prop-value'
+import findItemsWithMaxPropValue from 'obojobo-document-engine/src/scripts/common/util/find-items-with-max-prop-updated'
+// import findItemsWithMaxPropValue from '../../../../app/obojobo-document-engine/src/scripts/common/util/find-items-with-max-prop-updated'
+// import findItemsWithMaxPropValue from '../../../common/util/find-items-with-max-prop-updated'
 
 // app/doc-engine/src/scripts/common/util/find-gblkasd
 

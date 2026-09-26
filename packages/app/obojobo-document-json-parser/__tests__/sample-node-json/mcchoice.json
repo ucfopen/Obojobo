@@ -9,7 +9,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -33,7 +33,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "An answer",
+									"updated": "An answer",
 									"styleList": []
 								}
 							}

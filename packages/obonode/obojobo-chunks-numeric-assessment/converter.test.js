@@ -30,7 +30,7 @@ describe('NumericAssessment Converter', () => {
 				units: [
 					{
 						text: {
-							value: '',
+							updated: '',
 							styleList: null
 						},
 						data: {}
@@ -75,7 +75,7 @@ describe('NumericAssessment Converter', () => {
 													indent: 0
 												},
 												text: {
-													value: 'Feedback1',
+													updated: 'Feedback1',
 													styleList: []
 												}
 											}
@@ -117,7 +117,7 @@ describe('NumericAssessment Converter', () => {
 													indent: 0
 												},
 												text: {
-													value: 'Feedback2',
+													updated: 'Feedback2',
 													styleList: []
 												}
 											}
@@ -134,7 +134,7 @@ describe('NumericAssessment Converter', () => {
 				units: [
 					{
 						text: {
-							value: 'grams',
+							updated: 'grams',
 							styleList: []
 						},
 						data: {}

@@ -4,9 +4,9 @@ const parseRubric = el => {
 		el.elements &&
 		el.elements[0] &&
 		el.elements[0].name === 'mods' &&
-		Array.isArray(el.elements[0].value)
+		Array.isArray(el.elements[0].updated)
 	) {
-		mods = el.elements[0].value.map(child => parseMod(child))
+		mods = el.elements[0].updated.map(child => parseMod(child))
 	}
 
 	return {

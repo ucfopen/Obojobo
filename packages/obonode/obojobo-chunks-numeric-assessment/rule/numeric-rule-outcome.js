@@ -18,10 +18,10 @@ const { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } = require('./rule-error-types'
  * @example
  * const entry = new NumericEntry('4')
  * // Student's answer must have 2-3 significant figures ("4.0" or "4.00")
- * const rule = new NumericRule({ value:'4.0', numSigFigs:'[2,3]', score:100 })
+ * const rule = new NumericRule({ updated:'4.0', numSigFigs:'[2,3]', score:100 })
  * const outcome = new NumericRuleOutcome(entry, rule)
  * outcome.isMatched // false (Rule does not match)
- * outcome.scoreOutcome.isWithinError // true (Student answer is the correct value)
+ * outcome.scoreOutcome.isWithinError // true (Student answer is the correct updated)
  * outcome.isExpectedNumSigFigs // false (Student failed to specify the correct number of sig figs)
  */
 module.exports = class NumericRuleOutcome {
@@ -30,12 +30,12 @@ module.exports = class NumericRuleOutcome {
 	 * @param {NumericRule} rule
 	 * @return {NumericEntryRange}
 	 * @example
-	 * const rule = new NumericRule({ value:'2', percentError:1 })
+	 * const rule = new NumericRule({ updated:'2', percentError:1 })
 	 * const newRange = NumericRuleOutcome.getPercentErrorRange(rule)
 	 * newRange.toString() // [1,3]
 	 */
 	static getPercentErrorRange(rule) {
-		const bigValueRange = rule.value.toBigValueRange()
+		const bigValueRange = rule.updated.toBigValueRange()
 
 		// If the range is universal (infinite - "(*,*)") then there's nothing to extend...
 		if (bigValueRange.isUniversal) {
@@ -57,13 +57,13 @@ module.exports = class NumericRuleOutcome {
 	 * @param {NumericRule} rule
 	 * @return {NumericEntryRange}
 	 * @example
-	 * const rule = new NumericRule({ value:'2', absoluteError:0.5 })
+	 * const rule = new NumericRule({ updated:'2', absoluteError:0.5 })
 	 * const newRange = NumericRuleOutcome.getAbsoluteErrorRange(rule)
 	 * newRange.toString() // [1.5,2.5]
 	 */
 	static getAbsoluteErrorRange(rule) {
 		const absError = rule.errorValue
-		const bigValueRange = rule.value.toBigValueRange()
+		const bigValueRange = rule.updated.toBigValueRange()
 
 		return NumericRuleOutcome.extendBigValueRange(bigValueRange, absError)
 	}
@@ -93,7 +93,7 @@ module.exports = class NumericRuleOutcome {
 	 * @result {NumericRuleScoreOutcomeObject}
 	 */
 	static getScoreOutcome(studentNumericEntry, rule) {
-		const isExactlyCorrect = rule.value.isValueInRange(studentNumericEntry)
+		const isExactlyCorrect = rule.updated.isValueInRange(studentNumericEntry)
 
 		switch (rule.errorType) {
 			case PERCENT_ERROR:

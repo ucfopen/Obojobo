@@ -13,7 +13,7 @@ exports[`EditorTitleInput EditorTitleInput component 1`] = `
     onChange={[Function]}
     onKeyDown={[Function]}
     placeholder="Module Title"
-    value="mock-title"
+    updated="mock-title"
   />
 </div>
 `;

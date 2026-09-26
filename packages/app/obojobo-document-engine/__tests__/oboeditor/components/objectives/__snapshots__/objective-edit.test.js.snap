@@ -64,7 +64,7 @@ exports[`Objective Edit ObjectiveEdit renders correctly 1`] = `
                 onChange={[Function]}
                 placeholder="This objective's label (1.2, A, B, etc...) "
                 type="text"
-                value="mock-label"
+                updated="mock-label"
               />
             </div>
             <div>
@@ -84,7 +84,7 @@ exports[`Objective Edit ObjectiveEdit renders correctly 1`] = `
                 onChange={[Function]}
                 placeholder="Type your objective here..."
                 type="text"
-                value="description"
+                updated="description"
               />
             </div>
             <span

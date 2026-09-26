@@ -10,7 +10,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}
@@ -69,7 +69,7 @@
 											"align": "center"
 										},
 										"text": {
-											"value": "How did you do?",
+											"updated": "How did you do?",
 											"styleList": []
 										}
 									}
@@ -88,7 +88,7 @@
 											"align": "center"
 										},
 										"text": {
-											"value": "You have {{assessment:attemptsRemaining}} attempts remaining.",
+											"updated": "You have {{assessment:attemptsRemaining}} attempts remaining.",
 											"styleList": []
 										}
 									}
@@ -103,7 +103,7 @@
 								"actions": [
 									{
 										"type": "assessment:startAttempt",
-										"value": "{\"id\":\"my-assessment\"}"
+										"updated": "{\"id\":\"my-assessment\"}"
 									}
 								],
 								"triggers": [
@@ -112,7 +112,7 @@
 										"actions": [
 											{
 												"type": "assessment:startAttempt",
-												"value": {
+												"updated": {
 													"id": "my-assessment"
 												}
 											}
@@ -123,7 +123,7 @@
 									{
 										"data": null,
 										"text": {
-											"value": "Retry Assessment",
+											"updated": "Retry Assessment",
 											"styleList": []
 										}
 									}
@@ -152,7 +152,7 @@
 									"align": "center"
 								},
 								"text": {
-									"value": "Assessment",
+									"updated": "Assessment",
 									"styleList": []
 								}
 							}
@@ -171,7 +171,7 @@
 									"align": "left"
 								},
 								"text": {
-									"value": "An assessment works a little differently from a regular page.",
+									"updated": "An assessment works a little differently from a regular page.",
 									"styleList": []
 								}
 							}
@@ -187,7 +187,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "Assessment Nodes",
+									"updated": "Assessment Nodes",
 									"styleList": []
 								}
 							}
@@ -206,7 +206,7 @@
 									"align": "left"
 								},
 								"text": {
-									"value": "The assessment consists of four required nodes (Assessment Settings, Launch Page, Question Bank, and Score Actions) and a single optional node (Rubric). ",
+									"updated": "The assessment consists of four required nodes (Assessment Settings, Launch Page, Question Bank, and Score Actions) and a single optional node (Rubric). ",
 									"styleList": []
 								}
 							}
@@ -222,7 +222,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "Assessment Settings",
+									"updated": "Assessment Settings",
 									"styleList": []
 								}
 							}
@@ -241,7 +241,7 @@
 									"align": "left"
 								},
 								"text": {
-									"value": "The first required node is the assessment settings, which holds the basic parameters for the assessment. This is displayed in a box at the top of the page, and it lists the number of attempts and the review type.",
+									"updated": "The first required node is the assessment settings, which holds the basic parameters for the assessment. This is displayed in a box at the top of the page, and it lists the number of attempts and the review type.",
 									"styleList": []
 								}
 							}
@@ -259,7 +259,7 @@
 									"align": "left"
 								},
 								"text": {
-									"value": "The number of attempts controls how many times the student can take this assessment. Enter a number to limit the number of attempts, or type unlimited to allow the student to try as many times as they want.",
+									"updated": "The number of attempts controls how many times the student can take this assessment. Enter a number to limit the number of attempts, or type unlimited to allow the student to try as many times as they want.",
 									"styleList": [
 										{
 											"end": 151,
@@ -282,14 +282,14 @@
 							{
 								"data": {},
 								"text": {
-									"value": "The review type describes how answers will be displayed after an attempt has ended.",
+									"updated": "The review type describes how answers will be displayed after an attempt has ended.",
 									"styleList": []
 								}
 							},
 							{
 								"data": {},
 								"text": {
-									"value": "A value of never means that after every attempt, the student will only be able to see if an answered question is incorrect.",
+									"updated": "A updated of never means that after every attempt, the student will only be able to see if an answered question is incorrect.",
 									"styleList": [
 										{
 											"end": 16,
@@ -303,7 +303,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "A value of always means that the student will see both incorrect responses and the correct answers after every attempt.",
+									"updated": "A updated of always means that the student will see both incorrect responses and the correct answers after every attempt.",
 									"styleList": [
 										{
 											"end": 17,
@@ -317,7 +317,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "A value of no-attempts-remaining means that the student will see whether or not they got a question wrong after every attempt. Correct answers are shown after the final attempt.",
+									"updated": "A updated of no-attempts-remaining means that the student will see whether or not they got a question wrong after every attempt. Correct answers are shown after the final attempt.",
 									"styleList": []
 								}
 							}
@@ -333,7 +333,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "Launch Page",
+									"updated": "Launch Page",
 									"styleList": []
 								}
 							}
@@ -352,7 +352,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "The second required node is the launch page. This is the page that a student sees the first time they navigate to an assessment.",
+									"updated": "The second required node is the launch page. This is the page that a student sees the first time they navigate to an assessment.",
 									"styleList": []
 								}
 							}
@@ -370,7 +370,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "Somewhere on the launch page, there should be an Action Button that executes the assessment:attemptStart action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:",
+									"updated": "Somewhere on the launch page, there should be an Action Button that executes the assessment:attemptStart action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:",
 									"styleList": [
 										{
 											"end": 104,
@@ -392,7 +392,7 @@
 						"actions": [
 							{
 								"type": "assessment:startAttempt",
-								"value": "{\"id\":\"my-assessment\"}"
+								"updated": "{\"id\":\"my-assessment\"}"
 							}
 						],
 						"triggers": [
@@ -401,7 +401,7 @@
 								"actions": [
 									{
 										"type": "assessment:startAttempt",
-										"value": {
+										"updated": {
 											"id": "my-assessment"
 										}
 									}
@@ -412,7 +412,7 @@
 							{
 								"data": null,
 								"text": {
-									"value": "Start Assessment",
+									"updated": "Start Assessment",
 									"styleList": []
 								}
 							}
@@ -428,7 +428,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "Question Bank",
+									"updated": "Question Bank",
 									"styleList": []
 								}
 							}
@@ -447,7 +447,7 @@
 									"align": "left"
 								},
 								"text": {
-									"value": "The third required node is the Question Bank. This Question Bank functions the same way as a Question Bank within a page.",
+									"updated": "The third required node is the Question Bank. This Question Bank functions the same way as a Question Bank within a page.",
 									"styleList": []
 								}
 							}
@@ -463,7 +463,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "Score Actions",
+									"updated": "Score Actions",
 									"styleList": []
 								}
 							}
@@ -482,7 +482,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "The fourth required node is the list of Score Actions. Score Actions are the pages that are displayed at the top of a review after a student has completed an attempt. Different Score Actions can be displayed for different score ranges.",
+									"updated": "The fourth required node is the list of Score Actions. Score Actions are the pages that are displayed at the top of a review after a student has completed an attempt. Different Score Actions can be displayed for different score ranges.",
 									"styleList": []
 								}
 							}
@@ -500,7 +500,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "To describe a score range, use square brackets to denote an inclusive range, so that [0,100] would match all scores from 0 to 100, including 0 and 100. Use parenthesis to denote an exclusive range, such that (0, 100) would match all scores between 0 and 100, and would not match 0 or 100. Square brackets and parenthesis can also be mixed and matched, allowing for ranges such as [0,100), which matches all scores except 100, and (0,100], which matches all scores except 0. Any two numbers can be placed between the brackets and parenthesis, and the numbers should be separated by a comma.",
+									"updated": "To describe a score range, use square brackets to denote an inclusive range, so that [0,100] would match all scores from 0 to 100, including 0 and 100. Use parenthesis to denote an exclusive range, such that (0, 100) would match all scores between 0 and 100, and would not match 0 or 100. Square brackets and parenthesis can also be mixed and matched, allowing for ranges such as [0,100), which matches all scores except 100, and (0,100], which matches all scores except 0. Any two numbers can be placed between the brackets and parenthesis, and the numbers should be separated by a comma.",
 									"styleList": [
 										{
 											"end": 92,
@@ -543,7 +543,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "In most cases, Score Actions should contain an Action Button that executes the assessment:attemptStart action, just like the Launch Page. This will allow the students to complete multiple attempts.",
+									"updated": "In most cases, Score Actions should contain an Action Button that executes the assessment:attemptStart action, just like the Launch Page. This will allow the students to complete multiple attempts.",
 									"styleList": []
 								}
 							}
@@ -559,7 +559,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "Rubric",
+									"updated": "Rubric",
 									"styleList": []
 								}
 							}
@@ -578,7 +578,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "The fifth node in the assessment is an optional Rubric. The Rubric allows you to set custom parameters about passing and failing scores for the assessment.",
+									"updated": "The fifth node in the assessment is an optional Rubric. The Rubric allows you to set custom parameters about passing and failing scores for the assessment.",
 									"styleList": []
 								}
 							}
@@ -596,7 +596,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "When processing the student's score, the assessment first determines their raw score by dividing the number of questions correct by the total number of questions and then multiplying by 100. ",
+									"updated": "When processing the student's score, the assessment first determines their raw score by dividing the number of questions correct by the total number of questions and then multiplying by 100. ",
 									"styleList": [
 										{
 											"end": 84,
@@ -612,7 +612,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "((correct / questions) * 100 = raw score)",
+									"updated": "((correct / questions) * 100 = raw score)",
 									"styleList": [
 										{
 											"end": 40,
@@ -635,7 +635,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "The Rubric then checks the raw score. If the raw score is greater than or equal to the Passing Score, the rubric declares the student as passed.",
+									"updated": "The Rubric then checks the raw score. If the raw score is greater than or equal to the Passing Score, the rubric declares the student as passed.",
 									"styleList": [
 										{
 											"end": 100,
@@ -649,7 +649,7 @@
 							{
 								"data": {},
 								"text": {
-									"value": "If the student takes all of their allowed attempts and does not achieve at least one Passing Score, then the Unable to Pass Result will be sent to the grade book.",
+									"updated": "If the student takes all of their allowed attempts and does not achieve at least one Passing Score, then the Unable to Pass Result will be sent to the grade book.",
 									"styleList": [
 										{
 											"end": 98,
@@ -680,7 +680,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "The Rubric also allows you to set up to 20 mods that change the student's score. These are bonus points that are added to a Passed Result after the student achieves a Passing Score. The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in Score Actions), a single value, or as the variable $last_attempt. The reward describes how many points to add to the Passed Result, with positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.",
+									"updated": "The Rubric also allows you to set up to 20 mods that change the student's score. These are bonus points that are added to a Passed Result after the student achieves a Passing Score. The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in Score Actions), a single updated, or as the variable $last_attempt. The reward describes how many points to add to the Passed Result, with positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.",
 									"styleList": [
 										{
 											"end": 138,
@@ -747,7 +747,7 @@
 									"indent": 0
 								},
 								"text": {
-									"value": "In this assessment, the Rubric lists a 75% as the Passing Score and sets the Passed Result and Failed Result so that students who make at least 75% will receive a 100%, but students who do not make at least 75% will receive a 0%. Students who take all three attempts and never make at least a 75% will receive a score of 50%. There are also mods that show all of the possible options for ranges and rewards.",
+									"updated": "In this assessment, the Rubric lists a 75% as the Passing Score and sets the Passed Result and Failed Result so that students who make at least 75% will receive a 100%, but students who do not make at least 75% will receive a 0%. Students who take all three attempts and never make at least a 75% will receive a score of 50%. There are also mods that show all of the possible options for ranges and rewards.",
 									"styleList": [
 										{
 											"end": 63,
@@ -799,7 +799,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Here is an example question inside of an Assessment's question bank.",
+											"updated": "Here is an example question inside of an Assessment's question bank.",
 											"styleList": []
 										}
 									}
@@ -837,7 +837,7 @@
 																	"indent": 0
 																},
 																"text": {
-																	"value": "Incorrect answer",
+																	"updated": "Incorrect answer",
 																	"styleList": []
 																}
 															}
@@ -871,7 +871,7 @@
 																	"indent": 0
 																},
 																"text": {
-																	"value": "Correct answer",
+																	"updated": "Correct answer",
 																	"styleList": []
 																}
 															}

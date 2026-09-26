@@ -102,7 +102,7 @@ describe('Dashboard Reducer', () => {
 			// this action occurs after a new collection is created and the current user's
 			//  collections are queried - so it will contain a list of collections
 			payload: {
-				value: mockCollectionList
+				updated: mockCollectionList
 			}
 		}
 		// asynchronous action - state changes on success
@@ -162,7 +162,7 @@ describe('Dashboard Reducer', () => {
 				currentCollectionId: testSameCollection ? 'collectionId' : undefined
 			},
 			payload: {
-				value: mockCollectionList
+				updated: mockCollectionList
 			}
 		}
 		const handler = dashboardReducer(initialState, action)
@@ -218,7 +218,7 @@ describe('Dashboard Reducer', () => {
 			// this action occurs after the current user's modules are
 			//  queried - so it will contain a list of modules
 			payload: {
-				value: {
+				updated: {
 					allCount: mockModuleList.length,
 					modules: mockModuleList
 				}
@@ -303,7 +303,7 @@ describe('Dashboard Reducer', () => {
 			payload: {
 				// eslint-disable-next-line no-undefined
 				modules: testModules ? modulePayload : undefined,
-				value: mockUserList
+				updated: mockUserList
 			}
 		}
 
@@ -352,7 +352,7 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: testAction,
 			payload: {
-				value: mockCollectionList
+				updated: mockCollectionList
 			}
 		}
 
@@ -390,7 +390,7 @@ describe('Dashboard Reducer', () => {
 				currentCollectionId: testCurrentCollection ? 'mockCollectionId' : undefined
 			},
 			payload: {
-				value: {
+				updated: {
 					allCount: mockModuleList.length,
 					modules: mockModuleList
 				}
@@ -484,7 +484,7 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: BULK_DELETE_MODULES,
 			payload: {
-				value: {
+				updated: {
 					modules: mockModuleList,
 					allCount: mockModuleList.length
 				}
@@ -551,7 +551,7 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: BULK_REMOVE_MODULES_FROM_COLLECTION,
 			payload: {
-				value: {
+				updated: {
 					modules: mockModuleList,
 					allCount: mockModuleList.length
 				}
@@ -615,7 +615,7 @@ describe('Dashboard Reducer', () => {
 				}
 			},
 			payload: {
-				value: mockModule
+				updated: mockModule
 			}
 		}
 
@@ -855,7 +855,7 @@ describe('Dashboard Reducer', () => {
 				searchString: 'newSearchString'
 			},
 			payload: {
-				value: mockUserList
+				updated: mockUserList
 			}
 		}
 
@@ -965,7 +965,7 @@ describe('Dashboard Reducer', () => {
 				searchString: 'newSearchString'
 			},
 			payload: {
-				value: {
+				updated: {
 					modules: mockModuleList
 				}
 			}
@@ -1266,7 +1266,7 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: GET_MODULES,
 			payload: {
-				value: undeletedModules
+				updated: undeletedModules
 			}
 		}
 
@@ -1309,7 +1309,7 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: GET_DELETED_MODULES,
 			payload: {
-				value: deletedModules
+				updated: deletedModules
 			}
 		}
 
@@ -1348,7 +1348,7 @@ describe('Dashboard Reducer', () => {
 		const action = {
 			type: BULK_RESTORE_MODULES,
 			payload: {
-				value: mockModuleList
+				updated: mockModuleList
 			}
 		}
 

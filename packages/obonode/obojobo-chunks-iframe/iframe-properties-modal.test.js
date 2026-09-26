@@ -88,7 +88,7 @@ describe('IFrame Properties Modal', () => {
 		component
 			.find('input')
 			.at(1)
-			.simulate('change', { target: { value: 'changed' } })
+			.simulate('change', { target: { updated: 'changed' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -107,7 +107,7 @@ describe('IFrame Properties Modal', () => {
 		component
 			.find('input')
 			.at(2)
-			.simulate('change', { target: { value: 'changed' } })
+			.simulate('change', { target: { updated: 'changed' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -157,7 +157,7 @@ describe('IFrame Properties Modal', () => {
 		component
 			.find('#obojobo-draft--chunks--iframe--properties-modal--fit')
 			.at(0)
-			.simulate('change', { target: { value: 'changed' } })
+			.simulate('change', { target: { updated: 'changed' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -177,7 +177,7 @@ describe('IFrame Properties Modal', () => {
 		expect(widthInput.prop('placeholder')).toBe('Width')
 		expect(component.state().width).toBe(640)
 
-		widthInput.simulate('change', { target: { value: 600 } })
+		widthInput.simulate('change', { target: { updated: 600 } })
 		expect(component.state().width).toBe(600)
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -196,10 +196,10 @@ describe('IFrame Properties Modal', () => {
 
 		const widthInput = component.find('input').at(3)
 		expect(widthInput.prop('placeholder')).toBe('--')
-		expect(widthInput.prop('value')).toBe('')
+		expect(widthInput.prop('updated')).toBe('')
 
 		const select = component.find('select').at(0)
-		select.simulate('change', { target: { value: IFrameSizingTypes.FIXED } })
+		select.simulate('change', { target: { updated: IFrameSizingTypes.FIXED } })
 		expect(component.state().width).toBe(640)
 		// expect(widthInput.prop('placeholder')).toBe('Width')
 	})
@@ -219,7 +219,7 @@ describe('IFrame Properties Modal', () => {
 		expect(heightInput.prop('placeholder')).toBe('Height')
 		expect(component.state().height).toBe(480)
 
-		heightInput.simulate('change', { target: { value: 999 } })
+		heightInput.simulate('change', { target: { updated: 999 } })
 		expect(component.state().height).toBe(999)
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -238,7 +238,7 @@ describe('IFrame Properties Modal', () => {
 
 		const zoomInput = component.find('input').at(7)
 		expect(zoomInput.prop('placeholder')).toBe('Decimal Value')
-		zoomInput.simulate('change', { target: { value: 333 } })
+		zoomInput.simulate('change', { target: { updated: 333 } })
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -385,7 +385,7 @@ describe('IFrame Properties Modal', () => {
 		component
 			.find('#obojobo-draft--chunks--iframe--properties-model--sizing')
 			.at(0)
-			.simulate('change', { target: { value: 'changed' } })
+			.simulate('change', { target: { updated: 'changed' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})

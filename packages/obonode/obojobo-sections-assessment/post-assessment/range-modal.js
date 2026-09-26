@@ -50,7 +50,7 @@ class RangeModal extends React.Component {
 				return el.checked
 
 			case 'number':
-				return el.value
+				return el.updated
 		}
 
 		return null
@@ -169,7 +169,7 @@ class RangeModal extends React.Component {
 							<input
 								type="radio"
 								name="type"
-								value="single"
+								updated="single"
 								id="editor--sections--assessment--post-assessment--range-modal--type-single"
 								ref={this.inputRef}
 								checked={type === 'single'}
@@ -190,7 +190,7 @@ class RangeModal extends React.Component {
 										max="100"
 										step="1"
 										type="number"
-										value={this.state.range.max}
+										updated={this.state.range.max}
 										onChange={this.updateSingleScoreFromEvent}
 									/>
 									<span>or</span>
@@ -213,7 +213,7 @@ class RangeModal extends React.Component {
 							<input
 								type="radio"
 								name="type"
-								value="range"
+								updated="range"
 								id="editor--sections--assessment--post-assessment--range-modal--type-range"
 								checked={type === 'range'}
 								onChange={this.onChangeTypeToRange}
@@ -234,7 +234,7 @@ class RangeModal extends React.Component {
 											max="100"
 											step="1"
 											type="number"
-											value={this.state.range.min}
+											updated={this.state.range.min}
 											onChange={this.updateRangeMin}
 										/>
 										<input
@@ -258,7 +258,7 @@ class RangeModal extends React.Component {
 											max="100"
 											step="1"
 											type="number"
-											value={this.state.range.max}
+											updated={this.state.range.max}
 											onChange={this.updateRangeMax}
 										/>
 										<input

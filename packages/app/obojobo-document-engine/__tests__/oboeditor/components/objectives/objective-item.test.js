@@ -106,7 +106,7 @@ describe('Objective Item', () => {
 			.find('input#mock-id')
 			.at(0)
 			.simulate('change', {
-				target: { value: '' }
+				target: { updated: '' }
 			})
 	})
 })

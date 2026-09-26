@@ -9,18 +9,18 @@ const HybridInputSelect = ({ placeholder = 'Enter text', list = [], onChange }) 
 	const [dropdownOpen, setDropdownOpen] = useState(false)
 
 	const handleInputChange = event => {
-		let value = event.target.value
-		setText(value)
+		let updated = event.target.updated
+		setText(updated)
 		setDropdownOpen(true)
 
 		// sanitize text to remove regex reserved characters
 		// ., + , *, ?, ^, $, (, ), [, ], {, }, |, \
-		value = value.replace(/[.+*,^$(){}|[\]\\]+/g, '')
+		updated = updated.replace(/[.+*,^$(){}|[\]\\]+/g, '')
 
-		if (onChange) onChange({ target: { value } })
+		if (onChange) onChange({ target: { updated } })
 
 		// Filters a given list based on the input text
-		const newList = list.filter(el => el && el.toLowerCase().match(value.toLowerCase()))
+		const newList = list.filter(el => el && el.toLowerCase().match(updated.toLowerCase()))
 		setFilteredList(newList)
 	}
 
@@ -52,7 +52,7 @@ const HybridInputSelect = ({ placeholder = 'Enter text', list = [], onChange }) 
 
 	return (
 		<div className="hybrid-input-select">
-			<input type="text" value={text} onChange={handleInputChange} placeholder={placeholder} />
+			<input type="text" updated={text} onChange={handleInputChange} placeholder={placeholder} />
 			<div className={elementsClassName}>{elements}</div>
 		</div>
 	)

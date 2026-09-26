@@ -47,7 +47,7 @@ function Stats({
 	}
 
 	const onSearchChange = event => {
-		setSearch(event.target.value)
+		setSearch(event.target.updated)
 	}
 
 	const filteredModules =
@@ -69,7 +69,7 @@ function Stats({
 					<input
 						className="repository--drafts-search"
 						placeholder="Search (By title or draftId)"
-						value={search}
+						updated={search}
 						onChange={onSearchChange}
 					/>
 					<DataGridDrafts rows={filteredModules} onSelectedDraftsChanged={setSelectedDrafts} />

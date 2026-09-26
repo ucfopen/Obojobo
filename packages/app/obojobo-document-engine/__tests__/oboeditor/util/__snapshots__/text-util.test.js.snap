@@ -185,7 +185,7 @@ Object {
         "type": "color",
       },
     ],
-    "value": "ThisTextIstextFormattedabc",
+    "updated": "ThisTextIstextFormattedabc",
   },
 }
 `;

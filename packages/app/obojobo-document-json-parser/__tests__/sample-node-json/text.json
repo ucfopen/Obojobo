@@ -9,7 +9,7 @@
 					"indent": 0
 				},
 				"text": {
-					"value": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
+					"updated": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
 					"styleList": []
 				}
 			}
@@ -20,7 +20,7 @@
 				"actions": [
 					{
 						"type": "nav:goto",
-						"value": {
+						"updated": {
 							"id": "example-id"
 						}
 					}

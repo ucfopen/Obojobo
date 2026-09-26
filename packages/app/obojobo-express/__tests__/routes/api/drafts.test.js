@@ -175,7 +175,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', mockDocument)
+				expect(response.body).toHaveProperty('updated', mockDocument)
 				expect(jsonToXml).not.toHaveBeenCalled()
 			})
 	})
@@ -213,7 +213,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', mockDocument)
+				expect(response.body).toHaveProperty('updated', mockDocument)
 				expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledWith(
 					'00000000-0000-0000-0000-000000000000',
 					'00000000-0000-0000-0000-000000000001'
@@ -222,7 +222,7 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('get full draft errors on invalid contentId query value', () => {
+	test('get full draft errors on invalid contentId query updated', () => {
 		expect.hasAssertions()
 		mockCurrentUser = { id: 99, hasPermission: perm => perm === 'canViewEditor' } // mock current logged in user
 		// mock a yell function that returns a document
@@ -254,7 +254,7 @@ describe('api draft route', () => {
 				expect(response.statusCode).toBe(422)
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body).toHaveProperty(
-					'value.message',
+					'updated.message',
 					'contentId must be a valid UUID, got myFavorite'
 				)
 				expect(DraftModel.fetchDraftByVersion).not.toHaveBeenCalled()
@@ -293,7 +293,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', mockDocument)
+				expect(response.body).toHaveProperty('updated', mockDocument)
 				expect(jsonToXml).not.toHaveBeenCalled()
 			})
 	})
@@ -329,7 +329,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', mockDocument)
+				expect(response.body).toHaveProperty('updated', mockDocument)
 			})
 	})
 
@@ -364,7 +364,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', mockDocument)
+				expect(response.body).toHaveProperty('updated', mockDocument)
 			})
 	})
 
@@ -385,7 +385,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -407,8 +407,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
@@ -426,7 +426,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -450,8 +450,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'missing')
-				expect(response.body.value).toHaveProperty('message', 'Draft not found')
+				expect(response.body.updated).toHaveProperty('type', 'missing')
+				expect(response.body.updated).toHaveProperty('message', 'Draft not found')
 			})
 	})
 
@@ -466,8 +466,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
-				expect(response.body.value).toHaveProperty('message', 'mock-other-error')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
+				expect(response.body.updated).toHaveProperty('message', 'mock-other-error')
 			})
 	})
 
@@ -493,7 +493,7 @@ describe('api draft route', () => {
 					expect.anything()
 				)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(response.body).toHaveProperty('updated', 'mock-document-json')
 			})
 	})
 
@@ -513,8 +513,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'missing')
-				expect(response.body.value).toHaveProperty('message', 'Draft not found')
+				expect(response.body.updated).toHaveProperty('type', 'missing')
+				expect(response.body.updated).toHaveProperty('message', 'Draft not found')
 			})
 	})
 
@@ -528,8 +528,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
-				expect(response.body.value).toHaveProperty('message', 'mock-other-error')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
+				expect(response.body.updated).toHaveProperty('message', 'mock-other-error')
 			})
 	})
 	// new draft
@@ -543,8 +543,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response).toHaveProperty('body.status', 'ok')
-				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
-				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
+				expect(response).toHaveProperty('body.updated.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.updated.contentId', 'mockContentId')
 			})
 	})
 
@@ -564,8 +564,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response).toHaveProperty('body.status', 'ok')
-				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
-				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
+				expect(response).toHaveProperty('body.updated.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.updated.contentId', 'mockContentId')
 			})
 	})
 
@@ -586,8 +586,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response).toHaveProperty('body.status', 'ok')
-				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
-				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
+				expect(response).toHaveProperty('body.updated.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.updated.contentId', 'mockContentId')
 				expect(xml).toHaveBeenCalled()
 			})
 	})
@@ -610,8 +610,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
 			})
 	})
 
@@ -635,8 +635,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
 			})
 	})
 
@@ -649,8 +649,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -664,8 +664,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
 			})
 	})
 
@@ -694,8 +694,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value.id', 'mockDraftId')
-				expect(response.body).toHaveProperty('value.contentId', 'mockContentId')
+				expect(response.body).toHaveProperty('updated.id', 'mockDraftId')
+				expect(response.body).toHaveProperty('updated.contentId', 'mockContentId')
 			})
 	})
 
@@ -719,8 +719,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -735,8 +735,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response).toHaveProperty('body.status', 'ok')
-				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
-				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
+				expect(response).toHaveProperty('body.updated.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.updated.contentId', 'mockContentId')
 			})
 	})
 
@@ -753,9 +753,9 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response).toHaveProperty('body.status', 'ok')
-				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
-				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
-				expect(response).toHaveProperty('body.value.collectionId', 55)
+				expect(response).toHaveProperty('body.updated.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.updated.contentId', 'mockContentId')
+				expect(response).toHaveProperty('body.updated.collectionId', 55)
 			})
 	})
 
@@ -773,7 +773,7 @@ describe('api draft route', () => {
 				expect(response.statusCode).toBe(401)
 				expect(response).toHaveProperty('body.status', 'error')
 				expect(response).toHaveProperty(
-					'body.value.message',
+					'body.updated.message',
 					'You must have permissions to the requested collection to add a new module to it.'
 				)
 			})
@@ -788,8 +788,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -803,8 +803,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
 			})
 	})
 
@@ -825,7 +825,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', {
+				expect(response.body).toHaveProperty('updated', {
 					id: 'mockUpdatedContentId'
 				})
 				expect(xml).toHaveBeenCalledWith(basicXML, true)
@@ -846,7 +846,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', {
+				expect(response.body).toHaveProperty('updated', {
 					id: 'mockUpdatedContentId'
 				})
 				expect(xml).toHaveBeenCalledWith(basicXML, true)
@@ -867,8 +867,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
@@ -889,8 +889,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
@@ -909,7 +909,7 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', {
+				expect(response.body).toHaveProperty('updated', {
 					id: 'mockUpdatedContentId'
 				})
 			})
@@ -926,7 +926,7 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', {
+				expect(response.body).toHaveProperty('updated', {
 					id: 'mockUpdatedContentId'
 				})
 			})
@@ -943,8 +943,8 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
@@ -962,8 +962,8 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'In order to edit this module you must have "Partial" or "Full" access.'
 				)
@@ -984,9 +984,9 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(422)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'Posting draft failed - format unexpected'
 				)
@@ -1009,9 +1009,9 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(422)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'Posting draft failed - format unexpected'
 				)
@@ -1030,8 +1030,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -1049,9 +1049,9 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(422)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'Posting draft failed - duplicate id "duplicate-id"'
 				)
@@ -1075,8 +1075,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
 			})
 	})
 
@@ -1091,7 +1091,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value', {
+				expect(response.body).toHaveProperty('updated', {
 					type: 'notAuthorized'
 				})
 			})
@@ -1107,9 +1107,9 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(422)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
-				expect(response.body.value).toHaveProperty('message', 'draftId must be a valid UUID, got 6')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty('message', 'draftId must be a valid UUID, got 6')
 			})
 	})
 
@@ -1124,7 +1124,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-db-result')
+				expect(response.body).toHaveProperty('updated', 'mock-db-result')
 			})
 	})
 
@@ -1141,8 +1141,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
 			})
 	})
 
@@ -1158,8 +1158,8 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'You must have "Full" access to this draft to delete it'
 				)
@@ -1177,7 +1177,7 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-db-result')
+				expect(response.body).toHaveProperty('updated', 'mock-db-result')
 			})
 	})
 })

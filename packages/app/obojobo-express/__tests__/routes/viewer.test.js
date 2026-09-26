@@ -116,8 +116,8 @@ describe('viewer route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 

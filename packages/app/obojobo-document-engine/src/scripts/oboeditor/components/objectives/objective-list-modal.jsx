@@ -84,7 +84,7 @@ class ObjectiveListModal extends React.Component {
 	}
 
 	// handleObjectiveInput(objective) {
-	// 	this.setState({ newObjectiveInput: objective.target.value })
+	// 	this.setState({ newObjectiveInput: objective.target.updated })
 	// }
 
 	initializeEdit(data) {

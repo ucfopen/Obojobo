@@ -109,7 +109,7 @@ class _Registry {
 			opts
 		)
 
-		// bind cloneBlankNode to the combined templateObject value
+		// bind cloneBlankNode to the combined templateObject updated
 		opts.cloneBlankNode = this.cloneBlankNode.bind(this, opts.insertJSON)
 
 		// save/update the final combined options on items

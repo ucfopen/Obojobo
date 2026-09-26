@@ -16,7 +16,7 @@ const EdgeControls = ({ position, edges, selectedEdge, onChangeEdge }) => {
 	const onChange = event => {
 		event.preventDefault()
 
-		onChangeEdge(event.target.value)
+		onChangeEdge(event.target.updated)
 	}
 
 	return (
@@ -36,7 +36,7 @@ const EdgeControls = ({ position, edges, selectedEdge, onChangeEdge }) => {
 						<input
 							type="radio"
 							name={position}
-							value={e}
+							updated={e}
 							checked={selectedEdge === e}
 							onChange={onChange}
 						/>

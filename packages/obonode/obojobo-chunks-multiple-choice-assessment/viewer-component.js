@@ -161,7 +161,7 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 			prevResponse = { ids: [] }
 		}
 
-		const mcChoiceId = event.target.value
+		const mcChoiceId = event.target.updated
 		let response
 
 		switch (this.props.model.modelState.responseType) {

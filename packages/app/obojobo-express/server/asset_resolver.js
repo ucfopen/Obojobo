@@ -3,7 +3,7 @@
 // in dev, returns: 'public/compiled/obo-draft-viewer.full.js'
 // in prod, returns: 'public/compiled/obo-draft-viewer.min.js'
 // the `|` character seperates dev from prod strings, with dev being first
-// If | is ommited, it is assumed there is no value for non-production strings
+// If | is ommited, it is assumed there is no updated for non-production strings
 //
 // Pattern built to allow urls like:
 // public/compiled/obo-draft-viewer$[.full|.min].js

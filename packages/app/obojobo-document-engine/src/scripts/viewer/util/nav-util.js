@@ -25,7 +25,7 @@ const getFlatList = function(item) {
 const NavUtil = {
 	rebuildMenu(model) {
 		return Dispatcher.trigger('nav:rebuildMenu', {
-			value: {
+			updated: {
 				model
 			}
 		})
@@ -33,7 +33,7 @@ const NavUtil = {
 
 	gotoPath(path) {
 		return Dispatcher.trigger('nav:gotoPath', {
-			value: {
+			updated: {
 				path
 			}
 		})
@@ -44,7 +44,7 @@ const NavUtil = {
 
 	setFlag(id, flagName, flagValue) {
 		return Dispatcher.trigger('nav:setFlag', {
-			value: {
+			updated: {
 				id,
 				flagName,
 				flagValue
@@ -64,7 +64,7 @@ const NavUtil = {
 		// eslint-disable-next-line no-undefined
 		if (ignoreLock === undefined) ignoreLock = true
 		return Dispatcher.trigger('nav:goto', {
-			value: {
+			updated: {
 				id,
 				ignoreLock
 			}
@@ -93,7 +93,7 @@ const NavUtil = {
 
 	openExternalLink(url) {
 		return Dispatcher.trigger('nav:openExternalLink', {
-			value: {
+			updated: {
 				url
 			}
 		})
@@ -101,7 +101,7 @@ const NavUtil = {
 
 	showChildren(id) {
 		return Dispatcher.trigger('nav:showChildren', {
-			value: {
+			updated: {
 				id
 			}
 		})
@@ -109,7 +109,7 @@ const NavUtil = {
 
 	hideChildren(id) {
 		return Dispatcher.trigger('nav:hideChildren', {
-			value: {
+			updated: {
 				id
 			}
 		})
@@ -238,7 +238,7 @@ const NavUtil = {
 
 	setContext(context) {
 		return Dispatcher.trigger('nav:setContext', {
-			value: {
+			updated: {
 				context
 			}
 		})

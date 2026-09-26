@@ -15,7 +15,7 @@ const defaultOptions = () => ({
 const apiGetAssessmentDetailsForDraft = draftId => {
 	return fetch(`/api/assessments/${draftId}/details`, defaultOptions())
 		.then(res => res.json())
-		.then(res => parseAttemptReport(res.value))
+		.then(res => parseAttemptReport(res.updated))
 }
 
 const apiGetAssessmentDetailsForMultipleDrafts = draftIds =>

@@ -24,22 +24,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -66,7 +66,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -88,7 +88,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -167,22 +167,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -209,7 +209,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -231,7 +231,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -310,22 +310,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -352,7 +352,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -374,7 +374,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -453,22 +453,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -495,7 +495,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -517,7 +517,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -596,22 +596,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -638,7 +638,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -660,7 +660,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -739,22 +739,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -781,7 +781,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -803,7 +803,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -882,22 +882,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -924,7 +924,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -946,7 +946,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -1025,22 +1025,22 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
           onChange={[Function]}
         >
           <option
-            value=""
+            updated=""
           >
             Select one...
           </option>
           <option
-            value="course-title"
+            updated="course-title"
           >
             Course title
           </option>
           <option
-            value="resource-link-title"
+            updated="resource-link-title"
           >
             Resource link title
           </option>
           <option
-            value="student-name"
+            updated="student-name"
           >
             Student name
           </option>
@@ -1067,7 +1067,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             min={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"
@@ -1089,7 +1089,7 @@ exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAt
             max={null}
             onChange={[Function]}
             type="date"
-            value=""
+            updated=""
           />
           <button
             className="repository--button secondary-button"

@@ -44,10 +44,10 @@ packages.forEach(npmPackage => {
 	findIn.forEach(dependKey => {
 		if(typeof json[dependKey] != 'object') return
 
-		for(const [pkgKey, value] of Object.entries(json[dependKey])){
+		for(const [pkgKey, updated] of Object.entries(json[dependKey])){
 			if(!packages.includes(pkgKey)) continue // skip any packages that aren't an obojobo-* package
 
-			console.log(`updating ${npmPackage}.${dependKey}.${pkgKey} from ${value} to ${targetValue}`)
+			console.log(`updating ${npmPackage}.${dependKey}.${pkgKey} from ${updated} to ${targetValue}`)
 			json[dependKey][pkgKey] = targetValue
 		}
 	})

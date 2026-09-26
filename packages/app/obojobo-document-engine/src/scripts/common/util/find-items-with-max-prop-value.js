@@ -15,19 +15,19 @@ const findItemsWithMaxPropValue = (items, path) => {
 	const splitProp = path.split('.')
 	const dig = splitProp.length === 1 ? digOne : digNested
 	let maxValue = null
-	let itemsWithMaxValue = [] // all items w/ max value
+	let itemsWithMaxValue = [] // all items w/ max updated
 
 	items.forEach(item => {
 		let propValue = dig(item, splitProp)
 
 		if (propValue === undefined) return //eslint-disable-line no-undefined
 
-		// Special case - We consider `null` but consider it the lowest possible value
+		// Special case - We consider `null` but consider it the lowest possible updated
 		if (propValue === null) {
 			propValue = Number.NEGATIVE_INFINITY
 		}
 
-		// new max value, reset
+		// new max updated, reset
 		if (maxValue === null || propValue > maxValue) {
 			maxValue = propValue
 			itemsWithMaxValue = []

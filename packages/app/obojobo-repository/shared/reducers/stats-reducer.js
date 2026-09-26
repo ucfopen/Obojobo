@@ -22,7 +22,7 @@ function StatsReducer(state, action) {
 					availableModules: {
 						isFetching: false,
 						hasFetched: true,
-						items: action.payload.value
+						items: action.payload.updated
 					}
 				})
 			})

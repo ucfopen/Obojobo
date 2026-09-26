@@ -55,7 +55,7 @@ module.exports = class NumericAnswerResults {
 	 * score result.
 	 * Possible status values:
 	 * * `'inputMatchesMultipleTypes'`: It's unclear what the student meant as their answer matches multiple Numeric classes. Student should be asked to clarify.
-	 * * `'inputNotSafe'`: Students response was larger than could be safely computed - Student will need to resubmit with a smaller value.
+	 * * `'inputNotSafe'`: Students response was larger than could be safely computed - Student will need to resubmit with a smaller updated.
 	 * * `'inputInvalid'`: Students response wasn't understood as it didn't match any Numeric type. Student will need to fix their response and resubmit.
 	 * * `'inputNotMatched'`: Students response didn't match one of the allowed Numeric types (for example, they entered '1/2' but only decimal values were allowed).
 	 * * `'failedValidation'`: Students response matched one of the validation rules, meaning something about their response is not valid. Student may be given feedback but will need to resubmit.

@@ -75,7 +75,7 @@ describe('Materia editorRegistration', () => {
 
 	test('plugins.decorate does nothing when theres text', () => {
 		Element.isElement.mockReturnValueOnce(true)
-		Node.string.mockReturnValueOnce('mock-value')
+		Node.string.mockReturnValueOnce('mock-updated')
 		expect(Materia.plugins.decorate([null, null], {})).toMatchInlineSnapshot(`Array []`)
 	})
 

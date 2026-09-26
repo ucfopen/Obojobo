@@ -13,7 +13,7 @@ const attrElementToAttrItem = node => {
 
 			if (childNode.type === 'attribute') {
 				if (!node.attributes) node.attributes = {}
-				node.attributes[childNode.name] = childNode.value
+				node.attributes[childNode.name] = childNode.updated
 				node.elements.splice(i, 1)
 			}
 		}

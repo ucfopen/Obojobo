@@ -12,27 +12,27 @@ export default class CreateForm {
 
 	onUpdateRows(event) {
 		this.setState({
-			rows: ~~event.target.value
+			rows: ~~event.target.updated
 		})
 
-		return this.props.onChange(~~event.target.value, this.state.cols)
+		return this.props.onChange(~~event.target.updated, this.state.cols)
 	}
 
 	onUpdateCols(event) {
 		this.setState({
-			cols: ~~event.target.value
+			cols: ~~event.target.updated
 		})
 
-		return this.props.onChange(this.state.rows, ~~event.target.value)
+		return this.props.onChange(this.state.rows, ~~event.target.updated)
 	}
 
 	render() {
 		return (
 			<div>
 				<label>rows:</label>
-				<input type="number" value={this.state.rows} onChange={this.onUpdateRows} />
+				<input type="number" updated={this.state.rows} onChange={this.onUpdateRows} />
 				<label>cols:</label>
-				<input type="number" value={this.state.cols} onChange={this.onUpdateCols} />
+				<input type="number" updated={this.state.cols} onChange={this.onUpdateCols} />
 			</div>
 		)
 	}

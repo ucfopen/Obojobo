@@ -26,7 +26,7 @@ const orderedBullets = ['decimal', 'lower-alpha', 'lower-roman', 'upper-alpha', 
 const slateToObo = node => {
 	const textGroup = node.children.map(line => {
 		const textLine = {
-			text: { value: '', styleList: [] },
+			text: { updated: '', styleList: [] },
 			data: withoutUndefined({
 				indent: line.content.indent,
 				align: line.content.align,

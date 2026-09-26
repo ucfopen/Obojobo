@@ -62,7 +62,7 @@ const getQuestionModelsFromAttempt = async (
 }
 
 // returns a function that loads a draft document
-// calling that returned function again with the same arguments will return a cached value
+// calling that returned function again with the same arguments will return a cached updated
 // the cache is scoped to the memoized function, call memoGetDraftByVersion twice
 // and you'll receive 2 different functions with 2 different caches
 // the cache should be garbage collected after the reference to the returned function is cleaned up
@@ -79,7 +79,7 @@ const memoGetDraftByVersion = () => {
 }
 
 // returns a function that loads attempt history and extracts the number of finished attempts
-// calling that returned function again with the same arguments will return a cached value
+// calling that returned function again with the same arguments will return a cached updated
 // the cache is scoped to the memoized function, call memoGetCompletedAttemptsCount twice
 // and you'll receive 2 different functions with 2 different caches
 // the cache should be garbage collected after the reference to the returned function is cleaned up

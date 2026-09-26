@@ -384,7 +384,7 @@ describe('Figure Editor Node', () => {
 		API.postMultiPart = jest.fn().mockResolvedValue({
 			media_id: 'mockMediaId',
 			status: 'error',
-			value: { message: 'mockMessage' }
+			updated: { message: 'mockMessage' }
 		})
 
 		const component = mount(<Figure editor={{}} element={{ content: {} }} />)

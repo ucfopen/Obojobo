@@ -21,7 +21,7 @@ describe('MediaUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:show', {
-			value: {
+			updated: {
 				id: 'mocked-id'
 			}
 		})
@@ -32,7 +32,7 @@ describe('MediaUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:hide', {
-			value: {
+			updated: {
 				id: 'mocked-id',
 				actor: 'mocked-actor'
 			}
@@ -44,7 +44,7 @@ describe('MediaUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:hide', {
-			value: {
+			updated: {
 				id: 'mocked-id',
 				actor: null
 			}
@@ -56,7 +56,7 @@ describe('MediaUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:setDefaultZoom', {
-			value: {
+			updated: {
 				id: 'mocked-id',
 				zoom: 2
 			}
@@ -81,7 +81,7 @@ describe('MediaUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:setZoom', {
-			value: {
+			updated: {
 				id: 'mocked-id',
 				zoom: 'mock-zoom'
 			}
@@ -93,7 +93,7 @@ describe('MediaUtil', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:resetZoom', {
-			value: {
+			updated: {
 				id: 'mocked-id'
 			}
 		})

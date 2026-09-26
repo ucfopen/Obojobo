@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 
-import BigValueRange from '../../range/big-value-range'
+import BigValueRange from '../../range/big-updated-range'
 import Big from 'big.js'
 
 describe('BigValueRange', () => {

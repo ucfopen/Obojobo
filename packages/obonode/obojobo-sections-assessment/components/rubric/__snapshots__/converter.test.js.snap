@@ -9,13 +9,13 @@ Object {
   ],
   "content": Object {
     "failedResult": "no_score",
-    "failedType": "set-value",
+    "failedType": "set-updated",
     "mods": Array [],
     "passedResult": 100,
     "passedType": "$attempt_score",
     "passingAttemptScore": 0,
     "unableToPassResult": 0,
-    "unableToPassType": "no-value",
+    "unableToPassType": "no-updated",
   },
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }
@@ -30,13 +30,13 @@ Object {
   ],
   "content": Object {
     "failedResult": "no_score",
-    "failedType": "set-value",
+    "failedType": "set-updated",
     "mods": Array [],
     "passedResult": 100,
     "passedType": "$attempt_score",
     "passingAttemptScore": 0,
     "unableToPassResult": 0,
-    "unableToPassType": "no-value",
+    "unableToPassType": "no-updated",
   },
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }
@@ -72,13 +72,13 @@ Object {
   ],
   "content": Object {
     "failedResult": 100,
-    "failedType": "set-value",
+    "failedType": "set-updated",
     "mods": Array [],
     "passedResult": 100,
-    "passedType": "set-value",
+    "passedType": "set-updated",
     "passingAttemptScore": 0,
     "unableToPassResult": 100,
-    "unableToPassType": "set-value",
+    "unableToPassType": "set-updated",
   },
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }

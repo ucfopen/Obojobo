@@ -165,12 +165,12 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '-'
+					updated: '-'
 				}
 			})
 
 		expect(setCustomValidity).toHaveBeenCalledTimes(1)
-		expect(setCustomValidity).toHaveBeenLastCalledWith('Not a valid numeric value')
+		expect(setCustomValidity).toHaveBeenLastCalledWith('Not a valid numeric updated')
 		expect(reportValidity).toHaveBeenCalledTimes(1)
 
 		component
@@ -180,7 +180,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '-2'
+					updated: '-2'
 				}
 			})
 
@@ -198,7 +198,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '-2'
+					updated: '-2'
 				}
 			})
 
@@ -231,10 +231,10 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: ''
+					updated: ''
 				}
 			})
-		expect(setCustomValidity).toHaveBeenLastCalledWith('Missing a value')
+		expect(setCustomValidity).toHaveBeenLastCalledWith('Missing a updated')
 
 		component
 			.find('.input-item')
@@ -243,7 +243,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '0'
+					updated: '0'
 				}
 			})
 		expect(setCustomValidity).toHaveBeenLastCalledWith('')
@@ -258,10 +258,10 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '0'
+					updated: '0'
 				}
 			})
-		expect(setCustomValidity).toHaveBeenLastCalledWith('Not a valid numeric value')
+		expect(setCustomValidity).toHaveBeenLastCalledWith('Not a valid numeric updated')
 
 		NumericEntry.mockImplementation(() => ({
 			status: INPUT_NOT_SAFE
@@ -273,10 +273,10 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '0'
+					updated: '0'
 				}
 			})
-		expect(setCustomValidity).toHaveBeenLastCalledWith('This answer is too large of a value')
+		expect(setCustomValidity).toHaveBeenLastCalledWith('This answer is too large of a updated')
 
 		NumericEntry.mockImplementation(() => ({
 			status: INPUT_MATCHES_MULTIPLE_TYPES
@@ -288,7 +288,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '0'
+					updated: '0'
 				}
 			})
 		expect(setCustomValidity).toHaveBeenLastCalledWith('This answer matches multiple types')
@@ -303,7 +303,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '0'
+					updated: '0'
 				}
 			})
 		expect(setCustomValidity).toHaveBeenLastCalledWith(
@@ -333,7 +333,7 @@ describe('NumericOption', () => {
 						target: {
 							setCustomValidity,
 							reportValidity,
-							value: '1'
+							updated: '1'
 						}
 					})
 				expect(setCustomValidity).toHaveBeenCalledTimes(1)
@@ -347,7 +347,7 @@ describe('NumericOption', () => {
 						target: {
 							setCustomValidity,
 							reportValidity,
-							value: '0'
+							updated: '0'
 						}
 					})
 				expect(setCustomValidity).toHaveBeenCalledTimes(2)
@@ -361,7 +361,7 @@ describe('NumericOption', () => {
 						target: {
 							setCustomValidity,
 							reportValidity,
-							value: ''
+							updated: ''
 						}
 					})
 				expect(setCustomValidity).toHaveBeenCalledTimes(3)
@@ -375,7 +375,7 @@ describe('NumericOption', () => {
 						target: {
 							setCustomValidity,
 							reportValidity,
-							value: 'x'
+							updated: 'x'
 						}
 					})
 				expect(setCustomValidity).toHaveBeenCalledTimes(4)
@@ -389,7 +389,7 @@ describe('NumericOption', () => {
 						target: {
 							setCustomValidity,
 							reportValidity,
-							value: '0.001'
+							updated: '0.001'
 						}
 					})
 				expect(setCustomValidity).toHaveBeenCalledTimes(5)
@@ -425,7 +425,7 @@ describe('NumericOption', () => {
 					target: {
 						setCustomValidity,
 						reportValidity,
-						value: '0'
+						updated: '0'
 					},
 					relatedTarget: component.root.findAllByProps({ className: 'select-item' })[1]
 				})
@@ -439,7 +439,7 @@ describe('NumericOption', () => {
 					target: {
 						setCustomValidity,
 						reportValidity,
-						value: '0'
+						updated: '0'
 					},
 					relatedTarget: component.root.findAllByProps({ className: 'select-item' })[0]
 				})
@@ -475,15 +475,15 @@ describe('NumericOption', () => {
 				// Is ref related target
 				isRefRelatedTarget.mockImplementation(() => true)
 
-				component.root.findAllByType('input')[0].value = '0'
+				component.root.findAllByType('input')[0].updated = '0'
 
 				component.root.findAllByType('select')[1].props.onBlur({
 					target: {
 						setCustomValidity,
 						reportValidity,
-						value: 'Percent'
+						updated: 'Percent'
 					},
-					relatedTarget: component.root.findAllByProps({ className: 'margin-value' })[0]
+					relatedTarget: component.root.findAllByProps({ className: 'margin-updated' })[0]
 				})
 				expect(setCustomValidity).toHaveBeenCalledTimes(0)
 
@@ -493,7 +493,7 @@ describe('NumericOption', () => {
 					target: {
 						setCustomValidity,
 						reportValidity,
-						value: 'Percent'
+						updated: 'Percent'
 					},
 					relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 				})
@@ -516,7 +516,7 @@ describe('NumericOption', () => {
 					target: {
 						setCustomValidity,
 						reportValidity,
-						value: 'Percent'
+						updated: 'Percent'
 					},
 					relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 				})
@@ -551,7 +551,7 @@ describe('NumericOption', () => {
 					target: {
 						setCustomValidity,
 						reportValidity,
-						value: 'Absolute'
+						updated: 'Absolute'
 					},
 					relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 				})
@@ -588,7 +588,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '1'
+					updated: '1'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
@@ -601,18 +601,18 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '1'
+					updated: '1'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
 			expect(setCustomValidity).toHaveBeenCalledTimes(2)
 			expect(setCustomValidity).toHaveBeenLastCalledWith(
-				'Start value should be smaller than the end value'
+				'Start updated should be smaller than the end updated'
 			)
 			expect(reportValidity).toHaveBeenCalledTimes(2)
 
 			NumericEntryRange.mockImplementation(() => {
-				throw 'Invalid range: min value must be larger than max value'
+				throw 'Invalid range: min updated must be larger than max updated'
 			})
 
 			isRefRelatedTarget.mockImplementation(() => true)
@@ -620,7 +620,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
@@ -633,13 +633,13 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
 			expect(setCustomValidity).toHaveBeenCalledTimes(4)
 			expect(setCustomValidity).toHaveBeenLastCalledWith(
-				"Start value can't be larger than the end value"
+				"Start updated can't be larger than the end updated"
 			)
 			expect(reportValidity).toHaveBeenCalledTimes(4)
 
@@ -652,7 +652,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
@@ -665,7 +665,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[1]
 			})
@@ -699,7 +699,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '1'
+					updated: '1'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})
@@ -712,18 +712,18 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '1'
+					updated: '1'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})
 			expect(setCustomValidity).toHaveBeenCalledTimes(2)
 			expect(setCustomValidity).toHaveBeenLastCalledWith(
-				'End value should be larger than the start value'
+				'End updated should be larger than the start updated'
 			)
 			expect(reportValidity).toHaveBeenCalledTimes(2)
 
 			NumericEntryRange.mockImplementation(() => {
-				throw 'Invalid range: min value must be larger than max value'
+				throw 'Invalid range: min updated must be larger than max updated'
 			})
 
 			isRefRelatedTarget.mockImplementation(() => true)
@@ -731,7 +731,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})
@@ -744,13 +744,13 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})
 			expect(setCustomValidity).toHaveBeenCalledTimes(4)
 			expect(setCustomValidity).toHaveBeenLastCalledWith(
-				"End value can't be smaller than the start value"
+				"End updated can't be smaller than the start updated"
 			)
 			expect(reportValidity).toHaveBeenCalledTimes(4)
 
@@ -763,7 +763,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})
@@ -776,7 +776,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})
@@ -792,7 +792,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})
@@ -805,7 +805,7 @@ describe('NumericOption', () => {
 				target: {
 					setCustomValidity,
 					reportValidity,
-					value: '2'
+					updated: '2'
 				},
 				relatedTarget: component.root.findAllByProps({ className: 'input-item' })[0]
 			})

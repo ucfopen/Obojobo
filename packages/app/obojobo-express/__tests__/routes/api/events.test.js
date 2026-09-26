@@ -74,8 +74,8 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(401)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
@@ -105,9 +105,9 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(500)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('message', 'rejected')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('message', 'rejected')
+				expect(response.body.updated).toHaveProperty('type', 'unexpected')
 			})
 	})
 
@@ -130,12 +130,12 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(422)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('message')
-				expect(response.body.value.message).toContain(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty('message')
+				expect(response.body.updated.message).toContain(
 					'event.actor_time must be a valid ISO8601 date string, got '
 				)
-				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
 			})
 	})
 
@@ -158,12 +158,12 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(422)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'event.action must not be empty, got '
 				)
-				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
 			})
 	})
 
@@ -184,12 +184,12 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(422)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'event.action must not be empty, got undefined'
 				)
-				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
 			})
 	})
 
@@ -212,12 +212,12 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(422)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'event.draft_id must be a valid UUID, got 55'
 				)
-				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
 			})
 	})
 
@@ -240,12 +240,12 @@ describe('api draft events route', () => {
 				expect(response.statusCode).toBe(422)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
+				expect(response.body).toHaveProperty('updated')
+				expect(response.body.updated).toHaveProperty(
 					'message',
 					'event.event_version must match a valid semVer string, got 1'
 				)
-				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.updated).toHaveProperty('type', 'badInput')
 			})
 	})
 })

@@ -11,7 +11,7 @@ const parseTg = el => {
 const parseT = el => {
 	const t = {
 		text: {
-			value: '',
+			updated: '',
 			styleList: []
 		},
 		data: el.attributes || null
@@ -19,10 +19,10 @@ const parseT = el => {
 
 	// check for null and undefined
 	// eslint-disable-next-line eqeqeq
-	if (el.value == null) return t
+	if (el.updated == null) return t
 
-	for (const value of el.value) {
-		parseText(value, t.text)
+	for (const updated of el.updated) {
+		parseText(updated, t.text)
 	}
 
 	return t
@@ -30,7 +30,7 @@ const parseT = el => {
 
 const parseText = (node, textItem) => {
 	if (node.type === 'text') {
-		textItem.value += node.text
+		textItem.updated += node.text
 		return
 	}
 
@@ -75,18 +75,18 @@ const parseText = (node, textItem) => {
 	const styleRange = {
 		type: type,
 		data: data,
-		start: textItem.value.length,
+		start: textItem.updated.length,
 		end: 0
 	}
 
 	textItem.styleList.push(styleRange)
 
-	if (!node.value) node.value = ''
-	for (const value of node.value) {
-		parseText(value, textItem)
+	if (!node.updated) node.updated = ''
+	for (const updated of node.updated) {
+		parseText(updated, textItem)
 	}
 
-	styleRange.end = textItem.value.length
+	styleRange.end = textItem.updated.length
 }
 
 module.exports = parseTg

@@ -8,7 +8,7 @@ class ObjectiveProvider extends React.Component {
 
 	render() {
 		return (
-			<objectivesContext.Provider value={this.props.state}>
+			<objectivesContext.Provider updated={this.props.state}>
 				{this.props.children}
 			</objectivesContext.Provider>
 		)

@@ -8,7 +8,7 @@ describe('Handle', () => {
 		const component = renderer.create(
 			<Handle
 				domain={[1, 5]}
-				handle={{ id: 'mockId', value: 10, percent: 10 }}
+				handle={{ id: 'mockId', updated: 10, percent: 10 }}
 				disabled={false}
 				getHandleProps={handleProps}
 			/>

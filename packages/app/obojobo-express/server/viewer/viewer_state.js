@@ -1,7 +1,7 @@
 const db = oboRequire('server/db')
 const logger = oboRequire('server/logger')
 
-function set(userId, draftId, contentId, key, version, value, resourceLinkId) {
+function set(userId, draftId, contentId, key, version, updated, resourceLinkId) {
 	return db
 		.none(
 			`
@@ -18,8 +18,8 @@ function set(userId, draftId, contentId, key, version, value, resourceLinkId) {
 				userId,
 				draftId,
 				contentId,
-				contents: { value, version },
-				initialContents: { [key]: { value, version } },
+				contents: { updated, version },
+				initialContents: { [key]: { updated, version } },
 				key: `{${key}}`,
 				resourceLinkId
 			}

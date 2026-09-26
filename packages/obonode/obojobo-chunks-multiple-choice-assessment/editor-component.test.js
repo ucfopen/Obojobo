@@ -54,7 +54,7 @@ describe('MCAssessment Editor Node', () => {
 		component
 			.find('select')
 			.at(0)
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick-all' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { updated: 'pick-all' } })
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})

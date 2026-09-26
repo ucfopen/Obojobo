@@ -62,15 +62,15 @@ class MateriaSettingsDialog extends React.Component {
 	}
 
 	onSettingChange(setting, event) {
-		const value = event.target.value
-		const stateChanges = { [setting.prop]: value }
+		const updated = event.target.updated
+		const stateChanges = { [setting.prop]: updated }
 
 		switch (setting.prop) {
 			case 'src': {
 				// if src is cleared, clear icon & engine too
 				// because we only know what they are when using
 				// the lti launched content picker
-				if (!value) {
+				if (!updated) {
 					stateChanges.icon = ''
 					stateChanges.widgetEngine = ''
 				}
@@ -79,10 +79,10 @@ class MateriaSettingsDialog extends React.Component {
 			}
 
 			case 'width': {
-				const px = parseInt(value, 10)
+				const px = parseInt(updated, 10)
 				const [srcConfig, widthConfig, heightConfig] = this.state.settingsItems
 
-				if (value !== '' && (!Number.isFinite(px) || px < 100)) {
+				if (updated !== '' && (!Number.isFinite(px) || px < 100)) {
 					stateChanges.settingsItems = [
 						srcConfig,
 						{ ...widthConfig, validity: 'Width must be at least 100px or higher' },
@@ -96,10 +96,10 @@ class MateriaSettingsDialog extends React.Component {
 			}
 
 			case 'height': {
-				const px = parseInt(value, 10)
+				const px = parseInt(updated, 10)
 				const [srcConfig, widthConfig, heightConfig] = this.state.settingsItems
 
-				if (value !== '' && (!Number.isFinite(px) || px < 100)) {
+				if (updated !== '' && (!Number.isFinite(px) || px < 100)) {
 					stateChanges.settingsItems = [
 						srcConfig,
 						widthConfig,

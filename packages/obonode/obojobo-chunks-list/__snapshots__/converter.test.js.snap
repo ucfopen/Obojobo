@@ -102,7 +102,7 @@ Object {
     "textGroup": Array [
       Object {
         "text": Object {
-          "value": "mockLine1",
+          "updated": "mockLine1",
         },
       },
       Object {
@@ -110,12 +110,12 @@ Object {
           "indent": 5,
         },
         "text": Object {
-          "value": "mockLine1",
+          "updated": "mockLine1",
         },
       },
       Object {
         "text": Object {
-          "value": "mockLine2",
+          "updated": "mockLine2",
         },
       },
     ],
@@ -230,12 +230,12 @@ Object {
     "textGroup": Array [
       Object {
         "text": Object {
-          "value": "mockLine1",
+          "updated": "mockLine1",
         },
       },
       Object {
         "text": Object {
-          "value": "mockLine2",
+          "updated": "mockLine2",
         },
       },
       Object {
@@ -244,7 +244,7 @@ Object {
           "indent": 5,
         },
         "text": Object {
-          "value": "mockLine3",
+          "updated": "mockLine3",
         },
       },
     ],
@@ -281,7 +281,7 @@ Object {
               "type": "b",
             },
           ],
-          "value": "mockText",
+          "updated": "mockText",
         },
       },
       Object {
@@ -297,7 +297,7 @@ Object {
               "type": "b",
             },
           ],
-          "value": "mockText",
+          "updated": "mockText",
         },
       },
     ],

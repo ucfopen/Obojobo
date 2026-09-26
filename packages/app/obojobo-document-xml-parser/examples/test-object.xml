@@ -90,7 +90,7 @@
 									<trigger type="onClick">
 										<actions>
 											<action type="nav:goto">
-												<value id="page-1" />
+												<updated id="page-1" />
 											</action>
 										</actions>
 									</trigger>
@@ -258,7 +258,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="viewer:alert">
-									<value title="I have a message for you:" message="Thanks for clicking the button" />
+									<updated title="I have a message for you:" message="Thanks for clicking the button" />
 								</action>
 							</actions>
 						</trigger>
@@ -271,7 +271,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="nav:goto">
-									<value id="page-1" />
+									<updated id="page-1" />
 								</action>
 							</actions>
 						</trigger>
@@ -398,7 +398,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="nav:goto">
-									<value id="page-1" />
+									<updated id="page-1" />
 								</action>
 							</actions>
 						</trigger>
@@ -436,7 +436,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="assessment:startAttempt">
-									<value id="my-assessment" />
+									<updated id="my-assessment" />
 								</action>
 							</actions>
 						</trigger>
@@ -450,7 +450,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="viewer:alert">
-									<value title="I have a message for you:" message="Thanks for clicking the button" />
+									<updated title="I have a message for you:" message="Thanks for clicking the button" />
 								</action>
 							</actions>
 						</trigger>
@@ -465,7 +465,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="focus:component">
-									<value id="focus-on-me" fade="true" />
+									<updated id="focus-on-me" fade="true" />
 								</action>
 							</actions>
 						</trigger>
@@ -480,7 +480,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="focus:component">
-									<value id="scroll-to-me" animateScroll="true" />
+									<updated id="scroll-to-me" animateScroll="true" />
 								</action>
 							</actions>
 						</trigger>
@@ -500,10 +500,10 @@ int Fibonacci(int n)
 							<actions>
 								<action type="nav:toggle" />
 								<action type="nav:goto">
-									<value id="page-1" />
+									<updated id="page-1" />
 								</action>
 								<action type="focus:component">
-									<value id="my-math-equation" fade="true" />
+									<updated id="my-math-equation" fade="true" />
 								</action>
 							</actions>
 						</trigger>
@@ -518,14 +518,14 @@ int Fibonacci(int n)
 					<trigger type="onNavEnter">
 						<actions>
 							<action type="viewer:alert">
-								<value message="onNavEnter trigger resulted in a viewer:alert action" />
+								<updated message="onNavEnter trigger resulted in a viewer:alert action" />
 							</action>
 						</actions>
 					</trigger>
 					<trigger type="onNavExit">
 						<actions>
 							<action type="viewer:alert">
-								<value message="Goodbye!" />
+								<updated message="Goodbye!" />
 							</action>
 						</actions>
 					</trigger>
@@ -582,7 +582,7 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="assessment:startAttempt">
-									<value id="my-assessment" />
+									<updated id="my-assessment" />
 								</action>
 							</actions>
 						</trigger>
@@ -793,7 +793,7 @@ int Fibonacci(int n)
 								<trigger type="onClick">
 									<actions>
 										<action type="assessment:startAttempt">
-											<value id="my-assessment" />
+											<updated id="my-assessment" />
 										</action>
 									</actions>
 								</trigger>
@@ -815,7 +815,7 @@ int Fibonacci(int n)
 								<trigger type="onClick">
 									<actions>
 										<action type="assessment:startAttempt">
-											<value id="my-assessment" />
+											<updated id="my-assessment" />
 										</action>
 									</actions>
 								</trigger>

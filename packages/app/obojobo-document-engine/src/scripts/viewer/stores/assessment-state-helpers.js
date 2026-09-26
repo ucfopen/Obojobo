@@ -7,14 +7,14 @@ import LTIResyncStates from './assessment-store/lti-resync-states'
 import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
 import QuestionResponseSendStates from './question-store/question-response-send-states'
-import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
+import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-updated'
 import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 
 const getErrorFromResponse = res => {
-	return Error(res && res.value && res.value.message ? res.value.message : 'Request Failed')
+	return Error(res && res.updated && res.updated.message ? res.updated.message : 'Request Failed')
 }
 
 class AssessmentAPIHelpers {
@@ -84,7 +84,7 @@ class AssessmentAPIHelpers {
 
 class AssessmentStateHelpers {
 	static onError(res = null) {
-		throw Error(res ? res.value.message : 'Request Failed')
+		throw Error(res ? res.updated.message : 'Request Failed')
 	}
 
 	static async startAttempt(assessmentId) {
@@ -94,7 +94,7 @@ class AssessmentStateHelpers {
 			throw getErrorFromResponse(res)
 		}
 
-		await injectKatexIfNeeded({ value: res.value.questions })
+		await injectKatexIfNeeded({ updated: res.updated.questions })
 
 		return this.onAttemptStarted(res)
 	}
@@ -116,7 +116,7 @@ class AssessmentStateHelpers {
 			throw getErrorFromResponse(res)
 		}
 
-		await injectKatexIfNeeded({ value: res.value.questions })
+		await injectKatexIfNeeded({ updated: res.updated.questions })
 
 		return this.onAttemptStarted(res)
 	}
@@ -163,7 +163,7 @@ class AssessmentStateHelpers {
 			throw getErrorFromResponse(historyResponse)
 		}
 
-		const assessment = historyResponse.value.find(
+		const assessment = historyResponse.updated.find(
 			assessment => assessment.assessmentId === assessmentId
 		)
 
@@ -171,7 +171,7 @@ class AssessmentStateHelpers {
 			await this.updateAttemptHistoryWithReviewData(assessment)
 
 			const questions = assessment.attempts.map(attempt => attempt.state.questionModels)
-			await injectKatexIfNeeded({ value: questions })
+			await injectKatexIfNeeded({ updated: questions })
 		}
 
 		return historyResponse
@@ -179,10 +179,10 @@ class AssessmentStateHelpers {
 
 	static sendResponses(assessmentId, attemptId) {
 		return new Promise((resolve, reject) => {
-			const listener = ({ value }) => {
+			const listener = ({ updated }) => {
 				Dispatcher.off('question:forceSentAllResponses', listener)
 
-				if (value.success) {
+				if (updated.success) {
 					resolve()
 				} else {
 					reject(new Error('Sending all responses failed'))
@@ -197,7 +197,7 @@ class AssessmentStateHelpers {
 	}
 
 	static onAttemptStarted(res) {
-		const assessment = res.value
+		const assessment = res.updated
 		const assessmentId = assessment.assessmentId
 		const assessmentModel = OboModel.models[assessmentId]
 

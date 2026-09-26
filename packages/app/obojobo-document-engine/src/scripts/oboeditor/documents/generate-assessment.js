@@ -26,7 +26,7 @@ const generateAssessment = () => {
 												align: 'center'
 											},
 											text: {
-												value: 'How did you do?',
+												updated: 'How did you do?',
 												styleList: []
 											}
 										}
@@ -45,7 +45,7 @@ const generateAssessment = () => {
 												align: 'center'
 											},
 											text: {
-												value: 'You have {{assessment:attemptsRemaining}} attempts remaining.',
+												updated: 'You have {{assessment:attemptsRemaining}} attempts remaining.',
 												styleList: []
 											}
 										}
@@ -64,7 +64,7 @@ const generateAssessment = () => {
 											actions: [
 												{
 													type: 'assessment:startAttempt',
-													value: {
+													updated: {
 														id: assessmentId
 													}
 												}
@@ -75,7 +75,7 @@ const generateAssessment = () => {
 										{
 											data: null,
 											text: {
-												value: 'Retry Assessment',
+												updated: 'Retry Assessment',
 												styleList: []
 											}
 										}
@@ -104,7 +104,7 @@ const generateAssessment = () => {
 										align: 'center'
 									},
 									text: {
-										value: 'Assessment Intro Title',
+										updated: 'Assessment Intro Title',
 										styleList: []
 									}
 								}
@@ -123,7 +123,7 @@ const generateAssessment = () => {
 										align: 'center'
 									},
 									text: {
-										value: 'Some overview before starting the Assessment.',
+										updated: 'Some overview before starting the Assessment.',
 										styleList: []
 									}
 								}
@@ -141,7 +141,7 @@ const generateAssessment = () => {
 										align: 'center'
 									},
 									text: {
-										value: 'You have {{assessment:attemptsRemaining}} attempts remaining.',
+										updated: 'You have {{assessment:attemptsRemaining}} attempts remaining.',
 										styleList: []
 									}
 								}
@@ -159,7 +159,7 @@ const generateAssessment = () => {
 									actions: [
 										{
 											type: 'assessment:startAttempt',
-											value: {
+											updated: {
 												id: assessmentId
 											}
 										}
@@ -170,7 +170,7 @@ const generateAssessment = () => {
 								{
 									data: null,
 									text: {
-										value: 'Start Assessment',
+										updated: 'Start Assessment',
 										styleList: []
 									}
 								}
@@ -201,7 +201,7 @@ const generateAssessment = () => {
 										{
 											data: null,
 											text: {
-												value: 'Your Question Here',
+												updated: 'Your Question Here',
 												styleList: []
 											}
 										}
@@ -218,7 +218,7 @@ const generateAssessment = () => {
 										{
 											data: null,
 											text: {
-												value: 'More question text here.',
+												updated: 'More question text here.',
 												styleList: []
 											}
 										}
@@ -254,7 +254,7 @@ const generateAssessment = () => {
 																{
 																	data: null,
 																	text: {
-																		value: 'Correct answer',
+																		updated: 'Correct answer',
 																		styleList: []
 																	}
 																}
@@ -286,7 +286,7 @@ const generateAssessment = () => {
 																{
 																	data: null,
 																	text: {
-																		value: 'Incorrect answer',
+																		updated: 'Incorrect answer',
 																		styleList: []
 																	}
 																}

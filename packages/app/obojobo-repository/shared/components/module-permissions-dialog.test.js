@@ -261,7 +261,7 @@ describe('ModulePermissionsDialog', () => {
 		expect(peopleListItems[1].props.isMe).toBe(true)
 
 		act(() => {
-			peopleListItems[0].findByType('select').props.onChange({ target: { value: PARTIAL } })
+			peopleListItems[0].findByType('select').props.onChange({ target: { updated: PARTIAL } })
 		})
 
 		expect(defaultProps.changeAccessLevel).toHaveBeenCalledTimes(1)

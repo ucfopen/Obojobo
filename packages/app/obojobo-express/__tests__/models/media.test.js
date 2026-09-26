@@ -94,7 +94,7 @@ describe('media model', () => {
 			MediaModel.storeImageInDb(args)
 		}
 
-		// args is stringifies, so it can be passed by value and manipulated
+		// args is stringifies, so it can be passed by updated and manipulated
 		expect(testInvalidBinaryArgument.bind(this, JSON.stringify(args))).toThrowError(
 			'One or more required arguments not provided.'
 		)
@@ -302,7 +302,7 @@ describe('media model', () => {
 				userId: mockUserId
 			})
 
-			// Check that the correct value is being returned to the route
+			// Check that the correct updated is being returned to the route
 			expect(mediaId).toEqual({
 				binary_id: 'BINARY_UUID',
 				dimensions: 'original',

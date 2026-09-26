@@ -104,7 +104,7 @@ exports[`Stats Renders "modules loaded" state correctly 1`] = `
         className="repository--drafts-search"
         onChange={[Function]}
         placeholder="Search (By title or draftId)"
-        value=""
+        updated=""
       />
       <div
         className="repository--data-grid-drafts-container"
@@ -291,7 +291,7 @@ exports[`Stats Renders "modules loaded" state correctly 2`] = `
         className="repository--drafts-search"
         onChange={[Function]}
         placeholder="Search (By title or draftId)"
-        value=""
+        updated=""
       />
       <div
         className="repository--data-grid-drafts-container"
@@ -576,7 +576,7 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
         className="repository--drafts-search"
         onChange={[Function]}
         placeholder="Search (By title or draftId)"
-        value=""
+        updated=""
       />
       <div
         className="repository--data-grid-drafts-container"
@@ -687,15 +687,15 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
               </span>
               <select
                 onChange={[Function]}
-                value="final-assessment-scores"
+                updated="final-assessment-scores"
               >
                 <option
-                  value="final-assessment-scores"
+                  updated="final-assessment-scores"
                 >
                   Final Assessment Scores
                 </option>
                 <option
-                  value="all-attempts"
+                  updated="all-attempts"
                 >
                   All Attempt Scores
                 </option>
@@ -728,22 +728,22 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
                         onChange={[Function]}
                       >
                         <option
-                          value=""
+                          updated=""
                         >
                           Select one...
                         </option>
                         <option
-                          value="course-title"
+                          updated="course-title"
                         >
                           Course title
                         </option>
                         <option
-                          value="resource-link-title"
+                          updated="resource-link-title"
                         >
                           Resource link title
                         </option>
                         <option
-                          value="student-name"
+                          updated="student-name"
                         >
                           Student name
                         </option>
@@ -770,7 +770,7 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
                           min={null}
                           onChange={[Function]}
                           type="date"
-                          value=""
+                          updated=""
                         />
                         <button
                           className="repository--button secondary-button"
@@ -792,7 +792,7 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
                           max={null}
                           onChange={[Function]}
                           type="date"
-                          value=""
+                          updated=""
                         />
                         <button
                           className="repository--button secondary-button"
@@ -1108,7 +1108,7 @@ exports[`Stats Renders correctly when assessment stat fetching has not started o
         className="repository--drafts-search"
         onChange={[Function]}
         placeholder="Search (By title or draftId)"
-        value=""
+        updated=""
       />
       <div
         className="repository--data-grid-drafts-container"
@@ -1314,7 +1314,7 @@ exports[`Stats Renders correctly when assessment stat fetching has started but n
         className="repository--drafts-search"
         onChange={[Function]}
         placeholder="Search (By title or draftId)"
-        value=""
+        updated=""
       />
       <div
         className="repository--data-grid-drafts-container"

@@ -63,7 +63,7 @@ describe('ModuleSearchDialog', () => {
 		})
 
 		// changing the text of the search field should call props.filterCollections
-		const filterChangePayload = { target: { value: 'string' } }
+		const filterChangePayload = { target: { updated: 'string' } }
 		component.root.findByType(Search).props.onChange(filterChangePayload)
 		expect(defaultProps.onSearchChange).toHaveBeenCalledTimes(1)
 		expect(defaultProps.onSearchChange).toHaveBeenCalledWith(

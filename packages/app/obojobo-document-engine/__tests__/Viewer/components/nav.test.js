@@ -10,7 +10,7 @@ jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 class MockStylableText {
 	constructor(text) {
-		this.value = text
+		this.updated = text
 	}
 }
 const mockStylableComponent = props => <div {...props} className={'mockStylableText'} />
@@ -486,7 +486,7 @@ describe('Nav', () => {
 		expect(NavUtil.goto).not.toHaveBeenCalled()
 		expect(mockDispatcherTrigger).toHaveBeenCalledTimes(1)
 		expect(mockDispatcherTrigger).toHaveBeenCalledWith('viewer:scrollToTop', {
-			value: { animateScroll: true }
+			updated: { animateScroll: true }
 		})
 	})
 
