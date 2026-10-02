@@ -1,7 +1,8 @@
-@import '../../client/css/defaults';
+@use '../../client/css/defaults';
+@use "../../client/css/media-queries";
 
 .repository--section-wrapper {
-	max-width: $dimension-width;
+	max-width: defaults.$dimension-width;
 	margin: 0 auto;
 }
 
@@ -11,15 +12,15 @@
 	background: #ffffff;
 	min-width: 100%;
 	z-index: 100;
-	border-bottom: 1px solid $border-color;
+	border-bottom: 1px solid defaults.$border-color;
 }
 
 .repository--nav {
-	max-width: $dimension-width;
-	padding-left: $dimension-padding;
-	padding-right: $dimension-padding;
+	max-width: defaults.$dimension-width;
+	padding-left: defaults.$dimension-padding;
+	padding-right: defaults.$dimension-padding;
 	box-sizing: border-box;
-	min-height: $dimension-nav-height;
+	min-height: defaults.$dimension-nav-height;
 	margin: 0.25em auto;
 	display: flex;
 	flex-wrap: nowrap;
@@ -33,15 +34,15 @@
 		margin-right: 0.4em;
 		text-align: center;
 
-		@include mq($from: zero, $until: mobileS) {
+		@include media-queries.mq($from: zero, $until: mobileS) {
 			font-size: 0.65em;
 		}
 
-		@include mq($from: mobileS, $until: mobileL) {
+		@include media-queries.mq($from: mobileS, $until: mobileL) {
 			font-size: 0.7em;
 		}
 
-		@include mq($from: mobileL, $until: tablet) {
+		@include media-queries.mq($from: mobileL, $until: tablet) {
 			font-size: 0.75em;
 		}
 	}
@@ -49,12 +50,12 @@
 
 .repository--nav a:link,
 .repository--nav a:visited {
-	color: $color-obojobo-blue;
+	color: defaults.$color-obojobo-blue;
 }
 
 .repository--nav a:active,
 .repository--nav a:hover {
-	color: $color-highlight;
+	color: defaults.$color-highlight;
 }
 
 .repository--nav--logo {
@@ -89,9 +90,9 @@
 
 .repository--nav .repository--nav--current-user {
 	position: relative;
-	height: $dimension-nav-height;
+	height: defaults.$dimension-nav-height;
 	text-align: right;
-	padding: 0 $dimension-nav-height 0 0;
+	padding: 0 defaults.$dimension-nav-height 0 0;
 	box-sizing: border-box;
 	margin-right: 0;
 
@@ -104,9 +105,9 @@
 	button {
 		border: none;
 		font-size: 1em;
-		background: $color-bg;
-		font-family: $font-default;
-		height: $dimension-nav-height;
+		background: defaults.$color-bg;
+		font-family: defaults.$font-default;
+		height: defaults.$dimension-nav-height;
 		margin: 0;
 	}
 

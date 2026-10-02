@@ -28,7 +28,7 @@
 		"precommit": "lint-staged"
 	},
 	"engines": {
-		"node": "^18.16.0"
+		"node": "^24.0.0"
 	},
 	"lint-staged": {
 		"**/*.scss": [
@@ -63,9 +63,9 @@
 		"multer": "^1.4.2",
 		"pg-promise": "^10.10.1",
 		"react-transition-group": "^4.4.1",
+		"sass-loader": "^16.0.5",
 		"serve-favicon": "~2.5.0",
 		"sharp": "^0.32.6",
-		"trianglify": "^4.1.1",
 		"uuid": "^8.3.2"
 	},
 	"peerDependencies": {
@@ -82,10 +82,10 @@
 		"css-loader": "^5.2.0",
 		"express-list-endpoints": "^5.0.0",
 		"mini-css-extract-plugin": "^1.4.0",
-		"node-sass": "^8.0.0",
 		"oauth-signature": "^1.5.0",
 		"postcss-loader": "^7.3.3",
-		"sass-loader": "^11.0.1",
+		"sass": "^1.89.2",
+		"sass-loader": "^16.0.5",
 		"style-loader": "^2.0.0",
 		"supertest": "^6.1.3",
 		"url": "^0.11.0",

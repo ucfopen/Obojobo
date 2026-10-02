@@ -1,11 +1,13 @@
-@import '~styles/includes';
+@use "sass:math";
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--question {
 	perspective: 1000px;
 	margin: 0 auto;
 
-	$color-correct-text: darken($color-correct, 10%);
-	$color-border: transparentize($color-shadow, 0.25);
+	$color-correct-text: color.adjust(includes.$color-correct, $lightness: -10%);
+	$color-border: color.adjust(includes.$color-shadow, $alpha: -0.25);
 
 	.submit {
 		margin-left: 0;
@@ -21,7 +23,7 @@
 		}
 
 		.divider {
-			color: $color-shadow;
+			color: includes.$color-shadow;
 			display: inline-block;
 			padding: 0 0.4em;
 			transform: scale(2, 0.9);
@@ -30,7 +32,7 @@
 
 	.reveal-answer-button {
 		position: absolute;
-		right: $dimension-padding;
+		right: includes.$dimension-padding;
 		top: 0;
 
 		button {
@@ -41,11 +43,11 @@
 	}
 
 	.solution {
-		background: $color-bg2;
+		background: includes.$color-bg2;
 		position: relative;
 		border-bottom-left-radius: 0.3em;
 		border-bottom-right-radius: 0.3em;
-		border-top: 1px solid $color-shadow;
+		border-top: 1px solid includes.$color-shadow;
 		padding-bottom: 1px; /* stylelint-disable-line unit-disallowed-list */
 
 		> .obojobo-draft--components--button {
@@ -54,12 +56,12 @@
 			margin-left: 3em;
 			margin-right: 3em;
 
-			@include mq($until: desktop) {
+			@include includes.mq($until: desktop) {
 				margin-left: 3em * 0.75;
 				margin-right: 3em * 0.75;
 			}
 
-			@include mq($until: tablet) {
+			@include includes.mq($until: tablet) {
 				margin-left: 3em * 0.3;
 				margin-right: 3em * 0.3;
 			}
@@ -81,8 +83,8 @@
 
 			/* prettier-ignore */
 			transition:
-				opacity $duration-animation-default * 2,
-				max-height $duration-animation-default * 2;
+				opacity includes.$duration-animation-default * 2,
+				max-height includes.$duration-animation-default * 2;
 		}
 
 		&.explanation-leave {
@@ -97,22 +99,22 @@
 
 			/* prettier-ignore */
 			transition:
-				opacity $duration-animation-default * 2,
-				max-height $duration-animation-default * 2;
+				opacity includes.$duration-animation-default * 2,
+				max-height includes.$duration-animation-default * 2;
 		}
 
 		> .solution-container-animation-placeholder {
-			transition: height $duration-animation-default * 2;
+			transition: height includes.$duration-animation-default * 2;
 		}
 
 		.solution-container {
-			background: $color-bg;
+			background: includes.$color-bg;
 			text-align: left;
 			padding: 0.5em;
-			margin-bottom: $dimension-padding / 3;
-			margin-left: $dimension-padding / 3;
-			margin-right: $dimension-padding / 3;
-			border: 1px solid $color-shadow;
+			margin-bottom: math.div(includes.$dimension-padding, 3);
+			margin-left: math.div(includes.$dimension-padding, 3);
+			margin-right: math.div(includes.$dimension-padding, 3);
+			border: 1px solid includes.$color-shadow;
 			position: relative;
 
 			&:focus {
@@ -120,10 +122,10 @@
 			}
 
 			&::before {
-				$color-solution-label-text: transparentize($color-text, 0.25);
+				$color-solution-label-text: color.adjust(includes.$color-text, $alpha: -0.25);
 
 				content: 'Full explanation:';
-				font-family: $font-default;
+				font-family: includes.$font-default;
 				font-size: 1em;
 				font-weight: bold;
 				color: $color-solution-label-text;
@@ -134,7 +136,7 @@
 				transform: scale(0.7);
 				transform-origin: top left;
 
-				@include mq($until: tablet) {
+				@include includes.mq($until: tablet) {
 					margin-top: 0.5em;
 					margin-left: 0.5em;
 				}
@@ -143,7 +145,7 @@
 			&.solution-enter {
 				max-height: 0;
 				overflow: hidden;
-				border: 0 solid $color-transparent;
+				border: 0 solid includes.$color-transparent;
 				margin-bottom: 0;
 				opacity: 0;
 			}
@@ -151,21 +153,21 @@
 			&.solution-enter.solution-enter-active {
 				max-height: 60em;
 				margin-bottom: 1em;
-				border: 1px solid $color-shadow;
+				border: 1px solid includes.$color-shadow;
 				opacity: 1;
 
 				/* prettier-ignore */
 				transition:
-					max-height $duration-animation-default * 2,
-					margin-bottom $duration-animation-default * 2,
-					border $duration-animation-default * 2,
-					opacity $duration-animation-default * 2;
+					max-height includes.$duration-animation-default * 2,
+					margin-bottom includes.$duration-animation-default * 2,
+					border includes.$duration-animation-default * 2,
+					opacity includes.$duration-animation-default * 2;
 			}
 
 			&.solution-exit {
 				max-height: 60em;
 				margin-bottom: 1em;
-				border: 1px solid $color-shadow;
+				border: 1px solid includes.$color-shadow;
 				overflow: hidden;
 				opacity: 1;
 			}
@@ -173,15 +175,15 @@
 			&.solution-exit.solution-exit-active {
 				max-height: 0;
 				margin-bottom: 0;
-				border: 0 solid $color-transparent;
+				border: 0 solid includes.$color-transparent;
 				opacity: 0;
 
 				/* prettier-ignore */
 				transition:
-					max-height $duration-animation-default * 2,
-					margin-bottom $duration-animation-default * 2,
-					border $duration-animation-default * 2,
-					opacity $duration-animation-default * 2;
+					max-height includes.$duration-animation-default * 2,
+					margin-bottom includes.$duration-animation-default * 2,
+					border includes.$duration-animation-default * 2,
+					opacity includes.$duration-animation-default * 2;
 			}
 
 			> div > .for-screen-reader-only {
@@ -205,7 +207,7 @@
 			.obojobo-draft--pages--page {
 				font-size: 0.85em;
 
-				@include mq($until: tablet) {
+				@include includes.mq($until: tablet) {
 					padding-top: 0.5em;
 				}
 			}
@@ -237,15 +239,15 @@
 		$color-sep: rgba(0, 0, 0, 0.1);
 
 		position: relative;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		padding: 0;
 		margin-bottom: 1em;
-		border: 1.25px solid transparentize($color-shadow, 0.2);
-		max-width: $dimension-column-width;
-		background: $color-bg;
-		transition: opacity $duration-animation-default;
+		border: 1.25px solid color.adjust(includes.$color-shadow, $alpha: -0.2);
+		max-width: includes.$dimension-column-width;
+		background: includes.$color-bg;
+		transition: opacity includes.$duration-animation-default;
 
-		@include mq($until: desktop) {
+		@include includes.mq($until: desktop) {
 			border-radius: 0;
 		}
 
@@ -259,25 +261,25 @@
 				border: none;
 				border-bottom: 1px solid $color-border;
 				// background: white;
-				border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
+				border-radius: 0 0 includes.$dimension-rounded-radius includes.$dimension-rounded-radius;
 
 				> legend {
 					$font-size: 1em;
 
-					@include pad();
+					@include includes.pad();
 
-					@include mq($until: desktop) {
-						@include pad(0.75);
+					@include includes.mq($until: desktop) {
+						@include includes.pad(0.75);
 					}
 
-					@include mq($until: tablet) {
-						@include pad(0.3);
+					@include includes.mq($until: tablet) {
+						@include includes.pad(0.3);
 					}
 
 					content: 'Practice';
 					display: block;
-					font-family: $font-default;
-					color: $color-action;
+					font-family: includes.$font-default;
+					color: includes.$color-action;
 					font-size: $font-size;
 					font-weight: normal;
 					width: 100%;
@@ -288,29 +290,29 @@
 				}
 
 				> .assessment-component {
-					background: $color-bg;
+					background: includes.$color-bg;
 				}
 			}
 
 			> .solution-editor {
-				background: $color-bg2;
-				border-top: 1px solid $color-shadow;
+				background: includes.$color-bg2;
+				border-top: 1px solid includes.$color-shadow;
 				position: relative;
 				border-bottom-left-radius: 0.3em;
 				border-bottom-right-radius: 0.3em;
 				padding-bottom: 1px; /* stylelint-disable-line unit-disallowed-list */
 
 				.page-editor {
-					margin: $dimension-padding / 3;
-					background: $color-bg;
-					border: 1px solid $color-shadow;
+					margin: math.div(includes.$dimension-padding, 3);
+					background: includes.$color-bg;
+					border: 1px solid includes.$color-shadow;
 
 					&::before {
 						content: 'Full explanation:';
-						font-family: $font-default;
+						font-family: includes.$font-default;
 						font-size: 1em;
 						font-weight: bold;
-						color: $color-text-minor;
+						color: includes.$color-text-minor;
 						margin-top: 1em;
 						margin-left: 2em;
 						margin-bottom: -1em;
@@ -325,7 +327,7 @@
 				left: 50%;
 				transform: translate(-50%, 0);
 				position: relative;
-				margin: $dimension-padding / 3;
+				margin: math.div(includes.$dimension-padding, 3);
 			}
 		}
 
@@ -336,18 +338,18 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background: $color-bg;
+			background: includes.$color-bg;
 			cursor: pointer;
-			border-radius: $dimension-rounded-radius;
+			border-radius: includes.$dimension-rounded-radius;
 
-			@include mq($until: desktop) {
+			@include includes.mq($until: desktop) {
 				border-radius: 0;
 			}
 
 			> .obojobo-draft--components--button {
-				transition: transform $duration-animation-default;
-				font-family: $font-default;
-				color: $color-action;
+				transition: transform includes.$duration-animation-default;
+				font-family: includes.$font-default;
+				color: includes.$color-action;
 				position: absolute;
 				left: 50%;
 				top: 50%;
@@ -356,7 +358,7 @@
 			}
 
 			&:hover {
-				background: $color-action-bg;
+				background: includes.$color-action-bg;
 
 				.obojobo-draft--components--button {
 					transform: translate(-50%, -50%) scale(1.1, 1.1);
@@ -407,8 +409,8 @@
 		left: 0;
 		right: 0;
 		bottom: 1em;
-		font-family: $font-default;
-		color: $color-text;
+		font-family: includes.$font-default;
+		color: includes.$color-text;
 		font-size: 0.7em;
 		height: 2em;
 
@@ -418,7 +420,8 @@
 			left: 0;
 			top: 0;
 			opacity: 0;
-			transition: opacity $duration-animation-default, color $duration-animation-default;
+			transition: opacity includes.$duration-animation-default,
+				color includes.$duration-animation-default;
 		}
 
 		> .response-status-exit {
@@ -440,7 +443,7 @@
 		}
 
 		> .is-response-state-error {
-			color: $color-error;
+			color: includes.$color-error;
 
 			&.response-status-enter,
 			&.response-status-enter-done {
@@ -459,7 +462,7 @@
 	}
 
 	&.is-hidden > .flipper {
-		border: 1px solid $color-action;
+		border: 1px solid includes.$color-action;
 		max-height: 15em;
 		overflow: hidden;
 	}
@@ -504,10 +507,10 @@
 
 	&.is-mode-practice {
 		> .flipper > .content-back::before {
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 			content: 'Practice';
 			display: block;
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			position: absolute;
 			left: 3.15em;
 			top: 0.5em;
@@ -516,28 +519,28 @@
 		}
 
 		&.is-correct .flipper {
-			border: 1.25px solid $color-correct;
+			border: 1.25px solid includes.$color-correct;
 		}
 
 		&.is-not-correct .flipper {
-			border: 1.25px solid $color-incorrect;
+			border: 1.25px solid includes.$color-incorrect;
 		}
 
 		&.is-no-score .flipper {
-			border: 1.25px solid $color-survey;
+			border: 1.25px solid includes.$color-survey;
 		}
 	}
 
 	&.is-type-survey {
 		> .flipper > .content-back {
-			background: transparentize($color: $color-bg2, $amount: 0.7);
+			background: color.adjust($color: includes.$color-bg2, $alpha: -0.7);
 		}
 
 		> .flipper > .content-back::before {
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 			content: 'Survey Question';
 			display: block;
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			position: absolute;
 			left: 3.15em;
 			top: 0.5em;
@@ -554,14 +557,14 @@
 	}
 
 	.submit-and-result-container {
-		@include pad();
+		@include includes.pad();
 
-		@include mq($until: desktop) {
-			@include pad(0.75);
+		@include includes.mq($until: desktop) {
+			@include includes.pad(0.75);
 		}
 
-		@include mq($until: tablet) {
-			@include pad(0.3);
+		@include includes.mq($until: tablet) {
+			@include includes.pad(0.3);
 		}
 
 		min-height: 4em;
@@ -571,7 +574,7 @@
 
 	.pick-all-instructions {
 		display: block;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 0.8em;
 		font-weight: bold;
 		line-height: 1.5em;
@@ -584,7 +587,7 @@
 	}
 
 	&.is-not-correct .pick-all-instructions {
-		color: $color-incorrect;
+		color: includes.$color-incorrect;
 	}
 
 	.result-container {
@@ -596,13 +599,13 @@
 		padding-bottom: 1em;
 		line-height: 1em;
 
-		@include mq($until: mobile) {
+		@include includes.mq($until: mobile) {
 			display: block;
 		}
 
 		.result {
-			font-family: $font-default;
-			color: $color-bg;
+			font-family: includes.$font-default;
+			color: includes.$color-bg;
 			font-weight: bold;
 			box-sizing: border-box;
 			margin: 0;
@@ -615,15 +618,15 @@
 			animation-fill-mode: forwards;
 
 			&.correct {
-				background-color: $color-correct;
+				background-color: includes.$color-correct;
 			}
 
 			&.incorrect {
-				background-color: $color-incorrect;
+				background-color: includes.$color-incorrect;
 			}
 
 			&.survey {
-				background-color: $color-survey;
+				background-color: includes.$color-survey;
 			}
 		}
 	}

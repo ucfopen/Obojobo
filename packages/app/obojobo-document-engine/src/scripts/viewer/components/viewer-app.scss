@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .viewer--viewer-app--visit-error {
 	width: 100%;
@@ -8,8 +9,8 @@
 	left: 50%;
 	top: 20%;
 	transform: translate(-50%, -50%);
-	color: $color-text;
-	font-family: $font-default;
+	color: includes.$color-text;
+	font-family: includes.$font-default;
 }
 
 .viewer--viewer-app {
@@ -17,55 +18,55 @@
 	overflow: auto;
 	padding-top: 2.5rem;
 	box-sizing: border-box;
-	background: $color-bg;
+	background: includes.$color-bg;
 
 	/* prettier-ignore */
 	transition:
-		padding-left $duration-animation-default $duration-animation-default,
-		padding-top $duration-animation-default;
+		padding-left includes.$duration-animation-default includes.$duration-animation-default,
+		padding-top includes.$duration-animation-default;
 
 	> .viewer--components--header {
 		position: absolute;
 		left: 0;
 		width: 100%;
 		top: 0;
-		z-index: $z-index-above-content;
-		border-bottom: 1px solid transparentize($color-shadow, 0.2);
+		z-index: includes.$z-index-above-content;
+		border-bottom: 1px solid color.adjust(includes.$color-shadow, $alpha: -0.2);
 		opacity: 0.95;
 		word-wrap: break-word;
 
 		/* prettier-ignore */
 		transition:
-			top $duration-animation-default,
-			opacity $duration-animation-default;
-		transition-delay: $duration-animation-default * 2;
+			top includes.$duration-animation-default,
+			opacity includes.$duration-animation-default;
+		transition-delay: includes.$duration-animation-default * 2;
 
 		.viewer--components--logo {
-			transition: opacity $duration-animation-default;
-			transition-delay: $duration-animation-default * 3;
+			transition: opacity includes.$duration-animation-default;
+			transition-delay: includes.$duration-animation-default * 3;
 		}
 	}
 
 	> .preview-banner {
-		font-family: $font-default;
-		background: $color-preview;
+		font-family: includes.$font-default;
+		background: includes.$color-preview;
 		box-sizing: border-box;
-		color: $color-bg;
+		color: includes.$color-bg;
 		font-size: 0.7em;
 		font-weight: bold;
-		min-height: $dimension-preview-banner;
+		min-height: includes.$dimension-preview-banner;
 		left: 0;
 		padding: 0.5em 1em;
 		position: fixed;
 		right: 0;
 		bottom: 0;
-		z-index: $z-index-preview;
-		border-top: 2px solid $color-bg;
+		z-index: includes.$z-index-preview;
+		border-top: 2px solid includes.$color-bg;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 
-		@include mq($until: mobileLandscape) {
+		@include includes.mq($until: mobileLandscape) {
 			font-size: 0.6em;
 
 			.controls > span {
@@ -84,7 +85,7 @@
 				appearance: none;
 				user-select: none;
 				margin-left: 1em;
-				font-family: $font-default;
+				font-family: includes.$font-default;
 				line-height: 1em;
 				cursor: pointer;
 				font-size: 1em;
@@ -93,8 +94,8 @@
 				min-width: 3.25em;
 				border-radius: 0.2em;
 				padding: 0.4em;
-				background-color: $color-bg;
-				color: $color-preview;
+				background-color: includes.$color-bg;
+				color: includes.$color-preview;
 				border: none;
 			}
 		}
@@ -105,24 +106,24 @@
 			top: 0;
 			right: 0;
 			bottom: 0;
-			border: 3px solid $color-preview;
+			border: 3px solid includes.$color-preview;
 			pointer-events: none;
 		}
 	}
 
 	&.is-open-nav.is-not-disabled-nav {
-		padding-left: $dimension-nav-menu;
+		padding-left: includes.$dimension-nav-menu;
 		padding-top: 0;
 
-		@include mq($until: desktop) {
-			padding-left: $dimension-nav-menu-small;
+		@include includes.mq($until: desktop) {
+			padding-left: includes.$dimension-nav-menu-small;
 		}
 
-		@include mq($until: tablet) {
-			padding-left: $dimension-nav-menu-xsmall;
+		@include includes.mq($until: tablet) {
+			padding-left: includes.$dimension-nav-menu-xsmall;
 		}
 
-		@include mq($until: mobileLandscape) {
+		@include includes.mq($until: mobileLandscape) {
 			padding-left: 0;
 		}
 
@@ -132,7 +133,7 @@
 			.viewer--components--logo,
 			.location {
 				opacity: 0;
-				transition: $duration-animation-default/2 opacity;
+				transition: includes.$duration-animation-default * 0.5 opacity;
 				transition-delay: 0s;
 			}
 		}
@@ -143,6 +144,6 @@
 	}
 
 	code {
-		font-family: $font-monospace;
+		font-family: includes.$font-monospace;
 	}
 }

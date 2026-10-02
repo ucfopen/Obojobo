@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--modal--dialog.pre-attempt-import {
 	max-width: 40rem;
@@ -12,7 +12,7 @@
 			> .choice-box {
 				width: 50%;
 				background: #f9f4ff;
-				border-radius: $dimension-rounded-radius;
+				border-radius: includes.$dimension-rounded-radius;
 				padding: 1em 0.5em;
 				position: relative;
 				box-sizing: border-box;
@@ -38,10 +38,10 @@
 			> .or-box {
 				align-self: center;
 				margin: 0 1em;
-				color: $color-text-minor;
+				color: includes.$color-text-minor;
 			}
 
-			@include mq($until: tablet) {
+			@include includes.mq($until: tablet) {
 				margin: 0;
 
 				> .choice-box {
@@ -69,7 +69,7 @@
 			}
 		}
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			.obojobo-draft--components--modal--modal {
 				padding: 0.5rem 0.5em;
 			}

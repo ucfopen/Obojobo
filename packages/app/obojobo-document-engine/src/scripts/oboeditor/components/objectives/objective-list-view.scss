@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .objective-list-view {
 	width: 21em;
@@ -14,7 +14,7 @@
 		font-weight: normal;
 		border: none;
 		list-style-type: disc;
-		font-family: $font-monospace;
+		font-family: includes.$font-monospace;
 		padding: 0;
 
 		label {

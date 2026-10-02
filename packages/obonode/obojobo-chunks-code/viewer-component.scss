@@ -1,28 +1,30 @@
-@import '~styles/includes';
+@use "sass:math";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--code,
 .component[data-obo-component='true'] .obojobo-draft--chunks--code {
 	pre {
 		$font-size: 0.95em;
 
-		font-family: $font-monospace;
+		font-family: includes.$font-monospace;
 		letter-spacing: -0.01em;
 		font-size: $font-size;
 		line-height: 1.4em;
 		margin-top: 0;
 		margin-bottom: 0;
 		overflow-x: auto;
-		background: $color-bg2;
-		border-radius: $dimension-rounded-radius;
+		background: includes.$color-bg2;
+		border-radius: includes.$dimension-rounded-radius;
 		box-sizing: border-box;
-		padding: $dimension-padding / 4 $dimension-padding / 3 / ($font-size / 1em);
+		padding: includes.$dimension-padding * 0.25
+			math.div(math.div(includes.$dimension-padding, 3), math.div($font-size, 1em));
 		tab-size: 2;
 
-		@include mq($until: desktop) {
+		@include includes.mq($until: desktop) {
 			font-size: $font-size * 0.9;
 		}
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			font-size: $font-size * 0.8;
 		}
 

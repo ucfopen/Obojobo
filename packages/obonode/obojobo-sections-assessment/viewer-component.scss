@@ -1,9 +1,13 @@
-@import '~styles/includes';
+@use "sass:meta";
+@use '~styles/includes';
+@use './components/test/index' as test-styles;
+@use './components/post-test/index' as post-test-styles;
+@use './components/full-review/index' as full-review-styles;
 
 .obojobo-draft--sections--assessment {
-	@import './components/test/index.scss';
-	@import './components/post-test/index.scss';
-	@import './components/full-review/index.scss';
+	@include test-styles.styles();
+	@include post-test-styles.styles();
+	@include full-review-styles.styles();
 
 	.pre-test {
 		padding-top: 1em;
@@ -21,7 +25,7 @@
 	}
 
 	.loading-assessment {
-		animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+		animation: obojobo-draft--animation--fadein includes.$duration-animation-default * 2;
 		position: absolute;
 		left: 50%;
 		top: 0;
@@ -37,10 +41,10 @@
 	}
 
 	.test {
-		animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+		animation: obojobo-draft--animation--fadein includes.$duration-animation-default * 2;
 	}
 }
 
 .obojobo-draft--sections--assessment--results-modal {
-	background: $color-bg2;
+	background: includes.$color-bg2;
 }

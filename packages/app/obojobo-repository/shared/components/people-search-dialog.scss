@@ -1,4 +1,4 @@
-@import '../../client/css/defaults';
+@use '../../client/css/defaults';
 
 .people-search-dialog {
 	min-width: 23em;
@@ -24,13 +24,13 @@
 
 	.sub-title {
 		font-size: 0.7em;
-		margin-bottom: $size-spacing-vertical-half;
+		margin-bottom: defaults.$size-spacing-vertical-half;
 	}
 
 	.access-list-wrapper {
 		margin: 0;
-		margin-top: $size-spacing-vertical-half;
-		background-color: $color-banner-bg;
+		margin-top: defaults.$size-spacing-vertical-half;
+		background-color: defaults.$color-banner-bg;
 		padding: 0;
 	}
 

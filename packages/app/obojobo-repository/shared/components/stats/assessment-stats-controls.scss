@@ -1,4 +1,4 @@
-@import '../../../client/css/defaults';
+@use '../../../client/css/defaults';
 
 .repository--assessment-stats-controls {
 	hr {
@@ -32,9 +32,9 @@
 
 	.search-controls {
 		select {
-			@include select-input();
+			@include defaults.select-input();
 
-			border: 1px solid $color-shadow;
+			border: 1px solid defaults.$color-shadow;
 			font-size: 0.8em;
 			width: 11em;
 		}
@@ -94,25 +94,25 @@
 				}
 
 				input[type='date'] {
-					border-radius: $dimension-rounded-radius;
+					border-radius: defaults.$dimension-rounded-radius;
 					padding: 0.5em;
 					font-size: 0.8em;
-					border: 0.1em solid $color-shadow;
+					border: 0.1em solid defaults.$color-shadow;
 
 					&[value=''] {
-						color: $color-text-minor;
+						color: defaults.$color-text-minor;
 					}
 
 					&:not([value='']) {
-						background-color: $color-action-bg;
-						border: 1px solid $color-action;
+						background-color: defaults.$color-action-bg;
+						border: 1px solid defaults.$color-action;
 					}
 				}
 			}
 		}
 
 		input {
-			font-family: $font-monospace;
+			font-family: defaults.$font-monospace;
 		}
 	}
 }

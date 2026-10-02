@@ -1,16 +1,18 @@
-@import './media-queries';
+@use 'sass:color';
+@use 'sass:math';
+@use './media-queries' as *;
 
 $border-color: #cccccc;
 $button-color: #76c7aa;
 $color-banner-bg: #e8e3eb;
 $color-action: #6714bd;
-$color-button-bg: lighten($color-action, 9%);
-$color-action-minor: desaturate(lighten($color-action, 30%), 40%);
+$color-button-bg: color.adjust($color-action, $lightness: 9%);
+$color-action-minor: color.adjust(color.adjust($color-action, $lightness: 30%), $saturation: -40%);
 $color-error: #990000;
 $color-dangerous: #d40000;
-$color-dangerous-minor: desaturate($color-dangerous, 20%);
+$color-dangerous-minor: color.adjust($color-dangerous, $saturation: -20%);
 $color-text: #000000;
-$color-text-minor: lighten($color-text, 40%);
+$color-text-minor: color.adjust($color-text, $lightness: 40%);
 $color-text-subheading: #a20e83;
 $color-text-placeholder: #aaaaaa;
 $color-bg: #ffffff;
@@ -34,8 +36,8 @@ $color-obojobo-blue: #0d4fa7;
 $color-preview: #af1b5c;
 
 $size-spacing-vertical-big: 40px;
-$size-spacing-vertical-half: $size-spacing-vertical-big / 2;
-$size-spacing-vertical-internal: $size-spacing-vertical-half / 2;
+$size-spacing-vertical-half: math.div($size-spacing-vertical-big, 2);
+$size-spacing-vertical-internal: math.div($size-spacing-vertical-half, 2);
 
 $box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 $box-shadow-overlay: 0 2px 2px $color-shadow;

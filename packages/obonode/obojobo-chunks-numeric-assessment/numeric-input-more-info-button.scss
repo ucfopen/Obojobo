@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--numeric-assessment--input-more-info {
 	display: inline-block;
@@ -6,18 +7,18 @@
 	left: 0.8em;
 	top: 50%;
 	transform: translateY(-50%);
-	z-index: $z-index-above-all;
+	z-index: includes.$z-index-above-all;
 
 	.container {
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 0.9rem;
 		width: 30rem;
 
 		> .wrapper {
 			padding: 1rem;
 			margin: 1rem;
-			background: $color-bg;
-			border-radius: $dimension-rounded-radius;
+			background: includes.$color-bg;
+			border-radius: includes.$dimension-rounded-radius;
 
 			> .about {
 				font-weight: bold;
@@ -36,23 +37,23 @@
 					}
 
 					> span {
-						font-family: $font-monospace;
-						background: lighten($color-highlight, 18%);
+						font-family: includes.$font-monospace;
+						background: color.adjust(includes.$color-highlight, $lightness: 18%);
 						padding: 0.2em 0.4em;
 						margin-left: 0.2em;
 						margin-right: 0.2em;
-						border-radius: $dimension-rounded-radius / 2;
+						border-radius: includes.$dimension-rounded-radius * 0.5;
 					}
 				}
 			}
 		}
 	}
 
-	@include mq($until: desktop) {
+	@include includes.mq($until: desktop) {
 		left: 0.4em;
 	}
 
-	@include mq($until: tablet) {
+	@include includes.mq($until: tablet) {
 		left: 0.1em;
 		transform: translateY(-165%);
 	}

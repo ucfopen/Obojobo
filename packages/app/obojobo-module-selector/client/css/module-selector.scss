@@ -1,4 +1,5 @@
-@import '../../../obojobo-document-engine/src/scss/includes';
+@use "sass:color";
+@use '../../../obojobo-document-engine/src/scss/includes';
 
 $color-personal-action: #4fbfcc;
 $color-personal-minor: #3f8393;
@@ -16,11 +17,11 @@ html {
 body {
 	margin: 0;
 	padding: 0;
-	font-family: $font-default;
+	font-family: includes.$font-default;
 }
 
 a {
-	color: $color-action;
+	color: includes.$color-action;
 }
 
 header {
@@ -52,7 +53,7 @@ header {
 	color: white;
 
 	&:hover {
-		background-color: lighten($color-personal-action, 20%);
+		background-color: color.adjust($color-personal-action, $lightness: 20%);
 	}
 }
 
@@ -261,7 +262,7 @@ header {
 
 	&.purple {
 		#list-header-wrapper #list-header #search {
-			border-color: $color-action;
+			border-color: includes.$color-action;
 		}
 
 		#header-title {
@@ -271,19 +272,19 @@ header {
 		}
 
 		a {
-			color: $color-action;
+			color: includes.$color-action;
 		}
 
 		.flourish-line {
-			background-color: $color-action;
+			background-color: includes.$color-action;
 		}
 
 		.button {
-			background-color: $color-action;
+			background-color: includes.$color-action;
 			color: white;
 
 			&:hover {
-				background-color: $color-action-minor;
+				background-color: includes.$color-action-minor;
 			}
 		}
 	}
@@ -448,30 +449,30 @@ header {
 
 	#community-library-button {
 		.wizard-button {
-			background-color: lighten($color-action, 55%);
+			background-color: color.adjust(includes.$color-action, $lightness: 55%);
 			background-image: url('./community-library-icon.png');
 			background-repeat: no-repeat;
 			background-position: center 20px;
-			color: darken($color-action, 10%);
+			color: color.adjust(includes.$color-action, $lightness: -10%);
 		}
 
 		&:hover .wizard-button {
-			background-color: lighten($color-action, 50%);
+			background-color: color.adjust(includes.$color-action, $lightness: 50%);
 			background-position: center 16px;
 		}
 	}
 
 	#personal-library-button {
 		.wizard-button {
-			background-color: lighten($color-personal-action, 40%);
+			background-color: color.adjust($color-personal-action, $lightness: 40%);
 			background-image: url('./personal-library-icon.png');
 			background-repeat: no-repeat;
 			background-position: center 40px;
-			color: darken($color-personal-action, 30%);
+			color: color.adjust($color-personal-action, $lightness: -30%);
 		}
 
 		&:hover .wizard-button {
-			background-color: lighten($color-personal-action, 30%);
+			background-color: color.adjust($color-personal-action, $lightness: 30%);
 			background-position: center 36px;
 		}
 	}

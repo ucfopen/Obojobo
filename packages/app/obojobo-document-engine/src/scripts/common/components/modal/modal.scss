@@ -1,20 +1,20 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--modal--modal {
-	background: $color-bg;
+	background: includes.$color-bg;
 	padding: 1.5rem 3em;
 	min-width: 15em;
-	box-shadow: 0 1px 1px $color-shadow;
+	box-shadow: 0 1px 1px includes.$color-shadow;
 	border-radius: 2px;
 	max-height: 85vh;
 	overflow: auto;
 	box-sizing: border-box;
 
-	@include mq($until: mobileLandscape) {
+	@include includes.mq($until: mobileLandscape) {
 		padding: 1.5rem 1em;
 	}
 
-	@include mq($until: tablet) {
+	@include includes.mq($until: tablet) {
 		padding: 1rem 0.5em;
 	}
 

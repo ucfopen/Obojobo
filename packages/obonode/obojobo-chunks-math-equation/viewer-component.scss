@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--math-equation {
 	.non-editable-chunk {
@@ -12,30 +13,30 @@
 		padding-top: 0.1em; // extra padding prevents vertical scrolling
 		padding-bottom: 0.1em;
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			font-size: 0.9em; // squish a little on smaller screens
 		}
 	}
 
 	.equation-label {
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		position: relative;
 		text-align: center;
 		right: 0;
 		left: 0;
 		top: 0;
 		font-size: 0.8em;
-		color: lighten(
-			$color-text,
-			30%
+		color: color.adjust(
+			includes.$color-text,
+			$lightness: 30%
 		); // stylelint-disable-line scale-unlimited/declaration-strict-value
 
 		&::before {
 			content: 'Equation ';
 			font-style: italic;
-			color: lighten(
-				$color-text,
-				50%
+			color: color.adjust(
+				includes.$color-text,
+				$lightness: 50%
 			); // stylelint-disable-line scale-unlimited/declaration-strict-value
 		}
 	}

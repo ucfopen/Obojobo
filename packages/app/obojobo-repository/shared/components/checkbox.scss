@@ -1,4 +1,4 @@
-@import '../../client/css/defaults';
+@use '../../client/css/defaults';
 
 .repository--checkbox {
 	display: block;
@@ -7,8 +7,8 @@
 	user-select: none;
 	width: 2em;
 	height: 2em;
-	border: 3px solid $color-bg3;
-	background-color: $color-bg2;
+	border: 3px solid defaults.$color-bg3;
+	background-color: defaults.$color-bg2;
 	border-radius: 0.25em;
 	padding: 0;
 	padding-bottom: 0.3em;
@@ -20,8 +20,8 @@
 		content: '';
 		height: 0.45em;
 		width: 0.9em;
-		border-top: 3px solid $color-correct;
-		border-right: 3px solid $color-correct;
+		border-top: 3px solid defaults.$color-correct;
+		border-right: 3px solid defaults.$color-correct;
 		transform: rotate(135deg);
 	}
 }

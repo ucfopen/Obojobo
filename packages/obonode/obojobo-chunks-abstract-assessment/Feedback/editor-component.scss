@@ -1,7 +1,7 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--abstract-assessment--feedback {
-	border: 1px solid $color-shadow;
+	border: 1px solid includes.$color-shadow;
 	margin-top: -1.5em;
 	margin-left: 3em;
 	margin-right: 3em;
@@ -13,7 +13,7 @@
 	background: none;
 	position: relative;
 	top: -2em;
-	border-radius: $dimension-rounded-radius;
+	border-radius: includes.$dimension-rounded-radius;
 
 	@media (max-width: 61.24em) {
 		margin-left: 2.8em;

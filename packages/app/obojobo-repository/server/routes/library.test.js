@@ -2,7 +2,7 @@ jest.mock('../models/collection')
 jest.mock('../models/draft_summary')
 jest.mock('obojobo-express/server/models/user')
 jest.mock('../models/draft_permissions')
-jest.mock('trianglify')
+jest.mock('trianglify', () => jest.fn())
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 jest.mock(

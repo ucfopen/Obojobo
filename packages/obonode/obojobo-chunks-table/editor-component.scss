@@ -1,7 +1,8 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--table.viewer {
-	$color-action-low-opacity: lighten($color-action, 50%);
+	$color-action-low-opacity: color.adjust(includes.$color-action, $lightness: 50%);
 
 	> .container {
 		// We need to disable the overflow rule for auto-width table cells since this will hide
@@ -28,7 +29,7 @@
 		position: absolute;
 		top: -0.3em;
 		right: 0;
-		z-index: $z-index-above-all;
+		z-index: includes.$z-index-above-all;
 		font-size: 1rem;
 		width: 10rem;
 
@@ -40,9 +41,9 @@
 			height: 1.2em;
 			width: 1.2em;
 			padding: 0;
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 			border: none;
-			background-color: $color-transparent;
+			background-color: includes.$color-transparent;
 
 			> div.table-options-icon {
 				background-image: url('./table-options-icon.svg');
@@ -80,14 +81,14 @@
 		.drop-content-cell {
 			display: none;
 			text-align: right;
-			border: 1px solid $color-shadow-light;
-			border-radius: $dimension-rounded-radius;
+			border: 1px solid includes.$color-shadow-light;
+			border-radius: includes.$dimension-rounded-radius;
 			overflow: hidden;
 			position: relative;
 			top: 1.4em;
 			right: 0.2em;
-			box-shadow: 0 2px 2px $color-shadow;
-			font-family: $font-default;
+			box-shadow: 0 2px 2px includes.$color-shadow;
+			font-family: includes.$font-default;
 
 			&.is-open {
 				display: block;
@@ -98,16 +99,16 @@
 				width: 100%;
 				text-align: center;
 				border: none;
-				background-color: $color-bg;
-				padding: $dimension-padding / 4;
+				background-color: includes.$color-bg;
+				padding: includes.$dimension-padding * 0.25;
 				cursor: pointer;
-				font-family: $font-default;
+				font-family: includes.$font-default;
 				font-size: 0.8em;
 
 				&:hover,
 				&.focused {
 					background-color: $color-action-low-opacity;
-					color: $color-action;
+					color: includes.$color-action;
 				}
 			}
 		}
@@ -120,15 +121,15 @@
 	.buttonbox-box {
 		position: absolute;
 		text-align: center;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		font-size: 0.75em;
 		bottom: -4em;
 		left: 50%;
 		transform: translate(-50%, 0);
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		box-sizing: border-box;
-		background-color: $color-bg2;
-		box-shadow: $box-shadow-overlay;
+		background-color: includes.$color-bg2;
+		box-shadow: includes.$box-shadow-overlay;
 		z-index: 9;
 		width: 34em;
 
@@ -139,12 +140,12 @@
 			transform: translate(-50%, -50%) rotate(45deg);
 			width: 1.72em;
 			height: 1.72em;
-			border-radius: $dimension-rounded-radius 0;
+			border-radius: includes.$dimension-rounded-radius 0;
 			z-index: -1;
 		}
 
 		.box-border {
-			background-color: $color-bg2;
+			background-color: includes.$color-bg2;
 			padding: 1em;
 
 			.obojobo-draft--components--button {
@@ -162,8 +163,8 @@
 		&::before {
 			@include point();
 
-			background-color: $color-bg2;
-			box-shadow: -$box-shadow-overlay;
+			background-color: includes.$color-bg2;
+			box-shadow: -(includes.$box-shadow-overlay);
 		}
 	}
 

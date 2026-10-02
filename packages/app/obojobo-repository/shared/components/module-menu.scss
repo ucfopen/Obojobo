@@ -1,4 +1,5 @@
-@import '../../client/css/defaults';
+@use "sass:color";
+@use '../../client/css/defaults';
 
 .repository--module-icon--menu-wrapper {
 	position: relative;
@@ -15,7 +16,7 @@
 	line-height: $button-size;
 	position: absolute;
 	border-radius: $button-size;
-	background-color: $color-banner-bg;
+	background-color: defaults.$color-banner-bg;
 	border: 3px solid white;
 	top: 6.8em;
 	right: 1.3em;
@@ -25,12 +26,12 @@
 		vertical-align: middle;
 		height: 50%;
 		width: 50%;
-		stroke: $color-action;
-		fill: $color-action;
+		stroke: defaults.$color-action;
+		fill: defaults.$color-action;
 	}
 
 	&:hover {
-		background-color: $color-action;
+		background-color: defaults.$color-action;
 		transform: scale(1.2);
 		transform-origin: center;
 
@@ -46,18 +47,18 @@
 	position: absolute;
 	width: 100%;
 	top: 0.8em;
-	background-color: $color-banner-bg;
+	background-color: defaults.$color-banner-bg;
 	border-radius: 0 0 0.25em 0.25em;
 	padding: 0.7em 0.8em;
 	z-index: 100;
-	border: 1px solid $color-banner-bg;
+	border: 1px solid defaults.$color-banner-bg;
 	border-top: 0;
 	transform: translate(-1px);
 
 	hr {
 		margin: 0 0 0.6em 0;
 		border: 0;
-		border-top: 1px solid darken($color-banner-bg, 10%);
+		border-top: 1px solid color.adjust(defaults.$color-banner-bg, $lightness: -10%);
 	}
 
 	.repository--button {
@@ -69,7 +70,7 @@
 
 		&.more {
 			margin-bottom: 0;
-			color: $color-action;
+			color: defaults.$color-action;
 			background-color: inherit;
 			text-decoration: underline;
 

@@ -1,8 +1,9 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--question-bank {
-	background: transparentize($color-action, 0.95);
-	border-radius: $dimension-rounded-radius;
+	background: color.adjust(includes.$color-action, $alpha: -0.95);
+	border-radius: includes.$dimension-rounded-radius;
 	overflow: visible;
 	margin-left: 3em;
 	margin-right: 3em;
@@ -20,7 +21,7 @@
 
 		&.clickable-label {
 			label:hover {
-				color: $color-obojobo-blue;
+				color: includes.$color-obojobo-blue;
 				cursor: pointer;
 			}
 		}
@@ -28,7 +29,7 @@
 
 	.qb-settings {
 		font-size: 0.85em;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-weight: bold;
 		display: flex;
 		flex-flow: row wrap;
@@ -47,7 +48,7 @@
 			}
 
 			input[type='number'] {
-				@include text-input();
+				@include includes.text-input();
 
 				margin-left: 0.5em;
 				max-width: 5em;
@@ -73,10 +74,10 @@
 
 			select {
 				display: block;
-				font-family: $font-default;
-				border-radius: $dimension-rounded-radius;
+				font-family: includes.$font-default;
+				border-radius: includes.$dimension-rounded-radius;
 				font-size: 0.7em;
-				background-color: $color-bg;
+				background-color: includes.$color-bg;
 				width: 24em;
 				padding: 0.7em 2.5em 0.7em 0.5em;
 				appearance: none;
@@ -127,13 +128,13 @@
 			border: none;
 			background: none;
 			font-weight: bold;
-			color: $color-shadow;
+			color: includes.$color-shadow;
 
 			// fixing this error would cause another specificity error in the parent rule, not worth it
 			// stylelint-disable-next-line no-descending-specificity
 			&:hover {
 				background: none;
-				color: $color-obojobo-blue;
+				color: includes.$color-obojobo-blue;
 			}
 		}
 

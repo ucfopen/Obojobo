@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .editor--components--text-menu {
 	$bg: rgba(0, 0, 0, 0.9);
@@ -7,7 +8,7 @@
 
 	background: $bg;
 	border-radius: $size;
-	box-shadow: $box-shadow-overlay;
+	box-shadow: includes.$box-shadow-overlay;
 	box-sizing: border-box;
 	height: $size;
 	position: absolute;
@@ -30,16 +31,16 @@
 	a {
 		background: none;
 		border: none;
-		border-right: 1px solid transparentize($color-bg, 0.7);
+		border-right: 1px solid color.adjust(includes.$color-bg, $alpha: -0.7);
 		box-sizing: border-box;
-		color: $color-bg;
+		color: includes.$color-bg;
 		cursor: pointer;
 		display: inline-block;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 1em;
 		font-weight: bold;
 		height: $size * 0.7;
-		margin-top: $size / 2;
+		margin-top: $size * 0.5;
 		opacity: 0.8;
 		padding-left: 0.4em;
 		padding-right: 0.4em;
@@ -74,7 +75,7 @@
 	}
 
 	.click-blocker {
-		background: $color-bg;
+		background: includes.$color-bg;
 		display: block;
 		height: 100%;
 		left: 0;

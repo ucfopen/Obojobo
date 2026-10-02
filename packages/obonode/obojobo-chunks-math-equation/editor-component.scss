@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--math-equation {
 	position: relative;
@@ -10,27 +10,27 @@
 	}
 
 	.katex-error {
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		text-align: center;
 	}
 
 	.no-equation {
-		font-family: $font-default;
+		font-family: includes.$font-default;
 	}
 
 	.attributes-box {
 		position: absolute;
 		text-align: center;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		font-size: 0.75em;
 		left: 50%;
 		bottom: -6em;
 		transform: translate(-50%, 0);
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		box-sizing: border-box;
 		min-height: 2.5em;
-		background-color: $color-bg2;
-		box-shadow: $box-shadow-overlay;
+		background-color: includes.$color-bg2;
+		box-shadow: includes.$box-shadow-overlay;
 		z-index: 9;
 
 		&.is-open {
@@ -45,25 +45,25 @@
 			transform: translate(-50%, -50%) rotate(45deg);
 			width: 1.72em;
 			height: 1.72em;
-			border-radius: $dimension-rounded-radius 0;
+			border-radius: includes.$dimension-rounded-radius 0;
 			z-index: -1;
 		}
 
 		.box-border {
-			background-color: $color-bg2;
+			background-color: includes.$color-bg2;
 			padding: 1em;
 		}
 
 		&::before {
 			@include point();
 
-			background-color: $color-bg2;
-			box-shadow: -$box-shadow-overlay;
+			background-color: includes.$color-bg2;
+			box-shadow: -(includes.$box-shadow-overlay);
 		}
 
 		.attributes-list {
-			background-color: $color-bg;
-			border-radius: $dimension-rounded-radius;
+			background-color: includes.$color-bg;
+			border-radius: includes.$dimension-rounded-radius;
 
 			.obojobo-draft--components--button {
 				padding-bottom: 0.5em;
@@ -82,7 +82,7 @@
 
 			input,
 			textarea {
-				@include text-input();
+				@include includes.text-input();
 
 				width: 22em;
 			}

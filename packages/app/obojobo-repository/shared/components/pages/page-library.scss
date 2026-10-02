@@ -1,6 +1,6 @@
 /* stylelint-disable */
-@import '../../../client/css/defaults';
-@import './page-module.scss';
+@use '../../../client/css/defaults';
+@use 'page-module.scss';
 
 // reduce a larger font-size set on an ancestor in the library page
 .repository--nav--links--search {
@@ -10,6 +10,6 @@
 .repository--main-content--no-filter-results-text {
 	display: block;
 	margin: 1em auto;
-	color: $color-text-placeholder;
+	color: defaults.$color-text-placeholder;
 	text-align: center;
 }
