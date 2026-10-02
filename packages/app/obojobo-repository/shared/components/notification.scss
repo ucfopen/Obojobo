@@ -1,0 +1,77 @@
+@import '~styles/includes';
+@import '../../client/css/defaults';
+
+.notification-banner {
+	background-color: $color-bg;
+	padding: 1em;
+	color: $color-text;
+	border-radius: 0.5em;
+	margin: 0.1em;
+	text-align: left;
+	border: solid;
+	border-color: $color-notification;
+	border-width: 0.3em;
+
+	h1 {
+		margin: 0;
+		font-size: 0.6cm;
+	}
+
+	p {
+		display: block;
+		font-size: 0.5cm;
+	}
+
+	.notification-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+
+		.notification-exit-button {
+			color: $color-notification;
+			background-color: $color-bg;
+			border: none;
+			border-radius: 6em;
+			font-size: 0.8cm;
+			padding-left: 0.5em;
+			padding-right: 0.5em;
+			padding-top: 0.1em;
+			padding-bottom: 0.3em;
+			cursor: pointer;
+		}
+
+		.notification-exit-button:hover {
+			color: $color-notification-focus;
+			background-color: $color-notification;
+		}
+	}
+}
+
+.notification-banner.hidden {
+	display: none;
+}
+
+.notification-banner:hover {
+	background-color: $color-notification-focus;
+	color: $color-text;
+	transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;
+}
+
+.notification-none {
+	color: $color-notification;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	p {
+		border-style: solid;
+		border-radius: 0.5em;
+		padding: 0.5em;
+		width: 50%;
+		border-color: $color-notification;
+		font-size: 3em;
+	}
+}

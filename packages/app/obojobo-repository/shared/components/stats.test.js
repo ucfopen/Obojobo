@@ -1,3 +1,6 @@
+jest.mock('react-modal', () => props => {
+	return <mock-ReactModal {...props}></mock-ReactModal>
+})
 import React from 'react'
 import { create, act } from 'react-test-renderer'
 import Button from './button'
@@ -5,6 +8,7 @@ import Button from './button'
 import Stats from './stats'
 import AssessmentStats from './stats/assessment-stats'
 import DataGridDrafts from './stats/data-grid-drafts'
+import ReactModal from 'react-modal'
 
 jest.mock('react-data-table-component', () => ({
 	default: props => (
@@ -35,7 +39,9 @@ describe('Stats', () => {
 			revisionCount: 1
 		}
 	]
-
+	beforeAll(() => {
+		ReactModal.setAppElement = jest.fn()
+	})
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
