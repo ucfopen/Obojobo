@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .numeric-input-container {
 	$color-border: #dfdfdf;
@@ -50,7 +50,7 @@
 
 		th,
 		td {
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			text-align: left;
 			padding: 0;
 			padding-right: 1rem;
@@ -60,7 +60,7 @@
 
 	label {
 		display: inline-block;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		text-align: left;
 		padding: 0;
 		padding-right: 1rem;
@@ -74,11 +74,11 @@
 
 	.select > select {
 		display: block;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		border: 1px solid $color-border;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		font-size: 1rem;
-		background-color: $color-bg;
+		background-color: includes.$color-bg;
 		padding: 0.7rem 0 0.7rem 0.5rem;
 		width: 100%;
 		appearance: none;
@@ -105,18 +105,18 @@
 
 	.input > input {
 		display: block;
-		font-family: $font-monospace;
+		font-family: includes.$font-monospace;
 		border: 1px solid $color-border;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		width: 100%;
 		padding: 0.7rem 0 0.7rem 0.5rem;
 		box-sizing: border-box;
 	}
 
 	.input-item {
-		font-family: $font-monospace;
+		font-family: includes.$font-monospace;
 		border: 1px solid $color-border;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		font-size: 1rem;
 		width: 100%;
 		padding: 0.7rem 0 0.7rem 0.5rem;

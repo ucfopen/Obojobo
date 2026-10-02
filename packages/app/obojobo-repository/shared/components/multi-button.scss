@@ -1,4 +1,5 @@
-@import '../../client/css/defaults';
+@use "sass:color";
+@use '../../client/css/defaults';
 
 .repository--button.repository--multi-button {
 	$size: 2.3em;
@@ -6,7 +7,7 @@
 	$open-width: 9.7em;
 
 	position: relative;
-	border: 1px solid $color-action;
+	border: 1px solid defaults.$color-action;
 	min-height: 2.6em;
 	padding-left: 3.5em;
 	padding-top: 1em;
@@ -32,8 +33,8 @@
 		width: calc(100% + 2px);
 		left: 0;
 		box-sizing: border-box;
-		background: $color-bg;
-		border: 1px solid darken($color-banner-bg, 10%);
+		background: defaults.$color-bg;
+		border: 1px solid color.adjust(defaults.$color-banner-bg, $lightness: -10%);
 		border-radius: 0 0 0.4em 0.4em;
 		margin-left: -1px;
 		padding: 1em 0.8em 0 0.8em;
@@ -61,7 +62,7 @@
 			width: 100%;
 			fill: white;
 			stroke-width: 0.5em;
-			stroke: $color-action;
+			stroke: defaults.$color-action;
 		}
 
 		&::after {
@@ -73,15 +74,15 @@
 			width: 100%;
 			line-height: $size;
 			content: '＋';
-			color: $color-action;
+			color: defaults.$color-action;
 		}
 	}
 
 	&.is-open,
 	&:hover {
-		color: $color-action;
+		color: defaults.$color-action;
 		background-color: white;
-		border: 1px solid darken($color-banner-bg, 10%);
+		border: 1px solid color.adjust(defaults.$color-banner-bg, $lightness: -10%);
 		margin-right: 0;
 		width: $open-width;
 

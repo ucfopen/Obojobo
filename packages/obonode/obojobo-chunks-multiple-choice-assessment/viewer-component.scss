@@ -1,25 +1,26 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .component.obojobo-draft--chunks--mc-assessment {
-	$color-border: transparentize($color-shadow, 0.25);
+	$color-border: color.adjust(includes.$color-shadow, $alpha: -0.25);
 
 	@mixin correct() {
 		content: '✔';
 		position: absolute;
 		top: 0.65em;
 		display: block;
-		color: $color-correct;
+		color: includes.$color-correct;
 		font-size: 2.5em;
 		transform: translate(-50%, -50%);
 		left: 0.6em;
-		animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+		animation: obojobo-draft--animation--fadein includes.$duration-animation-default * 2;
 
-		@include mq($until: desktop) {
+		@include includes.mq($until: desktop) {
 			font-size: 1.5em;
 			top: 1.1em;
 		}
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			font-size: 1.2em;
 			top: 0.6em;
 			left: 1.1em;
@@ -31,18 +32,18 @@
 		position: absolute;
 		top: 0.65em;
 		display: block;
-		color: $color-incorrect;
+		color: includes.$color-incorrect;
 		font-size: 2.5em;
 		transform: translate(-50%, -50%);
 		left: 0.6em;
-		animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+		animation: obojobo-draft--animation--fadein includes.$duration-animation-default * 2;
 
-		@include mq($until: desktop) {
+		@include includes.mq($until: desktop) {
 			font-size: 1.5em;
 			top: 1.1em;
 		}
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			font-size: 1.2em;
 			top: 0.6em;
 			left: 1.1em;
@@ -68,11 +69,11 @@
 		padding-bottom: 0;
 		padding-left: 2em;
 
-		@include mq($until: desktop) {
+		@include includes.mq($until: desktop) {
 			padding-left: 1.5em;
 		}
 
-		@include mq($until: mobileLandscape) {
+		@include includes.mq($until: mobileLandscape) {
 			padding-left: 1em;
 		}
 	}
@@ -89,7 +90,7 @@
 					@include correct();
 				}
 
-				background: transparentize($color-correct, 0.9);
+				background: color.adjust(includes.$color-correct, $alpha: -0.9);
 			}
 
 			&.is-type-should-not-have-chosen {
@@ -98,18 +99,18 @@
 					@include incorrect();
 				}
 
-				background: transparentize($color-incorrect, 0.9);
+				background: color.adjust(includes.$color-incorrect, $alpha: -0.9);
 			}
 
 			&.is-type-chosen-survey {
-				background: transparentize($color-survey, 0.9);
+				background: color.adjust(includes.$color-survey, $alpha: -0.9);
 			}
 		}
 	}
 
 	// prettier-ignore
 	&.is-scored.is-not-correct.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly {
-		background: transparentize($color-highlight, 0.8);
+		background: color.adjust(includes.$color-highlight, $alpha: -0.8);
 	}
 
 	&.is-mode-review {
@@ -117,7 +118,7 @@
 			margin-top: 0;
 			min-height: inherit;
 
-			@include mq($until: tablet) {
+			@include includes.mq($until: tablet) {
 				margin-top: 1em;
 			}
 		}
@@ -142,11 +143,11 @@
 				}
 
 				&.is-type-could-have-chosen {
-					background: transparentize($color-alt-correct, 0.9);
+					background: color.adjust(includes.$color-alt-correct, $alpha: -0.9);
 				}
 
 				&.is-type-should-have-chosen {
-					background: transparentize($color-unchosen-correct, 0.9);
+					background: color.adjust(includes.$color-unchosen-correct, $alpha: -0.9);
 				}
 			}
 		}

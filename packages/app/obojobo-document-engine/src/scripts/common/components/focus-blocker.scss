@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .viewer--components--focus-blocker {
 	position: fixed;
@@ -6,8 +6,8 @@
 	top: 0;
 	right: 0;
 	bottom: 0;
-	background: $color-bg;
-	transition: opacity $duration-animation-default * 4;
+	background: includes.$color-bg;
+	transition: opacity includes.$duration-animation-default * 4;
 	opacity: 0;
 	pointer-events: none;
 }
@@ -23,7 +23,7 @@
 }
 
 .component[data-obo-component='true'] {
-	animation: component-focus-blocker-z-index $duration-animation-default * 4;
+	animation: component-focus-blocker-z-index includes.$duration-animation-default * 4;
 
 	&[data-focussed='true'] {
 		z-index: 2;

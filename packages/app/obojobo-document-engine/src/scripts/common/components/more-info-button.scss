@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--components--more-info-button {
 	@keyframes obojobo-draft--components--more-info-button--slidein {
@@ -15,10 +16,10 @@
 	display: inline-block;
 
 	> button {
-		background: $color-bg2;
+		background: includes.$color-bg2;
 		height: 2em;
 		border-radius: 1.5em;
-		color: $color-action;
+		color: includes.$color-action;
 		border: none;
 		cursor: help;
 	}
@@ -29,14 +30,14 @@
 		right: -1em;
 		top: 50%;
 		transform: translate(100%, -50%);
-		background: $color-bg2;
-		box-shadow: $box-shadow-overlay;
-		z-index: $z-index-above-content;
+		background: includes.$color-bg2;
+		box-shadow: includes.$box-shadow-overlay;
+		z-index: includes.$z-index-above-content;
 
 		/* prettier-ignore */
 		animation:
-			obojobo-draft--animation--fadein $duration-animation-default,
-			obojobo-draft--components--more-info-button--slidein $duration-animation-default;
+			obojobo-draft--animation--fadein includes.$duration-animation-default,
+			obojobo-draft--components--more-info-button--slidein includes.$duration-animation-default;
 
 		&::before {
 			position: absolute;
@@ -47,8 +48,8 @@
 			width: 1em;
 			height: 1em;
 			// background: $color-shadow;
-			background: $color-bg2;
-			box-shadow: $box-shadow-overlay;
+			background: includes.$color-bg2;
+			box-shadow: includes.$box-shadow-overlay;
 		}
 
 		&:focus {
@@ -56,7 +57,7 @@
 		}
 
 		> .container {
-			background: $color-bg2;
+			background: includes.$color-bg2;
 			position: relative;
 		}
 	}
@@ -69,15 +70,15 @@
 
 	&.is-mode-hover {
 		> button {
-			background: transparentize($color-action, 0.3);
-			color: $color-bg;
+			background: color.adjust(includes.$color-action, $alpha: -0.3);
+			color: includes.$color-bg;
 		}
 	}
 
 	&.is-mode-clicked {
 		> button {
-			background: $color-action;
-			color: $color-bg;
+			background: includes.$color-action;
+			color: includes.$color-bg;
 			cursor: pointer;
 		}
 	}

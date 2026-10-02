@@ -1,7 +1,7 @@
 # =====================================================================================================
 # Base stage used for  build and final stages
 # =====================================================================================================
-FROM node:18.16.0-alpine AS base_stage
+FROM node:24.21.0-alpine AS base_stage
 
 # ======== PUT NEW NODE BIN DIR IN PATH
 RUN npm config set prefix '/home/node/.npm-global'
@@ -13,7 +13,7 @@ ENV PATH=/home/node/.npm-global/bin:${PATH}
 FROM base_stage as build_stage
 
 # build-base needed for node building binaries
-# pkgconfig pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev needed for npm trianglify
+# pkgconfig pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev needed to build canvas
 RUN apk add --no-cache build-base git pkgconfig pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev python3
 
 # ======== INSTALL PM2 Globally
@@ -50,7 +50,7 @@ RUN yarn --production=true
 # =====================================================================================================
 FROM base_stage as final_stage
 
-# cairo pango jpeg giflib are needed for npm trianglify
+# cairo pango jpeg giflib are needed by canvas
 RUN apk add --no-cache cairo pango jpeg giflib
 
 # ======== COPY GLOBAL NODE STUFF

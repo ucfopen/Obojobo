@@ -1,19 +1,19 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--edit-button {
 	display: inline-block;
 
 	button {
 		user-select: none;
-		background-color: $color-bg;
+		background-color: includes.$color-bg;
 		background-position: 0.3rem center;
 		background-repeat: no-repeat;
 		background-size: 30%;
-		border: 1px solid $color-action;
-		box-shadow: 0 1px 1px $color-shadow;
-		color: $color-action;
+		border: 1px solid includes.$color-action;
+		box-shadow: 0 1px 1px includes.$color-shadow;
+		color: includes.$color-action;
 		cursor: pointer;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 0.7em;
 		height: 2em;
 		margin-left: 1em;
@@ -23,8 +23,8 @@
 		min-width: 3.25em;
 
 		&:hover {
-			background-color: $color-action;
-			color: $color-bg;
+			background-color: includes.$color-action;
+			color: includes.$color-bg;
 			opacity: 1;
 			text-align: center;
 		}

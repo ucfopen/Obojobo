@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--slider--slider-rail-outer {
 	position: absolute;
@@ -16,5 +16,5 @@
 	transform: translate(0%, -50%);
 	border-radius: 0.5em;
 	pointer-events: none;
-	background: $color-shadow;
+	background: includes.$color-shadow;
 }

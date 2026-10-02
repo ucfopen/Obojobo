@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 @keyframes obojobo-draft--components--modal-container {
 	0% {
@@ -29,8 +29,8 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-	z-index: $z-index-above-all;
-	animation-duration: $duration-animation-default;
+	z-index: includes.$z-index-above-all;
+	animation-duration: includes.$duration-animation-default;
 	animation-name: obojobo-draft--components--modal-container;
 
 	&.is-not-active {
@@ -44,9 +44,9 @@
 	}
 
 	&.is-active > .content {
-		animation-duration: $duration-animation-default;
+		animation-duration: includes.$duration-animation-default;
 		animation-name: obojobo-draft--components--modal-container--content;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		position: absolute;
 		left: 50%;
 		top: 50%;

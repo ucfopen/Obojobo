@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .paragraph-styles {
 	cursor: pointer;
@@ -8,10 +9,10 @@
 
 	> button {
 		display: block;
-		border-radius: $dimension-rounded-radius;
-		background-color: $color-bg;
+		border-radius: includes.$dimension-rounded-radius;
+		background-color: includes.$color-bg;
 		font-size: 1em;
-		border: 1px solid $color-shadow;
+		border: 1px solid includes.$color-shadow;
 		padding-right: 2em;
 		position: relative;
 		top: -0.5em;
@@ -23,7 +24,7 @@
 			font-weight: bold;
 			position: absolute;
 			right: 0.5em;
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 			top: 0;
 			transform: rotate(-180deg);
 
@@ -47,16 +48,16 @@
 	.paragraph-styles-menu {
 		position: absolute;
 		top: 1em;
-		background-color: $color-bg;
-		border-radius: $dimension-rounded-radius;
+		background-color: includes.$color-bg;
+		border-radius: includes.$dimension-rounded-radius;
 		min-width: 11em;
-		border: 1px solid $color-shadow;
-		box-shadow: $box-shadow-overlay;
+		border: 1px solid includes.$color-shadow;
+		box-shadow: includes.$box-shadow-overlay;
 
 		button {
 			display: block;
-			background-color: $color-bg;
-			border-radius: $dimension-rounded-radius;
+			background-color: includes.$color-bg;
+			border-radius: includes.$dimension-rounded-radius;
 			border: none;
 			font-size: 1em;
 			width: 100%;
@@ -64,7 +65,7 @@
 			padding: 0.3em;
 
 			&:hover {
-				background: lighten($color-action, 48%);
+				background: color.adjust(includes.$color-action, $lightness: 48%);
 			}
 
 			> * {
@@ -77,7 +78,7 @@
 			h4,
 			h5,
 			h6 {
-				font-family: $font-default;
+				font-family: includes.$font-default;
 				font-weight: normal;
 				margin: 0;
 			}
@@ -94,13 +95,13 @@
 
 			h2 {
 				line-height: 1em;
-				color: $color-text-subheading;
+				color: includes.$color-text-subheading;
 				font-size: 1.5em;
 			}
 
 			pre,
 			textarea {
-				font-family: $font-monospace;
+				font-family: includes.$font-monospace;
 				font-size: 1em;
 				letter-spacing: -0.01em;
 			}

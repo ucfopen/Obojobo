@@ -1,24 +1,29 @@
-.submit-button {
-	display: block;
-	margin: 0 auto;
-	text-align: center;
-	position: relative;
+@use "sass:color";
+@use '~styles/includes' as *;
 
-	button {
-		min-width: 9em;
-	}
-
-	.incomplete-notice {
-		$incomplete-notice: lighten($color-text-minor, 20%);
-
-		font-family: $font-default;
+@mixin styles() {
+	.submit-button {
 		display: block;
-		font-size: 0.6em;
-		color: $incomplete-notice;
-		position: absolute;
+		margin: 0 auto;
 		text-align: center;
-		left: 0%;
-		right: 0%;
-		pointer-events: none;
+		position: relative;
+
+		button {
+			min-width: 9em;
+		}
+
+		.incomplete-notice {
+			$incomplete-notice: color.adjust($color-text-minor, $lightness: 20%);
+
+			font-family: $font-default;
+			display: block;
+			font-size: 0.6em;
+			color: $incomplete-notice;
+			position: absolute;
+			text-align: center;
+			left: 0%;
+			right: 0%;
+			pointer-events: none;
+		}
 	}
 }

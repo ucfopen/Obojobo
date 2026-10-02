@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--iframe {
 	display: block;
@@ -64,11 +65,11 @@
 			bottom: 0;
 			right: 0;
 			overflow: hidden;
-			border-radius: $dimension-rounded-radius;
+			border-radius: includes.$dimension-rounded-radius;
 			width: 100%;
 
 			> iframe {
-				background: $color-bg2;
+				background: includes.$color-bg2;
 			}
 
 			> iframe,
@@ -84,12 +85,12 @@
 			left: 50%;
 			top: 50%;
 			transform: translate(-50%, -50%);
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			line-height: 1.3em;
 			box-sizing: border-box;
 			font-size: 1em;
-			border-radius: $dimension-rounded-radius;
-			color: $color-text;
+			border-radius: includes.$dimension-rounded-radius;
+			color: includes.$color-text;
 			font-weight: bold;
 			transition: transform 0.2s;
 			max-width: calc(100% - 3em);
@@ -155,14 +156,14 @@
 
 	&.is-missing-src {
 		> .container {
-			$error-color: lighten($color-error, 65%);
+			$error-color: color.adjust(includes.$color-error, $lightness: 65%);
 
-			border: 1px solid $color-error;
+			border: 1px solid includes.$color-error;
 			background-color: $error-color;
 			pointer-events: none;
 
 			> .click-to-load > span {
-				color: $color-error;
+				color: includes.$color-error;
 			}
 		}
 	}
@@ -173,14 +174,14 @@
 
 	&.is-showing {
 		> .container {
-			border: 1px solid $color-transparent;
+			border: 1px solid includes.$color-transparent;
 		}
 	}
 
 	&.is-bordered.is-showing {
 		> .container > .iframe-container {
 			// This gets an outline with rounded corners (border messes up our calculations)
-			$b: darken($color-bg2, 20%);
+			$b: color.adjust(includes.$color-bg2, $lightness: -20%);
 
 			/* prettier-ignore */
 			box-shadow:
@@ -210,9 +211,9 @@
 			$bg-color: #fdfdfd;
 			$hover-bg-color: #f9f4ff;
 
-			border: 1px solid transparentize($color-action, 0.8);
+			border: 1px solid color.adjust(includes.$color-action, $alpha: -0.8);
 			max-height: 15em;
-			border-radius: $dimension-rounded-radius;
+			border-radius: includes.$dimension-rounded-radius;
 			background-color: $bg-color;
 			overflow: hidden;
 			cursor: pointer;
@@ -227,7 +228,8 @@
 				top: 0;
 				right: 0;
 				bottom: 0;
-				transition: transform $duration-animation-default, opacity $duration-animation-default;
+				transition: transform includes.$duration-animation-default,
+					opacity includes.$duration-animation-default;
 			}
 
 			&:hover {

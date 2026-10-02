@@ -1,11 +1,11 @@
-@import '../../../../scss/includes';
+@use '../../../../scss/includes';
 
 .visual-editor--more-info {
 	position: absolute;
 	z-index: 9999;
 	top: 0;
 	right: 0;
-	font-family: $font-default;
+	font-family: includes.$font-default;
 	font-weight: bold;
 
 	.more-info-button {
@@ -25,14 +25,14 @@
 
 		&:hover {
 			svg {
-				stroke: $color-obojobo-blue;
+				stroke: includes.$color-obojobo-blue;
 				opacity: 1;
 			}
 		}
 
 		&.is-open {
 			svg {
-				stroke: $color-obojobo-blue;
+				stroke: includes.$color-obojobo-blue;
 				opacity: 1;
 			}
 		}
@@ -42,9 +42,9 @@
 		position: absolute;
 		top: -1em;
 		right: -30.5em;
-		background-color: $color-bg2;
-		z-index: $z-index-above-content;
-		box-shadow: $box-shadow-overlay;
+		background-color: includes.$color-bg2;
+		z-index: includes.$z-index-above-content;
+		box-shadow: includes.$box-shadow-overlay;
 		width: 28em;
 		text-align: left;
 
@@ -57,12 +57,12 @@
 			width: 1em;
 			height: 1em;
 			// background: $color-shadow;
-			background: $color-bg2;
-			box-shadow: $box-shadow-overlay;
+			background: includes.$color-bg2;
+			box-shadow: includes.$box-shadow-overlay;
 		}
 
 		> .container {
-			background: $color-bg2;
+			background: includes.$color-bg2;
 			position: relative;
 			padding: 0.5em;
 		}
@@ -72,8 +72,8 @@
 		}
 
 		.properties {
-			background-color: $color-bg;
-			color: $color-text;
+			background-color: includes.$color-bg;
+			color: includes.$color-text;
 			padding: 0.5em;
 			margin-bottom: 0.5em;
 
@@ -81,7 +81,7 @@
 				padding-top: 0.5em;
 				padding-bottom: 0.5em;
 				min-height: 1.5em;
-				border-bottom: 1px solid $color-shadow;
+				border-bottom: 1px solid includes.$color-shadow;
 				position: relative;
 
 				.properties--row {
@@ -106,7 +106,7 @@
 				}
 
 				input {
-					@include text-input();
+					@include includes.text-input();
 
 					&.id-input {
 						margin-right: 0.2em;
@@ -121,9 +121,9 @@
 				}
 
 				input:read-only {
-					background: $color-bg2;
-					border: 1px solid $color-bg2;
-					color: $color-text-minor;
+					background: includes.$color-bg2;
+					border: 1px solid includes.$color-bg2;
+					color: includes.$color-text-minor;
 					cursor: default;
 				}
 
@@ -213,15 +213,15 @@
 		text-align: center;
 
 		.error {
-			color: $color-error;
+			color: includes.$color-error;
 		}
 	}
 
 	.select-item {
-		font-family: $font-default;
-		border-radius: $dimension-rounded-radius;
+		font-family: includes.$font-default;
+		border-radius: includes.$dimension-rounded-radius;
 		font-size: 0.7em;
-		background-color: $color-bg;
+		background-color: includes.$color-bg;
 		min-width: 26.5em;
 		padding: 0.7em 2em 0.7em 0.5em;
 		line-height: 1.1em;
