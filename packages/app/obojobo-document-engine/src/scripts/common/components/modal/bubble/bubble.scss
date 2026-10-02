@@ -1,13 +1,13 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--modal--bubble {
 	$tip-size: 1em;
 
-	background: $color-bg;
-	border: 1px solid $color-shadow;
+	background: includes.$color-bg;
+	border: 1px solid includes.$color-shadow;
 	border-radius: 0.3em;
 	bottom: 0;
-	box-shadow: $box-shadow-overlay;
+	box-shadow: includes.$box-shadow-overlay;
 	box-sizing: border-box;
 	display: inline-block;
 	left: 50%;
@@ -18,9 +18,9 @@
 	z-index: 10;
 
 	&::before {
-		background: $color-bg;
-		border-left: 1px solid $color-shadow;
-		border-top: 1px solid $color-shadow;
+		background: includes.$color-bg;
+		border-left: 1px solid includes.$color-shadow;
+		border-top: 1px solid includes.$color-shadow;
 		content: ' ';
 		height: $tip-size;
 		left: 50%;

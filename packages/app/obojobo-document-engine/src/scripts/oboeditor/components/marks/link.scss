@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .editor--components--mark--link {
 	position: relative;
@@ -10,8 +10,8 @@
 		transform: translate(-50%, -200%);
 		left: 50%;
 		z-index: 3;
-		background-color: $color-bg;
-		border-radius: $dimension-rounded-radius;
+		background-color: includes.$color-bg;
+		border-radius: includes.$dimension-rounded-radius;
 		padding: 0.5em;
 	}
 
@@ -31,7 +31,7 @@
 	.link-edit,
 	.link-remove {
 		display: inline;
-		background-color: $color-bg;
+		background-color: includes.$color-bg;
 		background-position: center;
 		background-repeat: no-repeat;
 		border: none;
@@ -49,19 +49,19 @@
 	}
 
 	.href-menu {
-		background: $color-bg;
+		background: includes.$color-bg;
 		font-size: 1rem;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		position: absolute;
 		bottom: -2em;
 		left: -1em;
-		box-shadow: $box-shadow-overlay;
+		box-shadow: includes.$box-shadow-overlay;
 		user-select: none;
 		white-space: nowrap;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		height: 1.9rem;
-		z-index: $z-index-above-all;
-		border: 1px solid $color-shadow;
+		z-index: includes.$z-index-above-all;
+		border: 1px solid includes.$color-shadow;
 
 		a {
 			height: 1.9rem;
@@ -80,7 +80,7 @@
 			text-overflow: ellipsis;
 
 			&:hover {
-				background: $color-action-bg;
+				background: includes.$color-action-bg;
 			}
 		}
 	}

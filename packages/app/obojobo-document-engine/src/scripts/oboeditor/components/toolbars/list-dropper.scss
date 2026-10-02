@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .list-dropper {
 	cursor: pointer;
@@ -11,12 +12,12 @@
 	button {
 		&:hover {
 			opacity: 1;
-			background: lighten($color-action, 48%);
+			background: color.adjust(includes.$color-action, $lightness: 48%);
 		}
 
 		&.is-open {
 			opacity: 1;
-			background: lighten($color-action, 48%);
+			background: color.adjust(includes.$color-action, $lightness: 48%);
 		}
 	}
 
@@ -66,16 +67,16 @@
 		position: absolute;
 		top: 2em;
 		right: 0;
-		background-color: $color-bg;
-		border-radius: $dimension-rounded-radius;
+		background-color: includes.$color-bg;
+		border-radius: includes.$dimension-rounded-radius;
 		width: 1.5em;
-		border: 1px solid $color-shadow;
-		box-shadow: $box-shadow-overlay;
+		border: 1px solid includes.$color-shadow;
+		box-shadow: includes.$box-shadow-overlay;
 
 		button {
 			display: block;
-			background-color: $color-bg;
-			border-radius: $dimension-rounded-radius;
+			background-color: includes.$color-bg;
+			border-radius: includes.$dimension-rounded-radius;
 			border: none;
 			font-size: 1em;
 			width: 100%;
@@ -83,7 +84,7 @@
 			padding: 0.3em;
 
 			&:hover {
-				background: lighten($color-action, 48%);
+				background: color.adjust(includes.$color-action, $lightness: 48%);
 			}
 		}
 	}

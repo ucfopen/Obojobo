@@ -1,4 +1,4 @@
-@import '../../../scss/includes';
+@use '../../../scss/includes';
 
 .visual-editor--editor-app {
 	margin-bottom: 10rem;
@@ -13,11 +13,11 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		z-index: $z-index-above-all;
-		background-color: $color-bg;
+		z-index: includes.$z-index-above-all;
+		background-color: includes.$color-bg;
 	}
 
 	code {
-		font-family: $font-monospace;
+		font-family: includes.$font-monospace;
 	}
 }

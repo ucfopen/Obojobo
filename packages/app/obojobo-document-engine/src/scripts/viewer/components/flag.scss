@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--flag {
 	@mixin point() {
@@ -9,14 +9,14 @@
 		transform: translate(6.79em, -50%) rotate(45deg);
 		width: 1.72em;
 		height: 1.72em;
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 	}
 
 	&::before {
 		@include point();
 
 		z-index: -1;
-		box-shadow: 0 1px 1px $color-shadow;
+		box-shadow: 0 1px 1px includes.$color-shadow;
 	}
 
 	&::after {
@@ -24,21 +24,21 @@
 	}
 
 	position: relative;
-	color: $color-bg;
+	color: includes.$color-bg;
 	width: 7.75em;
 	text-align: center;
-	border-radius: $dimension-rounded-radius;
+	border-radius: includes.$dimension-rounded-radius;
 	font-size: 0.75em;
 	// left: -5.3em;
 	// top: 1.1em;
-	font-family: $font-default;
-	box-shadow: 0 1px 1px $color-shadow;
+	font-family: includes.$font-default;
+	box-shadow: 0 1px 1px includes.$color-shadow;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 	box-sizing: border-box;
 	min-height: 2.5em;
 
-	@include mq($until: desktop) {
+	@include includes.mq($until: desktop) {
 		font-size: 0.5em;
 		// left: -1.9em;
 		// top: 0.3em;
@@ -63,49 +63,49 @@
 
 	&.is-type-chosen-correctly,
 	&.is-type-chosen-survey {
-		background-color: $color-correct;
+		background-color: includes.$color-correct;
 
 		&::before,
 		&::after {
-			background-color: $color-correct;
+			background-color: includes.$color-correct;
 		}
 	}
 
 	&.is-type-should-not-have-chosen {
-		background-color: $color-incorrect;
+		background-color: includes.$color-incorrect;
 
 		&::before,
 		&::after {
-			background-color: $color-incorrect;
+			background-color: includes.$color-incorrect;
 		}
 	}
 
 	&.is-type-should-have-chosen {
-		background-color: $color-unchosen-correct;
+		background-color: includes.$color-unchosen-correct;
 
 		&::before,
 		&::after {
-			background-color: $color-unchosen-correct;
+			background-color: includes.$color-unchosen-correct;
 		}
 	}
 
 	&.is-type-could-have-chosen {
-		background-color: $color-alt-correct;
-		color: $color-text;
+		background-color: includes.$color-alt-correct;
+		color: includes.$color-text;
 
 		&::before,
 		&::after {
-			background-color: $color-alt-correct;
+			background-color: includes.$color-alt-correct;
 		}
 	}
 
 	&.is-type-chosen-survey {
-		background-color: $color-survey;
-		color: $color-bg;
+		background-color: includes.$color-survey;
+		color: includes.$color-bg;
 
 		&::before,
 		&::after {
-			background-color: $color-survey;
+			background-color: includes.$color-survey;
 		}
 	}
 }

@@ -1,6 +1,7 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
-$lighter-blue: lighten($color-obojobo-blue, 60%);
+$lighter-blue: color.adjust(includes.$color-obojobo-blue, $lightness: 60%);
 
 .obojobo-draft--chunks--excerpt--edge-controls {
 	z-index: 1;
@@ -9,7 +10,8 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 	justify-content: center;
 	align-items: center;
 	height: 1em;
-	border: 2px dotted transparentize(lighten($color-obojobo-blue, 40%), 0.5);
+	border: 2px dotted
+		color.adjust(color.adjust(includes.$color-obojobo-blue, $lightness: 40%), $alpha: -0.5);
 	transform: translate(-50%, -50%);
 	left: 50%;
 	width: 100%;
@@ -19,8 +21,8 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		width: 1em;
 		height: 1em;
 		display: inline-block;
-		border: 2px solid lighten($color-obojobo-blue, 40%);
-		background-color: $color-bg;
+		border: 2px solid color.adjust(includes.$color-obojobo-blue, $lightness: 40%);
+		background-color: includes.$color-bg;
 
 		&::after {
 			content: ' ';
@@ -48,7 +50,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 
 		&.is-selected {
 			background-color: $lighter-blue;
-			border: 2px solid $color-obojobo-blue;
+			border: 2px solid includes.$color-obojobo-blue;
 			z-index: 1;
 
 			&::after {

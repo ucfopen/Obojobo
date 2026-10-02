@@ -1,13 +1,14 @@
-@import '../../../../scss/includes';
+@use "sass:color";
+@use '../../../../scss/includes';
 
 .visual-editor--file-toolbar {
-	z-index: $z-index-above-all;
+	z-index: includes.$z-index-above-all;
 	margin: 0 auto;
 	padding-right: 0.5em;
 	padding-left: 0.5em;
-	background-color: $color-bg;
-	border-bottom: 1px solid $color-shadow;
-	font-family: $font-default;
+	background-color: includes.$color-bg;
+	border-bottom: 1px solid includes.$color-shadow;
+	font-family: includes.$font-default;
 	font-size: 0.8em;
 	margin-top: 2.3em;
 
@@ -18,11 +19,11 @@
 		border: none;
 		background: transparent;
 		cursor: pointer;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 
 		&:hover {
 			opacity: 1;
-			background: lighten($color-action, 48%);
+			background: color.adjust(includes.$color-action, $lightness: 48%);
 		}
 	}
 
@@ -41,11 +42,11 @@
 		font-weight: bold;
 
 		&.saved {
-			color: $color-action;
+			color: includes.$color-action;
 		}
 
 		&.saving {
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 		}
 	}
 }

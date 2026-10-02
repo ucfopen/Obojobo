@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .prompt {
 	label {
@@ -7,7 +7,7 @@
 	}
 
 	input {
-		@include text-input();
+		@include includes.text-input();
 
 		width: 18em;
 	}

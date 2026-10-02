@@ -1,19 +1,19 @@
-@import '../../client/css/defaults';
+@use '../../client/css/defaults';
 
 #dashboard-root {
 	.repository--main-content--control-bar {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: $size-spacing-vertical-big;
+		margin-bottom: defaults.$size-spacing-vertical-big;
 
 		.repository--main-content--new-module-button {
 			width: 11em;
 		}
 
 		&.is-multi-select-mode {
-			border: 1px solid $color-banner-bg;
-			background-color: $color-banner-bg;
+			border: 1px solid defaults.$color-banner-bg;
+			background-color: defaults.$color-banner-bg;
 			border-radius: 0.15em;
 
 			.module-count {
@@ -46,7 +46,7 @@
 			justify-content: space-between;
 			gap: 0.5em;
 			position: relative;
-			border: 1px solid $color-action;
+			border: 1px solid defaults.$color-action;
 			font-size: 0.65em;
 
 			.trash-can-icon {
@@ -73,7 +73,7 @@
 					width: 100%;
 					fill: white;
 					stroke-width: 0.5em;
-					stroke: $color-action;
+					stroke: defaults.$color-action;
 					top: 0.35em;
 				}
 			}
@@ -85,7 +85,7 @@
 		margin: 0 auto;
 
 		.repository--item-list--collection--empty-placeholder--text {
-			color: $color-text-placeholder;
+			color: defaults.$color-text-placeholder;
 			margin-right: 2em;
 		}
 	}

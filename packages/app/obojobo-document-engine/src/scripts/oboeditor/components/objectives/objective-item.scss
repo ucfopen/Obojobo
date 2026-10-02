@@ -1,7 +1,8 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 /* Display the objective css */
-$color-highlight-bg: lighten($color-action, 50%);
+$color-highlight-bg: color.adjust(includes.$color-action, $lightness: 50%);
 
 .is-objective-label-selected {
 	background-color: $color-highlight-bg;
@@ -12,28 +13,28 @@ $color-highlight-bg: lighten($color-action, 50%);
 }
 
 .is-not-objective-label-selected {
-	background-color: $color-bg;
+	background-color: includes.$color-bg;
 
 	.objective-options button {
-		background-color: $color-bg;
+		background-color: includes.$color-bg;
 	}
 }
 
 .objective-block {
 	text-align: left;
 	width: 35rem;
-	border: 1px solid lighten($color-unchosen-correct, 25%);
+	border: 1px solid color.adjust(includes.$color-unchosen-correct, $lightness: 25%);
 	padding: 0.8em;
 	margin: 0.5em;
 	display: flex;
 	align-items: center;
-	border-radius: $dimension-rounded-radius;
+	border-radius: includes.$dimension-rounded-radius;
 
 	.close-btn {
 		font-size: 1em;
 		font-weight: bold;
 		background: none;
-		color: $color-shadow;
+		color: includes.$color-shadow;
 	}
 
 	.close-btn .obojobo-draft--components--delete-button {
@@ -47,7 +48,7 @@ $color-highlight-bg: lighten($color-action, 50%);
 		justify-content: space-between;
 
 		button:hover {
-			background-color: $color-action;
+			background-color: includes.$color-action;
 		}
 	}
 
@@ -56,8 +57,8 @@ $color-highlight-bg: lighten($color-action, 50%);
 		cursor: pointer;
 		border: 0;
 		font-size: 0.75em;
-		font-family: $font-default;
-		color: $color-action;
+		font-family: includes.$font-default;
+		color: includes.$color-action;
 		text-decoration: underline;
 	}
 
@@ -76,7 +77,7 @@ $color-highlight-bg: lighten($color-action, 50%);
 
 		.objective-label {
 			width: 2em;
-			font-family: $font-monospace;
+			font-family: includes.$font-monospace;
 		}
 
 		.objective-description {

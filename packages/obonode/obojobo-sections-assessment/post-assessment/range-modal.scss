@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .score-range {
 	text-align: left;
@@ -6,7 +6,7 @@
 	min-width: 19em;
 
 	input {
-		@include text-input();
+		@include includes.text-input();
 
 		vertical-align: middle;
 	}
@@ -43,13 +43,13 @@
 		}
 
 		.null-label {
-			font-family: $font-monospace;
+			font-family: includes.$font-monospace;
 			font-size: 0.8em;
 		}
 	}
 
 	.error {
-		color: $color-error;
+		color: includes.$color-error;
 		font-size: 0.8em;
 		font-weight: bold;
 		display: block;
@@ -86,7 +86,7 @@
 			text-align: left;
 			margin-top: 1em;
 			font-size: 0.7em;
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 		}
 
 		.range-type-input {

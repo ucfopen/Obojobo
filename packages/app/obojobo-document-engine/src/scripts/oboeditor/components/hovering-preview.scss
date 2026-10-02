@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .hovering-preview {
 	position: absolute;
@@ -7,13 +7,13 @@
 	width: auto;
 	background: white;
 	white-space: nowrap;
-	color: $color-text;
+	color: includes.$color-text;
 	padding: 0.3rem 1rem;
 	padding-top: -0.3rem;
 	border-radius: 0.25rem;
 	border: 1px solid rgba(0, 0, 0, 0.2);
-	z-index: $z-index-above-all;
-	font-family: $font-monospace;
+	z-index: includes.$z-index-above-all;
+	font-family: includes.$font-monospace;
 	font-size: 1rem;
 	cursor: text;
 	line-height: 1.5rem;
@@ -22,7 +22,7 @@
 	display: none;
 
 	p {
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 0.8rem;
 		margin: 0;
 		margin-bottom: -0.3rem;
