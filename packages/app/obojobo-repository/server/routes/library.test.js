@@ -2,7 +2,7 @@ jest.mock('../models/collection')
 jest.mock('../models/draft_summary')
 jest.mock('obojobo-express/server/models/user')
 jest.mock('../models/draft_permissions')
-jest.mock('trianglify', () => jest.fn())
+jest.mock('trianglify-ts-no-canvas', () => jest.fn())
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 jest.mock(
@@ -68,7 +68,7 @@ describe('repository library route', () => {
 			id: 99,
 			perms: []
 		}
-		trianglify = require('trianglify')
+		trianglify = require('trianglify-ts-no-canvas')
 		trianglify.mockReturnValue({
 			toSVG: jest.fn().mockReturnValue('mockTrianglifySVGInnerHTML')
 		})
