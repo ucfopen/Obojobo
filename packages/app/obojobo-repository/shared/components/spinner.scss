@@ -1,14 +1,13 @@
+@import '../../client/css/defaults';
+
 .obojobo-draft--components--spinner {
 	position: absolute;
-	width: 1.5em;
-	height: 1.5em;
-	display: block;
-	left: 0;
-	right: 0;
-	top: 15%;
-	margin-left: auto;
-	margin-right: auto;
-	z-index: 999;
+	width: 1em;
+	height: 1em;
+	top: 1em;
+	right: 0.5em;
+	display: inline-block;
+	background-color: $color-bg;
 
 	> .spinner {
 		@keyframes obojobo-draft--components--spinner--rotate {

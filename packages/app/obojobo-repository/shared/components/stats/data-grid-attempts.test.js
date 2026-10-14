@@ -36,16 +36,17 @@ describe('DataGridAttempts', () => {
 				isPreview: false
 			}
 		],
-		filterSettings: {
+		controls: {
 			showIncompleteAttempts: false,
 			showPreviewAttempts: false,
-			showAdvancedFields: false
+			showAdvancedFields: false,
+			searchBy: 'draft-id',
+			searchContent: {
+				searchString: 'mock',
+				date: null
+			}
 		},
-		searchSettings: 'draft-id',
-		searchContent: {
-			text: 'mock',
-			date: null
-		}
+		setFilteredRows: () => {}
 	})
 
 	test('DataGridAttempts renders correctly', () => {
@@ -58,11 +59,15 @@ describe('DataGridAttempts', () => {
 	test('DataGridAttempts renders with no attempts', () => {
 		const component = renderer.create(
 			<DataGridAttempts
-				filterSettings={getTestProps().filterSettings}
-				searchSettings="draft-id"
-				searchContent={{
-					text: 'mock',
-					date: null
+				controls={{
+					showIncompleteAttempts: false,
+					showPreviewAttempts: false,
+					showAdvancedFields: false,
+					searchBy: 'draft-id',
+					searchContent: {
+						searchString: 'mock',
+						date: null
+					}
 				}}
 			/>
 		)
@@ -72,20 +77,21 @@ describe('DataGridAttempts', () => {
 	})
 
 	test('DataGridAttempts columns with cell components render as expected', () => {
-		const component = renderer.create(
-			<DataGridAttempts
-				filterSettings={{
-					showIncompleteAttempts: true,
-					showPreviewAttempts: true,
-					showAdvancedFields: true
-				}}
-				searchSettings="draft-id"
-				searchContent={{
-					text: 'mock',
+		const props = {
+			...getTestProps(),
+			controls: {
+				showIncompleteAttempts: true,
+				showPreviewAttempts: true,
+				showAdvancedFields: true,
+				searchBy: 'draft-id',
+				searchContent: {
+					searchString: 'mock',
 					date: null
-				}}
-			/>
-		)
+				}
+			}
+		}
+
+		const component = renderer.create(<DataGridAttempts {...props} />)
 		const columns = component.root.findByProps({ className: 'react-data-table-component' }).props
 			.columns
 

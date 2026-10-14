@@ -42,7 +42,7 @@
 		}
 	}
 
-	.filters {
+	.controls {
 		> span {
 			display: inline-block;
 			width: 6em;
@@ -62,6 +62,7 @@
 		height: calc(100% - 2px);
 		border: 1px solid $color-shadow;
 		border-radius: $dimension-rounded-radius;
+		position: relative;
 
 		.repository--button {
 			display: inline-block;
@@ -99,5 +100,12 @@
 	.repository--assessment-stats-filter-controls {
 		display: inline-block;
 		margin-top: 1em;
+	}
+
+	.data-table-header {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 }

@@ -703,113 +703,111 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
             </label>
             <hr />
             <div
-              className="filters"
+              className="controls"
             >
               <div
-                className="repository--assessment-stats-search-controls"
+                className="repository--assessment-stats-controls"
               >
                 <div
-                  className="search-by-text"
+                  className="search-controls"
                 >
-                  <label
-                    htmlFor="repository--assessment-stats-search-controls--search-by"
-                  >
-                    Search by: 
-                  </label>
                   <div
-                    className="controls"
+                    className="search-by-text"
                   >
-                    <select
-                      id="repository--assessment-stats-search-controls--search-by"
-                      onChange={[Function]}
+                    <label
+                      htmlFor="repository--assessment-stats-search-controls--search-by"
                     >
-                      <option
-                        value=""
+                      Search by:
+                       
+                    </label>
+                    <div
+                      className="controls"
+                    >
+                      <select
+                        id="repository--assessment-stats-search-controls--search-by"
+                        onChange={[Function]}
                       >
-                        Select one...
-                      </option>
-                      <option
-                        value="course-title"
+                        <option
+                          value=""
+                        >
+                          Select one...
+                        </option>
+                        <option
+                          value="course-title"
+                        >
+                          Course title
+                        </option>
+                        <option
+                          value="resource-link-title"
+                        >
+                          Resource link title
+                        </option>
+                        <option
+                          value="student-name"
+                        >
+                          Student name
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <hr />
+                  <div
+                    className="search-by-date"
+                  >
+                    <span
+                      className="label"
+                    >
+                      Filter attempts by date range:
+                    </span>
+                    <label>
+                      <span>
+                        From:
+                      </span>
+                      <div
+                        className="date-range"
                       >
-                        Course title
-                      </option>
-                      <option
-                        value="resource-link-title"
+                        <input
+                          min={null}
+                          onChange={[Function]}
+                          type="date"
+                          value=""
+                        />
+                        <button
+                          className="repository--button secondary-button"
+                          disabled={true}
+                          onClick={[Function]}
+                        >
+                          × Clear
+                        </button>
+                      </div>
+                    </label>
+                    <label>
+                      <span>
+                        To:
+                      </span>
+                      <div
+                        className="date-range"
                       >
-                        Resource link title
-                      </option>
-                      <option
-                        value="user-first-name"
-                      >
-                        First name
-                      </option>
-                      <option
-                        value="user-last-name"
-                      >
-                        Last name
-                      </option>
-                    </select>
+                        <input
+                          max={null}
+                          onChange={[Function]}
+                          type="date"
+                          value=""
+                        />
+                        <button
+                          className="repository--button secondary-button"
+                          disabled={true}
+                          onClick={[Function]}
+                        >
+                          × Clear
+                        </button>
+                      </div>
+                    </label>
                   </div>
                 </div>
                 <hr />
                 <div
-                  className="search-by-date"
-                >
-                  <span
-                    className="label"
-                  >
-                    Filter attempts by date range:
-                  </span>
-                  <label>
-                    <span>
-                      From:
-                    </span>
-                    <div
-                      className="date-range"
-                    >
-                      <input
-                        onChange={[Function]}
-                        type="date"
-                        value=""
-                      />
-                      <button
-                        className="repository--button secondary-button"
-                        disabled={true}
-                        onClick={[Function]}
-                      >
-                        × Clear
-                      </button>
-                    </div>
-                  </label>
-                  <label>
-                    <span>
-                      To:
-                    </span>
-                    <div
-                      className="date-range"
-                    >
-                      <input
-                        onChange={[Function]}
-                        type="date"
-                        value=""
-                      />
-                      <button
-                        className="repository--button secondary-button"
-                        disabled={true}
-                        onClick={[Function]}
-                      >
-                        × Clear
-                      </button>
-                    </div>
-                  </label>
-                </div>
-              </div>
-              <hr />
-              <div
-                className="repository--assessment-stats-filter-controls"
-              >
-                <div
-                  className="container"
+                  className="filter-controls"
                 >
                   <label>
                     <input
@@ -943,6 +941,18 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
                       },
                       Object {
                         "advanced": false,
+                        "name": "Student Name",
+                        "selector": "studentName",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": true,
+                        "name": "User Roles",
+                        "selector": "userRoles",
+                        "sortable": true,
+                      },
+                      Object {
+                        "advanced": false,
                         "cell": [Function],
                         "name": "Final Assessment Score",
                         "selector": "highestAssessmentScore",
@@ -972,7 +982,15 @@ exports[`Stats Renders correctly when assessment stat fetching has finished 1`] 
                     ]
                   }
                   striped={true}
-                  title="Final Assessment Scores"
+                  title={
+                    <div
+                      className="data-table-header Final Assessment Scores"
+                    >
+                      <p>
+                        Final Assessment Scores
+                      </p>
+                    </div>
+                  }
                 >
                   react-data-table-component
                 </div>

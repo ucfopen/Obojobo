@@ -13,6 +13,10 @@ jest.mock('obojobo-express/server/insert_event')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 
+jest.mock('uuid', () => ({
+	v4: jest.fn()
+}))
+
 let CollectionSummary
 let Collection
 let DraftSummary
@@ -58,6 +62,8 @@ const request = require('supertest')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+
+const uuid = require('uuid').v4
 
 // register express-react-views template engine if not already registered
 app.engine('jsx', require('express-react-views-custom').createEngine())
@@ -586,6 +592,98 @@ describe('repository api route', () => {
 			.then(() => {
 				expect(mockDraftObject.content.title).toEqual('New Draft Title')
 				// everything else is unchanged from above
+			})
+	})
+
+	test('post /drafts/:draftId/copy refreshes all node IDs in a document', () => {
+		expect.hasAssertions()
+
+		// have a bit of a document just to make sure substitutions work everywhere
+		// actual details such as type, etc. don't matter too much here
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			},
+			children: [
+				{
+					id: 'do-not-change-me',
+					children: [
+						{ id: '4baa2860-5219-404f-9d99-616ca8f81e41' },
+						{
+							id: 'adcc55b7-e412-4f44-b64f-6c317021f812',
+							reference: {
+								id: '4baa2860-5219-404f-9d99-616ca8f81e41'
+							}
+						},
+						{ id: '9d992860-3540-5219-8b4a-1e41616ca8f8' }
+					]
+				}
+			]
+		}
+
+		// this is admittedly sort of magical - we happen to know how many times
+		//  this should run based on the document structure we made above
+		// potentially find a more elegant way of doing this
+		uuid
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000001')
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000002')
+			.mockReturnValueOnce('00000000-0000-0000-0000-000000000003')
+
+		// this is also a bit brute force, but it does the job
+		const expectedNewDraftDocument = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'New Draft Title'
+			},
+			children: [
+				{
+					id: 'do-not-change-me',
+					children: [
+						{ id: '00000000-0000-0000-0000-000000000001' },
+						{
+							id: '00000000-0000-0000-0000-000000000002',
+							reference: {
+								id: '00000000-0000-0000-0000-000000000001'
+							}
+						},
+						{ id: '00000000-0000-0000-0000-000000000003' }
+					]
+				}
+			]
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			},
+			// this would be handled by the Draft model, but we're mocking that so
+			//  we have to do this ourselves
+			nodesById: new Map([
+				['do-not-change-me', {}],
+				['4baa2860-5219-404f-9d99-616ca8f81e41', {}],
+				['adcc55b7-e412-4f44-b64f-6c317021f812', {}],
+				['9d992860-3540-5219-8b4a-1e41616ca8f8', {}]
+			])
+		}
+
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
+
+		Draft.fetchById = jest.fn()
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+
+		return request(app)
+			.post('/drafts/mockDraftId/copy')
+			.send({ visitId: 'mockVisitId', title: 'New Draft Title' })
+			.then(() => {
+				expect(uuid).toHaveBeenCalledTimes(3)
+				// 99 = mock user id
+				expect(Draft.createWithContent).toHaveBeenCalledWith(99, expectedNewDraftDocument)
 			})
 	})
 

@@ -115,6 +115,12 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
             },
             Object {
               "advanced": false,
+              "name": "Student Name",
+              "selector": "studentName",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
               "name": "Attempt ID",
               "selector": "attemptId",
               "sortable": true,
@@ -228,7 +234,15 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
           ]
         }
         striped={true}
-        title="Attempt Scores"
+        title={
+          <div
+            className="data-table-header Attempt Scores"
+          >
+            <p>
+              Attempt Scores
+            </p>
+          </div>
+        }
       >
         react-data-table-component
       </div>
@@ -236,7 +250,7 @@ exports[`DataGridAttempts DataGridAttempts renders correctly 1`] = `
     <a
       className="repository--button "
       download="attempt-scores__mock-draft-id_mock-draft-id2"
-      href="data:text/csv;charset=utf-8,%22First%20Name%22%2C%22Last%20Name%22%2C%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20%23%22%2C%22Attempt%20Score%22%2C%22Assessment%20Status%22%2C%22Un-modded%20Assessment%20Score%22%2C%22Mod%20Reward%20Total%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22true%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22false%22"
+      href="data:text/csv;charset=utf-8,%22First%20Name%22%2C%22Last%20Name%22%2C%22Course%20Title%22%2C%22Resource%20Link%20Title%22%2C%22URL%22%2C%22Student%20Name%22%2C%22Attempt%20ID%22%2C%22Imported%20Attempt%20ID%22%2C%22Attempt%20%23%22%2C%22Attempt%20Score%22%2C%22Assessment%20Status%22%2C%22Un-modded%20Assessment%20Score%22%2C%22Mod%20Reward%20Total%22%2C%22Assessment%20Score%22%2C%22Started%20Time%22%2C%22Submitted%20Time%22%2C%22Preview%20Mode%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22true%22%0A%22%22%2C%22%22%2C%22%22%2C%22%22%2C%22mock-url%22%2C%22%22%2C%22%22%2C%22mock-imported-attempt-id%22%2C%22%22%2C%22mock-attempt-score%22%2C%22mock-assessment-status%22%2C%22mock-assessment-status%22%2C%22mock-reward%22%2C%22%22%2C%22%22%2C%22%22%2C%22false%22"
     >
       ⬇️   Download 
       
@@ -293,6 +307,12 @@ exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
               "cell": [Function],
               "name": "URL",
               "selector": "launchPresentationReturnUrl",
+              "sortable": true,
+            },
+            Object {
+              "advanced": false,
+              "name": "Student Name",
+              "selector": "studentName",
               "sortable": true,
             },
             Object {
@@ -385,7 +405,15 @@ exports[`DataGridAttempts DataGridAttempts renders with no attempts 1`] = `
           ]
         }
         striped={true}
-        title="Attempt Scores"
+        title={
+          <div
+            className="data-table-header Attempt Scores"
+          >
+            <p>
+              Attempt Scores
+            </p>
+          </div>
+        }
       >
         react-data-table-component
       </div>

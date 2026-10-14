@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HybridInputSelect renders with a given list and placeholder 1`] = `
+<div
+  className="hybrid-input-select"
+>
+  <input
+    onChange={[Function]}
+    placeholder="Mock placeholder"
+    type="text"
+    value=""
+  />
+  <div
+    className="elements closed"
+  >
+    <div
+      className="element"
+      onClick={[Function]}
+    >
+      mock-student-one
+    </div>
+    <div
+      className="element"
+      onClick={[Function]}
+    >
+      mock-student-two
+    </div>
+    <div
+      className="element"
+      onClick={[Function]}
+    >
+      mock-student-three
+    </div>
+    <div
+      className="element"
+      onClick={[Function]}
+    >
+      mock-short
+    </div>
+    <div
+      className="element"
+      onClick={[Function]}
+    >
+      mock-very-long-student-name...
+    </div>
+    <div
+      className="element"
+      onClick={[Function]}
+    >
+      mock-extremely-long-student-name...
+    </div>
+  </div>
+</div>
+`;
+
+exports[`HybridInputSelect renders with default props 1`] = `
+<div
+  className="hybrid-input-select"
+>
+  <input
+    onChange={[Function]}
+    placeholder="Enter text"
+    type="text"
+    value=""
+  />
+  <div
+    className="elements closed"
+  >
+    <div
+      className="element no-matches"
+    >
+      No matches found
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,1145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=false showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=false showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=true showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=false showPreviewAttempts=true showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={false}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=false showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=false showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={false}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=true showAdvancedFields=false /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={false}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`AssessmentStatsControls <AssessmentStatsFilterControls showIncompleteAttempts=true showPreviewAttempts=true showAdvancedFields=true /> matches snapshot 1`] = `
+<div
+  className="repository--assessment-stats-controls"
+>
+  <div
+    className="search-controls"
+  >
+    <div
+      className="search-by-text"
+    >
+      <label
+        htmlFor="repository--assessment-stats-search-controls--search-by"
+      >
+        Search by:
+         
+      </label>
+      <div
+        className="controls"
+      >
+        <select
+          id="repository--assessment-stats-search-controls--search-by"
+          onChange={[Function]}
+        >
+          <option
+            value=""
+          >
+            Select one...
+          </option>
+          <option
+            value="course-title"
+          >
+            Course title
+          </option>
+          <option
+            value="resource-link-title"
+          >
+            Resource link title
+          </option>
+          <option
+            value="student-name"
+          >
+            Student name
+          </option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div
+      className="search-by-date"
+    >
+      <span
+        className="label"
+      >
+        Filter attempts by date range:
+      </span>
+      <label>
+        <span>
+          From:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            min={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+      <label>
+        <span>
+          To:
+        </span>
+        <div
+          className="date-range"
+        >
+          <input
+            max={null}
+            onChange={[Function]}
+            type="date"
+            value=""
+          />
+          <button
+            className="repository--button secondary-button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            × Clear
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+  <hr />
+  <div
+    className="filter-controls"
+  >
+    <label>
+      <input
+        checked={true}
+        className="show-incomplete-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include incomplete attempt data
+      </span>
+    </label>
+    <label>
+      <input
+        checked={true}
+        className="show-preview-attempts"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include preview attempt data
+      </span>
+    </label>
+    <hr />
+    <label>
+      <input
+        checked={true}
+        className="show-advanced-fields"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <span>
+        Include advanced fields
+      </span>
+    </label>
+  </div>
+</div>
+`;
