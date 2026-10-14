@@ -4,7 +4,7 @@
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
-		"node": "^18.16.0"
+		"node": "^24.0.0"
 	},
 	"main": "index.js",
 	"scripts": {
@@ -53,7 +53,7 @@
 		"react-dom": "^16.13.1",
 		"react-idle-timer": "4.5.6",
 		"react-transition-group": "^4.4.1",
-		"sass-mq": "^5.0.1",
+		"sass-mq": "^7.0.1",
 		"slate": "0.57.2",
 		"slate-history": "0.57.2",
 		"slate-react": "0.57.2",

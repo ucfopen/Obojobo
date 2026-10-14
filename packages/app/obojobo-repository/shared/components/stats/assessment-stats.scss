@@ -1,9 +1,9 @@
-@import '../../../client/css/defaults';
+@use '../../../client/css/defaults';
 
 .repository--assessment-stats {
-	background: $color-bg;
+	background: defaults.$color-bg;
 	height: 100%;
-	border-radius: $dimension-rounded-radius;
+	border-radius: defaults.$dimension-rounded-radius;
 	padding: 1em;
 	box-sizing: border-box;
 	display: flex;
@@ -13,7 +13,7 @@
 		width: 100%;
 		height: 1px;
 		border: none;
-		border-bottom: 1px solid $color-shadow;
+		border-bottom: 1px solid defaults.$color-shadow;
 		margin: 0;
 	}
 
@@ -35,9 +35,9 @@
 		}
 
 		select {
-			@include select-input();
+			@include defaults.select-input();
 
-			border: 1px solid $color-shadow;
+			border: 1px solid defaults.$color-shadow;
 			font-size: 0.8em;
 		}
 	}
@@ -60,8 +60,8 @@
 		display: flex;
 		flex-direction: column;
 		height: calc(100% - 2px);
-		border: 1px solid $color-shadow;
-		border-radius: $dimension-rounded-radius;
+		border: 1px solid defaults.$color-shadow;
+		border-radius: defaults.$dimension-rounded-radius;
 		position: relative;
 
 		.repository--button {
@@ -88,7 +88,7 @@
 			}
 
 			> div:last-child {
-				border-bottom: 1px solid $color-shadow;
+				border-bottom: 1px solid defaults.$color-shadow;
 			}
 
 			.rdt_TableHeader {

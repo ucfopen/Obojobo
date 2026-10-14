@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--materia {
 	display: block;
@@ -19,9 +19,9 @@
 
 	.label {
 		margin: 0 auto;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 0.8em;
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 		max-width: calc(100% - 14em); //stylelint-disable-line unit-disallowed-list
 		margin-top: -1em;
 	}

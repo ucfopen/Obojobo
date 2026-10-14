@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--question--wrapper {
 	z-index: 1;
@@ -8,19 +9,19 @@
 .obojobo-draft--chunks--question {
 	> .flipper {
 		&.question-editor {
-			background: $color-bg;
+			background: includes.$color-bg;
 		}
 	}
 
 	&.is-collapsed {
 		> .flipper {
 			padding: 0.5em 5em 0.5em 1em;
-			background-color: $color-bg2;
+			background-color: includes.$color-bg2;
 			width: 100%;
 			box-sizing: border-box;
 
 			label.question-summary:hover {
-				color: $color-obojobo-blue;
+				color: includes.$color-obojobo-blue;
 				cursor: pointer;
 			}
 		}
@@ -29,7 +30,7 @@
 	.question-settings {
 		padding-left: 3em;
 		padding-top: 2em;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-weight: bold;
 
 		> label {
@@ -40,8 +41,8 @@
 			position: absolute;
 			top: 2.85em;
 			right: 4.3em;
-			border: 1px solid $color-shadow;
-			border-radius: $dimension-rounded-radius;
+			border: 1px solid includes.$color-shadow;
+			border-radius: includes.$dimension-rounded-radius;
 			padding: 0.25em;
 			padding-right: 1em;
 			font-weight: normal;
@@ -49,8 +50,8 @@
 			cursor: pointer;
 
 			&:hover {
-				border: 1px solid $color-action;
-				background: lighten($color-action, 48%);
+				border: 1px solid includes.$color-action;
+				background: color.adjust(includes.$color-action, $lightness: 48%);
 			}
 
 			input {
@@ -69,9 +70,9 @@
 	.show-reveal-answer-container {
 		$color-border: #dfdfdf;
 
-		@include pad();
+		@include includes.pad();
 
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		border-top: 1px solid $color-border;
 		padding-top: 0.7em;
 		padding-bottom: 1em;
@@ -109,11 +110,11 @@
 			border: none;
 			background: none;
 			font-weight: bold;
-			color: $color-shadow;
+			color: includes.$color-shadow;
 
 			&:hover {
 				background: none;
-				color: $color-obojobo-blue;
+				color: includes.$color-obojobo-blue;
 			}
 		}
 	}
@@ -137,6 +138,6 @@
 	}
 
 	select {
-		@include select-input();
+		@include includes.select-input();
 	}
 }

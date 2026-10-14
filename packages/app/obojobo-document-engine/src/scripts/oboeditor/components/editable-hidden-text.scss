@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .editor--hidden-text {
 	position: absolute;
@@ -8,11 +8,11 @@
 	bottom: 0;
 	opacity: 0;
 	overflow: hidden;
-	color: $color-transparent;
-	text-shadow: 0 0 0 $color-bg;
+	color: includes.$color-transparent;
+	text-shadow: 0 0 0 includes.$color-bg;
 
 	* {
-		color: $color-transparent;
-		text-shadow: 0 0 0 $color-bg;
+		color: includes.$color-transparent;
+		text-shadow: 0 0 0 includes.$color-bg;
 	}
 }

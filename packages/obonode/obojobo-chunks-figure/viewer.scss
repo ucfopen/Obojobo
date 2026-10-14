@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--figure {
 	text-align: center;
@@ -16,19 +16,19 @@
 		// width: 18em;
 
 		img {
-			background: $color-bg;
+			background: includes.$color-bg;
 			border: none;
 			display: block;
 			width: 100%;
 		}
 
 		.img-placeholder {
-			border: 1px solid $color-shadow;
+			border: 1px solid includes.$color-shadow;
 		}
 	}
 
 	figcaption {
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 		font-size: 0.9em;
 	}
 
@@ -54,7 +54,7 @@
 		}
 
 		.container {
-			width: $dimension-column-width;
+			width: includes.$dimension-column-width;
 		}
 	}
 

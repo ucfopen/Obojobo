@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--list {
 	ul,
@@ -12,7 +12,7 @@
 	> div > ol {
 		padding-left: 3.5em;
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			padding-left: 2em;
 		}
 	}

@@ -1,4 +1,4 @@
-@import '../../client/css/defaults';
+@use '../../client/css/defaults';
 
 $search-input-height: 30px;
 
@@ -7,7 +7,7 @@ $search-input-height: 30px;
 
 	.repository--nav--links--search--icon {
 		position: absolute;
-		fill: $border-color;
+		fill: defaults.$border-color;
 		height: calc(100% - 4px);
 		z-index: 2;
 		top: 50%;
@@ -27,7 +27,7 @@ $search-input-height: 30px;
 		justify-content: center;
 
 		input {
-			@include text-input;
+			@include defaults.text-input;
 
 			z-index: 1;
 			background: none;
@@ -35,7 +35,7 @@ $search-input-height: 30px;
 			left: 0;
 			width: 100%;
 			line-height: $search-input-height;
-			border: solid 0.0625em $border-color;
+			border: solid 0.0625em defaults.$border-color;
 			background-color: white;
 			border-radius: 0.2em;
 			height: $search-input-height;
@@ -90,13 +90,13 @@ $search-input-height: 30px;
 		*/
 		// stylelint-disable-next-line no-descending-specificity
 		> input {
-			border-color: $color-action;
-			background-color: $color-action;
+			border-color: defaults.$color-action;
+			background-color: defaults.$color-action;
 			color: white;
 
 			&:-webkit-autofill {
 				-webkit-text-fill-color: white;
-				-webkit-box-shadow: 0 0 0 1000px $color-action inset;
+				-webkit-box-shadow: 0 0 0 1000px defaults.$color-action inset;
 			}
 		}
 
@@ -108,14 +108,14 @@ $search-input-height: 30px;
 	&.is-empty > input:active,
 	&.is-empty > input:hover,
 	&.is-empty > input:focus {
-		border-color: $color-action;
+		border-color: defaults.$color-action;
 
 		+ .repository--nav--links--search--icon {
-			fill: $color-action;
+			fill: defaults.$color-action;
 		}
 
 		&::placeholder {
-			color: $color-action;
+			color: defaults.$color-action;
 		}
 	}
 }

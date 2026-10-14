@@ -1,9 +1,10 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .viewer--components--nav {
 	$color-nav-bg: #fbfbfb;
-	$color-nav-highlight: $color-obojobo-blue;
-	$color-nav-hover: darken($color-highlight, 25%);
+	$color-nav-highlight: includes.$color-obojobo-blue;
+	$color-nav-hover: color.adjust(includes.$color-highlight, $lightness: -25%);
 	$padding: 2rem;
 
 	position: fixed;
@@ -11,16 +12,16 @@
 	left: 0;
 	bottom: 0;
 	z-index: 0;
-	font-family: $font-default;
-	color: $color-text;
+	font-family: includes.$font-default;
+	color: includes.$color-text;
 	background: $color-nav-bg;
 	font-size: 1rem;
-	width: $dimension-nav-menu;
+	width: includes.$dimension-nav-menu;
 	padding: $padding;
 	padding-top: 0;
 	box-sizing: border-box;
-	transition: left $duration-animation-default $duration-animation-default;
-	border-right: 1px solid transparentize($color-shadow, 0.1);
+	transition: left includes.$duration-animation-default includes.$duration-animation-default;
+	border-right: 1px solid color.adjust(includes.$color-shadow, $alpha: -0.1);
 	overflow-y: auto;
 	word-wrap: break-word;
 
@@ -28,16 +29,16 @@
 		outline: none;
 	}
 
-	@include mq($until: desktop) {
-		width: $dimension-nav-menu-small;
+	@include includes.mq($until: desktop) {
+		width: includes.$dimension-nav-menu-small;
 		padding: $padding * 0.4;
 		padding-bottom: $padding;
 		padding-top: 0;
 		font-size: 0.8rem;
 	}
 
-	@include mq($until: tablet) {
-		width: $dimension-nav-menu-xsmall;
+	@include includes.mq($until: tablet) {
+		width: includes.$dimension-nav-menu-xsmall;
 		padding: 0.1rem;
 		padding-right: $padding * 0.2;
 		padding-bottom: $padding * 0.2;
@@ -47,7 +48,7 @@
 
 	hr {
 		border: none;
-		border-bottom: 1px solid $color-bg;
+		border-bottom: 1px solid includes.$color-bg;
 		opacity: 0.2;
 	}
 
@@ -68,7 +69,7 @@
 		position: relative;
 		list-style-type: none;
 		padding: 0 0 1rem 0;
-		border-left: solid 1px $color-text-minor;
+		border-left: solid 1px includes.$color-text-minor;
 	}
 
 	.lock-icon {
@@ -85,7 +86,7 @@
 		background-repeat: no-repeat;
 		background-size: contain;
 
-		@include mq($from: mobile, $until: desktop) {
+		@include includes.mq($from: mobile, $until: desktop) {
 			left: -1rem;
 			height: 0.65rem;
 		}
@@ -96,7 +97,7 @@
 	}
 
 	.heading {
-		$color-heading-text: lighten($color-text, 25%);
+		$color-heading-text: color.adjust(includes.$color-text, $lightness: 25%);
 
 		padding-top: 2em;
 		margin-bottom: 1em;
@@ -119,10 +120,10 @@
 			top: 1rem;
 			width: 100%;
 			height: 1px; /* stylelint-disable-line unit-disallowed-list */
-			background: lighten($color-text, 95%);
+			background: color.adjust(includes.$color-text, $lightness: 95%);
 		}
 
-		@include mq($until: desktop) {
+		@include includes.mq($until: desktop) {
 			font-size: 1rem;
 			margin-bottom: 0.5em;
 
@@ -131,7 +132,7 @@
 			}
 		}
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			font-size: 0.9rem;
 			padding-bottom: 0.5rem;
 		}
@@ -175,7 +176,7 @@
 			font-weight: bold;
 
 			&::after {
-				background: lighten($color-nav-highlight, 10%);
+				background: color.adjust($color-nav-highlight, $lightness: 10%);
 				border: solid 2px $color-nav-highlight;
 			}
 
@@ -203,14 +204,14 @@
 			left: -0.55em;
 			width: 0.8em;
 			height: 0.8em;
-			background: $color-bg;
-			border: solid 2px $color-text-minor;
+			background: includes.$color-bg;
+			border: solid 2px includes.$color-text-minor;
 		}
 
 		.assessment-info {
 			font-size: 0.75em;
 			font-weight: normal;
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 		}
 	}
 
@@ -218,7 +219,7 @@
 	.sub-link {
 		margin-left: 0.5rem;
 		padding-left: 1rem;
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 		cursor: pointer;
 		word-wrap: break-word;
 
@@ -239,7 +240,7 @@
 
 			&::after {
 				border-color: $color-nav-hover;
-				background: lighten($color-nav-hover, 25%);
+				background: color.adjust($color-nav-hover, $lightness: 25%);
 			}
 		}
 
@@ -255,7 +256,7 @@
 				height: 1.2em;
 				background: $color-nav-bg;
 
-				@include mq($from: mobile, $until: desktop) {
+				@include includes.mq($from: mobile, $until: desktop) {
 					width: 1em;
 					height: 2em;
 				}
@@ -266,7 +267,7 @@
 			border: none;
 			font-size: 1em;
 			background: transparent;
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			cursor: pointer;
 			padding: 0;
 			margin: 0;
@@ -281,7 +282,7 @@
 		position: relative;
 
 		&.is-last-in-list {
-			border-left: $dimension-nav-menu-small;
+			border-left: includes.$dimension-nav-menu-small;
 		}
 
 		&::before {
@@ -289,7 +290,7 @@
 		}
 
 		&::after {
-			$c: lighten($color-text, 60%);
+			$c: color.adjust(includes.$color-text, $lightness: 60%);
 
 			left: -0.9em;
 			width: 1.2em;
@@ -297,7 +298,7 @@
 			content: 'Q';
 			padding: 0.2em;
 			color: $c;
-			border: solid 1px lighten($color-text, 60%);
+			border: solid 1px color.adjust(includes.$color-text, $lightness: 60%);
 			border-radius: 4px;
 			font-size: 0.6em;
 			font-weight: bold;
@@ -308,14 +309,14 @@
 			color: $color-nav-highlight;
 
 			&::after {
-				color: $color-bg;
-				background: lighten($color-nav-highlight, 10%);
+				color: includes.$color-bg;
+				background: color.adjust($color-nav-highlight, $lightness: 10%);
 				border: solid 1px $color-nav-highlight;
 			}
 		}
 
 		&:hover::after {
-			color: $color-bg;
+			color: includes.$color-bg;
 		}
 	}
 
@@ -334,7 +335,7 @@
 		position: fixed;
 		text-indent: -9999px;
 		top: 0.5rem;
-		transition: background-color $duration-animation-default;
+		transition: background-color includes.$duration-animation-default;
 		width: 1.5rem;
 		z-index: 6;
 		transform: none;
@@ -366,16 +367,16 @@
 		bottom: $padding * 0.4;
 		font-size: 0.7rem;
 		opacity: 0.5;
-		transition: opacity $duration-animation-default $duration-animation-default;
+		transition: opacity includes.$duration-animation-default includes.$duration-animation-default;
 
-		@include mq($from: mobile, $until: desktop) {
+		@include includes.mq($from: mobile, $until: desktop) {
 			left: $padding * 0.4;
 		}
 	}
 
 	&.is-not-open {
-		z-index: $z-index-above-content;
-		left: -$dimension-nav-menu;
+		z-index: includes.$z-index-above-content;
+		left: -(includes.$dimension-nav-menu);
 
 		.toggle-button {
 			transform: rotate(180deg);

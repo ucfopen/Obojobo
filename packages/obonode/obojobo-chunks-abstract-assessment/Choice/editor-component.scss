@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--abstract-assessment--choice {
 	position: relative;
@@ -23,30 +23,30 @@
 
 		.button {
 			padding: 0.2em 0.5em;
-			color: $color-correct;
-			background-color: $color-bg;
-			border-color: $color-correct;
+			color: includes.$color-correct;
+			background-color: includes.$color-bg;
+			border-color: includes.$color-correct;
 			border-width: 2px;
 			height: 2.35em;
 
 			&:hover {
-				color: $color-bg;
-				background-color: $color-correct;
+				color: includes.$color-bg;
+				background-color: includes.$color-correct;
 			}
 		}
 	}
 
 	&.is-not-correct {
 		.correct-button {
-			color: $color-incorrect;
+			color: includes.$color-incorrect;
 
 			.button {
-				color: $color-incorrect;
-				border-color: $color-incorrect;
+				color: includes.$color-incorrect;
+				border-color: includes.$color-incorrect;
 
 				&:hover {
-					color: $color-bg;
-					background-color: $color-incorrect;
+					color: includes.$color-bg;
+					background-color: includes.$color-incorrect;
 				}
 			}
 		}
@@ -68,7 +68,7 @@
 
 	&.is-correct {
 		.correct-button {
-			color: $color-correct;
+			color: includes.$color-correct;
 		}
 	}
 
@@ -88,11 +88,11 @@
 			border: none;
 			background: none;
 			font-weight: bold;
-			color: $color-shadow;
+			color: includes.$color-shadow;
 
 			&:hover {
 				background-color: transparent; //stylelint-disable-line
-				color: $color-obojobo-blue;
+				color: includes.$color-obojobo-blue;
 			}
 		}
 	}

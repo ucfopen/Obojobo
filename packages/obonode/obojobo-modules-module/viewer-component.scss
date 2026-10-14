@@ -1,6 +1,6 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--modules--module {
-	min-height: calc(100% - #{$dimension-prev-next-button-height});
-	max-width: $dimension-column-width;
+	min-height: calc(100% - #{includes.$dimension-prev-next-button-height});
+	max-width: includes.$dimension-column-width;
 }

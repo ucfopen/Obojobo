@@ -1,13 +1,14 @@
-@import '../../client/css/defaults';
+@use "sass:color";
+@use '../../client/css/defaults';
 
-$border-color: rgba(0, 0, 0, 0.1);
-$border: 1px solid $border-color;
+defaults.$border-color: rgba(0, 0, 0, 0.1);
+$border: 1px solid defaults.$border-color;
 $menu-transition-time: 0.25s;
-$color-nav-highlight: $color-obojobo-blue;
-$color-nav-hover: darken($color-highlight, 25%);
+$color-nav-highlight: defaults.$color-obojobo-blue;
+$color-nav-hover: color.adjust(defaults.$color-highlight, $lightness: -25%);
 
 .assessment-score-data-dialog {
-	font-family: $font-default;
+	font-family: defaults.$font-default;
 	width: calc(100vw - 3em);
 
 	.loading--container {

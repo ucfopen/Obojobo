@@ -1,17 +1,18 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 $selected-gray: #ebebeb;
-$lighter-blue: lighten($color-obojobo-blue, 60%);
+$lighter-blue: color.adjust(includes.$color-obojobo-blue, $lightness: 60%);
 
 .excerpt--excerpt-edit-controls {
 	position: absolute;
-	border-radius: $dimension-rounded-radius;
+	border-radius: includes.$dimension-rounded-radius;
 	font-size: 0.75rem;
-	font-family: $font-default;
+	font-family: includes.$font-default;
 	box-sizing: border-box;
 	min-height: 2.5em;
-	background-color: $color-bg2;
-	box-shadow: $box-shadow-overlay;
+	background-color: includes.$color-bg2;
+	box-shadow: includes.$box-shadow-overlay;
 	left: 50%;
 	width: 24em;
 	top: calc(100% + 3em);
@@ -28,7 +29,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 	}
 
 	.box-border {
-		background-color: $color-bg2;
+		background-color: includes.$color-bg2;
 		padding: 1em;
 	}
 
@@ -53,12 +54,12 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		height: 1.25em;
 		border-radius: 0.25em 0;
 		z-index: -1;
-		background-color: $color-bg2;
+		background-color: includes.$color-bg2;
 	}
 
 	> .attributes-list {
-		background-color: $color-bg;
-		border-radius: $dimension-rounded-radius;
+		background-color: includes.$color-bg;
+		border-radius: includes.$dimension-rounded-radius;
 		margin: 1em;
 
 		> div {
@@ -112,8 +113,8 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 			grid-template-columns: 1fr 1fr 1fr;
 			height: 18em;
 			overflow-y: scroll;
-			border-radius: $dimension-rounded-radius;
-			border-top: 1px solid $color-shadow-light;
+			border-radius: includes.$dimension-rounded-radius;
+			border-top: 1px solid includes.$color-shadow-light;
 
 			li {
 				padding: 0.25em 0;
@@ -131,7 +132,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 				border: none;
 				background: transparent;
 				font-size: 1em;
-				font-family: $font-default;
+				font-family: includes.$font-default;
 				text-align: center;
 				width: 100%;
 				height: 100%;
@@ -141,7 +142,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 			.icon {
 				width: 4em;
 				height: 3em;
-				border-radius: $dimension-rounded-radius;
+				border-radius: includes.$dimension-rounded-radius;
 				display: block;
 				margin: 0 auto;
 				background-image: url('../images/icons-presets.png');
@@ -250,7 +251,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 			flex-direction: row;
 
 			select {
-				@include select-input();
+				@include includes.select-input();
 
 				font-size: 0.9em;
 				margin-bottom: 0.5em;

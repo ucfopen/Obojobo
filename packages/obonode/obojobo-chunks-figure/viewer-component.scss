@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:math";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--figure {
 	text-align: center;
@@ -15,25 +16,25 @@
 		position: relative;
 
 		img {
-			background: $color-bg;
+			background: includes.$color-bg;
 			display: block;
-			border: 5px solid $color-bg;
-			border-radius: $dimension-rounded-radius;
+			border: 5px solid includes.$color-bg;
+			border-radius: includes.$dimension-rounded-radius;
 
 			&.is-not-loaded {
-				background: $color-bg2;
+				background: includes.$color-bg2;
 			}
 		}
 
 		.img-placeholder {
-			border: 1px solid $color-shadow;
+			border: 1px solid includes.$color-shadow;
 		}
 	}
 
 	figcaption {
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 0.8em;
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 		max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
 
 		&.is-caption-width-text-width {
@@ -61,14 +62,14 @@
 			}
 
 			figcaption {
-				@include pad(1 / 0.8);
+				@include includes.pad(math.div(1, 0.8));
 
-				@include mq($until: desktop) {
-					@include pad(0.75 / 0.8);
+				@include includes.mq($until: desktop) {
+					@include includes.pad(math.div(0.75, 0.8));
 				}
 
-				@include mq($until: tablet) {
-					@include pad(0.3 / 0.8);
+				@include includes.mq($until: tablet) {
+					@include includes.pad(math.div(0.3, 0.8));
 				}
 
 				margin: auto;
@@ -77,14 +78,14 @@
 	}
 
 	&.small {
-		@include pad();
+		@include includes.pad();
 
-		@include mq($until: desktop) {
-			@include pad(0.75);
+		@include includes.mq($until: desktop) {
+			@include includes.pad(0.75);
 		}
 
-		@include mq($until: tablet) {
-			@include pad(0.3);
+		@include includes.mq($until: tablet) {
+			@include includes.pad(0.3);
 		}
 
 		.container {
@@ -104,14 +105,14 @@
 	}
 
 	&.medium {
-		@include pad();
+		@include includes.pad();
 
-		@include mq($until: desktop) {
-			@include pad(0.75);
+		@include includes.mq($until: desktop) {
+			@include includes.pad(0.75);
 		}
 
-		@include mq($until: tablet) {
-			@include pad(0.3);
+		@include includes.mq($until: tablet) {
+			@include includes.pad(0.3);
 		}
 
 		.container {

@@ -77,7 +77,11 @@ module.exports =
 						}
 					},
 					{
-						test: /\.s?css$/,
+						test: /\.css$/,
+						use: [MiniCssExtractPlugin.loader, 'css-loader']
+					},
+					{
+						test: /\.s[ac]ss$/,
 						use: [
 							MiniCssExtractPlugin.loader,
 							'css-loader',
@@ -92,8 +96,16 @@ module.exports =
 							{
 								loader: 'sass-loader',
 								options: {
+									api: 'modern-compiler',
+									webpackImporter: true,
+									sassOptions: {
+										loadPaths: [path.join(__dirname, '..', '..', '..', 'node_modules')]
+									},
 									// expose SASS variable for build environment
-									additionalData: `$is_production: '${is_production}';`
+									additionalData: (content, loaderContext) =>
+										/\.css$/i.test(loaderContext.resourcePath)
+											? content
+											: `$is_production: '${is_production}';\n${content}`
 								}
 							}
 						]

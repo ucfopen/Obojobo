@@ -1,11 +1,12 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--sections--assessment {
 	.add-rubric {
 		.button {
-			$color-preview-hover: darken($color-preview, 9%);
+			$color-preview-hover: color.adjust(includes.$color-preview, $lightness: -9%);
 
-			background-color: $color-preview;
+			background-color: includes.$color-preview;
 
 			&:hover {
 				background-color: $color-preview-hover;

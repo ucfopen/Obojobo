@@ -1,14 +1,15 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--figure {
 	.accessibility-warning {
-		font-family: $font-default;
+		font-family: includes.$font-default;
 	}
 
 	.figure-box {
 		cursor: default;
 		position: relative;
-		border: 3px solid transparentize($color-action, 0.7);
+		border: 3px solid color.adjust(includes.$color-action, $alpha: -0.7);
 		user-select: none;
 
 		.obojobo-draft--components--button {
@@ -17,7 +18,7 @@
 		}
 
 		&.is-selected {
-			border: 3px solid $color-action;
+			border: 3px solid includes.$color-action;
 
 			.obojobo-draft--components--button {
 				transition: opacity 0s;
@@ -26,7 +27,7 @@
 		}
 
 		&:hover {
-			border: 3px solid $color-action;
+			border: 3px solid includes.$color-action;
 
 			.obojobo-draft--components--button {
 				transition: opacity 0s;
@@ -35,7 +36,7 @@
 		}
 
 		&.drag-over {
-			border: 3px dashed transparentize($color-action, 0.7);
+			border: 3px dashed color.adjust(includes.$color-action, $alpha: -0.7);
 		}
 
 		.image-toolbar {
@@ -56,7 +57,7 @@
 			left: 0;
 			right: 0;
 			bottom: -1em;
-			color: $color-error;
+			color: includes.$color-error;
 		}
 
 		.delete-button {

@@ -1,10 +1,11 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--you-tube {
 	width: auto;
 	max-width: 32em;
-	border: 3px solid transparentize($color-action, 0.7);
-	border-radius: $dimension-rounded-radius * 1.65;
+	border: 3px solid color.adjust(includes.$color-action, $alpha: -0.7);
+	border-radius: includes.$dimension-rounded-radius * 1.65;
 
 	.editor--hidden-text {
 		cursor: default;
@@ -16,7 +17,7 @@
 	}
 
 	&.is-selected {
-		border: 3px solid $color-action;
+		border: 3px solid includes.$color-action;
 
 		.obojobo-draft--components--button {
 			transition: opacity 0s;
@@ -34,7 +35,7 @@
 	}
 
 	&:hover {
-		border: 3px solid $color-action;
+		border: 3px solid includes.$color-action;
 
 		.obojobo-draft--components--button {
 			transition: opacity 0s;
@@ -63,7 +64,7 @@
 		right: 1em;
 
 		button {
-			border: 1px solid $color-bg;
+			border: 1px solid includes.$color-bg;
 		}
 	}
 
@@ -74,7 +75,7 @@
 		width: 100%;
 		height: 100%;
 		text-align: center;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 
 		div {
 			display: inline;

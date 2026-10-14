@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--modal--dialog {
 	max-width: 100vw;
@@ -14,11 +14,11 @@
 		> .dialog-content {
 			margin-bottom: 2em;
 
-			@include mq($until: tablet) {
+			@include includes.mq($until: tablet) {
 				margin-bottom: 2em;
 			}
 
-			@include mq($until: mobileLandscape) {
+			@include includes.mq($until: mobileLandscape) {
 				margin-bottom: 1.5em;
 			}
 		}
@@ -35,7 +35,7 @@
 			}
 
 			.obo-text {
-				color: $color-text-minor;
+				color: includes.$color-text-minor;
 				font-size: 0.9em;
 			}
 		}

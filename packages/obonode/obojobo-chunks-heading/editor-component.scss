@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--heading {
 	.placeholder {
@@ -17,10 +18,10 @@
 
 		> button {
 			display: block;
-			border-radius: $dimension-rounded-radius;
-			background-color: $color-bg;
+			border-radius: includes.$dimension-rounded-radius;
+			background-color: includes.$color-bg;
 			font-size: 1em;
-			border: 2px solid $color-obojobo-blue;
+			border: 2px solid includes.$color-obojobo-blue;
 			padding-right: 2em;
 			position: relative;
 
@@ -28,7 +29,7 @@
 				font-weight: bold;
 				position: absolute;
 				right: 0.5em;
-				color: $color-text-minor;
+				color: includes.$color-text-minor;
 				top: 0;
 				transform: rotate(-180deg);
 
@@ -65,15 +66,16 @@
 		.drop-content-heading {
 			position: relative;
 			top: -0.15em;
-			background-color: $color-bg;
-			border-radius: 0 $dimension-rounded-radius $dimension-rounded-radius $dimension-rounded-radius;
+			background-color: includes.$color-bg;
+			border-radius: 0 includes.$dimension-rounded-radius includes.$dimension-rounded-radius
+				includes.$dimension-rounded-radius;
 			min-width: 20em;
-			border: 2px solid $color-obojobo-blue;
-			box-shadow: $box-shadow-overlay;
+			border: 2px solid includes.$color-obojobo-blue;
+			box-shadow: includes.$box-shadow-overlay;
 
 			button {
 				display: block;
-				background-color: $color-bg;
+				background-color: includes.$color-bg;
 				border: none;
 				font-size: 1em;
 				width: 100%;
@@ -81,7 +83,7 @@
 				padding: 0.3em;
 
 				&:hover {
-					background: lighten($color-action, 48%);
+					background: color.adjust(includes.$color-action, $lightness: 48%);
 				}
 			}
 		}

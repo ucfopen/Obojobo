@@ -1,13 +1,14 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .visual-editor--content-toolbar {
 	margin: 0 auto;
 	padding-right: 0.4em;
 	padding-left: 0.4em;
-	border-bottom: 1px solid $color-shadow;
+	border-bottom: 1px solid includes.$color-shadow;
 
-	@include mq($from: mobile, $until: desktop) {
-		left: $dimension-nav-menu-small;
+	@include includes.mq($from: mobile, $until: desktop) {
+		left: includes.$dimension-nav-menu-small;
 	}
 
 	> button {
@@ -30,25 +31,25 @@
 		}
 
 		svg line {
-			stroke: $color-text;
+			stroke: includes.$color-text;
 		}
 
 		&:hover,
 		&.is-selected {
 			opacity: 1;
-			background: lighten($color-action, 55%);
+			background: color.adjust(includes.$color-action, $lightness: 55%);
 
 			svg path {
-				fill: $color-action;
+				fill: includes.$color-action;
 			}
 
 			svg line {
-				stroke: $color-action;
+				stroke: includes.$color-action;
 			}
 		}
 
 		&:hover {
-			background: lighten($color-action, 48%);
+			background: color.adjust(includes.$color-action, $lightness: 48%);
 		}
 	}
 

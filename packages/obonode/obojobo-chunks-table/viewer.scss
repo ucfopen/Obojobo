@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--table.viewer {
 	.view {
@@ -9,7 +9,7 @@
 
 		th,
 		td {
-			border: 1px solid $color-shadow;
+			border: 1px solid includes.$color-shadow;
 			box-sizing: border-box;
 			font-size: 1em;
 			height: auto;
@@ -21,8 +21,8 @@
 		}
 
 		th {
-			background: $color-bg2;
-			font-family: $font-default;
+			background: includes.$color-bg2;
+			font-family: includes.$font-default;
 			font-size: 0.9em;
 			text-align: center;
 		}

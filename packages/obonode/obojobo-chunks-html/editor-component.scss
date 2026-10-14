@@ -1,12 +1,13 @@
-@import '~styles/includes';
+@use "sass:math";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--html {
 	pre {
 		&::before {
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 			content: 'HTML';
 			display: block;
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			position: absolute;
 			left: 3.5em;
 			top: 0;
@@ -18,10 +19,11 @@
 		margin-top: 0;
 		margin-bottom: 0;
 		overflow-x: auto;
-		background: $color-bg2;
-		border-radius: $dimension-rounded-radius;
+		background: includes.$color-bg2;
+		border-radius: includes.$dimension-rounded-radius;
 		box-sizing: border-box;
-		padding: $dimension-padding / 4 $dimension-padding / 3 / 0.9;
+		padding: includes.$dimension-padding * 0.25
+			math.div(math.div(includes.$dimension-padding, 3), 0.9);
 		tab-size: 2;
 	}
 }

@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--modal--settings-dialog {
 	text-align: left;
@@ -40,7 +40,7 @@
 	}
 
 	input {
-		@include text-input();
+		@include includes.text-input();
 
 		vertical-align: top;
 
@@ -54,7 +54,7 @@
 	}
 
 	select {
-		@include select-input();
+		@include includes.select-input();
 
 		vertical-align: top;
 		font-size: 0.8em;

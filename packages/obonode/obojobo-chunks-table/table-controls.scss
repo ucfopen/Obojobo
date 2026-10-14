@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--chunks--table--table-controls {
 	position: absolute;
@@ -10,7 +10,7 @@
 	// stylelint-disable-next-line unit-disallowed-list
 	border: 1px solid #b3b3b3;
 	// stylelint-disable-next-line unit-disallowed-list
-	outline: 2px solid $color-action;
+	outline: 2px solid includes.$color-action;
 
 	button {
 		position: absolute;

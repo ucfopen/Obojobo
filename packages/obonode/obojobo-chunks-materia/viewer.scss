@@ -1,10 +1,10 @@
-@import 'obojobo-document-engine/src/scss/includes';
+@use 'obojobo-document-engine/src/scss/includes';
 
 .obojobo-draft--chunks--materia {
 	display: block;
 	font-size: 0.8em;
 	margin: 0 auto;
-	max-width: $dimension-editor;
+	max-width: includes.$dimension-editor;
 	text-align: left;
 	width: 100%;
 

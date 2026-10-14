@@ -1,26 +1,27 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--delete-button {
 	$default-size: 1.5em;
 
 	button {
-		background: $color-bg2;
+		background: includes.$color-bg2;
 		border: none;
 		border-radius: $default-size;
 		box-sizing: border-box;
 		cursor: pointer;
 		display: block;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: inherit;
 		height: $default-size;
 		overflow: hidden;
 		position: relative;
 		text-indent: -9999px;
-		transition: background $duration-animation-default ease, color $duration-animation-default ease;
+		transition: background includes.$duration-animation-default ease,
+			color includes.$duration-animation-default ease;
 		width: $default-size;
 
 		&::after {
-			color: $color-action-minor;
+			color: includes.$color-action-minor;
 			content: '+';
 			font-size: $default-size;
 			left: 50%;
@@ -31,10 +32,10 @@
 		}
 
 		&:hover {
-			background: $color-action;
+			background: includes.$color-action;
 
 			&::after {
-				color: $color-bg;
+				color: includes.$color-bg;
 			}
 		}
 	}

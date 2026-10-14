@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "aws-secrets-environment": "^1.0.0",
-    "deasync": "^0.1.15"
+    "deasync": "^0.1.31"
   }
 }

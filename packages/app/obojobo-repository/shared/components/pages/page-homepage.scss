@@ -1,5 +1,6 @@
 /* stylelint-disable */
-@import '../../../client/css/defaults';
+@use '../../../client/css/defaults';
+@use "../../../client/css/media-queries";
 
 /* global element styles */
 a {
@@ -320,13 +321,13 @@ header .header-container nav > ul > .help > ul {
 }
 
 /* responsive */
-@include mq($from: wide) {
+@include media-queries.mq($from: wide) {
 	.hero {
 		background-size: 100% 658px;
 	}
 }
 
-@include mq($from: desktop) {
+@include media-queries.mq($from: desktop) {
 	.step .step-items-container {
 		width: 336px;
 	}
@@ -381,7 +382,7 @@ header .header-container nav > ul > .help > ul {
 	}
 }
 
-@include mq($until: desktop) {
+@include media-queries.mq($until: desktop) {
 	.hero {
 		height: 560px;
 	}
@@ -482,7 +483,7 @@ header .header-container nav > ul > .help > ul {
 	}
 }
 
-@include mq($until: tablet) {
+@include media-queries.mq($until: tablet) {
 	header {
 		height: auto;
 	}
@@ -594,7 +595,7 @@ header .header-container nav > ul > .help > ul {
 	}
 }
 
-@include mq($from: zero, $until: mobileL) {
+@include media-queries.mq($from: zero, $until: mobileL) {
 	.hero {
 		height: 215px;
 		margin-bottom: 170px;

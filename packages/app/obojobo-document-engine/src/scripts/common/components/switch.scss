@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--components--switch {
 	position: relative;
@@ -23,15 +24,15 @@
 		}
 
 		.switch-slider {
-			$color-switch-text: lighten($color-text, 20%);
+			$color-switch-text: color.adjust(includes.$color-text, $lightness: 20%);
 
-			border: 1px solid $color-shadow;
+			border: 1px solid includes.$color-shadow;
 			position: absolute;
 			top: 0;
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color: $color-bg2;
+			background-color: includes.$color-bg2;
 			transition: 0.4s;
 			border-radius: 0.7em;
 			cursor: pointer;
@@ -39,13 +40,13 @@
 
 			// Circle slider
 			&::before {
-				border: 1px solid $color-shadow;
+				border: 1px solid includes.$color-shadow;
 				position: absolute;
 				content: '';
 				height: 0.7em;
 				width: 0.7em;
 				left: 0.05em;
-				background-color: $color-bg;
+				background-color: includes.$color-bg;
 				transition: 0.4s;
 				border-radius: 50%;
 				z-index: 1;
@@ -54,7 +55,7 @@
 
 			&::after {
 				content: 'OFF';
-				font-family: $font-default;
+				font-family: includes.$font-default;
 				color: $color-switch-text;
 				font-weight: bold;
 				display: block;
@@ -67,22 +68,22 @@
 		}
 
 		input:checked + .switch-slider {
-			background-color: $color-obojobo-blue;
+			background-color: includes.$color-obojobo-blue;
 		}
 
 		input:focus + .switch-slider {
-			box-shadow: 0 0 10px $color-obojobo-blue;
+			box-shadow: 0 0 10px includes.$color-obojobo-blue;
 		}
 
 		input:checked + .switch-slider::before {
 			transform: translateX(1.6em);
-			background-color: $color-bg;
-			border: 1px solid $color-bg;
+			background-color: includes.$color-bg;
+			border: 1px solid includes.$color-bg;
 		}
 
 		input:checked + .switch-slider::after {
 			content: 'ON';
-			color: $color-bg;
+			color: includes.$color-bg;
 			left: 37%;
 		}
 	}

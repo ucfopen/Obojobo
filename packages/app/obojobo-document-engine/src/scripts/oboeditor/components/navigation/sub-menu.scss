@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .editor--editor-nav--submenu {
 	padding-right: 1em;
@@ -16,20 +16,20 @@
 			left: -1.55em;
 			width: 0.8em;
 			height: 0.8em;
-			background: $color-bg;
-			border: solid 2px $color-shadow;
+			background: includes.$color-bg;
+			border: solid 2px includes.$color-shadow;
 		}
 
 		.add-page-button {
-			color: $color-obojobo-blue;
+			color: includes.$color-obojobo-blue;
 			font-size: 1em;
-			border: 2px solid $color-obojobo-blue;
-			border-radius: $dimension-rounded-radius;
-			background-color: $color-bg;
+			border: 2px solid includes.$color-obojobo-blue;
+			border-radius: includes.$dimension-rounded-radius;
+			background-color: includes.$color-bg;
 
 			&:hover {
-				background-color: $color-obojobo-blue;
-				color: $color-bg;
+				background-color: includes.$color-obojobo-blue;
+				color: includes.$color-bg;
 			}
 		}
 	}
@@ -52,10 +52,10 @@
 				text-align: center;
 				height: 100%;
 				display: block;
-				background: $color-obojobo-blue;
-				border: solid 1px $color-bg2;
-				border-radius: $dimension-rounded-radius;
-				color: $color-bg;
+				background: includes.$color-obojobo-blue;
+				border: solid 1px includes.$color-bg2;
+				border-radius: includes.$dimension-rounded-radius;
+				color: includes.$color-bg;
 				font-size: 1rem;
 			}
 		}

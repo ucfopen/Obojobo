@@ -1,31 +1,32 @@
-@import '../../../../scss/includes';
+@use "sass:color";
+@use '../../../../scss/includes';
 
 .visual-editor--draft-nav {
 	$color-nav-bg: #fbfbfb;
-	$color-nav-highlight: $color-obojobo-blue;
-	$color-nav-hover: darken($color-highlight, 25%);
+	$color-nav-highlight: includes.$color-obojobo-blue;
+	$color-nav-hover: color.adjust(includes.$color-highlight, $lightness: -25%);
 	$padding: 2rem;
 
 	height: inherit;
 	display: table-cell;
-	z-index: $z-index-above-most;
-	font-family: $font-default;
-	color: $color-text;
+	z-index: includes.$z-index-above-most;
+	font-family: includes.$font-default;
+	color: includes.$color-text;
 	background: $color-nav-bg;
 	font-size: 1rem;
-	width: $dimension-nav-menu;
+	width: includes.$dimension-nav-menu;
 	padding: $padding;
 	padding-top: 0;
 	box-sizing: border-box;
-	transition: left $duration-animation-default $duration-animation-default;
-	border-right: 1px solid transparentize($color-shadow, 0.1);
+	transition: left includes.$duration-animation-default includes.$duration-animation-default;
+	border-right: 1px solid color.adjust(includes.$color-shadow, $alpha: -0.1);
 	overflow-y: visible;
-	border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
+	border-radius: includes.$dimension-rounded-radius 0 0 includes.$dimension-rounded-radius;
 	align-items: stretch;
 
 	hr {
 		border: none;
-		border-bottom: 1px solid $color-bg;
+		border-bottom: 1px solid includes.$color-bg;
 		opacity: 0.2;
 	}
 
@@ -46,11 +47,11 @@
 		position: relative;
 		list-style-type: none;
 		padding: 0 0 1rem 0;
-		border-left: solid 1px $color-text-minor;
+		border-left: solid 1px includes.$color-text-minor;
 	}
 
 	.heading {
-		$color-heading-text: rgba(lighten($color-text, 25%), 0.9);
+		$color-heading-text: rgba(color.adjust(includes.$color-text, $lightness: 25%), 0.9);
 
 		position: relative;
 		padding-top: 2em;
@@ -73,7 +74,7 @@
 			top: 1rem;
 			width: 100%;
 			height: 1px; /* stylelint-disable-line unit-disallowed-list */
-			background: lighten($color-text, 95%);
+			background: color.adjust(includes.$color-text, $lightness: 95%);
 		}
 
 		.visual-editor--more-info {
@@ -117,7 +118,7 @@
 	.link {
 		margin-left: 0.5rem;
 		padding-left: 1rem;
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 		cursor: pointer;
 		word-wrap: break-word;
 
@@ -130,8 +131,8 @@
 			left: -0.55em;
 			width: 0.8em;
 			height: 0.8em;
-			background: $color-bg;
-			border: solid 2px $color-text-minor;
+			background: includes.$color-bg;
+			border: solid 2px includes.$color-text-minor;
 		}
 
 		&:hover {
@@ -139,7 +140,7 @@
 
 			&::after {
 				border-color: $color-nav-hover;
-				background: lighten($color-nav-hover, 25%);
+				background: color.adjust($color-nav-hover, $lightness: 25%);
 			}
 		}
 
@@ -154,7 +155,7 @@
 			}
 
 			&::after {
-				background: lighten($color-nav-highlight, 10%);
+				background: color.adjust($color-nav-highlight, $lightness: 10%);
 				border: solid 2px $color-nav-highlight;
 			}
 
@@ -186,7 +187,7 @@
 			border: none;
 			font-size: 1em;
 			background: transparent;
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			cursor: pointer;
 			padding: 0;
 			margin: 0;
@@ -200,7 +201,7 @@
 		position: relative;
 
 		&.is-last-in-list {
-			border-left: $dimension-nav-menu-small;
+			border-left: includes.$dimension-nav-menu-small;
 		}
 
 		&::before {
@@ -208,7 +209,7 @@
 		}
 
 		&::after {
-			$c: lighten($color-text, 60%);
+			$c: color.adjust(includes.$color-text, $lightness: 60%);
 
 			left: -0.9em;
 			width: 1.2em;
@@ -216,7 +217,7 @@
 			content: 'Q';
 			padding: 0.2em;
 			color: $c;
-			border: solid 1px lighten($color-text, 60%);
+			border: solid 1px color.adjust(includes.$color-text, $lightness: 60%);
 			border-radius: 4px;
 			font-size: 0.6em;
 			font-weight: bold;
@@ -227,14 +228,14 @@
 			color: $color-nav-highlight;
 
 			&::after {
-				color: $color-bg;
-				background: lighten($color-nav-highlight, 10%);
+				color: includes.$color-bg;
+				background: color.adjust($color-nav-highlight, $lightness: 10%);
 				border: solid 1px $color-nav-highlight;
 			}
 		}
 
 		&:hover::after {
-			color: $color-bg;
+			color: includes.$color-bg;
 		}
 	}
 
@@ -272,21 +273,21 @@
 			left: -0.55em;
 			width: 0.8em;
 			height: 0.8em;
-			background: $color-bg;
-			border: solid 2px $color-shadow;
+			background: includes.$color-bg;
+			border: solid 2px includes.$color-shadow;
 		}
 	}
 
 	.add-node-button {
-		color: $color-obojobo-blue;
+		color: includes.$color-obojobo-blue;
 		font-size: 1em;
-		border: 2px solid $color-obojobo-blue;
-		border-radius: $dimension-rounded-radius;
-		background-color: $color-bg;
+		border: 2px solid includes.$color-obojobo-blue;
+		border-radius: includes.$dimension-rounded-radius;
+		background-color: includes.$color-bg;
 
 		&:hover {
-			background-color: $color-obojobo-blue;
-			color: $color-bg;
+			background-color: includes.$color-obojobo-blue;
+			color: includes.$color-bg;
 		}
 	}
 }

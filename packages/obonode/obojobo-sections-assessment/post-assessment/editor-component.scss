@@ -1,9 +1,10 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .scoreactions {
-	font-family: $font-default;
-	background-color: $color-bg2;
-	border-radius: $dimension-rounded-radius;
+	font-family: includes.$font-default;
+	background-color: includes.$color-bg2;
+	border-radius: includes.$dimension-rounded-radius;
 	padding: 2em 3em;
 	margin-bottom: 3em;
 	margin-top: 3em;
@@ -22,13 +23,13 @@
 	}
 
 	.score-actions-page {
-		background-color: $color-bg;
+		background-color: includes.$color-bg;
 		margin-left: 2em;
 		margin-right: 2em;
 		margin-bottom: 2em;
 		position: relative;
 		width: auto;
-		border: 3px solid transparentize($color-action, 0.7);
+		border: 3px solid color.adjust(includes.$color-action, $alpha: -0.7);
 
 		.delete-button {
 			position: absolute;
@@ -50,11 +51,11 @@
 		transform: scaleX(-1);
 		display: inline;
 		font-size: 1.5em;
-		color: $color-action;
+		color: includes.$color-action;
 		border: none;
 
 		&:hover {
-			color: $color-text;
+			color: includes.$color-text;
 		}
 	}
 }

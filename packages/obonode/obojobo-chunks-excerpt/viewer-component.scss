@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 /*
 there will be a lot of superfluous nesting in this file meant to placate
@@ -58,8 +58,8 @@ since it is not compatible with stylelint's indentation rules
 			margin-top: 0.5em;
 			display: inline-block;
 			font-style: normal;
-			font-family: $font-default;
-			color: $color-text-minor;
+			font-family: includes.$font-default;
+			color: includes.$color-text-minor;
 			font-size: 0.7em;
 			position: relative;
 			text-align: center;
@@ -88,7 +88,7 @@ since it is not compatible with stylelint's indentation rules
 
 	&.is-font-serif > blockquote > .excerpt-content {
 		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
-			font-family: $font-text;
+			font-family: includes.$font-text;
 
 			> h1,
 			> h2,
@@ -96,14 +96,14 @@ since it is not compatible with stylelint's indentation rules
 			> h4,
 			> h5,
 			> h6 {
-				font-family: $font-text;
+				font-family: includes.$font-text;
 			}
 		}
 	}
 
 	&.is-font-sans > blockquote > .excerpt-content {
 		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
-			font-family: $font-default;
+			font-family: includes.$font-default;
 
 			> h1,
 			> h2,
@@ -111,14 +111,14 @@ since it is not compatible with stylelint's indentation rules
 			> h4,
 			> h5,
 			> h6 {
-				font-family: $font-default;
+				font-family: includes.$font-default;
 			}
 		}
 	}
 
 	&.is-font-monospace > blockquote > .excerpt-content {
 		> .wrapper > .component[data-obo-component='true'] > .text-chunk {
-			font-family: $font-monospace;
+			font-family: includes.$font-monospace;
 
 			> h1,
 			> h2,
@@ -126,7 +126,7 @@ since it is not compatible with stylelint's indentation rules
 			> h4,
 			> h5,
 			> h6 {
-				font-family: $font-monospace;
+				font-family: includes.$font-monospace;
 			}
 		}
 	}
@@ -327,7 +327,8 @@ since it is not compatible with stylelint's indentation rules
 				height: 0;
 				border-style: solid;
 				border-width: 1.1em 0 1.1em 1.75em;
-				border-color: $color-transparent $color-transparent $color-transparent $callout-blue;
+				border-color: includes.$color-transparent includes.$color-transparent
+					includes.$color-transparent $callout-blue;
 			}
 		}
 	}
@@ -365,7 +366,7 @@ since it is not compatible with stylelint's indentation rules
 	&.is-body-style-type-bordered-box {
 		> blockquote > .excerpt-content {
 			border: 1px solid rgba(0, 0, 0, 0.1);
-			border-radius: $dimension-rounded-radius;
+			border-radius: includes.$dimension-rounded-radius;
 			border-radius: 0.25em;
 		}
 	}
@@ -386,7 +387,7 @@ since it is not compatible with stylelint's indentation rules
 
 	&.is-body-style-type-command-line {
 		> blockquote > .excerpt-content {
-			border-radius: $dimension-rounded-radius;
+			border-radius: includes.$dimension-rounded-radius;
 			border-radius: 0.25em;
 			background: $terminal-background;
 
@@ -510,7 +511,7 @@ since it is not compatible with stylelint's indentation rules
 		*/
 		// stylelint-disable-next-line no-descending-specificity
 		> blockquote > .excerpt-content {
-			border-radius: $dimension-rounded-radius * 3;
+			border-radius: includes.$dimension-rounded-radius * 3;
 			background: linear-gradient(#383635, $terminal-background);
 
 			> .wrapper > .component[data-obo-component='true'] {
@@ -534,7 +535,7 @@ since it is not compatible with stylelint's indentation rules
 			}
 
 			.overlay {
-				border-radius: $dimension-rounded-radius * 3;
+				border-radius: includes.$dimension-rounded-radius * 3;
 				width: 100%;
 				position: absolute;
 				left: 0;
@@ -554,7 +555,7 @@ since it is not compatible with stylelint's indentation rules
 		*/
 		// stylelint-disable-next-line no-descending-specificity
 		> blockquote > .excerpt-content {
-			border-radius: $dimension-rounded-radius * 3;
+			border-radius: includes.$dimension-rounded-radius * 3;
 			background: linear-gradient(#383635, $terminal-background);
 
 			// same here
@@ -581,7 +582,7 @@ since it is not compatible with stylelint's indentation rules
 			}
 
 			.overlay {
-				border-radius: $dimension-rounded-radius * 3;
+				border-radius: includes.$dimension-rounded-radius * 3;
 				width: 100%;
 				position: absolute;
 				left: 0;
@@ -601,7 +602,7 @@ since it is not compatible with stylelint's indentation rules
 		*/
 		// stylelint-disable-next-line no-descending-specificity
 		> blockquote > .excerpt-content {
-			border-radius: $dimension-rounded-radius * 3;
+			border-radius: includes.$dimension-rounded-radius * 3;
 			background: linear-gradient(#383635, $terminal-background);
 
 			// same here
@@ -628,7 +629,7 @@ since it is not compatible with stylelint's indentation rules
 			}
 
 			.overlay {
-				border-radius: $dimension-rounded-radius * 3;
+				border-radius: includes.$dimension-rounded-radius * 3;
 				width: 100%;
 				position: absolute;
 				left: 0;

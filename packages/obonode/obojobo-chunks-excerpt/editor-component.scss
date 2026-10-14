@@ -1,7 +1,8 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 $selected-gray: #ebebeb;
-$lighter-blue: lighten($color-obojobo-blue, 60%);
+$lighter-blue: color.adjust(includes.$color-obojobo-blue, $lightness: 60%);
 
 .obojobo-draft--chunks--excerpt {
 	> .obojobo-draft--chunks--excerpt--edge-controls {
@@ -46,11 +47,11 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 			border: none;
 			background: none;
 			font-weight: bold;
-			color: $color-shadow;
+			color: includes.$color-shadow;
 
 			&:hover {
 				background: none;
-				color: $color-obojobo-blue;
+				color: includes.$color-obojobo-blue;
 			}
 		}
 	}

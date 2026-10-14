@@ -1,13 +1,14 @@
-@import '../../client/css/defaults';
+@use "sass:color";
+@use '../../client/css/defaults';
 
 .repository--section-wrapper--full-width {
-	margin-bottom: $size-spacing-vertical-big;
+	margin-bottom: defaults.$size-spacing-vertical-big;
 	position: relative;
 	z-index: 1;
 	box-sizing: border-box;
 
 	> section {
-		max-width: $dimension-width;
+		max-width: defaults.$dimension-width;
 		margin: 0 auto;
 	}
 
@@ -31,15 +32,15 @@
 }
 
 .repository--section-wrapper--grey {
-	background-color: $color-banner-bg;
-	border-bottom: 1px solid $border-color;
+	background-color: defaults.$color-banner-bg;
+	border-bottom: 1px solid defaults.$border-color;
 }
 
 .repository--title-banner {
 	display: flex;
 	position: relative;
 	z-index: 1;
-	padding: $dimension-padding;
+	padding: defaults.$dimension-padding;
 	box-sizing: border-box;
 	align-items: center;
 	color: #555555;
@@ -49,14 +50,14 @@
 		margin-right: 1em;
 
 		svg {
-			height: $dimension-module-icon + 45px;
+			height: defaults.$dimension-module-icon + 45px;
 		}
 	}
 }
 
 .repository--title-banner--title {
-	font-family: $font-default;
-	color: darken($color-action, 10%);
+	font-family: defaults.$font-default;
+	color: color.adjust(defaults.$color-action, $lightness: -10%);
 	font-weight: 700;
 	font-size: 2.5em;
 	white-space: pre-wrap;
@@ -80,14 +81,14 @@
 		// webkit supports strokes, although they are center aligned,
 		// so we'll double the desired stroke here to think of the stroke-width
 		// in terms of pixels of stroke that'll be visible outside the text
-		-webkit-text-stroke: $stroke-width * 2 $color-banner-bg;
+		-webkit-text-stroke: $stroke-width * 2 defaults.$color-banner-bg;
 		// In case we're not in webkit, throw a text-shadow on to at least get
 		// a pixel of glow to keep the background from mixing with the font too much
 		// prettier-ignore
 		text-shadow:
-			-1px -1px 0 $color-banner-bg,
-			1px -1px 0 $color-banner-bg,
-			-1px 1px 0 $color-banner-bg,
-			1px 1px 0 $color-banner-bg;
+			-1px -1px 0 defaults.$color-banner-bg,
+			1px -1px 0 defaults.$color-banner-bg,
+			-1px 1px 0 defaults.$color-banner-bg,
+			1px 1px 0 defaults.$color-banner-bg;
 	}
 }

@@ -1,6 +1,7 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
-$lighter-blue: lighten($color-obojobo-blue, 60%);
+$lighter-blue: color.adjust(includes.$color-obojobo-blue, $lightness: 60%);
 
 .excerpt--radio-icons {
 	$size: 1.2em;
@@ -35,10 +36,10 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		position: relative;
 		width: $size;
 		height: $size;
-		border-left: 1px solid $color-shadow;
+		border-left: 1px solid includes.$color-shadow;
 		display: inline-block;
-		border: 1px solid $color-shadow;
-		background-color: $color-bg;
+		border: 1px solid includes.$color-shadow;
+		background-color: includes.$color-bg;
 
 		img {
 			width: $size;
@@ -65,7 +66,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 
 		&.is-selected {
 			background-color: $lighter-blue;
-			border: 1px solid $color-obojobo-blue;
+			border: 1px solid includes.$color-obojobo-blue;
 			z-index: 1;
 
 			img {
@@ -75,7 +76,7 @@ $lighter-blue: lighten($color-obojobo-blue, 60%);
 		}
 
 		&:hover.is-not-selected {
-			border: 1px solid lighten($color-obojobo-blue, 40%);
+			border: 1px solid color.adjust(includes.$color-obojobo-blue, $lightness: 40%);
 			background-color: $lighter-blue;
 
 			img {

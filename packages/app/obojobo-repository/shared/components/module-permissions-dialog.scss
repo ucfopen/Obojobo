@@ -1,4 +1,4 @@
-@import '../../client/css/defaults';
+@use '../../client/css/defaults';
 
 .module-permissions-dialog {
 	max-width: 26em;
@@ -95,7 +95,7 @@
 
 	.access-list-wrapper {
 		margin: 1em 0;
-		background-color: $color-banner-bg;
+		background-color: defaults.$color-banner-bg;
 		padding: 0;
 	}
 

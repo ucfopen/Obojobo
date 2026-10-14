@@ -1,24 +1,25 @@
-@import '~styles/includes';
+@use "sass:math";
+@use '~styles/includes';
 
 .solution-editor {
-	background: $color-bg2;
-	border-top: 1px solid $color-shadow;
+	background: includes.$color-bg2;
+	border-top: 1px solid includes.$color-shadow;
 	position: relative;
 	border-bottom-left-radius: 0.3em;
 	border-bottom-right-radius: 0.3em;
 	padding-bottom: 1px; /* stylelint-disable-line unit-disallowed-list */
 
 	.page-editor {
-		margin: $dimension-padding / 3;
-		background: $color-bg;
-		border: 1px solid $color-shadow;
+		margin: math.div(includes.$dimension-padding, 3);
+		background: includes.$color-bg;
+		border: 1px solid includes.$color-shadow;
 
 		&::before {
 			content: 'Full explanation:';
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			font-size: 1em;
 			font-weight: bold;
-			color: $color-text-minor;
+			color: includes.$color-text-minor;
 			margin-top: 1em;
 			margin-left: 2em;
 			margin-bottom: -1em;

@@ -1,20 +1,21 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .import-questions-model {
 	max-width: 70vw;
 
 	.import-model--question-content {
-		background: $color-bg2;
-		border-radius: $dimension-rounded-radius;
+		background: includes.$color-bg2;
+		border-radius: includes.$dimension-rounded-radius;
 		max-height: 55vh;
 		min-width: 35em;
 		overflow: scroll;
 		font-size: 0.75em;
 
 		.import-model--question-content--single {
-			background: $color-bg;
-			border: 1px solid $color-shadow;
-			border-radius: $dimension-rounded-radius;
+			background: includes.$color-bg;
+			border: 1px solid includes.$color-shadow;
+			border-radius: includes.$dimension-rounded-radius;
 			user-select: none;
 			cursor: pointer;
 			margin: 1em;
@@ -39,8 +40,8 @@
 			}
 
 			&.is-selected {
-				background: transparentize($color-action, 0.9);
-				border: 1px solid $color-action;
+				background: color.adjust(includes.$color-action, $alpha: -0.9);
+				border: 1px solid includes.$color-action;
 			}
 
 			* {
@@ -52,6 +53,6 @@
 	p {
 		margin: 1em 0 -1em;
 		font-size: 0.8em;
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 	}
 }

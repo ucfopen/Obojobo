@@ -1,4 +1,5 @@
-@import '../../../../scss/includes';
+@use "sass:color";
+@use '../../../../scss/includes';
 
 .visual-editor--drop-down-menu {
 	display: inline;
@@ -13,11 +14,11 @@
 			left: 0;
 			display: none;
 			width: 15em;
-			background-color: $color-bg;
+			background-color: includes.$color-bg;
 			padding: 0;
 			margin: 0;
 			z-index: 99;
-			border: 1px solid $color-shadow;
+			border: 1px solid includes.$color-shadow;
 
 			button {
 				text-align: start;
@@ -53,7 +54,7 @@
 			}
 
 			> .menu-title {
-				background: lighten($color-action, 48%);
+				background: color.adjust(includes.$color-action, $lightness: 48%);
 			}
 		}
 

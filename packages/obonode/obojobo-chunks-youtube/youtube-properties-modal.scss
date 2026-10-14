@@ -1,11 +1,11 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .youtube-video-properties {
 	text-align: left;
 	margin: auto;
 
 	input[type='text'] {
-		@include text-input();
+		@include includes.text-input();
 
 		width: 100%;
 		box-sizing: border-box;
@@ -25,7 +25,7 @@
 		margin-top: 0;
 		margin-bottom: 0.4em;
 		font-size: 0.7em;
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 	}
 
 	h2 {
@@ -41,14 +41,14 @@
 		button {
 			background: none;
 			text-decoration: underline;
-			color: $color-action;
+			color: includes.$color-action;
 			border: none;
 			font-size: 0.7em;
 			margin: 0;
 
 			&:hover {
-				background: $color-action-bg;
-				color: $color-action;
+				background: includes.$color-action-bg;
+				color: includes.$color-action;
 			}
 		}
 	}
@@ -77,16 +77,16 @@
 		$dimension-rounded-radius: 0.25em;
 
 		width: 18em;
-		background: $color-bg2;
+		background: includes.$color-bg2;
 
 		.container {
-			background: $color-bg2;
+			background: includes.$color-bg2;
 		}
 
 		.text-items {
 			text-align: left;
 			border-radius: $dimension-rounded-radius;
-			background: $color-bg;
+			background: includes.$color-bg;
 			padding: 1em;
 			margin: 1em;
 			font-size: 0.9em;
@@ -103,8 +103,8 @@
 
 			code {
 				border-radius: $dimension-rounded-radius;
-				background: $color-bg2;
-				font-family: $font-monospace;
+				background: includes.$color-bg2;
+				font-family: includes.$font-monospace;
 			}
 		}
 	}

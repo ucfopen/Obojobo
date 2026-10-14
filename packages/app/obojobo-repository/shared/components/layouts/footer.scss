@@ -1,3 +1,4 @@
+@use "sass:color";
 $color-fg: #888888;
 $color-bg: white;
 
@@ -45,7 +46,7 @@ footer div {
 	color: $color-fg;
 
 	&:hover {
-		color: darken($color-fg, 25%);
+		color: color.adjust($color-fg, $lightness: -25%);
 	}
 
 	// add separator between links

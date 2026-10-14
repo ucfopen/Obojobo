@@ -1,11 +1,11 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .iframe-properties {
 	text-align: left;
 	min-width: 25em;
 
 	input {
-		@include text-input();
+		@include includes.text-input();
 
 		vertical-align: top;
 
@@ -26,7 +26,7 @@
 		width: 6.75em;
 		padding: 0.2em;
 		border-radius: 0.2em;
-		border: 1px solid $color-shadow;
+		border: 1px solid includes.$color-shadow;
 	}
 
 	#obojobo-draft--chunks--iframe--properties-modal--title,
@@ -41,7 +41,7 @@
 	.options,
 	.controls {
 		height: auto;
-		border-top: 1px solid $color-shadow;
+		border-top: 1px solid includes.$color-shadow;
 		margin-top: 1em;
 	}
 

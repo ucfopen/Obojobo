@@ -319,7 +319,7 @@ describe('EditorUtil', () => {
 		// eslint-disable-next-line no-console
 		expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		// eslint-disable-next-line no-console
-		expect(console.error.mock.calls[0][0].message).toBe('Unexpected token i in JSON at position 0')
+		expect(console.error.mock.calls[0][0].message).toMatch(/Unexpected token/)
 	})
 
 	test('getTitleFromXML returns unnamed', () => {

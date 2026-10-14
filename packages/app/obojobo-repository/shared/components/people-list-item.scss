@@ -1,4 +1,5 @@
-@import '../../client/css/defaults';
+@use "sass:color";
+@use '../../client/css/defaults';
 
 .people-list-item {
 	$dimensions-avatar: 1.8em;
@@ -12,7 +13,7 @@
 	align-items: center;
 
 	&:hover {
-		background-color: lighten($color-banner-bg, 2%);
+		background-color: color.adjust(defaults.$color-banner-bg, $lightness: 2%);
 	}
 
 	.user-name {

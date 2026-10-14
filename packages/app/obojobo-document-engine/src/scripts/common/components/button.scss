@@ -1,12 +1,13 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--components--button {
 	@mixin disabled() {
-		background-color: $color-bg2;
+		background-color: includes.$color-bg2;
 		cursor: default;
-		color: $color-text-minor;
-		border: 1px solid $color-transparent;
-		border-bottom: 1px solid $color-transparent;
+		color: includes.$color-text-minor;
+		border: 1px solid includes.$color-transparent;
+		border-bottom: 1px solid includes.$color-transparent;
 		opacity: 1;
 	}
 
@@ -15,50 +16,50 @@
 	.button {
 		user-select: none;
 		cursor: pointer;
-		font-family: $font-default;
+		font-family: includes.$font-default;
 		font-size: 0.85em;
 		position: relative;
 		min-width: 3.25em;
 		border-radius: 0.2em;
 		padding: 0.6rem 1em;
-		background-color: $color-button-bg;
-		color: $color-bg;
-		border: 1px solid $color-transparent;
-		border-bottom: 1px solid darken($color-action, 20%);
+		background-color: includes.$color-button-bg;
+		color: includes.$color-bg;
+		border: 1px solid includes.$color-transparent;
+		border-bottom: 1px solid color.adjust(includes.$color-action, $lightness: -20%);
 
 		&:focus {
 			outline: none;
-			box-shadow: 0 0 0 1px $color-bg, 0 0 0 3px $color-browser-focus;
+			box-shadow: 0 0 0 1px includes.$color-bg, 0 0 0 3px includes.$color-browser-focus;
 		}
 	}
 
 	&.is-dangerous {
 		button {
-			background-color: $color-dangerous;
-			border-bottom: 1px solid darken($color-action, 20%);
+			background-color: includes.$color-dangerous;
+			border-bottom: 1px solid color.adjust(includes.$color-action, $lightness: -20%);
 		}
 	}
 
 	&.alt-action {
 		button {
-			border: 1px solid $color-action;
-			border-bottom: 1px solid $color-action;
-			background-color: $color-bg;
-			color: $color-action;
+			border: 1px solid includes.$color-action;
+			border-bottom: 1px solid includes.$color-action;
+			background-color: includes.$color-bg;
+			color: includes.$color-action;
 		}
 	}
 
 	&.alt-action.is-dangerous {
 		button {
-			border: 1px solid $color-dangerous;
-			border-bottom: 1px solid $color-dangerous;
-			background-color: $color-bg;
-			color: $color-dangerous;
+			border: 1px solid includes.$color-dangerous;
+			border-bottom: 1px solid includes.$color-dangerous;
+			background-color: includes.$color-bg;
+			color: includes.$color-dangerous;
 		}
 	}
 
 	.button:hover {
-		background-color: $color-action;
+		background-color: includes.$color-action;
 	}
 
 	.button:disabled {
@@ -66,28 +67,28 @@
 	}
 
 	&.is-dangerous button:hover {
-		background-color: $color-dangerous-minor;
-		color: $color-bg;
+		background-color: includes.$color-dangerous-minor;
+		color: includes.$color-bg;
 	}
 
 	&.alt-action button:hover {
-		background-color: $color-action;
-		color: $color-bg;
+		background-color: includes.$color-action;
+		color: includes.$color-bg;
 	}
 
 	&.alt-action button:disabled {
 		@include disabled();
 
-		background-color: $color-bg;
+		background-color: includes.$color-bg;
 		cursor: not-allowed;
-		color: $color-text;
-		border: 1px solid $color-text;
+		color: includes.$color-text;
+		border: 1px solid includes.$color-text;
 		opacity: 0.4;
 	}
 
 	&.alt-action.is-dangerous button:hover {
-		background-color: $color-dangerous;
-		color: $color-bg;
+		background-color: includes.$color-dangerous;
+		color: includes.$color-bg;
 	}
 
 	&.alt-action.is-dangerous button:disabled {

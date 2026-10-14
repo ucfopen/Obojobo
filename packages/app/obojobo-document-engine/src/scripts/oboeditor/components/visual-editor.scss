@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .editor--page-editor {
 	$latex-editor-background: #e8eef9;
@@ -8,9 +8,9 @@
 	display: flex;
 	margin: 2em;
 	margin-top: 8em;
-	border: 1px solid $color-shadow;
-	background-color: $color-bg;
-	border-radius: $dimension-rounded-radius;
+	border: 1px solid includes.$color-shadow;
+	background-color: includes.$color-bg;
+	border-radius: includes.$dimension-rounded-radius;
 	min-height: calc(100vh - 10.5em);
 	position: relative;
 	min-width: 56.5em;
@@ -30,7 +30,7 @@
 	.latex-editor {
 		background: $latex-editor-background;
 		color: $latex-editor-color;
-		font-family: $font-monospace;
+		font-family: includes.$font-monospace;
 		border-radius: 0.15em;
 		font-size: 0.95em;
 		letter-spacing: -0.025em;

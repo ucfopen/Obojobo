@@ -1,10 +1,10 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .oboeditor-component {
 	position: relative;
 
 	&.is-selected {
-		z-index: $z-index-above-content;
+		z-index: includes.$z-index-above-content;
 	}
 
 	.component-toolbar {
@@ -12,11 +12,11 @@
 		height: 100%;
 		top: 0;
 		left: 1.1em;
-		border: 2px dotted $color-shadow;
+		border: 2px dotted includes.$color-shadow;
 		width: 0.1em;
 		user-select: none;
-		background: $color-bg;
-		outline: 2px solid $color-bg; //stylelint-disable unit-disallowed-list
+		background: includes.$color-bg;
+		outline: 2px solid includes.$color-bg; //stylelint-disable unit-disallowed-list
 
 		.top {
 			top: 0;
@@ -42,8 +42,8 @@
 		right: -2em;
 		top: 0;
 		padding: 0;
-		background: $color-bg;
-		border: 2px solid $color-bg;
+		background: includes.$color-bg;
+		border: 2px solid includes.$color-bg;
 		border-radius: 100%;
 		cursor: pointer;
 

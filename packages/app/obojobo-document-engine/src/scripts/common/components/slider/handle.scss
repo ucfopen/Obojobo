@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--components--slider--handle {
 	position: absolute;
@@ -8,10 +8,10 @@
 	height: 2em;
 	border-radius: 50%;
 	box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
-	border: 1px solid $color-action;
-	background: $color-bg;
+	border: 1px solid includes.$color-action;
+	background: includes.$color-bg;
 
 	&.is-disabled {
-		background: $color-shadow;
+		background: includes.$color-shadow;
 	}
 }

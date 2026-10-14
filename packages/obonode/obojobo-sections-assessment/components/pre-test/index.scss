@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .score {
 	> .attempt-history {
 		> h1 {
@@ -48,7 +50,7 @@
 			}
 
 			.from-attempt {
-				border-top: 1px solid transparentize($color-shadow, 0.2);
+				border-top: 1px solid color.adjust($color-shadow, $alpha: -0.2);
 				display: block;
 				font-size: 0.7em;
 				padding-top: 0.5em;

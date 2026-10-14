@@ -1,11 +1,12 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .choose-image {
-	$color-button-bg: lighten($color-action, 9%);
+	$color-button-bg: color.adjust(includes.$color-action, $lightness: 9%);
 
 	text-align: center;
 	max-width: 27rem;
-	background-color: $color-bg2;
+	background-color: includes.$color-bg2;
 	padding: 1rem;
 	margin: 0 auto;
 
@@ -18,7 +19,7 @@
 			flex: 1;
 
 			.error-message {
-				color: $color-dangerous;
+				color: includes.$color-dangerous;
 				font-size: 0.8em;
 			}
 		}
@@ -30,7 +31,7 @@
 		#choose-image--image-controls--url {
 			flex: 1;
 			cursor: pointer;
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			font-size: 0.85em;
 			min-width: 3em;
 			padding: 0.6em 1em;
@@ -47,23 +48,23 @@
 
 		.inputfile + label {
 			background-color: $color-button-bg;
-			font-family: $font-default;
+			font-family: includes.$font-default;
 			font-size: 0.85em;
 			position: relative;
 			width: 80%;
 			border-radius: 0.2em;
 			padding: 0.6em 1em;
-			color: $color-bg;
+			color: includes.$color-bg;
 			display: inline-block;
 			cursor: pointer;
 
 			&:hover {
-				background-color: $color-action;
+				background-color: includes.$color-action;
 			}
 		}
 
 		.inputfile:focus + label {
-			outline: 0.1em dotted $color-text;
+			outline: 0.1em dotted includes.$color-text;
 			outline: -webkit-focus-ring-color auto 0.3em;
 		}
 	}
@@ -72,7 +73,7 @@
 		/* stylelint-disable-next-line unit-disallowed-list */
 		height: 1px;
 		/* stylelint-disable-next-line scale-unlimited/declaration-strict-value */
-		background-color: darken($color-bg2, 30%);
+		background-color: color.adjust(includes.$color-bg2, $lightness: -30%);
 		margin: 0.5rem 0;
 	}
 

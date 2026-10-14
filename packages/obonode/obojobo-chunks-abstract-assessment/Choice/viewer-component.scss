@@ -1,10 +1,11 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--chunks--mc-assessment--mc-choice {
 	list-style-type: none;
 	min-height: 3.5em;
 	position: relative;
-	font-family: $font-default;
+	font-family: includes.$font-default;
 	cursor: pointer;
 	padding-bottom: 1em;
 
@@ -16,11 +17,11 @@
 		transform: translate(0, -50%) translate(0, 0.5px);
 		margin: 0;
 
-		@include mq($until: desktop) {
+		@include includes.mq($until: desktop) {
 			left: 2em;
 		}
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			left: 1em;
 		}
 	}
@@ -50,9 +51,9 @@
 
 				/* prettier-ignore */
 				transition:
-					max-height $duration-animation-default * 2,
-					margin-bottom $duration-animation-default * 2,
-					opacity $duration-animation-default * 2;
+					max-height includes.$duration-animation-default * 2,
+					margin-bottom includes.$duration-animation-default * 2,
+					opacity includes.$duration-animation-default * 2;
 			}
 
 			&.feedback-leave {
@@ -69,9 +70,9 @@
 
 				/* prettier-ignore */
 				transition:
-					max-height $duration-animation-default / 2,
-					margin-bottom $duration-animation-default / 2,
-					opacity $duration-animation-default / 2;
+					max-height includes.$duration-animation-default * 0.5,
+					margin-bottom includes.$duration-animation-default * 0.5,
+					opacity includes.$duration-animation-default * 0.5;
 			}
 
 			> .obojobo-draft--chunks--mc-assessment--mc-feedback {
@@ -83,7 +84,7 @@
 	}
 
 	&.is-selected {
-		background: transparentize($color-highlight, 0.75);
+		background: color.adjust(includes.$color-highlight, $alpha: -0.75);
 	}
 
 	&.is-mode-review {
@@ -96,6 +97,6 @@
 	}
 
 	&.is-not-selected:hover {
-		background: transparentize($color-highlight, 0.85);
+		background: color.adjust(includes.$color-highlight, $alpha: -0.85);
 	}
 }

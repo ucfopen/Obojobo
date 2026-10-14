@@ -1,7 +1,8 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .rubric-modal {
-	$color-rubric-bg: transparentize($color-preview, 0.95);
+	$color-rubric-bg: color.adjust(includes.$color-preview, $alpha: -0.95);
 	// @HACK: Enforce pixel perfect children.
 	// Used to make the "Click to load this content" element non-blurry in CHROME
 	transform-style: preserve-3d;
@@ -33,7 +34,7 @@
 
 	.pass-fail {
 		border: none;
-		border-top: 1px solid $color-shadow;
+		border-top: 1px solid includes.$color-shadow;
 		padding: 1em 0;
 		text-align: left;
 		margin: 0;
@@ -56,7 +57,7 @@
 			display: block;
 			display: flex;
 			align-items: center;
-			border-radius: $dimension-rounded-radius;
+			border-radius: includes.$dimension-rounded-radius;
 			background-color: $color-rubric-bg;
 			margin: 1em 0;
 
@@ -74,7 +75,7 @@
 		.when-failing,
 		.out-of-attempts {
 			padding: 1em;
-			border-radius: $dimension-rounded-radius;
+			border-radius: includes.$dimension-rounded-radius;
 			background-color: $color-rubric-bg;
 			margin-bottom: 1em;
 
@@ -89,7 +90,7 @@
 	}
 
 	.mods {
-		border-radius: $dimension-rounded-radius;
+		border-radius: includes.$dimension-rounded-radius;
 		position: relative;
 		display: block;
 
@@ -112,14 +113,14 @@
 
 		.obojobo-draft--components--button {
 			.button {
-				color: $color-action;
+				color: includes.$color-action;
 				background-color: inherit; /* stylelint-disable-line scale-unlimited/declaration-strict-value */
-				border-color: $color-action;
+				border-color: includes.$color-action;
 				border-width: 2px;
 
 				&:hover {
-					color: $color-bg;
-					background-color: $color-action;
+					color: includes.$color-bg;
+					background-color: includes.$color-action;
 				}
 			}
 		}
@@ -128,11 +129,11 @@
 			text-align: left;
 
 			.reward {
-				color: $color-correct;
+				color: includes.$color-correct;
 			}
 
 			.deduct {
-				color: $color-incorrect;
+				color: includes.$color-incorrect;
 			}
 		}
 	}
@@ -156,7 +157,7 @@
 	}
 
 	input[type='number'] {
-		@include text-input();
+		@include includes.text-input();
 
 		max-width: 3em;
 		margin-left: 0.5em;
@@ -169,7 +170,7 @@
 	}
 
 	select {
-		@include select-input();
+		@include includes.select-input();
 
 		margin-left: 0.5em;
 	}

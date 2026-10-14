@@ -1,4 +1,5 @@
-@import '~styles/includes';
+@use "sass:color";
+@use '~styles/includes';
 
 .obojobo-draft--components--modal--settings-dialog .image-properties .row {
 	margin-bottom: 0;
@@ -23,14 +24,14 @@
 	}
 
 	input[type='text'] {
-		@include text-input();
+		@include includes.text-input();
 
 		width: 100%;
 		box-sizing: border-box;
 	}
 
 	input[type='number'] {
-		@include text-input();
+		@include includes.text-input();
 
 		width: 6em;
 		margin-right: 0.5em;
@@ -50,7 +51,7 @@
 		// height: 1.8em;
 		width: 100%;
 
-		@include select-input();
+		@include includes.select-input();
 	}
 
 	.size-input {
@@ -81,7 +82,7 @@
 		display: flex;
 		align-items: center;
 		padding: 1rem 0;
-		background-color: $color-bg2;
+		background-color: includes.$color-bg2;
 
 		&.image-container {
 			justify-content: center;
@@ -109,8 +110,8 @@
 			line-height: 100px; /* stylelint-disable-line unit-disallowed-list */
 			text-align: center;
 			box-sizing: border-box;
-			background: darken($color-bg2, 10%);
-			color: $color-text-minor;
+			background: color.adjust(includes.$color-bg2, $lightness: -10%);
+			color: includes.$color-text-minor;
 		}
 	}
 }

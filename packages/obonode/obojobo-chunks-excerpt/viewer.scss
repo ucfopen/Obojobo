@@ -1,4 +1,4 @@
-@import '../obojobo-document-engine/src/scss';
+@use 'obojobo-document-engine/src/scss/main' as *;
 
 .obojobo-draft--chunks--excerpt {
 	pre {

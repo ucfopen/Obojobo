@@ -1,19 +1,19 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .objective-list-modal {
 	position: relative;
 	width: 32em;
 	min-height: 56vh;
-	background: $color-bg2;
+	background: includes.$color-bg2;
 	padding: 0.5em;
-	border-radius: $dimension-rounded-radius;
+	border-radius: includes.$dimension-rounded-radius;
 
 	.objective-list-header {
 		margin: -0.7em 0 1em 0;
 	}
 
 	.objective-list-subheader {
-		font: $font-monospace;
+		font: includes.$font-monospace;
 	}
 }
 

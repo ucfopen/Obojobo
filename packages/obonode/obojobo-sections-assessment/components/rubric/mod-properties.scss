@@ -1,4 +1,4 @@
-@import '~styles/includes';
+@use '~styles/includes';
 
 .obojobo-draft--sections--assessment--mod-properties {
 	font-size: 0.85em;
@@ -16,19 +16,19 @@
 	}
 
 	.mod-box {
-		background: $color-bg2;
-		border-radius: $dimension-rounded-radius;
-		border: 1px solid $color-shadow;
+		background: includes.$color-bg2;
+		border-radius: includes.$dimension-rounded-radius;
+		border: 1px solid includes.$color-shadow;
 		padding: 0.5em;
 		overflow-y: auto;
 
 		.mod {
-			background: $color-bg;
-			border-radius: $dimension-rounded-radius;
+			background: includes.$color-bg;
+			border-radius: includes.$dimension-rounded-radius;
 			margin: 0.5em;
 			padding: 0.5em;
 			text-align: start;
-			border: 1px solid $color-shadow;
+			border: 1px solid includes.$color-shadow;
 			position: relative;
 
 			label {
@@ -36,7 +36,7 @@
 			}
 
 			input {
-				@include text-input();
+				@include includes.text-input();
 			}
 
 			.delete-button {
@@ -50,7 +50,7 @@
 					font-size: 1.3em;
 					min-width: 0;
 					background: none;
-					color: $color-shadow;
+					color: includes.$color-shadow;
 					border: none;
 				}
 			}

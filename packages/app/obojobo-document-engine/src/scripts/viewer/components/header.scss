@@ -1,23 +1,23 @@
-@import '../../../scss/_includes.scss';
+@use '../../../scss/_includes.scss';
 
 .viewer--components--header {
-	background: $color-bg;
+	background: includes.$color-bg;
 	height: 2.5rem;
 	font-size: 0.7rem;
-	font-family: $font-default;
-	color: $color-text;
-	padding: 0.9rem $dimension-header-padding;
+	font-family: includes.$font-default;
+	color: includes.$color-text;
+	padding: 0.9rem includes.$dimension-header-padding;
 	padding-left: 4rem;
 	box-sizing: border-box;
 	text-align: left;
 	overflow: hidden;
 
-	@include mq($until: tablet) {
+	@include includes.mq($until: tablet) {
 		display: block;
 		margin-left: 0;
 	}
 
-	@include mq($until: desktop) {
+	@include includes.mq($until: desktop) {
 		padding-left: 2.5rem;
 	}
 
@@ -25,7 +25,7 @@
 		position: relative;
 		line-height: 0.9rem;
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			margin-top: -0.3rem;
 		}
 	}
@@ -41,14 +41,14 @@
 		font-weight: bold;
 		cursor: default;
 
-		@include mq($until: tablet) {
+		@include includes.mq($until: tablet) {
 			display: block;
 			margin-left: 0;
 		}
 	}
 
 	.viewer--components--logo {
-		color: $color-text-minor;
+		color: includes.$color-text-minor;
 		position: fixed;
 		top: 0.8rem;
 		opacity: 0.2;
@@ -59,11 +59,11 @@
 		padding-left: 6rem;
 
 		.viewer--components--logo {
-			left: $dimension-header-padding;
+			left: includes.$dimension-header-padding;
 		}
 	}
 
 	&.is-logo-right .viewer--components--logo {
-		right: $dimension-header-padding;
+		right: includes.$dimension-header-padding;
 	}
 }
