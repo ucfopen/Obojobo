@@ -1,5 +1,6 @@
 const processTriggers = require('../process-triggers')
 const processAttrs = require('../process-attrs')
+const processVars = require('../process-vars')
 const processObjectives = require('../process-objectives')
 
 const assessmentNodeParser = (node, childrenParser) => {
@@ -8,6 +9,7 @@ const assessmentNodeParser = (node, childrenParser) => {
 	const scoreActionsXML = scoreActionsParser(node.content.scoreActions, childrenParser)
 	const rubricXML = rubricParser(node.content.rubric)
 	const triggersXML = processTriggers(node.content.triggers)
+	const varsXML = processVars(node.content.variables)
 	const objectivesXML = processObjectives(node.content.objectives)
 
 	return (
@@ -17,6 +19,7 @@ const assessmentNodeParser = (node, childrenParser) => {
 		rubricXML +
 		triggersXML +
 		objectivesXML +
+		varsXML +
 		`</Assessment>`
 	)
 }

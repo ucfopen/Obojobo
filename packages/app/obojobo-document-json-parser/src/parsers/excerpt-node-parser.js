@@ -1,5 +1,6 @@
 const processTriggers = require('../process-triggers')
 const processAttrs = require('../process-attrs')
+const processVars = require('../process-vars')
 const processObjectives = require('../process-objectives')
 
 const excerptNodeParser = (node, childrenParser) => {
@@ -7,6 +8,7 @@ const excerptNodeParser = (node, childrenParser) => {
 	const attrs = processAttrs(node.content, ['triggers', 'actions'])
 
 	const triggersXML = processTriggers(node.content.triggers)
+	const varsXML = processVars(node.content.variables)
 	const objectivesXML = processObjectives(node.content.objectives)
 
 	return (
@@ -14,6 +16,7 @@ const excerptNodeParser = (node, childrenParser) => {
 		childrenParser(node.children) +
 		triggersXML +
 		objectivesXML +
+		varsXML +
 		`</Excerpt>`
 	)
 }

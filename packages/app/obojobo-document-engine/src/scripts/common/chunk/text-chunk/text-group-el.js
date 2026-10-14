@@ -41,6 +41,7 @@ const getText = props => {
 	// Loop through the text, replacing every substitution in substitutions
 	substitutions.forEach(sub => {
 		text.replaceText(sub.index, sub.index + sub.length, sub.replacementText)
+		text.styleText('color', sub.index, sub.index + sub.replacementText.length, { text: 'red' })
 	})
 
 	return text

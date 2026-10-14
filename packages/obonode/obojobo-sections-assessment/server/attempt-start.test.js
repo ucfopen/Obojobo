@@ -22,6 +22,8 @@ jest.mock(
 jest.mock(
 	'./util',
 	() => ({
+		getVariableOwner: jest.fn().mockReturnValue(null),
+		getVariablesUsedInNode: jest.fn().mockReturnValue(null),
 		getFullQuestionsFromDraftTree: jest.fn(),
 		getRandom: jest.fn().mockReturnValue(0),
 		logAndRespondToUnexpected: jest.fn()
@@ -29,7 +31,13 @@ jest.mock(
 	{ virtual: false }
 )
 
-const { getRandom, logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
+const {
+	getRandom,
+	logAndRespondToUnexpected,
+	getFullQuestionsFromDraftTree,
+	getVariablesUsedInNode,
+	getVariableOwner
+} = require('./util')
 
 const {
 	startAttempt,
@@ -82,42 +90,61 @@ describe('start attempt route', () => {
 		mockRes = {}
 	})
 
+	// reusable mock object structures only really used in the first few tests
+	const standardMockAssessmentNode = {
+		yell: jest.fn(),
+		getChildNodeById: jest.fn(() => ({
+			node: {
+				content: {
+					attempts: 3
+				}
+			},
+			children: [
+				{},
+				{
+					childrenSet: [],
+					buildAssessment: jest.fn().mockReturnValueOnce([
+						{
+							id: 'mockQuestion',
+							type: QUESTION_NODE_TYPE
+						}
+					])
+				}
+			],
+			draftTree: {
+				getChildNodeById: jest.fn().mockReturnValueOnce({
+					id: 'mockQuestion',
+					type: QUESTION_NODE_TYPE,
+					children: [],
+					yell: jest.fn(),
+					toObject: jest.fn().mockReturnValueOnce({})
+				})
+			}
+		}))
+	}
+	const standardMockAttempt = {
+		attemptId: 'mockAttemptId',
+		state: {
+			chosen: [
+				{
+					id: 'mockQuestion',
+					type: QUESTION_NODE_TYPE
+				},
+				{
+					id: 'mockQuestionBank',
+					type: QUESTION_BANK_NODE_TYPE
+				}
+			]
+		}
+	}
+
 	test('startAttempt calls database, inserts events, adds assessment questions to response, and returns expected object', () => {
 		mockRes = {
 			success: jest.fn(),
 			reject: jest.fn()
 		}
 
-		const mockAssessmentNode = {
-			getChildNodeById: jest.fn(() => ({
-				node: {
-					content: {
-						attempts: 3
-					}
-				},
-				children: [
-					{},
-					{
-						childrenSet: [],
-						buildAssessment: jest.fn().mockReturnValueOnce([
-							{
-								id: 'mockQuestion',
-								type: QUESTION_NODE_TYPE
-							}
-						])
-					}
-				],
-				draftTree: {
-					getChildNodeById: jest.fn().mockReturnValueOnce({
-						id: 'mockQuestion',
-						type: QUESTION_NODE_TYPE,
-						children: [],
-						yell: jest.fn(),
-						toObject: jest.fn().mockReturnValueOnce({})
-					})
-				}
-			}))
-		}
+		const mockAssessmentNode = { ...standardMockAssessmentNode }
 
 		mockReq = {
 			body: {
@@ -133,21 +160,7 @@ describe('start attempt route', () => {
 			currentUser: { id: 4 }
 		}
 
-		const mockAttempt = {
-			attemptId: 'mockAttemptId',
-			state: {
-				chosen: [
-					{
-						id: 'mockQuestion',
-						type: QUESTION_NODE_TYPE
-					},
-					{
-						id: 'mockQuestionBank',
-						type: QUESTION_BANK_NODE_TYPE
-					}
-				]
-			}
-		}
+		const mockAttempt = { ...standardMockAttempt }
 
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
 		AssessmentModel.createNewAttempt.mockResolvedValueOnce(mockAttempt)
@@ -159,6 +172,153 @@ describe('start attempt route', () => {
 			expect(mockRes.success).toBeCalledTimes(1)
 			expect(AssessmentModel.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
 			expect(AssessmentModel.createNewAttempt).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt.mock.calls[0][4].variables).toEqual([])
+			expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
+		})
+	})
+
+	test('startAttempt generates variables for a new attempt properly', () => {
+		mockRes = {
+			success: jest.fn(),
+			reject: jest.fn()
+		}
+
+		// actual variables would have much more detail than this
+		const mockVariables = [{ name: 'var1' }, { name: 'var2' }]
+
+		const mockAssessmentNode = {
+			...standardMockAssessmentNode,
+			// rather than return a value, the actual function modifies a provided value
+			yell: jest.fn((event, req, res, variableArray) => {
+				variableArray.push(...mockVariables)
+			})
+		}
+
+		mockReq = {
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			},
+			hostname: 'mockHostname',
+			connection: {
+				remoteAddress: 'mockRemoteAddress'
+			},
+			currentVisit: {
+				is_preview: false
+			},
+			currentDocument: mockAssessmentNode,
+			currentUser: { id: 4 }
+		}
+
+		const mockAttempt = { ...standardMockAttempt }
+
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
+		AssessmentModel.createNewAttempt.mockResolvedValueOnce(mockAttempt)
+
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+
+		expect.hasAssertions()
+		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockAssessmentNode.yell).toBeCalledTimes(1)
+			expect(mockAssessmentNode.yell.mock.calls[0][0]).toBe('internal:generateVariables')
+
+			expect(mockRes.success).toBeCalledTimes(1)
+			expect(AssessmentModel.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt.mock.calls[0][4].variables).toEqual(mockVariables)
+			// bonus test - pretend there are no variables in the chosen question, make sure there were
+			//  also no variable references stored
+			expect(AssessmentModel.createNewAttempt.mock.calls[0][4].chosen[0].varRef).toBeUndefined()
+			expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
+		})
+	})
+
+	test('startAttempt stores variable references for chosen questions properly - references necessary', () => {
+		const mockUsedVariables = ['var1', 'var2']
+		// the stored value for varRef is basically just an array of all the responses from getVariableOwner
+		const mockVarRef = [{ var: 'var1', ref: 'owner1' }, { var: 'var2', ref: 'owner2' }]
+		getVariablesUsedInNode.mockReturnValueOnce(mockUsedVariables)
+		getVariableOwner.mockReturnValueOnce(mockVarRef[0]).mockReturnValueOnce(mockVarRef[1])
+
+		mockRes = {
+			success: jest.fn(),
+			reject: jest.fn()
+		}
+
+		mockReq = {
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			},
+			hostname: 'mockHostname',
+			connection: {
+				remoteAddress: 'mockRemoteAddress'
+			},
+			currentVisit: {
+				is_preview: false
+			},
+			currentDocument: standardMockAssessmentNode,
+			currentUser: { id: 4 }
+		}
+
+		const mockAttempt = { ...standardMockAttempt }
+
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
+		AssessmentModel.createNewAttempt.mockResolvedValueOnce(mockAttempt)
+
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+
+		expect.hasAssertions()
+		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.success).toBeCalledTimes(1)
+			expect(AssessmentModel.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt.mock.calls[0][4].chosen[0].varRef).toEqual(mockVarRef)
+			expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
+		})
+	})
+
+	test('startAttempt stores variable references for chosen questions properly - references not necessary', () => {
+		const mockUsedVariables = ['var1', 'var2']
+		getVariablesUsedInNode.mockReturnValueOnce(mockUsedVariables)
+		// in the case that any identified variables are in the longhand format or are owned by
+		//  the question, getVariableOwner will return nothing
+		getVariableOwner.mockReturnValueOnce().mockReturnValueOnce()
+
+		mockRes = {
+			success: jest.fn(),
+			reject: jest.fn()
+		}
+
+		mockReq = {
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			},
+			hostname: 'mockHostname',
+			connection: {
+				remoteAddress: 'mockRemoteAddress'
+			},
+			currentVisit: {
+				is_preview: false
+			},
+			currentDocument: standardMockAssessmentNode,
+			currentUser: { id: 4 }
+		}
+
+		const mockAttempt = { ...standardMockAttempt }
+
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
+		AssessmentModel.createNewAttempt.mockResolvedValueOnce(mockAttempt)
+
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+
+		expect.hasAssertions()
+		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.success).toBeCalledTimes(1)
+			expect(AssessmentModel.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt.mock.calls[0][4].chosen[0].varRef).toBeUndefined()
 			expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
 		})
 	})
@@ -167,6 +327,7 @@ describe('start attempt route', () => {
 		mockRes = { reject: jest.fn() }
 
 		const mockAssessmentNode = {
+			yell: jest.fn(),
 			getChildNodeById: jest.fn(() => ({
 				node: {
 					content: {
@@ -206,6 +367,7 @@ describe('start attempt route', () => {
 		mockRes = { reject: jest.fn() }
 
 		const mockAssessmentNode = {
+			yell: jest.fn(),
 			getChildNodeById: jest.fn(() => ({
 				node: {
 					content: {
@@ -251,7 +413,8 @@ describe('start attempt route', () => {
 			},
 			currentVisit: { is_preview: false },
 			currentDocument: {
-				getChildNodeById: jest.fn(() => null)
+				getChildNodeById: jest.fn(() => null),
+				yell: jest.fn()
 			},
 			currentUser: { id: 4 }
 		}
@@ -562,7 +725,7 @@ describe('start attempt route', () => {
 			}
 		})
 
-		const state = getState(mockAssessmentProperties)
+		const state = getState(mockDraft, mockAssessmentProperties)
 
 		expect(state.chosen).toEqual([
 			{ id: 'qb1.q1', type: 'ObojoboDraft.Chunks.Question' },

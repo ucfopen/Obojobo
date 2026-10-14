@@ -2,7 +2,16 @@
 	"id": "7a2ee0ca-e40c-4fdd-aceb-74182701ef2f",
 	"type": "ObojoboDraft.Modules.Module",
 	"content": {
-		"title": "Obojobo Example Document"
+		"title": "Obojobo Example Document",
+		"vars": [
+			{ "name": "a", "type": "static-value", "value": "123" },
+			{ "name": "b", "type": "random-number", "value": "[0,10]", "decimalPlaces": "[0,2]" },
+			{ "name": "c", "type": "static-list", "value": "a,b,c" },
+			{ "name": "d", "type": "random-list", "unique": "true", "size": "[2,5]", "value": "[0,3]", "decimalPlaces": "0" },
+			{ "name": "e", "type": "pick-one", "value": "Alice,Bob" },
+			{ "name": "f", "type": "pick-list", "value": "10,20,30", "ordered": "true", "choose": "[1,2]" },
+			{ "name": "g", "type": "random-sequence", "start": "2","step": "1.2", "seriesType": "arithmetic", "size": "[1,5]" }
+		]
 	},
 	"children": [
 		{
@@ -35,7 +44,6 @@
 							"children": []
 						},
 						{
-
 							"id": "f1d8cf21-0233-4f8e-b06c-6c102749eecc",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {

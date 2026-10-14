@@ -73,7 +73,8 @@ class Draft {
 		this.nodesByType.set(rawNode.type, nodesByType)
 
 		for (const i in rawNode.children) {
-			const childNode = this.processRawNode(rawNode.children[i])
+			const childNode = this.processRawNode(rawNode.children[i], rawNode.id)
+			childNode.node.parentId = rawNode.id
 			draftNode.children.push(childNode)
 		}
 

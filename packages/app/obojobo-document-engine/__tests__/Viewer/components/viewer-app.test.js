@@ -23,6 +23,8 @@ import { mount } from 'enzyme'
 import testObject from 'obojobo-document-engine/test-object.json'
 import mockConsole from 'jest-mock-console'
 import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
+import VariableStore from 'obojobo-document-engine/src/scripts/viewer/stores/variable-store'
+import VariableUtil from 'obojobo-document-engine/src/scripts/viewer/util/variable-util'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/viewer-api')
 jest.mock('obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed')
@@ -40,6 +42,8 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/components/nav')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
 jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag')
 jest.mock('obojobo-document-engine/src/scripts/common/components/modal-container')
+jest.mock('obojobo-document-engine/src/scripts/viewer/stores/variable-store')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/variable-util')
 
 describe('ViewerApp', () => {
 	let restoreConsole
@@ -1025,7 +1029,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('sendCloseEvent calls navigator.sendBeacon', done => {
+	test('sendClose`Event calls navigator.sendBeacon', done => {
 		global.navigator.sendBeacon = jest.fn()
 
 		expect.assertions(1)
@@ -1840,5 +1844,156 @@ describe('ViewerApp', () => {
 
 		spy1.mockRestore()
 		spy2.mockRestore()
+	})
+
+	test('component passes variables to VariableStore correctly', done => {
+		mocksForMount()
+
+		const mockVariables = {
+			'nodeid1:variablename1': 'var1',
+			'nodeid1:variablename2': 'var2'
+		}
+
+		// reset the mocked function to test variables
+		ViewerAPI.requestStart = jest.fn().mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				visitId: 123,
+				lti: {
+					lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
+				},
+				isPreviewing: true,
+				extensions: {
+					':ObojoboDraft.Sections.Assessment:attemptHistory': []
+				},
+				variables: mockVariables
+			}
+		})
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			expect(VariableStore.init).toHaveBeenCalledWith(mockVariables)
+			component.update()
+			done()
+		})
+	})
+
+	test('component calls expected VariableUtil functions, standard variable name', done => {
+		mocksForMount()
+
+		NavUtil.getContext.mockReturnValueOnce('test-context')
+
+		const mockVariables = {
+			'nodeid1:variablename1': 'var1',
+			'nodeid1:variablename2': 'var2'
+		}
+
+		// reset the mocked function to test variables
+		ViewerAPI.requestStart = jest.fn().mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				visitId: 123,
+				lti: {
+					lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
+				},
+				isPreviewing: true,
+				extensions: {
+					':ObojoboDraft.Sections.Assessment:attemptHistory': []
+				},
+				variables: mockVariables
+			}
+		})
+
+		const mockVariableState = { mockVariableStateKey: 'mockVariableStateVal' }
+
+		VariableStore.getState.mockReturnValueOnce(mockVariableState)
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			VariableUtil.findValueWithModel.mockReturnValueOnce('mock-var-value')
+
+			// ordinarily this is an oboModel instance, but it doesn't matter for tests
+			const mockTextModel = { key: 'val' }
+			const mockEvent = { text: '' }
+
+			component.instance().getTextForVariable(mockEvent, '$variablename1', mockTextModel)
+			expect(VariableUtil.findValueWithModel).toHaveBeenCalledWith(
+				'test-context',
+				mockVariableState,
+				mockTextModel,
+				'variablename1'
+			)
+			expect(VariableUtil.getValue).not.toHaveBeenCalled()
+
+			expect(mockEvent.text).toEqual('mock-var-value')
+
+			done()
+		})
+	})
+
+	test('component calls expected VariableUtil functions, owner:variable name', done => {
+		mocksForMount()
+
+		NavUtil.getContext.mockReturnValueOnce('test-context')
+
+		const mockVariables = {
+			'nodeid1:variablename1': 'var1',
+			'nodeid1:variablename2': 'var2'
+		}
+
+		// reset the mocked function to test variables
+		ViewerAPI.requestStart = jest.fn().mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				visitId: 123,
+				lti: {
+					lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
+				},
+				isPreviewing: true,
+				extensions: {
+					':ObojoboDraft.Sections.Assessment:attemptHistory': []
+				},
+				variables: mockVariables
+			}
+		})
+
+		const mockVariableState = { mockVariableStateKey: 'mockVariableStateVal' }
+
+		VariableStore.getState.mockReturnValueOnce(mockVariableState)
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			VariableUtil.getValue.mockReturnValueOnce('mock-var-value')
+
+			// ordinarily this is an oboModel instance, but it doesn't matter for tests
+			const mockTextModel = { key: 'val' }
+			const mockEvent = { text: '' }
+
+			component.instance().getTextForVariable(mockEvent, '$nodeid1:variablename1', mockTextModel)
+			expect(VariableUtil.getValue).toHaveBeenCalledWith(
+				'test-context',
+				mockVariableState,
+				'nodeid1',
+				'variablename1'
+			)
+			expect(VariableUtil.findValueWithModel).not.toHaveBeenCalled()
+
+			expect(mockEvent.text).toEqual('mock-var-value')
+
+			// bonus test to make sure event text is not overwritten if no value is found
+			VariableUtil.getValue.mockReturnValueOnce(null)
+			mockEvent.text = ''
+			expect(mockEvent.text).toEqual('')
+			component.instance().getTextForVariable(mockEvent, '$nodeid1:variablename1', mockTextModel)
+			expect(mockEvent.text).toEqual('')
+
+			done()
+		})
 	})
 })

@@ -18,6 +18,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			objectives: node.content.objectives,
+			variables: node.content.variables,
 			src: node.content.src,
 			title: node.content.title,
 			type: node.content.type,

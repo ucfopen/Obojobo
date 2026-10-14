@@ -39,6 +39,7 @@ describe('OboModel', () => {
 		expect(o.children.models.length).toBe(0)
 		expect(o.triggers).toEqual([])
 		expect(o.objectives).toEqual([])
+		expect(o.variables).toEqual([])
 		expect(o.title).toBe(null)
 		expect(o.modelState).toEqual({
 			dirty: false,
@@ -60,12 +61,14 @@ describe('OboModel', () => {
 				triggers: [{ passedInTrigger: 1 }],
 				title: 'passedInTitle',
 				customContent: 'example',
-				objectives: [{ objectiveId: 'mock-objective' }]
+				objectives: [{ objectiveId: 'mock-objective' }],
+				variables: [{ name: 'mock-var', type: 'mock-var-type' }]
 			}
 		})
 
 		expect(o.triggers).toEqual([{ passedInTrigger: 1 }])
 		expect(o.objectives).toEqual([{ objectiveId: 'mock-objective' }])
+		expect(o.variables).toEqual([{ name: 'mock-var', type: 'mock-var-type' }])
 		expect(o.title).toEqual('passedInTitle')
 		expect(o.id).toEqual('passedInId')
 		expect(o.get('content').customContent).toEqual('example')

@@ -14,7 +14,8 @@ const slateToObo = node => ({
 	children: node.children.map(child => Component.helpers.slateToObo(child)),
 	content: withoutUndefined({
 		triggers: node.content.triggers,
-		objectives: node.content.objectives
+		objectives: node.content.objectives,
+		variables: node.content.variables
 	})
 })
 
