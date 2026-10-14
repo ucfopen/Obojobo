@@ -120,6 +120,9 @@ exports.requireCanViewStatsPage = (req, res, next) =>
 exports.requireCanViewSystemStats = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canViewSystemStats')
 
+exports.requireCanViewAdminPage = (req, res, next) =>
+	requireCurrentUser(req, res, next, 'canViewAdminPage')
+
 exports.checkValidationRules = (req, res, next) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {

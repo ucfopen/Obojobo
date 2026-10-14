@@ -88,6 +88,21 @@ describe('RepositoryNav', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
+	test('renders admin section with canViewAdminPage', () => {
+		const component = create(<RepositoryNav {...navProps} userPerms={['canViewAdminPage']} />)
+
+		expect(
+			component.root.findAllByProps({ className: 'repository--nav--current-user' }).length
+		).toBe(1)
+		expect(
+			component.root.findByProps({ className: 'repository--nav--current-user--name' }).children[0]
+		).toBe(navProps.displayName)
+		expect(component.root.findAllByProps({ href: '/login' }).length).toBe(0)
+		expect(component.root.findAllByProps({ href: '/admin' }).length).toBe(1)
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
 	test('clicking current user button toggles a class on a menu element', () => {
 		const reusableComponent = <RepositoryNav {...navProps} />
 		const component = create(reusableComponent)

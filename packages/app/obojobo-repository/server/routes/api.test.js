@@ -10,6 +10,7 @@ jest.mock('../services/collections')
 jest.mock('../services/count')
 jest.mock('obojobo-express/server/models/user')
 jest.mock('obojobo-express/server/insert_event')
+jest.mock('../models/admin_interface')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 
@@ -24,6 +25,7 @@ let CountServices
 let UserModel
 let insertEvent
 let DraftPermissions
+let AdminInterface
 
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
@@ -98,6 +100,7 @@ describe('repository api route', () => {
 		CountServices = require('../services/count')
 		DraftPermissions = require('../models/draft_permissions')
 		UserModel = require('obojobo-express/server/models/user')
+		AdminInterface = require('../models/admin_interface')
 		insertEvent = require('obojobo-express/server/insert_event')
 	})
 
@@ -491,6 +494,64 @@ describe('repository api route', () => {
 				expect(SearchServices.searchForUserByString).toHaveBeenCalledWith('searchString')
 				expect(response.statusCode).toBe(500)
 				expect(response.error).toHaveProperty('text', 'Server Error: database error')
+			})
+	})
+
+	test('post /permissions/add returns the expected response', () => {
+		expect.hasAssertions()
+
+		// this should be a user object but for testing purposes it doesn't matter
+		AdminInterface.addPermission.mockResolvedValueOnce(true)
+
+		return request(app)
+			.post('/permissions/add')
+			.send({ userId: 5, perm: 'someNewPerm' })
+			.then(response => {
+				expect(AdminInterface.addPermission).toHaveBeenCalledTimes(1)
+				expect(AdminInterface.addPermission).toHaveBeenCalledWith(5, 'someNewPerm')
+				expect(response.statusCode).toBe(200)
+			})
+	})
+	test('post /permissions/add handles thrown errors', () => {
+		expect.hasAssertions()
+
+		AdminInterface.addPermission.mockRejectedValueOnce('database error')
+
+		return request(app)
+			.post('/permissions/add')
+			.send({ userId: 5, perm: 'someNewPerm' })
+			.then(response => {
+				expect(AdminInterface.addPermission).toHaveBeenCalledTimes(1)
+				expect(AdminInterface.addPermission).toHaveBeenCalledWith(5, 'someNewPerm')
+				expect(response.statusCode).toBe(500)
+			})
+	})
+	test('post /permissions/remove returns the expected response', () => {
+		expect.hasAssertions()
+
+		AdminInterface.removePermission.mockResolvedValueOnce(true)
+
+		return request(app)
+			.post('/permissions/remove')
+			.send({ userId: 5, perm: 'someExistingPerm' })
+			.then(response => {
+				expect(AdminInterface.removePermission).toHaveBeenCalledTimes(1)
+				expect(AdminInterface.removePermission).toHaveBeenCalledWith(5, 'someExistingPerm')
+				expect(response.statusCode).toBe(200)
+			})
+	})
+	test('post /permissions/remove handles thrown errors', () => {
+		expect.hasAssertions()
+
+		AdminInterface.removePermission.mockRejectedValueOnce('database error')
+
+		return request(app)
+			.post('/permissions/remove')
+			.send({ userId: 5, perm: 'someExistingPerm' })
+			.then(response => {
+				expect(AdminInterface.removePermission).toHaveBeenCalledTimes(1)
+				expect(AdminInterface.removePermission).toHaveBeenCalledWith(5, 'someExistingPerm')
+				expect(response.statusCode).toBe(500)
 			})
 	})
 

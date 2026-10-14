@@ -6,6 +6,7 @@ const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
 const DraftPermissions = require('../models/draft_permissions')
 const DraftsMetadata = require('../models/drafts_metadata')
+const AdminInterface = require('../models/admin_interface')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
@@ -14,7 +15,8 @@ const {
 	requireCanCreateDrafts,
 	requireCanDeleteDrafts,
 	check,
-	requireCanViewStatsPage
+	requireCanViewStatsPage,
+	requireCanViewAdminPage
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
@@ -164,6 +166,36 @@ router
 			const users = await searchForUserByString(req.query.q)
 			const filteredUsers = users.map(u => u.toJSON())
 			res.success(filteredUsers)
+		} catch (error) {
+			res.unexpected(error)
+		}
+	})
+
+router
+	.route('/permissions/add')
+	.post([requireCanViewAdminPage])
+	.post(async (req, res) => {
+		const userId = req.body.userId
+		const perm = req.body.perm
+
+		try {
+			const modifiedUser = await AdminInterface.addPermission(userId, perm)
+			res.success(modifiedUser)
+		} catch (error) {
+			res.unexpected(error)
+		}
+	})
+
+router
+	.route('/permissions/remove')
+	.post([requireCanViewAdminPage])
+	.post(async (req, res) => {
+		const userId = req.body.userId
+		const perm = req.body.perm
+
+		try {
+			const modifiedUser = await AdminInterface.removePermission(userId, perm)
+			res.success(modifiedUser)
 		} catch (error) {
 			res.unexpected(error)
 		}
