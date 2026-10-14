@@ -52,6 +52,7 @@ const questionJSON = {
 			type: 'ObojoboDraft.Chunks.MCAssessment',
 			content: {
 				correctLabels: 'mock-correct-labels',
+				partialLabels: 'mock-partial-labels',
 				incorrectLabels: 'mock-incorrect-labels'
 			},
 			children: [

@@ -16,6 +16,11 @@ Object {
     "z",
   ],
   "needsUpdate": false,
+  "partialLabels": Array [
+    "l",
+    "m",
+    "n",
+  ],
   "revealAnswer": "when-incorrect",
   "solution": Object {
     "children": Array [
@@ -60,6 +65,7 @@ Object {
   "editing": false,
   "incorrectLabels": null,
   "needsUpdate": false,
+  "partialLabels": null,
   "revealAnswer": "default",
   "solution": null,
   "type": "default",
@@ -74,6 +80,7 @@ Object {
   "editing": false,
   "incorrectLabels": null,
   "needsUpdate": false,
+  "partialLabels": null,
   "revealAnswer": "default",
   "solution": null,
   "type": "default",
@@ -86,6 +93,7 @@ Object {
     "collapsed": false,
     "correctLabels": "a|b|c",
     "incorrectLabels": "d|e|f",
+    "partialLabels": null,
     "revealAnswer": "default",
     "solution": Object {
       "children": Array [
@@ -129,6 +137,7 @@ Object {
     "collapsed": false,
     "correctLabels": null,
     "incorrectLabels": null,
+    "partialLabels": null,
     "revealAnswer": "default",
     "solution": null,
     "type": "default",

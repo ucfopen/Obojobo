@@ -47,11 +47,17 @@ const QuestionComponent = ({
 	onClickReveal,
 	onClickShowExplanation,
 	onClickHideExplanation,
-	onClickBlocker
+	onClickBlocker,
+	onSaveAnswer
 }) => {
 	const isAnswerScored = score !== null
 	const hasResponse = response !== null
 	const isAssessmentQuestion = mode === 'assessment'
+	// Optional question modelState property to disable the footer for external tools used as questions
+	const noFooter =
+		questionAssessmentModel.modelState &&
+		questionAssessmentModel.modelState.noFooter === true &&
+		mode !== 'review'
 	const isResponseSending = responseSendState === QuestionResponseSendStates.SENDING
 	const isFormDisabled = isResponseSending && isAssessmentQuestion
 	const QuestionAssessmentComponent = questionAssessmentModel.getComponentClass()
@@ -109,10 +115,11 @@ const QuestionComponent = ({
 								questionModel={questionModel}
 								response={response}
 								disabled={isFormDisabled}
+								onSaveAnswer={onSaveAnswer}
 							/>
 						</div>
 					</fieldset>
-					{!isAssessmentQuestion ? (
+					{!isAssessmentQuestion && !noFooter ? (
 						<QuestionFooter
 							score={score}
 							hasResponse={hasResponse}

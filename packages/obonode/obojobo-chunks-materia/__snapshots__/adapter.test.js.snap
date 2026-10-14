@@ -4,6 +4,7 @@ exports[`Materia adapter construct builds without attributes 1`] = `
 Object {
   "height": 600,
   "icon": null,
+  "noFooter": true,
   "src": null,
   "textGroup": TextGroup {
     "dataTemplate": Object {},
@@ -31,6 +32,7 @@ Object {
   "content": Object {
     "height": 600,
     "icon": null,
+    "noFooter": true,
     "src": "mockSrc",
     "textGroup": Array [
       Object {

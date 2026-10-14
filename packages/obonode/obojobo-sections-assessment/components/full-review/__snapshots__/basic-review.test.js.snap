@@ -174,6 +174,7 @@ exports[`BasicReview Basic component correct 1`] = `
           "collapsed": false,
           "correctLabels": null,
           "incorrectLabels": null,
+          "partialLabels": null,
           "revealAnswer": "default",
           "solution": Object {
             "children": Array [
@@ -399,6 +400,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
           "collapsed": false,
           "correctLabels": null,
           "incorrectLabels": null,
+          "partialLabels": null,
           "revealAnswer": "default",
           "solution": Object {
             "children": Array [
@@ -624,6 +626,7 @@ exports[`BasicReview Basic component survey 1`] = `
           "collapsed": false,
           "correctLabels": null,
           "incorrectLabels": null,
+          "partialLabels": null,
           "revealAnswer": "default",
           "solution": Object {
             "children": Array [

@@ -39,6 +39,7 @@ export default class Question extends React.Component {
 		this.onClickReveal = this.onClickReveal.bind(this)
 		this.onFormSubmit = this.onFormSubmit.bind(this)
 		this.onFormChange = this.onFormChange.bind(this)
+		this.onSaveAnswer = this.onSaveAnswer.bind(this)
 		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
@@ -79,7 +80,9 @@ export default class Question extends React.Component {
 		return true
 	}
 
-	onFormChange(event) {
+	// This is passed down the chain directly to assessment chunks
+	// In the event that they are not forms, they can still submit answers
+	onSaveAnswer(event) {
 		if (this.props.isReview) return
 
 		const prevResponse = QuestionUtil.getResponse(
@@ -101,6 +104,10 @@ export default class Question extends React.Component {
 		)
 
 		this.nextFocus = FOCUS_TARGET_RESULTS
+	}
+
+	onFormChange(event) {
+		this.onSaveAnswer(event)
 	}
 
 	onFormSubmit(event) {
@@ -181,6 +188,7 @@ export default class Question extends React.Component {
 
 		const feedbackText = getLabel(
 			modelState.correctLabels,
+			modelState.partialLabels,
 			modelState.incorrectLabels,
 			calculatedScoreResponse.score,
 			this.props.mode === 'review',
@@ -339,6 +347,7 @@ export default class Question extends React.Component {
 
 		return getLabel(
 			this.props.model.modelState.correctLabels,
+			this.props.model.modelState.partialLabels,
 			this.props.model.modelState.incorrectLabels,
 			this.getScore(),
 			this.getMode() === 'review',
@@ -536,6 +545,7 @@ export default class Question extends React.Component {
 				onClickShowExplanation={this.onClickShowExplanation}
 				onClickHideExplanation={this.onClickHideExplanation}
 				onClickBlocker={this.onClickBlocker}
+				onSaveAnswer={this.onSaveAnswer}
 				onEnterPress={this.onEnterPress}
 			/>
 		)

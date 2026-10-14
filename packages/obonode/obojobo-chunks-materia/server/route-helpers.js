@@ -58,7 +58,7 @@ const widgetLaunchParams = (document, visit, user, materiaOboNodeId, baseUrl) =>
 	}
 
 	// materia currently uses context_id to group scores and attempts
-	// obojobo doesn't support materia as scoreable questions yet, so the key in use here is intended to:
+	// the key in use here is intended to:
 	// * support materia in content pages
 	// * re lti launch will reset scores/attempts
 	// * browser reload of the window will resume an attempt/score window

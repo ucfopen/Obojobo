@@ -618,6 +618,10 @@
 				background-color: $color-correct;
 			}
 
+			&.partially-correct {
+				background-color: $color-partially-correct;
+			}
+
 			&.incorrect {
 				background-color: $color-incorrect;
 			}

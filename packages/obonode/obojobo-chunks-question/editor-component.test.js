@@ -17,6 +17,7 @@ jest.mock('slate', () => ({
 }))
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
+import Common from 'obojobo-document-engine/src/scripts/common'
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	Registry: {
 		getItemForType: type => ({
@@ -29,7 +30,8 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 			oboToSlate: type => ({
 				oboToSlateReturnFor: type
 			})
-		})
+		}),
+		contentTypes: [MCASSESSMENT_NODE, NUMERIC_ASSESSMENT_NODE]
 	},
 	components: {
 		// eslint-disable-next-line react/display-name
@@ -53,6 +55,8 @@ jest.mock(
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
+const MATERIA_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.MateriaAssessment'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 describe('Question Editor Node', () => {
@@ -74,6 +78,11 @@ describe('Question Editor Node', () => {
 		expect(mainComponent.props.className).toBe(
 			'component obojobo-draft--chunks--question is-viewed pad is-type-default is-not-collapsed'
 		)
+
+		const options = component.root.findByType('select').findAllByType('option')
+		expect(options.length).toBe(2)
+		expect(options[0].props.value).toBe(MCASSESSMENT_NODE)
+		expect(options[1].props.value).toBe(NUMERIC_ASSESSMENT_NODE)
 
 		const collapseButton = component.root.findByProps({ className: 'collapse-button' })
 		expect(collapseButton.children[0].children[0]).toBe('-')
@@ -376,5 +385,33 @@ describe('Question Editor Node', () => {
 			{ content: { type: 'default', collapsed: true } },
 			{ at: path }
 		)
+	})
+
+	test('Question type options include Materia assessment if it is registered', () => {
+		Common.Registry.contentTypes = [
+			MCASSESSMENT_NODE,
+			NUMERIC_ASSESSMENT_NODE,
+			MATERIA_ASSESSMENT_NODE
+		]
+
+		const props = {
+			element: {
+				content: { type: 'default' },
+				children: [{}, { subtype: SOLUTION_NODE }]
+			}
+		}
+		const component = renderer.create(<Question {...props} />)
+		const mainComponent = component.root.findByProps({
+			className: 'obojobo-draft--chunks--question--wrapper'
+		}).children[0].children[0]
+		expect(mainComponent.props.className).toBe(
+			'component obojobo-draft--chunks--question is-viewed pad is-type-default is-not-collapsed'
+		)
+
+		const options = component.root.findByType('select').findAllByType('option')
+		expect(options.length).toBe(3)
+		expect(options[0].props.value).toBe(MCASSESSMENT_NODE)
+		expect(options[1].props.value).toBe(NUMERIC_ASSESSMENT_NODE)
+		expect(options[2].props.value).toBe(MATERIA_ASSESSMENT_NODE)
 	})
 })
