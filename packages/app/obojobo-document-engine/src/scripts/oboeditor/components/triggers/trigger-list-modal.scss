@@ -63,6 +63,18 @@
 					margin-bottom: 1em;
 					margin-right: 4.7em;
 				}
+
+				.invalid-assessment-id-message {
+					display: block;
+					border-radius: $dimension-rounded-radius;
+					color: $color-bg;
+					background-color: $color-error;
+					width: 10.2em;
+					padding: 0.2em;
+					text-align: left;
+					margin-left: 15.8em;
+					margin-bottom: 1em;
+				}
 			}
 		}
 

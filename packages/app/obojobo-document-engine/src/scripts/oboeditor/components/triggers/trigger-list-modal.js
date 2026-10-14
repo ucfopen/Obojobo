@@ -2,9 +2,12 @@ import './trigger-list-modal.scss'
 
 import React from 'react'
 
-import SimpleDialog from '../../../common/components/modal/simple-dialog'
-import Button from '../../../common/components/button'
-import Switch from '../../../common/components/switch'
+import Common from 'obojobo-document-engine/src/scripts/common'
+const { SimpleDialog } = Common.components.modal
+const { Button, Switch } = Common.components
+const { OboModel } = Common.models
+
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 class TriggerListModal extends React.Component {
 	constructor(props) {
@@ -14,6 +17,7 @@ class TriggerListModal extends React.Component {
 		if (!this.state.triggers) this.state.triggers = []
 
 		this.createTrigger = this.createTrigger.bind(this)
+		this.renderErrorMessage = this.renderErrorMessage.bind(this)
 	}
 
 	componentWillUnmount() {
@@ -123,30 +127,56 @@ class TriggerListModal extends React.Component {
 		}))
 	}
 
-	updateActionValue(triggerIndex, actionIndex, key, event) {
+	updateActionValue(triggerIndex, actionIndex, key, actionType, event) {
+		const targetValue = event.target.value
 		const value = {}
 		// pull changes off the event
 		// checkbox handles events from <Switch> being a checkbox
-		value[key] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+		value[key] = event.target.type === 'checkbox' ? event.target.checked : targetValue
 
-		// Update triggers[triggerIndex].actions[actionIndex].value.key
 		// The nested loops insure that React's immutable state is updated properly
 		return this.setState(prevState => ({
 			/* eslint-disable no-mixed-spaces-and-tabs */
-			triggers: prevState.triggers.map((trigger, tIndex) =>
-				triggerIndex === tIndex
-					? Object.assign(trigger, {
-							actions: trigger.actions.map((action, aIndex) =>
-								actionIndex === aIndex
-									? Object.assign(action, {
-											value: Object.assign({}, action.value, value)
-									  })
-									: action
-							)
-					  })
-					: trigger
-			)
+			triggers: prevState.triggers.map((trigger, tIndex) => {
+				if (triggerIndex === tIndex) {
+					trigger = Object.assign(trigger, {
+							actions: trigger.actions.map((action, aIndex) => {
+
+								if (actionIndex === aIndex) {
+									action = Object.assign(action, { value: Object.assign({}, action.value, value) })
+
+									// Updating error message if needed
+									if (actionType && (actionType === 'assessment:startAttempt' || actionType === 'assessment:endAttempt')) {
+
+										const typedId = targetValue
+										if (!this.isValidAssessmentId(typedId)) {
+											action = Object.assign(action, { errorMessage: "Invalid Assessment Id" })
+										}else {
+											action = Object.assign(action, { errorMessage: "" })
+										}
+									}
+								}
+
+								return action
+							})
+					 })
+				}
+
+				return trigger
+			})
 		}))
+	}
+
+	isValidAssessmentId(id) {
+		if (id === "") return true
+
+		// Checks if id exists
+		if (!OboModel.models[id]) {
+			return false
+		}
+
+		// Checks if found id belongs to an assessment
+		return OboModel.models[id].attributes.type === ASSESSMENT_NODE
 	}
 
 	deleteAction(triggerIndex, actionIndex) {
@@ -223,6 +253,15 @@ class TriggerListModal extends React.Component {
 		}))
 	}
 
+	renderErrorMessage(triggerIndex, actionIndex) {
+		const trigger = this.state.triggers[triggerIndex]
+		const action = trigger.actions[actionIndex]
+
+		if (action.errorMessage) {
+			return <span className="invalid-assessment-id-message">{action.errorMessage}</span>
+		}
+	}
+
 	renderActionOptions(triggerIndex, actionIndex, action) {
 		switch (action.type) {
 			case 'nav:goto':
@@ -271,9 +310,10 @@ class TriggerListModal extends React.Component {
 							<input
 								className="input-item"
 								value={action.value.id || ''}
-								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
+								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id', action.type)}
 							/>
 						</div>
+						{this.renderErrorMessage(triggerIndex, actionIndex)}
 					</div>
 				)
 			case 'viewer:alert':
