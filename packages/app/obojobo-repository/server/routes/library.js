@@ -4,7 +4,7 @@ const DraftSummary = require('../models/draft_summary')
 const UserModel = require('obojobo-express/server/models/user')
 const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const DraftPermissions = require('../models/draft_permissions')
-const trianglify = require('trianglify')
+const trianglify = require('trianglify-ts-no-canvas')
 const seedrandom = require('seedrandom')
 const {
 	checkValidationRules,
