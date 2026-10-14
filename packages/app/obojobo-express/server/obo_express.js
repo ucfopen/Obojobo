@@ -34,6 +34,7 @@ app.on('mount', app => {
 	// =========== ROUTING & CONTROLLERS ===========
 	app.use('/preview', oboRequire('server/routes/preview'))
 	app.use('/view', oboRequire('server/routes/viewer'))
+	app.use('/view-split', oboRequire('server/routes/view-split'))
 	app.use('/editor', oboRequire('server/routes/editor'))
 	app.use('/lti', oboRequire('server/routes/lti'))
 	app.use('/api/drafts', oboRequire('server/routes/api/drafts'))

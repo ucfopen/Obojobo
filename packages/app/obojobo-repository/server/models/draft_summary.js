@@ -84,6 +84,15 @@ class DraftSummary {
 			})
 	}
 
+	static fetchMultipleById(moduleIds) {
+		return db
+			.many(buildQueryWhere('drafts.id IN ($[ids:csv])'), { ids: moduleIds })
+			.then(DraftSummary.resultsToObjects)
+			.catch(error => {
+				throw logger.logError('DraftSummary fetchMultipleById Error', error)
+			})
+	}
+
 	static fetchByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
 			`repository_map_user_to_draft.access_level AS access_level,`,

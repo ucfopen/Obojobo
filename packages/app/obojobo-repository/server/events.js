@@ -2,6 +2,7 @@ const oboEvents = require('obojobo-express/server/obo_events')
 const logger = require('obojobo-express/server/logger')
 const db = require('obojobo-express/server/db')
 const DraftModel = require('obojobo-express/server/models/draft')
+const DraftSummary = require('./models/draft_summary')
 const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const appCSSUrl = webpackAssetPath('repository.css')
 
@@ -60,4 +61,21 @@ oboEvents.on('HTTP_UNEXPECTED', ({ req, res, next }) => {
 		}
 		res.render('pages/page-error.jsx', props)
 	})
+})
+
+// Split-Run Preview Landing
+oboEvents.on('SPLIT_RUN_PREVIEW', ({ req, res, next, moduleOptionIds }) => {
+	req.responseHandled = true
+	return req
+		.getCurrentUser()
+		.then(() => DraftSummary.fetchMultipleById(moduleOptionIds))
+		.then(moduleOptions => {
+			const props = {
+				title: 'Split-Run Preview',
+				currentUser: req.currentUser,
+				appCSSUrl: webpackAssetPath('page-split-run-preview.css'),
+				moduleOptions
+			}
+			return res.render('pages/page-split-run-preview.jsx', props)
+		})
 })

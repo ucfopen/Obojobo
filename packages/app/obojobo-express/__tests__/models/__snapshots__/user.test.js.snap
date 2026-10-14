@@ -11,7 +11,7 @@ Array [
 				first_name = $[firstName],
 				last_name = $[lastName],
 				roles = $[roles]
-			RETURNING id
+			RETURNING id, created_at
 			",
   Object {
     "accessLevel": undefined,
@@ -70,7 +70,7 @@ Array [
 				first_name = $[firstName],
 				last_name = $[lastName],
 				roles = $[roles]
-			RETURNING id
+			RETURNING id, created_at
 			",
   Object {
     "accessLevel": undefined,

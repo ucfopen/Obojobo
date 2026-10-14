@@ -8,6 +8,8 @@ const User = require('../../server/models/user')
 const db = require('../../server/db')
 const oboEvents = require('../../server/obo_events')
 
+const nowForTests = Date.now()
+
 describe('user model', () => {
 	beforeAll(() => {
 		Date.now = () => 'mockNowDate'
@@ -137,7 +139,7 @@ describe('user model', () => {
 	test('creates a new user', () => {
 		expect.hasAssertions()
 
-		db.one.mockResolvedValueOnce({ id: 3 })
+		db.one.mockResolvedValueOnce({ id: 3, created_at: nowForTests })
 
 		const u = new User({
 			firstName: 'Roger',
@@ -149,6 +151,7 @@ describe('user model', () => {
 		return u.saveOrCreate().then(user => {
 			expect(user).toBeInstanceOf(User)
 			expect(user.id).toBe(3)
+			expect(user.createdAt).toBe(nowForTests)
 			expect(db.one).toHaveBeenCalledTimes(1)
 			expect(db.one.mock.calls[0]).toMatchSnapshot()
 			expect(oboEvents.emit).toHaveBeenCalledTimes(1)
@@ -159,7 +162,7 @@ describe('user model', () => {
 	test('saves an existing user', () => {
 		expect.hasAssertions()
 
-		db.one.mockResolvedValueOnce({ id: 10 })
+		db.one.mockResolvedValueOnce({ id: 10, created_at: nowForTests })
 
 		const u = new User({
 			id: 10,
@@ -172,6 +175,7 @@ describe('user model', () => {
 		return u.saveOrCreate().then(user => {
 			expect(user).toBeInstanceOf(User)
 			expect(user.id).toBe(10)
+			expect(user.createdAt).toBe(nowForTests)
 			expect(db.one).toHaveBeenCalledTimes(1)
 			expect(db.one.mock.calls[0]).toMatchSnapshot()
 			expect(oboEvents.emit).toHaveBeenCalledTimes(1)
