@@ -30,40 +30,6 @@ describe('IFrame adapter', () => {
 		expect(model.modelState).toMatchSnapshot()
 	})
 
-	test('adapter sets modelState.border to true when given attributes border=true (or when border not specified and type="webpage")', () => {
-		model = new MockOboModel({ border: false })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(false)
-
-		model = new MockOboModel({ border: true })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(true)
-
-		model = new MockOboModel({ type: 'webpage' })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(true)
-
-		model = new MockOboModel({ type: 'media' })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(false)
-
-		model = new MockOboModel({ type: 'webpage', border: false })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(false)
-
-		model = new MockOboModel({ type: 'media', border: false })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(false)
-
-		model = new MockOboModel({ type: 'webpage', border: true })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(true)
-
-		model = new MockOboModel({ type: 'media', border: true })
-		IFrameAdapter.construct(model)
-		expect(model.modelState.border).toBe(true)
-	})
-
 	test('adapter sets modelState.fit to "scale" by default, "scale" or "scroll" when specified, "scroll" if not specified (and type="webpage") and "scale" if not specified (and type="media")', () => {
 		model = new MockOboModel({ fit: 'sCroll' })
 		IFrameAdapter.construct(model)
@@ -110,14 +76,14 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.fit).toBe('scale')
 	})
 
-	test('adapter sets modelState.controls to "reload" by default, "zoom,reload,new-window" if not specified (and type="webpage"), "reload" if not specified (and type="media") and lower-cases and trims values if specified', () => {
+	test('adapter sets modelState.controls to "reload" by default, "zoom,reload,new-window,border" if not specified (and type="webpage"), "reload" if not specified (and type="media") and lower-cases and trims values if specified', () => {
 		model = new MockOboModel({})
 		IFrameAdapter.construct(model)
 		expect(model.modelState.controls).toEqual(['reload'])
 
 		model = new MockOboModel({ type: 'webpage' })
 		IFrameAdapter.construct(model)
-		expect(model.modelState.controls).toEqual(['zoom', 'reload', 'new-window'])
+		expect(model.modelState.controls).toEqual(['zoom', 'reload', 'new-window', 'border'])
 
 		model = new MockOboModel({ type: 'media' })
 		IFrameAdapter.construct(model)
